@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home4/ukrmeumy/public_html/
+    - export DEPLOYPATH=/home4/ukrmeumy/public_html/zyntello/
     - /bin/cp -r dist/* $DEPLOYPATH
