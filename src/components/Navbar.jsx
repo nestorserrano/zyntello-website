@@ -10,7 +10,7 @@ export default function Navbar() {
           <img
             src="/logos/zyntello_isotipo_transparente.png"
             alt="Zyntello"
-            style={{ height: '38px', width: 'auto' }}
+            style={{ height: '52px', width: 'auto' }}
           />
           <div className="d-flex flex-column">
             <span className="fw-bold text-white" style={{ fontSize: '1.3rem', lineHeight: 1.1 }}>Zyntello</span>
