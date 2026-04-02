@@ -20,9 +20,13 @@ export default function Contacto() {
       datos.append('from_name', form.nombre)
       datos.append('name', form.nombre)
       datos.append('email', form.email)
-      datos.append('Empresa', form.empresa || '—')
-      datos.append('Servicio', form.servicio)
-      datos.append('message', form.mensaje)
+      datos.append('message',
+        `Nombre: ${form.nombre}\n` +
+        `Empresa: ${form.empresa || '—'}\n` +
+        `Correo: ${form.email}\n` +
+        `Servicio: ${form.servicio}\n\n` +
+        `Mensaje:\n${form.mensaje}`
+      )
 
       const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
