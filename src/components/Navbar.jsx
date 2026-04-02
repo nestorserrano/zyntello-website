@@ -6,11 +6,15 @@ export default function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg fixed-top" style={{ background: 'rgba(10,10,20,0.96)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
       <div className="container-fluid px-4">
-        <a className="navbar-brand d-flex flex-column" href="#inicio">
-          <span className="fw-bold text-white" style={{ fontSize: '1.3rem', lineHeight: 1.1 }}>Zyntello</span>
-          <span style={{ fontSize: '0.65rem', letterSpacing: '1.5px', textTransform: 'uppercase' }}>
-            <span style={{ color: '#60a5fa' }}>Inteligencia Artificial</span>
-            <span style={{ color: '#475569' }}> · ERP · Tecnología Empresarial</span>
+        <a className="navbar-brand d-flex align-items-center gap-2" href="#inicio">
+          <img
+            src="/logos/zyntello_principal_blanco.svg"
+            alt="Zyntello"
+            style={{ height: '36px', width: 'auto' }}
+          />
+          <span style={{ fontSize: '0.62rem', letterSpacing: '1.5px', textTransform: 'uppercase', lineHeight: 1.3 }}>
+            <span style={{ color: '#60a5fa', display: 'block' }}>Inteligencia Artificial</span>
+            <span style={{ color: '#475569' }}>ERP · Tecnología Empresarial</span>
           </span>
         </a>
 
