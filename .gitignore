@@ -21,3 +21,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Subcarpetas de módulos Zyntello (cada una tiene su propio repo)
+constructflow/
+crm/
+facturacion/
+nomina/
+encuestas/
+marketing/
+
+# Carpeta de memoria de Claude (solo local)
+.claude/
