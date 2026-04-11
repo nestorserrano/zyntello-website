@@ -11,6 +11,6 @@ RewriteCond %{DOCUMENT_ROOT}/$1/public/$2 -f
 RewriteRule ^([^/]+)/(.+)$ $1/public/$2 [L,QSA,NC]
 
 # Rutas dinámicas: delegar al front controller de Laravel
+# No se usa !-d porque cada [slug]/ es un directorio real en el servidor
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^([^/]+)(/.*)?$ $1/public/index.php [L,QSA]
