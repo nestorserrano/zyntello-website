@@ -154,12 +154,12 @@ Deploy via SSH o Git en cPanel. Cada módulo tiene su propia instrucción en su 
 
 | Aplicación | Base de Datos | Usuario | Contraseña |
 |---|---|---|---|
-| Admin interno | `ukrmeumi_zyntello_admin` | `ukrmeumy_zyntello_user` | `C3dul@13238162` |
-| ConstructFlow | `ukrmeumi_zyntello_constructflow` | `ukrmeumy_zyntello_user` | `C3dul@13238162` |
-| Facturación | `ukrmeumi_zyntello_facturacion` | `ukrmeumy_zyntello_user` | `C3dul@13238162` |
-| CRM | `ukrmeumi_zyntello_crm` | `ukrmeumy_zyntello_user` | `C3dul@13238162` |
-| Nómina | `ukrmeumi_zyntello_nomina` | `ukrmeumy_zyntello_user` | `C3dul@13238162` |
-| Encuestas | `ukrmeumi_zyntello_encuestas` | `ukrmeumy_zyntello_user` | `C3dul@13238162` |
+| Admin interno | `ukrmeumy_zyntello_admin` | `ukrmeumy_zyntello_user` | `C3dul@13238162` |
+| ConstructFlow | `ukrmeumy_zyntello_constructflow` | `ukrmeumy_zyntello_user` | `C3dul@13238162` |
+| Facturación | `ukrmeumy_zyntello_facturacion` | `ukrmeumy_zyntello_user` | `C3dul@13238162` |
+| CRM | `ukrmeumy_zyntello_crm` | `ukrmeumy_zyntello_user` | `C3dul@13238162` |
+| Nómina | `ukrmeumy_zyntello_nomina` | `ukrmeumy_zyntello_user` | `C3dul@13238162` |
+| Encuestas | `ukrmeumy_zyntello_encuestas` | `ukrmeumy_zyntello_user` | `C3dul@13238162` |
 
 **Ventajas de separar BDs:**
 - Isolamiento: fallo en una app no afecta las demás
