@@ -5,3 +5,5 @@ deployment:
     - /bin/cp -r dist/* $DEPLOYPATH
     - /bin/mkdir -p ${DEPLOYPATH}app
     - /bin/cp app/.htaccess ${DEPLOYPATH}app/.htaccess
+    - chmod 644 ${DEPLOYPATH}app/.htaccess
+    - chmod 755 ${DEPLOYPATH}app
