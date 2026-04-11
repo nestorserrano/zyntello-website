@@ -26,6 +26,7 @@ const apps = [
     rating: 4.8,
     reviews: 124,
     etiqueta: 'Popular',
+    url: 'https://app.zyntello.com/crm',
     previews: [
       { label: 'Pipeline', icon: '📊' },
       { label: 'Contactos', icon: '👥' },
@@ -54,6 +55,7 @@ const apps = [
     rating: 4.7,
     reviews: 89,
     etiqueta: 'Nuevo',
+    url: 'https://app.zyntello.com/proyectos',
     previews: [
       { label: 'Kanban', icon: '🗂️' },
       { label: 'Gantt', icon: '📅' },
@@ -82,6 +84,7 @@ const apps = [
     rating: 4.6,
     reviews: 67,
     etiqueta: null,
+    url: 'https://app.zyntello.com/tareas',
     previews: [
       { label: 'Mis Tareas', icon: '📝' },
       { label: 'Calendario', icon: '🗓️' },
@@ -110,6 +113,7 @@ const apps = [
     rating: 4.9,
     reviews: 203,
     etiqueta: 'Destacado',
+    url: 'https://app.zyntello.com/facturacion',
     previews: [
       { label: 'Facturas', icon: '🧾' },
       { label: 'Cobros', icon: '💰' },
@@ -138,6 +142,7 @@ const apps = [
     rating: 4.7,
     reviews: 156,
     etiqueta: null,
+    url: 'https://app.zyntello.com/inventario',
     previews: [
       { label: 'Stock', icon: '📦' },
       { label: 'Almacenes', icon: '🏭' },
@@ -167,6 +172,7 @@ const apps = [
     rating: 4.8,
     reviews: 91,
     etiqueta: 'Nuevo',
+    url: 'https://app.zyntello.com/encuestas',
     previews: [
       { label: 'Constructor', icon: '🛠️' },
       { label: 'Resultados', icon: '📊' },
@@ -196,6 +202,7 @@ const apps = [
     rating: 4.8,
     reviews: 74,
     etiqueta: 'Nuevo',
+    url: 'https://app.zyntello.com/contabilidad',
     previews: [
       { label: 'Asientos', icon: '📒' },
       { label: 'Balances', icon: '⚖️' },
@@ -225,10 +232,98 @@ const apps = [
     rating: 4.9,
     reviews: 52,
     etiqueta: 'Destacado',
+    url: 'https://app.zyntello.com/condominios',
     previews: [
       { label: 'Propietarios', icon: '🏘️' },
       { label: 'Cuotas', icon: '💳' },
       { label: 'Reportes', icon: '📊' }
+    ]
+  },
+  {
+    id: 'constructflow',
+    icono: '🏗️',
+    nombre: 'ConstructFlow',
+    subtitulo: 'Gestión de Obras y Construcción',
+    desarrollador: 'Zyntello',
+    categoria: 'Construcción',
+    descripcion: 'Planifica y ejecuta proyectos de construcción con control de presupuesto, avance de obra, materiales y subcontratistas en tiempo real.',
+    caracteristicas: [
+      'Gestión de proyectos y frentes de obra',
+      'Control presupuestario y costos reales',
+      'Inventario de materiales y equipos',
+      'Cronograma y avance por etapas',
+      'Informes de progreso para clientes'
+    ],
+    precio: 49,
+    precioAnual: 39,
+    color: '#d97706',
+    gradiente: 'linear-gradient(135deg, #78350f 0%, #b45309 60%, #d97706 100%)',
+    rating: 4.9,
+    reviews: 47,
+    etiqueta: 'Disponible',
+    url: 'https://app.zyntello.com/constructflow',
+    previews: [
+      { label: 'Obras', icon: '🏗️' },
+      { label: 'Presupuesto', icon: '💰' },
+      { label: 'Avance', icon: '📊' }
+    ]
+  },
+  {
+    id: 'restaurante',
+    icono: '🍽️',
+    nombre: 'Restaurante',
+    subtitulo: 'Sistema POS para Restaurantes',
+    desarrollador: 'Zyntello',
+    categoria: 'Hostelería',
+    descripcion: 'Sistema completo para restaurantes, cafeterías y bares. Mesas, comandas, cocina, delivery, inventario y cierre de caja integrado.',
+    caracteristicas: [
+      'Gestión de mesas y comandas en tiempo real',
+      'Pantalla de cocina (KDS)',
+      'Control de inventario y recetas',
+      'Delivery y take-away integrado',
+      'Reportes de ventas y cierre de caja'
+    ],
+    precio: 29,
+    precioAnual: 23,
+    color: '#e11d48',
+    gradiente: 'linear-gradient(135deg, #881337 0%, #be123c 60%, #fb7185 100%)',
+    rating: 4.7,
+    reviews: 31,
+    etiqueta: 'Nuevo',
+    url: 'https://app.zyntello.com/restaurante',
+    previews: [
+      { label: 'Mesas', icon: '🪑' },
+      { label: 'Cocina', icon: '👨‍🍳' },
+      { label: 'Cierre', icon: '💵' }
+    ]
+  },
+  {
+    id: 'doctores',
+    icono: '🩺',
+    nombre: 'Doctores',
+    subtitulo: 'Gestión de Consultorios y Clínicas',
+    desarrollador: 'Zyntello',
+    categoria: 'Salud',
+    descripcion: 'Agenda citas, gestiona expedientes clínicos, recetas, historial del paciente y factura consultas con total seguridad y privacidad.',
+    caracteristicas: [
+      'Agenda de citas y recordatorios automáticos',
+      'Expediente clínico electrónico',
+      'Recetas y órdenes de laboratorio',
+      'Control de historias clínicas',
+      'Facturación de consultas y seguros'
+    ],
+    precio: 29,
+    precioAnual: 23,
+    color: '#06b6d4',
+    gradiente: 'linear-gradient(135deg, #164e63 0%, #0891b2 60%, #22d3ee 100%)',
+    rating: 4.8,
+    reviews: 28,
+    etiqueta: 'Nuevo',
+    url: 'https://app.zyntello.com/doctores',
+    previews: [
+      { label: 'Agenda', icon: '📅' },
+      { label: 'Expedientes', icon: '📋' },
+      { label: 'Recetas', icon: '💊' }
     ]
   }
 ]
@@ -250,6 +345,9 @@ const APP_SUITE = {
     'Encuestas – Estadísticas y reportes',
     'Contabilidad – Estados financieros y fiscal',
     'Condominios – Administración residencial',
+    'ConstructFlow – Gestión de obras y construcción',
+    'Restaurante – POS para restaurantes',
+    'Doctores – Consultorios y expedientes clínicos',
     'Soporte prioritario incluido',
     '1 usuario incluido · +$5 por usuario adicional'
   ],
@@ -568,7 +666,7 @@ export default function Soluciones() {
               Microaplicaciones empresariales listas para usar. Sin instalaciones, acceso desde cualquier dispositivo y soporte incluido.
             </p>
             <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', flexWrap: 'wrap', marginTop: '16px' }}>
-              {['CRM', 'Proyectos', 'Tareas', 'Facturación', 'Inventario', 'Encuestas', 'Contabilidad', 'Condominios'].map(a => (
+              {['CRM', 'Proyectos', 'Tareas', 'Facturación', 'Inventario', 'Encuestas', 'Contabilidad', 'Condominios', 'ConstructFlow', 'Restaurante', 'Doctores'].map(a => (
                 <span key={a} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.09)', color: '#64748b', fontSize: '0.75rem', padding: '4px 12px', borderRadius: '20px' }}>{a}</span>
               ))}
             </div>
@@ -634,7 +732,7 @@ export default function Soluciones() {
                 <span className="sol-bundle-badge">Mejor precio</span>
               </div>
               <p style={{ color: '#64748b', margin: 0, fontSize: '0.88rem' }}>
-                CRM · Proyectos · Tareas · Facturación · Inventario · Encuestas · Contabilidad · Condominios — las 8 apps por un precio especial
+                CRM · Proyectos · Tareas · Facturación · Inventario · Encuestas · Contabilidad · Condominios · ConstructFlow · Restaurante · Doctores — las 11 apps por un precio especial
               </p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexShrink: 0 }}>
@@ -669,54 +767,63 @@ export default function Soluciones() {
                   e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'
                 }}
               >
-                {/* Banner de color */}
-                <div style={{ height: '76px', background: app.gradiente, position: 'relative', overflow: 'hidden', borderRadius: '12px 12px 0 0' }}>
-                  {app.etiqueta && (
-                    <span className="sol-card-badge">{app.etiqueta}</span>
-                  )}
-                  <div style={{ position: 'absolute', right: '-22px', bottom: '-32px', width: '110px', height: '110px', background: 'rgba(255,255,255,0.06)', borderRadius: '50%' }} />
-                  <div style={{ position: 'absolute', right: '44px', bottom: '-44px', width: '88px', height: '88px', background: 'rgba(255,255,255,0.04)', borderRadius: '50%' }} />
-                </div>
+                {/* Header con identidad completa */}
+                <div style={{
+                  height: '96px', background: app.gradiente, position: 'relative',
+                  overflow: 'hidden', borderRadius: '12px 12px 0 0',
+                  padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '12px'
+                }}>
+                  <div style={{ position: 'absolute', right: '-22px', bottom: '-32px', width: '110px', height: '110px', background: 'rgba(255,255,255,0.06)', borderRadius: '50%', pointerEvents: 'none' }} />
+                  <div style={{ position: 'absolute', right: '44px', bottom: '-44px', width: '88px', height: '88px', background: 'rgba(255,255,255,0.04)', borderRadius: '50%', pointerEvents: 'none' }} />
 
-                {/* Ícono superpuesto */}
-                <div style={{ padding: '0 18px', marginTop: '-26px', marginBottom: '10px' }}>
                   <div style={{
-                    width: '52px', height: '52px', background: app.gradiente,
-                    borderRadius: '13px', border: '3px solid #060612',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '1.5rem', boxShadow: `0 4px 20px ${app.color}55`
+                    width: '48px', height: '48px', background: 'rgba(255,255,255,0.18)',
+                    borderRadius: '12px', display: 'flex', alignItems: 'center',
+                    justifyContent: 'center', fontSize: '1.5rem',
+                    backdropFilter: 'blur(8px)', flexShrink: 0, zIndex: 1
                   }}>
                     {app.icono}
                   </div>
-                </div>
 
-                {/* Info */}
-                <div style={{ padding: '0 18px 18px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '3px' }}>
-                    <div>
-                      <h4 style={{ color: '#f1f5f9', margin: 0, fontWeight: 800, fontSize: '1rem' }}>{app.nombre}</h4>
-                      <p style={{ color: '#334155', margin: 0, fontSize: '0.72rem' }}>por {app.desarrollador}</p>
-                    </div>
+                  <div style={{ flex: 1, minWidth: 0, zIndex: 1 }}>
+                    <h4 style={{
+                      color: '#fff', margin: 0, fontWeight: 800, fontSize: '1rem',
+                      lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'
+                    }}>
+                      {app.nombre}
+                    </h4>
+                    <p style={{
+                      color: 'rgba(255,255,255,0.72)', margin: '2px 0 6px', fontSize: '0.72rem',
+                      lineHeight: 1.3, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'
+                    }}>
+                      {app.subtitulo}
+                    </p>
                     <span style={{
-                      background: `${app.color}18`, color: app.color,
-                      fontSize: '0.65rem', fontWeight: 600, padding: '3px 8px',
-                      borderRadius: '6px', whiteSpace: 'nowrap', marginLeft: '8px', marginTop: '2px'
+                      background: 'rgba(0,0,0,0.28)', backdropFilter: 'blur(4px)',
+                      color: 'rgba(255,255,255,0.88)', fontSize: '0.6rem', fontWeight: 700,
+                      padding: '2px 8px', borderRadius: '20px', letterSpacing: '0.3px'
                     }}>
                       {app.categoria}
                     </span>
                   </div>
 
-                  <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  {app.etiqueta && <span className="sol-card-badge">{app.etiqueta}</span>}
+                </div>
+
+                {/* Info */}
+                <div style={{ padding: '0 18px 18px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+
+                  <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '12px' }}>
                     <Estrellas rating={app.rating} />
                     <span style={{ color: '#334155', fontSize: '0.7rem' }}>({app.reviews})</span>
                   </div>
 
-                  <p style={{ color: '#94a3b8', fontSize: '0.82rem', lineHeight: 1.6, marginBottom: '10px' }}>
+                  <p style={{ color: '#94a3b8', fontSize: '0.82rem', lineHeight: 1.6, marginBottom: '10px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                     {app.descripcion}
                   </p>
 
                   <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 10px' }}>
-                    {app.caracteristicas.map((c, ci) => (
+                    {app.caracteristicas.slice(0, 3).map((c, ci) => (
                       <li key={ci} style={{
                         color: '#64748b', fontSize: '0.76rem', padding: '4px 0',
                         display: 'flex', alignItems: 'flex-start', gap: '6px',
@@ -729,7 +836,7 @@ export default function Soluciones() {
                   </ul>
 
                   {/* Precio + CTA */}
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '16px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: '14px', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
                     <div>
                       <div style={{ color: app.color, fontWeight: 800, fontSize: '1.15rem', lineHeight: 1 }}>
                         {simbolo} {formatPrecio(app.precio)}
@@ -737,15 +844,25 @@ export default function Soluciones() {
                       </div>
                       <div style={{ color: '#334155', fontSize: '0.68rem', marginTop: '2px' }}>desde {simbolo} {formatPrecio(app.precioAnual)}/mes anual</div>
                     </div>
-                    <button
-                      onClick={() => setModalApp(app)}
-                      className="sol-btn-obtener"
-                      style={{ background: app.color }}
-                      onMouseEnter={e => e.currentTarget.style.opacity = '0.82'}
-                      onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-                    >
-                      Obtener
-                    </button>
+                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                      {app.url && (
+                        <a href={app.url} target="_blank" rel="noopener noreferrer"
+                          style={{ color: app.color, fontSize: '0.78rem', fontWeight: 600, textDecoration: 'none', opacity: 0.75 }}
+                          onMouseEnter={e => e.currentTarget.style.opacity = '1'}
+                          onMouseLeave={e => e.currentTarget.style.opacity = '0.75'}>
+                          Ver Demo →
+                        </a>
+                      )}
+                      <button
+                        onClick={() => setModalApp(app)}
+                        className="sol-btn-obtener"
+                        style={{ background: app.color }}
+                        onMouseEnter={e => e.currentTarget.style.opacity = '0.82'}
+                        onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+                      >
+                        Obtener
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

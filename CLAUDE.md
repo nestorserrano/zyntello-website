@@ -10,7 +10,7 @@
 
 ## Empresa
 
-**Zyntello, S.R.L.** es una empresa de tecnología que vende suscripciones mensuales a módulos de software empresarial (SaaS B2B). Cada módulo es una aplicación independiente disponible bajo un subdominio de `zyntello.com`.
+**Zyntello, S.R.L.** es una empresa de tecnología que vende suscripciones mensuales a módulos de software empresarial (SaaS B2B). Cada módulo es una aplicación independiente disponible bajo el subdominio `app.zyntello.com/[nombre-app]`.
 
 - **Correo:** info@zyntello.com
 - **Teléfono:** +1 829 639 9877
@@ -24,40 +24,46 @@
 c:/wamp64/www/zyntello/         ← Esta carpeta (repo: zyntello-website)
 ├── src/                        ← Sitio web principal (React + Vite)
 ├── dist/                       ← Build para producción
-├── constructflow/              ← App SaaS #1 (repo: zyntello-constructflow)
-├── crm/                        ← App SaaS #2 (futuro)
-├── facturacion/                ← App SaaS #3 (futuro)
-├── nomina/                     ← App SaaS #4 (futuro)
-├── encuestas/                  ← App SaaS #5 (futuro)
+├── admin/                      ← Panel interno Zyntello (repo: zyntello-admin)
+├── app/                        ← Apps SaaS (cada una es su propio repo)
+│   ├── constructflow/          ← App SaaS #1 (repo: zyntello-constructflow)
+│   ├── crm/                    ← App SaaS #2 (futuro)
+│   ├── facturacion/            ← App SaaS #3 (futuro)
+│   ├── nomina/                 ← App SaaS #4 (futuro)
+│   └── encuestas/              ← App SaaS #5 (futuro)
 └── CLAUDE.md                   ← Este archivo
 ```
 
-> Cada subcarpeta de módulo es su propio repositorio Git en GitHub (`nestorserrano/zyntello-*`) y se ignora en este repo del sitio web.
+> Tanto `admin/` como cada subcarpeta dentro de `app/` son repositorios Git independientes en GitHub (`nestorserrano/zyntello-*`) y están ignorados en este repo del sitio web.
 
 ---
 
 ## Estructura en Bluehost (servidor)
 
 ```
-/home/ukrmeumy/public_html/
+/home4/ukrmeumy/public_html/
   zyntello/
     index.html (+ assets/)      ← Sitio web principal (zyntello.com)
-    constructflow/
-      public/                   ← Document root de constructflow.zyntello.com
-    crm/
-      public/                   ← Document root de crm.zyntello.com (futuro)
-    facturacion/
-      public/                   ← Document root de facturacion.zyntello.com (futuro)
+    admin/
+      public/                   ← Document root de admin.zyntello.com
+    app/                        ← Document root de app.zyntello.com
+      constructflow/
+        public/                 ← app.zyntello.com/constructflow
+      crm/
+        public/                 ← app.zyntello.com/crm (futuro)
+      facturacion/
+        public/                 ← app.zyntello.com/facturacion (futuro)
 ```
 
-### Subdominio por módulo (cPanel → Subdomains)
+### Subdominios (cPanel → Subdomains)
 | Subdominio | Document Root |
 |---|---|
 | zyntello.com | `public_html/zyntello/` |
-| constructflow.zyntello.com | `public_html/zyntello/constructflow/public` |
-| crm.zyntello.com | `public_html/zyntello/crm/public` |
-| facturacion.zyntello.com | `public_html/zyntello/facturacion/public` |
-| nomina.zyntello.com | `public_html/zyntello/nomina/public` |
+| admin.zyntello.com | `public_html/zyntello/admin/public` |
+| app.zyntello.com | `public_html/zyntello/app/` |
+
+> Cada app Laravel vive en `app/[slug]/` y se accede como `app.zyntello.com/[slug]`.
+> El `.htaccess` en `app/` redirige cada ruta a `[slug]/public/index.php`.
 
 ---
 
@@ -66,6 +72,7 @@ c:/wamp64/www/zyntello/         ← Esta carpeta (repo: zyntello-website)
 | Proyecto | Repo | Estado |
 |---|---|---|
 | Sitio web | `nestorserrano/zyntello-website` | Activo |
+| Admin interno | `nestorserrano/zyntello-admin` | Activo |
 | ConstructFlow | `nestorserrano/zyntello-constructflow` | Activo |
 | CRM | `nestorserrano/zyntello-crm` | Futuro |
 | Facturación | `nestorserrano/zyntello-facturacion` | Futuro |

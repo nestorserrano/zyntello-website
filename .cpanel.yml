@@ -3,3 +3,5 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home4/ukrmeumy/public_html/zyntello/
     - /bin/cp -r dist/* $DEPLOYPATH
+    - /bin/mkdir -p ${DEPLOYPATH}app
+    - /bin/cp app/.htaccess ${DEPLOYPATH}app/.htaccess

@@ -22,13 +22,11 @@ dist-ssr
 *.sln
 *.sw?
 
-# Subcarpetas de módulos Zyntello (cada una tiene su propio repo)
-constructflow/
-crm/
-facturacion/
-nomina/
-encuestas/
-marketing/
+# Panel admin y apps SaaS (cada uno tiene su propio repo Git)
+# Excepción: app/.htaccess sí se versiona para el deploy en Bluehost
+admin/
+app/*
+!app/.htaccess
 
 # Carpeta de memoria de Claude (solo local)
 .claude/

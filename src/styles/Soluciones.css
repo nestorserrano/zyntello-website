@@ -23,6 +23,8 @@
   overflow: hidden;
   transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
   cursor: default;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Badge de etiqueta en la tarjeta */
