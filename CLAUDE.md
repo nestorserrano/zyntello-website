@@ -148,6 +148,27 @@ Deploy via SSH o Git en cPanel. Cada módulo tiene su propia instrucción en su 
 
 ---
 
+## Bases de Datos (Bluehost)
+
+**Estructura:** Cada aplicación tiene su propia BD para isolamiento de datos.
+
+| Aplicación | Base de Datos | Usuario | Contraseña |
+|---|---|---|---|
+| Admin interno | `ukrmeumi_zyntello_admin` | `ukrmeumy_zyntello_user` | `C3dul@13238162` |
+| ConstructFlow | `ukrmeumi_zyntello_constructflow` | `ukrmeumy_zyntello_user` | `C3dul@13238162` |
+| Facturación | `ukrmeumi_zyntello_facturacion` | `ukrmeumy_zyntello_user` | `C3dul@13238162` |
+| CRM | `ukrmeumi_zyntello_crm` | `ukrmeumy_zyntello_user` | `C3dul@13238162` |
+| Nómina | `ukrmeumi_zyntello_nomina` | `ukrmeumy_zyntello_user` | `C3dul@13238162` |
+| Encuestas | `ukrmeumi_zyntello_encuestas` | `ukrmeumy_zyntello_user` | `C3dul@13238162` |
+
+**Ventajas de separar BDs:**
+- Isolamiento: fallo en una app no afecta las demás
+- Escalabilidad: cada app crece independientemente
+- Backups granulares por aplicación
+- Seguridad: credenciales compartidas pero datos separados
+
+---
+
 ## Convenciones de trabajo
 
 - Todo el código, comentarios, mensajes de commit y documentación en **español**
