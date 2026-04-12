@@ -1,8 +1,25 @@
 ---
+# DEPLOY: zyntello-website
+# ─────────────────────────────────────────────────────────────────────
+# ORIGEN:  directorio de trabajo del repo clonado por cPanel
+#          (Git Version Control → ruta configurada en el repo)
+#          ejemplo: /home4/ukrmeumy/repositories/zyntello-website/
+#
+# DESTINO: /home4/ukrmeumy/public_html/zyntello/
+#          accesible como: zyntello.com
+#
+# Qué se copia:
+#   dist/*           → /public_html/zyntello/           (build React/Vite)
+#   app/.htaccess    → /public_html/zyntello/app/        (enrutador de apps SaaS)
+#
+# El app/.htaccess redirige app.zyntello.com/[slug] a [slug]/public/index.php
+# ─────────────────────────────────────────────────────────────────────
 deployment:
   tasks:
     - export DEPLOYPATH=/home4/ukrmeumy/public_html/zyntello/
+    # Copia el build de React/Vite al document root del sitio web
     - /bin/cp -r dist/* $DEPLOYPATH
+    # Crea carpeta app/ si no existe y copia el .htaccess enrutador de apps SaaS
     - /bin/mkdir -p ${DEPLOYPATH}app
     - /bin/cp app/.htaccess ${DEPLOYPATH}app/.htaccess
     - chmod 644 ${DEPLOYPATH}app/.htaccess
