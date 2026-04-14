@@ -88,13 +88,26 @@ function hexToGradiente(hex) {
   }
 }
 
+/* ─── Badge por estado (desde admin) ─────────────────────────── */
+const ESTADO_BADGE = {
+  proximo:   { texto: 'Próximamente', bg: 'rgba(63,63,70,0.92)',   color: '#a1a1aa' },
+  nuevo:     { texto: 'Nuevo',        bg: 'rgba(20,83,45,0.92)',   color: '#86efac' },
+  destacado: { texto: 'Destacado',    bg: 'rgba(120,53,15,0.92)',  color: '#fcd34d' },
+}
+
 /* ─── Combina datos del API con display estático ──────────────── */
 function combinarModulo(apiData) {
-  const display = DISPLAY_ESTATICO[apiData.slug] || DISPLAY_DEFAULT
-  const color   = apiData.color_primario || '#7c3aed'
+  const display   = DISPLAY_ESTATICO[apiData.slug] || DISPLAY_DEFAULT
+  const color     = apiData.color_primario || '#7c3aed'
   const gradiente = hexToGradiente(color)
-
   const ahorroPct = apiData.ahorro_pct > 0 ? `AHORRA ${apiData.ahorro_pct}%` : null
+
+  // El estado del admin tiene prioridad sobre los datos estáticos
+  const estado     = apiData.estado || 'activo'
+  const disponible = apiData.disponible !== false  // si el API no lo envía, asumimos disponible
+  const etiquetaEstado = ESTADO_BADGE[estado] ? ESTADO_BADGE[estado].texto : null
+  // Para 'activo' usamos la etiqueta estática; para proximo/nuevo/destacado usamos el estado
+  const etiqueta = estado === 'activo' ? display.etiqueta : etiquetaEstado
 
   return {
     id:             apiData.slug,
@@ -110,7 +123,9 @@ function combinarModulo(apiData) {
     gradiente,
     rating:         display.rating,
     reviews:        display.reviews,
-    etiqueta:       display.etiqueta,
+    etiqueta,
+    etiquetaBadge:  ESTADO_BADGE[estado] || null,
+    disponible,
     url:            apiData.url,
     previews:       display.previews || [],
     categoria:      display.categoria,
@@ -468,7 +483,11 @@ export default function Soluciones() {
                       {app.categoria}
                     </span>
                   </div>
-                  {app.etiqueta && <span className="sol-card-badge">{app.etiqueta}</span>}
+                  {app.etiqueta && (
+                    <span className="sol-card-badge" style={app.etiquetaBadge ? { background: app.etiquetaBadge.bg, color: app.etiquetaBadge.color } : {}}>
+                      {app.etiqueta}
+                    </span>
+                  )}
                 </div>
 
                 <div style={{ padding: '0 18px 18px', flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -496,7 +515,7 @@ export default function Soluciones() {
                       <div style={{ color: '#334155', fontSize: '0.68rem', marginTop: '2px' }}>desde {simbolo} {formatPrecio(app.precioAnual)}/mes anual</div>
                     </div>
                     <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                      {app.url && (
+                      {app.url && app.disponible !== false && (
                         <a href={app.url} target="_blank" rel="noopener noreferrer"
                           style={{ color: app.color, fontSize: '0.78rem', fontWeight: 600, textDecoration: 'none', opacity: 0.75 }}
                           onMouseEnter={e => e.currentTarget.style.opacity = '1'}
@@ -504,12 +523,18 @@ export default function Soluciones() {
                           Ver Demo →
                         </a>
                       )}
-                      <button onClick={() => setModalApp(app)} className="sol-btn-obtener"
-                        style={{ background: app.color }}
-                        onMouseEnter={e => e.currentTarget.style.opacity = '0.82'}
-                        onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
-                        Obtener
-                      </button>
+                      {app.disponible !== false ? (
+                        <button onClick={() => setModalApp(app)} className="sol-btn-obtener"
+                          style={{ background: app.color }}
+                          onMouseEnter={e => e.currentTarget.style.opacity = '0.82'}
+                          onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
+                          Obtener
+                        </button>
+                      ) : (
+                        <span style={{ fontSize: '0.72rem', fontWeight: 600, color: '#52525b', padding: '6px 12px', background: '#27272a', borderRadius: '8px', cursor: 'default' }}>
+                          Próximamente
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
