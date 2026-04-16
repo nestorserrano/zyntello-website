@@ -10,7 +10,7 @@
 
 ## Empresa
 
-**Zyntello, S.R.L.** es una empresa de tecnología que vende suscripciones mensuales a módulos de software empresarial (SaaS B2B). Cada módulo es una aplicación independiente disponible bajo el subdominio `app.zyntello.com/[nombre-app]`.
+**Zyntello, S.R.L.** es una empresa de tecnología que vende suscripciones mensuales a módulos de software empresarial (SaaS B2B). Todos los módulos viven bajo el subdominio `app.zyntello.com` dentro de una sola app Laravel multi-tenant.
 
 - **Correo:** info@zyntello.com
 - **Teléfono:** +1 829 639 9877
@@ -173,6 +173,39 @@ Deploy via **cPanel Git Version Control**:
 - Escalabilidad: cada app crece independientemente
 - Backups granulares por aplicación
 - Seguridad: credenciales compartidas pero datos separados
+
+---
+
+## ⚠️ Regla de arquitectura — LEER ANTES DE CREAR CUALQUIER MÓDULO NUEVO
+
+> **Esta regla es definitiva y no tiene excepciones.**
+
+Cuando el usuario pida crear una nueva aplicación SaaS, un nuevo módulo, o una nueva funcionalidad de negocio (contabilidad, CRM, facturación, encuestas, RRHH, etc.), la respuesta SIEMPRE es agregar un módulo dentro de `app/zyntello-app/`. **Nunca crear una carpeta nueva en `app/` ni un repositorio Laravel separado.**
+
+### Por qué existe esta regla
+
+- Ya existe una app Laravel multi-tenant en `app/zyntello-app/` con auth, billing, multi-BD, middleware de módulos y DemoSeeder.
+- Crear una app separada duplicaría toda esa infraestructura sin beneficio.
+- Cada empresa suscriptora accede a sus módulos contratados desde un solo login. Apps separadas romperían eso.
+
+### Checklist para agregar un módulo nuevo (ej: `contabilidad`)
+
+1. **Rutas** — crear `routes/modules/contabilidad.php` y registrarlo en `routes/web.php` bajo el middleware `module:contabilidad`
+2. **Controladores** — crear en `app/Http/Controllers/Contabilidad/`
+3. **Modelos** — crear en `app/Models/Contabilidad/` con `protected $connection = 'contabilidad';`
+4. **Migraciones** — crear con `protected $connection = 'contabilidad';` en cada archivo
+5. **Conexión BD** — agregar conexión `contabilidad` en `config/database.php` y variables `DB_CONTABILIDAD_*` en `.env`
+6. **Base de datos local** — crear `zyntello_contabilidad` en MySQL local
+7. **PricingService** — registrar el slug `contabilidad` en `App\Services\PricingService::MODULES`
+8. **Vistas** — crear en `resources/views/contabilidad/`
+9. **DemoSeeder** — agregar datos de ejemplo para el módulo nuevo
+
+### Lo que NO se debe hacer
+
+- ❌ Crear `app/contabilidad/` (carpeta en nivel de `app/`)
+- ❌ Crear un nuevo repo Laravel separado para el módulo
+- ❌ Agregar un nuevo subdominio para el módulo
+- ❌ Crear una nueva entrada en cPanel Git Version Control
 
 ---
 
