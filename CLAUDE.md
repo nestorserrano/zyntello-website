@@ -25,16 +25,14 @@ c:/wamp64/www/zyntello/         ← Esta carpeta (repo: zyntello-website)
 ├── src/                        ← Sitio web principal (React + Vite)
 ├── dist/                       ← Build para producción
 ├── admin/                      ← Panel interno Zyntello (repo: zyntello-admin)
-├── app/                        ← Apps SaaS (cada una es su propio repo)
-│   ├── constructflow/          ← App SaaS #1 (repo: zyntello-constructflow)
-│   ├── crm/                    ← App SaaS #2 (futuro)
-│   ├── facturacion/            ← App SaaS #3 (futuro)
-│   ├── nomina/                 ← App SaaS #4 (futuro)
-│   └── encuestas/              ← App SaaS #5 (futuro)
+├── app/                        ← App SaaS unificada (repo: zyntello-app)
+│   └── zyntello-app/           ← Laravel multi-tenant con todos los módulos
 └── CLAUDE.md                   ← Este archivo
 ```
 
-> Tanto `admin/` como cada subcarpeta dentro de `app/` son repositorios Git independientes en GitHub (`nestorserrano/zyntello-*`) y están ignorados en este repo del sitio web.
+> `admin/` y `app/zyntello-app/` son repositorios Git independientes en GitHub y están ignorados en este repo del sitio web.
+>
+> **Arquitectura:** Una sola app Laravel (`zyntello-app`) aloja TODOS los módulos SaaS bajo `app.zyntello.com`. Los módulos no son apps separadas; son rutas dentro de la misma app multi-tenant.
 
 ---
 
@@ -46,13 +44,13 @@ c:/wamp64/www/zyntello/         ← Esta carpeta (repo: zyntello-website)
     index.html (+ assets/)      ← Sitio web principal (zyntello.com)
     admin/
       public/                   ← Document root de admin.zyntello.com
-    app/                        ← Document root de app.zyntello.com
-      constructflow/
-        public/                 ← app.zyntello.com/constructflow
-      crm/
-        public/                 ← app.zyntello.com/crm (futuro)
-      facturacion/
-        public/                 ← app.zyntello.com/facturacion (futuro)
+    app/                        ← Contenido del repo zyntello-app (app unificada)
+      public/                   ← Document root de app.zyntello.com ← MUY IMPORTANTE
+        index.php
+        build/
+      app/
+      routes/
+      ...                       ← Resto de Laravel
 ```
 
 ### Subdominios (cPanel → Subdomains)
@@ -60,10 +58,11 @@ c:/wamp64/www/zyntello/         ← Esta carpeta (repo: zyntello-website)
 |---|---|
 | zyntello.com | `public_html/zyntello/` |
 | admin.zyntello.com | `public_html/zyntello/admin/public` |
-| app.zyntello.com | `public_html/zyntello/app/` |
+| app.zyntello.com | `public_html/zyntello/app/public` ← cambiar al old `app/` |
 
-> Cada app Laravel vive en `app/[slug]/` y se accede como `app.zyntello.com/[slug]`.
-> El `.htaccess` en `app/` redirige cada ruta a `[slug]/public/index.php`.
+> La app Laravel unificada se despliega directamente en `zyntello/app/` (no en una subcarpeta).
+> Todos los módulos (`/constructflow`, `/nomina`, etc.) son rutas de la misma app.
+> El deploy via cPanel Git Version Control copia el repo `zyntello-app` a `zyntello/app/`.
 
 ---
 
@@ -73,11 +72,8 @@ c:/wamp64/www/zyntello/         ← Esta carpeta (repo: zyntello-website)
 |---|---|---|
 | Sitio web | `nestorserrano/zyntello-website` | Activo |
 | Admin interno | `nestorserrano/zyntello-admin` | Activo |
-| ConstructFlow | `nestorserrano/zyntello-constructflow` | Activo |
-| CRM | `nestorserrano/zyntello-crm` | Futuro |
-| Facturación | `nestorserrano/zyntello-facturacion` | Futuro |
-| Nómina | `nestorserrano/zyntello-nomina` | Futuro |
-| Encuestas | `nestorserrano/zyntello-encuestas` | Futuro |
+| App unificada (todos los módulos) | `nestorserrano/zyntello-app` | Activo |
+| App antigua ConstructFlow (deprecada) | `nestorserrano/zyntello-constructflow` | Archivado |
 
 ---
 
@@ -95,9 +91,22 @@ Deploy via **cPanel Git Version Control**:
 & 'C:\Program Files\nodejs\node.exe' 'C:\Users\Sistemas\AppData\Roaming\npm\node_modules\npm\bin\npm-cli.js' run build
 ```
 
-### Módulos Laravel (constructflow, crm, etc.)
+### App SaaS unificada (zyntello-app)
 
-Deploy via SSH o Git en cPanel. Cada módulo tiene su propia instrucción en su `claude.md`.
+Deploy via **cPanel Git Version Control**:
+- Repo: `nestorserrano/zyntello-app`
+- Directorio destino en servidor: `/home4/ukrmeumy/public_html/zyntello/app/`
+- Document root de `app.zyntello.com`: `public_html/zyntello/app/public`
+- `.cpanel.yml` copia archivos, corre `php artisan migrate` y cachés automáticamente
+- `vendor/` y `public/build/` están incluidos en el repo (Bluehost sin Composer/Node)
+- `.env` debe existir manualmente en `/home4/ukrmeumy/public_html/zyntello/app/.env`
+
+**Setup inicial en Bluehost (una sola vez):**
+1. cPanel → Subdomains → cambiar document root de `app.zyntello.com` a `public_html/zyntello/app/public`
+2. cPanel → Git Version Control → clonar `nestorserrano/zyntello-app` → directorio `public_html/zyntello/app`
+3. Crear `.env` manualmente en `public_html/zyntello/app/.env` (ver `.env.production` como base)
+4. Crear bases de datos en cPanel → MySQL: `ukrmeumy_zyntello_app`, `ukrmeumy_zyntello_constructflow`, `ukrmeumy_zyntello_nomina`
+5. Via cPanel Terminal o phpMyAdmin: correr `php artisan migrate --force`
 
 ---
 
@@ -106,9 +115,7 @@ Deploy via SSH o Git en cPanel. Cada módulo tiene su propia instrucción en su 
 | Proyecto | Stack |
 |---|---|
 | Sitio web | React 19 + Vite + Bootstrap 5 (dark) |
-| ConstructFlow | Laravel 11 + Livewire 3 + Tailwind CSS + MySQL |
-| CRM (futuro) | Laravel 11 + Livewire 3 + Tailwind CSS + MySQL |
-| Facturación (futuro) | Laravel 11 + Livewire 3 + Tailwind CSS + MySQL |
+| App SaaS unificada | Laravel 11 + Livewire 3 + Tailwind CSS + Alpine.js + MySQL multi-BD |
 
 ---
 
