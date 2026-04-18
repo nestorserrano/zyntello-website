@@ -175,11 +175,14 @@ const MONEDAS_INFO = {
   VES: { nombre: 'Bolívar',   simbolo: 'Bs.',  bandera: '🇻🇪' },
 }
 
-/* ─── Modal de Registro ─────────────────────────────────────────── */
+const APP_CHECKOUT_URL = 'https://app.zyntello.com/checkout'
+
+/* ─── Modal de Registro + Pago ──────────────────────────────────── */
 function ModalApp({ app, onClose, formatPrecio, simbolo }) {
   const [plan, setPlan]     = useState('mensual')
   const [paso, setPaso]     = useState(1)
   const [form, setForm]     = useState({ nombre: '', empresa: '', email: '', telefono: '' })
+  const [metodo, setMetodo] = useState('stripe')
   const [enviando, setEnviando] = useState(false)
   const [errores, setErrores]   = useState({})
 
@@ -198,13 +201,21 @@ function ModalApp({ app, onClose, formatPrecio, simbolo }) {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!validar()) return
-    setEnviando(true)
-    setTimeout(() => { setEnviando(false); setPaso(3) }, 1200)
+    setPaso(3)
   }
 
-  const mensajeWA = encodeURIComponent(
-    `Hola Zyntello! Quiero acceder a la app *${app.nombre}* — Plan ${plan} ($${precio}/mes).\nNombre: ${form.nombre}\nEmpresa: ${form.empresa}\nEmail: ${form.email}`
-  )
+  const irAlPago = () => {
+    const params = new URLSearchParams({
+      modulo:   app.id,
+      plan,
+      nombre:   form.nombre,
+      email:    form.email,
+      empresa:  form.empresa || '',
+      telefono: form.telefono,
+      metodo,
+    })
+    window.location.href = `${APP_CHECKOUT_URL}?${params.toString()}`
+  }
 
   return (
     <div className="sol-overlay" onClick={onClose}>
@@ -221,19 +232,17 @@ function ModalApp({ app, onClose, formatPrecio, simbolo }) {
               <Estrellas rating={app.rating} />
             </div>
           </div>
-          {paso < 3 && (
-            <div style={{ display: 'flex', gap: '6px', marginTop: '16px' }}>
-              {['Plan', 'Datos'].map((label, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '22px', height: '22px', borderRadius: '50%', fontSize: '0.7rem', fontWeight: 700, background: paso > i + 1 ? '#fff' : paso === i + 1 ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.25)', color: paso > i + 1 ? app.color : paso === i + 1 ? '#1e293b' : 'rgba(255,255,255,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    {paso > i + 1 ? '✓' : i + 1}
-                  </div>
-                  <span style={{ color: paso === i + 1 ? '#fff' : 'rgba(255,255,255,0.5)', fontSize: '0.75rem' }}>{label}</span>
-                  {i < 1 && <span style={{ color: 'rgba(255,255,255,0.3)', margin: '0 2px' }}>›</span>}
+          <div style={{ display: 'flex', gap: '6px', marginTop: '16px' }}>
+            {['Plan', 'Datos', 'Pago'].map((label, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <div style={{ width: '22px', height: '22px', borderRadius: '50%', fontSize: '0.7rem', fontWeight: 700, background: paso > i + 1 ? '#fff' : paso === i + 1 ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.25)', color: paso > i + 1 ? app.color : paso === i + 1 ? '#1e293b' : 'rgba(255,255,255,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  {paso > i + 1 ? '✓' : i + 1}
                 </div>
-              ))}
-            </div>
-          )}
+                <span style={{ color: paso === i + 1 ? '#fff' : 'rgba(255,255,255,0.5)', fontSize: '0.75rem' }}>{label}</span>
+                {i < 2 && <span style={{ color: 'rgba(255,255,255,0.3)', margin: '0 2px' }}>›</span>}
+              </div>
+            ))}
+          </div>
         </div>
 
         <div style={{ padding: '22px 24px', overflowY: 'auto', flex: 1 }}>
@@ -307,31 +316,60 @@ function ModalApp({ app, onClose, formatPrecio, simbolo }) {
                   style={{ flex: '0 0 auto', padding: '12px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', color: '#64748b', cursor: 'pointer', fontSize: '0.9rem' }}>
                   ← Volver
                 </button>
-                <button type="submit" disabled={enviando}
-                  style={{ flex: 1, padding: '12px', background: enviando ? `${app.color}80` : app.color, border: 'none', borderRadius: '10px', color: '#fff', fontWeight: 700, cursor: enviando ? 'default' : 'pointer', fontSize: '0.95rem' }}>
-                  {enviando ? '⏳ Procesando…' : '💳 Proceder al Pago'}
+                <button type="submit"
+                  style={{ flex: 1, padding: '12px', background: app.color, border: 'none', borderRadius: '10px', color: '#fff', fontWeight: 700, cursor: 'pointer', fontSize: '0.95rem' }}>
+                  Elegir método de pago →
                 </button>
               </div>
             </form>
           )}
 
           {paso === 3 && (
-            <div style={{ textAlign: 'center', padding: '16px 0' }}>
-              <div style={{ fontSize: '3.5rem', marginBottom: '12px' }}>🎉</div>
-              <h4 style={{ color: '#f1f5f9', marginBottom: '8px', fontWeight: 800 }}>¡Solicitud recibida!</h4>
-              <p style={{ color: '#94a3b8', fontSize: '0.92rem', lineHeight: 1.7, marginBottom: '22px' }}>
-                Un asesor de Zyntello se pondrá en contacto contigo en breve para completar tu acceso a{' '}
-                <strong style={{ color: app.color }}>{app.nombre}</strong> y procesar el pago.
-              </p>
-              <a href={`https://wa.me/${NUMERO_WA}?text=${mensajeWA}`} target="_blank" rel="noopener noreferrer"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#25d366', color: '#fff', padding: '12px 24px', borderRadius: '10px', textDecoration: 'none', fontWeight: 700, fontSize: '0.95rem', marginBottom: '14px' }}>
-                <span style={{ fontSize: '1.1rem' }}>📱</span> Contactar por WhatsApp
-              </a>
-              <br />
-              <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: '#475569', cursor: 'pointer', fontSize: '0.88rem' }}>
-                Cerrar
-              </button>
-            </div>
+            <>
+              <h5 className="sol-modal-title">Método de pago</h5>
+              <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '10px', padding: '12px 14px', marginBottom: '20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ color: '#64748b', fontSize: '0.85rem' }}>{app.nombre} · Plan {plan}</span>
+                  <span style={{ color: app.color, fontWeight: 800, fontSize: '1.05rem' }}>
+                    {simbolo} {formatPrecio(precio)}<span style={{ color: '#475569', fontSize: '0.72rem', fontWeight: 400 }}>/mes</span>
+                  </span>
+                </div>
+                <div style={{ color: '#334155', fontSize: '0.72rem', marginTop: '4px' }}>Sin permanencia · Cancela cuando quieras</div>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '22px' }}>
+                {[
+                  { key: 'stripe',  icono: '💳', label: 'Tarjeta de crédito / débito',  sub: 'Visa, Mastercard, Amex — powered by Stripe' },
+                  { key: 'paypal',  icono: '🅿️', label: 'PayPal',                        sub: 'Paga con tu cuenta PayPal o tarjeta' },
+                  { key: 'cripto',  icono: '₿',  label: 'Criptomonedas',                 sub: 'USDT (TRC-20 / ERC-20) · USDC · BTC' },
+                ].map(m => (
+                  <div key={m.key} onClick={() => setMetodo(m.key)}
+                    style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '14px 16px', borderRadius: '10px', cursor: 'pointer', border: `2px solid ${metodo === m.key ? app.color : 'rgba(255,255,255,0.09)'}`, background: metodo === m.key ? `${app.color}15` : 'rgba(255,255,255,0.02)', transition: 'all 0.15s' }}>
+                    <span style={{ fontSize: '1.5rem', lineHeight: 1 }}>{m.icono}</span>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ color: '#e2e8f0', fontWeight: 700, fontSize: '0.92rem' }}>{m.label}</div>
+                      <div style={{ color: '#475569', fontSize: '0.72rem', marginTop: '2px' }}>{m.sub}</div>
+                    </div>
+                    <div style={{ width: '18px', height: '18px', borderRadius: '50%', border: `2px solid ${metodo === m.key ? app.color : 'rgba(255,255,255,0.2)'}`, background: metodo === m.key ? app.color : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      {metodo === m.key && <span style={{ color: '#fff', fontSize: '0.6rem', fontWeight: 900 }}>✓</span>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button type="button" onClick={() => setPaso(2)}
+                  style={{ flex: '0 0 auto', padding: '12px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', color: '#64748b', cursor: 'pointer', fontSize: '0.9rem' }}>
+                  ← Volver
+                </button>
+                <button type="button" onClick={irAlPago}
+                  style={{ flex: 1, padding: '12px', background: app.color, border: 'none', borderRadius: '10px', color: '#fff', fontWeight: 700, cursor: 'pointer', fontSize: '0.95rem' }}>
+                  {metodo === 'stripe'  && '💳 Ir al pago con tarjeta →'}
+                  {metodo === 'paypal'  && '🅿️ Ir al pago con PayPal →'}
+                  {metodo === 'cripto'  && '₿ Ver instrucciones cripto →'}
+                </button>
+              </div>
+            </>
           )}
         </div>
       </div>
