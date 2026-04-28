@@ -2,6 +2,204 @@
    Sección Soluciones – App Store Style
    ═══════════════════════════════════════════════ */
 
+/* ── Sección principal ──────────────────────── */
+.sol-section {
+  background: #060612;
+  padding: 5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.sol-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Glows de fondo ─────────────────────────── */
+.sol-bg-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(80px);
+}
+
+.sol-bg-glow-1 {
+  width: 600px; height: 600px;
+  left: -150px; top: 5%;
+  background: radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 70%);
+}
+
+.sol-bg-glow-2 {
+  width: 500px; height: 500px;
+  right: -100px; top: 30%;
+  background: radial-gradient(circle, rgba(59,130,246,0.09) 0%, transparent 70%);
+}
+
+.sol-bg-glow-3 {
+  width: 400px; height: 400px;
+  left: 35%; bottom: 5%;
+  background: radial-gradient(circle, rgba(16,185,129,0.07) 0%, transparent 70%);
+}
+
+/* ── Iconos flotantes ───────────────────────── */
+.sol-floating-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.sol-float-wrap {
+  position: absolute;
+  animation: sol-float ease-in-out infinite alternate;
+}
+
+@keyframes sol-float {
+  0%   { transform: translateY(0px) rotate(-4deg) scale(1);    opacity: 0.35; }
+  100% { transform: translateY(-22px) rotate(4deg) scale(1.05); opacity: 0.65; }
+}
+
+.sol-float-icon {
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+}
+
+/* ── Hero header ────────────────────────────── */
+.sol-hero {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.sol-hero-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #a78bfa;
+  margin-bottom: 1rem;
+}
+
+.sol-hero-title {
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-weight: 900;
+  color: #f1f5f9;
+  line-height: 1.1;
+  margin-bottom: 1.2rem;
+  letter-spacing: -0.5px;
+}
+
+.sol-hero-accent {
+  background: linear-gradient(90deg, #a78bfa 0%, #60a5fa 50%, #a78bfa 100%);
+  background-size: 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: sol-gradient-shift 4s ease infinite;
+}
+
+@keyframes sol-gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.sol-hero-subtitle {
+  color: #64748b;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  max-width: 580px;
+  margin: 0 auto 1.5rem;
+}
+
+.sol-hero-pills {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sol-hero-pill {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  color: #475569;
+  font-size: 0.75rem;
+  padding: 5px 13px;
+  border-radius: 20px;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.sol-hero-pill:hover {
+  border-color: rgba(167,139,250,0.3);
+  color: #94a3b8;
+}
+
+/* ── Callout ────────────────────────────────── */
+.sol-callout {
+  background: linear-gradient(135deg, rgba(59,130,246,0.07) 0%, rgba(139,92,246,0.07) 100%);
+  border: 1px solid rgba(139,92,246,0.22);
+  border-radius: 14px;
+  padding: 18px 24px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.sol-callout-icon {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.sol-callout-title {
+  color: #e2e8f0;
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.sol-callout-text {
+  color: #475569;
+  margin: 0;
+  font-size: 0.83rem;
+  line-height: 1.65;
+}
+
+.sol-callout-btn {
+  background: rgba(139,92,246,0.18);
+  border: 1px solid rgba(139,92,246,0.35);
+  color: #a78bfa;
+  padding: 9px 20px;
+  border-radius: 9px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.sol-callout-btn:hover {
+  background: rgba(139,92,246,0.28);
+  border-color: rgba(139,92,246,0.5);
+  color: #c4b5fd;
+}
+
+/* ── Bundle banner ──────────────────────────── */
+.sol-bundle-name {
+  background: linear-gradient(90deg, #a78bfa, #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
 /* Grid de tarjetas */
 .sol-grid {
   display: grid;

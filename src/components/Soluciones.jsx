@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import '../styles/Soluciones.css'
 
 const NUMERO_WA = '18296399877'
@@ -377,15 +377,57 @@ function ModalApp({ app, onClose, formatPrecio, simbolo }) {
   )
 }
 
+/* ─── Iconos flotantes animados ─────────────────────────────────── */
+const FLOAT_POSITIONS = [
+  { left: '4%',  top: '12%', delay: '0s',    dur: '5.2s', size: '56px', font: '1.6rem' },
+  { left: '14%', top: '72%', delay: '0.8s',  dur: '4.8s', size: '44px', font: '1.2rem' },
+  { left: '24%', top: '30%', delay: '1.4s',  dur: '6.0s', size: '48px', font: '1.3rem' },
+  { left: '38%', top: '80%', delay: '0.3s',  dur: '5.5s', size: '40px', font: '1.1rem' },
+  { left: '52%', top: '8%',  delay: '1.8s',  dur: '4.6s', size: '52px', font: '1.5rem' },
+  { left: '63%', top: '62%', delay: '0.6s',  dur: '5.8s', size: '46px', font: '1.25rem'},
+  { left: '75%', top: '22%', delay: '2.1s',  dur: '4.9s', size: '50px', font: '1.4rem' },
+  { left: '84%', top: '75%', delay: '1.1s',  dur: '5.3s', size: '42px', font: '1.15rem'},
+  { left: '91%', top: '40%', delay: '0.4s',  dur: '6.2s', size: '54px', font: '1.5rem' },
+  { left: '7%',  top: '50%', delay: '1.6s',  dur: '5.0s', size: '38px', font: '1.0rem' },
+  { left: '46%', top: '45%', delay: '2.5s',  dur: '4.7s', size: '44px', font: '1.2rem' },
+]
+
+function FloatingIcons({ apps }) {
+  const items = apps.slice(0, FLOAT_POSITIONS.length)
+  return (
+    <div className="sol-floating-bg" aria-hidden="true">
+      {items.map((app, i) => {
+        const pos = FLOAT_POSITIONS[i]
+        return (
+          <div key={app.id} className="sol-float-wrap" style={{
+            left: pos.left, top: pos.top,
+            animationDelay: pos.delay,
+            animationDuration: pos.dur,
+          }}>
+            <div className="sol-float-icon" style={{
+              width: pos.size, height: pos.size,
+              fontSize: pos.font,
+              background: `${app.color}14`,
+              border: `1px solid ${app.color}28`,
+              boxShadow: `0 0 24px ${app.color}18`,
+            }}>
+              {app.icono}
+            </div>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 /* ─── Componente principal ──────────────────────────────────────── */
 export default function Soluciones() {
   const [modalApp, setModalApp] = useState(null)
   const [moneda, setMoneda]     = useState('USD')
   const [rates, setRates]       = useState(null)
-  const [apps, setApps]         = useState(APPS_FALLBACK)   // empieza con fallback
+  const [apps, setApps]         = useState(APPS_FALLBACK)
   const [apiCargada, setApiCargada] = useState(false)
 
-  // Tasas de cambio
   useEffect(() => {
     fetch('https://api.exchangerate-api.com/v4/latest/USD')
       .then(r => r.json())
@@ -393,7 +435,6 @@ export default function Soluciones() {
       .catch(() => {})
   }, [])
 
-  // Módulos dinámicos desde admin
   useEffect(() => {
     fetch(API_URL)
       .then(r => r.json())
@@ -403,7 +444,7 @@ export default function Soluciones() {
           setApiCargada(true)
         }
       })
-      .catch(() => {/* silencioso — queda el fallback */})
+      .catch(() => {})
   }, [])
 
   const infoMoneda = MONEDAS_INFO[moneda]
@@ -416,43 +457,46 @@ export default function Soluciones() {
 
   return (
     <>
-      <section id="soluciones" style={{ background: '#060612', padding: '5rem 0' }}>
-        <div className="container-fluid px-4 px-lg-5">
+      <section id="soluciones" className="sol-section">
 
-          {/* Header */}
-          <div className="text-center mb-5">
-            <p className="text-uppercase fw-semibold mb-2" style={{ color: '#a78bfa', letterSpacing: '2px', fontSize: '0.85rem' }}>
-              Plataforma SaaS
-            </p>
-            <h2 className="fw-black mb-3" style={{ fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', color: '#f1f5f9' }}>
-              Soluciones en la Nube
+        {/* Fondo: gradientes + iconos flotantes */}
+        <div className="sol-bg-glow sol-bg-glow-1" />
+        <div className="sol-bg-glow sol-bg-glow-2" />
+        <div className="sol-bg-glow sol-bg-glow-3" />
+        <FloatingIcons apps={apps} />
+
+        <div className="container-fluid px-4 px-lg-5 sol-content">
+
+          {/* Hero header */}
+          <div className="sol-hero">
+            <p className="sol-hero-eyebrow">Plataforma SaaS · {apps.length} módulos</p>
+            <h2 className="sol-hero-title">
+              Tu empresa,<br />
+              <span className="sol-hero-accent">digitalizada.</span>
             </h2>
-            <p className="mx-auto" style={{ color: '#94a3b8', maxWidth: '560px', fontSize: '1.05rem', lineHeight: 1.7 }}>
-              Microaplicaciones empresariales listas para usar. Sin instalaciones, acceso desde cualquier dispositivo y soporte incluido.
+            <p className="sol-hero-subtitle">
+              Microaplicaciones empresariales listas para usar. Sin instalaciones,<br className="d-none d-md-block" />
+              acceso desde cualquier dispositivo y soporte incluido.
             </p>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', flexWrap: 'wrap', marginTop: '16px' }}>
+            <div className="sol-hero-pills">
               {apps.map(a => (
-                <span key={a.id} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.09)', color: '#64748b', fontSize: '0.75rem', padding: '4px 12px', borderRadius: '20px' }}>
-                  {a.nombre}
+                <span key={a.id} className="sol-hero-pill">
+                  <span style={{ color: a.color }}>{a.icono}</span> {a.nombre}
                 </span>
               ))}
             </div>
           </div>
 
           {/* Callout personalización */}
-          <div style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.07) 0%, rgba(139,92,246,0.07) 100%)', border: '1px solid rgba(139,92,246,0.22)', borderRadius: '14px', padding: '18px 24px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '1.6rem', flexShrink: 0 }}>🏗️</span>
+          <div className="sol-callout">
+            <span className="sol-callout-icon">🏗️</span>
             <div style={{ flex: 1, minWidth: '220px' }}>
-              <div style={{ color: '#e2e8f0', fontWeight: 700, fontSize: '0.95rem', marginBottom: '4px' }}>
-                ¿Necesitas más? Las personalizamos e instalamos en tu empresa
-              </div>
-              <p style={{ color: '#475569', margin: 0, fontSize: '0.83rem', lineHeight: 1.65 }}>
-                Todas estas soluciones pueden ser adaptadas a tus procesos, integradas con tus sistemas actuales e instaladas directamente en la infraestructura de tu empresa con módulos adicionales a la medida.
+              <div className="sol-callout-title">¿Necesitas más? Las personalizamos e instalamos en tu empresa</div>
+              <p className="sol-callout-text">
+                Todas estas soluciones pueden ser adaptadas a tus procesos, integradas con tus sistemas actuales e instaladas directamente en la infraestructura de tu empresa.
               </p>
             </div>
-            <a href="#contacto" style={{ background: 'rgba(139,92,246,0.18)', border: '1px solid rgba(139,92,246,0.35)', color: '#a78bfa', padding: '9px 20px', borderRadius: '9px', textDecoration: 'none', fontWeight: 600, fontSize: '0.85rem', whiteSpace: 'nowrap', flexShrink: 0 }}>
-              Hablar con un asesor →
-            </a>
+            <a href="#contacto" className="sol-callout-btn">Hablar con un asesor →</a>
           </div>
 
           {/* Selector de moneda */}
@@ -475,9 +519,7 @@ export default function Soluciones() {
             <div style={{ flex: 1 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
                 <span style={{ fontSize: '1.5rem' }}>🚀</span>
-                <span style={{ background: 'linear-gradient(90deg, #a78bfa, #60a5fa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: 800, fontSize: '1.1rem' }}>
-                  Suite Completa Zyntello
-                </span>
+                <span className="sol-bundle-name">Suite Completa Zyntello</span>
                 <span className="sol-bundle-badge">Mejor precio</span>
               </div>
               <p style={{ color: '#64748b', margin: 0, fontSize: '0.88rem' }}>
@@ -501,10 +543,10 @@ export default function Soluciones() {
           <div className="sol-grid">
             {apps.map(app => (
               <div key={app.id} className="sol-card"
-                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = `0 16px 48px ${app.color}28`; e.currentTarget.style.borderColor = `${app.color}40` }}
+                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = `0 20px 52px ${app.color}30`; e.currentTarget.style.borderColor = `${app.color}44` }}
                 onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)' }}
               >
-                <div style={{ height: '96px', background: app.gradiente, position: 'relative', overflow: 'hidden', borderRadius: '12px 12px 0 0', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ height: '96px', background: app.gradiente, position: 'relative', overflow: 'hidden', borderRadius: '14px 14px 0 0', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <div style={{ position: 'absolute', right: '-22px', bottom: '-32px', width: '110px', height: '110px', background: 'rgba(255,255,255,0.06)', borderRadius: '50%', pointerEvents: 'none' }} />
                   <div style={{ position: 'absolute', right: '44px', bottom: '-44px', width: '88px', height: '88px', background: 'rgba(255,255,255,0.04)', borderRadius: '50%', pointerEvents: 'none' }} />
                   <div style={{ width: '48px', height: '48px', background: 'rgba(255,255,255,0.18)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', backdropFilter: 'blur(8px)', flexShrink: 0, zIndex: 1 }}>
