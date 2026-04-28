@@ -1,17 +1,11 @@
 ---
 # DEPLOY: zyntello-website
 # ─────────────────────────────────────────────────────────────────────
-# ORIGEN:  directorio de trabajo del repo clonado por cPanel
-#          (Git Version Control → ruta configurada en el repo)
-#          ejemplo: /home4/ukrmeumy/repositories/zyntello-website/
-#
-# DESTINO: /home4/ukrmeumy/public_html/zyntello/
-#          accesible como: zyntello.com
-#
-# Qué se copia:
-#   dist/*  → /public_html/zyntello/  (build React/Vite)
+# Las tareas se ejecutan con CWD = directorio del repositorio clonado.
+# Por eso el origen usa ruta RELATIVA (dist/) y el destino ruta ABSOLUTA.
 # ─────────────────────────────────────────────────────────────────────
 ---
 deployment:
   tasks:
-    - /bin/cp -rf /home4/ukrmeumy/repositories/zyntello-website/dist/. /home4/ukrmeumy/public_html/zyntello/
+    - /bin/mkdir -p /home4/ukrmeumy/public_html/zyntello
+    - /bin/cp -rf dist/. /home4/ukrmeumy/public_html/zyntello/
