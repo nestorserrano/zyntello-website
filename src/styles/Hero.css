@@ -123,6 +123,84 @@
   margin-top: 0.3rem;
 }
 
+/* ── Letras difusas gigantes ────────────────── */
+.hero-watermark {
+  position: absolute;
+  font-size: clamp(9rem, 22vw, 18rem);
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(96, 165, 250, 0.07);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -8px;
+  filter: blur(5px);
+  z-index: 0;
+  top: 42%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  line-height: 1;
+}
+
+.hero-watermark-2 {
+  font-size: clamp(6rem, 15vw, 13rem);
+  -webkit-text-stroke: 1px rgba(139, 92, 246, 0.05);
+  top: auto;
+  bottom: 5%;
+  left: 5%;
+  transform: none;
+  filter: blur(7px);
+}
+
+/* ── Elementos flotantes animados ────────────── */
+.hero-floats {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.hero-float {
+  position: absolute;
+}
+
+/* Tres trayectorias distintas */
+.hero-float-a {
+  animation: hero-float-a ease-in-out infinite alternate;
+}
+.hero-float-b {
+  animation: hero-float-b ease-in-out infinite alternate;
+}
+.hero-float-c {
+  animation: hero-float-c ease-in-out infinite alternate;
+}
+
+@keyframes hero-float-a {
+  0%   { transform: translateY(0px)   rotate(-5deg) scale(1);    opacity: 0.4; }
+  100% { transform: translateY(-26px) rotate(5deg)  scale(1.07); opacity: 0.7; }
+}
+@keyframes hero-float-b {
+  0%   { transform: translateY(0px)   translateX(0px)  rotate(3deg)  scale(1.02); opacity: 0.3; }
+  100% { transform: translateY(-20px) translateX(12px) rotate(-3deg) scale(0.96); opacity: 0.65; }
+}
+@keyframes hero-float-c {
+  0%   { transform: translateY(0px)   translateX(0px)   rotate(0deg)  scale(1);    opacity: 0.35; }
+  50%  { transform: translateY(-16px) translateX(-10px) rotate(-4deg) scale(1.05); opacity: 0.55; }
+  100% { transform: translateY(-28px) translateX(8px)   rotate(4deg)  scale(0.97); opacity: 0.65; }
+}
+
+.hero-float-icon {
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(96, 165, 250, 0.08);
+  border: 1px solid rgba(96, 165, 250, 0.15);
+  box-shadow: 0 0 32px rgba(96, 165, 250, 0.12);
+  backdrop-filter: blur(8px);
+}
+
 @media (max-width: 768px) {
   .hero {
     flex-direction: column;
@@ -130,4 +208,8 @@
   }
   .hero-botones { justify-content: center; }
   .hero-card { flex-direction: row; gap: 1.5rem; padding: 2rem; }
+
+  /* En móvil los floats son más pequeños y solo algunos visibles */
+  .hero-float-b { display: none; }
+  .hero-watermark { font-size: clamp(5rem, 28vw, 9rem); }
 }
