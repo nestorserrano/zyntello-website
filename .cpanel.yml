@@ -1,10 +1,4 @@
 ---
-# DEPLOY: zyntello-website
-# ─────────────────────────────────────────────────────────────────────
-# Las tareas se ejecutan con CWD = directorio del repositorio clonado.
-# Por eso el origen usa ruta RELATIVA (dist/) y el destino ruta ABSOLUTA.
-# ─────────────────────────────────────────────────────────────────────
----
 deployment:
   tasks:
     - /bin/mkdir -p /home4/ukrmeumy/public_html/zyntello
