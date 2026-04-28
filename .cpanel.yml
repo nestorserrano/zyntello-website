@@ -9,15 +9,9 @@
 #          accesible como: zyntello.com
 #
 # Qué se copia:
-#   dist/*           → /public_html/zyntello/           (build React/Vite)
-#   app/.htaccess    → /public_html/zyntello/app/        (enrutador de apps SaaS)
-#
-# El app/.htaccess redirige app.zyntello.com/[slug] a [slug]/public/index.php
+#   dist/*  → /public_html/zyntello/  (build React/Vite)
 # ─────────────────────────────────────────────────────────────────────
 ---
 deployment:
   tasks:
     - /bin/cp -rf /home4/ukrmeumy/repositories/zyntello-website/dist/. /home4/ukrmeumy/public_html/zyntello/
-    - /bin/mkdir -p /home4/ukrmeumy/public_html/zyntello/app
-    - /bin/cp -f /home4/ukrmeumy/repositories/zyntello-website/app/.htaccess /home4/ukrmeumy/public_html/zyntello/app/.htaccess
-
