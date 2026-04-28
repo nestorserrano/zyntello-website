@@ -14,17 +14,10 @@
 #
 # El app/.htaccess redirige app.zyntello.com/[slug] a [slug]/public/index.php
 # ─────────────────────────────────────────────────────────────────────
+---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home4/ukrmeumy/public_html/zyntello/
-    # Limpiar assets anteriores (no fatal si falla)
-    - /bin/rm -rf ${DEPLOYPATH}assets || true
-    # Copia el build de React/Vite al document root del sitio web
-    - /bin/cp -r /home4/ukrmeumy/repositories/zyntello-website/dist/index.html $DEPLOYPATH
-    - /bin/cp -r /home4/ukrmeumy/repositories/zyntello-website/dist/assets $DEPLOYPATH
-    - /bin/cp -r /home4/ukrmeumy/repositories/zyntello-website/dist/logos $DEPLOYPATH
-    # Crea carpeta app/ si no existe y copia el .htaccess enrutador de apps SaaS
-    - /bin/mkdir -p ${DEPLOYPATH}app
-    - /bin/cp /home4/ukrmeumy/repositories/zyntello-website/app/.htaccess ${DEPLOYPATH}app/.htaccess
-    - chmod 644 ${DEPLOYPATH}app/.htaccess
-    - chmod 755 ${DEPLOYPATH}app
+    - /bin/cp -rf /home4/ukrmeumy/repositories/zyntello-website/dist/. /home4/ukrmeumy/public_html/zyntello/
+    - /bin/mkdir -p /home4/ukrmeumy/public_html/zyntello/app
+    - /bin/cp -f /home4/ukrmeumy/repositories/zyntello-website/app/.htaccess /home4/ukrmeumy/public_html/zyntello/app/.htaccess
+
