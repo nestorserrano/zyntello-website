@@ -53,12 +53,31 @@
 
 .sol-float-wrap {
   position: absolute;
-  animation: sol-float ease-in-out infinite alternate;
 }
 
-@keyframes sol-float {
-  0%   { transform: translateY(0px) rotate(-4deg) scale(1);    opacity: 0.35; }
-  100% { transform: translateY(-22px) rotate(4deg) scale(1.05); opacity: 0.65; }
+/* Tres trayectorias distintas para más organicidad */
+.sol-float-a {
+  animation: sol-float-a ease-in-out infinite alternate;
+}
+.sol-float-b {
+  animation: sol-float-b ease-in-out infinite alternate;
+}
+.sol-float-c {
+  animation: sol-float-c ease-in-out infinite alternate;
+}
+
+@keyframes sol-float-a {
+  0%   { transform: translateY(0px)   rotate(-5deg) scale(1);    opacity: 0.3; }
+  100% { transform: translateY(-24px) rotate(5deg)  scale(1.06); opacity: 0.6; }
+}
+@keyframes sol-float-b {
+  0%   { transform: translateY(0px)   translateX(0px)   rotate(3deg)  scale(1.02); opacity: 0.25; }
+  100% { transform: translateY(-18px) translateX(10px)  rotate(-3deg) scale(0.97); opacity: 0.55; }
+}
+@keyframes sol-float-c {
+  0%   { transform: translateY(0px)   translateX(0px)    rotate(0deg) scale(1);    opacity: 0.35; }
+  50%  { transform: translateY(-14px) translateX(-8px)   rotate(-4deg) scale(1.04); opacity: 0.5; }
+  100% { transform: translateY(-26px) translateX(6px)    rotate(4deg) scale(0.98); opacity: 0.6; }
 }
 
 .sol-float-icon {
@@ -67,6 +86,36 @@
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(6px);
+  transition: transform 0.3s;
+}
+
+/* ── Watermark ──────────────────────────────── */
+.sol-watermark {
+  position: absolute;
+  font-size: clamp(8rem, 20vw, 16rem);
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(139, 92, 246, 0.07);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -6px;
+  filter: blur(3px);
+  z-index: 0;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  line-height: 1;
+}
+
+.sol-watermark-2 {
+  font-size: clamp(6rem, 15vw, 12rem);
+  top: auto;
+  bottom: 12%;
+  left: 10%;
+  transform: none;
+  -webkit-text-stroke: 1px rgba(96, 165, 250, 0.05);
+  filter: blur(5px);
 }
 
 /* ── Hero header ────────────────────────────── */

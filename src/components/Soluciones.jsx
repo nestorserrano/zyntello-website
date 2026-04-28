@@ -379,17 +379,17 @@ function ModalApp({ app, onClose, formatPrecio, simbolo }) {
 
 /* ─── Iconos flotantes animados ─────────────────────────────────── */
 const FLOAT_POSITIONS = [
-  { left: '4%',  top: '12%', delay: '0s',    dur: '5.2s', size: '56px', font: '1.6rem' },
-  { left: '14%', top: '72%', delay: '0.8s',  dur: '4.8s', size: '44px', font: '1.2rem' },
-  { left: '24%', top: '30%', delay: '1.4s',  dur: '6.0s', size: '48px', font: '1.3rem' },
-  { left: '38%', top: '80%', delay: '0.3s',  dur: '5.5s', size: '40px', font: '1.1rem' },
-  { left: '52%', top: '8%',  delay: '1.8s',  dur: '4.6s', size: '52px', font: '1.5rem' },
-  { left: '63%', top: '62%', delay: '0.6s',  dur: '5.8s', size: '46px', font: '1.25rem'},
-  { left: '75%', top: '22%', delay: '2.1s',  dur: '4.9s', size: '50px', font: '1.4rem' },
-  { left: '84%', top: '75%', delay: '1.1s',  dur: '5.3s', size: '42px', font: '1.15rem'},
-  { left: '91%', top: '40%', delay: '0.4s',  dur: '6.2s', size: '54px', font: '1.5rem' },
-  { left: '7%',  top: '50%', delay: '1.6s',  dur: '5.0s', size: '38px', font: '1.0rem' },
-  { left: '46%', top: '45%', delay: '2.5s',  dur: '4.7s', size: '44px', font: '1.2rem' },
+  { left: '4%',  top: '12%', delay: '0s',    dur: '5.2s', size: '56px', font: '1.6rem', dir: 'a' },
+  { left: '14%', top: '72%', delay: '0.8s',  dur: '4.8s', size: '44px', font: '1.2rem', dir: 'b' },
+  { left: '24%', top: '30%', delay: '1.4s',  dur: '6.0s', size: '48px', font: '1.3rem', dir: 'a' },
+  { left: '38%', top: '80%', delay: '0.3s',  dur: '5.5s', size: '40px', font: '1.1rem', dir: 'c' },
+  { left: '52%', top: '8%',  delay: '1.8s',  dur: '4.6s', size: '52px', font: '1.5rem', dir: 'b' },
+  { left: '63%', top: '62%', delay: '0.6s',  dur: '5.8s', size: '46px', font: '1.25rem', dir: 'a' },
+  { left: '75%', top: '22%', delay: '2.1s',  dur: '4.9s', size: '50px', font: '1.4rem', dir: 'c' },
+  { left: '84%', top: '75%', delay: '1.1s',  dur: '5.3s', size: '42px', font: '1.15rem', dir: 'b' },
+  { left: '91%', top: '40%', delay: '0.4s',  dur: '6.2s', size: '54px', font: '1.5rem', dir: 'a' },
+  { left: '7%',  top: '50%', delay: '1.6s',  dur: '5.0s', size: '38px', font: '1.0rem', dir: 'c' },
+  { left: '46%', top: '45%', delay: '2.5s',  dur: '4.7s', size: '44px', font: '1.2rem', dir: 'b' },
 ]
 
 function FloatingIcons({ apps }) {
@@ -399,7 +399,7 @@ function FloatingIcons({ apps }) {
       {items.map((app, i) => {
         const pos = FLOAT_POSITIONS[i]
         return (
-          <div key={app.id} className="sol-float-wrap" style={{
+          <div key={app.id} className={`sol-float-wrap sol-float-${pos.dir}`} style={{
             left: pos.left, top: pos.top,
             animationDelay: pos.delay,
             animationDuration: pos.dur,
@@ -409,7 +409,7 @@ function FloatingIcons({ apps }) {
               fontSize: pos.font,
               background: `${app.color}14`,
               border: `1px solid ${app.color}28`,
-              boxShadow: `0 0 24px ${app.color}18`,
+              boxShadow: `0 0 28px ${app.color}20`,
             }}>
               {app.icono}
             </div>
@@ -464,6 +464,10 @@ export default function Soluciones() {
         <div className="sol-bg-glow sol-bg-glow-2" />
         <div className="sol-bg-glow sol-bg-glow-3" />
         <FloatingIcons apps={apps} />
+
+        {/* Letras difusas de fondo */}
+        <div className="sol-watermark" aria-hidden="true">ZYNTELLO</div>
+        <div className="sol-watermark sol-watermark-2" aria-hidden="true">SAAS</div>
 
         <div className="container-fluid px-4 px-lg-5 sol-content">
 
