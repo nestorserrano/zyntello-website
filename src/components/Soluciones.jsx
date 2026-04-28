@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import '../styles/Soluciones.css'
 
 const NUMERO_WA = '18296399877'
@@ -102,11 +102,9 @@ function combinarModulo(apiData) {
   const gradiente = hexToGradiente(color)
   const ahorroPct = apiData.ahorro_pct > 0 ? `AHORRA ${apiData.ahorro_pct}%` : null
 
-  // El estado del admin tiene prioridad sobre los datos estáticos
   const estado     = apiData.estado || 'activo'
-  const disponible = apiData.disponible !== false  // si el API no lo envía, asumimos disponible
+  const disponible = apiData.disponible !== false
   const etiquetaEstado = ESTADO_BADGE[estado] ? ESTADO_BADGE[estado].texto : null
-  // Para 'activo' usamos la etiqueta estática; para proximo/nuevo/destacado usamos el estado
   const etiqueta = estado === 'activo' ? display.etiqueta : etiquetaEstado
 
   return {
@@ -138,9 +136,9 @@ function Estrellas({ rating }) {
   return (
     <span style={{ display: 'inline-flex', alignItems: 'center', gap: '1px' }}>
       {[1, 2, 3, 4, 5].map(s => (
-        <span key={s} style={{ color: s <= Math.round(rating) ? '#f59e0b' : '#334155', fontSize: '0.85rem' }}>★</span>
+        <span key={s} style={{ color: s <= Math.round(rating) ? '#f59e0b' : '#1e293b', fontSize: '0.78rem' }}>★</span>
       ))}
-      <span style={{ color: '#94a3b8', fontSize: '0.75rem', marginLeft: '5px' }}>{rating}</span>
+      <span style={{ color: '#475569', fontSize: '0.68rem', marginLeft: '4px' }}>{rating}</span>
     </span>
   )
 }
@@ -220,26 +218,26 @@ function ModalApp({ app, onClose, formatPrecio, simbolo }) {
   return (
     <div className="sol-overlay" onClick={onClose}>
       <div className="sol-modal" onClick={e => e.stopPropagation()}>
-        <div style={{ background: app.gradiente, borderRadius: '16px 16px 0 0', padding: '22px 24px', position: 'relative', flexShrink: 0 }}>
+        <div style={{ background: app.gradiente, borderRadius: '12px 12px 0 0', padding: '22px 24px', position: 'relative', flexShrink: 0 }}>
           <button onClick={onClose} className="sol-modal-close">✕</button>
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-            <div style={{ width: '60px', height: '60px', background: 'rgba(255,255,255,0.18)', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.8rem', backdropFilter: 'blur(6px)' }}>
+            <div style={{ width: '56px', height: '56px', background: 'rgba(255,255,255,0.18)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.7rem', backdropFilter: 'blur(6px)' }}>
               {app.icono}
             </div>
             <div>
-              <h3 style={{ color: '#fff', margin: 0, fontWeight: 800, fontSize: '1.2rem' }}>{app.nombre}</h3>
-              <p style={{ color: 'rgba(255,255,255,0.75)', margin: '2px 0 4px', fontSize: '0.82rem' }}>{app.subtitulo}</p>
+              <h3 style={{ color: '#fff', margin: 0, fontWeight: 800, fontSize: '1.15rem' }}>{app.nombre}</h3>
+              <p style={{ color: 'rgba(255,255,255,0.72)', margin: '2px 0 4px', fontSize: '0.8rem' }}>{app.subtitulo}</p>
               <Estrellas rating={app.rating} />
             </div>
           </div>
           <div style={{ display: 'flex', gap: '6px', marginTop: '16px' }}>
             {['Plan', 'Datos', 'Pago'].map((label, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <div style={{ width: '22px', height: '22px', borderRadius: '50%', fontSize: '0.7rem', fontWeight: 700, background: paso > i + 1 ? '#fff' : paso === i + 1 ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.25)', color: paso > i + 1 ? app.color : paso === i + 1 ? '#1e293b' : 'rgba(255,255,255,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ width: '22px', height: '22px', borderRadius: '50%', fontSize: '0.7rem', fontWeight: 700, background: paso > i + 1 ? '#fff' : paso === i + 1 ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.22)', color: paso > i + 1 ? app.color : paso === i + 1 ? '#1e293b' : 'rgba(255,255,255,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   {paso > i + 1 ? '✓' : i + 1}
                 </div>
-                <span style={{ color: paso === i + 1 ? '#fff' : 'rgba(255,255,255,0.5)', fontSize: '0.75rem' }}>{label}</span>
-                {i < 2 && <span style={{ color: 'rgba(255,255,255,0.3)', margin: '0 2px' }}>›</span>}
+                <span style={{ color: paso === i + 1 ? '#fff' : 'rgba(255,255,255,0.45)', fontSize: '0.75rem' }}>{label}</span>
+                {i < 2 && <span style={{ color: 'rgba(255,255,255,0.28)', margin: '0 2px' }}>›</span>}
               </div>
             ))}
           </div>
@@ -255,28 +253,28 @@ function ModalApp({ app, onClose, formatPrecio, simbolo }) {
                   { key: 'anual',   label: 'Anual',   monto: app.precioAnual, nota: app.ahorroAnual }
                 ].map(p => (
                   <div key={p.key} onClick={() => setPlan(p.key)} className="sol-plan-card"
-                    style={{ border: `2px solid ${plan === p.key ? app.color : 'rgba(255,255,255,0.09)'}`, background: plan === p.key ? `${app.color}15` : 'rgba(255,255,255,0.02)' }}>
+                    style={{ border: `2px solid ${plan === p.key ? app.color : 'rgba(255,255,255,0.08)'}`, background: plan === p.key ? `${app.color}15` : 'rgba(255,255,255,0.02)' }}>
                     {p.nota && <span className="sol-plan-badge" style={{ background: app.color }}>{p.nota}</span>}
                     <div style={{ color: '#e2e8f0', fontWeight: 700, marginBottom: '6px' }}>{p.label}</div>
-                    <div style={{ color: app.color, fontSize: '1.5rem', fontWeight: 800, lineHeight: 1 }}>
+                    <div style={{ color: app.color, fontSize: '1.45rem', fontWeight: 800, lineHeight: 1 }}>
                       {simbolo} {formatPrecio(p.monto)}
-                      <span style={{ color: '#475569', fontSize: '0.72rem', fontWeight: 400 }}>/mes</span>
+                      <span style={{ color: '#475569', fontSize: '0.7rem', fontWeight: 400 }}>/mes</span>
                     </div>
-                    {p.key === 'anual' && <div style={{ color: '#64748b', fontSize: '0.7rem', marginTop: '4px' }}>Facturado anualmente</div>}
+                    {p.key === 'anual' && <div style={{ color: '#475569', fontSize: '0.68rem', marginTop: '4px' }}>Facturado anualmente</div>}
                   </div>
                 ))}
               </div>
               <h5 className="sol-modal-title">¿Qué incluye?</h5>
               <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 22px' }}>
                 {app.caracteristicas.map((c, i) => (
-                  <li key={i} style={{ color: '#94a3b8', fontSize: '0.88rem', padding: '7px 0', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <li key={i} style={{ color: '#94a3b8', fontSize: '0.86rem', padding: '7px 0', borderBottom: '1px solid rgba(255,255,255,0.04)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
                     <span style={{ color: app.color, flexShrink: 0, marginTop: '1px' }}>✓</span>
                     {c}
                   </li>
                 ))}
               </ul>
               <button onClick={() => setPaso(2)}
-                style={{ width: '100%', padding: '13px', background: app.color, border: 'none', borderRadius: '10px', color: '#fff', fontWeight: 700, fontSize: '1rem', cursor: 'pointer' }}>
+                style={{ width: '100%', padding: '13px', background: app.color, border: 'none', borderRadius: '8px', color: '#fff', fontWeight: 700, fontSize: '1rem', cursor: 'pointer' }}>
                 Continuar → Mis datos
               </button>
             </>
@@ -292,32 +290,32 @@ function ModalApp({ app, onClose, formatPrecio, simbolo }) {
                 { key: 'telefono', label: 'Teléfono / WhatsApp',   type: 'tel',   placeholder: '+1 809 000 0000',      required: true }
               ].map(f => (
                 <div key={f.key} style={{ marginBottom: '14px' }}>
-                  <label style={{ color: '#64748b', fontSize: '0.8rem', display: 'block', marginBottom: '5px' }}>
+                  <label style={{ color: '#64748b', fontSize: '0.78rem', display: 'block', marginBottom: '5px' }}>
                     {f.label} {f.required && <span style={{ color: app.color }}>*</span>}
                   </label>
                   <input type={f.type} placeholder={f.placeholder} value={form[f.key]}
                     onChange={e => { setForm({ ...form, [f.key]: e.target.value }); setErrores({ ...errores, [f.key]: null }) }}
-                    style={{ width: '100%', padding: '10px 14px', boxSizing: 'border-box', background: errores[f.key] ? 'rgba(239,68,68,0.08)' : 'rgba(255,255,255,0.05)', border: `1px solid ${errores[f.key] ? '#ef4444' : 'rgba(255,255,255,0.1)'}`, borderRadius: '8px', color: '#f1f5f9', fontSize: '0.9rem', outline: 'none' }}
+                    style={{ width: '100%', padding: '10px 14px', boxSizing: 'border-box', background: errores[f.key] ? 'rgba(239,68,68,0.08)' : 'rgba(255,255,255,0.04)', border: `1px solid ${errores[f.key] ? '#ef4444' : 'rgba(255,255,255,0.09)'}`, borderRadius: '6px', color: '#f1f5f9', fontSize: '0.88rem', outline: 'none' }}
                   />
-                  {errores[f.key] && <span style={{ color: '#ef4444', fontSize: '0.72rem' }}>{errores[f.key]}</span>}
+                  {errores[f.key] && <span style={{ color: '#ef4444', fontSize: '0.7rem' }}>{errores[f.key]}</span>}
                 </div>
               ))}
-              <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '10px', padding: '12px 14px', marginBottom: '18px' }}>
+              <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '8px', padding: '12px 14px', marginBottom: '18px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ color: '#64748b', fontSize: '0.85rem' }}>{app.nombre} · Plan {plan}</span>
-                  <span style={{ color: app.color, fontWeight: 800, fontSize: '1.05rem' }}>
-                    {simbolo} {formatPrecio(precio)}<span style={{ color: '#475569', fontSize: '0.72rem', fontWeight: 400 }}>/mes</span>
+                  <span style={{ color: '#64748b', fontSize: '0.83rem' }}>{app.nombre} · Plan {plan}</span>
+                  <span style={{ color: app.color, fontWeight: 800, fontSize: '1rem' }}>
+                    {simbolo} {formatPrecio(precio)}<span style={{ color: '#475569', fontSize: '0.7rem', fontWeight: 400 }}>/mes</span>
                   </span>
                 </div>
-                <div style={{ color: '#334155', fontSize: '0.72rem', marginTop: '4px' }}>Sin permanencia · Cancela cuando quieras</div>
+                <div style={{ color: '#334155', fontSize: '0.7rem', marginTop: '4px' }}>Sin permanencia · Cancela cuando quieras</div>
               </div>
               <div style={{ display: 'flex', gap: '10px' }}>
                 <button type="button" onClick={() => setPaso(1)}
-                  style={{ flex: '0 0 auto', padding: '12px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', color: '#64748b', cursor: 'pointer', fontSize: '0.9rem' }}>
+                  style={{ flex: '0 0 auto', padding: '11px 15px', background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#64748b', cursor: 'pointer', fontSize: '0.88rem' }}>
                   ← Volver
                 </button>
                 <button type="submit"
-                  style={{ flex: 1, padding: '12px', background: app.color, border: 'none', borderRadius: '10px', color: '#fff', fontWeight: 700, cursor: 'pointer', fontSize: '0.95rem' }}>
+                  style={{ flex: 1, padding: '11px', background: app.color, border: 'none', borderRadius: '8px', color: '#fff', fontWeight: 700, cursor: 'pointer', fontSize: '0.9rem' }}>
                   Elegir método de pago →
                 </button>
               </div>
@@ -327,14 +325,14 @@ function ModalApp({ app, onClose, formatPrecio, simbolo }) {
           {paso === 3 && (
             <>
               <h5 className="sol-modal-title">Método de pago</h5>
-              <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '10px', padding: '12px 14px', marginBottom: '20px' }}>
+              <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '8px', padding: '12px 14px', marginBottom: '20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ color: '#64748b', fontSize: '0.85rem' }}>{app.nombre} · Plan {plan}</span>
-                  <span style={{ color: app.color, fontWeight: 800, fontSize: '1.05rem' }}>
-                    {simbolo} {formatPrecio(precio)}<span style={{ color: '#475569', fontSize: '0.72rem', fontWeight: 400 }}>/mes</span>
+                  <span style={{ color: '#64748b', fontSize: '0.83rem' }}>{app.nombre} · Plan {plan}</span>
+                  <span style={{ color: app.color, fontWeight: 800, fontSize: '1rem' }}>
+                    {simbolo} {formatPrecio(precio)}<span style={{ color: '#475569', fontSize: '0.7rem', fontWeight: 400 }}>/mes</span>
                   </span>
                 </div>
-                <div style={{ color: '#334155', fontSize: '0.72rem', marginTop: '4px' }}>Sin permanencia · Cancela cuando quieras</div>
+                <div style={{ color: '#334155', fontSize: '0.7rem', marginTop: '4px' }}>Sin permanencia · Cancela cuando quieras</div>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '22px' }}>
@@ -344,14 +342,14 @@ function ModalApp({ app, onClose, formatPrecio, simbolo }) {
                   { key: 'cripto',  icono: '₿',  label: 'Criptomonedas',                 sub: 'USDT (TRC-20 / ERC-20) · USDC · BTC' },
                 ].map(m => (
                   <div key={m.key} onClick={() => setMetodo(m.key)}
-                    style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '14px 16px', borderRadius: '10px', cursor: 'pointer', border: `2px solid ${metodo === m.key ? app.color : 'rgba(255,255,255,0.09)'}`, background: metodo === m.key ? `${app.color}15` : 'rgba(255,255,255,0.02)', transition: 'all 0.15s' }}>
-                    <span style={{ fontSize: '1.5rem', lineHeight: 1 }}>{m.icono}</span>
+                    style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '13px 15px', borderRadius: '8px', cursor: 'pointer', border: `2px solid ${metodo === m.key ? app.color : 'rgba(255,255,255,0.08)'}`, background: metodo === m.key ? `${app.color}15` : 'rgba(255,255,255,0.02)', transition: 'all 0.15s' }}>
+                    <span style={{ fontSize: '1.4rem', lineHeight: 1 }}>{m.icono}</span>
                     <div style={{ flex: 1 }}>
-                      <div style={{ color: '#e2e8f0', fontWeight: 700, fontSize: '0.92rem' }}>{m.label}</div>
-                      <div style={{ color: '#475569', fontSize: '0.72rem', marginTop: '2px' }}>{m.sub}</div>
+                      <div style={{ color: '#e2e8f0', fontWeight: 700, fontSize: '0.9rem' }}>{m.label}</div>
+                      <div style={{ color: '#475569', fontSize: '0.7rem', marginTop: '2px' }}>{m.sub}</div>
                     </div>
-                    <div style={{ width: '18px', height: '18px', borderRadius: '50%', border: `2px solid ${metodo === m.key ? app.color : 'rgba(255,255,255,0.2)'}`, background: metodo === m.key ? app.color : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      {metodo === m.key && <span style={{ color: '#fff', fontSize: '0.6rem', fontWeight: 900 }}>✓</span>}
+                    <div style={{ width: '18px', height: '18px', borderRadius: '50%', border: `2px solid ${metodo === m.key ? app.color : 'rgba(255,255,255,0.18)'}`, background: metodo === m.key ? app.color : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      {metodo === m.key && <span style={{ color: '#fff', fontSize: '0.58rem', fontWeight: 900 }}>✓</span>}
                     </div>
                   </div>
                 ))}
@@ -359,11 +357,11 @@ function ModalApp({ app, onClose, formatPrecio, simbolo }) {
 
               <div style={{ display: 'flex', gap: '10px' }}>
                 <button type="button" onClick={() => setPaso(2)}
-                  style={{ flex: '0 0 auto', padding: '12px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', color: '#64748b', cursor: 'pointer', fontSize: '0.9rem' }}>
+                  style={{ flex: '0 0 auto', padding: '11px 15px', background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#64748b', cursor: 'pointer', fontSize: '0.88rem' }}>
                   ← Volver
                 </button>
                 <button type="button" onClick={irAlPago}
-                  style={{ flex: 1, padding: '12px', background: app.color, border: 'none', borderRadius: '10px', color: '#fff', fontWeight: 700, cursor: 'pointer', fontSize: '0.95rem' }}>
+                  style={{ flex: 1, padding: '11px', background: app.color, border: 'none', borderRadius: '8px', color: '#fff', fontWeight: 700, cursor: 'pointer', fontSize: '0.9rem' }}>
                   {metodo === 'stripe'  && '💳 Ir al pago con tarjeta →'}
                   {metodo === 'paypal'  && '🅿️ Ir al pago con PayPal →'}
                   {metodo === 'cripto'  && '₿ Ver instrucciones cripto →'}
@@ -377,15 +375,119 @@ function ModalApp({ app, onClose, formatPrecio, simbolo }) {
   )
 }
 
+/* ─── ParticleBackground (scroll-reactive) ──────────────────────── */
+function ParticleBackground({ sectionRef }) {
+  const canvasRef = useRef(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const ctx = canvas.getContext('2d')
+    let animId
+    let particles = []
+    let scrollProgress = 0
+
+    const resize = () => {
+      canvas.width  = canvas.offsetWidth
+      canvas.height = canvas.offsetHeight
+    }
+
+    const initParticles = () => {
+      particles = []
+      const count = Math.floor((canvas.width * canvas.height) / 7000)
+      for (let i = 0; i < Math.min(count, 80); i++) {
+        particles.push({
+          x:       Math.random() * canvas.width,
+          y:       Math.random() * canvas.height,
+          vx:      (Math.random() - 0.5) * 0.35,
+          vy:      (Math.random() - 0.5) * 0.35,
+          r:       Math.random() * 1.8 + 0.4,
+          opacity: Math.random() * 0.5 + 0.15,
+        })
+      }
+    }
+
+    const onScroll = () => {
+      const section = sectionRef?.current
+      if (!section) return
+      const rect = section.getBoundingClientRect()
+      const total = rect.height - window.innerHeight
+      scrollProgress = total > 0 ? Math.max(0, Math.min(1, -rect.top / total)) : 0
+    }
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      const speed = 1 + scrollProgress * 1.8
+
+      particles.forEach(p => {
+        p.x += p.vx * speed
+        p.y += p.vy * speed
+        if (p.x < 0)            p.x = canvas.width
+        if (p.x > canvas.width) p.x = 0
+        if (p.y < 0)            p.y = canvas.height
+        if (p.y > canvas.height) p.y = 0
+
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(139,92,246,${p.opacity})`
+        ctx.fill()
+      })
+
+      /* conexiones */
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx   = particles[i].x - particles[j].x
+          const dy   = particles[i].y - particles[j].y
+          const dist = Math.sqrt(dx * dx + dy * dy)
+          if (dist < 130) {
+            ctx.beginPath()
+            ctx.moveTo(particles[i].x, particles[i].y)
+            ctx.lineTo(particles[j].x, particles[j].y)
+            ctx.strokeStyle = `rgba(139,92,246,${(1 - dist / 130) * 0.12})`
+            ctx.lineWidth = 0.5
+            ctx.stroke()
+          }
+        }
+      }
+
+      animId = requestAnimationFrame(draw)
+    }
+
+    resize()
+    initParticles()
+    draw()
+
+    const handleResize = () => { resize(); initParticles() }
+    window.addEventListener('resize', handleResize)
+    window.addEventListener('scroll', onScroll, { passive: true })
+
+    return () => {
+      cancelAnimationFrame(animId)
+      window.removeEventListener('resize', handleResize)
+      window.removeEventListener('scroll', onScroll)
+    }
+  }, [sectionRef])
+
+  return (
+    <canvas ref={canvasRef} style={{
+      position: 'absolute', inset: 0,
+      width: '100%', height: '100%',
+      pointerEvents: 'none', zIndex: 0,
+    }} />
+  )
+}
+
 /* ─── Componente principal ──────────────────────────────────────── */
 export default function Soluciones() {
+  const sectionRef = useRef(null)
   const [modalApp, setModalApp] = useState(null)
   const [moneda, setMoneda]     = useState('USD')
   const [rates, setRates]       = useState(null)
-  const [apps, setApps]         = useState(APPS_FALLBACK)   // empieza con fallback
+  const [apps, setApps]         = useState(APPS_FALLBACK)
   const [apiCargada, setApiCargada] = useState(false)
 
-  // Tasas de cambio
+  /* Tasas de cambio */
   useEffect(() => {
     fetch('https://api.exchangerate-api.com/v4/latest/USD')
       .then(r => r.json())
@@ -393,7 +495,7 @@ export default function Soluciones() {
       .catch(() => {})
   }, [])
 
-  // Módulos dinámicos desde admin
+  /* Módulos dinámicos desde admin */
   useEffect(() => {
     fetch(API_URL)
       .then(r => r.json())
@@ -403,7 +505,7 @@ export default function Soluciones() {
           setApiCargada(true)
         }
       })
-      .catch(() => {/* silencioso — queda el fallback */})
+      .catch(() => {})
   }, [])
 
   const infoMoneda = MONEDAS_INFO[moneda]
@@ -416,48 +518,57 @@ export default function Soluciones() {
 
   return (
     <>
-      <section id="soluciones" style={{ background: '#060612', padding: '5rem 0' }}>
-        <div className="container-fluid px-4 px-lg-5">
+      <section id="soluciones" className="sol-section" ref={sectionRef}>
+        <ParticleBackground sectionRef={sectionRef} />
 
-          {/* Header */}
-          <div className="text-center mb-5">
-            <p className="text-uppercase fw-semibold mb-2" style={{ color: '#a78bfa', letterSpacing: '2px', fontSize: '0.85rem' }}>
-              Plataforma SaaS
-            </p>
-            <h2 className="fw-black mb-3" style={{ fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', color: '#f1f5f9' }}>
-              Soluciones en la Nube
-            </h2>
-            <p className="mx-auto" style={{ color: '#94a3b8', maxWidth: '560px', fontSize: '1.05rem', lineHeight: 1.7 }}>
-              Microaplicaciones empresariales listas para usar. Sin instalaciones, acceso desde cualquier dispositivo y soporte incluido.
-            </p>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', flexWrap: 'wrap', marginTop: '16px' }}>
-              {apps.map(a => (
-                <span key={a.id} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.09)', color: '#64748b', fontSize: '0.75rem', padding: '4px 12px', borderRadius: '20px' }}>
-                  {a.nombre}
-                </span>
-              ))}
+        <div className="container-fluid px-4 px-lg-5 sol-content">
+
+          {/* Terminal Header */}
+          <div className="sol-terminal-header">
+            <div className="sol-terminal-bar">
+              <div className="sol-terminal-dots">
+                <span className="sol-dot sol-dot-red" />
+                <span className="sol-dot sol-dot-yellow" />
+                <span className="sol-dot sol-dot-green" />
+              </div>
+              <span className="sol-terminal-title">zyntello — módulos SaaS</span>
+              <span className="sol-terminal-status">{apps.length} módulos · v2.0</span>
+            </div>
+            <div className="sol-terminal-body">
+              <p className="sol-terminal-line">
+                <span className="sol-prompt">$</span>
+                <span className="sol-cmd"> zyntello</span>
+                <span className="sol-arg"> --list-modules</span>
+                <span className="sol-arg2"> --show-pricing</span>
+              </p>
+              <p className="sol-terminal-subtitle">
+                Microaplicaciones empresariales listas para usar. Sin instalaciones, acceso desde cualquier dispositivo y soporte incluido.
+              </p>
+              <div className="sol-module-tags">
+                {apps.map(a => (
+                  <span key={a.id} className="sol-module-tag">
+                    <span style={{ color: a.color }}>{a.icono}</span> {a.nombre}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 
           {/* Callout personalización */}
-          <div style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.07) 0%, rgba(139,92,246,0.07) 100%)', border: '1px solid rgba(139,92,246,0.22)', borderRadius: '14px', padding: '18px 24px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '1.6rem', flexShrink: 0 }}>🏗️</span>
-            <div style={{ flex: 1, minWidth: '220px' }}>
-              <div style={{ color: '#e2e8f0', fontWeight: 700, fontSize: '0.95rem', marginBottom: '4px' }}>
-                ¿Necesitas más? Las personalizamos e instalamos en tu empresa
-              </div>
-              <p style={{ color: '#475569', margin: 0, fontSize: '0.83rem', lineHeight: 1.65 }}>
+          <div className="sol-callout">
+            <span className="sol-callout-icon">🏗️</span>
+            <div className="sol-callout-body">
+              <div className="sol-callout-title">¿Necesitas más? Las personalizamos e instalamos en tu empresa</div>
+              <p className="sol-callout-text">
                 Todas estas soluciones pueden ser adaptadas a tus procesos, integradas con tus sistemas actuales e instaladas directamente en la infraestructura de tu empresa con módulos adicionales a la medida.
               </p>
             </div>
-            <a href="#contacto" style={{ background: 'rgba(139,92,246,0.18)', border: '1px solid rgba(139,92,246,0.35)', color: '#a78bfa', padding: '9px 20px', borderRadius: '9px', textDecoration: 'none', fontWeight: 600, fontSize: '0.85rem', whiteSpace: 'nowrap', flexShrink: 0 }}>
-              Hablar con un asesor →
-            </a>
+            <a href="#contacto" className="sol-callout-btn">Hablar con un asesor →</a>
           </div>
 
           {/* Selector de moneda */}
           <div className="sol-moneda-selector">
-            <span className="sol-moneda-label">💱 Ver precios en:</span>
+            <span className="sol-moneda-label"><span className="sol-prompt">$</span> moneda</span>
             <div className="sol-moneda-pills">
               {Object.entries(MONEDAS_INFO).map(([code, m]) => (
                 <button key={code} onClick={() => setMoneda(code)} className={`sol-moneda-pill${moneda === code ? ' active' : ''}`}>
@@ -467,33 +578,33 @@ export default function Soluciones() {
                 </button>
               ))}
             </div>
-            {!rates && <span className="sol-moneda-loading">⏳ Cargando tasas…</span>}
+            {!rates && <span className="sol-moneda-loading">⏳ cargando tasas…</span>}
           </div>
 
           {/* Banner Bundle */}
           <div className="sol-bundle-banner" onClick={() => setModalApp(APP_SUITE)}>
-            <div style={{ flex: 1 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
-                <span style={{ fontSize: '1.5rem' }}>🚀</span>
-                <span style={{ background: 'linear-gradient(90deg, #a78bfa, #60a5fa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: 800, fontSize: '1.1rem' }}>
-                  Suite Completa Zyntello
-                </span>
-                <span className="sol-bundle-badge">Mejor precio</span>
-              </div>
-              <p style={{ color: '#64748b', margin: 0, fontSize: '0.88rem' }}>
-                {apps.map(a => a.nombre).join(' · ')} — todas las apps por un precio especial
-              </p>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexShrink: 0 }}>
-              <div style={{ textAlign: 'right' }}>
-                <div style={{ color: '#475569', textDecoration: 'line-through', fontSize: '0.8rem' }}>{simbolo} {formatPrecio(192)}/mes</div>
-                <div style={{ color: '#f1f5f9', fontWeight: 800, fontSize: '1.4rem', lineHeight: 1 }}>
-                  {simbolo} {formatPrecio(129)}<span style={{ color: '#64748b', fontSize: '0.72rem', fontWeight: 400 }}>/mes</span>
+            <div className="sol-bundle-inner">
+              <div className="sol-bundle-left">
+                <div className="sol-bundle-title">
+                  <span>🚀</span>
+                  <span className="sol-bundle-name">Suite Completa Zyntello</span>
+                  <span className="sol-bundle-badge">Mejor precio</span>
                 </div>
+                <p className="sol-bundle-desc">
+                  {apps.map(a => a.nombre).join(' · ')} — todas las apps por un precio especial
+                </p>
               </div>
-              <button onClick={e => { e.stopPropagation(); setModalApp(APP_SUITE) }} className="sol-bundle-btn">
-                Ver bundle →
-              </button>
+              <div className="sol-bundle-right">
+                <div className="sol-bundle-pricing">
+                  <div className="sol-bundle-was">{simbolo} {formatPrecio(192)}/mes</div>
+                  <div className="sol-bundle-price">
+                    {simbolo} {formatPrecio(129)}<span className="sol-bundle-period">/mes</span>
+                  </div>
+                </div>
+                <button onClick={e => { e.stopPropagation(); setModalApp(APP_SUITE) }} className="sol-bundle-btn">
+                  Ver bundle →
+                </button>
+              </div>
             </div>
           </div>
 
@@ -501,79 +612,79 @@ export default function Soluciones() {
           <div className="sol-grid">
             {apps.map(app => (
               <div key={app.id} className="sol-card"
-                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = `0 16px 48px ${app.color}28`; e.currentTarget.style.borderColor = `${app.color}40` }}
-                onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = `${app.color}50`; e.currentTarget.style.boxShadow = `0 8px 32px ${app.color}18` }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)'; e.currentTarget.style.boxShadow = 'none' }}
               >
-                <div style={{ height: '96px', background: app.gradiente, position: 'relative', overflow: 'hidden', borderRadius: '12px 12px 0 0', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ position: 'absolute', right: '-22px', bottom: '-32px', width: '110px', height: '110px', background: 'rgba(255,255,255,0.06)', borderRadius: '50%', pointerEvents: 'none' }} />
-                  <div style={{ position: 'absolute', right: '44px', bottom: '-44px', width: '88px', height: '88px', background: 'rgba(255,255,255,0.04)', borderRadius: '50%', pointerEvents: 'none' }} />
-                  <div style={{ width: '48px', height: '48px', background: 'rgba(255,255,255,0.18)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', backdropFilter: 'blur(8px)', flexShrink: 0, zIndex: 1 }}>
-                    {app.icono}
+                {/* Terminal window bar */}
+                <div className="sol-card-bar" style={{ borderBottomColor: `${app.color}30` }}>
+                  <div className="sol-card-dots">
+                    <span className="sol-dot" style={{ background: '#ff5f57' }} />
+                    <span className="sol-dot" style={{ background: '#ffbd2e' }} />
+                    <span className="sol-dot" style={{ background: '#28c840' }} />
                   </div>
-                  <div style={{ flex: 1, minWidth: 0, zIndex: 1 }}>
-                    <h4 style={{ color: '#fff', margin: 0, fontWeight: 800, fontSize: '1rem', lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {app.nombre}
-                    </h4>
-                    <p style={{ color: 'rgba(255,255,255,0.72)', margin: '2px 0 6px', fontSize: '0.72rem', lineHeight: 1.3, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                      {app.subtitulo}
-                    </p>
-                    <span style={{ background: 'rgba(0,0,0,0.28)', backdropFilter: 'blur(4px)', color: 'rgba(255,255,255,0.88)', fontSize: '0.6rem', fontWeight: 700, padding: '2px 8px', borderRadius: '20px' }}>
-                      {app.categoria}
-                    </span>
-                  </div>
+                  <span className="sol-card-slug" style={{ color: app.color }}>{app.id}</span>
                   {app.etiqueta && (
-                    <span className="sol-card-badge" style={app.etiquetaBadge ? { background: app.etiquetaBadge.bg, color: app.etiquetaBadge.color } : {}}>
+                    <span className="sol-card-badge"
+                      style={app.etiquetaBadge
+                        ? { background: app.etiquetaBadge.bg, color: app.etiquetaBadge.color }
+                        : { background: `${app.color}20`, color: app.color }}>
                       {app.etiqueta}
                     </span>
                   )}
                 </div>
 
-                <div style={{ padding: '0 18px 18px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '12px' }}>
-                    <Estrellas rating={app.rating} />
-                    <span style={{ color: '#334155', fontSize: '0.7rem' }}>({app.reviews})</span>
+                {/* Horizontal content layout */}
+                <div className="sol-card-content">
+                  {/* Panel izquierdo */}
+                  <div className="sol-card-left">
+                    <div className="sol-card-icon" style={{ background: `${app.color}15`, border: `1px solid ${app.color}28` }}>
+                      <span>{app.icono}</span>
+                    </div>
+                    <div className="sol-card-meta">
+                      <h4 className="sol-card-name" style={{ color: app.color }}>{app.nombre}</h4>
+                      <span className="sol-card-cat">{app.categoria}</span>
+                      <Estrellas rating={app.rating} />
+                      <span className="sol-card-reviews">({app.reviews})</span>
+                    </div>
                   </div>
-                  <p style={{ color: '#94a3b8', fontSize: '0.82rem', lineHeight: 1.6, marginBottom: '10px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                    {app.descripcion}
-                  </p>
-                  <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 10px' }}>
-                    {app.caracteristicas.slice(0, 3).map((c, ci) => (
-                      <li key={ci} style={{ color: '#64748b', fontSize: '0.76rem', padding: '4px 0', display: 'flex', alignItems: 'flex-start', gap: '6px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                        <span style={{ color: app.color, flexShrink: 0, fontSize: '0.7rem', marginTop: '2px' }}>✓</span>
-                        {c}
-                      </li>
-                    ))}
-                  </ul>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: '14px', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-                    <div>
-                      <div style={{ color: app.color, fontWeight: 800, fontSize: '1.15rem', lineHeight: 1 }}>
-                        {simbolo} {formatPrecio(app.precio)}
-                        <span style={{ color: '#475569', fontSize: '0.7rem', fontWeight: 400 }}>/mes</span>
-                      </div>
-                      <div style={{ color: '#334155', fontSize: '0.68rem', marginTop: '2px' }}>desde {simbolo} {formatPrecio(app.precioAnual)}/mes anual</div>
-                    </div>
-                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                      {app.url && app.disponible !== false && (
-                        <a href={app.url} target="_blank" rel="noopener noreferrer"
-                          style={{ color: app.color, fontSize: '0.78rem', fontWeight: 600, textDecoration: 'none', opacity: 0.75 }}
-                          onMouseEnter={e => e.currentTarget.style.opacity = '1'}
-                          onMouseLeave={e => e.currentTarget.style.opacity = '0.75'}>
-                          Ver Demo →
-                        </a>
-                      )}
-                      {app.disponible !== false ? (
-                        <button onClick={() => setModalApp(app)} className="sol-btn-obtener"
-                          style={{ background: app.color }}
-                          onMouseEnter={e => e.currentTarget.style.opacity = '0.82'}
-                          onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
-                          Obtener
-                        </button>
-                      ) : (
-                        <span style={{ fontSize: '0.72rem', fontWeight: 600, color: '#52525b', padding: '6px 12px', background: '#27272a', borderRadius: '8px', cursor: 'default' }}>
-                          Próximamente
-                        </span>
-                      )}
-                    </div>
+
+                  {/* Panel derecho */}
+                  <div className="sol-card-right">
+                    <p className="sol-card-desc">{app.descripcion}</p>
+                    <ul className="sol-card-features">
+                      {app.caracteristicas.slice(0, 3).map((c, ci) => (
+                        <li key={ci}>
+                          <span style={{ color: app.color }}>›</span> {c}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Footer de la tarjeta */}
+                <div className="sol-card-footer" style={{ borderTopColor: `${app.color}18` }}>
+                  <div className="sol-card-price">
+                    <span className="sol-price-main" style={{ color: app.color }}>
+                      {simbolo} {formatPrecio(app.precio)}<span className="sol-price-period">/mes</span>
+                    </span>
+                    <span className="sol-price-annual">desde {simbolo} {formatPrecio(app.precioAnual)}/mes anual</span>
+                  </div>
+                  <div className="sol-card-actions">
+                    {app.url && app.disponible !== false && (
+                      <a href={app.url} target="_blank" rel="noopener noreferrer"
+                        className="sol-btn-demo"
+                        style={{ color: app.color, borderColor: `${app.color}40` }}>
+                        Demo
+                      </a>
+                    )}
+                    {app.disponible !== false ? (
+                      <button onClick={() => setModalApp(app)} className="sol-btn-obtener"
+                        style={{ background: app.color }}>
+                        Obtener
+                      </button>
+                    ) : (
+                      <span className="sol-btn-pronto">Próximamente</span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -581,14 +692,14 @@ export default function Soluciones() {
           </div>
 
           {/* Footer */}
-          <div className="text-center mt-5">
-            <p style={{ color: '#334155', fontSize: '0.83rem', lineHeight: 1.8 }}>
+          <div className="sol-footer-note">
+            <p>
               Todas las aplicaciones incluyen actualizaciones continuas y soporte técnico.<br />
-              <span style={{ color: '#475569' }}>Sin contratos de permanencia · Cancela cuando quieras · Acceso inmediato tras el pago.</span>
+              <span>Sin contratos de permanencia · Cancela cuando quieras · Acceso inmediato tras el pago.</span>
             </p>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(167,139,250,0.08)', border: '1px solid rgba(167,139,250,0.2)', borderRadius: '10px', padding: '8px 18px', marginTop: '10px' }}>
-              <span style={{ color: '#a78bfa', fontSize: '1rem' }}>🎁</span>
-              <span style={{ color: '#a78bfa', fontSize: '0.83rem', fontWeight: 600 }}>Plan anual — 2 meses gratis en todos los paquetes</span>
+            <div className="sol-footer-badge">
+              <span>🎁</span>
+              <span>Plan anual — 2 meses gratis en todos los paquetes</span>
             </div>
           </div>
 
