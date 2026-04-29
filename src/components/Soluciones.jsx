@@ -41,37 +41,37 @@ const APPS_FALLBACK = [
 ]
 
 const APP_SUITE = {
-  id: 'suite',
-  icono: '🚀',
-  nombre: 'Suite Completa',
-  subtitulo: 'Las 8 apps en un solo plan',
+  id: 'erp',
+  icono: '🏢',
+  nombre: 'Zyntello ERP',
+  subtitulo: '9 módulos integrados para gestión empresarial completa',
   desarrollador: 'Zyntello',
-  categoria: 'Bundle',
-  descripcion: 'Accede a todas las microaplicaciones Zyntello en un solo plan con descuento especial y soporte prioritario.',
+  categoria: 'ERP',
+  descripcion: 'El ERP empresarial de Zyntello integra en un solo plan todos los módulos que tu empresa necesita: desde inventario y facturación hasta nómina, bancos y activos fijos. Todo conectado, sin duplicidad de datos.',
   caracteristicas: [
-    'CRM – Gestión de clientes y ventas',
-    'Proyectos – Kanban y Gantt',
-    'Tareas – Gestión de equipo',
-    'Facturación – Facturas y cobros',
-    'Inventario – Control de stock',
-    'Encuestas – Estadísticas y reportes',
-    'Contabilidad – Estados financieros y fiscal',
-    'Condominios – Administración residencial',
-    'ConstructFlow – Gestión de obras y construcción',
-    'Restaurante – POS para restaurantes',
-    'Doctores – Consultorios y expedientes clínicos',
+    '📦 Inventario — Stock en tiempo real, múltiples bodegas y valorización',
+    '🧾 Facturación — Cotizaciones, pedidos, facturas electrónicas y despachos',
+    '💰 Cuentas por Cobrar — Gestión de cobros, cartera vencida y estado de cuenta',
+    '📑 Cuentas por Pagar — Proveedores, pagos, cheques y conciliación',
+    '👥 Nómina — Empleados, períodos, AFP/SFS/INFOTEP y liquidaciones',
+    '🔐 Control de Acceso — Usuarios, roles y permisos por módulo',
+    '🏦 Bancos — Cuentas, movimientos, transferencias y conciliación',
+    '🏗️ Activos Fijos — Registro, depreciación y mantenimiento de activos',
+    '💵 Caja Chica — Control de fondos, reposiciones y gastos menores',
+    'Integración contable automática entre todos los módulos',
+    'Multi-moneda: DOP, USD, EUR y más',
     'Soporte prioritario incluido',
-    '1 usuario incluido · +$5 por usuario adicional'
   ],
-  precio: 129,
-  precioAnual: 105,
+  precio: 150,
+  precioAnual: 125,
   ahorroAnual: '2 MESES GRATIS',
-  color: '#8b5cf6',
-  gradiente: 'linear-gradient(135deg, #1e3a8a 0%, #4c1d95 50%, #7c3aed 100%)',
+  color: '#6366f1',
+  gradiente: 'linear-gradient(135deg, #1e1b4b 0%, #4338ca 50%, #6366f1 100%)',
   rating: 5.0,
-  reviews: 38,
-  etiqueta: 'Mejor valor',
-  previews: []
+  reviews: 42,
+  etiqueta: 'ERP Completo',
+  previews: [],
+  url: 'https://app.zyntello.com/erp',
 }
 
 /* ─── Convierte color hex a gradiente CSS ──────────────────────── */
@@ -518,28 +518,28 @@ export default function Soluciones() {
             {!rates && <span className="sol-moneda-loading">⏳ Cargando tasas…</span>}
           </div>
 
-          {/* Banner Bundle */}
-          <div className="sol-bundle-banner" onClick={() => setModalApp(APP_SUITE)}>
+          {/* Banner ERP */}
+          <div className="sol-bundle-banner" onClick={() => window.location.href = 'https://app.zyntello.com/erp'} style={{ cursor: 'pointer' }}>
             <div style={{ flex: 1 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
-                <span style={{ fontSize: '1.5rem' }}>🚀</span>
-                <span className="sol-bundle-name">Suite Completa Zyntello</span>
-                <span className="sol-bundle-badge">Mejor precio</span>
+                <span style={{ fontSize: '1.5rem' }}>🏢</span>
+                <span className="sol-bundle-name">Zyntello ERP</span>
+                <span className="sol-bundle-badge">ERP Completo</span>
               </div>
               <p style={{ color: '#64748b', margin: 0, fontSize: '0.88rem' }}>
-                {apps.map(a => a.nombre).join(' · ')} — todas las apps por un precio especial
+                Inventario · Facturación · Cuentas por Cobrar · Cuentas por Pagar · Nómina · Control de Acceso · Bancos · Activos Fijos · Caja Chica
               </p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexShrink: 0 }}>
               <div style={{ textAlign: 'right' }}>
-                <div style={{ color: '#475569', textDecoration: 'line-through', fontSize: '0.8rem' }}>{simbolo} {formatPrecio(192)}/mes</div>
+                <div style={{ color: '#475569', textDecoration: 'line-through', fontSize: '0.8rem' }}>{simbolo} {formatPrecio(220)}/mes</div>
                 <div style={{ color: '#f1f5f9', fontWeight: 800, fontSize: '1.4rem', lineHeight: 1 }}>
-                  {simbolo} {formatPrecio(129)}<span style={{ color: '#64748b', fontSize: '0.72rem', fontWeight: 400 }}>/mes</span>
+                  {simbolo} {formatPrecio(150)}<span style={{ color: '#64748b', fontSize: '0.72rem', fontWeight: 400 }}>/mes</span>
                 </div>
               </div>
-              <button onClick={e => { e.stopPropagation(); setModalApp(APP_SUITE) }} className="sol-bundle-btn">
-                Ver bundle →
-              </button>
+              <a href="https://app.zyntello.com/erp" onClick={e => e.stopPropagation()} className="sol-bundle-btn" style={{ textDecoration: 'none' }}>
+                Ver ERP →
+              </a>
             </div>
           </div>
 
