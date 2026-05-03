@@ -125,7 +125,8 @@ Commitear `dist/` siempre antes del push.
 
 ### App SaaS unificada (zyntello-app)
 Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` a `/home4/ukrmeumy/public_html/zyntello/app/`.
-- `.cpanel.yml` copia archivos, corre `php artisan migrate` y cachés
+- `.cpanel.yml` copia archivos, corre migraciones y cachés
+- En deploy queda auditoría en `storage/logs/deploy-migrate.log` y `storage/logs/deploy-migrate-status.log`
 - `vendor/` y `public/build/` están en el repo (Bluehost no tiene Composer/Node)
 - `.env` se mantiene manualmente en el servidor
 
@@ -134,7 +135,15 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 2. cPanel → Git Version Control → clonar `nestorserrano/zyntello-app` → `public_html/zyntello/app`
 3. Crear `.env` (basado en `.env.production`)
 4. cPanel → MySQL → crear `ukrmeumy_zyntello` y `ukrmeumy_zyntello_admin` (no más)
-5. Vía cPanel Terminal o ruta `/zyn-maint/migrate?key=XXX`: correr migraciones
+5. Sin SSH: usar ruta `/zyn-maint/migrate-y-limpiar?key=XXX` y validar con `/zyn-maint/migrate-status?key=XXX`
+
+### Bitácora reciente (estado actual)
+
+- Commit `[#411]`: rediseño completo de dashboard ERP (`erp/resumen`) para 12 módulos.
+- Commit `[#412]`: fix de ruta `inventario.maestros.articulos.index` y limpieza de contenido duplicado en vista.
+- Commit `[#413]`: fix relación `moneda()` faltante en `CuentaPorCobrar`.
+- Commit `[#414]`: fix `montoPendiente()` en `CuentaPorCobrar`, `SoftDeletes` en `Company`, y migración de `ban_cuentas.entidad_bancaria_id`.
+- Mantenimiento sin SSH reforzado: endpoint `/zyn-maint/migrate-status` y logs de migraciones en deploy cPanel.
 
 ---
 
