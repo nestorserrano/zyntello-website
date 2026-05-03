@@ -145,6 +145,14 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 - Commit `[#414]`: fix `montoPendiente()` en `CuentaPorCobrar`, `SoftDeletes` en `Company`, y migración de `ban_cuentas.entidad_bancaria_id`.
 - Mantenimiento sin SSH reforzado: endpoint `/zyn-maint/migrate-status` y logs de migraciones en deploy cPanel.
 
+### Mini guía operativa post-deploy (sin SSH)
+
+1. Ejecutar `https://app.zyntello.com/zyn-maint/migrate-y-limpiar?key=XXX`.
+2. Validar estado en `https://app.zyntello.com/zyn-maint/migrate-status?key=XXX`.
+3. Si hay error, revisar `https://app.zyntello.com/zyn-maint/logs?key=XXX&filter=ERROR`.
+4. Confirmar auditoría de deploy en servidor: `storage/logs/deploy-migrate.log`.
+5. Confirmar auditoría de estado en servidor: `storage/logs/deploy-migrate-status.log`.
+
 ---
 
 ## Tecnologías por proyecto
