@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zyntello PSA — Blueprint & Propuesta de Valor</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0b1d36;
+  --navy2: #132644;
+  --blue: #1d5fcc;
+  --blue-light: #3b82f6;
+  --teal: #0d9488;
+  --teal-light: #14b8a6;
+  --amber: #f59e0b;
+  --amber-light: #fbbf24;
+  --emerald: #10b981;
+  --coral: #ef4444;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-500: #64748b;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-900: #0f172a;
+  --white: #ffffff;
+  --font-head: 'Sora', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --shadow: 0 4px 24px rgba(11,29,54,0.10);
+  --shadow-lg: 0 12px 48px rgba(11,29,54,0.18);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--gray-50); color: var(--gray-700); line-height: 1.7; font-size: 15px; }
+
+/* NAV */
+nav { position: sticky; top: 0; z-index: 100; background: rgba(11,29,54,0.96); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.07); }
+.nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+.nav-logo { font-family: var(--font-head); font-size: 18px; font-weight: 700; color: var(--white); letter-spacing: -0.5px; }
+.nav-logo span { color: var(--teal-light); }
+.nav-links { display: flex; gap: 1.5rem; list-style: none; }
+.nav-links a { font-size: 13px; color: rgba(255,255,255,0.65); text-decoration: none; font-weight: 500; transition: color .2s; }
+.nav-links a:hover { color: var(--white); }
+.nav-cta { background: var(--teal); color: var(--white); padding: 7px 18px; border-radius: 50px; font-size: 13px; font-weight: 600; text-decoration: none; transition: background .2s; }
+.nav-cta:hover { background: var(--teal-light); }
+
+/* HERO */
+.hero { background: linear-gradient(135deg, var(--navy) 0%, #0d2a52 50%, #0f3060 100%); color: var(--white); padding: 100px 2rem 80px; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+.hero-inner { max-width: 1100px; margin: 0 auto; position: relative; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(13,148,136,0.2); border: 1px solid rgba(20,184,166,0.4); padding: 6px 16px; border-radius: 50px; font-size: 12px; font-weight: 600; color: var(--teal-light); margin-bottom: 2rem; letter-spacing: 1px; text-transform: uppercase; }
+.hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--teal-light); display: block; }
+.hero h1 { font-family: var(--font-head); font-size: clamp(36px, 5vw, 62px); font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -2px; }
+.hero h1 em { font-style: normal; color: var(--teal-light); }
+.hero-sub { font-size: 18px; color: rgba(255,255,255,0.72); max-width: 620px; margin-bottom: 3rem; line-height: 1.7; font-weight: 300; }
+.hero-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+.hero-stat { }
+.hero-stat .num { font-family: var(--font-head); font-size: 36px; font-weight: 800; color: var(--white); letter-spacing: -1px; line-height: 1; }
+.hero-stat .lbl { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+.hero-tag { display: flex; gap: 10px; margin-top: 2.5rem; flex-wrap: wrap; }
+.tag { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.75); padding: 5px 14px; border-radius: 50px; font-size: 12px; font-weight: 500; }
+
+/* SECTIONS */
+section { padding: 80px 2rem; }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+.section-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
+.section-title { font-family: var(--font-head); font-size: clamp(28px, 4vw, 42px); font-weight: 700; line-height: 1.2; color: var(--navy); margin-bottom: 1rem; letter-spacing: -1px; }
+.section-sub { font-size: 17px; color: var(--gray-500); max-width: 620px; line-height: 1.7; margin-bottom: 3rem; }
+
+/* PROBLEM SECTION */
+#problema { background: var(--white); }
+.problem-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-bottom: 3rem; }
+.problem-quote { background: var(--navy); color: var(--white); padding: 2rem 2.5rem; border-radius: var(--radius-lg); position: relative; }
+.problem-quote::before { content: '"'; font-family: var(--font-head); font-size: 80px; color: var(--teal-light); position: absolute; top: -10px; left: 20px; line-height: 1; opacity: 0.4; }
+.problem-quote p { font-size: 17px; line-height: 1.7; color: rgba(255,255,255,0.85); font-weight: 300; padding-top: 1.5rem; }
+.problem-quote cite { display: block; margin-top: 1.5rem; font-size: 13px; color: var(--teal-light); font-style: normal; font-weight: 600; }
+.pain-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.pain-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 1.5rem; border-left: 4px solid var(--coral); }
+.pain-card .pain-icon { font-size: 28px; margin-bottom: 12px; }
+.pain-card h4 { font-family: var(--font-head); font-size: 15px; font-weight: 700; color: var(--gray-900); margin-bottom: 8px; }
+.pain-card p { font-size: 13px; color: var(--gray-500); line-height: 1.6; }
+.pain-price { background: #fef2f2; border: 1px solid #fecaca; border-left: 4px solid var(--coral); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-top: 2rem; display: flex; align-items: center; gap: 1.5rem; }
+.pain-price .price-num { font-family: var(--font-head); font-size: 42px; font-weight: 800; color: var(--coral); white-space: nowrap; }
+.pain-price p { font-size: 14px; color: var(--gray-600); }
+.pain-price strong { color: var(--gray-900); }
+
+/* SOLUTION SECTION */
+#solucion { background: var(--gray-50); }
+.modules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.module-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 2rem; transition: box-shadow .2s, transform .2s; }
+.module-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+.mod-header { display: flex; align-items: center; gap: 14px; margin-bottom: 1.25rem; }
+.mod-icon { width: 48px; height: 48px; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.mod-icon.blue { background: #eff6ff; }
+.mod-icon.teal { background: #f0fdf4; }
+.mod-icon.amber { background: #fffbeb; }
+.mod-icon.purple { background: #faf5ff; }
+.mod-icon.navy { background: #eff6ff; }
+.mod-icon.coral { background: #fff7ed; }
+.mod-title { font-family: var(--font-head); font-size: 17px; font-weight: 700; color: var(--navy); }
+.mod-subtitle { font-size: 12px; color: var(--teal); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.mod-features { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.mod-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--gray-600); }
+.mod-features li::before { content: '✓'; font-weight: 700; color: var(--teal); flex-shrink: 0; margin-top: 1px; }
+.module-badge { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--gray-100); display: flex; gap: 6px; flex-wrap: wrap; }
+.mbadge { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600; }
+.mbadge-blue { background: #dbeafe; color: #1d4ed8; }
+.mbadge-teal { background: #ccfbf1; color: #0f766e; }
+.mbadge-amber { background: #fef3c7; color: #b45309; }
+.mbadge-purple { background: #ede9fe; color: #6d28d9; }
+
+/* COMPARISON TABLE */
+#comparacion { background: var(--white); }
+.table-wrap { overflow-x: auto; border-radius: var(--radius-lg); border: 1px solid var(--gray-200); box-shadow: var(--shadow); }
+table { width: 100%; border-collapse: collapse; min-width: 600px; }
+thead { background: var(--navy); }
+th { padding: 16px 20px; font-family: var(--font-head); font-size: 14px; font-weight: 700; color: var(--white); text-align: left; }
+th.replicon { background: #1e2d4a; }
+th.zyntello { background: var(--teal); }
+td { padding: 14px 20px; font-size: 13px; border-bottom: 1px solid var(--gray-100); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) { background: var(--gray-50); }
+.feature-col { font-weight: 500; color: var(--gray-700); }
+.bad { color: #ef4444; }
+.neutral { color: var(--gray-500); }
+.good { color: var(--teal); font-weight: 600; }
+.win { background: #f0fdf9 !important; }
+.badge-bad { background: #fee2e2; color: #b91c1c; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.badge-good { background: #ccfbf1; color: #0f766e; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.badge-neu { background: var(--gray-100); color: var(--gray-600); padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+
+/* DIFERENCIADORES */
+#diferenciadores { background: var(--gray-50); }
+.diff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+.diff-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 2rem; position: relative; overflow: hidden; }
+.diff-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+.diff-card.blue::before { background: var(--blue); }
+.diff-card.teal::before { background: var(--teal); }
+.diff-card.amber::before { background: var(--amber); }
+.diff-card.purple::before { background: #8b5cf6; }
+.diff-card.navy::before { background: var(--navy); }
+.diff-num { font-family: var(--font-head); font-size: 48px; font-weight: 800; color: var(--gray-100); position: absolute; top: 8px; right: 16px; line-height: 1; }
+.diff-card h3 { font-family: var(--font-head); font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
+.diff-card p { font-size: 13px; color: var(--gray-500); line-height: 1.7; }
+.diff-highlights { margin-top: 1.25rem; display: flex; flex-direction: column; gap: 8px; }
+.diff-hi { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--gray-600); }
+.diff-hi::before { content: '→'; color: var(--teal); font-weight: 700; }
+
+/* MOBILE SECTION */
+#movil { background: var(--navy); color: var(--white); }
+#movil .section-title { color: var(--white); }
+#movil .section-sub { color: rgba(255,255,255,0.6); }
+#movil .section-label { color: var(--teal-light); }
+.mobile-layout { display: grid; grid-template-columns: 1fr 320px; gap: 4rem; align-items: center; }
+.mobile-features { display: flex; flex-direction: column; gap: 1.5rem; }
+.mobile-feat { display: flex; gap: 16px; align-items: flex-start; }
+.mf-icon { width: 44px; height: 44px; border-radius: var(--radius); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.mf-text h4 { font-family: var(--font-head); font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+.mf-text p { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+/* phone mockup */
+.phone-mock { background: #1a2744; border: 2px solid rgba(255,255,255,0.15); border-radius: 36px; padding: 12px; box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
+.phone-screen { background: #0f1e3c; border-radius: 28px; overflow: hidden; }
+.phone-header { background: var(--teal); padding: 16px 16px 12px; }
+.phone-header .ph-name { font-size: 11px; color: rgba(255,255,255,0.7); }
+.phone-header .ph-title { font-family: var(--font-head); font-size: 16px; font-weight: 700; color: var(--white); }
+.phone-body { padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.ph-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px; }
+.ph-card .ph-card-label { font-size: 10px; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.ph-card .ph-card-val { font-family: var(--font-head); font-size: 18px; font-weight: 700; color: var(--white); }
+.ph-card .ph-card-sub { font-size: 11px; color: rgba(255,255,255,0.45); }
+.ph-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ph-btn { background: var(--teal); border: none; border-radius: 10px; color: var(--white); font-family: var(--font-head); font-size: 13px; font-weight: 700; padding: 14px; width: 100%; cursor: default; text-align: center; }
+.ph-btn.outline { background: transparent; border: 1px solid rgba(255,255,255,0.2); }
+.ph-map { background: rgba(13,148,136,0.1); border: 1px solid rgba(13,148,136,0.3); border-radius: 10px; padding: 12px; display: flex; align-items: center; gap: 10px; }
+.ph-map .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal-light); flex-shrink: 0; }
+.ph-map p { font-size: 11px; color: rgba(255,255,255,0.6); }
+.ph-map strong { color: var(--teal-light); display: block; font-size: 12px; }
+
+/* WORKFLOW */
+#workflow { background: var(--white); }
+.flow-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+.flow-role { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 2rem; position: relative; }
+.flow-role.champion { background: #eff6ff; border-color: #bfdbfe; }
+.flow-role.gerente { background: #f0fdf4; border-color: #bbf7d0; }
+.role-badge { display: inline-block; padding: 4px 14px; border-radius: 50px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; }
+.role-badge.op { background: #fef3c7; color: #92400e; }
+.role-badge.ch { background: #dbeafe; color: #1d4ed8; }
+.role-badge.ge { background: #dcfce7; color: #166534; }
+.flow-role h3 { font-family: var(--font-head); font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 1rem; }
+.flow-perms { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.flow-perms li { font-size: 13px; color: var(--gray-600); display: flex; align-items: flex-start; gap: 8px; }
+.flow-perms li.yes::before { content: '✓'; color: var(--emerald); font-weight: 700; flex-shrink: 0; }
+.flow-perms li.no::before { content: '✕'; color: var(--gray-300); font-weight: 700; flex-shrink: 0; }
+.flow-arrows { display: flex; align-items: center; justify-content: center; gap: 0; padding: 2rem 0; }
+.flow-connect { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 16px; align-items: center; }
+.flow-arrow { text-align: center; color: var(--gray-300); font-size: 24px; }
+.flow-arrow span { display: block; font-size: 10px; color: var(--gray-400); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+/* MARKETING */
+#marketing { background: var(--gray-50); }
+.mkt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 3rem; }
+.mkt-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 1.75rem; }
+.mkt-card .mkt-num { font-family: var(--font-head); font-size: 13px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.mkt-card h3 { font-family: var(--font-head); font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+.mkt-card p { font-size: 13px; color: var(--gray-500); line-height: 1.7; }
+.mkt-card ul { list-style: none; margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+.mkt-card ul li { font-size: 13px; color: var(--gray-600); display: flex; gap: 8px; align-items: flex-start; }
+.mkt-card ul li::before { content: '·'; color: var(--teal); font-weight: 900; font-size: 18px; line-height: 1; flex-shrink: 0; }
+.pricing-banner { background: var(--navy); color: var(--white); border-radius: var(--radius-lg); padding: 2.5rem; display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; }
+.pricing-banner h3 { font-family: var(--font-head); font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+.pricing-banner p { color: rgba(255,255,255,0.65); font-size: 14px; }
+.pricing-tiers { display: flex; gap: 1rem; }
+.pricing-tier { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius); padding: 1rem 1.5rem; text-align: center; }
+.pricing-tier .pt-price { font-family: var(--font-head); font-size: 28px; font-weight: 800; color: var(--white); }
+.pricing-tier .pt-label { font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.5px; }
+.pricing-tier.featured { background: var(--teal); border-color: var(--teal-light); }
+.key-messages { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 2rem; margin-top: 2rem; }
+.key-messages h3 { font-family: var(--font-head); font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 1.5rem; }
+.msgs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.msg-item { background: var(--gray-50); border-radius: var(--radius); padding: 1rem 1.25rem; border-left: 3px solid var(--teal); }
+.msg-item p { font-size: 14px; color: var(--gray-700); font-weight: 500; line-height: 1.5; font-style: italic; }
+
+/* TECH STACK */
+#stack { background: var(--white); }
+.stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 2.5rem; }
+.stack-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 1.5rem; }
+.stack-card .sc-layer { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--teal); margin-bottom: 10px; }
+.stack-card h4 { font-family: var(--font-head); font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.stack-card p { font-size: 12px; color: var(--gray-500); line-height: 1.6; }
+.stack-tech { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+.tech-pill { background: var(--navy); color: rgba(255,255,255,0.85); font-family: var(--font-mono); font-size: 10px; padding: 3px 10px; border-radius: 50px; }
+.tenant-box { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 2rem; }
+.tenant-box h3 { font-family: var(--font-head); font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 1rem; }
+.tenant-diagram { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 1.5rem; }
+.tenant-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 1rem; text-align: center; }
+.tenant-card .tc-id { font-family: var(--font-mono); font-size: 12px; color: var(--teal); font-weight: 600; margin-bottom: 6px; }
+.tenant-card h4 { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.tenant-card p { font-size: 11px; color: var(--gray-500); }
+.tenant-note { margin-top: 1rem; background: #fffbeb; border: 1px solid #fef3c7; border-radius: var(--radius); padding: 1rem 1.25rem; font-size: 13px; color: #92400e; }
+.tenant-note strong { color: #78350f; }
+
+/* ROADMAP */
+#roadmap { background: var(--gray-50); }
+.roadmap-list { display: flex; flex-direction: column; gap: 0; position: relative; }
+.roadmap-list::before { content: ''; position: absolute; left: 60px; top: 24px; bottom: 24px; width: 2px; background: var(--gray-200); }
+.rm-phase { display: flex; gap: 2rem; align-items: flex-start; padding: 0 0 2.5rem; position: relative; }
+.rm-phase:last-child { padding-bottom: 0; }
+.rm-num { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-head); font-size: 18px; font-weight: 800; color: var(--white); flex-shrink: 0; z-index: 1; position: relative; }
+.rm-num.p1 { background: var(--blue); }
+.rm-num.p2 { background: var(--teal); }
+.rm-num.p3 { background: var(--amber); }
+.rm-num.p4 { background: #8b5cf6; }
+.rm-content { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 1.75rem; flex: 1; }
+.rm-content .rm-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--teal); margin-bottom: 8px; }
+.rm-content h3 { font-family: var(--font-head); font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
+.rm-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; }
+.rm-item { font-size: 13px; color: var(--gray-600); display: flex; gap: 8px; align-items: flex-start; }
+.rm-item::before { content: '→'; color: var(--teal); font-weight: 700; flex-shrink: 0; }
+
+/* CTA */
+#cta { background: linear-gradient(135deg, var(--navy) 0%, #0d2a52 60%, var(--teal) 100%); color: var(--white); text-align: center; padding: 100px 2rem; }
+#cta .section-title { color: var(--white); text-align: center; }
+#cta .section-sub { color: rgba(255,255,255,0.7); margin: 0 auto 2.5rem; text-align: center; }
+.cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.cta-btn { padding: 14px 32px; border-radius: 50px; font-family: var(--font-head); font-size: 15px; font-weight: 700; text-decoration: none; transition: all .2s; }
+.cta-btn.primary { background: var(--teal); color: var(--white); }
+.cta-btn.primary:hover { background: var(--teal-light); }
+.cta-btn.secondary { background: rgba(255,255,255,0.1); color: var(--white); border: 1px solid rgba(255,255,255,0.2); }
+.cta-btn.secondary:hover { background: rgba(255,255,255,0.18); }
+.cta-note { margin-top: 1.5rem; font-size: 13px; color: rgba(255,255,255,0.45); }
+
+/* FOOTER */
+footer { background: var(--gray-900); color: rgba(255,255,255,0.4); padding: 2rem; text-align: center; font-size: 12px; }
+footer strong { color: rgba(255,255,255,0.7); }
+
+/* UTILITIES */
+.divider { height: 1px; background: var(--gray-200); margin: 2.5rem 0; }
+.highlight-box { background: linear-gradient(135deg, #f0fdf9 0%, #e0f2fe 100%); border: 1px solid #99f6e4; border-radius: var(--radius-lg); padding: 2rem; margin-top: 2rem; }
+.highlight-box h3 { font-family: var(--font-head); font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.highlight-box p { font-size: 14px; color: var(--gray-600); }
+
+@media (max-width: 768px) {
+  .problem-intro { grid-template-columns: 1fr; gap: 2rem; }
+  .mobile-layout { grid-template-columns: 1fr; }
+  .phone-mock { display: none; }
+  .flow-grid { grid-template-columns: 1fr; }
+  .flow-connect { grid-template-columns: 1fr; }
+  .flow-arrow { display: none; }
+  .pricing-banner { grid-template-columns: 1fr; }
+  .pricing-tiers { flex-wrap: wrap; }
+  nav .nav-links { display: none; }
+  .tenant-diagram { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">Zyntello <span>PSA</span></div>
+    <ul class="nav-links">
+      <li><a href="#problema">El Problema</a></li>
+      <li><a href="#solucion">Solución</a></li>
+      <li><a href="#comparacion">Comparación</a></li>
+      <li><a href="#movil">App Móvil</a></li>
+      <li><a href="#marketing">Marketing</a></li>
+      <li><a href="#stack">Stack</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+    </ul>
+    <a href="#cta" class="nav-cta">Empezar →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">Blueprint · Propuesta de Valor · Estrategia Go-to-Market</div>
+    <h1>El PSA que tu empresa<br>realmente <em>quiere usar.</em></h1>
+    <p class="hero-sub">Zyntello PSA es la alternativa inteligente, económica y diseñada para LATAM a plataformas como Replicon. Control total de tiempo, proyectos, fuerza laboral y facturación — sin la curva de aprendizaje brutal.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="num">6</div>
+        <div class="lbl">Módulos core</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">100%</div>
+        <div class="lbl">Multi-tenant nativo</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">APK</div>
+        <div class="lbl">App móvil nativa</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">GPS</div>
+        <div class="lbl">Tracking en tiempo real</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">QB</div>
+        <div class="lbl">QuickBooks ready</div>
+      </div>
+    </div>
+    <div class="hero-tag">
+      <span class="tag">Laravel + SQL Server</span>
+      <span class="tag">Multi-tenant / compania_id</span>
+      <span class="tag">Workflow Champion</span>
+      <span class="tag">Periodos de nómina</span>
+      <span class="tag">Bonos por proyecto</span>
+      <span class="tag">Español nativo</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMA -->
+<section id="problema">
+  <div class="section-inner">
+    <div class="section-label">El Problema</div>
+    <h2 class="section-title">Replicon es poderoso.<br>Pero nadie lo usa bien.</h2>
+    <p class="section-sub">Es la plataforma líder de time tracking empresarial. Pero tiene un problema fundamental: fue diseñada para grandes corporaciones anglófonas con equipos de IT dedicados. No para empresas como las nuestras.</p>
+
+    <div class="problem-intro">
+      <div>
+        <div class="pain-price">
+          <div class="price-num">$49</div>
+          <p><strong>Por usuario / por mes</strong> en el plan Polaris PSA.<br>Una empresa con 50 personas pagaría <strong>$2,450 USD mensuales</strong> — solo en licencias, sin contar implementación, capacitación ni soporte.</p>
+        </div>
+        <div style="margin-top:1.5rem; padding:1.25rem 1.5rem; background:#f0fdf9; border:1px solid #99f6e4; border-radius:var(--radius);">
+          <p style="font-size:14px; color:#0f766e; font-weight:600;">Zyntello PSA ofrece la misma potencia funcional a una fracción del costo, adaptada al mercado latinoamericano.</p>
+        </div>
+      </div>
+      <div class="problem-quote">
+        <p>"Replicon tiene todo lo que necesitamos en papel. Pero configurarlo tomó 4 meses, el equipo nunca terminó de entenderlo, y el soporte solo responde en inglés. Terminamos usando Excel para lo importante."</p>
+        <cite>— Patrón típico de abandono en empresas LATAM de servicios</cite>
+      </div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-icon">🧩</div>
+        <h4>Complejidad aplastante</h4>
+        <p>La interfaz tiene cientos de configuraciones. Implementar Replicon desde cero requiere consultores certificados y meses de trabajo.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">💰</div>
+        <h4>Precio prohibitivo para LATAM</h4>
+        <p>El modelo por usuario se vuelve insostenible rápidamente. Las PYMES y empresas medianas quedan fuera del mercado objetivo real.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🌐</div>
+        <h4>No pensado para la región</h4>
+        <p>Soporte solo en inglés, cumplimiento laboral orientado a EE.UU. y Europa. Nómina, festivos y regulaciones locales requieren workarounds costosos.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">📱</div>
+        <h4>Mobile limitado y básico</h4>
+        <p>La app móvil de Replicon es funcional pero no está diseñada para equipos de campo, registro de asistencia por GPS o flujos de aprobación desde el celular.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🔄</div>
+        <h4>Sin flujo Champion nativo</h4>
+        <p>No tiene el concepto de "champion" o aprobador por proyecto. Los flujos de aprobación son genéricos y no reflejan la estructura real de muchas empresas de servicios.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">📊</div>
+        <h4>Reportes difíciles de personalizar</h4>
+        <p>Los reportes estándar están en inglés. Generar reportes específicos de nómina, planilla por proyecto o bonos requiere módulos adicionales o BI externo.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">⚙️</div>
+        <h4>Personalización = más costo</h4>
+        <p>Cualquier adaptación al negocio específico requiere horas de consultoría a tarifas USD. La rigidez del sistema fuerza al negocio a adaptarse a él, no al revés.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🏢</div>
+        <h4>Exceso para la mayoría</h4>
+        <p>Replicon está diseñado para 500+ usuarios. Las empresas medianas pagan por funcionalidades que nunca usan, mientras les faltan las que sí necesitan.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUCIÓN -->
+<section id="solucion">
+  <div class="section-inner">
+    <div class="section-label">La Solución</div>
+    <h2 class="section-title">Zyntello PSA — El PSA<br>hecho para ti.</h2>
+    <p class="section-sub">Mismo poder funcional. Diseño más simple. Adaptado a LATAM. Construido para escalar desde una PYME hasta una corporación multi-país sin cambiar de plataforma.</p>
+
+    <div class="modules-grid">
+
+      <div class="module-card">
+        <div class="mod-header">
+          <div class="mod-icon blue">🕐</div>
+          <div>
+            <div class="mod-subtitle">Módulo 01</div>
+            <div class="mod-title">Timesheets</div>
+          </div>
+        </div>
+        <ul class="mod-features">
+          <li>Registro de horas por proyecto, tarea y actividad</li>
+          <li>Plantillas de timesheet por departamento o rol</li>
+          <li>Pre-carga del período anterior como base</li>
+          <li>Flujo de aprobación Champion → Gerente</li>
+          <li>Estados: pendiente, aprobado, rechazado</li>
+          <li>Registro desde web y app móvil APK</li>
+          <li>Horas proyectadas vs. horas reales por período</li>
+        </ul>
+        <div class="module-badge">
+          <span class="mbadge mbadge-blue">Aprobaciones</span>
+          <span class="mbadge mbadge-teal">GPS</span>
+          <span class="mbadge mbadge-amber">Períodos</span>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="mod-header">
+          <div class="mod-icon teal">📁</div>
+          <div>
+            <div class="mod-subtitle">Módulo 02</div>
+            <div class="mod-title">Gestión de Proyectos</div>
+          </div>
+        </div>
+        <ul class="mod-features">
+          <li>Proyectos con presupuesto, fechas y localidad (país/ciudad)</li>
+          <li>Asignación de empleados por rol y proyecto</li>
+          <li>Horas proyectadas por empleado por período (Champion)</li>
+          <li>Control de costos: salario + bonos + gastos</li>
+          <li>Seguimiento de horas facturables vs. consumidas</li>
+          <li>Dashboard de rentabilidad por proyecto</li>
+          <li>Resumen de horas pagadas por proyecto</li>
+        </ul>
+        <div class="module-badge">
+          <span class="mbadge mbadge-teal">Multi-país</span>
+          <span class="mbadge mbadge-blue">Presupuesto</span>
+          <span class="mbadge mbadge-amber">Bonos</span>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="mod-header">
+          <div class="mod-icon amber">👥</div>
+          <div>
+            <div class="mod-subtitle">Módulo 03</div>
+            <div class="mod-title">Workforce</div>
+          </div>
+        </div>
+        <ul class="mod-features">
+          <li>Gestión de empleados: roles, salarios, tipo de contrato</li>
+          <li>Ponche / fichaje de entrada y salida (APK + GPS)</li>
+          <li>Registro de ubicación horaria diaria</li>
+          <li>Validación GPS: ¿está el empleado en el lugar correcto?</li>
+          <li>Manejo de turnos y horarios por proyecto/localidad</li>
+          <li>Períodos de nómina configurables</li>
+          <li>Cálculo de horas extras según legislación local</li>
+        </ul>
+        <div class="module-badge">
+          <span class="mbadge mbadge-teal">GPS</span>
+          <span class="mbadge mbadge-purple">Turnos</span>
+          <span class="mbadge mbadge-blue">Nómina</span>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="mod-header">
+          <div class="mod-icon purple">🏖️</div>
+          <div>
+            <div class="mod-subtitle">Módulo 04</div>
+            <div class="mod-title">Ausencias y Vacaciones</div>
+          </div>
+        </div>
+        <ul class="mod-features">
+          <li>Solicitud de vacaciones, permisos y bajas médicas</li>
+          <li>Saldo de días disponibles por empleado</li>
+          <li>Calendarios de festivos por país</li>
+          <li>Aprobación por Champion o Gerente</li>
+          <li>Visibilidad del equipo para planificación</li>
+          <li>Integración con timesheets (días sin horas)</li>
+          <li>Reglas de acumulación configurables</li>
+        </ul>
+        <div class="module-badge">
+          <span class="mbadge mbadge-blue">Multi-país</span>
+          <span class="mbadge mbadge-teal">Aprobaciones</span>
+          <span class="mbadge mbadge-amber">Saldos</span>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="mod-header">
+          <div class="mod-icon navy">💳</div>
+          <div>
+            <div class="mod-subtitle">Módulo 05</div>
+            <div class="mod-title">Facturación y Nómina</div>
+          </div>
+        </div>
+        <ul class="mod-features">
+          <li>Planilla de empleados por proyecto y período</li>
+          <li>Cálculo de salarios, horas y deducciones</li>
+          <li>Bonos por participación en proyectos (% del monto)</li>
+          <li>Salarios administrativos sin bono de proyecto</li>
+          <li>Recibos de pago digitales enviados al APK</li>
+          <li>Integración futura con QuickBooks</li>
+          <li>Exportación para sistemas externos de nómina</li>
+        </ul>
+        <div class="module-badge">
+          <span class="mbadge mbadge-teal">Recibos APK</span>
+          <span class="mbadge mbadge-blue">QB Ready</span>
+          <span class="mbadge mbadge-amber">Bonos</span>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="mod-header">
+          <div class="mod-icon coral">🧾</div>
+          <div>
+            <div class="mod-subtitle">Módulo 06</div>
+            <div class="mod-title">Gastos y Reembolsos</div>
+          </div>
+        </div>
+        <ul class="mod-features">
+          <li>Registro de gastos desde el APK con foto de factura</li>
+          <li>Categorización por proyecto, tipo y período</li>
+          <li>Flujo de aprobación Champion → Gerente</li>
+          <li>OCR para extracción de datos de facturas</li>
+          <li>Vinculación de gastos a presupuesto del proyecto</li>
+          <li>Reportes de gastos por empleado y proyecto</li>
+          <li>Exportación para reembolso en nómina</li>
+        </ul>
+        <div class="module-badge">
+          <span class="mbadge mbadge-teal">OCR</span>
+          <span class="mbadge mbadge-blue">Aprobaciones</span>
+          <span class="mbadge mbadge-purple">Reportes</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- COMPARACIÓN -->
+<section id="comparacion">
+  <div class="section-inner">
+    <div class="section-label">Comparación</div>
+    <h2 class="section-title">Replicon vs. Zyntello PSA</h2>
+    <p class="section-sub">Una comparación honesta de lo que ofrece cada plataforma para empresas de servicios en América Latina.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:32%">Característica</th>
+            <th class="replicon" style="width:34%">Replicon (Deltek)</th>
+            <th class="zyntello" style="width:34%">Zyntello PSA</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="feature-col">Precio por usuario/mes</td>
+            <td><span class="badge-bad">$20 – $49 USD</span></td>
+            <td class="win"><span class="badge-good">Flexible / LATAM</span></td>
+          </tr>
+          <tr>
+            <td class="feature-col">Idioma principal</td>
+            <td class="neutral">Inglés (español limitado)</td>
+            <td class="win good">Español nativo</td>
+          </tr>
+          <tr>
+            <td class="feature-col">Facilidad de adopción</td>
+            <td><span class="badge-bad">Alta curva de aprendizaje</span></td>
+            <td class="win"><span class="badge-good">Intuitivo desde el día 1</span></td>
+          </tr>
+          <tr>
+            <td class="feature-col">App móvil APK nativa</td>
+            <td class="neutral">Básica (solo timesheets)</td>
+            <td class="win good">Completa: GPS, gastos, recibos, ponche</td>
+          </tr>
+          <tr>
+            <td class="feature-col">Tracking GPS horario</td>
+            <td><span class="badge-bad">No nativo / limitado</span></td>
+            <td class="win"><span class="badge-good">Cada hora, diariamente</span></td>
+          </tr>
+          <tr>
+            <td class="feature-col">Workflow Champion</td>
+            <td><span class="badge-bad">No existe</span></td>
+            <td class="win"><span class="badge-good">Nativo por proyecto</span></td>
+          </tr>
+          <tr>
+            <td class="feature-col">Períodos de nómina</td>
+            <td class="neutral">Básico (orientado a EE.UU.)</td>
+            <td class="win good">Configurables para cualquier país</td>
+          </tr>
+          <tr>
+            <td class="feature-col">Horas proyectadas por empleado</td>
+            <td class="neutral">A nivel de proyecto general</td>
+            <td class="win good">Por empleado, por período (Champion)</td>
+          </tr>
+          <tr>
+            <td class="feature-col">Pre-carga período anterior</td>
+            <td><span class="badge-bad">No</span></td>
+            <td class="win"><span class="badge-good">Sí, automático</span></td>
+          </tr>
+          <tr>
+            <td class="feature-col">Bonos por participación en proyecto</td>
+            <td><span class="badge-bad">No nativo</span></td>
+            <td class="win"><span class="badge-good">% del monto del proyecto</span></td>
+          </tr>
+          <tr>
+            <td class="feature-col">Diferenciación admin / operario</td>
+            <td class="neutral">Limitada</td>
+            <td class="win good">Roles con reglas de bono diferenciadas</td>
+          </tr>
+          <tr>
+            <td class="feature-col">Recibos de pago en el APK</td>
+            <td><span class="badge-bad">No</span></td>
+            <td class="win"><span class="badge-good">Sí, push al empleado</span></td>
+          </tr>
+          <tr>
+            <td class="feature-col">Foto de facturas en gastos</td>
+            <td class="neutral">Básico</td>
+            <td class="win good">OCR + foto desde el APK</td>
+          </tr>
+          <tr>
+            <td class="feature-col">Multi-tenant / compania_id</td>
+            <td class="neutral">Sí (enterprise)</td>
+            <td class="win good">Nativo desde v1.0</td>
+          </tr>
+          <tr>
+            <td class="feature-col">Localidades (países y ciudades)</td>
+            <td class="neutral">Básico</td>
+            <td class="win good">Seeder completo LATAM incluido</td>
+          </tr>
+          <tr>
+            <td class="feature-col">Integración QuickBooks</td>
+            <td class="neutral">Sí (complejidad alta)</td>
+            <td class="win good">Roadmap fase 3 (API nativa)</td>
+          </tr>
+          <tr>
+            <td class="feature-col">Implementación</td>
+            <td><span class="badge-bad">3–6 meses + consultores</span></td>
+            <td class="win"><span class="badge-good">Guiada, desde semanas</span></td>
+          </tr>
+          <tr>
+            <td class="feature-col">Soporte en español</td>
+            <td><span class="badge-bad">No (solo Enterprise)</span></td>
+            <td class="win"><span class="badge-good">Sí, desde el inicio</span></td>
+          </tr>
+          <tr>
+            <td class="feature-col">Personalización sin costo extra</td>
+            <td><span class="badge-bad">No — consultoría USD/hora</span></td>
+            <td class="win"><span class="badge-good">Incluida en el servicio</span></td>
+          </tr>
+          <tr>
+            <td class="feature-col">Historial de cambios / memoria del sistema</td>
+            <td class="neutral">Auditoría básica</td>
+            <td class="win good">Log completo de cada actividad</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- DIFERENCIADORES -->
+<section id="diferenciadores">
+  <div class="section-inner">
+    <div class="section-label">Lo que nos hace únicos</div>
+    <h2 class="section-title">5 características que<br>Replicon no tiene.</h2>
+    <p class="section-sub">Estas no son funcionalidades menores. Son el resultado de entender cómo trabajan realmente las empresas de servicios en nuestra región.</p>
+
+    <div class="diff-grid">
+
+      <div class="diff-card blue">
+        <div class="diff-num">01</div>
+        <h3>Workflow Champion nativo</h3>
+        <p>El Champion es el aprobador de proyecto: ve todos los empleados asignados, gestiona horas proyectadas por período y aprueba/rechaza timesheets y gastos. Es el eslabón entre el empleado y la gerencia.</p>
+        <div class="diff-highlights">
+          <div class="diff-hi">Champion asigna horas proyectadas a cada empleado por período</div>
+          <div class="diff-hi">Aprueba, rechaza o pide corrección con comentarios</div>
+          <div class="diff-hi">Pre-carga automática del período anterior como base</div>
+          <div class="diff-hi">Dashboard propio con todo su equipo y proyectos</div>
+        </div>
+      </div>
+
+      <div class="diff-card teal">
+        <div class="diff-num">02</div>
+        <h3>GPS tracking horario real</h3>
+        <p>La app APK registra la ubicación del empleado cada hora durante su jornada laboral. Permite verificar presencia en obra, validar fichajes y tener trazabilidad completa de la fuerza laboral en campo.</p>
+        <div class="diff-highlights">
+          <div class="diff-hi">Registro automático de ubicación cada hora</div>
+          <div class="diff-hi">Geofencing por proyecto o localidad</div>
+          <div class="diff-hi">Historial de ubicaciones consultable</div>
+          <div class="diff-hi">Alertas si el empleado sale del perímetro del proyecto</div>
+        </div>
+      </div>
+
+      <div class="diff-card amber">
+        <div class="diff-num">03</div>
+        <h3>Bonos por participación en proyecto</h3>
+        <p>Sistema automático de cálculo de bonificaciones basado en el presupuesto del proyecto. El porcentaje se distribuye entre los empleados participantes según criterios configurables por la empresa.</p>
+        <div class="diff-highlights">
+          <div class="diff-hi">% configurable del monto del proyecto como bono</div>
+          <div class="diff-hi">Exclusión automática de empleados administrativos</div>
+          <div class="diff-hi">Distribución por horas, rol o criterio fijo</div>
+          <div class="diff-hi">Cálculo integrado en la planilla del período</div>
+        </div>
+      </div>
+
+      <div class="diff-card purple">
+        <div class="diff-num">04</div>
+        <h3>APK completo con recibos digitales</h3>
+        <p>El empleado no solo registra entradas y gastos desde el APK — también recibe sus recibos de pago, ve sus horas aprobadas y rechazadas, y consulta su estado en tiempo real sin necesitar ir a una oficina.</p>
+        <div class="diff-highlights">
+          <div class="diff-hi">Ponche / fichaje con GPS y foto opcional</div>
+          <div class="diff-hi">Registro y foto de facturas para gastos</div>
+          <div class="diff-hi">Recibo de pago digital cada período</div>
+          <div class="diff-hi">Notificaciones push de aprobaciones y rechazos</div>
+        </div>
+      </div>
+
+      <div class="diff-card navy">
+        <div class="diff-num">05</div>
+        <h3>Multi-tenant con compania_id</h3>
+        <p>Desde el día 1, Zyntello PSA está construido con aislamiento total de datos por suscriptor. Cada empresa (tenant) opera en su propio espacio lógico sin posibilidad de cruce de información.</p>
+        <div class="diff-highlights">
+          <div class="diff-hi">compania_id en todas las tablas críticas</div>
+          <div class="diff-hi">Middleware de validación de tenant en cada request</div>
+          <div class="diff-hi">Cada suscriptor gestiona sus propios usuarios y datos</div>
+          <div class="diff-hi">Escalable de 1 empresa a cientos de tenants</div>
+        </div>
+      </div>
+
+      <div class="diff-card teal" style="border-top-color: #f59e0b;">
+        <div class="diff-num">06</div>
+        <h3>QuickBooks Ready (roadmap)</h3>
+        <p>Diseñado desde la arquitectura para integrarse con QuickBooks en la fase 3. Las entidades de nómina, facturación y gastos mapean directamente a las categorías de QuickBooks Online.</p>
+        <div class="diff-highlights">
+          <div class="diff-hi">Exportación de planilla a formato QB</div>
+          <div class="diff-hi">Sync de clientes, proyectos y facturas</div>
+          <div class="diff-hi">API bidireccional para contabilidad en tiempo real</div>
+          <div class="diff-hi">Sin doble entrada de datos</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MÓVIL -->
+<section id="movil">
+  <div class="section-inner">
+    <div class="section-label">App Móvil</div>
+    <h2 class="section-title">Todo en el bolsillo<br>del empleado.</h2>
+    <p class="section-sub">El APK de Zyntello PSA convierte el smartphone de cada empleado en una terminal completa de registro, comunicación y consulta. Sin papel. Sin oficina. Sin excusas.</p>
+
+    <div class="mobile-layout">
+      <div class="mobile-features">
+
+        <div class="mobile-feat">
+          <div class="mf-icon">📍</div>
+          <div class="mf-text">
+            <h4>Ponche inteligente con GPS</h4>
+            <p>Registro de entrada y salida con validación de ubicación. Si el empleado no está en el geofence del proyecto, el sistema lo registra y notifica al Champion.</p>
+          </div>
+        </div>
+
+        <div class="mobile-feat">
+          <div class="mf-icon">📸</div>
+          <div class="mf-text">
+            <h4>Captura de facturas con la cámara</h4>
+            <p>El empleado fotografía su recibo de gasto y lo sube desde el APK. El sistema extrae automáticamente el monto, fecha y proveedor con OCR.</p>
+          </div>
+        </div>
+
+        <div class="mobile-feat">
+          <div class="mf-icon">🗺️</div>
+          <div class="mf-text">
+            <h4>Historial de ubicación horario</h4>
+            <p>Cada hora durante la jornada laboral, el APK registra la coordenada GPS del empleado en segundo plano. El Champion y Gerente pueden consultar el historial.</p>
+          </div>
+        </div>
+
+        <div class="mobile-feat">
+          <div class="mf-icon">🔔</div>
+          <div class="mf-text">
+            <h4>Notificaciones de aprobaciones</h4>
+            <p>Push notifications cuando un timesheet o gasto es aprobado, rechazado o requiere corrección. Sin tener que entrar al sistema para saber el estado.</p>
+          </div>
+        </div>
+
+        <div class="mobile-feat">
+          <div class="mf-icon">📄</div>
+          <div class="mf-text">
+            <h4>Recibo de pago digital</h4>
+            <p>Al cerrar cada período de nómina, el empleado recibe su recibo de pago directamente en el APK con el desglose de salario, horas, deducciones y bonos.</p>
+          </div>
+        </div>
+
+        <div class="mobile-feat">
+          <div class="mf-icon">✅</div>
+          <div class="mf-text">
+            <h4>Vista de horas: aprobadas / rechazadas / pendientes</h4>
+            <p>El empleado ve en tiempo real el estado de sus horas registradas en cada proyecto, con el comentario del Champion si fueron rechazadas.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Phone Mockup -->
+      <div class="phone-mock">
+        <div class="phone-screen">
+          <div class="phone-header">
+            <div class="ph-name">Juan Pérez · Proyecto Alpha</div>
+            <div class="ph-title">Zyntello PSA</div>
+          </div>
+          <div class="phone-body">
+            <div class="ph-map">
+              <div class="dot"></div>
+              <div>
+                <strong>Santo Domingo, DR</strong>
+                <p>En zona del proyecto · Verificado</p>
+              </div>
+            </div>
+            <div class="ph-row">
+              <div class="ph-card">
+                <div class="ph-card-label">Hoy</div>
+                <div class="ph-card-val">7.5h</div>
+                <div class="ph-card-sub">Registradas</div>
+              </div>
+              <div class="ph-card">
+                <div class="ph-card-label">Período</div>
+                <div class="ph-card-val">38h</div>
+                <div class="ph-card-sub">Proyectadas: 40h</div>
+              </div>
+            </div>
+            <div class="ph-row">
+              <div class="ph-btn">Ponchar Salida</div>
+              <div class="ph-btn outline">+ Gasto</div>
+            </div>
+            <div class="ph-card">
+              <div class="ph-card-label">Último recibo</div>
+              <div class="ph-card-val">RD$ 42,500</div>
+              <div class="ph-card-sub">Período 01 Mayo 2026 · Ver PDF</div>
+            </div>
+            <div class="ph-card" style="background:rgba(16,185,129,0.08); border-color:rgba(16,185,129,0.2)">
+              <div class="ph-card-label" style="color:#10b981">Timesheet</div>
+              <div class="ph-card-val" style="font-size:14px; color:#10b981">✓ Aprobado por Champion</div>
+              <div class="ph-card-sub">Sem. 1 Mayo · 40h aprobadas</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKFLOW -->
+<section id="workflow">
+  <div class="section-inner">
+    <div class="section-label">Roles y Permisos</div>
+    <h2 class="section-title">Tres niveles. Un flujo claro.</h2>
+    <p class="section-sub">Cada rol tiene exactamente lo que necesita ver y hacer. Sin menús confusos, sin opciones que no aplican, sin sobrecarga de información.</p>
+
+    <div class="flow-connect">
+      <div class="flow-role">
+        <div class="role-badge op">Operario / Empleado</div>
+        <h3>👷 Mi trabajo</h3>
+        <ul class="flow-perms">
+          <li class="yes">Ver y editar su perfil</li>
+          <li class="yes">Ponchar entrada y salida (GPS)</li>
+          <li class="yes">Registrar horas en timesheet</li>
+          <li class="yes">Subir gastos con foto de factura</li>
+          <li class="yes">Ver estado de horas (aprobadas / rechazadas)</li>
+          <li class="yes">Recibir recibos de pago en APK</li>
+          <li class="yes">Solicitar vacaciones y permisos</li>
+          <li class="no">Ver datos de otros empleados</li>
+          <li class="no">Ver reportes financieros</li>
+          <li class="no">Aprobar horas o gastos</li>
+        </ul>
+      </div>
+
+      <div class="flow-arrow">→<span>Reporta a</span></div>
+
+      <div class="flow-role champion">
+        <div class="role-badge ch">Champion / Aprobador</div>
+        <h3>🏆 Mi equipo</h3>
+        <ul class="flow-perms">
+          <li class="yes">Todo lo del operario</li>
+          <li class="yes">Ver todos sus proyectos asignados</li>
+          <li class="yes">Gestionar empleados de sus proyectos</li>
+          <li class="yes">Asignar horas proyectadas por período</li>
+          <li class="yes">Aprobar / rechazar timesheets</li>
+          <li class="yes">Aprobar / rechazar gastos</li>
+          <li class="yes">Ver horas reales vs. proyectadas</li>
+          <li class="yes">Ver presupuesto de proyecto</li>
+          <li class="no">Ver proyectos de otros Champions</li>
+          <li class="no">Ver reportes de toda la empresa</li>
+        </ul>
+      </div>
+
+      <div class="flow-arrow">→<span>Reporta a</span></div>
+
+      <div class="flow-role gerente">
+        <div class="role-badge ge">Gerente / Admin</div>
+        <h3>📊 Empresa completa</h3>
+        <ul class="flow-perms">
+          <li class="yes">Todo lo anterior</li>
+          <li class="yes">Acceso a todos los proyectos</li>
+          <li class="yes">Reportes financieros globales</li>
+          <li class="yes">Planilla por proyecto y período</li>
+          <li class="yes">Configurar períodos de nómina</li>
+          <li class="yes">Configurar bonos y porcentajes</li>
+          <li class="yes">Aprobar planillas finales</li>
+          <li class="yes">Gestión de Champions</li>
+          <li class="yes">Exportar a QuickBooks / nómina</li>
+          <li class="yes">Configuración del tenant</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="highlight-box" style="margin-top:2rem">
+      <h3>🔄 Flujo de aprobación de un timesheet</h3>
+      <p>Empleado registra horas en APK → Champion recibe notificación → Champion revisa vs. horas proyectadas → Aprueba o rechaza con comentario → Empleado recibe notificación → Gerente consolida en planilla del período → Empleado recibe recibo en APK.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REPORTES CLAVE -->
+<section style="background: var(--gray-50); padding: 80px 2rem;">
+  <div class="section-inner">
+    <div class="section-label">Reportes Clave</div>
+    <h2 class="section-title">La información que importa,<br>cuando la necesitas.</h2>
+    <p class="section-sub">Los reportes iniciales del sistema están diseñados para responder las preguntas que los gerentes hacen todos los días.</p>
+
+    <div class="pain-grid" style="border-left:none">
+
+      <div class="pain-card" style="border-left-color: var(--teal);">
+        <div class="pain-icon">📋</div>
+        <h4>Planilla por proyecto y período</h4>
+        <p>Listado completo de empleados por proyecto con horas trabajadas, salario base, bonos de participación, deducciones y total a pagar en el período.</p>
+      </div>
+
+      <div class="pain-card" style="border-left-color: var(--teal);">
+        <div class="pain-icon">⏱️</div>
+        <h4>Horas por proyecto</h4>
+        <p>Resumen de cuántas horas se pagaron en cada proyecto: total de horas, costo por hora, monto total pagado y porcentaje de avance vs. presupuesto.</p>
+      </div>
+
+      <div class="pain-card" style="border-left-color: var(--teal);">
+        <div class="pain-icon">📈</div>
+        <h4>Proyección vs. real por período</h4>
+        <p>Comparativo de horas proyectadas por Champion vs. horas reales registradas por empleado. Diferencias, alertas de desvío y provisión del dinero según presupuesto.</p>
+      </div>
+
+      <div class="pain-card" style="border-left-color: var(--teal);">
+        <div class="pain-icon">🗺️</div>
+        <h4>Historial GPS de empleados</h4>
+        <p>Reporte de ubicaciones registradas por empleado en el período: hora de registro, coordenada, proyecto asociado y validación de geofencing.</p>
+      </div>
+
+      <div class="pain-card" style="border-left-color: var(--teal);">
+        <div class="pain-icon">💰</div>
+        <h4>Bonos de participación</h4>
+        <p>Cálculo detallado de bonos: monto del proyecto, porcentaje asignado, distribución entre empleados participantes y total de bonificación por persona.</p>
+      </div>
+
+      <div class="pain-card" style="border-left-color: var(--teal);">
+        <div class="pain-icon">🧾</div>
+        <h4>Gastos por proyecto y empleado</h4>
+        <p>Detalle de todos los gastos registrados en el período: empleado, categoría, monto, estado de aprobación y impacto en el presupuesto del proyecto.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MARKETING -->
+<section id="marketing">
+  <div class="section-inner">
+    <div class="section-label">Estrategia de Marketing</div>
+    <h2 class="section-title">Cómo vender Zyntello PSA<br>y ganar el mercado.</h2>
+    <p class="section-sub">Replicon lo hizo difícil para nosotros. Nosotros lo hacemos fácil para el cliente. Esa es la historia que vende.</p>
+
+    <div class="mkt-grid">
+
+      <div class="mkt-card">
+        <div class="mkt-num">Mercado objetivo primario</div>
+        <h3>Empresas de servicios LATAM</h3>
+        <p>El sweet spot: empresas de 20 a 500 empleados en servicios profesionales, construcción, consultoría, IT y gobierno contratista.</p>
+        <ul>
+          <li>Empresas de consultoría y servicios profesionales</li>
+          <li>Constructoras y firmas de ingeniería</li>
+          <li>Empresas de servicios de IT y outsourcing</li>
+          <li>Contratistas de gobierno (OEA, compras públicas)</li>
+          <li>Firmas de servicios financieros y contabilidad</li>
+        </ul>
+      </div>
+
+      <div class="mkt-card">
+        <div class="mkt-num">Posicionamiento central</div>
+        <h3>"El PSA que sí se usa"</h3>
+        <p>El mayor pain point de Replicon no es el precio — es que las empresas lo compran y no lo adoptan. Nuestro diferencial es la adopción real.</p>
+        <ul>
+          <li>Implementación en semanas, no meses</li>
+          <li>Capacitación en español por expertos locales</li>
+          <li>Interfaz que cualquier empleado entiende sin manual</li>
+          <li>Soporte que responde en horas, no días</li>
+          <li>Adaptamos el sistema a tu empresa, no al revés</li>
+        </ul>
+      </div>
+
+      <div class="mkt-card">
+        <div class="mkt-num">Canal digital</div>
+        <h3>Estrategia de contenido SEO</h3>
+        <p>Atacar las búsquedas de dolor de Replicon en español. Las empresas buscan alternativas — nosotros debemos estar ahí.</p>
+        <ul>
+          <li>"Alternativa a Replicon en español"</li>
+          <li>"Software PSA para empresas en República Dominicana"</li>
+          <li>"Control de tiempo y proyectos LATAM"</li>
+          <li>Casos de estudio con ROI claro en USD/DOP</li>
+          <li>YouTube: demos en español vs. Replicon</li>
+        </ul>
+      </div>
+
+      <div class="mkt-card">
+        <div class="mkt-num">Canal directo</div>
+        <h3>Ventas consultivas B2B</h3>
+        <p>El PSA es una decisión de directivos y finanzas. La venta es relacional y consultiva, no transaccional.</p>
+        <ul>
+          <li>Demo personalizada a medida del cliente</li>
+          <li>ROI calculator: cuánto ahorras vs. Replicon</li>
+          <li>Prueba gratuita de 30 días con datos reales</li>
+          <li>Alianzas con firmas de contabilidad y ERP</li>
+          <li>Partner program para implementadores</li>
+        </ul>
+      </div>
+
+      <div class="mkt-card">
+        <div class="mkt-num">Diferenciador emocional</div>
+        <h3>El empleado también gana</h3>
+        <p>En Replicon, el empleado es solo el que llena formularios. En Zyntello PSA, el empleado tiene un asistente en el bolsillo.</p>
+        <ul>
+          <li>Sus recibos de pago llegan al celular</li>
+          <li>Sabe en tiempo real si sus horas fueron aprobadas</li>
+          <li>Registra gastos en segundos con la cámara</li>
+          <li>Poncha desde donde esté, con respaldo GPS</li>
+          <li>Más transparencia = más confianza = menos rotación</li>
+        </ul>
+      </div>
+
+      <div class="mkt-card">
+        <div class="mkt-num">Modelo de ingresos</div>
+        <h3>SaaS + Implementación</h3>
+        <p>Modelo híbrido que maximiza el valor para el cliente y el ingreso recurrente para Zyntello.</p>
+        <ul>
+          <li>SaaS mensual por usuario activo</li>
+          <li>Setup fee de implementación (one-time)</li>
+          <li>Módulos adicionales (QuickBooks, BI avanzado)</li>
+          <li>Soporte premium con SLA garantizado</li>
+          <li>White-label para partners/integradores</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="pricing-banner">
+      <div>
+        <h3>Propuesta de pricing sugerida</h3>
+        <p>Referencial basado en mercado LATAM. Ajustable según cliente, país y volumen. Siempre más económico que Replicon.</p>
+      </div>
+      <div class="pricing-tiers">
+        <div class="pricing-tier">
+          <div class="pt-price">$8</div>
+          <div class="pt-label">Starter / usuario</div>
+        </div>
+        <div class="pricing-tier featured">
+          <div class="pt-price">$15</div>
+          <div class="pt-label">Pro / usuario</div>
+        </div>
+        <div class="pricing-tier">
+          <div class="pt-price">Custom</div>
+          <div class="pt-label">Enterprise</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="key-messages">
+      <h3>Mensajes clave para ventas</h3>
+      <div class="msgs-grid">
+        <div class="msg-item"><p>"Replicon fue diseñado para empresas de 1,000+ personas. Nosotros fuimos diseñados para la tuya."</p></div>
+        <div class="msg-item"><p>"Tu equipo en campo necesita una app, no un manual de 200 páginas."</p></div>
+        <div class="msg-item"><p>"Si tardaste 4 meses en implementar Replicon, te va a sorprender lo que es hacer las cosas bien desde el principio."</p></div>
+        <div class="msg-item"><p>"Conocemos la nómina dominicana, guatemalteca, costarricense. No tienes que explicarnos cómo funciona tu país."</p></div>
+        <div class="msg-item"><p>"Cada peso de tu proyecto, rastreado. Cada hora de tu equipo, justificada. Sin margen para el error."</p></div>
+        <div class="msg-item"><p>"QuickBooks ya está en el roadmap. Tu contabilidad y tu operación hablando el mismo idioma, finalmente."</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack">
+  <div class="section-inner">
+    <div class="section-label">Stack Tecnológico</div>
+    <h2 class="section-title">Construido sobre<br>tecnología probada.</h2>
+    <p class="section-sub">Laravel + SQL Server + APK nativa. Sin plataformas exóticas. Sin riesgo de abandono. Con todo el potencial para escalar a miles de usuarios.</p>
+
+    <div class="stack-grid">
+      <div class="stack-card">
+        <div class="sc-layer">Backend</div>
+        <h4>Laravel 11+</h4>
+        <p>Framework PHP robusto y maduro. Ideal para lógica de negocio compleja, multi-tenant y APIs REST.</p>
+        <div class="stack-tech">
+          <span class="tech-pill">Laravel Sanctum</span>
+          <span class="tech-pill">Eloquent ORM</span>
+          <span class="tech-pill">Jobs/Queues</span>
+          <span class="tech-pill">Notifications</span>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="sc-layer">Base de datos</div>
+        <h4>SQL Server</h4>
+        <p>Motor de base de datos empresarial con soporte para multi-tenant via compania_id y esquemas separados por tenant.</p>
+        <div class="stack-tech">
+          <span class="tech-pill">SQL Server 2019+</span>
+          <span class="tech-pill">Índices optimizados</span>
+          <span class="tech-pill">Row-level security</span>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="sc-layer">Frontend Web</div>
+        <h4>Vue.js / Inertia</h4>
+        <p>Interfaz reactiva y moderna con Inertia.js como puente. Sin complejidad de SPA puro, con toda la potencia.</p>
+        <div class="stack-tech">
+          <span class="tech-pill">Vue 3</span>
+          <span class="tech-pill">Inertia.js</span>
+          <span class="tech-pill">Tailwind CSS</span>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="sc-layer">App Móvil</div>
+        <h4>Flutter (APK Android)</h4>
+        <p>App nativa Android con GPS background, captura de fotos, push notifications y funcionamiento offline básico.</p>
+        <div class="stack-tech">
+          <span class="tech-pill">Flutter 3+</span>
+          <span class="tech-pill">Dart</span>
+          <span class="tech-pill">GPS Background</span>
+          <span class="tech-pill">Firebase Push</span>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="sc-layer">Infraestructura</div>
+        <h4>Cloud o On-Premise</h4>
+        <p>Compatible con servidores propios Windows/Linux o cloud (AWS, Azure, DigitalOcean). El cliente elige.</p>
+        <div class="stack-tech">
+          <span class="tech-pill">Docker</span>
+          <span class="tech-pill">Nginx</span>
+          <span class="tech-pill">Redis</span>
+          <span class="tech-pill">S3 / Storage</span>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="sc-layer">Integraciones</div>
+        <h4>APIs y Conectores</h4>
+        <p>API REST documentada (OpenAPI). Preparado para QuickBooks Online, sistemas de nómina y ERP externos.</p>
+        <div class="stack-tech">
+          <span class="tech-pill">REST API</span>
+          <span class="tech-pill">QuickBooks API</span>
+          <span class="tech-pill">OCR Engine</span>
+          <span class="tech-pill">Webhook</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tenant-box">
+      <h3>🔐 Arquitectura Multi-Tenant con compania_id</h3>
+      <p style="font-size:14px; color:var(--gray-500); margin-bottom:1rem;">Cada suscriptor (tenant) tiene su <code style="background:var(--gray-100);padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-size:12px">compania_id</code> único. Todas las tablas críticas incluyen esta columna y el middleware de Laravel valida el tenant en cada request automáticamente. Un suscriptor nunca puede ver datos de otro.</p>
+      <div class="tenant-diagram">
+        <div class="tenant-card">
+          <div class="tc-id">tenant_001</div>
+          <h4>Constructora ABC</h4>
+          <p>RD — 45 empleados<br>12 proyectos activos</p>
+        </div>
+        <div class="tenant-card">
+          <div class="tc-id">tenant_002</div>
+          <h4>Consultoría XYZ</h4>
+          <p>Guatemala — 28 empleados<br>8 proyectos activos</p>
+        </div>
+        <div class="tenant-card">
+          <div class="tc-id">tenant_003</div>
+          <h4>IT Services Co.</h4>
+          <p>Costa Rica — 67 empleados<br>21 proyectos activos</p>
+        </div>
+      </div>
+      <div class="tenant-note">
+        <strong>Aislamiento total garantizado:</strong> El middleware <code>ValidateTenant</code> inyecta el <code>compania_id</code> en cada query de Eloquent vía Global Scope. Es imposible que una consulta cruce datos entre tenants.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="section-inner">
+    <div class="section-label">Roadmap de Desarrollo</div>
+    <h2 class="section-title">De cero a PSA completo<br>en 4 fases.</h2>
+    <p class="section-sub">Cada fase entrega valor real e inmediato. El cliente puede empezar a usar el sistema desde la fase 1 mientras construimos el resto.</p>
+
+    <div class="roadmap-list">
+
+      <div class="rm-phase">
+        <div class="rm-num p1">1</div>
+        <div class="rm-content">
+          <div class="rm-tag">Fase 1 · Meses 1–3 · Core PSA</div>
+          <h3>Fundaciones: Timesheets, Proyectos y Workforce</h3>
+          <div class="rm-items">
+            <div class="rm-item">Multi-tenant base (compania_id + middleware)</div>
+            <div class="rm-item">Módulo de empleados y roles</div>
+            <div class="rm-item">Gestión de proyectos con presupuesto</div>
+            <div class="rm-item">Timesheets con workflow Champion</div>
+            <div class="rm-item">Horas proyectadas por período</div>
+            <div class="rm-item">Localidades: países y ciudades (seeder)</div>
+            <div class="rm-item">Períodos de nómina configurables</div>
+            <div class="rm-item">Panel web: Gerente, Champion, Operario</div>
+            <div class="rm-item">Auditoría y log de todos los cambios</div>
+            <div class="rm-item">Ausencias y vacaciones básico</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rm-phase">
+        <div class="rm-num p2">2</div>
+        <div class="rm-content">
+          <div class="rm-tag">Fase 2 · Meses 4–6 · App Móvil + GPS</div>
+          <h3>APK: Ponche, GPS, Gastos y Recibos</h3>
+          <div class="rm-items">
+            <div class="rm-item">APK Flutter Android completo</div>
+            <div class="rm-item">Ponche entrada/salida con GPS</div>
+            <div class="rm-item">Registro de ubicación horaria</div>
+            <div class="rm-item">Geofencing por proyecto</div>
+            <div class="rm-item">Módulo de gastos con foto de factura</div>
+            <div class="rm-item">OCR para extracción de datos</div>
+            <div class="rm-item">Push notifications de aprobaciones</div>
+            <div class="rm-item">Recibos de pago digitales en APK</div>
+            <div class="rm-item">Planilla por proyecto y período (reporte)</div>
+            <div class="rm-item">Bonos de participación por proyecto</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rm-phase">
+        <div class="rm-num p3">3</div>
+        <div class="rm-content">
+          <div class="rm-tag">Fase 3 · Meses 7–9 · QuickBooks + Analytics</div>
+          <h3>Integración Contable y Reportes Avanzados</h3>
+          <div class="rm-items">
+            <div class="rm-item">Integración QuickBooks Online (API bidireccional)</div>
+            <div class="rm-item">Sync de clientes, proyectos y facturas</div>
+            <div class="rm-item">Exportación de planilla a formatos externos</div>
+            <div class="rm-item">Dashboard ejecutivo de rentabilidad</div>
+            <div class="rm-item">Reportes de utilización por empleado</div>
+            <div class="rm-item">BI: proyección vs. real con gráficas</div>
+            <div class="rm-item">Compliance laboral por país (DR, GT, CR)</div>
+            <div class="rm-item">iOS APK (iPhone)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rm-phase">
+        <div class="rm-num p4">4</div>
+        <div class="rm-content">
+          <div class="rm-tag">Fase 4 · Meses 10–12 · IA y Escalabilidad</div>
+          <h3>Inteligencia Artificial y PSA Enterprise</h3>
+          <div class="rm-items">
+            <div class="rm-item">IA: sugerencia de horas proyectadas basada en histórico</div>
+            <div class="rm-item">IA: detección de anomalías en timesheets</div>
+            <div class="rm-item">Facturación a clientes (invoicing)</div>
+            <div class="rm-item">CRM básico de gestión de clientes</div>
+            <div class="rm-item">Portal de cliente (ver avance de proyecto)</div>
+            <div class="rm-item">API pública documentada (OpenAPI)</div>
+            <div class="rm-item">Partner / white-label program</div>
+            <div class="rm-item">Multi-idioma (inglés + portugués)</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="section-inner">
+    <div class="section-label" style="color:var(--teal-light); text-align:center">Próximos pasos</div>
+    <h2 class="section-title" style="text-align:center">¿Empezamos a construir<br>el PSA de Zyntello?</h2>
+    <p class="section-sub">Este blueprint es el mapa. La arquitectura, la base de datos, los módulos y el diseño están definidos. Es momento de pasar a la acción.</p>
+    <div class="cta-buttons">
+      <a href="#stack" class="cta-btn primary">Ver arquitectura técnica →</a>
+      <a href="#comparacion" class="cta-btn secondary">Ver comparación completa</a>
+    </div>
+    <p class="cta-note">Zyntello PSA · Diseñado en República Dominicana para el mercado latinoamericano · v1.0 Blueprint 2026</p>
+  </div>
+</section>
+
+<footer>
+  <strong>Zyntello PSA</strong> — Blueprint & Propuesta de Valor · Confidencial · © 2026 Zyntello · Todos los derechos reservados
+</footer>
+
+</body>
+</html>
