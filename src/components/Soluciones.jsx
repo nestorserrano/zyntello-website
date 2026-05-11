@@ -456,16 +456,7 @@ export default function Soluciones() {
       .then(r => r.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
-          // Merge: el API actualiza los módulos que conoce; el fallback cubre los que no vienen del API
-          const apiMap = new Map(data.map(m => [m.slug, combinarModulo(m)]))
-          setApps(prev => {
-            const merged = prev.map(app => apiMap.has(app.id) ? apiMap.get(app.id) : app)
-            // Agregar módulos del API que no estaban en el fallback
-            apiMap.forEach((mod, slug) => {
-              if (!merged.find(a => a.id === slug)) merged.push(mod)
-            })
-            return merged
-          })
+          setApps(data.map(combinarModulo))
           setApiCargada(true)
         }
       })
@@ -498,7 +489,7 @@ export default function Soluciones() {
 
           {/* Hero header */}
           <div className="sol-hero">
-            <p className="sol-hero-eyebrow">Plataforma SaaS · {apps.filter(a => !a.bundle && !ERP_BUNDLE_SLUGS.has(a.id)).length + 1}+ módulos</p>
+            <p className="sol-hero-eyebrow">Plataforma SaaS · {apps.length} módulos</p>
             <h2 className="sol-hero-title">
               Tu empresa,<br />
               <span className="sol-hero-accent">digitalizada.</span>
