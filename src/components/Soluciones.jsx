@@ -147,7 +147,7 @@ function combinarModulo(apiData) {
 
 // Slugs que forman parte del ERP y nunca se muestran como módulos standalone.
 // El API marca estos con bundle:true; esta lista actúa como respaldo si el campo aún no está en BD.
-const ERP_BUNDLE_SLUGS = new Set(['erp', 'caja_chica', 'activos_fijos', 'compras', 'presupuesto']);
+const ERP_BUNDLE_SLUGS = new Set(['erp', 'caja_chica', 'activos_fijos', 'compras', 'presupuesto', 'cxc', 'cxp']);
 
 /* ─── Stars ─────────────────────────────────────────────────────── */
 function Estrellas({ rating }) {
