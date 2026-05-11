@@ -44,10 +44,10 @@ const APP_SUITE = {
   id: 'erp',
   icono: '🏢',
   nombre: 'Zyntello ERP',
-  subtitulo: '9 módulos integrados para gestión empresarial completa',
+  subtitulo: '10 módulos integrados para gestión empresarial completa',
   desarrollador: 'Zyntello',
   categoria: 'ERP',
-  descripcion: 'El ERP empresarial de Zyntello integra en un solo plan todos los módulos que tu empresa necesita: desde inventario y facturación hasta nómina, bancos y activos fijos. Todo conectado, sin duplicidad de datos.',
+  descripcion: 'El ERP empresarial de Zyntello integra en un solo plan todos los módulos que tu empresa necesita: inventario, facturación, compras, nómina, bancos, activos fijos y más. Todo conectado, sin duplicidad de datos.',
   caracteristicas: [
     '📦 Inventario — Stock en tiempo real, múltiples bodegas y valorización',
     '🧾 Facturación — Cotizaciones, pedidos, facturas electrónicas y despachos',
@@ -56,6 +56,8 @@ const APP_SUITE = {
     '👥 Nómina — Empleados, períodos, AFP/SFS/INFOTEP y liquidaciones',
     '🔐 Control de Acceso — Usuarios, roles y permisos por módulo',
     '🏦 Bancos — Cuentas, movimientos, transferencias y conciliación',
+    '🛒 Compras — Requisiciones, órdenes de compra y recepciones',
+    '📊 Presupuesto — Planificación y control presupuestal en tiempo real',
     '🏗️ Activos Fijos — Registro, depreciación y mantenimiento de activos',
     '💵 Caja Chica — Control de fondos, reposiciones y gastos menores',
     'Integración contable automática entre todos los módulos',
@@ -126,12 +128,17 @@ function combinarModulo(apiData) {
     etiqueta,
     etiquetaBadge:  ESTADO_BADGE[estado] || null,
     disponible,
+    bundle:         !!apiData.bundle,
     url:            apiData.url || `https://app.zyntello.com/demo/${apiData.slug}`,
     previews:       display.previews || [],
     categoria:      display.categoria,
     desarrollador:  'Zyntello',
   }
 }
+
+// Slugs que forman parte del ERP y nunca se muestran como módulos standalone.
+// El API marca estos con bundle:true; esta lista actúa como respaldo si el campo aún no está en BD.
+const ERP_BUNDLE_SLUGS = new Set(['erp', 'caja_chica', 'activos_fijos', 'compras', 'presupuesto']);
 
 /* ─── Stars ─────────────────────────────────────────────────────── */
 function Estrellas({ rating }) {
@@ -527,7 +534,7 @@ export default function Soluciones() {
                 <span className="sol-bundle-badge">ERP Completo</span>
               </div>
               <p style={{ color: '#64748b', margin: 0, fontSize: '0.88rem' }}>
-                Inventario · Facturación · Cuentas por Cobrar · Cuentas por Pagar · Nómina · Control de Acceso · Bancos · Activos Fijos · Caja Chica
+                Inventario · Facturación · Cuentas por Cobrar · Cuentas por Pagar · Nómina · Control de Acceso · Bancos · Compras · Presupuesto · Activos Fijos · Caja Chica
               </p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexShrink: 0 }}>
@@ -543,9 +550,9 @@ export default function Soluciones() {
             </div>
           </div>
 
-          {/* Grid de apps */}
+          {/* Grid de apps — se excluyen módulos del bundle ERP y el slug 'erp' */}
           <div className="sol-grid">
-            {apps.map(app => (
+            {apps.filter(app => !app.bundle && !ERP_BUNDLE_SLUGS.has(app.id)).map(app => (
               <div key={app.id} className="sol-card"
                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = `0 20px 52px ${app.color}30`; e.currentTarget.style.borderColor = `${app.color}44` }}
                 onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)' }}
