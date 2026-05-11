@@ -21,6 +21,15 @@ const DISPLAY_ESTATICO = {
   constructflow:{ icono: '🏗️', rating: 4.9, reviews: 47,  etiqueta: 'Disponible', previews: [{ label: 'Obras', icon: '🏗️' }, { label: 'Presupuesto', icon: '💰' }, { label: 'Avance', icon: '📊' }],    categoria: 'Construcción' },
   restaurante:  { icono: '🍽️', rating: 4.7, reviews: 31,  etiqueta: 'Nuevo',      previews: [{ label: 'Mesas', icon: '🪑' }, { label: 'Cocina', icon: '👨‍🍳' }, { label: 'Cierre', icon: '💵' }],         categoria: 'Hostelería' },
   doctores:     { icono: '🩺', rating: 4.8, reviews: 28,  etiqueta: 'Nuevo',      previews: [{ label: 'Agenda', icon: '📅' }, { label: 'Expedientes', icon: '📋' }, { label: 'Recetas', icon: '💊' }],    categoria: 'Salud' },
+  // Módulos ERP (para cuando el API los devuelva como parte del grid)
+  nomina:       { icono: '👥', rating: 4.8, reviews: 118, etiqueta: 'Disponible', previews: [{ label: 'Empleados', icon: '👤' }, { label: 'Nómina', icon: '💰' }, { label: 'Reportes', icon: '📊' }],    categoria: 'RRHH' },
+  activos:      { icono: '🏭', rating: 4.7, reviews: 63,  etiqueta: 'Disponible', previews: [{ label: 'Activos', icon: '🏭' }, { label: 'Depreciación', icon: '📉' }, { label: 'Reportes', icon: '📋' }],   categoria: 'Finanzas' },
+  cajachica:    { icono: '💵', rating: 4.6, reviews: 41,  etiqueta: 'Disponible', previews: [{ label: 'Fondos', icon: '💵' }, { label: 'Reembolsos', icon: '🔄' }, { label: 'Reportes', icon: '📋' }],    categoria: 'Finanzas' },
+  compras:      { icono: '🛒', rating: 4.8, reviews: 57,  etiqueta: 'Disponible', previews: [{ label: 'Órdenes', icon: '📋' }, { label: 'Recepciones', icon: '📦' }, { label: 'Reportes', icon: '📊' }],  categoria: 'Compras' },
+  presupuesto:  { icono: '📊', rating: 4.7, reviews: 34,  etiqueta: 'Disponible', previews: [{ label: 'Presupuesto', icon: '📊' }, { label: 'Ejecución', icon: '✅' }, { label: 'Variaciones', icon: '📈' }], categoria: 'Finanzas' },
+  bancos:       { icono: '🏦', rating: 4.8, reviews: 82,  etiqueta: 'Disponible', previews: [{ label: 'Cuentas', icon: '🏦' }, { label: 'Cheques', icon: '📄' }, { label: 'Conciliación', icon: '⚖️' }],  categoria: 'Finanzas' },
+  cxc:          { icono: '💳', rating: 4.8, reviews: 94,  etiqueta: 'Disponible', previews: [{ label: 'Cobros', icon: '💳' }, { label: 'Cartera', icon: '📊' }, { label: 'Reportes', icon: '📈' }],        categoria: 'Finanzas' },
+  cxp:          { icono: '📑', rating: 4.7, reviews: 76,  etiqueta: 'Disponible', previews: [{ label: 'Pagos', icon: '💸' }, { label: 'Cheques', icon: '📄' }, { label: 'Reportes', icon: '📋' }],         categoria: 'Finanzas' },
 }
 
 const DISPLAY_DEFAULT = { icono: '⚡', rating: 4.5, reviews: 10, etiqueta: null, previews: [], categoria: 'Módulo' }
@@ -447,7 +456,16 @@ export default function Soluciones() {
       .then(r => r.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
-          setApps(data.map(combinarModulo))
+          // Merge: el API actualiza los módulos que conoce; el fallback cubre los que no vienen del API
+          const apiMap = new Map(data.map(m => [m.slug, combinarModulo(m)]))
+          setApps(prev => {
+            const merged = prev.map(app => apiMap.has(app.id) ? apiMap.get(app.id) : app)
+            // Agregar módulos del API que no estaban en el fallback
+            apiMap.forEach((mod, slug) => {
+              if (!merged.find(a => a.id === slug)) merged.push(mod)
+            })
+            return merged
+          })
           setApiCargada(true)
         }
       })
@@ -480,7 +498,7 @@ export default function Soluciones() {
 
           {/* Hero header */}
           <div className="sol-hero">
-            <p className="sol-hero-eyebrow">Plataforma SaaS · {apps.length} módulos</p>
+            <p className="sol-hero-eyebrow">Plataforma SaaS · {apps.filter(a => !a.bundle && !ERP_BUNDLE_SLUGS.has(a.id)).length + 1}+ módulos</p>
             <h2 className="sol-hero-title">
               Tu empresa,<br />
               <span className="sol-hero-accent">digitalizada.</span>
