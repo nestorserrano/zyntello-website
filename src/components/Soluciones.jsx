@@ -19,6 +19,7 @@ const DISPLAY_ESTATICO = {
   contabilidad: { icono: '📒', rating: 4.8, reviews: 74,  etiqueta: 'Nuevo',      previews: [{ label: 'Asientos', icon: '📒' }, { label: 'Balances', icon: '⚖️' }, { label: 'Fiscal', icon: '🏛️' }],    categoria: 'Finanzas' },
   condominios:  { icono: '🏢', rating: 4.9, reviews: 52,  etiqueta: 'Destacado',  previews: [{ label: 'Propietarios', icon: '🏘️' }, { label: 'Cuotas', icon: '💳' }, { label: 'Reportes', icon: '📊' }], categoria: 'Servicios' },
   constructflow:{ icono: '🏗️', rating: 4.9, reviews: 47,  etiqueta: 'Disponible', previews: [{ label: 'Obras', icon: '🏗️' }, { label: 'Presupuesto', icon: '💰' }, { label: 'Avance', icon: '📊' }],    categoria: 'Construcción' },
+  events:       { icono: '🎟️', rating: 4.9, reviews: 39,  etiqueta: 'Lanzamiento', previews: [{ label: 'QR', icon: '📱' }, { label: 'Ponentes', icon: '🎤' }, { label: 'Dashboard', icon: '📊' }],      categoria: 'Eventos' },
   restaurante:  { icono: '🍽️', rating: 4.7, reviews: 31,  etiqueta: 'Nuevo',      previews: [{ label: 'Mesas', icon: '🪑' }, { label: 'Cocina', icon: '👨‍🍳' }, { label: 'Cierre', icon: '💵' }],         categoria: 'Hostelería' },
   doctores:     { icono: '🩺', rating: 4.8, reviews: 28,  etiqueta: 'Nuevo',      previews: [{ label: 'Agenda', icon: '📅' }, { label: 'Expedientes', icon: '📋' }, { label: 'Recetas', icon: '💊' }],    categoria: 'Salud' },
   // Módulos ERP (para cuando el API los devuelva como parte del grid)
@@ -30,6 +31,7 @@ const DISPLAY_ESTATICO = {
   bancos:       { icono: '🏦', rating: 4.8, reviews: 82,  etiqueta: 'Disponible', previews: [{ label: 'Cuentas', icon: '🏦' }, { label: 'Cheques', icon: '📄' }, { label: 'Conciliación', icon: '⚖️' }],  categoria: 'Finanzas' },
   cxc:          { icono: '💳', rating: 4.8, reviews: 94,  etiqueta: 'Disponible', previews: [{ label: 'Cobros', icon: '💳' }, { label: 'Cartera', icon: '📊' }, { label: 'Reportes', icon: '📈' }],        categoria: 'Finanzas' },
   cxp:          { icono: '📑', rating: 4.7, reviews: 76,  etiqueta: 'Disponible', previews: [{ label: 'Pagos', icon: '💸' }, { label: 'Cheques', icon: '📄' }, { label: 'Reportes', icon: '📋' }],         categoria: 'Finanzas' },
+  psa:          { icono: '⏱️', rating: 4.9, reviews: 53,  etiqueta: 'Disponible', previews: [{ label: 'Timesheets', icon: '🕒' }, { label: 'GPS', icon: '📍' }, { label: 'Planilla', icon: '📄' }],       categoria: 'Servicios' },
 }
 
 const DISPLAY_DEFAULT = { icono: '⚡', rating: 4.5, reviews: 10, etiqueta: null, previews: [], categoria: 'Módulo' }
@@ -45,6 +47,7 @@ const APPS_FALLBACK = [
   { id: 'contabilidad', nombre: 'Contabilidad',   subtitulo: 'Gestión Contable y Financiera',         descripcion: 'Lleva la contabilidad de tu empresa con plan de cuentas, asientos diarios, estados financieros y cumplimiento fiscal.', precio: 32,  precioAnual: 26, color: '#14b8a6', gradiente: 'linear-gradient(135deg, #134e4a 0%, #0f766e 60%, #2dd4bf 100%)', ahorroAnual: '2 MESES GRATIS', url: 'https://app.zyntello.com/demo/contabilidad',  caracteristicas: ['Plan de cuentas personalizable', 'Asientos contables y libro diario', 'Balance general y estado de resultados', 'Reportes fiscales por país (RD, CO, MX, VE)', 'Conciliación bancaria automatizada'] },
   { id: 'condominios',  nombre: 'Condominios',    subtitulo: 'Gestión de Condominios y Residencias',  descripcion: 'Administra residenciales, edificios y condominios con control de cuotas, propietarios, mantenimiento y comunicación.', precio: 35,  precioAnual: 28, color: '#f97316', gradiente: 'linear-gradient(135deg, #7c2d12 0%, #ea580c 60%, #fb923c 100%)', ahorroAnual: '2 MESES GRATIS', url: 'https://app.zyntello.com/demo/condominios',  caracteristicas: ['Registro de propietarios e inquilinos', 'Cobro y control de cuotas de mantenimiento', 'Reserva y gestión de áreas comunes', 'Órdenes de trabajo y mantenimiento', 'Comunicados y avisos a residentes'] },
   { id: 'constructflow',nombre: 'ConstructFlow',  subtitulo: 'Gestión de Obras y Construcción',       descripcion: 'Planifica y ejecuta proyectos de construcción con control de presupuesto, avance de obra, materiales y subcontratistas.', precio: 49,  precioAnual: 39, color: '#d97706', gradiente: 'linear-gradient(135deg, #78350f 0%, #b45309 60%, #d97706 100%)', ahorroAnual: '2 MESES GRATIS', url: 'https://app.zyntello.com/demo/constructflow', caracteristicas: ['Gestión de proyectos y frentes de obra', 'Control presupuestario y costos reales', 'Inventario de materiales y equipos', 'Cronograma y avance por etapas', 'Informes de progreso para clientes'] },
+  { id: 'events',       nombre: 'Zyntello Events',subtitulo: 'Registro de Eventos con QR y Ponentes', descripcion: 'Gestiona eventos con registro por QR, participantes por día, control de ponentes y dashboard en vivo para seguimiento en tiempo real.', precio: 50,  precioAnual: 42, color: '#ec4899', gradiente: 'linear-gradient(135deg, #831843 0%, #db2777 60%, #f472b6 100%)', ahorroAnual: '2 MESES GRATIS', url: 'https://app.zyntello.com/demo/events',  caracteristicas: ['Registro público por QR token', 'Check-in diario por participante', 'Dashboard live para ponentes', 'Gestión de agenda y días del evento', 'Reportes de inscritos en tiempo real'] },
   { id: 'restaurante',  nombre: 'Restaurante',    subtitulo: 'Sistema POS para Restaurantes',         descripcion: 'Sistema completo para restaurantes, cafeterías y bares. Mesas, comandas, cocina, delivery, inventario y cierre de caja.', precio: 29,  precioAnual: 23, color: '#e11d48', gradiente: 'linear-gradient(135deg, #881337 0%, #be123c 60%, #fb7185 100%)', ahorroAnual: '2 MESES GRATIS', url: 'https://app.zyntello.com/demo/restaurante',   caracteristicas: ['Gestión de mesas y comandas en tiempo real', 'Pantalla de cocina (KDS)', 'Control de inventario y recetas', 'Delivery y take-away integrado', 'Reportes de ventas y cierre de caja'] },
   { id: 'doctores',     nombre: 'Doctores',       subtitulo: 'Gestión de Consultorios y Clínicas',    descripcion: 'Agenda citas, gestiona expedientes clínicos, recetas, historial del paciente y factura consultas con seguridad y privacidad.', precio: 29,  precioAnual: 23, color: '#06b6d4', gradiente: 'linear-gradient(135deg, #164e63 0%, #0891b2 60%, #22d3ee 100%)', ahorroAnual: '2 MESES GRATIS', url: 'https://app.zyntello.com/demo/doctores',      caracteristicas: ['Agenda de citas y recordatorios automáticos', 'Expediente clínico electrónico', 'Recetas y órdenes de laboratorio', 'Control de historias clínicas', 'Facturación de consultas y seguros'] },
 ]
@@ -138,7 +141,11 @@ function combinarModulo(apiData) {
     etiquetaBadge:  ESTADO_BADGE[estado] || null,
     disponible,
     bundle:         !!apiData.bundle,
-    url:            apiData.url || `https://app.zyntello.com/demo/${apiData.slug}`,
+    url:            apiData.slug === 'psa'
+      ? '/zyntello-psa.html'
+      : apiData.slug === 'events'
+        ? 'https://app.zyntello.com/demo/events'
+        : (apiData.url || `https://app.zyntello.com/demo/${apiData.slug}`),
     previews:       display.previews || [],
     categoria:      display.categoria,
     desarrollador:  'Zyntello',
