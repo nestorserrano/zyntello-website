@@ -7,6 +7,8 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <!-- Permisos de cámara para WebView / navegador -->
+  <meta http-equiv="Permissions-Policy" content="camera=*, microphone=()">
   <title>Zyntello Eventos</title>
   <script src="https://unpkg.com/alpinejs@3.14.1/dist/cdn.min.js" defer></script>
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
@@ -874,7 +876,12 @@ function app() {
         this.scannerMsg = 'Apunta el QR al recuadro.';
       } catch (e) {
         this.scannerActive = false;
-        alert('No se pudo acceder a la cámara. Verifica los permisos de la app.');
+        const msg = (e?.message ?? '').toLowerCase();
+        if (msg.includes('permission') || msg.includes('denied') || msg.includes('notallowed')) {
+          alert('Sin permiso de cámara.\n\nPara habilitarlo:\n1. Ve a Ajustes del teléfono\n2. Aplicaciones → Zyntello Eventos\n3. Permisos → Cámara → Permitir');
+        } else {
+          alert('No se pudo acceder a la cámara. Verifica que no esté en uso por otra app y que los permisos estén activos.');
+        }
       }
     },
 
