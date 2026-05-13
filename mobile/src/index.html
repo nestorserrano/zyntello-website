@@ -93,6 +93,7 @@
 
     /* ── Tab active dot ── */
     .tab-dot { width: 3px; height: 3px; border-radius: 50%; background: #10b981; margin: 0 auto; }
+    .brand-logo { object-fit: contain; display: block; }
   </style>
 </head>
 <body>
@@ -119,10 +120,8 @@
     <div class="fade-in" style="width:100%;max-width:380px;">
       <!-- Logo -->
       <div style="text-align:center;margin-bottom:36px;">
-        <div style="width:64px;height:64px;background:#10b981;border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
+        <div style="width:72px;height:72px;background:#0b1220;border:1px solid #334155;border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;padding:10px;">
+          <img src="/logos/zyntello_isotipo.png" alt="Zyntello" class="brand-logo" style="width:100%;height:100%;">
         </div>
         <p style="font-size:24px;font-weight:800;color:#e2e8f0;">Zyntello</p>
         <p style="font-size:13px;color:#64748b;margin-top:3px;">Gestión de Eventos</p>
@@ -133,16 +132,20 @@
         <div class="card-p" style="padding:24px;">
           <div style="margin-bottom:16px;">
             <span class="label">Correo electrónico</span>
-            <input x-model="loginEmail" type="email" class="input" placeholder="usuario@empresa.com"
-                   autocomplete="email" inputmode="email">
+                 <input :value="loginEmail" @input="loginEmail = $event.target.value"
+                   @keydown.stop @focus="loginError = null"
+                   type="email" class="input" placeholder="usuario@empresa.com"
+                   autocomplete="email" autocorrect="off" autocapitalize="none" spellcheck="false" inputmode="email">
           </div>
           <div style="margin-bottom:20px;">
             <span class="label">Contraseña</span>
             <div style="position:relative;">
-              <input x-model="loginPassword" :type="showPass ? 'text' : 'password'" class="input"
+              <input :value="loginPassword" @input="loginPassword = $event.target.value"
+                @keydown.stop @focus="loginError = null"
+                :type="showPass ? 'text' : 'password'" class="input"
                      placeholder="••••••••" autocomplete="current-password"
                      style="padding-right:44px;" @keydown.enter="doLogin()">
-              <button @click="showPass = !showPass"
+              <button type="button" @click="showPass = !showPass"
                 style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#64748b;cursor:pointer;padding:4px;">
                 <svg x-show="!showPass" width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -182,10 +185,8 @@
       </button>
       <!-- Logo (only on events list) -->
       <div x-show="screen === 'events'"
-           style="width:34px;height:34px;background:#10b981;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-        <svg width="16" height="16" fill="none" stroke="#fff" viewBox="0 0 24 24" stroke-width="2.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
+           style="width:34px;height:34px;background:#0b1220;border:1px solid #334155;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:5px;">
+        <img src="/logos/zyntello_isotipo.png" alt="Zyntello" class="brand-logo" style="width:100%;height:100%;">
       </div>
 
       <div style="flex:1;min-width:0;">
