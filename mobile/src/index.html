@@ -746,18 +746,30 @@ function app() {
             device_name: 'android-app',
           }),
         });
-        const data = await res.json();
+
+        const raw = await res.text();
+        let data = null;
+        try { data = raw ? JSON.parse(raw) : null; } catch (_) { data = null; }
+
         if (!res.ok) {
-          this.loginError = data.message ?? (data.errors?.email?.[0]) ?? 'Credenciales inválidas.';
+          this.loginError = data?.message
+            ?? data?.errors?.email?.[0]
+            ?? `No se pudo iniciar sesión (HTTP ${res.status}).`;
           return;
         }
+
+        if (!data || !data.token) {
+          this.loginError = 'La API devolvió una respuesta inválida. Verifica deploy/CORS en servidor.';
+          return;
+        }
+
         this.token = data.token;
         this.user  = data.user;
         localStorage.setItem('zyn_admin_token', this.token);
         localStorage.setItem('zyn_admin_user',  JSON.stringify(this.user));
         await this.loadEvents();
       } catch (e) {
-        this.loginError = 'Error de conexión. Verifica tu red e intenta de nuevo.';
+        this.loginError = 'Error de conexión. Verifica internet y CORS (https://localhost) en backend.';
       } finally {
         this.loginLoading = false;
       }
