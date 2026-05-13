@@ -28,7 +28,7 @@
     .header   { flex-shrink: 0; background: #1e293b; border-bottom: 1px solid rgba(51,65,85,.6);
                 padding: 10px 16px; padding-top: calc(10px + env(safe-area-inset-top, 0px)); }
     .content  { flex: 1; overflow-y: auto; overscroll-behavior: contain;
-                -webkit-overflow-scrolling: touch; padding: 16px; padding-bottom: 80px; }
+                -webkit-overflow-scrolling: touch; padding: 16px; padding-bottom: 100px; }
     .tab-bar  { position: fixed; bottom: 0; left: 0; right: 0; background: #1e293b;
                 border-top: 1px solid rgba(51,65,85,.6);
                 padding-bottom: env(safe-area-inset-bottom, 8px); z-index: 50; }
@@ -94,7 +94,16 @@
     .content::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
 
     /* ── Tab active dot ── */
-    .tab-dot { width: 3px; height: 3px; border-radius: 50%; background: #10b981; margin: 0 auto; }
+    .tab-dot { display: none; }
+    .tab-btn { position: relative; }
+    .tab-btn.active::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 16px; right: 16px;
+      height: 2px;
+      background: #10b981;
+      border-radius: 0 0 2px 2px;
+    }
     .brand-logo { object-fit: contain; display: block; }
   </style>
 </head>
@@ -320,6 +329,17 @@
 
       <!-- Acciones rápidas -->
       <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+        <button class="btn" x-show="currentEvent?.qr_token"
+            @click="openQrModal()"
+            style="background:rgba(99,102,241,.15);color:#a5b4fc;border:1px solid rgba(99,102,241,.3);">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 14h2m0 0h3m-3 0v3m0 0v2"/>
+          </svg>
+          Mostrar QR del evento
+        </button>
         <button class="btn btn-primary" @click="goCheckin()">
           <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -625,38 +645,68 @@
   <div x-show="['events','event','checkin','participants'].includes(screen)" class="tab-bar">
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;">
       <button @click="screen = 'events'"
-          style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px 8px;background:none;border:none;cursor:pointer;transition:color .15s;"
+          class="tab-btn" :class="screen === 'events' ? 'active' : ''"
+          style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:14px 8px 12px;background:none;border:none;cursor:pointer;transition:color .15s;"
           :style="screen === 'events' ? 'color:#10b981' : 'color:#475569'">
-        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
         </svg>
-        <span style="font-size:11px;font-weight:500;">Eventos</span>
-        <div x-show="screen === 'events'" class="tab-dot"></div>
+        <span style="font-size:12px;font-weight:600;">Eventos</span>
       </button>
       <button @click="screen === 'events' ? null : goCheckin()"
           :disabled="!currentEvent"
-          style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px 8px;background:none;border:none;cursor:pointer;transition:color .15s;"
+          class="tab-btn" :class="screen === 'checkin' ? 'active' : ''"
+          style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:14px 8px 12px;background:none;border:none;cursor:pointer;transition:color .15s;"
           :style="screen === 'checkin' ? 'color:#10b981' : (currentEvent ? 'color:#475569' : 'color:#334155')">
-        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
-        <span style="font-size:11px;font-weight:500;">Check-in</span>
-        <div x-show="screen === 'checkin'" class="tab-dot"></div>
+        <span style="font-size:12px;font-weight:600;">Check-in</span>
       </button>
       <button @click="screen === 'events' ? null : goParticipants()"
           :disabled="!currentEvent"
-          style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px 8px;background:none;border:none;cursor:pointer;transition:color .15s;"
+          class="tab-btn" :class="screen === 'participants' ? 'active' : ''"
+          style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:14px 8px 12px;background:none;border:none;cursor:pointer;transition:color .15s;"
           :style="screen === 'participants' ? 'color:#10b981' : (currentEvent ? 'color:#475569' : 'color:#334155')">
-        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
         </svg>
-        <span style="font-size:11px;font-weight:500;">Participantes</span>
-        <div x-show="screen === 'participants'" class="tab-dot"></div>
+        <span style="font-size:12px;font-weight:600;">Participantes</span>
       </button>
     </div>
   </div>
 
 </div>
+
+  <!-- ═══════════════════════════════════════════ QR MODAL ═══ -->
+  <div x-show="showQrModal"
+       style="position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;"
+       @click.self="closeQrModal()">
+    <div class="fade-in" style="width:100%;max-width:320px;text-align:center;">
+      <div style="width:56px;height:56px;background:rgba(99,102,241,.2);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+        <svg width="26" height="26" fill="none" stroke="#a5b4fc" viewBox="0 0 24 24" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7" rx="1"/>
+          <rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14 14h2m0 0h3m-3 0v3m0 0v2"/>
+        </svg>
+      </div>
+      <p style="font-size:18px;font-weight:800;color:#e2e8f0;margin-bottom:4px;" x-text="currentEvent?.name"></p>
+      <p style="font-size:12px;color:#64748b;margin-bottom:20px;">Código QR para registro</p>
+      <div style="background:#fff;border-radius:20px;padding:14px;">
+        <img :src="eventQrUrl" alt="QR Evento" style="width:100%;border-radius:10px;display:block;"
+             @error="$el.src='https://quickchart.io/qr?size=500&text=error'">
+      </div>
+      <p style="font-size:11px;color:#475569;margin-top:14px;">Escanea para registrarte al evento</p>
+      <button @click="closeQrModal()" class="btn btn-ghost"
+              style="margin-top:20px;max-width:200px;">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+        Cerrar
+      </button>
+    </div>
+  </div>
 
 <!-- ═══════════════════════════════════════════════════ SCRIPT ═══ -->
 <script>
@@ -689,6 +739,14 @@ function app() {
     checkinParticipant: null,
     doingCheckin: false,
     checkinResult: null, checkinMessage: '',
+
+    // ── QR Modal ──
+    showQrModal: false,
+    get eventQrUrl() {
+      if (!this.currentEvent?.qr_token) return '';
+      const url = 'https://app.zyntello.com/events/r/' + encodeURIComponent(this.currentEvent.qr_token);
+      return 'https://quickchart.io/qr?size=600&text=' + encodeURIComponent(url);
+    },
 
     // ── Participants ──
     participants: [], participantSearch: '',
@@ -830,6 +888,9 @@ function app() {
       if (this.scannerActive) { this.stopScanner(); }
       this.screen = prev[this.screen] ?? 'events';
     },
+
+    openQrModal() { this.showQrModal = true; },
+    closeQrModal() { this.showQrModal = false; },
 
     // ─────────────────────────────────────────────────────────────
     // CHECK-IN
