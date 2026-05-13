@@ -132,8 +132,8 @@
         <div class="card-p" style="padding:24px;">
           <div style="margin-bottom:16px;">
             <span class="label">Correo electrónico</span>
-                 <input :value="loginEmail" @input="loginEmail = $event.target.value"
-                   @keydown.stop @focus="loginError = null"
+                     <input :value="loginEmail" @input="loginEmail = $event.target.value"
+                       @focus="loginError = null"
                    type="email" class="input" placeholder="usuario@empresa.com"
                    autocomplete="email" autocorrect="off" autocapitalize="none" spellcheck="false" inputmode="email">
           </div>
@@ -141,10 +141,10 @@
             <span class="label">Contraseña</span>
             <div style="position:relative;">
               <input :value="loginPassword" @input="loginPassword = $event.target.value"
-                @keydown.stop @focus="loginError = null"
+                @focus="loginError = null"
                 :type="showPass ? 'text' : 'password'" class="input"
                      placeholder="••••••••" autocomplete="current-password"
-                     style="padding-right:44px;" @keydown.enter="doLogin()">
+                style="padding-right:44px;" @keyup.enter="doLogin()">
               <button type="button" @click="showPass = !showPass"
                 style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#64748b;cursor:pointer;padding:4px;">
                 <svg x-show="!showPass" width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
