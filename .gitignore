@@ -28,5 +28,11 @@ admin/
 app/*
 !app/.htaccess
 
+# Artefactos PHP y mobile que no pertenecen al repo del sitio web
+vendor/
+composer.lock
+mobile/
+releases/
+
 # Carpeta de memoria de Claude (solo local)
 .claude/

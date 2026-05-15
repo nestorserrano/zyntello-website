@@ -7,8 +7,27 @@
 > Operación regional: RD, Venezuela, Colombia, Guatemala, Costa Rica, Soporte Remoto
 
 > **Para detalles de arquitectura interna de la app SaaS, ver `app/zyntello-app/CLAUDE.md`.**
-> **Memorias del proyecto:** `C:\Users\Sistemas\.claude\projects\c--wamp64-www-zyntello\memory\MEMORY.md`
+> **Memorias del proyecto:** `/memories/repo/zyntello-app-reglas-codigos.md` y otros archivos en `/memories/repo/`
 > **Planes activos:** `C:\Users\Sistemas\.claude\plans\` (cada plan describe un sprint o refactor en curso)
+
+---
+
+## 🔑 INSTRUCCIÓN PARA INICIAR SESIÓN
+
+> **SIEMPRE hacer esto al comenzar cualquier sesión de trabajo en Zyntello:**
+>
+> 1. Leer `/memories/zyntello-convenciones.md` — Reglas mandatorias del ecosistema
+> 2. Leer `/memories/repo/zyntello-app-reglas-codigos.md` — Estado actual del código y reglas
+> 3. Leer sección "Bitácora técnica reciente" en `app/zyntello-app/CLAUDE.md`
+> 4. Verificar push pendiente: `git log --oneline -3` y `git status` en el repo activo
+>
+> **Regla de validación — NUNCA omitir:**
+> En TODO controlador de zyntello-app, al inicio de cualquier acción:
+> ```php
+> $empresa = empresa_activa();
+> $company = company();
+> abort_unless($empresa && $company, 403);
+> ```
 
 ---
 
@@ -108,6 +127,8 @@ c:/wamp64/www/zyntello/         ← Esta carpeta (repo: zyntello-website)
 | `pg_*` | Presupuesto (bundle ERP) |
 | `pur_*` | Compras (bundle ERP) |
 | `loc_*` | Localización multi-país |
+| `evt_*` | Events (gestión de eventos, QR, check-in) |
+| `psa_*` | PSA (Professional Services Automation — timesheets, planilla, ponches) |
 
 > Histórico: hasta el commit `[#408]` existían 5 BDs separadas (`zyntello_constructflow`, `zyntello_nomina`, `zyntello_contabilidad`, `zyntello_inventario`, `zyntello_facturacion`). Fueron consolidadas en `zyntello_app`. No volver a crearlas.
 
@@ -140,10 +161,18 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 ### Bitácora reciente (estado actual)
 
 - Commit `[#411]`: rediseño completo de dashboard ERP (`erp/resumen`) para 12 módulos.
-- Commit `[#412]`: fix de ruta `inventario.maestros.articulos.index` y limpieza de contenido duplicado en vista.
-- Commit `[#413]`: fix relación `moneda()` faltante en `CuentaPorCobrar`.
-- Commit `[#414]`: fix `montoPendiente()` en `CuentaPorCobrar`, `SoftDeletes` en `Company`, y migración de `ban_cuentas.entidad_bancaria_id`.
-- Mantenimiento sin SSH reforzado: endpoint `/zyn-maint/migrate-status` y logs de migraciones en deploy cPanel.
+- Commits `[#490–#500]`: módulo Events completo — CRUD, QR, check-in scanner, dashboard live, sala fullscreen, reportes, dark theme, hardening middleware.
+- Commits `[#574–#578]`: Events APK dark theme, logo APK más grande, reportes dark theme.
+- Commit `[#579]`: **Fix crítico APK** — QR modal fuera del scope Alpine.js en `mobile/src/index.html`. Corregido moviéndolo dentro del `<div x-data="app()">`.
+- Commit `[#580]`: **Fix PSA 500 producción** — helper seguro `psa_empleado_activo()` en `app/helpers.php`.
+- Commits `[#581–#588]`: Sistema de usuarios internos — CRUD panel, Gates granulares por módulo, `EnsureModuleAccess` para internos, PSA timecheck gerencial.
+- Commit `[#589]`: **PSA Sprint 2** — tabla `psa_festivos`, modelo `PsaFestivo`, CRUD festivos completo (10 países), vistas CRUD, `PsaConfigController::update()`, config/index con formulario completo, `PsaHolidaysSeeder` para DO/GT/CR/CO/MX/VE.
+- Commit `[#590]`: **Fix 4 bugs usuarios internos** — sidebar oculta Empresas/Plan/Config para internos, botón "Crear empresa" protegido, tabla responsive, switch Alpine.js con color verde/gris, permisos rediseñados con toggle-button chips.
+- Commit `[#591]`: **Fix `permissions.blade.php`** — archivo estaba cortado (sin `</div>`, `@endsection`, JS). Completado con funciones `syncToggle/toggleFila/seleccionarTodosGlobal` y `$menuOpciones` descriptivas para 13 módulos. ✅ **Push completado** (origin/master = `fac879e4`).
+- Commit `[#592]`: Auditoría completa — migration sentinels, asteriscos JS campos requeridos, `PasswordInput` Blade, `TenantUserCredentialsMail`, `DocumentAuditObserver` (31 modelos), `HasUuids` en `ActivityLog`.
+- Commit `[#593]` `be4d4c49`: Permisos granulares — árbol 13 módulos, `tn_permissions`, `tn_permission_grants`, `permissions.blade.php` reescrito, bitácora owner, fix switch Alpine.js, full-width containers.
+- Commit `[#594]` `73ccd695`: Fix deploy Bluehost — guards idempotentes en 8 migraciones + sentinelas `MaintenanceController`.
+- Commit `[#595]` `91e40100`: **Fix ERR_TOO_MANY_REDIRECTS** — exception handler no redirige a `/dashboard` si ya estamos en dashboard (usa `route('home')` como fallback); try/catch en view composer topbar y sidebar `ApprovalRequest`.
 
 ### Mini guía operativa post-deploy (sin SSH)
 
