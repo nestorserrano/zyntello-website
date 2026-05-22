@@ -129,6 +129,7 @@ c:/wamp64/www/zyntello/         ← Esta carpeta (repo: zyntello-website)
 | `loc_*` | Localización multi-país |
 | `evt_*` | Events (gestión de eventos, QR, check-in) |
 | `psa_*` | PSA (Professional Services Automation — timesheets, planilla, ponches) |
+| `crm_*` | CRM (pipeline leads, contactos, reportes) |
 
 > Histórico: hasta el commit `[#408]` existían 5 BDs separadas (`zyntello_constructflow`, `zyntello_nomina`, `zyntello_contabilidad`, `zyntello_inventario`, `zyntello_facturacion`). Fueron consolidadas en `zyntello_app`. No volver a crearlas.
 
@@ -158,21 +159,72 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 4. cPanel → MySQL → crear `ukrmeumy_zyntello` y `ukrmeumy_zyntello_admin` (no más)
 5. Sin SSH: usar ruta `/zyn-maint/migrate-y-limpiar?key=XXX` y validar con `/zyn-maint/migrate-status?key=XXX`
 
-### Bitácora reciente (estado actual)
+### Bitácora reciente (estado actual — 2026-05-22)
 
-- Commit `[#411]`: rediseño completo de dashboard ERP (`erp/resumen`) para 12 módulos.
-- Commits `[#490–#500]`: módulo Events completo — CRUD, QR, check-in scanner, dashboard live, sala fullscreen, reportes, dark theme, hardening middleware.
-- Commits `[#574–#578]`: Events APK dark theme, logo APK más grande, reportes dark theme.
-- Commit `[#579]`: **Fix crítico APK** — QR modal fuera del scope Alpine.js en `mobile/src/index.html`. Corregido moviéndolo dentro del `<div x-data="app()">`.
-- Commit `[#580]`: **Fix PSA 500 producción** — helper seguro `psa_empleado_activo()` en `app/helpers.php`.
-- Commits `[#581–#588]`: Sistema de usuarios internos — CRUD panel, Gates granulares por módulo, `EnsureModuleAccess` para internos, PSA timecheck gerencial.
-- Commit `[#589]`: **PSA Sprint 2** — tabla `psa_festivos`, modelo `PsaFestivo`, CRUD festivos completo (10 países), vistas CRUD, `PsaConfigController::update()`, config/index con formulario completo, `PsaHolidaysSeeder` para DO/GT/CR/CO/MX/VE.
-- Commit `[#590]`: **Fix 4 bugs usuarios internos** — sidebar oculta Empresas/Plan/Config para internos, botón "Crear empresa" protegido, tabla responsive, switch Alpine.js con color verde/gris, permisos rediseñados con toggle-button chips.
-- Commit `[#591]`: **Fix `permissions.blade.php`** — archivo estaba cortado (sin `</div>`, `@endsection`, JS). Completado con funciones `syncToggle/toggleFila/seleccionarTodosGlobal` y `$menuOpciones` descriptivas para 13 módulos. ✅ **Push completado** (origin/master = `fac879e4`).
-- Commit `[#592]`: Auditoría completa — migration sentinels, asteriscos JS campos requeridos, `PasswordInput` Blade, `TenantUserCredentialsMail`, `DocumentAuditObserver` (31 modelos), `HasUuids` en `ActivityLog`.
-- Commit `[#593]` `be4d4c49`: Permisos granulares — árbol 13 módulos, `tn_permissions`, `tn_permission_grants`, `permissions.blade.php` reescrito, bitácora owner, fix switch Alpine.js, full-width containers.
-- Commit `[#594]` `73ccd695`: Fix deploy Bluehost — guards idempotentes en 8 migraciones + sentinelas `MaintenanceController`.
-- Commit `[#595]` `91e40100`: **Fix ERR_TOO_MANY_REDIRECTS** — exception handler no redirige a `/dashboard` si ya estamos en dashboard (usa `route('home')` como fallback); try/catch en view composer topbar y sidebar `ApprovalRequest`.
+> Último commit en **zyntello-app**: `[#799]` `6e05c2ad` | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `edc1f62`
+
+#### Sprints de website completados en la sesión 2026-05-22
+
+**Admin `[#494]` (hoy):** `ModulosSeeder.php` actualizado con datos visuales de 13 módulos (color_primario, subtitulo, caracteristicas, estado, orden) + campos de precios (ya corregido en [#495]).
+
+**Admin `[#495]` (hoy):** 
+- `ApiModuloController.php`: ahora retorna `stripe_mensual` y `stripe_anual` (Stripe Price IDs) en la respuesta JSON del endpoint `/api/modulos`.
+- `ModulosSeeder.php`: corregido para **solo actualizar campos visuales** (`subtitulo`, `descripcion`, `color_primario`, `estado`, `orden`, `caracteristicas`) en registros existentes — NUNCA sobreescribe precios ni Stripe IDs. Para nuevos módulos crea con todos los campos.
+
+**Website (hoy):**
+- `Soluciones.jsx`: `combinarModulo()` ahora extrae `stripeMensual` y `stripeAnual` del API.
+- `irAlPago()`: si el método de pago es `stripe` y hay un Stripe Price ID disponible, agrega `price_id=...` en la URL del checkout (`app.zyntello.com/checkout`).
+- `.env.production` creado con `VITE_ADMIN_URL=https://admin.zyntello.com`.
+- API_URL configurable via variable de entorno.
+
+**Sprint noble-shimmying-floyd (completado antes de la sesión de hoy):**
+- Tarjetas de Soluciones con header nuevo: icono + nombre + subtítulo + categoría dentro del gradiente.
+- Carga dinámica desde API admin (`/api/modulos`) con skeleton loading y manejo de error.
+- `combinarModulo()` mapea datos API + datos visuales locales (`MODULO_META`).
+- Backend admin completo: migración visual fields, `Modulo.php` fillable actualizado, `ApiModuloController.php` como endpoint público CORS-libre, `ModuloController.php` con validaciones, vistas create/edit con sección "Apariencia".
+
+#### Resumen de sprints completados (commits relevantes)
+
+| Rango | Sprint / Área | Descripción breve |
+|---|---|---|
+| `[#411]` | ERP Dashboard | Rediseño dashboard 12 módulos |
+| `[#490–#500]` | Events | Módulo completo — CRUD, QR, check-in, live dashboard, sala fullscreen, reportes, APK, dark theme, hardening |
+| `[#574–#580]` | Events APK + PSA fix | APK dark theme, fix QR modal Alpine scope, helper seguro PSA producción |
+| `[#581–#595]` | Usuarios internos + Seguridad | CRUD usuarios internos, gates granulares, PSA timecheck gerencial, permisos árbol 13 módulos, `tn_permission_grants`, fix deploys Bluehost, fix ERR_TOO_MANY_REDIRECTS |
+| `[#606–#607]` | PSA Sprints 6–7 | Módulo Ausencias + Módulo Gastos completos |
+| `[#629–#630]` | PSA Sprint 29 | QuickBooks config + IA estadística (`PsaIaService`: sugerencias y anomalías) |
+| `[#631]` | CRM Sprint 1 | Pipeline CRM completo — kanban drag & drop, leads, notas, tareas, fuentes, config |
+| `[#637–#644]` | CRM Sprints 2–5 | Contactos, conversión lead→cliente, presupuestos vendedor, email SMTP, notificaciones, integración PSA + Facturación |
+| `[#653–#656]` | CRM Sprints 7–10 | Permisos granulares CRM, conversión nativa in-CRM, revenue real facturas, asignación leads a usuarios |
+| `[#697]` | Inventario Fase 8 | Dashboard enriquecido, Kardex por artículo, criterios en menú, seed inventario |
+| `[#726–#732]` | PSA Mi Espacio | Panel ponche inteligente, timesheet rechazado editable, selector proyecto en ponche, 9 fixes producción |
+| `[#733–#735]` | PSA Nómina RD | ISR DOM progresivo, conceptos CRUD, liquidaciones CT-RD, salario navideño, Gestión Humana documentos |
+| `[#736–#740]` | Nómina Gestión Laboral | Documentos RRHH, cartas laborales/bancarias, entidades bancarias unificadas (`ban_entidades`) |
+| `[#741–#743]` | Fix Deploy Bluehost | Migraciones PSA sin FK corregidas, CxC/CxP closure `use()` fix, color-scheme dark en assets |
+| `[#744–#745]` | DemoSeeder + Seguridad | Fix CrmDemoSeeder, auditoría masiva `abort_unless` en 816 métodos de 149 controladores |
+| `[#746–#750]` | Fixes ERP varios | Fix rutas nómina, cuentas contabilidad, relación proveedor CxP, Condiciones de Pago CRUD, fix onboarding |
+| `[#751–#753]` | Fixes artículos + CxC | Código artículo obligatorio, fix edición empresa 403, fix `CxcService::registrarCobro` params |
+| `[#754]` | Proveedores/Clientes | Columna Código visible + filtro búsqueda por nombre/código/RNC en index |
+| `[#755–#778]` | **Contabilidad completa** | Plan cuentas, CC, tipos, diferidos, cierre anual, ajuste inflación, consolidación, integración contable, 7 reportes financieros |
+| `[#779–#785]` | Contabilidad Bug Fixes | Seeds, fix parámetros de ruta, unique multi-tenant tipos diferido, eliminación duplicados monedas/paises/TC |
+| `[#786]` | **DGII 606/607** | Reportes fiscales Compras y Ventas con exportación DGII; sidebar contabilidad completo |
+| `[#796]` | **Contabilidad bug fixes** | Empresa nueva operativa al instante (seed 20 tipos asiento + período + clasificaciones), fix route binding override EmpresaController, fix ConsolidacionController 500, guards informativos AsientoDiario |
+| `[#797]` | **Contabilidad empresa contable auto** | `ContabilidadEmpresaService`: empresa contable se crea automáticamente al crear empresa fiscal. Sincronización bidireccional nombre/RNC/dirección. Sin formulario manual. Accesos rápidos a config contable desde EmpresaController |
+| `[#798]` | **Onboarding sincronizar empresa** | Onboarding sincroniza empresa principal con país y moneda elegidos. Elimina separación entre company y empresa fiscal — datos coherentes desde el primer login |
+| `[#799]` | **Docs CLAUDE.md** | Bitácora técnica CLAUDE.md actualizada con detalle técnico commits [#796] contabilidad bug fixes |
+| `[admin #494–#495]` | **Website Soluciones dinámicas** | Tarjetas carga desde API admin, Stripe Price IDs en checkout, seeder seguro para campos visuales |
+
+#### Detalle commits recientes [#779–#786]
+
+- `[#779]` ContabilidadSeeder — tipos diferido LIN/ACD/SEG/DEP/OTR + fix clasificación en CRUD TipoDiferido.
+- `[#780]` Fix migración `_000002` — índice único `cont_tipos_diferido` ahora multi-tenant `(empresa_id, codigo)`.
+- `[#781]` Fix módulo diferidos — columnas reales en migration + model/service/controller/vistas alineados.
+- `[#782]` Seed clasificaciones NIIF por empresa (8 clasificaciones) en ContabilidadSeeder.
+- `[#783]` `6fdddc22` Fix ruta clasificaciones — `->parameters(['clasificaciones' => 'clasificacion'])`. Laravel auto-singulariza en inglés (clasificaciones → `{clasificacione}`). Requiere override explícito.
+- `[#784]` `0acaff13` Fix producción tipos diferido — índice único simple de era pre-multi-tenant. Nueva migración `_000005` lo reemplaza con `(empresa_id, codigo)`. `insertOrIgnore` en seed.
+- `[#785]` `0b5d4295` Eliminar monedas/paises/tipos-cambio duplicados de contabilidad. Arquitectura: `monedas` = catálogo global; `tasas_cambio` = historial por empresa. Tipos de cambio de contabilidad usaban columnas inexistentes.
+- `[#786]` `ed79b6b2` **DGII 606/607** — `DgiiReportesController` + 3 vistas + rutas + sidebar. 606 usa `cxp_documentos` (NCF en `numero_documento_electronico`). 607 usa `fact_facturas` (NCF en `ncf`, ITBIS en `total_itbis`). Exportación `.txt` separado por pipes. RNC vía `nits.nit`. También agrega balanza-comprobacion y centros-costo al sidebar reportes.
+- `[#796]` `f8734f9d` **Contabilidad fix empresa nueva** — (1) `EmpresaController::store()` siembra datos iniciales automáticamente: config contable, período abierto del mes, 20 tipos asiento, 5 tipos CC, 3 tipos diferido, 12 clasificaciones NIIF. (2) Fix route binding override en `edit/update/destroy/modulos`: el parámetro `Empresa $empresa` ya no se sobreescribe con `empresa_activa()` — se usa `$empresaERP`. (3) `ConsolidacionController::index()` corregido: `cont_grupos_consolidacion` sin `company_id` → filtrado via `whereHas('empresaControladora')`. (4) `AsientoDiarioController::create()` con guards informativos: si no hay tipos/períodos/cuentas → redirect con mensaje específico en lugar de error genérico.
 
 ### Mini guía operativa post-deploy (sin SSH)
 
@@ -266,3 +318,144 @@ Los planes vigentes están en `C:\Users\Sistemas\.claude\plans\`:
 - `noble-shimmying-floyd.md` — (ver archivo)
 
 > Antes de iniciar trabajo grande, leer el plan correspondiente. Al terminar un plan, dejarlo marcado o moverlo según convenga.
+
+---
+
+## 🗺️ Guía para nuevas IAs y nuevos miembros del equipo
+
+> Esta sección explica cómo funciona el ecosistema Zyntello desde el punto de vista de colaboración técnica. Léela completa antes de iniciar cualquier trabajo.
+
+### Cómo se relacionan los 3 repositorios
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    ECOSISTEMA ZYNTELLO                          │
+│                                                                 │
+│  zyntello-website (React + Vite)                                │
+│  ─────────────────────────────────                              │
+│  Sitio de marketing: zyntello.com                               │
+│  • NO tiene lógica de negocio                                   │
+│  • NO se conecta a la BD                                        │
+│  • Muestra módulos SaaS disponibles, precios, contacto          │
+│  • Deploy: build dist/ → cPanel Git → zyntello.com              │
+│                           │                                     │
+│              "Me interesa" / "Comprar"                          │
+│                           ▼                                     │
+│  zyntello-admin (Laravel 12 + Livewire 4)                       │
+│  ────────────────────────────────────────                       │
+│  Panel INTERNO: admin.zyntello.com                              │
+│  • Solo accede el equipo de Zyntello S.R.L.                     │
+│  • Crea Companies (tenants) en la BD admin                      │
+│  • Activa módulos por Company en company_modules                │
+│  • Gestiona suscripciones, pagos, Stripe webhooks               │
+│  • BD: ukrmeumy_zyntello_admin (separada)                       │
+│                           │                                     │
+│           "Activa módulo X para Company Y"                      │
+│           ──────────────────────────────►                       │
+│                           │   (company_modules)                 │
+│                           ▼                                     │
+│  zyntello-app (Laravel 11 + Livewire 3)                         │
+│  ──────────────────────────────────────                         │
+│  App SaaS: app.zyntello.com                                     │
+│  • Todos los módulos ERP en UN solo repo                        │
+│  • Multi-tenant: cada Company ve solo sus datos                 │
+│  • Multi-empresa: cada Company puede tener N empresas           │
+│  • BD: ukrmeumy_zyntello (tablas con prefijos por módulo)       │
+│  • Bluehost sin SSH: deploy por cPanel Git + /zyn-maint/*       │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Flujo completo de un cliente nuevo:**
+1. Ve el sitio en `zyntello.com` (website)
+2. Contacta por WhatsApp o formulario
+3. El equipo crea una `Company` en `admin.zyntello.com` y activa módulos
+4. El cliente accede a `app.zyntello.com`, hace onboarding y crea su empresa
+5. Puede usar los módulos que tiene contratados
+
+**¿El admin controla el app?**
+Sí, indirectamente: `admin.zyntello.com` gestiona qué `company_modules` tiene activo cada tenant. El middleware `EnsureModuleAccess` en `zyntello-app` bloquea el acceso si el módulo no está en esa tabla.
+
+---
+
+### Cómo trabaja Nestor (el director técnico)
+
+Entender el estilo de dirección evita malentendidos y re-trabajo.
+
+#### Filosofía de desarrollo
+
+1. **Incremental y funcional**: Cada commit entrega una funcionalidad completa que funciona end-to-end. No hay commits parciales. Si se empieza un módulo, se termina con CRUD + rutas + vistas + seed.
+
+2. **Primero arreglar, luego agregar**: Cuando hay bugs en producción, se priorizan los fixes antes de nuevas features. Los errores se documentan en el CLAUDE.md junto con la causa y el fix.
+
+3. **Todo en español**: Código, comentarios, commits, documentación, mensajes de error al usuario — TODO en español. Solo las palabras técnicas (variables, funciones de framework) quedan en inglés cuando es estándar del ecosistema.
+
+4. **Un solo repositorio por producto**: Nunca crear repos separados por módulo ni separados por tema. Hay 3 repos y punto — website, admin, app. Si se pide "crear un módulo X", siempre va dentro de `zyntello-app`.
+
+5. **Fix antes de commit**: Cada vez que se detecta un bug (en producción o en desarrollo), se crea un commit específico de fix antes de continuar. Los fixes no se acumulan.
+
+6. **Sin SSH en producción**: Bluehost no tiene SSH. Todos los deploys son por cPanel Git y las migraciones se corren por rutas HTTP `/zyn-maint/*`. Esto es una restricción de negocio, no una preferencia.
+
+#### Patrones de comunicación con Nestor
+
+- **"Agrega X a Y"**: Implementar completamente — backend, frontend, validaciones, SweetAlert2 para destructivos. No proponer, implementar.
+- **"Hay un error"**: Analizar el error real en el código. Mostrar la causa raíz y el fix, no hipótesis.
+- **"Actualiza las memorias"**: Actualizar TODOS los archivos de documentación relevantes (CLAUDE.md raíz, app CLAUDE.md, memories repo). No solo uno.
+- **"Commitea"**: Hacer `git add` específico de los archivos modificados + commit con formato `[#NNN] descripción` + push a origin/master. Nunca usar `git add .` sin verificar qué se está incluyendo.
+
+#### Reglas de UX/UI que Nestor siempre aplica
+
+- **SweetAlert2** para toda confirmación destructiva. Nunca `window.confirm()`.
+- **Tailwind dark theme**: paleta `bg-surface`, `text-text`, `text-text-muted`, `border-border`, `bg-primary`.
+- **Sin `max-width` centrado en vistas**: todas las vistas son full-width responsive.
+- **Alpine.js para interactividad inline**: modales, toggles, formularios dinámicos. No Livewire para cosas pequeñas.
+- **`font-mono`** para mostrar códigos (artículos, empleados, clientes). Diferencia claramente IDs de nombres.
+- **Paginación con `withQueryString()`**: siempre preservar filtros al paginar.
+
+#### Cómo interpretar las instrucciones implícitas
+
+| Frase del usuario | Lo que realmente pide |
+|---|---|
+| "agrega un filtro de búsqueda" | Barra de búsqueda GET + filtro LIKE en el controller + limpiar filtro con ✕ |
+| "agrega el código" | Columna visible en la tabla + campo en el formulario si no existe |
+| "arregla el error 403" | Revisar si `empresa_activa()` está sobreescribiendo un parámetro de ruta |
+| "actualiza el commit" | Hacer `git add` de los archivos cambiados + nuevo commit + push |
+| "registra los cambios" | Actualizar CLAUDE.md + memories con la bitácora completa de la sesión |
+| "no funciona en producción" | Primero verificar si falta deploy (cPanel pull) + migraciones pendientes |
+
+---
+
+### Guía de depuración rápida
+
+**Error 403 inesperado en un controlador:**
+→ Verificar si `empresa_activa()` se llama en un método que recibe `$empresa` por route model binding (ej: `edit(Empresa $empresa)`). Si es así, la llamada sobreescribe el parámetro. Solución: eliminar esa línea.
+
+**`Undefined variable` en closure:**
+→ Las variables externas usadas dentro de `function() { ... }` deben pasarse con `use ($var1, $var2)`. PHP no captura el scope exterior automáticamente como JS.
+
+**`Unknown named parameter $xxx` en PHP 8:**
+→ El método fue llamado con parámetros nombrados incorrectos. Verificar la firma real del método en el archivo del Service/Controller.
+
+**Error 1215 en migración Bluehost (Foreign key constraint):**
+→ Bluehost no puede crear FK de UUID referenciando una tabla que no existe aún. Solución: crear migración nueva sin FK + registrar la migración vieja en `autoRegistrarPendientes()` para saltarla.
+
+**`Table 'xxx' doesn't exist` en producción:**
+→ Las migraciones están pusheadas pero no se han ejecutado. Ir a: `https://app.zyntello.com/zyn-maint/migrate-y-limpiar?key=XXX`
+
+**`BindingResolutionException: psa_empleado_activo`:**
+→ Se usó `app('psa_empleado_activo')` directamente en lugar del helper seguro `psa_empleado_activo()`. El helper verifica `app()->bound()` antes de resolver.
+
+---
+
+### Blueprints disponibles
+
+Los blueprints describen la arquitectura detallada de cada módulo complejo:
+
+| Módulo | Blueprint local |
+|---|---|
+| Aprobaciones | `app/zyntello-app/zyntello-approvals-blueprint.md` |
+| Contabilidad | `app/zyntello-app/zyntello-contabilidad-blueprint.md` |
+| Inventario | `app/zyntello-app/zyntello-inventario-blueprint.md` |
+| PSA | `app/zyntello-app/zyntello-psa-blueprint.md` |
+| CRM | `app/zyntello-app/zyntello-crm-blueprint.md` (generado en [#631]) |
+
+Los blueprints describen el diseño conceptual. La implementación real puede diferir — siempre verificar el código real antes de asumir que el blueprint es el estado actual.
