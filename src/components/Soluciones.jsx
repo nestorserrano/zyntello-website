@@ -149,6 +149,8 @@ function combinarModulo(apiData) {
     previews:       display.previews || [],
     categoria:      display.categoria,
     desarrollador:  'Zyntello',
+    stripeMensual:  apiData.stripe_mensual || null,
+    stripeAnual:    apiData.stripe_anual   || null,
   }
 }
 
@@ -228,6 +230,7 @@ function ModalApp({ app, onClose, formatPrecio, simbolo }) {
   }
 
   const irAlPago = () => {
+    const stripeId = plan === 'mensual' ? app.stripeMensual : app.stripeAnual
     const params = new URLSearchParams({
       modulo:   app.id,
       plan,
@@ -237,6 +240,7 @@ function ModalApp({ app, onClose, formatPrecio, simbolo }) {
       telefono: form.telefono,
       metodo,
     })
+    if (metodo === 'stripe' && stripeId) params.append('price_id', stripeId)
     window.location.href = `${APP_CHECKOUT_URL}?${params.toString()}`
   }
 
