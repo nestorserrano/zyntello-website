@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import '../styles/Soluciones.css'
 
 const NUMERO_WA = '18296399877'
-const API_URL   = 'https://admin.zyntello.com/api/modulos'
+const API_URL   = `${(import.meta.env.VITE_ADMIN_URL || 'https://admin.zyntello.com').replace(/\/$/, '')}/api/modulos`
 
 /* ─── Datos de display estáticos por slug ──────────────────────
    El admin controla precios, contenido y orden.
