@@ -130,6 +130,7 @@ c:/wamp64/www/zyntello/         ← Esta carpeta (repo: zyntello-website)
 | `evt_*` | Events (gestión de eventos, QR, check-in) |
 | `psa_*` | PSA (Professional Services Automation — timesheets, planilla, ponches) |
 | `crm_*` | CRM (pipeline leads, contactos, reportes) |
+| `caj_*` | Caja (POS) — integrado a Facturación, sesiones y movimientos de efectivo |
 
 > Histórico: hasta el commit `[#408]` existían 5 BDs separadas (`zyntello_constructflow`, `zyntello_nomina`, `zyntello_contabilidad`, `zyntello_inventario`, `zyntello_facturacion`). Fueron consolidadas en `zyntello_app`. No volver a crearlas.
 
@@ -159,9 +160,9 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 4. cPanel → MySQL → crear `ukrmeumy_zyntello` y `ukrmeumy_zyntello_admin` (no más)
 5. Sin SSH: usar ruta `/zyn-maint/migrate-y-limpiar?key=XXX` y validar con `/zyn-maint/migrate-status?key=XXX`
 
-### Bitácora reciente (estado actual — 2026-05-25)
+### Bitácora reciente (estado actual — 2026-05-29)
 
-> Último commit en **zyntello-app**: `[#840]` `af716903` | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `edc1f62`
+> Último commit en **zyntello-app**: `12450d5c` (fix syntax error Caja) | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `edc1f62`
 
 #### Sprints de website completados en la sesión 2026-05-22
 
@@ -232,6 +233,8 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 | `[#837]` | **CRM Mejoras Hyplast: Quill + kanban búsqueda + top vendedores** | Quill WYSIWYG en notas (dark theme). Checkbox fijar, botón fijar/desfijar PATCH. Sort fijadas primero. Kanban: búsqueda por columna (Alpine), badge fuente en tarjetas. Dashboard: top vendedores del mes. Fix: relación 'notas'→'leadNotas' en show(). Blueprints CRM-Hyplast y Facturación-pendientes. |
 | `[#839]` | **CRM-H2: Kanban Sortable.js para tareas** | Vista doble lista/kanban con toggle. 3 columnas (Nuevo/En Proceso/Finalizado). Drag & drop con Sortable.js 1.15.2. Endpoint PATCH actualizarEstadoTarea. SweetAlert2 en ambas vistas. |
 | `[#840]` | **Facturación: Incoterms + Bonificaciones** | `fact_incoterms` catálogo global (11 incoterms, sin empresa_id). `incoterm_id` en cotizaciones/pedidos/facturas. `IncotermsController` global CRUD. `fact_bonificaciones` multi-tenant (cantidad_gratis/descuento_pct/articulo_gratis). `BonificacionService::calcularBonificaciones()`. CRUD + panel AJAX en documentos. Deploy: 3 migraciones. |
+| `[#859]` | **Sistema Geo Cascada completo** | `ciudades` mejorado con tipo/parent_id/company_id. Estados seeded 13 países extra. `GeoApiController` API /api/geo/{paises,estados,ciudades,parroquias}. `GeoCatalogoController` CRUD localidades por empresa. CiudadesSeeder ~130 municipios DO + VE/CO/GT/CR. Cascada País→Estado→Ciudad en proveedores y clientes (create+edit Alpine AJAX). Enlace "Catálogo Geográfico" en Facturación y Nómina. Deploy: migrate + /zyn-maint/seed-ciudades. |
+| `[#868]`+Caja | **Módulo Caja (POS) + fix syntax error crítico** | Tablas `caj_cajas/sesiones/movimientos`. `CajaService`: abrirSesion, cerrarSesion (asiento por diferencias), registrarMovimiento (integra CxcService). CRUD cajas, arqueo PDF, integración `FacturaController::registrarCobro` para efectivo. **Fix `12450d5c`:** `],` duplicado en `config/modules.php` bloque Caja causaba `ParseError` que bloqueaba TODA la app en producción. Deploy: `/zyn-maint/migrate-y-limpiar`. |
 
 #### Detalle commits recientes [#779–#786]
 
