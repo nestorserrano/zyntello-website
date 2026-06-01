@@ -160,9 +160,37 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 4. cPanel → MySQL → crear `ukrmeumy_zyntello` y `ukrmeumy_zyntello_admin` (no más)
 5. Sin SSH: usar ruta `/zyn-maint/migrate-y-limpiar?key=XXX` y validar con `/zyn-maint/migrate-status?key=XXX`
 
-### Bitácora reciente (estado actual — 2026-05-29)
+### Bitácora reciente (estado actual — 2026-06-01)
 
-> Último commit en **zyntello-app**: `[#882]` docs bitácora Caja POS | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `edc1f62`
+> Último commit en **zyntello-app**: `[#933]` `ba0be2c0` | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `edc1f62`
+
+#### Sesión 2026-06-01 — Fixes Sidebar, Tasas de Cambio, Settings UX
+
+- `[#919]` `f72adb2d` **Diagnóstico monedas** — ruta `/zyn-maint/diag-monedas` verifica USD/EUR en catálogo global `monedas`, tabla `empresa_monedas` y tasas por empresa. Utilidad de auditoría para producción.
+- `[#920]` `6ac47bd4` **Fix monedas: insertar USD y EUR** — migración idempotente que inserta USD y EUR en `monedas` (si no existen) y en `empresa_monedas` de cada empresa activa como monedas secundarias. Bluehost safe.
+- `[#921]` `40188cd5` **Fix serial: `numero_serial` → `numero_serie`** — `SerialController` y vista `seriales/index.blade.php` usaban el nombre de columna incorrecto. Corregido a la columna real de la tabla.
+- `[#922]` `621bc5c9` **Fix tasa de cambio en sidebar** — dos bugs: (1) View composer de `$tasaCambioHoy` solo estaba en `components.topbar`, pero el sidebar se renderiza ANTES en `app.blade.php` → nunca recibía la variable. Fix: nuevo View composer para `components.sidebar` con `with('moneda')` eager load. (2) Vista usaba `moneda->codigo` (columna inexistente); corregido a `moneda->iso`.
+- `[#923]` `51c31521` **Tasas históricas protegidas** — `TasasCambioController::destroy()` bloquea eliminación si `fecha < today()` con mensaje de error. Vista reemplaza botón eliminar por ícono candado 🔒 con `title` tooltip para tasas históricas. Solo se pueden eliminar tasas del día actual.
+- `[#924]` `27c75bf6` **Settings: eliminar vista empresa redundante** — `/settings` (índice) redirige a `settings.members`. Campos del suscriptor (`company.name`, `company.country`) movidos a vista Usuarios como sección "Cuenta Zyntello" al inicio (solo admin). Item "Configuración de la empresa" eliminado del sidebar (ya existía "Empresas" debajo). Elimina ambigüedad entre datos de suscriptor y datos operativos.
+- `[#925]` `e3ba0889` **Helper `empresa_activa()` con fallback a sesión** — el helper ahora tiene fallback a `session('empresa_activa_id')` cuando el binding del container no existe (rutas sin middleware `empresa`). Esto garantiza que el widget de tasa de cambio aparezca en el sidebar en TODAS las vistas autenticadas, no solo en las que pasan por `EnsureEmpresaActiva`.
+- `[#926]` `3dad2ae1` **Tasas de cambio: integración BCRD** — Scraping en tiempo real de la página del BCRD para obtener USD compra/venta. Modal "Registrar tasa" ahora muestra referencias BCRD con botones clicables que copian el valor al portapapeles y lo pegan automáticamente en el campo. Alpine.js carga las tasas al abrir el modal. Estados de carga, error y éxito implementados.
+- `[#927]` `5b3f1704` **Fix BCRD scraping** — Scraping mejorado con 3 patrones de extracción + fallback inteligente a valores de referencia con advertencia. Nunca falla completamente.
+- `[#928]` `3077038a` **Sistema de aprobaciones completo** — 7 handlers nuevos (Bancos, Compras, CajaChica, ActivosFijos, Caja, Presupuesto, CRM) + 1 expandido (Facturación: NotaCredito, Devolucion). Cobertura 100% de módulos críticos.
+- `[#929]` `9c6c380a` **Migraciones aprobaciones** — 8 migraciones que agregan `approval_request_id` y estados de aprobación a ~35 tablas. Guards `hasColumn` para Bluehost. ENUMs seguros.
+- `[#930]` `dcd86a91` **Documentación aprobaciones** — ANALISIS_APROBACIONES.md completo con 14 handlers, 8 migraciones, 27 tipos de transacciones documentadas.
+- `[#931]` `4c1da1b2` **Tasas BCRD: Google primario** — Scraping de Google Search como fuente primaria (más confiable), BCRD como respaldo. Layout modal rediseñado para que warning no se desborde.
+- `[#932]` `7b9c3aec` **Documentación** — Actualizar bitácora con [#931].
+- `[#933]` `ba0be2c0` **Fix migraciones aprobaciones** — Mapeo de valores existentes antes de modificar ENUMs en 8 migraciones de aprobaciones.
+- `[#931]` `4c1da1b2` **Tasas BCRD: Google primario** — Scraping de Google Search como fuente primaria (más confiable), BCRD como respaldo. Layout modal rediseñado para que warning no se desborde.
+- `[#932]` `7b9c3aec` **Documentación** — Actualizar bitácora con [#931].
+- `[#933]` `ba0be2c0` **Fix migraciones aprobaciones** — Mapeo de valores existentes antes de modificar ENUMs en 8 migraciones de aprobaciones.
+
+#### Reglas nuevas aprendidas (sesión 2026-06-01)
+
+- **Sidebar vs topbar render order**: `app.blade.php` renderiza `components.sidebar` en línea 59, ANTES que `components.topbar` (línea 61). Cualquier variable inyectada via View composer de topbar NO estará disponible en sidebar — necesita su propio composer.
+- **Tasas históricas**: proteger con `$fecha->lt(today())` en destroy(). Las tasas pasadas son auditables y no deben desaparecer aunque no haya FK directa.
+- **Route model binding + HasEmpresa**: si un controlador recibe `Model $model` por ruta Y el modelo tiene `HasEmpresa`, el global scope puede filtrar el registro → 404. Solución: `string $id` + `sinScopeEmpresa()->findOrFail($id)`.
+- **`empresa_activa()` helper**: desde [#925] tiene fallback a sesión. Usar siempre el helper, nunca `app('empresa_activa')` directo.
 
 #### Sprints de website completados en la sesión 2026-05-22
 
@@ -235,6 +263,16 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 | `[#840]` | **Facturación: Incoterms + Bonificaciones** | `fact_incoterms` catálogo global (11 incoterms, sin empresa_id). `incoterm_id` en cotizaciones/pedidos/facturas. `IncotermsController` global CRUD. `fact_bonificaciones` multi-tenant (cantidad_gratis/descuento_pct/articulo_gratis). `BonificacionService::calcularBonificaciones()`. CRUD + panel AJAX en documentos. Deploy: 3 migraciones. |
 | `[#859]` | **Sistema Geo Cascada completo** | `ciudades` mejorado con tipo/parent_id/company_id. Estados seeded 13 países extra. `GeoApiController` API /api/geo/{paises,estados,ciudades,parroquias}. `GeoCatalogoController` CRUD localidades por empresa. CiudadesSeeder ~130 municipios DO + VE/CO/GT/CR. Cascada País→Estado→Ciudad en proveedores y clientes (create+edit Alpine AJAX). Enlace "Catálogo Geográfico" en Facturación y Nómina. Deploy: migrate + /zyn-maint/seed-ciudades. |
 | `[#869]`–`[#881]` | **Módulo Caja (POS) completo + fixes producción** | Tablas `caj_cajas/sesiones/movimientos` (sin FK en Bluehost). `CajaService`: abrirSesion, cerrarSesion, registrarMovimiento. CRUD cajas, arqueo PDF. Selector caja Alpine en cobro (efectivo obligatorio, tarjeta opcional). `depositarBanco()`: egreso caja + crédito banco en una sola transacción. **Fixes:** bracket duplicado modules.php bloqueaba app; `caj_sesiones/movimientos` no creadas (FK UUID Bluehost); `Empresa::sinScopeEmpresa()` en CRM commands. Migraciones: `400001_create_caj_sesiones_no_fk`. Deploy: `/zyn-maint/migrate-y-limpiar`. |
+| `[#919–#920]` | **Fix monedas: diagnóstico + migración USD/EUR** | `/zyn-maint/diag-monedas` para auditoría. Migración idempotente inserta USD/EUR en catálogo y empresa_monedas. |
+| `[#921]` | **Fix serial** | `SerialController` y vista: `numero_serial` → `numero_serie` (columna real de la tabla). |
+| `[#922]` | **Fix sidebar tasa de cambio** | View composer propio para `components.sidebar` (se renderiza antes que topbar). Corrige `moneda->codigo` → `moneda->iso`. |
+| `[#923]` | **Tasas históricas protegidas** | `destroy()` bloquea si `fecha < today()`. Vista muestra candado 🔒 en lugar de botón eliminar. |
+| `[#924]` | **Settings: eliminar vista redundante** | `SettingsController::index()` redirige a `settings.members`. Campos Cuenta Zyntello en Usuarios. |
+| `[#925]` | **Helper `empresa_activa()` con fallback** | Fallback a `session('empresa_activa_id')` cuando no hay binding de container. Tasa visible en todas las vistas. |
+| `[#926–#927]` | **Tasas de cambio BCRD integración** | Scraping BCRD tiempo real USD compra/venta. Modal con botones clicables (copia + pega). 3 patrones extracción + fallback inteligente. |
+| `[#928–#930]` | **Sistema aprobaciones completo** | 7 handlers nuevos + 1 expandido. 8 migraciones (~35 tablas). ANALISIS_APROBACIONES.md. 100% cobertura módulos críticos. |
+| `[#931–#932]` | **BCRD: Google primario + docs** | Google Search como fuente primaria (más confiable). Modal layout fix (sin overflow). Bitácora actualizada. |
+| `[#933]` | **Fix migraciones aprobaciones** | Mapeo valores existentes antes de modificar ENUMs. Soluciona SQLSTATE[01000] Data truncated. |
 
 #### Detalle commits recientes [#779–#786]
 
