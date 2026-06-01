@@ -162,7 +162,7 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 
 ### Bitácora reciente (estado actual — 2026-06-01)
 
-> Último commit en **zyntello-app**: `[#933]` `ba0be2c0` | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `edc1f62`
+> Último commit en **zyntello-app**: `[#934]` `0c81c43c` | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `edc1f62`
 
 #### Sesión 2026-06-01 — Fixes Sidebar, Tasas de Cambio, Settings UX
 
@@ -181,9 +181,7 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 - `[#931]` `4c1da1b2` **Tasas BCRD: Google primario** — Scraping de Google Search como fuente primaria (más confiable), BCRD como respaldo. Layout modal rediseñado para que warning no se desborde.
 - `[#932]` `7b9c3aec` **Documentación** — Actualizar bitácora con [#931].
 - `[#933]` `ba0be2c0` **Fix migraciones aprobaciones** — Mapeo de valores existentes antes de modificar ENUMs en 8 migraciones de aprobaciones.
-- `[#931]` `4c1da1b2` **Tasas BCRD: Google primario** — Scraping de Google Search como fuente primaria (más confiable), BCRD como respaldo. Layout modal rediseñado para que warning no se desborde.
-- `[#932]` `7b9c3aec` **Documentación** — Actualizar bitácora con [#931].
-- `[#933]` `ba0be2c0` **Fix migraciones aprobaciones** — Mapeo de valores existentes antes de modificar ENUMs en 8 migraciones de aprobaciones.
+- `[#934]` `0c81c43c` **Fix nombres tabla y modelos Compras** — Tabla real es `pur_receipts` no `pur_recepciones`. Modelos correctos: `PurRequisition`, `PurPurchaseOrder`, `PurReceipt`, `PurLiquidacion`. Corregido en migración `100002_add_approval_to_compras.php` y en `ComprasApprovalHandler.php`.
 
 #### Reglas nuevas aprendidas (sesión 2026-06-01)
 
@@ -272,8 +270,7 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 | `[#926–#927]` | **Tasas de cambio BCRD integración** | Scraping BCRD tiempo real USD compra/venta. Modal con botones clicables (copia + pega). 3 patrones extracción + fallback inteligente. |
 | `[#928–#930]` | **Sistema aprobaciones completo** | 7 handlers nuevos + 1 expandido. 8 migraciones (~35 tablas). ANALISIS_APROBACIONES.md. 100% cobertura módulos críticos. |
 | `[#931–#932]` | **BCRD: Google primario + docs** | Google Search como fuente primaria (más confiable). Modal layout fix (sin overflow). Bitácora actualizada. |
-| `[#933]` | **Fix migraciones aprobaciones** | Mapeo valores existentes antes de modificar ENUMs. Soluciona SQLSTATE[01000] Data truncated. |
-
+| `[#933]` | **Fix migraciones aprobaciones** | Mapeo valores existentes antes de modificar ENUMs. Soluciona SQLSTATE[01000] Data truncated. || `[#934]` | **Fix nombres tabla Compras** | Corrige `pur_recepciones` → `pur_receipts` en migración + handler. Modelos corregidos: PurRequisition, PurPurchaseOrder, PurReceipt, PurLiquidacion. |
 #### Detalle commits recientes [#779–#786]
 
 - `[#779]` ContabilidadSeeder — tipos diferido LIN/ACD/SEG/DEP/OTR + fix clasificación en CRUD TipoDiferido.
