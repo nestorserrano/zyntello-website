@@ -162,7 +162,7 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 
 ### Bitácora reciente (estado actual — 2026-06-01)
 
-> Último commit en **zyntello-app**: `[#951]` `f7a32eef` | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `8257df5`
+> Último commit en **zyntello-app**: `[#952]` `d9a9b74a` | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `8257df5`
 
 #### Sesión 2026-06-02 — UX Fixes + Sistema Roles + Dashboards ERP
 
@@ -177,6 +177,7 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 - `[#949]` `06951573` **Fix ruta usuarios internos** — Link "Ver usuarios internos" en `settings/members.blade.php` usaba ruta inexistente `usuarios-internos.index`. Corregido a `settings.tenant-users.index` (ruta real definida en web.php línea 267). Error en producción causaba ViewException.
 - `[#950]` `3cd496db` **Fix acceso usuarios internos** — Migración marca primer usuario de cada company como `owner`. Problema: todos los usuarios eran `collaborator` pero el sistema requiere al menos un `owner` para gestionar usuarios internos. Migración ejecutada manualmente marca `demo@zyntello.com` como owner.
 - `[#951]` `f7a32eef` **Sistema reseteo cuenta demo completo** — Comando `demo:reset` (programado diario 3:00 AM via routes/console.php). Franja advertencia en dashboard.blade.php informa sobre borrado automático. Usuario demo marcado como `owner` (acceso completo para pruebas). DemoSeeder ampliado: limpieza módulo Caja (POS) agregada (caj_cajas/caj_sesiones/caj_movimientos), usuario demo creado como owner desde inicio. Solo afecta company demo (slug: constructora-demo-sa), protege datos de otros suscriptores.
+- `[#952]` `d9a9b74a` **UX Settings: eliminar campo idioma nivel company** — Campo `billing_language` removido de Cuenta Zyntello. Idioma debe configurarse por usuario individual, no a nivel de suscriptor. Grid settings: País principal + Documento Fiscal. Validación removida de SettingsController.
 
 #### Sesión 2026-06-01 — Fixes Sidebar, Tasas de Cambio, Settings UX
 
