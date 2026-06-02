@@ -162,7 +162,18 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 
 ### Bitácora reciente (estado actual — 2026-06-01)
 
-> Último commit en **zyntello-app**: `[#934]` `0c81c43c` | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `edc1f62`
+> Último commit en **zyntello-app**: `[#948]` `1756e7a8` | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `edc1f62`
+
+#### Sesión 2026-06-02 — UX Fixes + Sistema Roles + Dashboards ERP
+
+- `[#941]` **Fix combo país empresas** — Reemplazar Alpine dropdown custom por `<select>` nativo (evita z-index issues). Preservada cascada `setPais()` → `cargarEstados()` vía `fetch /api/geo/estados`. Auto-cierra, sin overflow, width auto.
+- `[#942]` **banco_central_link configurable** — Nueva columna `banco_central_link` varchar(500) en `empresas`. Sidebar y modal tasas usan `empresa->banco_central_link ?? 'https://bancentral.gov.do/...'` como fallback. Permite configurar link del banco central por país.
+- `[#943]` **Billing fields en company** — 4 campos nuevos en `companies`: `billing_language`, `billing_document`, `billing_address`, `requires_electronic_invoice`. Vista `settings/members.blade.php` rediseñada: sección "Cuenta Zyntello" con grid 2 columnas, descripciones por campo, separación visual clara de "Miembros del equipo".
+- `[#944]` **Sistema de roles completo para Company Members** — `config/member_roles.php` con 4 roles (Administrador, Transacciones, Consulta, Reportes) y 8 capacidades. Métodos `hasCapability($cap)` y `canAccessRoute($routeName)` en `CompanyMember`. Middleware `EnsureMemberCapability` registrado como `member.can:capability`. Documentación en `docs/ROLES_Y_PERMISOS.md`. Separación clara: Company Members (roles predefinidos) vs Internal Users (permisos granulares `tn_permissions`).
+- `[#945]` **Dashboards ERP — 7 controladores** — Creados `DashboardCxpController`, `DashboardCxcController`, `DashboardBancosController`, `DashboardActivosController`, `DashboardCajaChicaController`, `DashboardComprasController`, `DashboardPresupuestoController`. Patrón uniforme: 5-6 KPIs, queries con eager loading, top 5 entidades, últimos 10 registros, datos de gráficas (6 meses). Commit incluye vistas CxP y CxC.
+- `[#946]` **Vistas dashboard restantes** — 5 vistas blade (Bancos, Activos, CajaChica, Compras, Presupuesto) + actualización ruta CxC. Grid KPIs responsive, tablas top entities, listas últimas transacciones, alerts para sobreejecutados (Presupuesto) y bajo saldo (CajaChica). Dark theme consistente, `font-mono` en montos.
+- `[#947]` **Rutas dashboard raíz** — Actualizadas rutas en 5 módulos (Bancos, Activos, CajaChica, Compras, Presupuesto). Dashboard como `Route::get('/', [Dashboard...Controller::class, 'index'])->name('dashboard')`. CxP ya estaba actualizado en [#945]. Todos los módulos ERP ahora tienen dashboard como entry point.
+- `[#948]` **Middleware + protección UI roles** — Aplicado middleware `member.can:capability` en 5 rutas sensibles de settings: `settings.update` (can_configure), `billing-config.update` (can_manage_billing), `approval-workflows.store/destroy` (can_configure), `members.remove` (can_invite). Vista `settings/members.blade.php`: botones "Guardar cambios", "Quitar miembro" e "Invitar" protegidos con `$currentMember->hasCapability()`. Método `User::companyMember($company)` agregado para obtener CompanyMember del usuario en una compañía específica.
 
 #### Sesión 2026-06-01 — Fixes Sidebar, Tasas de Cambio, Settings UX
 
@@ -182,6 +193,12 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 - `[#932]` `7b9c3aec` **Documentación** — Actualizar bitácora con [#931].
 - `[#933]` `ba0be2c0` **Fix migraciones aprobaciones** — Mapeo de valores existentes antes de modificar ENUMs en 8 migraciones de aprobaciones.
 - `[#934]` `0c81c43c` **Fix nombres tabla y modelos Compras** — Tabla real es `pur_receipts` no `pur_recepciones`. Modelos correctos: `PurRequisition`, `PurPurchaseOrder`, `PurReceipt`, `PurLiquidacion`. Corregido en migración `100002_add_approval_to_compras.php` y en `ComprasApprovalHandler.php`.
+- `[#935]` `37b18341` **Fix migraciones aprobaciones Compras/CajaChica/ActivosFijos** — Guards `hasColumn` individuales (no solo approval_request_id). Guards `hasTable` para tablas inexistentes (cch_arqueos, af_bajas, af_revaluaciones, af_ajustes_vida_util). Mapeo ENUM 3-pasos seguro en af_depreciaciones: expandir ENUM + UPDATE + contraer.
+- `[#936]` `6cac4e0c` **Fix migraciones aprobaciones Presupuesto/CRM/Caja/Facturación** — Guards `hasTable` para pg_ajustes/pg_transferencias_partidas/pg_modificaciones/crm_condonaciones. Guards individuales por columna en todas las tablas. Las 8 migraciones de aprobaciones (100001-100008) ahora funcionan correctamente localmente.
+- `[#937]` `c0125716` **Fix modal tasas cambio** — Etiqueta simplificada: "Ref:" (elimina variable fuente dinámica). Valores de referencia con 4 decimales: `parseFloat(valor).toFixed(4)`.
+- `[#938]` `9e9e391e` **Modal tasas: layout optimizado** — Input tasa reducido de `flex-1` a `w-48` (evita desbordamiento). Referencias organizadas en columna. Link "Fuente: Google/BCRD" debajo de botones con ícono de enlace externo.
+- `[#939]` `f9fdaae2` **Modal tasas: dos fuentes siempre visibles** — Links Google y BCRD siempre disponibles (no condicional). Formato: "Fuentes: Google | BCRD" con iconos externos.
+- `[#940]` `ca4ff9b6` **Modal tasas: link BCRD directo** — Link BCRD actualizado a `bancentral.gov.do/SectorExterno/HistoricoTasas` (página específica de tasas, no homepage genérica).
 
 #### Reglas nuevas aprendidas (sesión 2026-06-01)
 
@@ -189,6 +206,25 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 - **Tasas históricas**: proteger con `$fecha->lt(today())` en destroy(). Las tasas pasadas son auditables y no deben desaparecer aunque no haya FK directa.
 - **Route model binding + HasEmpresa**: si un controlador recibe `Model $model` por ruta Y el modelo tiene `HasEmpresa`, el global scope puede filtrar el registro → 404. Solución: `string $id` + `sinScopeEmpresa()->findOrFail($id)`.
 - **`empresa_activa()` helper**: desde [#925] tiene fallback a sesión. Usar siempre el helper, nunca `app('empresa_activa')` directo.
+- **Migraciones Bluehost-safe** (patrón completo de [#933]–[#936]):
+  1. **hasTable() wrapper**: si tabla puede no existir localmente, envolver toda la sección en `if (Schema::hasTable('table'))`.
+  2. **Guards individuales por columna**: dentro de `Schema::table()`, cada columna necesita su propio `if (!Schema::hasColumn('table', 'col'))` — evita errores por migraciones parcialmente fallidas.
+  3. **Modificación ENUM segura**: si ENUM puede tener valores fuera de la nueva definición:
+     - Paso 1: `UPDATE table SET estado = 'default' WHERE estado NOT IN ('new1', 'new2', ...)`
+     - Paso 2: `ALTER TABLE table MODIFY COLUMN estado ENUM('new1', 'new2', ...) DEFAULT 'default'`
+  4. **Modificación ENUM con mapeo** (cuando valores antiguos deben migrar a nuevos):
+     - Paso 1: Expandir ENUM con valores antiguos + nuevos: `ALTER TABLE ... MODIFY ... ENUM('old1','old2','new1','new2')`
+     - Paso 2: Mapear datos: `UPDATE table SET estado = 'new1' WHERE estado = 'old1'`
+     - Paso 3: Contraer ENUM a solo valores nuevos: `ALTER TABLE ... MODIFY ... ENUM('new1','new2')`
+  5. **Verificar antes de modificar**: `$enum = DB::select("SHOW COLUMNS FROM table WHERE Field = 'estado'"); if ($enum && !str_contains($enum[0]->Type, 'target_value')) { ... }` — evita modificar si ya está correcto.
+
+#### Reglas nuevas aprendidas (sesión 2026-06-02)
+
+- **PowerShell mkdir múltiples paths**: `mkdir` no soporta múltiples paths simultáneos. Usar `New-Item -ItemType Directory` o crear archivos directos (auto-crea directorios padres).
+- **Select nativo vs Alpine custom**: Para combos en formularios complejos, `<select>` nativo evita problemas de z-index, overflow y auto-cierre. Alpine cascade logic funciona igual con selects nativos.
+- **Roles vs Permisos granulares**: Company Members (colegas del tenant) → sistema de roles predefinidos (4 roles, simple). Internal Users (staff temporal/externo) → permisos granulares por módulo (`tn_permissions`). No mezclar ambos sistemas.
+- **Dashboard pattern**: 5-6 KPIs grid → 2-column layout (top entities tabla + recent records list) → eager loading en queries → `withQueryString()` en paginación. Emoji en título, descripción debajo, dark theme (`bg-surface-elevated`, `border-border/40`).
+- **Route dashboard raíz**: En módulos con múltiples secciones, dashboard debe ser `Route::get('/', ...)` DENTRO del grupo `Route::prefix('module')->name('module.')`. Listados CRUD van a `/module/entidades`.
 
 #### Sprints de website completados en la sesión 2026-05-22
 
