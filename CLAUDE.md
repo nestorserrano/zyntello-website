@@ -162,7 +162,7 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 
 ### Bitácora reciente (estado actual — 2026-06-01)
 
-> Último commit en **zyntello-app**: `[#953]` `dd484909` | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `8257df5`
+> Último commit en **zyntello-app**: `[#954]` `f417e642` | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `8257df5`
 
 #### Sesión 2026-06-02 — UX Fixes + Sistema Roles + Dashboards ERP
 
@@ -179,6 +179,7 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 - `[#951]` `f7a32eef` **Sistema reseteo cuenta demo completo** — Comando `demo:reset` (programado diario 3:00 AM via routes/console.php). Franja advertencia en dashboard.blade.php informa sobre borrado automático. Usuario demo marcado como `owner` (acceso completo para pruebas). DemoSeeder ampliado: limpieza módulo Caja (POS) agregada (caj_cajas/caj_sesiones/caj_movimientos), usuario demo creado como owner desde inicio. Solo afecta company demo (slug: constructora-demo-sa), protege datos de otros suscriptores.
 - `[#952]` `d9a9b74a` **UX Settings: eliminar campo idioma nivel company** — Campo `billing_language` removido de Cuenta Zyntello. Idioma debe configurarse por usuario individual, no a nivel de suscriptor. Grid settings: País principal + Documento Fiscal. Validación removida de SettingsController.
 - `[#953]` `dd484909` **UX Settings: renombrar Usuarios a Suscriptor + pestañas** — Vista settings/members renombrada a "Suscriptor". Pestañas Alpine.js: "Suscripción" (datos facturación) y "Miembros" (lista + invitaciones). Campos reducidos: nombre w-96, dirección max-w-2xl. Sidebar config: "Usuarios" → "Suscriptor".
+- `[#954]` `f417e642` **DemoSeeder CxC/CxP completo + fix ENUMs aprobaciones + arquitectura tipos_documento** — **CxcSeeder + CxpSeeder**: implementación completa con 6 + 8 documentos demo respectivamente, usando `CxcService::seedTiposDocumento()` / `CxpService::seedTiposDocumento()`. **Fix estados ENUM**: BancosSeeder (4 cambios: completada→ejecutada 2x, cerrada→aprobada, abierta→borrador), DepreciacionService (5 cambios: calculada→borrador 3x, contabilizada→aplicada 2x), FacturacionSeeder (procesada→aplicada), CxcSeeder (parcial→pendiente 2x, cobrado→cobrada, vencido→pendiente), CxpSeeder (parcial→pendiente, pagado→pagada, vencido→pendiente, aprobado→aprobada). **Arquitectura tipos_documento multi-empresa**: `CxcService::seedTiposDocumento()` y `CxpService::seedTiposDocumento()` aceptan parámetro opcional `$empresaId` — si se pasa, crea tipos a nivel Empresa; si es null, a nivel Company. Query filtra por `empresa_id` cuando se especifica. **DemoSeeder**: limpieza de `cxc_tipos_documento` y `cxp_tipos_documento` antes de `Company::forceDelete()` para evitar tipos huérfanos. **CxpService**: eliminada línea `self::seedTiposDocumento($companyId)` en `resolverTipoDocumentoId()` — tipos deben crearse en onboarding/seeding explícito, no durante operaciones normales (evita conflictos con índice único). **Resultado**: `demo:reset` funciona completamente sin errores ENUM.
 
 #### Sesión 2026-06-01 — Fixes Sidebar, Tasas de Cambio, Settings UX
 
@@ -230,6 +231,10 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 - **Roles vs Permisos granulares**: Company Members (colegas del tenant) → sistema de roles predefinidos (4 roles, simple). Internal Users (staff temporal/externo) → permisos granulares por módulo (`tn_permissions`). No mezclar ambos sistemas.
 - **Dashboard pattern**: 5-6 KPIs grid → 2-column layout (top entities tabla + recent records list) → eager loading en queries → `withQueryString()` en paginación. Emoji en título, descripción debajo, dark theme (`bg-surface-elevated`, `border-border/40`).
 - **Route dashboard raíz**: En módulos con múltiples secciones, dashboard debe ser `Route::get('/', ...)` DENTRO del grupo `Route::prefix('module')->name('module.')`. Listados CRUD van a `/module/entidades`.
+- **Auto-seed en services causa conflictos UNIQUE**: Si un método operativo del service (ej. `crear()`) llama internamente a `seedTiposDocumento()` con parámetros diferentes a los del seeder explícito, puede causar violaciones de UNIQUE constraint. Solución: eliminar auto-seed; los tipos deben crearse SOLO en onboarding o seeders.
+- **ENUM estados de aprobaciones**: Tablas modificadas por sistema de aprobaciones ([#928]–[#936]) usan ENUM `('borrador','pendiente_aprobacion','aprobada','rechazada','ejecutada'/'aplicada')`. Mapeo: completada→ejecutada, cerrada→aprobada, abierta→borrador, calculada→borrador, contabilizada→aplicada, procesada→aplicada, parcial→pendiente, cobrado→cobrada, pagado→pagada, vencido→pendiente.
+- **CxC/CxP estados válidos**: `cxc_documentos.estado` = `('borrador','pendiente','aprobada','cobrada','anulada')`. `cxp_documentos` probablemente igual. Métodos de cobro/pago también tienen ENUMs específicos: `cxc_cobros.metodo_cobro` = `('efectivo','transferencia','cheque','tarjeta','nota_credito','otro')`.
+- **tipos_documento multi-empresa**: CxC y CxP soportan tipos a nivel Company (global para el tenant, `empresa_id=NULL`) O a nivel Empresa específica (`empresa_id` SET). seedTiposDocumento() debe recibir parámetro empresaId explícito cuando se llama desde seeders de módulos.
 
 #### Sprints de website completados en la sesión 2026-05-22
 
