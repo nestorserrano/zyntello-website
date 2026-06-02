@@ -162,7 +162,7 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 
 ### Bitácora reciente (estado actual — 2026-06-01)
 
-> Último commit en **zyntello-app**: `[#948]` `1756e7a8` (docs: `a8fe68d2`) | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `fd38936`
+> Último commit en **zyntello-app**: `[#948]` `1756e7a8` (docs: `a8fe68d2`) | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `6907365`
 
 #### Sesión 2026-06-02 — UX Fixes + Sistema Roles + Dashboards ERP
 
