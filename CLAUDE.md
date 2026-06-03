@@ -162,7 +162,7 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 
 ### Bitácora reciente (estado actual — 2026-06-03)
 
-> Último commit en **zyntello-app**: `[#965]` `d037351b` | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `8257df5`
+> Último commit en **zyntello-app**: `[#966]` `a48e50a4` | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `8257df5`
 
 #### Sesión 2026-06-02 — UX Fixes + Sistema Roles + Dashboards ERP
 
@@ -249,6 +249,7 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 - `[#963]` **Fix columna vendedores** — `GestionClientesController::index()` línea 77: `where('estado', 'activo')` fallaba porque tabla `vendedores` NO tiene columna `estado`. Columna correcta: `is_active` (boolean). Corregido a `where('is_active', true)`.
 - `[#964]` **Documentación [#961]–[#963]** — CLAUDE.md + /memories/repo/ actualizados. Nueva regla agregada: "Verificar Schema Antes de Filtrar" — siempre revisar tabla real antes de `where()`, convenciones varían (vendedores: is_active, users: status, empresas: estado).
 - `[#965]` `d037351b` **Fix variables vista + métodos modelo + prioridad ENUM** — **GestionClientesController**: renombradas variables KPI (totalClientes→totalPipeline, sinContacto15Dias→sinContacto), agregado cálculo altaPrioridad (count prioridad='alta'), agregados arrays kanbanConfig (configuración visual 4 columnas con gradientes/bordes/acentos) y porEstado (agrupación colecciones), actualizado compact() con 15 variables. **ClienteGestion modelo**: agregado 'prioridad' al fillable, agregados métodos públicos diasSinContacto() y textoUltimaInteraccion() requeridos por vista líneas 111 y 138. **Migración 100005**: cambia prioridad de INTEGER (error diseño migración 100004) a ENUM('alta','media','baja') con mapeo automático (0/NULL→baja, 1→media, 2+→alta), rollback incluido, try-catch Bluehost-safe. Fixes error "Undefined variable $totalPipeline" en index.blade.php línea 28.
+- `[#966]` `a48e50a4` **Fix vendedores estado en agregar()** — `GestionClientesController::agregar()` línea 157: `where('estado', 'activo')` → `where('is_active', true)`. Mismo error que [#963] pero en método diferente. Error producción al intentar agregar cliente a gestión comercial: SQLSTATE[42S22] Unknown column 'estado' in 'where clause'.
 
 #### Reglas nuevas aprendidas (sesión 2026-06-03)
 
