@@ -162,7 +162,7 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 
 ### Bitácora reciente (estado actual — 2026-06-03)
 
-> Último commit en **zyntello-app**: `[#967]` `a505b783` | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `8257df5`
+> Último commit en **zyntello-app**: `[#968]` `8267717d` | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `8257df5`
 
 #### Sesión 2026-06-02 — UX Fixes + Sistema Roles + Dashboards ERP
 
@@ -251,6 +251,7 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 - `[#965]` `d037351b` **Fix variables vista + métodos modelo + prioridad ENUM** — **GestionClientesController**: renombradas variables KPI (totalClientes→totalPipeline, sinContacto15Dias→sinContacto), agregado cálculo altaPrioridad (count prioridad='alta'), agregados arrays kanbanConfig (configuración visual 4 columnas con gradientes/bordes/acentos) y porEstado (agrupación colecciones), actualizado compact() con 15 variables. **ClienteGestion modelo**: agregado 'prioridad' al fillable, agregados métodos públicos diasSinContacto() y textoUltimaInteraccion() requeridos por vista líneas 111 y 138. **Migración 100005**: cambia prioridad de INTEGER (error diseño migración 100004) a ENUM('alta','media','baja') con mapeo automático (0/NULL→baja, 1→media, 2+→alta), rollback incluido, try-catch Bluehost-safe. Fixes error "Undefined variable $totalPipeline" en index.blade.php línea 28.
 - `[#966]` `a48e50a4` **Fix vendedores estado en agregar()** — `GestionClientesController::agregar()` línea 157: `where('estado', 'activo')` → `where('is_active', true)`. Mismo error que [#963] pero en método diferente. Error producción al intentar agregar cliente a gestión comercial: SQLSTATE[42S22] Unknown column 'estado' in 'where clause'.
 - `[#967]` `a505b783` **Fix import Cliente + gradientes kanban inline** — **GestionClientesController**: import corregido de `use App\Models\Tablas\Cliente` a `use App\Models\Cliente` (Cliente.php está en namespace App\Models directamente, NO en Tablas). Agregados valores CSS `gradiente` a kanbanConfig con linear-gradient RGB. **index.blade.php**: reemplazado `bg-gradient-to-r {{ $config['encabezado'] }}` por `style="background: {{ $config['gradiente'] }}"` — soluciona problema de clases Tailwind dinámicas no compiladas en build. Error producción: Class 'App\Models\Tablas\Cliente' not found. Fix visual: encabezados kanban ahora muestran gradientes correctamente.
+- `[#968]` `8267717d` **DemoSeeder: vendedores para 3 empresas + regla arquitectural** — **Problema**: combo vendedores vacío al cambiar de empresa activa. **Causa**: vendedores solo se creaban para empresa 1 (Constructora Demo SA), pero `HasEmpresa` filtra automáticamente por `empresa_id = empresa_activa()->id` → empresas 2 y 3 sin vendedores. **Fix**: planes de comisión + vendedores/cobradores/metas creados para las 3 empresas demo. Empresa2 (Servicios Profesionales): V101 Carlos, V102 María, C101 Roberto. Empresa3 (Distribuidora Mayoreo): V201 Jorge, V202 Sofía, C201 Fernando. **Regla arquitectural confirmada y documentada**: Tenant + Empresa activa → SEPARACIÓN TOTAL de datos operativos. Solo compartidos a nivel tenant (sin empresa_id): países, estados, monedas. TODO lo demás (vendedores, clientes, proveedores, artículos, facturas, cobros, planes comisión, nómina, empleados) SE SEPARA POR empresa_id. DemoSeeder debe crear data completa para las 3 empresas demo.
 
 #### Reglas nuevas aprendidas (sesión 2026-06-03)
 
@@ -263,6 +264,7 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 - **Integer vs ENUM inconsistency**: si migración define campo como INTEGER pero vista lo usa como string ('alta'/'media'/'baja'), crear migración de repair que cambie tipo + mapee valores. No confiar solo en casting PHP.
 - **Namespaces reales vs asumidos** (desde [#967]): `Cliente.php` está en `App\Models\` NO en `App\Models\Tablas\`. Vendedor SÍ está en `App\Models\Tablas\`. Siempre verificar la ubicación real del modelo antes de asumir el import. Error común: copiar-pegar imports sin verificar estructura.
 - **Tailwind clases dinámicas no compilan** (desde [#967]): `bg-gradient-to-r {{ $config['clase'] }}` NO funciona si la clase no está completa en tiempo de compilación. Solución: usar `style="background: {{ $config['css'] }}"` con valores CSS inline (linear-gradient, rgba, etc.). Blade puede interpolar CSS sin problema.
+- **DemoSeeder multi-empresa** (desde [#968]): si el DemoSeeder crea múltiples empresas demo (empresa1, empresa2, empresa3), DEBE crear datos operativos completos para CADA empresa. No es suficiente crear solo para empresa1 — cuando el usuario cambia de empresa activa, los combos aparecen vacíos porque `HasEmpresa` filtra por `empresa_id` automáticamente. Planes de comisión, vendedores, cobradores, metas, clientes, artículos — TODO debe existir por empresa.
 
 #### Sprints de website completados en la sesión 2026-05-22
 
@@ -471,6 +473,42 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 > **Definitiva, sin excepciones.**
 
 Cuando se pida crear una nueva funcionalidad de negocio (CRM, RRHH, encuestas, lo que sea), **siempre** se agrega como módulo dentro de `app/zyntello-app/`. Detalles del checklist completo en `app/zyntello-app/CLAUDE.md`.
+
+### Arquitectura de aislamiento: Tenant + Empresa
+
+**Regla fundamental:** TODO se separa por `company_id` (tenant) + `empresa_id` (empresa activa).
+
+**EXCEPCIONES (catálogos compartidos a nivel tenant, sin empresa_id):**
+1. **Países** (`paises`)
+2. **Estados/ciudades** (`estados`, `ciudades`)  
+3. **Monedas** (`monedas`)
+
+**TODO LO DEMÁS requiere separación por empresa_id:**
+- Clientes, proveedores, artículos
+- Vendedores, cobradores, metas
+- Facturas, cobros, pagos, movimientos
+- Planes de comisión
+- Nómina, empleados, proyectos
+- Cualquier dato operativo
+
+**Implementación:**
+- Trait `HasEmpresa` filtra automáticamente por `empresa_id = empresa_activa()->id`
+- **NUNCA** usar `sinScopeEmpresa()` en endpoints operativos
+- Solo usar `sinScopeEmpresa()` en: seeders, reportes cross-empresa con autorización, APIs de config global del tenant
+
+**Patrón defensivo en controladores:**
+```php
+$empresa = empresa_activa();
+$company = company();
+abort_unless($empresa && $company, 403);
+```
+
+**Ejemplo:**
+- TENANT (company_id) = "Grupo Empresarial XYZ"
+  - EMPRESA1 (empresa_id) = "Constructora XYZ SA"
+  - EMPRESA2 (empresa_id) = "Servicios XYZ SRL"
+  
+Los vendedores de Constructora NO aparecen en Servicios, las facturas NO se mezclan, los clientes son completamente independientes.
 
 ### Resumen del checklist (módulo nuevo)
 
