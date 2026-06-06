@@ -160,9 +160,13 @@ Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` 
 4. cPanel → MySQL → crear `ukrmeumy_zyntello` y `ukrmeumy_zyntello_admin` (no más)
 5. Sin SSH: usar ruta `/zyn-maint/migrate-y-limpiar?key=XXX` y validar con `/zyn-maint/migrate-status?key=XXX`
 
-### Bitácora reciente (estado actual — 2026-06-03)
+### Bitácora reciente (estado actual — 2026-06-05)
 
-> Último commit en **zyntello-app**: `[#968]` `8267717d` | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `8257df5`
+> Último commit en **zyntello-app**: `[#1104]` `87e37518` | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `8257df5`
+
+#### Sesión 2026-06-05 — Fix Modal Buscador Artículos Facturación
+
+- `[#1104]` `87e37518` **Fix buscador artículos modal: corregir nombre tabla fact_lista_precio_items** — Problema: modal de búsqueda de artículos en cotización/pedido/factura daba error al buscar. Causa raíz: métodos `buscarArticulosModal()` (línea 858) y `preciosLista()` (línea 969) en `CotizacionController` usaban tabla inexistente `fact_lista_precio_lineas` cuando la tabla real es `fact_lista_precio_items`. Fixes: 2 cambios en `CotizacionController.php`. Modal buscador ahora funciona correctamente con cascada de precios (lista → base → artículo). Deploy: cPanel pull inmediato. Regla aprendida: NUNCA asumir nombres de tabla — verificar con queries existentes en el mismo controlador.
 
 #### Sesión 2026-06-02 — UX Fixes + Sistema Roles + Dashboards ERP
 
