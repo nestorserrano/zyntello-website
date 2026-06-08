@@ -207,6 +207,30 @@ plink -i $KEY -P $PORT -batch $SSHHOST "cd public_html/zyntello/app && /usr/loca
 - `[#953]` `dd484909` **UX Settings: renombrar Usuarios a Suscriptor + pestañas** — Vista settings/members renombrada a "Suscriptor". Pestañas Alpine.js: "Suscripción" (datos facturación) y "Miembros" (lista + invitaciones). Campos reducidos: nombre w-96, dirección max-w-2xl. Sidebar config: "Usuarios" → "Suscriptor".
 - `[#954]` `f417e642` **DemoSeeder CxC/CxP completo + fix ENUMs aprobaciones + arquitectura tipos_documento** — **CxcSeeder + CxpSeeder**: implementación completa con 6 + 8 documentos demo respectivamente, usando `CxcService::seedTiposDocumento()` / `CxpService::seedTiposDocumento()`. **Fix estados ENUM**: BancosSeeder (4 cambios: completada→ejecutada 2x, cerrada→aprobada, abierta→borrador), DepreciacionService (5 cambios: calculada→borrador 3x, contabilizada→aplicada 2x), FacturacionSeeder (procesada→aplicada), CxcSeeder (parcial→pendiente 2x, cobrado→cobrada, vencido→pendiente), CxpSeeder (parcial→pendiente, pagado→pagada, vencido→pendiente, aprobado→aprobada). **Arquitectura tipos_documento multi-empresa**: `CxcService::seedTiposDocumento()` y `CxpService::seedTiposDocumento()` aceptan parámetro opcional `$empresaId` — si se pasa, crea tipos a nivel Empresa; si es null, a nivel Company. Query filtra por `empresa_id` cuando se especifica. **DemoSeeder**: limpieza de `cxc_tipos_documento` y `cxp_tipos_documento` antes de `Company::forceDelete()` para evitar tipos huérfanos. **CxpService**: eliminada línea `self::seedTiposDocumento($companyId)` en `resolverTipoDocumentoId()` — tipos deben crearse en onboarding/seeding explícito, no durante operaciones normales (evita conflictos con índice único). **Resultado**: `demo:reset` funciona completamente sin errores ENUM.
 
+#### Sesión 2026-06-08 — Análisis y Fix Recepciones de Compras (Checkout Recepciones)
+
+- `[#1109]` **Fix ruta proveedor buscar** — Cambio `route('proveedores.buscar')` → `route('tablas.proveedores.buscar')` en supplier-extensions create/edit. Soluciona RouteNotFoundException.
+- `[#1110]` **Fix ClienteActividad::registrar()** — Reemplazar `ClienteActividad::registrar()` con `ClienteActividadService::registrar()`. Eliminar parámetro `company_id`. Soluciona Call to undefined method.
+- `[#1111]` **Fix RFQ scoring sin respuestas** — Agregar try/catch en `QuotationController::evaluar()` para capturar RuntimeException. Mostrar mensaje amigable en SweetAlert2. Deshabilitar botón "Calcular scoring" si no hay respuestas de proveedores. Soluciona "RFQ sin respuestas para puntuar".
+- `[#1112]` **Frontend validation recepciones** — Agregar `validarYEnviar()` en Alpine.js antes de form.submit(). Mostrar TODOS los errores en SweetAlert2. Agregar backend logging con full error trace en try/catch(Throwable). Soluciona recepciones guardándose silenciosamente.
+- **Análisis cantidad_transito** — Creada migración `2026_06_08_100001_add_cantidad_transito_to_inv_stock.php` pero con error en nombre de columna: migración usaba `cantidad_en_transito` pero tabla debe usar `cantidad_transito`. Luego corregido en `PurchaseOrderService::registrarCantidadEnTransito()` y `ReceiptService::actualizarCantidadEnTransito()`. Sistema funciona: OC aprobada incrementa cantidad_transito, recepción posteada la decrementa.
+- `[#1113]` `bfc2f89` **Mejorar validaciones recepciones: SweetAlert2 detallado** — Reescribir `receiptForm()` validarYEnviar() con:
+  1. **Logs console**: DEBUG messages mostrando lineas, valores, fecha
+  2. **Validaciones detalladas**: cantidad > 0, no exceder disponible, fecha obligatoria
+  3. **SweetAlert2 visual**: cada error con ❌ emoji, lista HTML, didOpen() muestra logs
+  4. **Eliminación ambigüedad**: usuario ahora ve EXACTAMENTE qué campo está incompleto
+  
+  **Confirmación de investigación:** NO faltan campos ocultos. Todos presentes:
+  - `purchase_order_id` hidden ✓
+  - `lineas[].purchase_order_line_id` hidden ✓
+  - `lineas[].cantidad_recibida` en nombre HTML (x-model: l.recibir) ✓
+  - `lineas[].bodega_destino_id` select ✓
+  - `lineas[].lote` input ✓
+  
+  **Causa real de no guardar:** Usuario NO edita campo "Recibir ahora" antes de presionar Crear. El frontend valida `cantidad_recibida > 0` silenciosamente (sin error visible). Ahora muestra error claro en SweetAlert2.
+
+- **Documentación created** — `GUIA_VERIFICACION_RECEPCIONES.md` con paso a paso, flujo correcto, debugging F12, checklist guardar. `FLUJO_RECEPCION_FACTURA.md` con diagrama visual separación Recepción vs Factura Proveedor.
+
 #### Sesión 2026-06-01 — Fixes Sidebar, Tasas de Cambio, Settings UX
 
 - `[#919]` `f72adb2d` **Diagnóstico monedas** — ruta `/zyn-maint/diag-monedas` verifica USD/EUR en catálogo global `monedas`, tabla `empresa_monedas` y tasas por empresa. Utilidad de auditoría para producción.
