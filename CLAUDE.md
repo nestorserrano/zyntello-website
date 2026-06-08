@@ -147,18 +147,40 @@ Antes de push: ejecutar build con PowerShell:
 Commitear `dist/` siempre antes del push.
 
 ### App SaaS unificada (zyntello-app)
-Deploy via **cPanel Git Version Control** del repo `nestorserrano/zyntello-app` a `/home4/ukrmeumy/public_html/zyntello/app/`.
-- `.cpanel.yml` copia archivos, corre migraciones y cachés
-- En deploy queda auditoría en `storage/logs/deploy-migrate.log` y `storage/logs/deploy-migrate-status.log`
+Deploy via **SSH + plink (PuTTY)** del repo `nestorserrano/zyntello-app` a `/home4/ukrmeumy/public_html/zyntello/app/`.
+
+**Configuración SSH:**
+- Key: `C:\wamp64\www\zyntello\zyntello.ppk`
+- Host: `ukrmeumy@ukr.meu.mybluehost.me`
+- Puerto: `2222`
+- Passphrase: `C3dul@13238162`
+- Script automatizado: `.\deploy-bluehost.ps1`
+
+**Deploy manual (PowerShell):**
+```powershell
+$KEY = "C:\wamp64\www\zyntello\zyntello.ppk"
+$SSHHOST = "ukrmeumy@ukr.meu.mybluehost.me"
+$PORT = "2222"
+
+# Paso 1: Pull desde GitHub
+plink -i $KEY -P $PORT -batch $SSHHOST "cd repositories/zyntello-app && git pull origin master"
+
+# Paso 2: Limpiar caché y ejecutar migraciones
+plink -i $KEY -P $PORT -batch $SSHHOST "cd public_html/zyntello/app && /usr/local/bin/php artisan optimize:clear && /usr/local/bin/php artisan migrate --force"
+
+# Paso 3: Reconstruir caché optimizado
+plink -i $KEY -P $PORT -batch $SSHHOST "cd public_html/zyntello/app && /usr/local/bin/php artisan config:cache && /usr/local/bin/php artisan route:cache && /usr/local/bin/php artisan view:cache"
+```
+
+**O ejecutar script completo:**
+```powershell
+.\deploy-bluehost.ps1
+```
+
+**Requisitos:**
+- Plink (PuTTY) instalado y en PATH
 - `vendor/` y `public/build/` están en el repo (Bluehost no tiene Composer/Node)
 - `.env` se mantiene manualmente en el servidor
-
-**Setup inicial (una sola vez):**
-1. cPanel → Subdomains → document root de `app.zyntello.com` = `public_html/zyntello/app/public`
-2. cPanel → Git Version Control → clonar `nestorserrano/zyntello-app` → `public_html/zyntello/app`
-3. Crear `.env` (basado en `.env.production`)
-4. cPanel → MySQL → crear `ukrmeumy_zyntello` y `ukrmeumy_zyntello_admin` (no más)
-5. Sin SSH: usar ruta `/zyn-maint/migrate-y-limpiar?key=XXX` y validar con `/zyn-maint/migrate-status?key=XXX`
 
 ### Bitácora reciente (estado actual — 2026-06-05)
 
