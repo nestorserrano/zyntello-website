@@ -17,7 +17,7 @@ $ErrorActionPreference = "Continue"
 
 # Configuración
 $KEY = "C:\wamp64\www\zyntello\zyntello.ppk"
-$HOST = "ukrmeumy@ukr.meu.mybluehost.me"
+$SSHHOST = "ukrmeumy@ukr.meu.mybluehost.me"
 $PORT = "2222"
 $REPO_DIR = "repositories/zyntello-app"
 $APP_DIR = "public_html/zyntello/app"
@@ -32,7 +32,7 @@ function Invoke-SSHCommand {
     Write-Host "`n$Description" -ForegroundColor Cyan
     Write-Host ("=" * 70) -ForegroundColor DarkGray
     
-    $result = plink -i $KEY -P $PORT -batch ${HOST} "$Command" 2>&1
+    $result = plink -i $KEY -P $PORT -batch ${SSHHOST} "$Command" 2>&1
     
     if ($LASTEXITCODE -eq 0) {
         Write-Host $result
@@ -134,5 +134,5 @@ Write-Host ""
 # Mostrar estado de migraciones
 Write-Host "Estado de migraciones (últimas 5):" -ForegroundColor White
 Write-Host ("=" * 70) -ForegroundColor DarkGray
-plink -i $KEY -P $PORT -batch ${HOST} "cd $APP_DIR && /usr/local/bin/php artisan migrate:status | tail -6"
+plink -i $KEY -P $PORT -batch ${SSHHOST} "cd $APP_DIR && /usr/local/bin/php artisan migrate:status | tail -6"
 Write-Host ""
