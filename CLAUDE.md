@@ -182,7 +182,39 @@ plink -i $KEY -P $PORT -batch $SSHHOST "cd public_html/zyntello/app && /usr/loca
 - `vendor/` y `public/build/` están en el repo (Bluehost no tiene Composer/Node)
 - `.env` se mantiene manualmente en el servidor
 
-### Bitácora reciente (estado actual — 2026-06-05)
+⚠️ **IMPORTANTE — Permisos de directorio después de cada deploy:**
+
+**El problema:** Después de cada `rsync` o `git pull`, los directorios pierden permisos de lectura. Apache (usuario `nobody`) no puede acceder → Error 403/500.
+
+**Solución — Ejecutar SIEMPRE después de deploy:**
+```powershell
+$KEY = "C:\wamp64\www\zyntello\zyntello.ppk"
+$SSHHOST = "ukrmeumy@ukr.meu.mybluehost.me"
+$PORT = "2222"
+
+# Paso 1: Crear directorios de caché si no existen
+plink -i $KEY -P $PORT -batch $SSHHOST "mkdir -p /home4/ukrmeumy/public_html/zyntello/app/storage/framework/{views,cache,sessions}"
+
+# Paso 2: Arreglar permisos (CRÍTICO)
+plink -i $KEY -P $PORT -batch $SSHHOST "
+  chmod 755 /home4/ukrmeumy/public_html/zyntello/app
+  chmod -R 755 /home4/ukrmeumy/public_html/zyntello/app/public
+  chmod -R 755 /home4/ukrmeumy/public_html/zyntello/app/bootstrap
+  chmod -R 777 /home4/ukrmeumy/public_html/zyntello/app/storage
+  chmod -R 777 /home4/ukrmeumy/public_html/zyntello/app/bootstrap/cache
+"
+
+# Paso 3: Limpiar caché de vistas compiladas
+plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zyntello/app/storage/framework/views/*"
+```
+
+**Por qué ocurre:** El repositorio local o la sincronización preservan umask restrictivo. Apache necesita:
+- **755** en directorios para traverse/list
+- **777** en `storage/` para escribir logs/caché
+
+**Regla:** Si ves error 403/500 después de deploy → ejecuta esto primero.
+
+### Bitácora reciente (estado actual — 2026-06-09)
 
 > Último commit en **zyntello-app**: `[#1104]` `87e37518` | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `8257df5`
 
