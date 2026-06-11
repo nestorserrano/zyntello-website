@@ -162,8 +162,12 @@ $KEY = "C:\wamp64\www\zyntello\zyntello.ppk"
 $SSHHOST = "ukrmeumy@ukr.meu.mybluehost.me"
 $PORT = "2222"
 
-# Paso 1: Pull desde GitHub
-plink -i $KEY -P $PORT -batch $SSHHOST "cd repositories/zyntello-app && git pull origin master"
+# Método 1: Git pull directo (RECOMENDADO - preserva .env)
+plink -i $KEY -P $PORT -batch $SSHHOST "cd public_html/zyntello/app && git pull origin master"
+
+# Método 2: Rsync desde repositories (si necesario - CUIDADO con .env)
+# plink -i $KEY -P $PORT -batch $SSHHOST "cd repositories/zyntello-app && git pull origin master"
+# plink -i $KEY -P $PORT -batch $SSHHOST "rsync -av --delete --exclude='.git' --exclude='storage' --exclude='bootstrap/cache' --exclude='.env' repositories/zyntello-app/ public_html/zyntello/app/"
 
 # Paso 2: Limpiar caché y ejecutar migraciones
 plink -i $KEY -P $PORT -batch $SSHHOST "cd public_html/zyntello/app && /usr/local/bin/php artisan optimize:clear && /usr/local/bin/php artisan migrate --force"
@@ -181,6 +185,20 @@ plink -i $KEY -P $PORT -batch $SSHHOST "cd public_html/zyntello/app && /usr/loca
 - Plink (PuTTY) instalado y en PATH
 - `vendor/` y `public/build/` están en el repo (Bluehost no tiene Composer/Node)
 - `.env` se mantiene manualmente en el servidor
+
+⚠️ **CRÍTICO — Nunca eliminar .env en producción:**
+
+El archivo `.env` de producción NO está en Git (está en `.gitignore`). Contiene configuración crítica:
+- `APP_URL=https://app.zyntello.com` (si falta o dice localhost → app inaccesible)
+- Credenciales de base de datos
+- MAIL_PASSWORD, APP_KEY
+
+**Si el .env fue eliminado accidentalmente:**
+1. Crear nuevo con configuración correcta (ver sección "Bases de datos")
+2. `chmod 644 .env`
+3. `php artisan config:clear && php artisan config:cache`
+
+**Regla:** Usar `git pull` directo en `public_html/zyntello/app/`. Si usas `rsync`, SIEMPRE `--exclude='.env'`.
 
 ⚠️ **IMPORTANTE — Permisos de directorio después de cada deploy:**
 
@@ -624,6 +642,7 @@ Los vendedores de Constructora NO aparecen en Servicios, las facturas NO se mezc
 - **Asociaciones funcionales entre módulos:** usar códigos de negocio (ej. código de empleado) y no nombres/apellidos
 - **Migraciones ejecutadas:** nunca editarlas; siempre crear migración nueva
 - **Sin SSH en Bluehost:** usar cPanel Terminal, phpMyAdmin o rutas `/zyn-maint/*?key=XXX`
+- **UX Combos:** TODOS los combos/selects de datos (clientes, proveedores, artículos, empleados, etc.) DEBEN tener búsqueda. Excepciones: solo combos con 2-3 opciones fijas (Activo/Inactivo). Usar TomSelect (preferido), Alpine.js búsqueda client-side, o modal buscador según tamaño del dataset. Ver detalle en `app/zyntello-app/CLAUDE.md`.
 
 ---
 
