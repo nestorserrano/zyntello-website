@@ -37,4 +37,7 @@ releases/
 
 # Carpeta de memoria de Claude (solo local)
 .claude/
+# Claves SSH — NUNCA versionar (incluye la clave sin passphrase auto-generada)
 zyntello.ppk
+zyntello-auto.ppk
+*.ppk

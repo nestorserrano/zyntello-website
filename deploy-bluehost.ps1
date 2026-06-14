@@ -1,36 +1,58 @@
 # ============================================================================
-# DEPLOY ZYNTELLO-APP A BLUEHOST VÍA SSH
+# DEPLOY ZYNTELLO-APP A BLUEHOST VÍA SSH  (DESATENDIDO)
 # ============================================================================
-# Script automatizado para deployment completo de zyntello-app a producción
-# Ejecuta: git pull en public_html → limpiar caché → migrar → rebuild
+# Despliega zyntello-app a producción sin pedir nada:
+#   git pull en public_html → optimize:clear → migrate → rebuild cache
 #
-# REQUISITOS:
-# - Plink (PuTTY) instalado y en PATH
-# - Key SSH: C:\wamp64\www\zyntello\zyntello.ppk
+# ACCESO SSH SIN PROMPTS:
+#   - Usa la clave zyntello.ppk SIN passphrase (quitada con PuTTYgen).
+#   - Fija la host key del servidor con -hostkey → no pide aceptar host key.
+#   - plink -batch → cero prompts interactivos.
+#
+# SI LA CLAVE TIENE PASSPHRASE:
+#   El script lo detecta y avisa. Para quitarla (una sola vez):
+#     1. Abrir PuTTYgen
+#     2. Load -> C:\wamp64\www\zyntello\zyntello.ppk  (passphrase: <tu-passphrase>)
+#     3. Dejar "Key passphrase" y "Confirm passphrase" VACIOS
+#     4. Save private key -> SOBRESCRIBIR C:\wamp64\www\zyntello\zyntello.ppk
+#        (PuTTYgen pregunta "save without passphrase?" -> Yes)
 #
 # USO:
-#   .\deploy-bluehost.ps1
+#   .\deploy-bluehost.ps1             # desatendido
+#   .\deploy-bluehost.ps1 -Confirmar  # pide S/N antes de desplegar
 # ============================================================================
+
+param([switch]$Confirmar)
 
 $ErrorActionPreference = "Continue"
 
-# Configuración
-$KEY = "C:\wamp64\www\zyntello\zyntello.ppk"
+# ── Configuración ───────────────────────────────────────────────────────────
+$KEY     = "C:\wamp64\www\zyntello\zyntello.ppk"
+$HOSTKEY = "SHA256:/J5knqfWDwYYC6DQvknQRMxco7GHIkAyPJQY8w2SFog"   # ed25519 de ukr.meu.mybluehost.me
 $SSHHOST = "ukrmeumy@ukr.meu.mybluehost.me"
-$PORT = "2222"
+$PORT    = "2222"
 $APP_DIR = "public_html/zyntello/app"
 
-# Función para ejecutar comando SSH
+# ── Verificar que la clave NO tenga passphrase ──────────────────────────────
+if (-not (Test-Path $KEY)) {
+    Write-Host "ERROR: no se encontro la clave $KEY" -ForegroundColor Red
+    exit 1
+}
+if (Select-String -Path $KEY -Pattern 'Encryption: aes' -Quiet) {
+    Write-Host "ERROR: la clave $KEY TODAVIA tiene passphrase (Encryption: aes...)." -ForegroundColor Red
+    Write-Host "Quitala con PuTTYgen y SOBRESCRIBE el mismo archivo:" -ForegroundColor Yellow
+    Write-Host "  Load -> $KEY (passphrase: <tu-passphrase>) -> Key passphrase VACIO -> Save private key" -ForegroundColor White
+    exit 1
+}
+
+# ── Ejecutar comando SSH (batch + hostkey, sin prompts) ─────────────────────
 function Invoke-SSHCommand {
-    param(
-        [string]$Command,
-        [string]$Description
-    )
+    param([string]$Command, [string]$Description)
 
     Write-Host "`n$Description" -ForegroundColor Cyan
     Write-Host ("=" * 70) -ForegroundColor DarkGray
 
-    $result = plink -i $KEY -P $PORT -batch ${SSHHOST} "$Command" 2>&1
+    $result = plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "$Command" 2>&1
 
     if ($LASTEXITCODE -eq 0) {
         Write-Host $result
@@ -43,23 +65,25 @@ function Invoke-SSHCommand {
     }
 }
 
-# Banner
+# ── Banner ──────────────────────────────────────────────────────────────────
 Write-Host ""
 Write-Host "=====================================================================" -ForegroundColor Magenta
 Write-Host "         DEPLOY ZYNTELLO-APP -> PRODUCCION (BLUEHOST)               " -ForegroundColor Magenta
 Write-Host "=====================================================================" -ForegroundColor Magenta
 Write-Host ""
 
-# Confirmacion
-Write-Host "Este script ejecutara deployment COMPLETO a produccion:" -ForegroundColor Yellow
-Write-Host "  - git pull origin master en public_html/zyntello/app" -ForegroundColor White
-Write-Host "  - Ejecutar migraciones de base de datos" -ForegroundColor White
-Write-Host "  - Reconstruir cache de Laravel" -ForegroundColor White
-Write-Host ""
-$confirm = Read-Host "Continuar? (S/N)"
-if ($confirm -ne "S" -and $confirm -ne "s") {
-    Write-Host "Deployment cancelado." -ForegroundColor Red
-    exit 0
+# Confirmación opcional (-Confirmar). Por defecto el deploy es desatendido.
+if ($Confirmar) {
+    Write-Host "Este script ejecutara deployment COMPLETO a produccion:" -ForegroundColor Yellow
+    Write-Host "  - git pull origin master en $APP_DIR" -ForegroundColor White
+    Write-Host "  - Ejecutar migraciones de base de datos" -ForegroundColor White
+    Write-Host "  - Reconstruir cache de Laravel" -ForegroundColor White
+    Write-Host ""
+    $resp = Read-Host "Continuar? (S/N)"
+    if ($resp -ne "S" -and $resp -ne "s") {
+        Write-Host "Deployment cancelado." -ForegroundColor Red
+        exit 0
+    }
 }
 
 # ============================================================================
@@ -67,7 +91,7 @@ if ($confirm -ne "S" -and $confirm -ne "s") {
 # ============================================================================
 $success = Invoke-SSHCommand `
     -Command "cd $APP_DIR && git pull origin master" `
-    -Description "[1/3] Pull desde GitHub en public_html/zyntello/app..."
+    -Description "[1/3] Pull desde GitHub en $APP_DIR..."
 
 if (-not $success) {
     Write-Host "`nError en pull de GitHub. Abortando deployment." -ForegroundColor Red
@@ -109,8 +133,7 @@ Write-Host ""
 Write-Host "Aplicacion actualizada en: https://app.zyntello.com" -ForegroundColor Cyan
 Write-Host ""
 
-# Mostrar ultimos commits desplegados
 Write-Host "Ultimos commits en produccion:" -ForegroundColor White
 Write-Host ("=" * 70) -ForegroundColor DarkGray
-plink -i $KEY -P $PORT -batch ${SSHHOST} "cd $APP_DIR && git log --oneline -5"
+plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "cd $APP_DIR && git log --oneline -5"
 Write-Host ""
