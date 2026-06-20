@@ -2,7 +2,7 @@
 # DEPLOY ZYNTELLO-APP A BLUEHOST VÍA SSH  (DESATENDIDO)
 # ============================================================================
 # Despliega zyntello-app a producción sin pedir nada:
-#   git pull en public_html → optimize:clear → migrate → rebuild cache
+#   git pull en public_html → optimize:clear → migrate → limpiar vistas+permisos → rebuild cache
 #
 # ACCESO SSH SIN PROMPTS:
 #   - Usa la clave zyntello.ppk SIN passphrase (quitada con PuTTYgen).
@@ -91,7 +91,7 @@ if ($Confirmar) {
 # ============================================================================
 $success = Invoke-SSHCommand `
     -Command "cd $APP_DIR && git pull origin master" `
-    -Description "[1/3] Pull desde GitHub en $APP_DIR..."
+    -Description "[1/4] Pull desde GitHub en $APP_DIR..."
 
 if (-not $success) {
     Write-Host "`nError en pull de GitHub. Abortando deployment." -ForegroundColor Red
@@ -103,7 +103,7 @@ if (-not $success) {
 # ============================================================================
 $success = Invoke-SSHCommand `
     -Command "cd $APP_DIR && /usr/local/bin/php artisan optimize:clear && /usr/local/bin/php artisan migrate --force" `
-    -Description "[2/3] Limpiar cache de Laravel y ejecutar migraciones..."
+    -Description "[2/4] Limpiar cache de Laravel y ejecutar migraciones..."
 
 if (-not $success) {
     Write-Host "`nError en migraciones. Revisa logs del servidor." -ForegroundColor Red
@@ -112,11 +112,27 @@ if (-not $success) {
 }
 
 # ============================================================================
-# PASO 3: RECONSTRUIR CACHE OPTIMIZADO
+# PASO 3: LIMPIAR VISTAS COMPILADAS + PERMISOS DE STORAGE
+# ----------------------------------------------------------------------------
+# En Bluehost el git pull deja storage/framework/views con permisos restrictivos,
+# y el view:cache del paso siguiente NO puede sobrescribir las vistas compiladas
+# viejas -> el runtime sigue sirviendo una vista obsoleta/corrupta (error Blade).
+# Por eso, SIEMPRE: borrar vistas compiladas + recrear carpetas + chmod 777.
+# ============================================================================
+$success = Invoke-SSHCommand `
+    -Command "cd $APP_DIR && rm -rf storage/framework/views/* && mkdir -p storage/framework/views storage/framework/cache storage/framework/sessions && chmod -R 777 storage bootstrap/cache" `
+    -Description "[3/4] Limpiar vistas compiladas + arreglar permisos de storage..."
+
+if (-not $success) {
+    Write-Host "`nAdvertencia: no se pudieron ajustar permisos/limpiar vistas. Puede haber vistas obsoletas." -ForegroundColor Yellow
+}
+
+# ============================================================================
+# PASO 4: RECONSTRUIR CACHE OPTIMIZADO
 # ============================================================================
 $success = Invoke-SSHCommand `
     -Command "cd $APP_DIR && /usr/local/bin/php artisan config:cache && /usr/local/bin/php artisan route:cache && /usr/local/bin/php artisan view:cache" `
-    -Description "[3/3] Reconstruir cache optimizado (config/routes/views)..."
+    -Description "[4/4] Reconstruir cache optimizado (config/routes/views)..."
 
 if (-not $success) {
     Write-Host "`nError al reconstruir cache. La app deberia funcionar, pero sin optimizacion." -ForegroundColor Yellow
