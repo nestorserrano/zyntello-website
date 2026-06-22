@@ -232,9 +232,26 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 **Regla:** Si ves error 403/500 después de deploy → ejecuta esto primero.
 
-### Bitácora reciente (estado actual — 2026-06-09)
+### Bitácora reciente (estado actual — 2026-06-22)
 
-> Último commit en **zyntello-app**: `[#1104]` `87e37518` | Último commit en **zyntello-admin**: `[#495]` `926afd3` | Último commit en **zyntello-website**: `8257df5`
+> Último commit en **zyntello-app**: `[#1457]` `73d9370f` | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
+
+#### Resumen de sesiones 2026-06-20 → 2026-06-22 (zyntello-app `[#1388]`–`[#1457]`)
+
+> Detalle técnico completo en `app/zyntello-app/CLAUDE.md` (bitácora). Resumen ejecutivo:
+
+- **Cuentas Contables descentralizadas por módulo** (`[#1388]`–`[#1401]`): cada módulo (CxP, CxC, Bancos, Presupuesto, ConstructFlow, Inventario, Facturación, Contabilidad/Dif. Cambiaria) configura SUS cuentas en su propio menú, con tabla estándar `Operación | CC | Cuenta | Descripción` + modal cascada CC→cuenta. Facturación con pestañas Local/Exterior y moneda local por empresa (fix DOP hardcodeado).
+- **Framework de Importadores reutilizables** (`[#1402]`–`[#1443]`): `app/Services/Import/` con 7 importadores (CentroCosto, PlanCuenta, Cliente, Proveedor, Articulo, Empleado, ActivoFijo). Plantilla Excel con listas desplegables, preview editable con combos para FK, validación estricta. **Conector local descargable** (ZIP+.bat) para leer la BD en la LAN del cliente (SQL Server nativo + MySQL/PostgreSQL/ODBC → CSV) porque el importador en la nube no alcanza la red interna.
+- **Patrón Contable por niveles + Centros de Costo jerárquicos** (`[#1406]`–`[#1437]`): máscara configurable de cuentas y CC, autocódigo jerárquico que deriva del padre, vista organigrama (toggle Lista/Organigrama), naturaleza financiera del CC, reportes con roll-up por nivel.
+- **Bancos multimoneda** (`[#1446]`–`[#1450]`): fix dashboard (`ban_movimientos.tipo` es `credito`/`debito`, no `ingreso`/`egreso`), transferencias y reportes multimoneda por `tasas_cambio`, conciliación mensual con saldo inicial/continuidad, importación de estado de cuenta con mapeo configurable por entidad bancaria.
+- **Caja Chica por aprobación** (`[#1445]`, `[#1451]`): reembolso pasa por el motor de aprobaciones (retrocompatible) + comprobante con línea cuenta+CC estándar.
+- **Factura de proveedor (Compras)** (`[#1453]`–`[#1456]`): proveedor obligatorio heredado de la OC/recepción; fixes `moneda_id`/`proveedor_id` vacíos.
+- **Facturación Fase A** (`[#1457]`): validación `exists` en cliente/moneda/serie/lista antes de emitir.
+- **admin `[#498]`**: alta del módulo vertical **Prestamello** (prestamistas / ventas a crédito) en `ModulosSeeder`.
+
+### Bitácora histórica (2026-06-09)
+
+> Último commit en **zyntello-app**: `[#1104]` `87e37518` (histórico)
 
 #### Sesión 2026-06-05 — Fix Modal Buscador Artículos Facturación
 
@@ -643,6 +660,7 @@ Los vendedores de Constructora NO aparecen en Servicios, las facturas NO se mezc
 - **Migraciones ejecutadas:** nunca editarlas; siempre crear migración nueva
 - **Sin SSH en Bluehost:** usar cPanel Terminal, phpMyAdmin o rutas `/zyn-maint/*?key=XXX`
 - **UX Combos:** TODOS los combos/selects de datos (clientes, proveedores, artículos, empleados, etc.) DEBEN tener búsqueda. Excepciones: solo combos con 2-3 opciones fijas (Activo/Inactivo). Usar TomSelect (preferido), Alpine.js búsqueda client-side, o modal buscador según tamaño del dataset. Ver detalle en `app/zyntello-app/CLAUDE.md`.
+- **Consecutivos propios:** sistema de 8 fases (`[#1379]`–`[#1387]`) que permite al suscriptor crear consecutivos y elegir cuál usar por documento (Ventas/CxC/Compras/CxP/Bancos/Caja Chica/Contabilidad). Activación por módulo en Configuración → Consecutivos. Al integrar un módulo nuevo que numere documentos: (1) columna `consecutivo_id` nullable + fillable, (2) `@include('shared.selector-consecutivo')` en el form si `$usaConsecutivosPropios`, (3) numerar con `ConsecutivoService::numeroParaDocumento()` con fallback a la numeración predeterminada, (4) SIEMPRE filtrar por `company_id + empresa_id` (modelo `Consecutivo` usa `HasEmpresa`). Detalle en `app/zyntello-app/CLAUDE.md` (Sesión 2026-06-20) y memoria `project_consecutivos`.
 
 ---
 
