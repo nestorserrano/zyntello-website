@@ -638,6 +638,17 @@ Los vendedores de Constructora NO aparecen en Servicios, las facturas NO se mezc
 7. **Vistas** — `resources/views/{slug}/` (full-width Tailwind, sin max-width centrado)
 8. **DemoSeeder** — agregar datos demo y el slug a la lista de módulos activos
 
+### ⚠️ DIRECTIVA TRANSVERSAL OBLIGATORIA — todo módulo nuevo debe contemplar
+
+> **Sin excepción. Aplica al diseñar CUALQUIER módulo o funcionalidad nueva.**
+
+1. **Multimoneda desde el diseño** — la empresa puede tener **1, 2 o más monedas**. Todo documento/movimiento con valor monetario guarda **`moneda_id` + `tipo_cambio` + equivalente funcional** (`monto_funcional`/`total_funcional` = monto × tasa). Los **agregados** usan `COALESCE(*_funcional, *)`; los **reportes** muestran filas en moneda original y **totales/asientos en moneda funcional**. El flujo **monomoneda debe seguir igual** (tasa = 1 ⇒ funcional == original; campos nullable/backfill). La tasa se guarda **siempre** en cada movimiento (referencia/auditoría).
+2. **Mueve inventario ⇒ movimiento de inventario** — toda operación que afecte stock/productos genera su **movimiento de inventario** (`inv_movimientos` vía el servicio de Inventario). Nunca tocar stock por fuera.
+3. **Es contabilizable ⇒ asiento contable** — toda operación contabilizable dispara su **asiento** vía `MovimientoFinancieroService::registrar` (evento → `IntegracionContableService`), **en moneda funcional**, respetando la config de integración del módulo (puede estar desactivada).
+4. **Es venta ⇒ mueve Facturación** — si la operación es una venta, debe reflejarse en **Facturación** (y su cadena: stock, CxC, caja si aplica).
+5. **Cuentas Contables por módulo** — cada módulo **crea/configura SUS cuentas contables en su propio menú de Configuración** (patrón `Configuracion\ParametrosContablesController`, tabla estándar `Operación | CC | Cuenta | Descripción` + modal cascada CC→cuenta). **Nunca hardcodear cuentas**; leerlas de la config del módulo.
+6. **Integridad transversal** — respetar la integridad de **todos** los módulos interconectados: usar los servicios/eventos core (CxP/CxC, MovimientoFinancieroService, Inventario, Facturación, Presupuesto vía `GastoRegistrado`), no duplicar lógica ni registros (ej. un cobro/asiento se registra **una sola vez**, de fuente única).
+
 ### Lo que NUNCA se debe hacer
 - ❌ Crear `app/{modulo}/` u otra carpeta hermana de `zyntello-app`
 - ❌ Repo Laravel separado para el módulo
