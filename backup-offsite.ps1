@@ -15,7 +15,7 @@
 #    4. Verificar conteos: SELECT COUNT(*) FROM companies; FROM fact_facturas; etc.
 # =====================================================================
 param(
-    [string]$Destino = "C:\ZyntelloBackups",
+    [string]$Destino = "E:\ZyntelloBackups",
     [int]$Retencion  = 30
 )
 
