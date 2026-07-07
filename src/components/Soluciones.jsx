@@ -32,6 +32,7 @@ const DISPLAY_ESTATICO = {
   cxc:          { icono: '💳', rating: 4.8, reviews: 94,  etiqueta: 'Disponible', previews: [{ label: 'Cobros', icon: '💳' }, { label: 'Cartera', icon: '📊' }, { label: 'Reportes', icon: '📈' }],        categoria: 'Finanzas' },
   cxp:          { icono: '📑', rating: 4.7, reviews: 76,  etiqueta: 'Disponible', previews: [{ label: 'Pagos', icon: '💸' }, { label: 'Cheques', icon: '📄' }, { label: 'Reportes', icon: '📋' }],         categoria: 'Finanzas' },
   psa:          { icono: '⏱️', rating: 4.9, reviews: 53,  etiqueta: 'Disponible', previews: [{ label: 'Timesheets', icon: '🕒' }, { label: 'GPS', icon: '📍' }, { label: 'Planilla', icon: '📄' }],       categoria: 'Servicios' },
+  prestamello:  { icono: '💵', rating: 4.8, reviews: 22,  etiqueta: 'Nuevo',      previews: [{ label: 'Préstamos', icon: '💵' }, { label: 'Cobros GPS', icon: '📍' }, { label: 'Pagos online', icon: '💳' }], categoria: 'Finanzas' },
 }
 
 const DISPLAY_DEFAULT = { icono: '⚡', rating: 4.5, reviews: 10, etiqueta: null, previews: [], categoria: 'Módulo' }
