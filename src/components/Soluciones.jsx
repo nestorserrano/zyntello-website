@@ -60,42 +60,6 @@ const APPS_FALLBACK = [
   { id: 'doctores',     nombre: 'Doctores',       subtitulo: 'Gestión de Consultorios y Clínicas',    descripcion: 'Agenda citas, gestiona expedientes clínicos, recetas, historial del paciente y factura consultas con seguridad y privacidad.', precio: null,  precioAnual: null, color: '#06b6d4', gradiente: 'linear-gradient(135deg, #164e63 0%, #0891b2 60%, #22d3ee 100%)', ahorroAnual: '2 MESES GRATIS', url: 'https://app.zyntello.com/demo/doctores',      caracteristicas: ['Agenda de citas y recordatorios automáticos', 'Expediente clínico electrónico', 'Recetas y órdenes de laboratorio', 'Control de historias clínicas', 'Facturación de consultas y seguros'] },
 ]
 
-const APP_SUITE = {
-  id: 'erp',
-  icono: '🏢',
-  nombre: 'Zyntello ERP',
-  subtitulo: '10 módulos integrados para gestión empresarial completa',
-  desarrollador: 'Zyntello',
-  categoria: 'ERP',
-  descripcion: 'El ERP empresarial de Zyntello integra en un solo plan todos los módulos que tu empresa necesita: inventario, facturación, compras, nómina, bancos, activos fijos y más. Todo conectado, sin duplicidad de datos.',
-  caracteristicas: [
-    '📦 Inventario — Stock en tiempo real, múltiples bodegas y valorización',
-    '🧾 Facturación — Cotizaciones, pedidos, facturas electrónicas y despachos',
-    '💰 Cuentas por Cobrar — Gestión de cobros, cartera vencida y estado de cuenta',
-    '📑 Cuentas por Pagar — Proveedores, pagos, cheques y conciliación',
-    '👥 Nómina — Empleados, períodos, AFP/SFS/INFOTEP y liquidaciones',
-    '🔐 Control de Acceso — Usuarios, roles y permisos por módulo',
-    '🏦 Bancos — Cuentas, movimientos, transferencias y conciliación',
-    '🛒 Compras — Requisiciones, órdenes de compra y recepciones',
-    '📊 Presupuesto — Planificación y control presupuestal en tiempo real',
-    '🏗️ Activos Fijos — Registro, depreciación y mantenimiento de activos',
-    '💵 Caja Chica — Control de fondos, reposiciones y gastos menores',
-    'Integración contable automática entre todos los módulos',
-    'Multi-moneda: DOP, USD, EUR y más',
-    'Soporte prioritario incluido',
-  ],
-  precio: null,
-  precioAnual: null,
-  ahorroAnual: '2 MESES GRATIS',
-  color: '#6366f1',
-  gradiente: 'linear-gradient(135deg, #1e1b4b 0%, #4338ca 50%, #6366f1 100%)',
-  rating: 5.0,
-  reviews: 42,
-  etiqueta: 'ERP Completo',
-  previews: [],
-  url: 'https://app.zyntello.com/erp',
-}
-
 /* ─── Convierte color hex a gradiente CSS ──────────────────────── */
 function hexToGradiente(hex) {
   try {
