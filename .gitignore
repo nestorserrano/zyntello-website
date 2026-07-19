@@ -37,6 +37,9 @@ releases/
 
 # Carpeta de memoria de Claude (solo local)
 .claude/
+
+# Graphify — grafo de conocimiento generado localmente (solo local)
+graphify-out/
 # Claves SSH — NUNCA versionar (incluye la clave sin passphrase auto-generada)
 zyntello.ppk
 zyntello-auto.ppk

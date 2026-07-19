@@ -153,3 +153,6 @@ Write-Host "Ultimos commits en produccion:" -ForegroundColor White
 Write-Host ("=" * 70) -ForegroundColor DarkGray
 plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "cd $APP_DIR && git log --oneline -5"
 Write-Host ""
+
+# ── Graphify: NO se ejecuta en el deploy (es un artefacto local manual).
+#    Refrescar a mano cuando se necesite:  pwsh ./graphify-refresh.ps1

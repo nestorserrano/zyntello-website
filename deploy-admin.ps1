@@ -87,3 +87,6 @@ Write-Host "        ADMIN ACTUALIZADO -> https://admin.zyntello.com             
 Write-Host "=====================================================================" -ForegroundColor Green
 plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "cd $REPO_DIR && git log --oneline -3"
 Write-Host ""
+
+# ── Graphify: NO se ejecuta en el deploy (es un artefacto local manual).
+#    Refrescar a mano cuando se necesite:  pwsh ./graphify-refresh.ps1

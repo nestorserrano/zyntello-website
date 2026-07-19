@@ -552,6 +552,25 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 ---
 
+## Graphify — grafo de conocimiento del código (local)
+
+> Herramienta de análisis local que mapea el ecosistema (website + `app/zyntello-app` + `admin`) en un grafo consultable. **100% local, sin LLM** (tree-sitter AST, `--code-only`) — ningún código sale de la máquina.
+
+- **Instalación (aislada):** `uv tool install graphifyy --with mcp`. Paquete oficial `graphifyy` (doble "y"); expone `graphify` y `graphify-mcp`. El paquete `mcp` NO viene por defecto y es necesario para el servidor MCP.
+- **Salida:** `graphify-out/` en la raíz (**gitignored**) → `graph.json` (~14.7k nodos, 3 repos fusionados), `GRAPH_REPORT.md`, `GRAPH_TREE.html` (navegador jerárquico D3 — recomendado), `graph.html` (force-directed, pesado a >5000 nodos).
+- **Alcance = 3 repos.** El `.gitignore` raíz excluye `admin/` y `app/*`, así que hay que extraer cada repo por separado y fusionar (`graphify merge-graphs`). `admin/` y `app/zyntello-app/` llevan su propio `.graphifyignore` que excluye `vendor/`, `storage/`, `public/build/`, `bootstrap/cache/` — **Graphify NO salta `vendor` por defecto** y esos repos lo versionan para Bluehost.
+- **Consulta (terminal):** `graphify query "..."`, `graphify explain "X"`, `graphify path "A" "B"`, `graphify affected "X"`.
+- **Consulta (MCP):** servidor `graphify` registrado en Claude Code (scope local, en `~/.claude.json`), apunta a `graphify-out/graph.json`. Sus herramientas se cargan al **reiniciar** la sesión.
+- **Refresco: SOLO MANUAL** → `pwsh ./graphify-refresh.ps1` (re-extrae los 3 repos + fusiona + regenera reporte/HTML, sin LLM). Ejecutarlo cuando quieras actualizar el grafo.
+- **Sin automatización (desde 2026-07-19):** el grafo NO se refresca en cada commit ni en el deploy.
+  - **Post-commit:** los hooks `post-commit` de los 3 repos fueron **eliminados** (`.git/hooks/`). Ya no se lanza nada tras commitear.
+  - **Deploy:** los 3 scripts (`deploy-website.ps1`, `deploy-admin.ps1`, `deploy-bluehost.ps1`) **ya no** llaman a `graphify-refresh.ps1`.
+  - Motivo: el refresh en cada commit/deploy consumía tiempo y una corrupción del `graph.json` intermedio (en `%TEMP%\graphify-zyntello`) rompía el paso. Si el rebuild vuelve a fallar con "Extra data"/JSONDecodeError, borrar `%TEMP%\graphify-zyntello` y re-ejecutar `graphify-refresh.ps1` (full rebuild limpio).
+- **NO instalado (requiere OK explícito del usuario):** `graphify claude install` (hooks PreToolUse + sección en CLAUDE.md; costo de rendimiento: cargan `graph.json` de 23 MB en cada Read/Grep), `graphify hook install` (hooks git propios de graphify), `graphify watch`.
+- **Frescura:** el grafo es una foto del working tree en el último refresh. Si el código cambió y no corrió el refresh, el grafo (y las respuestas basadas en él) pueden estar desactualizados.
+
+---
+
 ## Tecnologías por proyecto
 
 | Proyecto | Stack |
