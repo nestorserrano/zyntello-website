@@ -232,9 +232,13 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 **Regla:** Si ves error 403/500 después de deploy → ejecuta esto primero.
 
-### Bitácora reciente (estado actual — 2026-06-22)
+### Bitácora reciente (estado actual — 2026-07-22)
 
-> Último commit en **zyntello-app**: `[#1457]` `73d9370f` | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
+> Último commit en **zyntello-app**: `[CXC-F4]` (FASE 4 CxC: incobrables, reportes y KPIs — cierra el blueprint CxC completo F0–F4) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
+
+> **CxC FASE 4 (2026-07-22)** — cierra `zyntello-cxc-mejoras-blueprint.md` (F0–F4): provisión de incobrables NIIF 9 simplificada (matriz por bucket configurable, documento mensual que contabiliza SOLO el delta), castigo (write-off) con aprobación obligatoria que consume el pool de provisión disponible + recuperación posterior sin reactivar el documento, 7 reportes nuevos (DSO, proyección de cobros, efectividad de cobranza, comportamiento de pago, cobros por método, provisión del período, intereses por mora) + aging con comparativo vs mes anterior, dashboard con 6 KPIs nuevos calculados con la MISMA fuente que sus reportes. **Bug real crítico encontrado y corregido**: doble registro de TODOS los event listeners de aprobación del sistema (Laravel auto-discovery duplicaba el registro manual en `AppServiceProvider`) — cada aprobación de CUALQUIER módulo ejecutaba su handler dos veces; fix de una línea en `bootstrap/app.php` (`withEvents(discover: false)`), verificado con la suite completa (0 regresiones). Detalle en `app/zyntello-app/CLAUDE.md` (Sesión 2026-07-22 continuación) y `app/zyntello-app/DISCREPANCIAS-cxc.md`. Suite CxC: 153 passed. Suite completa del ecosistema: 690+ passed, 0 failed.
+
+> **Activos Fijos FASE 4 (2026-07-21)** — operación física completa: inventario físico con QR (reusa escáner INV-F1-2 + patrón conteo INV-F2, resuelve por `public_token` sin cambiar el contrato público), mantenimientos (gasto vs capitalización al cerrar por umbral), seguros (extiende el catálogo `cont_polizas_seguro` de Contabilidad, no duplica), obras en curso CIP (asiento cuadrado DR activo/CR obra_en_curso + imputación Compras→CIP inline vía `pur_invoices.obra_curso_id`). 26 tests verdes + demo en las 3 empresas. Detalle en `app/zyntello-app/CLAUDE.md` (Sesión 2026-07-21) y memoria `project_activos_fase4`. ⚠️ La suite de testing NO usa RefreshDatabase (BD `zyntello_app_testing` puerto 3308); nunca `migrate:fresh` en testing (rompe el dump).
 
 #### Resumen de sesiones 2026-06-20 → 2026-06-22 (zyntello-app `[#1388]`–`[#1457]`)
 
