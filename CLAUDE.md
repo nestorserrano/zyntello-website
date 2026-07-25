@@ -277,7 +277,11 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > número); corregido con InnoDB explícito en las 4 tablas nuevas + conversión de `ban_config`,
 > **quedan 79 tablas del ecosistema en MyISAM** documentadas para verificación humana; (2) el
 > dry-run repetía cuentas homónimas de distintas empresas; (3) la migración inventaba talonarios
-> históricos de hojas fantasma. **Suite Bancos: 101 pruebas.** Detalle en
+> históricos de hojas fantasma; (4) `conUso()` adjuntaba el uso como atributos dinámicos de
+> Eloquent (un `save()` posterior habría dado *Unknown column*); (5) la emisión de cheques de
+> nómina no atrapaba la excepción → 500 en vez del mensaje accionable.
+> **Suite Bancos: 106 pruebas. Regresión completa del ecosistema VERDE: 1058 passed,
+> 4 skipped, 0 failed (6198 asserts)** — de 1004 a 1058, sin regresiones. Detalle en
 > `app/zyntello-app/CLAUDE.md` y `app/zyntello-app/DISCREPANCIAS-bancos.md` (`D-BAN-F1-*` y
 > "CIERRE DE LA FASE 1" con los 8 TODOs de verificación humana). ⚠️ Migraciones obligatorias
 > `2026_07_25_170001`–`170004`, `180001`, `190001`–`190002`.
