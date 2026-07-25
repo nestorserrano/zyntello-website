@@ -12,6 +12,28 @@
 
 ---
 
+## 🇩🇴 DIRECTIVA DE IDIOMA — MANDATORIA, SIN EXCEPCIÓN
+
+> **TODO en español. Absolutamente todo.**
+>
+> El director técnico (Nestor) **no lee inglés**. Cualquier salida en inglés es trabajo no entregado.
+>
+> Aplica a:
+> - **Respuestas al usuario** — mensajes, resúmenes, explicaciones, preguntas.
+> - **Razonamiento visible / pensamientos** — el bloque de análisis que el usuario ve también va en español.
+> - **Análisis, auditorías, diagnósticos, reportes de discrepancias.**
+> - **Código**: nombres de métodos y variables de negocio, comentarios, docblocks, mensajes de excepción, mensajes de validación, flash messages, textos de vista.
+> - **Commits**: `[#NNN] descripción en español`.
+> - **Documentación**: CLAUDE.md, blueprints, DISCREPANCIAS, memorias.
+> - **Tests**: nombres descriptivos y mensajes de aserción en español.
+>
+> Única excepción: palabras clave del framework/lenguaje que son estándar técnico
+> (`public function`, `Schema::create`, `belongsTo`, nombres de columnas ya existentes, etc.).
+>
+> Si una herramienta o subagente devuelve algo en inglés, **se traduce antes de mostrarlo**.
+
+---
+
 ## 🔑 INSTRUCCIÓN PARA INICIAR SESIÓN
 
 > **SIEMPRE hacer esto al comenzar cualquier sesión de trabajo en Zyntello:**
@@ -233,6 +255,33 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 **Regla:** Si ves error 403/500 después de deploy → ejecuta esto primero.
 
 ### Bitácora reciente (estado actual — 2026-07-24)
+
+> **BANCOS FASE 0 (2026-07-24) — `[BAN-F0-0]`–`[BAN-F0-3]`**: arranca `zyntello-bancos-mejoras-blueprint.md`
+> (tesorería). **F0-0** golden master de 10 pruebas que congela las 6 letras del blueprint, incluida
+> una **conciliación completa** (abrir → extracto CSV demo → match automático → conciliación manual →
+> cerrar). **F0-1** las 5 guardas con `GuardasBancariasService` como fuente única — la clave: **un
+> cheque que pagó CxP o nómina ya NO se anula suelto desde Bancos**, el mensaje dirige a reversar el
+> pago en su módulo origen (la cascada inversa sigue intacta). **F0-2** asientos de tesorería: la
+> transferencia multimoneda ahora registra **comisión y diferencia cambiaria** (antes ambas piernas
+> usaban el mismo importe y se perdían 300 funcional en el caso demo), el **cheque directo** deja su
+> asiento, y nuevo `CargoBancarioService` (comisión/cargo/interés/ITBIS) que consumirá F3-4; incluye
+> la **auditoría del proceso "Generar asientos"** que pedía el blueprint. **F0-3** aprobación de
+> egresos sobre umbral: `ban_config` por empresa (0 = desactivado) + pantalla "Configuración del
+> módulo"; un cheque sobre el umbral queda pendiente **sin tocar el saldo**, y los egresos ya
+> aprobados (corrida CxP, nómina) pasan directo. **F0-4** cierra las 2 discrepancias abiertas: el
+> cheque de nómina ya registra su asiento (`NOM_PAGO_CHEQUE`, del lado de Nómina que es su dueño) y
+> la pantalla de Procesos aclara que "Generar asientos" reprocesa todos los módulos; además las
+> decisiones humanas pasan a la Configuración del módulo (`permitir_anular_cheque_de_pago` OFF,
+> `dias_vigencia_cheque` 180) con un **checklist que evalúa solo** qué conceptos y cuentas faltan y
+> si el umbral está activo sin flujo. **4 bugs reales corregidos** que no estaban en el
+> blueprint: los updates masivos de movimientos no disparaban el observer y dejaban el saldo
+> desfasado; el cheque directo no asentaba; los contra-asientos salían sin líneas (el mayor nunca
+> volvía a cero); `ban_cheques` tenía las columnas de aprobación fuera del `$fillable`. Suite Bancos:
+> **47 pruebas, 255 aserciones**. **Regresión completa del ecosistema VERDE: 999 passed, 4 skipped,
+> 0 failed (5962 asserts)** — de 952 a 999, sin regresiones. Detalle en `app/zyntello-app/CLAUDE.md` y
+> `app/zyntello-app/DISCREPANCIAS-bancos.md` (secciones `D-BAN-F0-*` y "CIERRE DE LA FASE 0" con la
+> **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
+> en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
 > Último commit en **zyntello-app**: `[CND-FIX]` `c7c115eb` (correcciones post-cierre Condominios: discrepancias + config del módulo + fix bucle del combo de módulos) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
 
@@ -575,7 +624,7 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > Herramienta de análisis local que mapea el ecosistema (website + `app/zyntello-app` + `admin`) en un grafo consultable. **100% local, sin LLM** (tree-sitter AST, `--code-only`) — ningún código sale de la máquina.
 
 - **Instalación (aislada):** `uv tool install graphifyy --with mcp`. Paquete oficial `graphifyy` (doble "y"); expone `graphify` y `graphify-mcp`. El paquete `mcp` NO viene por defecto y es necesario para el servidor MCP.
-- **Salida:** `graphify-out/` en la raíz (**gitignored**) → `graph.json` (~14.7k nodos, 3 repos fusionados), `GRAPH_REPORT.md`, `GRAPH_TREE.html` (navegador jerárquico D3 — recomendado), `graph.html` (force-directed, pesado a >5000 nodos).
+- **Salida:** `graphify-out/` en la raíz (**gitignored**) → `graph.json` (**18,502 nodos / 39,782 aristas / 2,190 comunidades** tras el refresh del 2026-07-24, 3 repos fusionados), `GRAPH_REPORT.md`, `GRAPH_TREE.html` (navegador jerárquico D3 — recomendado), `graph.html` (force-directed, pesado a >5000 nodos).
 - **Alcance = 3 repos.** El `.gitignore` raíz excluye `admin/` y `app/*`, así que hay que extraer cada repo por separado y fusionar (`graphify merge-graphs`). `admin/` y `app/zyntello-app/` llevan su propio `.graphifyignore` que excluye `vendor/`, `storage/`, `public/build/`, `bootstrap/cache/` — **Graphify NO salta `vendor` por defecto** y esos repos lo versionan para Bluehost.
 - **Consulta (terminal):** `graphify query "..."`, `graphify explain "X"`, `graphify path "A" "B"`, `graphify affected "X"`.
 - **Consulta (MCP):** servidor `graphify` registrado en Claude Code (scope local, en `~/.claude.json`), apunta a `graphify-out/graph.json`. Sus herramientas se cargan al **reiniciar** la sesión.
