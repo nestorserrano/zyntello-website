@@ -256,6 +256,24 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 ### Bitácora reciente (estado actual — 2026-07-25)
 
+> **TODO EL ESQUEMA A InnoDB — migraciones portables (2026-07-25)**: pedido del usuario para
+> poder **mudar de servidor sin errores**. El motor se colaba por dos vías y las dos están
+> cerradas: (1) `config/database.php` tenía `'engine' => null` en las 3 conexiones MySQL, así
+> que cada `Schema::create()` heredaba el `default_storage_engine` del host (MyISAM en el MySQL
+> de WampServer) → ahora es **`'engine' => 'InnoDB'` explícito**, la corrección de raíz;
+> (2) el squashed schema `database/schema/mysql-schema.sql` traía **36 `ENGINE=MyISAM`** que un
+> servidor nuevo heredaba aunque su default fuera InnoDB → parcheado a **468/468 InnoDB**
+> (diff confirma que el motor es el único cambio). Para las BDs ya desplegadas, migración
+> `2026_07_25_200001_convertir_todas_las_tablas_a_innodb`: idempotente, no altera datos ni
+> columnas, y si una tabla no se puede convertir lo registra en el log sin abortar el deploy.
+> **Verificación de la mudanza hecha, no supuesta**: BD vacía + `migrate` completo → **948
+> migraciones, 0 errores, InnoDB 516 / no-InnoDB 0** (antes 437/79). Desarrollo y testing
+> también en 516/0. Blindado con `tests/Feature/EsquemaInnoDbTest.php` (3 pruebas: esquema,
+> conexiones y dump) — revertir cualquiera de las tres vías rompe la suite. ⚠️ **No volver
+> `'engine'` a `null`**. En MyISAM `DB::transaction()` no revierte y `lockForUpdate()` es un
+> no-op: afectaba a `users`, `companies`, `nom_employees`, `nom_payroll_results`,
+> `cxc_provisiones`, `cxp_corridas`, los 15 `af_*`, `pg_*` y más.
+
 > **BANCOS FASE 1 (2026-07-25) — `[BAN-F1-1]`–`[BAN-F1-3]` + cierre `[BAN-F1]`**: chequeras
 > (talonarios) del blueprint `zyntello-bancos-mejoras-blueprint.md`. Antes la numeración de
 > cheques era un correlativo suelto sin rangos comprados al banco, sin activación/agotamiento y
@@ -272,10 +290,10 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > (5 estados) con el cuadre "total explicado == hojas del talonario". **F1-3**: alertas
 > idempotentes por día (`bancos:alertas`, 06:25) con 3 tipos de chequera, silenciables, con
 > responsable y master-switch de correo apagado; tarjeta de chequeras en la cuenta bancaria.
-> **3 bugs reales**: (1) ⚠️ **el servidor usa `default_storage_engine = MyISAM`** → `lockForUpdate()`
+> **3 bugs reales**: (1) ⚠️ **el servidor usaba `default_storage_engine = MyISAM`** → `lockForUpdate()`
 > era un no-op y `DB::transaction()` no revertía (dos emisiones simultáneas habrían repetido el
-> número); corregido con InnoDB explícito en las 4 tablas nuevas + conversión de `ban_config`,
-> **quedan 79 tablas del ecosistema en MyISAM** documentadas para verificación humana; (2) el
+> número); afectaba a **79 tablas del ecosistema** y quedó **resuelto por completo** (ver la
+> entrada siguiente); (2) el
 > dry-run repetía cuentas homónimas de distintas empresas; (3) la migración inventaba talonarios
 > históricos de hojas fantasma; (4) `conUso()` adjuntaba el uso como atributos dinámicos de
 > Eloquent (un `save()` posterior habría dado *Unknown column*); (5) la emisión de cheques de
@@ -640,6 +658,31 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
   - **CRM-H5 Top vendedores:** Query en `CrmDashboardController` agrupada por `asignado_a` donde `ganado_en` es del mes actual. Sección "🏆 Top Vendedores (mes)" en panel lateral del dashboard.
   - Fix: `CrmLeadController::show()` cargaba relación inexistente `'notas'`; corregido a `'leadNotas'`/`'leadNotas.user'`.
   - Blueprints creados: `zyntello-crm-mejoras-hyplast-blueprint.md` y `zyntello-facturacion-pendientes-blueprint.md`.
+
+### Mudanza a otro servidor (BD desde cero) — probado 2026-07-25
+
+> El esquema completo es **InnoDB** y las migraciones corren de punta a punta sin errores. Dos
+> rutas, según si el host destino tiene el cliente `mysql` en el PATH:
+
+```bash
+# Ruta A — el servidor TIENE el cliente mysql (caso Bluehost)
+php artisan migrate --force        # restaura database/schema/mysql-schema.sql + aplica el resto
+
+# Ruta B — el servidor NO tiene el cliente mysql
+php artisan zyntello:cargar-schema # carga el dump con PDO puro (solo sobre BD vacía)
+php artisan migrate --force        # aplica las migraciones posteriores al dump
+```
+
+**Verificación de que la BD quedó bien** (debe devolver 0 filas):
+
+```sql
+SELECT TABLE_NAME, ENGINE FROM information_schema.TABLES
+WHERE TABLE_SCHEMA = DATABASE() AND ENGINE <> 'InnoDB';
+```
+
+Resultado de la prueba real: **948 migraciones, 0 errores, 517 tablas, no-InnoDB 0** por ambas
+rutas. ⚠️ En MyISAM las transacciones no revierten y `lockForUpdate()` es un no-op — por eso
+`config/database.php` fuerza `'engine' => 'InnoDB'` y hay 3 pruebas que impiden revertirlo.
 
 ### Mini guía operativa post-deploy (sin SSH)
 
