@@ -254,7 +254,35 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 **Regla:** Si ves error 403/500 después de deploy → ejecuta esto primero.
 
-### Bitácora reciente (estado actual — 2026-07-24)
+### Bitácora reciente (estado actual — 2026-07-25)
+
+> **BANCOS FASE 1 (2026-07-25) — `[BAN-F1-1]`–`[BAN-F1-3]` + cierre `[BAN-F1]`**: chequeras
+> (talonarios) del blueprint `zyntello-bancos-mejoras-blueprint.md`. Antes la numeración de
+> cheques era un correlativo suelto sin rangos comprados al banco, sin activación/agotamiento y
+> sin control del talonario. **F1-1**: el control vive detrás de **DOS interruptores apagados de
+> fábrica** — `ban_config.gestion_chequeras` ("Manejo de chequeras" en Configuración del módulo,
+> pedido explícito del usuario) + `ban_cuentas.usa_chequeras` (por cuenta, como pide el
+> blueprint); con cualquiera apagado la numeración es la histórica y el golden master no se mueve.
+> `ChequeraService` es fuente única: toma el número de la chequera **activa** con
+> `lockForUpdate()`, agota el talonario y exige activar el siguiente, rechaza solapes de rango y
+> garantiza una sola chequera activa por cuenta. Pantalla de **Chequeras** + selector de chequera
+> al emitir + comando `bancos:migrar-chequeras` que **por defecto solo simula**. **F1-2**: las
+> hojas dañadas/robadas/perdidas se anulan **en blanco** — el número queda consumido con motivo y
+> el próximo cheque salta —, y el reporte **Secuencia de Chequera** explica cada hoja del rango
+> (5 estados) con el cuadre "total explicado == hojas del talonario". **F1-3**: alertas
+> idempotentes por día (`bancos:alertas`, 06:25) con 3 tipos de chequera, silenciables, con
+> responsable y master-switch de correo apagado; tarjeta de chequeras en la cuenta bancaria.
+> **3 bugs reales**: (1) ⚠️ **el servidor usa `default_storage_engine = MyISAM`** → `lockForUpdate()`
+> era un no-op y `DB::transaction()` no revertía (dos emisiones simultáneas habrían repetido el
+> número); corregido con InnoDB explícito en las 4 tablas nuevas + conversión de `ban_config`,
+> **quedan 79 tablas del ecosistema en MyISAM** documentadas para verificación humana; (2) el
+> dry-run repetía cuentas homónimas de distintas empresas; (3) la migración inventaba talonarios
+> históricos de hojas fantasma. **Suite Bancos: 101 pruebas.** Detalle en
+> `app/zyntello-app/CLAUDE.md` y `app/zyntello-app/DISCREPANCIAS-bancos.md` (`D-BAN-F1-*` y
+> "CIERRE DE LA FASE 1" con los 8 TODOs de verificación humana). ⚠️ Migraciones obligatorias
+> `2026_07_25_170001`–`170004`, `180001`, `190001`–`190002`.
+
+### Bitácora anterior (2026-07-24)
 
 > **BANCOS FASE 0 (2026-07-24) — `[BAN-F0-0]`–`[BAN-F0-3]`**: arranca `zyntello-bancos-mejoras-blueprint.md`
 > (tesorería). **F0-0** golden master de 10 pruebas que congela las 6 letras del blueprint, incluida
