@@ -256,6 +256,31 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 ### Bitácora reciente (estado actual — 2026-07-26)
 
+> **BANCOS post-cierre F4 (2026-07-26) — `[BAN-F4-FIX]` · DESPLEGADO EN PRODUCCIÓN**: el hilo común
+> de lo que apareció al auditar fue **funcionalidad implementada y probada que el usuario no podía
+> alcanzar desde la pantalla**. (1) Los **conceptos contables del módulo** (comisiones, cargos,
+> intereses, ITBIS, dif. cambiaria y las dos cuentas por depositar) se configuran en
+> `parametros.modulo-banc`, que existía pero **no estaba enlazada en el menú** — y el checklist
+> mandaba a *Cuentas Contables*, que solo lista los de cada cuenta: el usuario habría dado vueltas
+> buscando algo que no estaba ahí. Ahora hay un ítem *Conceptos Contables del Módulo* y el otro se
+> llama *Cuentas Contables (por cuenta)*. (2) **`saldo_minimo` era una columna sin formulario**: la
+> alerta de saldo bajo no podía dispararse nunca en producción. (3) La ventana de «pendientes de
+> depositar» era una constante del código y pasa a `dias_pendientes_deposito` (cada cuánto deposita
+> la empresa no es un detalle técnico). (4) Anti-patrón `currentCompany` en los parámetros contables
+> de Bancos, que anulaba la validación de tenant, más una cuenta sin verificar que fuera de la
+> empresa. **Verificado con prueba, no por inspección**: cero cuentas hardcodeadas (la prueba falla
+> si aparece un literal de 4 dígitos), `company_id`+`empresa_id` en cabecera/líneas/movimiento con
+> aislamiento entre empresas probado, guardas de tesorería reusadas, evento catalogado y los 6 KPIs
+> del dashboard atados al servicio de analítica. **Checklist +3** (caja de cobros de CxC, cuenta
+> transitoria solo si el interruptor está encendido, vigilancia de saldo mínimo). Suite Bancos
+> **282**; regresión completa **1307 passed, 4 skipped, 0 failed**. ⚠️ Migración `2026_07_26_200004`.
+> **Desplegado**: pull + 4 migraciones + caché + permisos; verificado en producción que las tablas
+> nuevas son InnoDB (no-InnoDB en toda la BD: **0**), los 11 conceptos BANC están disponibles, el
+> evento está catalogado y las 7 rutas de depósitos responden.
+> **Reglas nuevas: una columna sin formulario es una función que no existe · un enlace del checklist
+> es parte del checklist · dos pantallas parecidas necesitan nombres que se distingan · una
+> constante que responde a «cada cuánto lo hace la empresa» es configuración.**
+
 > **BANCOS FASE 4 (2026-07-26) — `[BAN-F4-1]`–`[BAN-F4-4]` + cierre `[BAN-F4]` · CIERRA EL
 > BLUEPRINT DE BANCOS (F0→F4)**: relación con módulos, reportes y alertas de tesorería. Lo primero
 > fue **verificar el ANEXO B con `git log` en vez de suponerlo**, y las dos dependencias resultaron
