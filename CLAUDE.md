@@ -256,6 +256,56 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 ### Bitácora reciente (estado actual — 2026-07-26)
 
+> **BANCOS FASE 3 (2026-07-26) — `[BAN-F3-1]`–`[BAN-F3-4]` + cierre `[BAN-F3]`**: importación de
+> estados de cuenta flexible, del blueprint `zyntello-bancos-mejoras-blueprint.md`. El importador
+> existía y funcionaba, pero el mapeo era **ad-hoc**: se autodetectaba en cada importación o vivía
+> como un JSON suelto en `ban_entidades.formato_importacion`. Sin XLSX, sin encoding, sin forma de
+> ver **por qué** una línea no entró, con reglas de cruce fijas y sin flujo para los cargos que el
+> banco aplica solo. **F3-1**: un **perfil** (`ban_perfiles_importacion`) convierte el mapeo en una
+> entidad con nombre — se configura UNA vez contra la descarga real y se reutiliza cada mes.
+> **La compatibilidad es el diseño**: el importador actual ES el «perfil automático», y hay una
+> prueba que compara **fila por fila** la cascada sin perfil contra el importador histórico (cascada:
+> elegido a mano → cuenta → banco → legacy → automático; la cuenta manda porque dos cuentas del
+> mismo banco pueden descargar en formatos distintos). Se construye **SOBRE** el importador:
+> `aConfig()` devuelve el MISMO array que `parsearConConfig()` ya consumía, y solo se añadieron
+> claves **opcionales** — `col_tipo` (columna D/C, que solo tenía la autodetección: un banco con
+> «monto + tipo» era imposible de mapear a mano), `fila_inicio` (el preámbulo de titular/período/
+> saldos) y palabras clave propias. Semillas RD (Popular, BHD, Banreservas) **inactivas** y
+> `verificado=false`. **F3-2**: asistente de 4 pasos que muestra las **filas crudas del archivo del
+> usuario** con un combo encima de cada columna; **XLSX con PhpSpreadsheet** —la librería que ya usan
+> los exports del Ministerio de Trabajo— leído a filas y de ahí a TSV, así que desde ese punto hay
+> **una sola ruta de parseo**; Latin-1 detectado y convertido; y **nada se descarta en silencio**:
+> cada línea no leída se reporta con su número, su contenido y el motivo nombrando el dato concreto,
+> separando los descartes esperados (encabezado, preámbulo) de las filas con datos que quedaron
+> fuera. **F3-3**: reglas por cuenta (`ban_reglas_matching`) cuyos **defaults son el matching
+> histórico** —hay una prueba que reproduce el fixture del golden master F0-0— y la regla que
+> sostiene la tarea: **solo los cruces EXACTOS se auto-concilian**. Un probable (número de cheque
+> leído del texto, importe aceptado por tolerancia, o suma de varios movimientos 1-a-N) se propone y
+> espera, porque cuadrar una conciliación con un par equivocado es peor que dejarla pendiente: nadie
+> vuelve a mirar lo que ya aparece cuadrado. **F3-4**: la partida no reconocida se convierte en
+> movimiento + asiento + conciliado **en un clic** (la contabilidad ya vivía en `CargoBancarioService`
+> desde F0-2, que decía «es lo que consumirá F3-4»), con **aprendizaje por cuenta**: el patrón se
+> normaliza sin dígitos —los bancos meten el número de cuenta o el mes en la glosa— así que
+> «Comisión manejo cta 4471» y «COMISION MANEJO CTA 9982 FEB» son el mismo patrón, y el mes siguiente
+> se sugiere solo. **5 bugs reales**: (1) ⚠️ **`parsearFecha()` no validaba el calendario** —
+> `31/13/2026` volvía como `'2026-13-31'` y reventaba lejos de la causa, al guardar; (2) ⚠️ **el signo
+> DELANTE del importe se perdía** — con UNA sola columna de importe un cargo de `-1,500.00` se leía
+> como **depósito**, y el extracto no descuadra por poco sino por el doble (la ruta con mapeo sí lo
+> respetaba: las dos rutas del mismo servicio no coincidían); (3) `createFromFormat()` rueda el mes
+> sin avisar, así que un formato equivocado **guardaba fechas inventadas** en vez de fallar;
+> (4) el orden de preferencia de los patrones era **parcial** (pasaba aislada, fallaba en la suite) y
+> estaba **duplicado** entre servicio y pantalla: podía **sugerir un tipo y guardar otro**;
+> (5) **`saldo_libros` quedaba obsoleto** al crear el movimiento desde el extracto — la diferencia
+> mentía y **el mes no se podía cerrar aunque estuviera cuadrado**; las pruebas de F3-4 pasaban
+> todas, solo apareció al escribir la aceptación end-to-end. **Suite Bancos: 203 pruebas.**
+> Detalle en `app/zyntello-app/CLAUDE.md` y `app/zyntello-app/DISCREPANCIAS-bancos.md`
+> (`D-BAN-F3-*` y "CIERRE DE LA FASE 3" con 9 TODOs de verificación humana). ⚠️ Migraciones
+> `2026_07_26_100001`, `110001`, `110002`, `120001`. **Regla nueva: todo orden de preferencia tiene
+> que ser TOTAL** (desempate final por `id`) — segunda vez que este defecto aparece en Bancos.
+> ⚠️ **Trampa de entorno**: `phpunit.xml` declara `DB_PORT=3306` pero la BD de pruebas vive en el
+> **3308**; sin el puerto la suite falla en 1062 pruebas con «Table company_modules doesn't exist»,
+> que parece un desastre de código y es solo el puerto. **Correr `DB_PORT=3308 php artisan test`.**
+
 > **BANCOS FASE 2 (2026-07-26) — `[BAN-F2-1]`–`[BAN-F2-3]` + cierre `[BAN-F2]`**: formatos de
 > impresión de cheques del blueprint `zyntello-bancos-mejoras-blueprint.md`. El talonario del
 > banco viene pre-impreso y cada banco pone la fecha, el beneficiario y el importe en otro sitio
@@ -289,6 +339,32 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > verificación humana). ⚠️ Migraciones `2026_07_25_210001`–`210002`. **Regla: imprimir ≠ emitir**
 > — el motor solo lee y dibuja, y en el lote la impresión se cuenta cuando el documento se genera,
 > no al elegir el grupo.
+
+> **BANCOS post-cierre F3 (2026-07-26) — `[BAN-F3-FIX]`**: corrección de las 2 discrepancias
+> abiertas + las decisiones humanas de la fase llevadas a pantalla. **(1) D-BAN-F3-5**: el XLSX
+> **truncaba en silencio** a 5,000 filas — devolvía lo leído como si el archivo terminara ahí, y un
+> extracto de un mes movido pasa de 5,000 líneas sin esfuerzo. Es la peor forma de fallar: la
+> conciliación se importa "bien", cuadra *casi*, y la diferencia son los movimientos que nadie sabe
+> que faltan (nadie revisa lo que ya aparece importado). Ahora el tope es 20,000 y **se detiene con
+> un mensaje que dice qué hacer**. **(2) D-BAN-F3-6**: el agrupado manual tenía la tolerancia
+> **hardcodeada en 1 centavo** mientras el matching automático de la misma cuenta leía
+> `ReglaMatching::tolerancia_monto` — una cuenta con tolerancia de 5.00 aceptaba sola una diferencia
+> de 2.50 pero **rechazaba el mismo grupo armado a mano**, sin explicación. **(3)** Un criterio
+> duplicado en 2 vistas (clasificación de descartes esperados) unificado en el servicio: **tercera
+> vez** que aparece esta forma de defecto en Bancos (F2-3, F3-4). **3 opciones nuevas en
+> Configuración del módulo** con defaults = comportamiento de cierre y prueba dedicada a eso:
+> `exigir_perfil_verificado` (OFF), `bloquear_import_con_descartes` (OFF, distingue el encabezado
+> de las filas con datos: sin esa distinción ningún CSV importaría) y
+> `aprender_conceptos_extracto` (ON). **Pantalla nueva «Conceptos del Extracto»** que cierra el
+> TODO #7 de la fase: el catálogo que sugiere el tipo de cargo solo vivía en la tabla, sin ningún
+> sitio donde revisarlo, y un patrón demasiado corto sugiere el tipo equivocado el mes siguiente
+> hasta que el asiento sale contra la cuenta incorrecta. **Checklist ampliado** (cuentas sin perfil
+> —las nombra—, perfiles activos sin verificar, conceptos aprendidos). **`phpunit.xml` ya declara
+> `DB_PORT=3308`**: la trampa de los 1062 fallos por olvidar el override no puede repetirse.
+> **`CLAUDE.md` de la app ahora se versiona**, tras quitarle la clave real de `/zyn-maint` que
+> estaba en 2 URLs en texto plano. **Suite Bancos: 218 pruebas** (de 204). ⚠️ Migración
+> `2026_07_26_130001`. **Reglas: un tope que no avisa es peor que no tener tope · la misma
+> pregunta, un solo número · no fijar el conteo de una lista que va a crecer.**
 
 ### Bitácora anterior (2026-07-25)
 
