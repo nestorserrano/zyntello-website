@@ -256,6 +256,55 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 ### Bitácora reciente (estado actual — 2026-07-26)
 
+> **BANCOS FASE 4 (2026-07-26) — `[BAN-F4-1]`–`[BAN-F4-4]` + cierre `[BAN-F4]` · CIERRA EL
+> BLUEPRINT DE BANCOS (F0→F4)**: relación con módulos, reportes y alertas de tesorería. Lo primero
+> fue **verificar el ANEXO B con `git log` en vez de suponerlo**, y las dos dependencias resultaron
+> distintas de lo que el blueprint daba por hecho: el concepto «cheques/efectivo por depositar»
+> de CXC-F0-1 **no existía** (el commit sí, el concepto no), y CXC-F2-4 **ya tenía** el cheque
+> devuelto funcionando con `revertirCobrada` — así que se extiende en vez de duplicarlo.
+> **F4-1**: un cobro en efectivo o en cheque no está en el banco cuando se registra, está en la
+> gaveta; y el banco lo verá como UN depósito por el total, no como N cobros. La boleta de depósito
+> agrupa los pendientes y al confirmarla crea **UN** movimiento con su asiento — que es lo que
+> **convierte el 1-a-N de la conciliación en un 1-a-1 exacto** (probado: un solo candidato por ese
+> importe). Regla contable: el depósito acredita **la misma cuenta que el cobro debitó**
+> (`caja_cobros` de CXC para el efectivo, `cheques_por_depositar` de BANC para los cheques);
+> cualquier otra elección dejaría un saldo permanente en la cuenta de origen. Detrás de
+> `usar_cheques_por_depositar` **apagado de fábrica**, pero la elegibilidad NO depende del
+> interruptor (un cobro se puede depositar si no tiene movimiento bancario propio y no está ya en
+> un depósito: un hecho, no una configuración) más un UNIQUE como segunda guarda.
+> **F4-2**: ⚠️ **el saldo del banco NO bajaba al devolverse un cheque** —`recalcularSaldo()` solo
+> excluye `anulado`, así que marcar el movimiento como `devuelto` no quitaba el dinero: el
+> contra-asiento acreditaba el mayor mientras `saldo_actual` seguía contando un dinero que el banco
+> ya se había llevado. Ahora se registra el **débito que el banco aplica de verdad** (que además es
+> la línea del extracto a conciliar), sin asiento propio para no contar la devolución dos veces. Y
+> un cheque **dentro de un depósito agrupado** ya se puede devolver: F4-1 había creado un caso que
+> F4-2 no sabía atender, y es el caso normal. **F4-3**: `TesoreriaAnaliticaService` como fuente
+> única de 6 reportes (flotantes con aging, posición consolidada multi-empresa, depósitos en
+> tránsito, comisiones y cargos por banco, proyección de saldo, transferencias del período); cada
+> uno declara su **cuadre contra la fuente y lo muestra en pantalla**, no solo en una prueba.
+> **F4-4**: el dashboard tenía sus propias consultas y podía decir un flotante distinto al del
+> reporte — reescrito para consumir el mismo servicio (**KPI == reporte por construcción**, con una
+> prueba por KPI); y 3 alertas nuevas (saldo bajo mínimo, conciliación atrasada, cheque flotante
+> antiguo) idempotentes, silenciables y con responsable sobre la infraestructura canónica de F1-3.
+> **7 defectos reales** además de los dos del blueprint: la clave de la alerta de cheque devuelto
+> hacía que **dos cheques del mismo depósito generaran una sola alerta**; la guarda de «conciliado»
+> dejaba al tesorero sin salida en el caso normal; y las **pruebas de F4-1 pasaban con el asiento en
+> estado `error`** porque `assertAsientoCuadrado` solo mira si las líneas cuadran entre sí, no si
+> llegaron al mayor. **Suite Bancos: 266 pruebas** (de 218). Detalle en `app/zyntello-app/CLAUDE.md`
+> y `app/zyntello-app/DISCREPANCIAS-bancos.md` (`D-BAN-F4-*` y la **LISTA CONSOLIDADA de 35 TODOs
+> de verificación humana de TODO el blueprint**). ⚠️ Migraciones `2026_07_26_200001`–`200003`.
+> **Reglas nuevas: un cambio que crea un caso nuevo debe revisar quién lo va a recibir · una guarda
+> se pone sobre la ACCIÓN, no sobre el estado · un asiento que cuadra pero no se posteó no es un
+> asiento · una alerta que salta todos los días enseña a ignorar las alertas · el software avisa,
+> las decisiones con terceros son del humano (un cheque vencido NO se anula solo).**
+>
+> ⚠️ **Discrepancia corregida del blueprint (D-BAN-F4-3-1)**: la fórmula de la proyección de saldo
+> («saldo + corridas − flotantes + tránsito») hace **doble conteo** — el cheque emitido YA descontó
+> el saldo del libro desde F0-2, y un compromiso aprobado va a salir, así que se resta. Se
+> implementan dos columnas correctas, cada una con su fórmula escrita en el código **y en la
+> pantalla**: *disponible = saldo − compromisos* y *estimado en el banco = saldo − tránsito +
+> flotantes*.
+
 > **BANCOS FASE 3 (2026-07-26) — `[BAN-F3-1]`–`[BAN-F3-4]` + cierre `[BAN-F3]`**: importación de
 > estados de cuenta flexible, del blueprint `zyntello-bancos-mejoras-blueprint.md`. El importador
 > existía y funcionaba, pero el mapeo era **ad-hoc**: se autodetectaba en cada importación o vivía
