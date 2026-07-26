@@ -254,7 +254,43 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 **Regla:** Si ves error 403/500 después de deploy → ejecuta esto primero.
 
-### Bitácora reciente (estado actual — 2026-07-25)
+### Bitácora reciente (estado actual — 2026-07-26)
+
+> **BANCOS FASE 2 (2026-07-26) — `[BAN-F2-1]`–`[BAN-F2-3]` + cierre `[BAN-F2]`**: formatos de
+> impresión de cheques del blueprint `zyntello-bancos-mejoras-blueprint.md`. El talonario del
+> banco viene pre-impreso y cada banco pone la fecha, el beneficiario y el importe en otro sitio
+> del papel; la impresión era **una vista fija**, que servía para papel blanco pero no para
+> acertarle a la casilla. Ahora un **formato** (`ban_formatos_cheque`) guarda esas posiciones en
+> **milímetros** —la unidad con la que se mide contra el cheque físico— y el motor
+> (`ChequeFormatoService`, fuente única) las convierte en PDF con posicionamiento absoluto.
+> **Compatibilidad total**: la cascada es cuenta → entidad bancaria → *ninguna* = vista CLÁSICA,
+> así que mientras nadie asigne un formato ningún cheque imprime distinto. **F2-2**: editor donde
+> **los inputs en mm son el camino exacto y siempre disponible** (son los campos reales del
+> formulario) y el **arrastre es solo un acelerador** que redondea a 0.1 mm; **página de
+> calibración** con regla milimetrada, marco, cuadrícula y un **control de escala de 100 mm** que
+> hay que verificar con una regla real ANTES de medir nada (si la impresora escala, calibrar es
+> adivinar); preview en vivo, cheque de prueba con guías, duplicar (copia **inactiva**) y dos
+> formatos base sembrables, también inactivos porque son una aproximación y no una medida.
+> **F2-3**: **voucher** que contesta las tres preguntas que el cheque solo no contesta — qué se
+> pagó (facturas de CxP con NCF/e-NCF), qué se retuvo (**CXP F1**, verificado con `git log` antes
+> de integrar: sin esta sección el comprobante *parece* descuadrado) y cómo quedó registrado (el
+> asiento del egreso, consolidado por cuenta y con su cuadre; si no llegó al mayor lo dice en el
+> papel) + firmas configurables; y el **lote agrupa por formato** porque un PDF no puede mezclar
+> tamaños de página. **4 bugs reales**: (1) ⚠️ **el monto en letras tenía 4 defectos que se
+> imprimían HOY en cheques de producción** — 21,000 salía como «VEINTIUNO MIL PESOS» y 1.00 como
+> «UN PESOS»; una letra que no concuerda con la cifra es motivo de rechazo en ventanilla. El
+> helper existía y no tenía **una sola prueba**; ahora tiene 70; (2) el voucher **no era
+> determinista** (dos copias del mismo comprobante listaban las facturas en distinto orden); (3)
+> las coordenadas perdían el tipo al pasar por JSON; (4) `ban_cuentas.layout_cheque` y
+> `firma_imagen_path` eran columnas huérfanas preexistentes. **Suite Bancos: 155 pruebas.
+> Regresión completa del ecosistema VERDE: 1181 passed, 4 skipped, 0 failed** — de 1061 a 1181
+> (+120), sin regresiones. Detalle en `app/zyntello-app/CLAUDE.md` y
+> `app/zyntello-app/DISCREPANCIAS-bancos.md` (`D-BAN-F2-*` y "CIERRE DE LA FASE 2" con 9 TODOs de
+> verificación humana). ⚠️ Migraciones `2026_07_25_210001`–`210002`. **Regla: imprimir ≠ emitir**
+> — el motor solo lee y dibuja, y en el lote la impresión se cuenta cuando el documento se genera,
+> no al elegir el grupo.
+
+### Bitácora anterior (2026-07-25)
 
 > **TODO EL ESQUEMA A InnoDB — migraciones portables (2026-07-25)**: pedido del usuario para
 > poder **mudar de servidor sin errores**. El motor se colaba por dos vías y las dos están
