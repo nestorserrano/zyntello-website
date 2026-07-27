@@ -254,7 +254,121 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 **Regla:** Si ves error 403/500 después de deploy → ejecuta esto primero.
 
-### Bitácora reciente (estado actual — 2026-07-26)
+### Bitácora reciente (estado actual — 2026-07-27)
+
+> **CAR WASH post-cierre (2026-07-27) — `[CW-FIX-1]`, `[CW-FIX-2]`**: pedido del director técnico —
+> *«corrige las discrepancias, agrega a la configuración del módulo las opciones donde se requiera
+> intervención humana… los intervalos de mantenimiento se pueden agregar a la ficha del cliente por
+> su vehículo porque un cliente puede tener dos o más vehículos»*.
+> **`[CW-FIX-1]` el mantenimiento era global cuando el problema es por vehículo**: una camioneta de
+> trabajo cambia el aceite cada 5,000 km y el carro familiar lo necesita por tiempo — con una sola
+> regla por empresa **uno de los dos avisos siempre está mal**. La decisión fue **override, no reglas
+> por vehículo**: el catálogo es la plantilla y solo se guarda lo que ese vehículo tiene distinto
+> (`NULL` = usa el catálogo), porque copiar todas las reglas a cada carro dejaría a los ya
+> registrados sin recibir una corrección del estándar — hay una prueba de que la corrección **sí
+> llega** a quien no lo ajustó. `activo = false` cubre el **eléctrico que no lleva aceite**: sin esa
+> columna la única forma de no avisarle sería apagar la regla para todos. Y los vehículos ya se
+> **registran y se asignan a su dueño** (antes solo nacían al recibir un turno, con el carro
+> esperando en la puerta), con pestaña *Vehículos* en la ficha del cliente y un contador de los que
+> **no tienen dueño** — sin cliente no hay a quién avisarle.
+> **`[CW-FIX-2]` cuatro correcciones y un checklist**: (1) ⚠️ **la fidelidad ignoraba la cobertura
+> que el módulo ya declaraba** (`cobertura_membresia`): configurado por placa, el cliente con tres
+> carros llegaba al premio con la suma de los tres — un premio que ninguno se había ganado; es la
+> forma de defecto más difícil de ver, porque el número en pantalla es plausible y solo está contando
+> otra cosa. (2) ⚠️ **el catálogo de trabajos del taller no tenía NINGUNA pantalla**: F3 entregó
+> presupuesto, comisión del mecánico y vinculación al mantenimiento, y la tabla solo se podía llenar
+> por SQL — un taller recién instalado **no podía presupuestar**, y el TODO de «vincular cada regla a
+> su trabajo» era **imposible de cumplir** porque el combo siempre estaba vacío. (3) ⚠️ **sin el cron
+> nada lo decía** (el TODO más peligroso): ahora cada comando estampa su ejecución **aunque no envíe
+> nada**, porque «corrió y no había nada» y «no corrió» son cosas distintas. (4) la jornada de la
+> productividad estaba **fija en 8 h**: un lavadero que abre de 7 a 19 tenía el indicador mal por
+> diseño. **El checklist convierte 11 de los 18 TODOs** en algo que la pantalla dice sola, con tres
+> severidades — si todo lo apagado saliera en rojo, un módulo recién instalado mostraría diez alarmas
+> y el usuario aprendería a ignorarlas. **12 reglas verificadas violándolas, 12 detectadas**; y ⚠️
+> **una prueba pasaba por la razón equivocada** (segunda vez en el módulo): el global scope de
+> `HasEmpresa` la salvaba, así que se separó en dos, una por guarda. **Suite Car Wash: 376** (de 333).
+> ⚠️ Migraciones `2026_07_27_350001`–`350003`.
+> **Reglas nuevas: un dato que el negocio ajusta por caso no puede ser global · una decisión ya
+> declarada en la configuración manda en todo lo que dependa de ella · un proceso programado tiene
+> que dejar rastro de que corrió, incluso cuando no hizo nada · un checklist sin severidades es ruido
+> · una TABLA sin pantalla es una función que no existe.**
+
+> **CAR WASH FASE 4 (2026-07-27) — `[CW-F4-1]`–`[CW-F4-3]` + cierre `[CW-F4]` · CIERRA EL
+> BLUEPRINT DE CAR WASH (F0→F4)**: reportes, diferenciación y alertas. Lo primero fue **verificar
+> el ANEXO B con `git log`**, y las tres dependencias condicionales resultaron distintas de lo que
+> el blueprint daba por hecho: `crm_fidelidad` **no existe**, `[REST-*]` **nunca se ejecutó** y
+> `public_token` **no estaba** en `cw_ordenes`. **F4-1**: `CarwashAnaliticaService` es fuente única
+> de los 7 reportes **y** del dashboard —prevención directa del defecto de Bancos F4-4: el KPI y el
+> reporte salen del MISMO método— y cada reporte declara su **cuadre contra la fuente y lo pinta al
+> pie**, porque un cuadre que solo vive en la prueba no avisa a nadie en producción. Un turno
+> **anulado** no cuenta como venta (si contara, la venta no cuadraría con la caja y nadie sabría por
+> qué); los importes salen de las **líneas** y no de la cabecera, que es lo que permite que el
+> reporte por servicio y el total cuadren entre sí; y **lo que falta se nombra en vez de filtrarse**
+> (un servicio sin insumos declarados aparece marcado: «margen 100%» es una ilusión, el jabón
+> cuesta). **F4-2**: el contador de fidelidad **NO se guarda, se DERIVA** de los turnos entregados
+> desde el último canje —una columna sería un segundo registro del mismo hecho y al anular un turno
+> quedaría vieja; hay una prueba que **anula un turno y el contador baja solo**—; lo que sí se
+> guarda es el **canje**, que es un hecho nuevo. El `public_token` del QR va en la **ORDEN** y no en
+> el vehículo (un token por vehículo dejaría ver todas sus visitas a quien conserve un ticket viejo)
+> y la página pública muestra **solo lo que ya está impreso en el ticket** del cliente: ni su
+> nombre, ni su teléfono, ni los importes. Y el recordatorio de lavado **NO es automático**: un
+> mantenimiento vencido es un hecho y se manda solo, pero «hace tiempo que no viene» es una decisión
+> comercial — automatizarlo convertiría el módulo en un emisor de publicidad. **F4-3**: comparativo
+> contra el **mismo día de la semana anterior** (un lunes contra un lunes: contra «ayer» un lunes
+> siempre parecería un desastre al lado del sábado) desde el MISMO servicio que los KPIs, con la
+> variación en `null` cuando la referencia es 0; y 4 alertas sobre el patrón canónico del ecosistema
+> con la regla **«una alerta que salta todos los días enseña a ignorar las alertas»**: el umbral del
+> turno estancado nace en **0 = desactivado**, el de insumos exige mínimo declarado + candado de
+> Inventario, y el de mantenimiento solo cuenta los **vencidos** diciendo el **motivo** por el que
+> el recordatorio no salió. Hay una prueba que impide que el módulo nazca ruidoso: *con los defaults,
+> operar normal no dispara ni una alerta.* **⚠️ Los DOS mecanismos de control de la Fase 0 avisaron
+> al entregar F4-2** (el golden master del hueco F4 y la cuenta de los tres huecos): estaban escritos
+> para eso. Los **tres huecos** que F0-0 marcó quedan cerrados. **Suite Car Wash: 333 pruebas** — el
+> módulo **no tenía NINGUNA** antes de F0-0; **regresión completa VERDE: 1640 passed, 4 skipped,
+> 0 failed** (de 1307 antes de arrancar el blueprint). ⚠️ Migraciones `2026_07_27_340001`–`340003`; cron
+> `carwash:alertas` (06:35).
+> **Reglas nuevas: un cuadre que no se muestra no avisa de nada · lo que falta se nombra, no se
+> filtra · un contador que se puede derivar no se guarda · un porcentaje sobre cero es null, no
+> 100% · una alerta que no se puede apagar se ignora entera.**
+> **⚠️ Trampa del ecosistema: `HubTestCase` arranca con el módulo `inventario` ACTIVO** — para
+> probar un candado de Inventario hay que desactivarlo en la prueba, o el candado nunca se ejerce.
+
+> **CAR WASH FASE 3 (2026-07-27) — `[CW-F3-1]`–`[CW-F3-3]` + cierre `[CW-F3]`**: taller y
+> mantenimiento, la primera área **nueva** del vertical (F0–F2 endurecieron lo que ya existía).
+> El taller es un negocio distinto en el mismo local: el lavado dura 30 minutos y se cobra al
+> salir; una orden de taller dura días, necesita que el cliente **apruebe un presupuesto** y
+> consume piezas del almacén. La decisión de arquitectura salió de **leer el modelo `Orden`**, no
+> de elegir a priori: ni tabla propia (partiría el historial del vehículo en dos, y F3-3 pide
+> justamente una ficha unificada) ni aditivo puro (10 columnas en NULL para todos los lavados y 12
+> valores mezclados en el ENUM `estado`). Así que **la orden sigue siendo UNA** (`tipo_orden`) con
+> la extensión 1:1 `cw_taller_detalles`, y la pieza que lo sostiene es que **el estado fino del
+> taller se DERIVA al grueso**: el kanban, los KPIs, el semáforo, el historial y la facturación
+> siguen funcionando sin saber que el taller existe. **F3-2**: presupuestar **no consume** —el
+> stock se mueve con un botón cuando el mecánico usa la pieza, porque en un taller las piezas se
+> usan por tandas—, sin bodega configurada **no se inventa una** (descontar del almacén equivocado
+> es peor que no descontar: el error se descubre en el conteo físico semanas después), el consumo
+> es idempotente y **sella el costo real**, y la comisión del mecánico se **calcula** de lo
+> ejecutado en vez de registrarse aparte (dos registros de lo mismo = dos verdades, y una queda
+> vieja al corregir el trabajo). **F3-3**: el historial es UNO porque la orden es una —eso es lo
+> que compra la decisión de F3-1—; las reglas de mantenimiento admiten solo km (rotación de gomas),
+> solo tiempo (revisión anual) o las dos, y con las dos **la que se cumpla primero manda**; el
+> odómetro actual es la **lectura más alta, no la última** (un odómetro solo sube: 1200 en vez de
+> 12000 es un error de tecleo, y usarlo haría que el aviso no saltara nunca); el recordatorio
+> (cron 07:20) es idempotente por día, **solo simula** sin `--confirmar` y respeta el opt-out.
+> **⚠️ El defecto lo encontró la aceptación, no las tareas: una orden de taller NO SE PODÍA
+> FACTURAR** — el facturador arma las líneas desde los servicios de lavado y los productos de
+> tienda, y una orden de taller no tiene ninguno de los dos (sus líneas son trabajos y repuestos);
+> las pruebas de F3-2 verificaban que el total llegara a la **cabecera**, y eso era cierto, pero el
+> facturador **construye** las líneas desde las tablas de detalle. **⚠️ Y una prueba pasaba por la
+> razón equivocada**: al violar el filtro de «solo cuenta una orden entregada» siguió pasando
+> porque la salvaba el otro filtro (`ejecutado`) — separada en dos, una por filtro. **Suite Car
+> Wash: 243 pruebas** (de 172); **regresión completa VERDE: 1550 passed, 4 skipped, 0 failed**.
+> ⚠️ Migraciones `2026_07_27_330001`–`330003`.
+> **Reglas nuevas: un total en la cabecera no es una factura · una prueba que verifica UNA regla
+> tiene que aislarla, o pasa por la razón equivocada · presupuestar no consume · una columna sin
+> formulario es una función que no existe** (el opt-out de los recordatorios solo se podía cambiar
+> en la BD; ahora está en la ficha del cliente, junto con el de cobranza de `[CXC-F2-3]`, que
+> **también** estaba sin pantalla).
 
 > **BANCOS post-cierre F4 (2026-07-26) — `[BAN-F4-FIX]` · DESPLEGADO EN PRODUCCIÓN**: el hilo común
 > de lo que apareció al auditar fue **funcionalidad implementada y probada que el usuario no podía
