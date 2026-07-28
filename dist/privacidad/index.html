@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Política de Privacidad | Zyntello</title>
+<meta name="description" content="Política de Privacidad de Zyntello, S.R.L. — qué datos tratamos, con quién los compartimos, sus derechos y cómo solicitar la eliminación de sus datos.">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 1.5rem}
+
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:70ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:250px minmax(0,1fr);gap:3rem;align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:78ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:78ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note.ok{border-left-color:var(--ok);background:rgba(52,211,153,.05)}
+  .note b{color:#fff}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:600px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">Inicio</a>
+        <a href="https://zyntello.com/#soluciones">Soluciones</a>
+        <a href="/terminos/">Términos del Servicio</a>
+        <a href="https://zyntello.com/#contacto">Contacto</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">Documento legal</span>
+      <h1>Política de Privacidad</h1>
+      <p class="lead">
+        Esta Política explica qué datos personales trata <strong>Zyntello, S.R.L.</strong> a través de
+        su plataforma <code>app.zyntello.com</code> y su sitio web, con qué finalidad, con quién los
+        comparte, cuánto tiempo los conserva y cómo puede usted ejercer sus derechos, incluida la
+        <a href="#s9">solicitud de eliminación de datos</a>.
+      </p>
+      <div class="meta">
+        <span>Última actualización: <strong>28 de julio de 2026</strong></span>
+        <span>Vigencia: <strong>desde su publicación</strong></span>
+        <span>Versión: <strong>1.0</strong></span>
+        <span>Idioma original: <strong>español</strong></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+<div class="grid">
+
+  <aside class="toc">
+    <h2>Contenido</h2>
+    <ol>
+      <li><a href="#s1">Responsable del tratamiento</a></li>
+      <li><a href="#s2">Nuestro doble rol</a></li>
+      <li><a href="#s3">Qué datos tratamos</a></li>
+      <li><a href="#s4">Datos por módulo</a></li>
+      <li><a href="#s5">Con quién los compartimos</a></li>
+      <li><a href="#s6">WhatsApp y Meta</a></li>
+      <li><a href="#s7">Transferencias internacionales</a></li>
+      <li><a href="#s8">Plazos de conservación</a></li>
+      <li><a href="#s9">Sus derechos y eliminación de datos</a></li>
+      <li><a href="#s10">Normativa por país</a></li>
+      <li><a href="#s11">Seguridad</a></li>
+      <li><a href="#s12">Comunicaciones y marketing</a></li>
+      <li><a href="#s13">Cookies</a></li>
+      <li><a href="#s14">Notificación de incidentes</a></li>
+      <li><a href="#s15">Menores de edad</a></li>
+      <li><a href="#s16">Decisiones automatizadas e IA</a></li>
+      <li><a href="#s17">Cambios a esta Política</a></li>
+      <li><a href="#s18">Contacto</a></li>
+    </ol>
+  </aside>
+
+  <article>
+
+    <section id="s1">
+      <h2 class="sec"><span class="n">1.</span> Responsable del tratamiento</h2>
+      <p>
+        <strong>Zyntello, S.R.L.</strong>, sociedad constituida y domiciliada en la
+        <strong>República Dominicana</strong>, con operación comercial y de soporte en República
+        Dominicana, Venezuela, Colombia, Guatemala y Costa Rica.
+      </p>
+      <ul>
+        <li>Contacto de privacidad: <a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+        <li>Teléfono y WhatsApp: <a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+        <li>Sitio web: <a href="https://zyntello.com">https://zyntello.com</a></li>
+        <li>Plataforma: <a href="https://app.zyntello.com">https://app.zyntello.com</a></li>
+      </ul>
+      <p>
+        Esta Política forma parte integrante de nuestros
+        <a href="/terminos/">Términos del Servicio</a>.
+      </p>
+    </section>
+
+    <section id="s2">
+      <h2 class="sec"><span class="n">2.</span> Nuestro doble rol: responsable y encargado</h2>
+      <p>
+        Zyntello es una plataforma de software empresarial multiempresa. Por eso actuamos en dos roles
+        distintos, y de ello depende ante quién debe usted ejercer sus derechos:
+      </p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Rol</th><th>Sobre qué datos</th><th>Quién decide el uso</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Responsable</strong></td>
+              <td>Datos de la cuenta del Suscriptor: nombre, correo, teléfono, credenciales, datos de facturación y registros técnicos de uso.</td>
+              <td>Zyntello. Esta Política aplica directamente.</td>
+            </tr>
+            <tr>
+              <td><strong>Encargado</strong> (procesador)</td>
+              <td>Datos que cada Suscriptor carga sobre <strong>sus</strong> clientes, empleados, proveedores, residentes, deudores o participantes.</td>
+              <td>El Suscriptor. Zyntello solo los aloja y procesa para prestarle el servicio.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <p>
+          <b>Si usted es cliente, empleado, residente, deudor o participante de una empresa que usa
+          Zyntello</b>, esa empresa es la responsable de sus datos y debe ejercer sus derechos ante
+          ella. Si nos escribe directamente, canalizaremos su solicitud con esa empresa y colaboraremos
+          para atenderla, pero no podemos decidir por ella sobre datos que no nos pertenecen.
+        </p>
+      </div>
+    </section>
+
+    <section id="s3">
+      <h2 class="sec"><span class="n">3.</span> Qué datos tratamos y para qué</h2>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Categoría</th><th>Datos</th><th>Finalidad</th><th>Base legal</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Cuenta y usuarios</strong></td>
+              <td>Nombre, correo electrónico, contraseña cifrada de forma irreversible, rol, permisos, empresa a la que pertenece.</td>
+              <td>Crear y administrar la cuenta, autenticación, verificación en dos pasos, control de acceso.</td>
+              <td>Ejecución del contrato</td>
+            </tr>
+            <tr>
+              <td><strong>Facturación</strong></td>
+              <td>Razón social, identificación fiscal, dirección, país, historial de suscripciones y pagos.</td>
+              <td>Cobrar la suscripción, emitir comprobantes y cumplir obligaciones fiscales.</td>
+              <td>Contrato y obligación legal</td>
+            </tr>
+            <tr>
+              <td><strong>Pagos</strong></td>
+              <td><strong>No almacenamos números completos de tarjeta.</strong> Los procesadores nos comparten solo referencias: identificador de la transacción, estado del cargo y últimos dígitos.</td>
+              <td>Procesar pagos y gestionar la suscripción.</td>
+              <td>Ejecución del contrato</td>
+            </tr>
+            <tr>
+              <td><strong>Datos operativos del Suscriptor</strong></td>
+              <td>Todo lo que el Suscriptor registra en sus módulos (ver sección 4).</td>
+              <td>Prestar el servicio contratado. <strong>Tratados como encargado.</strong></td>
+              <td>Instrucciones del Suscriptor</td>
+            </tr>
+            <tr>
+              <td><strong>Registros técnicos</strong></td>
+              <td>Dirección IP, navegador, dispositivo, fecha y hora, acciones realizadas (bitácora de auditoría).</td>
+              <td>Seguridad, prevención de fraude, trazabilidad de acciones, soporte y diagnóstico.</td>
+              <td>Interés legítimo</td>
+            </tr>
+            <tr>
+              <td><strong>Cookies</strong></td>
+              <td>Cookie de sesión, token de protección de formularios y, si el usuario lo elige, cookie de sesión recordada. <strong>Sin cookies publicitarias ni de seguimiento de terceros.</strong></td>
+              <td>Mantener la sesión iniciada y proteger la aplicación.</td>
+              <td>Estrictamente necesarias</td>
+            </tr>
+            <tr>
+              <td><strong>Soporte y contacto</strong></td>
+              <td>Nombre, correo, teléfono y contenido del mensaje enviado desde el formulario del sitio web o por WhatsApp.</td>
+              <td>Atender consultas comerciales y de soporte.</td>
+              <td>Consentimiento y medidas precontractuales</td>
+            </tr>
+            <tr>
+              <td><strong>Marketing</strong></td>
+              <td>Correo electrónico y registro de la fecha, hora y origen del consentimiento.</td>
+              <td>Envío de novedades y comunicaciones comerciales, solo con consentimiento previo.</td>
+              <td>Consentimiento</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Las bases legales se expresan con la terminología del Reglamento General de Protección de Datos
+        de la Unión Europea por ser la más precisa; los conceptos equivalentes aplican bajo las leyes
+        locales indicadas en la sección 10.
+      </p>
+    </section>
+
+    <section id="s4">
+      <h2 class="sec"><span class="n">4.</span> Datos por módulo</h2>
+      <p>
+        Cada Suscriptor decide qué información carga. Estas son las categorías que cada módulo permite
+        registrar, tratadas por Zyntello siempre en calidad de <strong>encargado</strong>:
+      </p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Módulo</th><th>Categorías de datos</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Facturación · Cuentas por Cobrar · CRM · Caja</strong></td><td>Nombre o razón social, identificación fiscal, dirección, teléfono, correo, historial de compras y cobros, condiciones de crédito, saldos y notas de gestión comercial.</td></tr>
+            <tr><td><strong>Compras · Cuentas por Pagar</strong></td><td>Datos de proveedores y sus contactos, identificación fiscal, cuentas bancarias para pago, retenciones y documentos fiscales recibidos.</td></tr>
+            <tr><td><strong>Nómina · PSA</strong></td><td>Identificación del empleado, documento de identidad, fecha de nacimiento, sexo, dirección, cargo, <strong>remuneración y deducciones</strong>, cuentas bancarias, seguridad social, dependientes, ausencias y justificantes, hojas de tiempo, registros de entrada y salida y, cuando el empleador activa esas verificaciones, <strong>ubicación geográfica</strong> y <strong>fotografía del rostro</strong>.</td></tr>
+            <tr><td><strong>Zyntello Events</strong></td><td>Nombre, documento de identidad, correo, teléfono, organización, fotografía cuando se captura, y registros de acceso y asistencia.</td></tr>
+            <tr><td><strong>Condominios</strong></td><td>Datos de residentes y propietarios, unidad, alícuota, estado de cuenta, reservas de áreas comunes, incidencias con fotografías y votos en asamblea.</td></tr>
+            <tr><td><strong>Prestamello</strong></td><td>Datos del solicitante y sus fiadores, documentos de identidad, ingresos y egresos declarados, patrimonio, referencias, <strong>resultado de consultas a burós de crédito</strong>, garantías y sus documentos, historial de pagos y <strong>ubicación geográfica</strong> del personal de cobro en ruta.</td></tr>
+            <tr><td><strong>Car Wash</strong></td><td>Datos del cliente y de sus vehículos: placa, marca, modelo, color, odómetro, fotografías del vehículo e historial de servicios.</td></tr>
+            <tr><td><strong>ConstructFlow</strong></td><td>Personal asignado a obra, documentos y fotografías de avance.</td></tr>
+            <tr><td><strong>Inventario · Activos Fijos</strong></td><td>Responsables y custodios de activos, registros de conteo e inventario físico.</td></tr>
+            <tr><td><strong>Contabilidad · Bancos</strong></td><td>Cuentas bancarias de la empresa, beneficiarios de cheques y transferencias, y asientos con referencia a terceros.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note warn">
+        <p>
+          <b>Datos de especial impacto.</b> Los módulos de Nómina, PSA y Prestamello permiten tratar
+          documentos de identidad, remuneraciones, información asociada a ausencias por salud,
+          fotografías del rostro, ubicación geográfica de personal e historial crediticio. Es
+          responsabilidad del Suscriptor informar previamente a los titulares, contar con base legal o
+          consentimiento y activar solo las verificaciones estrictamente necesarias.
+        </p>
+      </div>
+      <p>
+        <strong>Portales de consulta pública.</strong> Algunos módulos generan enlaces o códigos QR de
+        consulta sin inicio de sesión (estado de un turno, estado de cuenta de un residente, boleto de
+        un evento, ficha de un activo). Se acceden mediante un identificador aleatorio, muestran
+        únicamente la información mínima necesaria y su activación depende del Suscriptor.
+      </p>
+    </section>
+
+    <section id="s5">
+      <h2 class="sec"><span class="n">5.</span> Con quién compartimos datos</h2>
+      <div class="note ok">
+        <p><b>No vendemos, alquilamos ni cedemos datos personales a terceros con fines publicitarios.</b></p>
+      </div>
+      <p>Compartimos datos únicamente con los siguientes destinatarios y para los fines indicados:</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Destinatario</th><th>Qué recibe</th><th>Para qué</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Proveedor de hosting</strong> (Estados Unidos)</td><td>Los datos alojados en la Plataforma y sus respaldos.</td><td>Infraestructura, almacenamiento y respaldo.</td></tr>
+            <tr><td><strong>Stripe</strong></td><td>Datos de la transacción de pago.</td><td>Procesar suscripciones y cobros en línea. <a href="https://stripe.com/privacy" rel="noopener">Política</a></td></tr>
+            <tr><td><strong>PayPal</strong></td><td>Datos de la transacción de pago.</td><td>Procesar suscripciones y cobros en línea. <a href="https://www.paypal.com/privacy" rel="noopener">Política</a></td></tr>
+            <tr><td><strong>Mercado Pago</strong></td><td>Datos de la transacción de pago.</td><td>Procesar cobros en línea. <a href="https://www.mercadopago.com/privacidad" rel="noopener">Política</a></td></tr>
+            <tr><td><strong>WhatsApp / Meta Platforms</strong></td><td>Número telefónico del destinatario y contenido del mensaje, <strong>solo si el Suscriptor activa la integración</strong>.</td><td>Envío de mensajes iniciados por el Suscriptor. <a href="https://www.whatsapp.com/legal/privacy-policy" rel="noopener">Política</a></td></tr>
+            <tr><td><strong>Proveedor de correo saliente</strong></td><td>Dirección del destinatario y contenido del mensaje.</td><td>Entrega de correos transaccionales y documentos.</td></tr>
+            <tr><td><strong>Proveedores de inteligencia artificial</strong></td><td>Imagen o texto del documento a interpretar, cuando el Suscriptor activa esa función con sus propias credenciales.</td><td>Extracción asistida de datos de facturas (ver sección 16).</td></tr>
+            <tr><td><strong>Administraciones tributarias</strong></td><td>Los datos del comprobante fiscal exigidos por la normativa.</td><td>Validación y transmisión de comprobantes fiscales electrónicos.</td></tr>
+            <tr><td><strong>Burós de crédito</strong></td><td>Identificación del solicitante, con las credenciales y bajo la autorización del propio Suscriptor.</td><td>Consulta de historial crediticio en el módulo Prestamello.</td></tr>
+            <tr><td><strong>Web3Forms</strong></td><td>Nombre, correo y mensaje del formulario del sitio web.</td><td>Entrega de consultas comerciales a nuestro correo.</td></tr>
+            <tr><td><strong>Autoridades competentes</strong></td><td>Lo estrictamente requerido por una orden legal válida.</td><td>Cumplimiento de obligaciones legales.</td></tr>
+            <tr><td><strong>Asesores profesionales</strong></td><td>Lo estrictamente necesario.</td><td>Contabilidad, auditoría y defensa legal.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Todos los proveedores actúan bajo sus propios compromisos de confidencialidad y seguridad. Las
+        credenciales que el Suscriptor configura para integrarse con terceros se almacenan
+        <strong>cifradas</strong> en nuestra base de datos.
+      </p>
+    </section>
+
+    <section id="s6">
+      <h2 class="sec"><span class="n">6.</span> WhatsApp y Meta</h2>
+      <p>
+        La Plataforma permite al Suscriptor comunicarse con sus propios contactos a través de
+        <strong>WhatsApp</strong>, en dos modalidades: mediante un enlace de conversación que el
+        Suscriptor abre manualmente, o mediante la API de WhatsApp Business cuando el Suscriptor
+        configura sus credenciales.
+      </p>
+      <h3>6.1. Qué se transmite</h3>
+      <p>
+        Al enviarse un mensaje se transmiten el <strong>número telefónico del destinatario</strong> y el
+        <strong>contenido del mensaje</strong>, que puede incluir el nombre del contacto, el número y
+        estado de un documento, importes y enlaces a documentos o portales de consulta.
+      </p>
+      <h3>6.2. Quién es responsable</h3>
+      <p>
+        El <strong>Suscriptor es el remitente</strong> y el responsable del mensaje: determina el
+        contenido, los destinatarios y la finalidad, y debe contar con el consentimiento previo del
+        destinatario para contactarlo por ese canal. Zyntello no envía comunicaciones comerciales a los
+        contactos de sus Suscriptores por iniciativa propia.
+      </p>
+      <h3>6.3. Finalidad de los mensajes</h3>
+      <p>
+        Los mensajes enviados desde la Plataforma son de naturaleza <strong>operativa o
+        transaccional</strong>: facturas y cotizaciones, recibos y comprobantes, estados de cuenta,
+        recordatorios de cobro y de mantenimiento, avisos de turno o de estado de un servicio,
+        convocatorias y notificaciones de aprobación.
+      </p>
+      <h3>6.4. Derecho de baja</h3>
+      <p>
+        Si usted recibe mensajes de una empresa que utiliza Zyntello y no desea seguir recibiéndolos,
+        puede responder solicitando la baja, bloquear el número o comunicarlo directamente a esa
+        empresa, que debe atenderlo de inmediato. La Plataforma provee mecanismos para registrar esa
+        preferencia por contacto. Si necesita ayuda para identificar al remitente, puede escribirnos a
+        <a href="mailto:info@zyntello.com">info@zyntello.com</a> y le orientaremos.
+      </p>
+      <h3>6.5. Políticas aplicables</h3>
+      <p>
+        El tratamiento de la información por parte de WhatsApp LLC y Meta Platforms, Inc. se rige por
+        sus propias políticas, incluidas la
+        <a href="https://www.whatsapp.com/legal/privacy-policy" rel="noopener">Política de Privacidad de WhatsApp</a>
+        y la <a href="https://www.whatsapp.com/legal/business-policy" rel="noopener">Política de WhatsApp Business</a>.
+        Zyntello no controla el tratamiento que realizan dichas empresas.
+      </p>
+    </section>
+
+    <section id="s7">
+      <h2 class="sec"><span class="n">7.</span> Transferencias internacionales</h2>
+      <p>
+        Nuestros servidores están alojados en <strong>Estados Unidos</strong>. Al utilizar la
+        Plataforma, los datos se transfieren y almacenan en ese país. Los procesadores de pago, el
+        proveedor de correo saliente, WhatsApp y Meta, y los proveedores de inteligencia artificial
+        también pueden tratar datos fuera del país de origen del Suscriptor.
+      </p>
+      <p>
+        Para los titulares sujetos al Reglamento General de Protección de Datos de la Unión Europea,
+        estas transferencias se amparan en las cláusulas contractuales tipo o en los mecanismos de
+        transferencia que cada proveedor tenga vigentes. Puede solicitarnos información sobre el
+        mecanismo aplicable escribiendo a
+        <a href="mailto:info@zyntello.com">info@zyntello.com</a>.
+      </p>
+    </section>
+
+    <section id="s8">
+      <h2 class="sec"><span class="n">8.</span> Plazos de conservación</h2>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Datos</th><th>Plazo de conservación</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Cuenta y datos operativos del Suscriptor</td><td>Mientras la suscripción esté activa, más <strong>30 días</strong> tras la terminación para permitir la exportación. Luego se eliminan.</td></tr>
+            <tr><td>Datos de facturación y comprobantes fiscales</td><td><strong>10 años</strong>, o el plazo que imponga la normativa fiscal aplicable si es distinto.</td></tr>
+            <tr><td>Registros técnicos y bitácora de auditoría</td><td><strong>12 meses</strong>, salvo que se requieran por más tiempo para investigar un incidente de seguridad.</td></tr>
+            <tr><td>Cuenta de demostración</td><td>Se <strong>elimina automáticamente todos los días</strong> mediante un proceso programado.</td></tr>
+            <tr><td>Respaldos</td><td>Ciclo de rotación de <strong>30 días</strong>. Los datos eliminados desaparecen de los respaldos al completarse el ciclo.</td></tr>
+            <tr><td>Registro de consentimiento y de baja de marketing</td><td>Mientras dure la relación, más <strong>5 años</strong> como prueba del consentimiento o de la baja.</td></tr>
+            <tr><td>Solicitudes de derechos y su respuesta</td><td><strong>3 años</strong> desde su atención, como evidencia de cumplimiento.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="s9">
+      <h2 class="sec"><span class="n">9.</span> Sus derechos y eliminación de datos</h2>
+      <h3>9.1. Derechos que puede ejercer</h3>
+      <p>Usted puede solicitar en cualquier momento:</p>
+      <ul>
+        <li><strong>Acceso</strong>: conocer qué datos suyos tratamos y con qué finalidad.</li>
+        <li><strong>Rectificación</strong>: corregir datos inexactos o incompletos.</li>
+        <li><strong>Supresión</strong> o cancelación: eliminar sus datos cuando ya no sean necesarios.</li>
+        <li><strong>Oposición</strong>: oponerse a un tratamiento basado en interés legítimo.</li>
+        <li><strong>Portabilidad</strong> y <strong>limitación</strong> del tratamiento, donde la ley
+        aplicable los prevea.</li>
+        <li><strong>Retirar un consentimiento</strong> otorgado previamente, sin efecto retroactivo.</li>
+      </ul>
+
+      <h3>9.2. Cómo ejercerlos</h3>
+      <p>
+        Escriba a <a href="mailto:info@zyntello.com">info@zyntello.com</a> desde el correo registrado o
+        acreditando su identidad, indicando con claridad el derecho que ejerce. Responderemos en un
+        plazo máximo de <strong>15 días hábiles</strong> (o de <strong>un mes</strong> si le aplica el
+        Reglamento General de Protección de Datos de la Unión Europea).
+      </p>
+
+      <h3>9.3. Solicitud de eliminación de datos</h3>
+      <div class="note">
+        <p>
+          <b>Para solicitar la eliminación de sus datos personales</b>, envíe un correo a
+          <a href="mailto:info@zyntello.com">info@zyntello.com</a> con el asunto
+          <em>«Solicitud de eliminación de datos»</em>, indicando:
+        </p>
+        <ul>
+          <li>su nombre completo;</li>
+          <li>el correo electrónico o número de teléfono con el que se registró o fue contactado;</li>
+          <li>si aplica, el nombre de la empresa que le contactó o que lo registró en la Plataforma.</li>
+        </ul>
+        <p>
+          Confirmaremos la recepción y procesaremos la solicitud en un plazo máximo de
+          <strong>30 días</strong>. Le informaremos por escrito el resultado, incluyendo qué datos se
+          eliminaron y cuáles debemos conservar por obligación legal.
+        </p>
+      </div>
+      <p>
+        <strong>Si sus datos fueron cargados por una empresa Suscriptora</strong> —porque usted es su
+        cliente, empleado, residente, deudor o participante— esa empresa es la responsable del
+        tratamiento. En ese caso canalizaremos su solicitud con ella, se lo comunicaremos y
+        colaboraremos para que sea atendida, pero la decisión final sobre la eliminación corresponde a
+        dicha empresa.
+      </p>
+      <p>
+        <strong>Límites.</strong> La supresión no aplica a la información que debamos conservar por
+        obligación legal, contable o tributaria (por ejemplo, comprobantes fiscales emitidos), ni a la
+        necesaria para la defensa de reclamaciones. En esos casos, los datos se bloquean y se restringe
+        su tratamiento hasta que venza el plazo legal de conservación.
+      </p>
+      <p>
+        Si considera que sus derechos no fueron atendidos adecuadamente, puede presentar una
+        reclamación ante la autoridad de protección de datos o el tribunal competente de su país.
+      </p>
+    </section>
+
+    <section id="s10">
+      <h2 class="sec"><span class="n">10.</span> Normativa por país</h2>
+      <ul>
+        <li><strong>República Dominicana</strong> — Ley No. 172-13 sobre Protección de Datos de Carácter
+        Personal: derechos de acceso, rectificación, cancelación y oposición; reclamaciones ante los
+        tribunales competentes.</li>
+        <li><strong>Unión Europea y Espacio Económico Europeo</strong> — Reglamento (UE) 2016/679
+        (RGPD), cuando resulte aplicable: bases jurídicas de la sección 3, derechos ampliados de la
+        sección 9, notificación de brechas a la autoridad de control dentro de las 72 horas y derecho a
+        reclamar ante la autoridad de control local.</li>
+        <li><strong>Colombia</strong> — Ley 1581 de 2012 y sus decretos reglamentarios (régimen de
+        habeas data): consultas y reclamos conforme a los procedimientos de la Superintendencia de
+        Industria y Comercio.</li>
+        <li><strong>Costa Rica</strong> — Ley 8968 de Protección de la Persona frente al Tratamiento de
+        sus Datos Personales (PRODHAB).</li>
+        <li><strong>Venezuela</strong> — derecho constitucional de habeas data (artículo 28 de la
+        Constitución) y normativa aplicable.</li>
+        <li><strong>Guatemala</strong> — a falta de una ley general de protección de datos, aplican las
+        garantías constitucionales y esta Política como compromiso contractual exigible.</li>
+        <li><strong>México</strong>, cuando resulte aplicable — Ley Federal de Protección de Datos
+        Personales en Posesión de los Particulares: derechos de acceso, rectificación, cancelación y
+        oposición ante el contacto de la sección 1.</li>
+      </ul>
+      <p>En caso de conflicto, prevalece la norma imperativa del país del titular de los datos.</p>
+    </section>
+
+    <section id="s11">
+      <h2 class="sec"><span class="n">11.</span> Seguridad</h2>
+      <p>Aplicamos medidas técnicas y organizativas proporcionales al riesgo, entre ellas:</p>
+      <ul>
+        <li>contraseñas almacenadas con algoritmos de <em>hashing</em> robustos, nunca en texto plano;</li>
+        <li>cifrado del tráfico en tránsito mediante TLS;</li>
+        <li><strong>aislamiento estricto de datos</strong> entre suscriptores y entre empresas de un
+        mismo suscriptor, aplicado de forma automática en cada consulta;</li>
+        <li>control de acceso por roles y permisos granulares por módulo;</li>
+        <li><strong>verificación en dos pasos</strong> por correo electrónico, activable por el usuario;</li>
+        <li>cifrado en base de datos de las credenciales de integraciones de terceros;</li>
+        <li>bitácora de auditoría de acciones sobre documentos y configuraciones;</li>
+        <li>respaldos periódicos con verificación de integridad y copia fuera del servidor principal;</li>
+        <li>cierre automático de sesión por inactividad.</li>
+      </ul>
+      <p>
+        Ningún sistema es completamente infalible. Si ocurriera una brecha que afecte a sus datos, la
+        notificaremos conforme a la sección 14.
+      </p>
+    </section>
+
+    <section id="s12">
+      <h2 class="sec"><span class="n">12.</span> Comunicaciones y marketing</h2>
+      <ul>
+        <li><strong>Comunicaciones transaccionales</strong> (verificación de identidad, códigos de
+        acceso, avisos de facturación, alertas de seguridad, avisos de mantenimiento y cambios
+        contractuales) se envían como parte del servicio y no requieren consentimiento adicional
+        mientras exista una relación contractual vigente.</li>
+        <li><strong>Comunicaciones comerciales de Zyntello</strong> (novedades, boletines, ofertas) se
+        envían únicamente con <strong>consentimiento previo</strong>, recogido mediante una casilla no
+        premarcada. Conservamos registro de cuándo y cómo se otorgó.</li>
+        <li><strong>Baja</strong>: todo correo comercial incluye un enlace de cancelación de un solo
+        clic. También puede solicitarla escribiendo a
+        <a href="mailto:info@zyntello.com">info@zyntello.com</a>. La baja se procesa en un máximo de
+        <strong>72 horas</strong> y no afecta las comunicaciones transaccionales del servicio.</li>
+        <li><strong>Comunicaciones enviadas por los Suscriptores</strong>: si una empresa que usa
+        Zyntello le envía mensajes por correo o WhatsApp, esa empresa es la responsable de contar con su
+        consentimiento y de atender su baja (ver sección 6).</li>
+      </ul>
+    </section>
+
+    <section id="s13">
+      <h2 class="sec"><span class="n">13.</span> Cookies</h2>
+      <p>
+        La Plataforma utiliza exclusivamente cookies <strong>estrictamente necesarias</strong> para su
+        funcionamiento:
+      </p>
+      <ul>
+        <li><strong>Cookie de sesión</strong>: mantiene al usuario autenticado mientras navega.</li>
+        <li><strong>Token de protección de formularios</strong>: evita el envío de peticiones
+        fraudulentas desde sitios de terceros.</li>
+        <li><strong>Cookie de sesión recordada</strong>: solo si el usuario marca esa opción al iniciar
+        sesión.</li>
+        <li><strong>Preferencia de última ubicación</strong>: permite retomar el trabajo donde se dejó
+        al reanudar la sesión.</li>
+      </ul>
+      <div class="note ok">
+        <p>
+          <b>No utilizamos cookies publicitarias, de perfilado ni de seguimiento de terceros</b>, ni
+        integramos píxeles de redes sociales o plataformas de anuncios en la Plataforma. Por ese motivo
+        no se requiere un banner de consentimiento de cookies para su uso.
+        </p>
+      </div>
+      <p>
+        Puede eliminar o bloquear las cookies desde la configuración de su navegador, teniendo en cuenta
+        que hacerlo impedirá iniciar sesión en la Plataforma.
+      </p>
+    </section>
+
+    <section id="s14">
+      <h2 class="sec"><span class="n">14.</span> Notificación de incidentes de seguridad</h2>
+      <p>
+        Si ocurre una brecha de seguridad que afecte datos personales, evaluaremos el riesgo y
+        notificaremos:
+      </p>
+      <ul>
+        <li>a los <strong>Suscriptores afectados</strong>, sin dilación indebida, con la información
+        disponible sobre el alcance, las categorías de datos comprometidos y las medidas adoptadas;</li>
+        <li>a las <strong>autoridades competentes</strong> cuando la ley lo exija —dentro de las
+        <strong>72 horas</strong> siguientes a tener constancia, en el caso del RGPD—;</li>
+        <li>a los <strong>titulares</strong>, cuando la brecha suponga un riesgo alto para sus derechos y
+        libertades y la ley aplicable lo requiera.</li>
+      </ul>
+      <p>
+        Cuando actuemos como encargado, la notificación se dirige al Suscriptor responsable, a quien
+        corresponde comunicar a los titulares y a la autoridad.
+      </p>
+    </section>
+
+    <section id="s15">
+      <h2 class="sec"><span class="n">15.</span> Menores de edad</h2>
+      <p>
+        La Plataforma está dirigida exclusivamente a empresas y profesionales, y no está destinada a
+        menores de 18 años. No recolectamos conscientemente datos de menores como usuarios del
+        servicio. Si un Suscriptor registra datos de menores en el ejercicio de su actividad, es su
+        responsabilidad contar con la autorización de los padres o tutores conforme a la ley aplicable.
+      </p>
+    </section>
+
+    <section id="s16">
+      <h2 class="sec"><span class="n">16.</span> Decisiones automatizadas e inteligencia artificial</h2>
+      <p>
+        Algunos módulos ofrecen funciones asistidas por inteligencia artificial, principalmente la
+        <strong>extracción de datos de facturas y documentos</strong> y sugerencias estadísticas sobre
+        información histórica.
+      </p>
+      <ul>
+        <li><strong>No tomamos decisiones automatizadas con efectos jurídicos</strong> sobre las
+        personas. Toda evaluación con consecuencias —por ejemplo, la aprobación de un crédito en el
+        módulo Prestamello— requiere la intervención y la decisión de un usuario humano.</li>
+        <li>La <strong>revisión humana es obligatoria</strong>: el resultado del modelo se presenta como
+        borrador y no genera efectos contables, fiscales o de inventario hasta que un usuario lo valida.</li>
+        <li>La función es <strong>opcional</strong>, está desactivada por defecto y requiere que el
+        Suscriptor la habilite con sus propias credenciales del proveedor de inteligencia artificial.</li>
+        <li><strong>No utilizamos los datos de los Suscriptores para entrenar modelos propios.</strong>
+        El tratamiento por parte del proveedor de inteligencia artificial se rige por los términos que
+        el Suscriptor haya aceptado con ese proveedor.</li>
+      </ul>
+    </section>
+
+    <section id="s17">
+      <h2 class="sec"><span class="n">17.</span> Cambios a esta Política</h2>
+      <p>
+        Publicaremos cualquier modificación en esta misma página, actualizando la fecha de última
+        actualización. Si el cambio es sustancial, lo notificaremos por correo electrónico o mediante un
+        aviso destacado en la Plataforma con al menos <strong>30 días</strong> de antelación a su
+        entrada en vigor. Las versiones anteriores están disponibles a solicitud.
+      </p>
+    </section>
+
+    <section id="s18">
+      <h2 class="sec"><span class="n">18.</span> Contacto</h2>
+      <p>Para cualquier consulta o solicitud relacionada con privacidad y protección de datos:</p>
+      <ul>
+        <li><strong>Zyntello, S.R.L.</strong> — República Dominicana</li>
+        <li>Correo electrónico: <a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+        <li>Teléfono y WhatsApp: <a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+        <li>Sitio web: <a href="https://zyntello.com">https://zyntello.com</a></li>
+      </ul>
+      <p>
+        Consulte también nuestros <a href="/terminos/">Términos del Servicio</a>.
+      </p>
+    </section>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>Tecnología empresarial e inteligencia artificial</li>
+          <li>República Dominicana</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/terminos/">Términos del Servicio</a></li>
+          <li><a href="/privacidad/">Política de Privacidad</a></li>
+          <li><a href="/privacidad/#s9">Eliminación de datos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <ul>
+          <li><a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+          <li><a href="https://zyntello.com">zyntello.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy">© 2026 Zyntello, S.R.L. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+</body>
+</html>

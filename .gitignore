@@ -44,3 +44,6 @@ graphify-out/
 zyntello.ppk
 zyntello-auto.ppk
 *.ppk
+
+# Artefactos de Playwright MCP (solo local)
+.playwright-mcp/
