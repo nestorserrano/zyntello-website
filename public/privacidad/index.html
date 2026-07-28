@@ -86,6 +86,16 @@
   tr:last-child td{border-bottom:0}
   td strong{color:var(--tx)}
 
+  /* Control de cambios */
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
   footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
   .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
   .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
@@ -106,8 +116,8 @@
       </a>
       <nav>
         <a href="https://zyntello.com">Inicio</a>
-        <a href="https://zyntello.com/#soluciones">Soluciones</a>
         <a href="/terminos/">Términos del Servicio</a>
+        <a href="/eliminacion-datos/">Eliminación de datos</a>
         <a href="https://zyntello.com/#contacto">Contacto</a>
       </nav>
     </div>
@@ -123,7 +133,7 @@
       <div class="meta">
         <span>Última actualización: <strong>28 de julio de 2026</strong></span>
         <span>Vigencia: <strong>desde su publicación</strong></span>
-        <span>Versión: <strong>1.0</strong></span>
+        <span>Versión: <strong><a class="verlink" href="#s19">1.0 — ver control de cambios</a></strong></span>
         <span>Idioma original: <strong>español</strong></span>
       </div>
     </div>
@@ -154,6 +164,7 @@
       <li><a href="#s16">Decisiones automatizadas e IA</a></li>
       <li><a href="#s17">Cambios a esta Política</a></li>
       <li><a href="#s18">Contacto</a></li>
+      <li><a href="#s19">Control de cambios</a></li>
     </ol>
   </aside>
 
@@ -461,6 +472,14 @@
       </p>
 
       <h3>9.3. Solicitud de eliminación de datos</h3>
+      <div class="note ok">
+        <p>
+          <b>Instrucciones detalladas en su propia página:</b>
+          <a href="/eliminacion-datos/"><strong>zyntello.com/eliminacion-datos/</strong></a> —
+          incluye el procedimiento paso a paso, los plazos, qué se elimina, qué se conserva por
+          obligación legal y cómo dejar de recibir mensajes.
+        </p>
+      </div>
       <div class="note">
         <p>
           <b>Para solicitar la eliminación de sus datos personales</b>, envíe un correo a
@@ -663,7 +682,45 @@
         <li>Sitio web: <a href="https://zyntello.com">https://zyntello.com</a></li>
       </ul>
       <p>
-        Consulte también nuestros <a href="/terminos/">Términos del Servicio</a>.
+        Consulte también nuestros <a href="/terminos/">Términos del Servicio</a> y las
+        <a href="/eliminacion-datos/">instrucciones para la eliminación de datos</a>.
+      </p>
+    </section>
+
+    <section id="s19">
+      <h2 class="sec"><span class="n">19.</span> Control de cambios</h2>
+      <p>
+        Registro completo y acumulativo de todas las versiones de esta Política desde su primera
+        publicación. Cada entrada indica la versión, la fecha de entrada en vigor y qué cambió. Las
+        entradas anteriores <strong>no se modifican ni se eliminan</strong>.
+      </p>
+      <div class="note">
+        <p>
+          <b>Cómo leer las versiones.</b> Un cambio de <strong>versión menor</strong> (1.0 → 1.1)
+          incorpora o precisa información —un módulo nuevo, un destinatario, una categoría de datos—
+          sin alterar las finalidades ni las bases legales del tratamiento. Un cambio de
+          <strong>versión mayor</strong> (1.x → 2.0) modifica finalidades, bases legales,
+          destinatarios, plazos de conservación o sus derechos, y se notifica con
+          <strong>30 días</strong> de antelación conforme a la sección 17.
+        </p>
+      </div>
+      <div class="tbl chg">
+        <table>
+          <thead>
+            <tr><th>Versión</th><th>Fecha</th><th>Cambios</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1.0 <span class="vig">Vigente</span></td>
+              <td>28 de julio de 2026</td>
+              <td><strong>Primera publicación.</strong> Documento inicial con 19 secciones: responsable del tratamiento, doble rol responsable/encargado, datos tratados y su base legal, datos por módulo, destinatarios y subencargados, WhatsApp y Meta, transferencias internacionales, plazos de conservación, derechos y procedimiento de eliminación de datos, normativa por país, seguridad, comunicaciones y marketing, cookies, notificación de incidentes, menores de edad, decisiones automatizadas e inteligencia artificial, cambios a la Política, contacto y control de cambios.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Puede solicitar una copia del texto completo de cualquier versión anterior escribiendo a
+        <a href="mailto:info@zyntello.com">info@zyntello.com</a>.
       </p>
     </section>
 
@@ -686,7 +743,7 @@
         <ul>
           <li><a href="/terminos/">Términos del Servicio</a></li>
           <li><a href="/privacidad/">Política de Privacidad</a></li>
-          <li><a href="/privacidad/#s9">Eliminación de datos</a></li>
+          <li><a href="/eliminacion-datos/">Eliminación de datos</a></li>
         </ul>
       </div>
       <div>

@@ -1144,6 +1144,9 @@ Los vendedores de Constructora NO aparecen en Servicios, las facturas NO se mezc
 6. **PricingService** — registrar el slug en `App\Services\PricingService::MODULES`
 7. **Vistas** — `resources/views/{slug}/` (full-width Tailwind, sin max-width centrado)
 8. **DemoSeeder** — agregar datos demo y el slug a la lista de módulos activos
+9. **📜 DOCUMENTOS LEGALES** — actualizar Términos y Privacidad con el módulo nuevo, subir la
+   versión, la fecha y el control de cambios, y **desplegar**. Ver la directiva de documentos
+   legales más abajo. **Un módulo no está terminado si los documentos legales no lo mencionan.**
 
 ### ⚠️ DIRECTIVA TRANSVERSAL OBLIGATORIA — todo módulo nuevo debe contemplar
 
@@ -1155,6 +1158,113 @@ Los vendedores de Constructora NO aparecen en Servicios, las facturas NO se mezc
 4. **Es venta ⇒ mueve Facturación** — si la operación es una venta, debe reflejarse en **Facturación** (y su cadena: stock, CxC, caja si aplica).
 5. **Cuentas Contables por módulo** — cada módulo **crea/configura SUS cuentas contables en su propio menú de Configuración** (patrón `Configuracion\ParametrosContablesController`, tabla estándar `Operación | CC | Cuenta | Descripción` + modal cascada CC→cuenta). **Nunca hardcodear cuentas**; leerlas de la config del módulo.
 6. **Integridad transversal** — respetar la integridad de **todos** los módulos interconectados: usar los servicios/eventos core (CxP/CxC, MovimientoFinancieroService, Inventario, Facturación, Presupuesto vía `GastoRegistrado`), no duplicar lógica ni registros (ej. un cobro/asiento se registra **una sola vez**, de fuente única).
+7. **Documentos legales al día** — todo módulo nuevo o cambio de alcance de un módulo existente
+   obliga a revisar y adaptar los documentos legales públicos. Ver la directiva completa en la
+   sección siguiente.
+
+---
+
+## 📜 DIRECTIVA — DOCUMENTOS LEGALES SIEMPRE VIGENTES (MANDATORIA)
+
+> **Los documentos legales NUNCA pueden quedar obsoletos.** Describen lo que el sistema hace de
+> verdad; si el sistema cambia y el documento no, el documento pasa a ser falso. Un documento legal
+> desactualizado es un riesgo regulatorio y puede costar la aprobación de la API de WhatsApp
+> Business, la de una pasarela de pago o la defensa ante un reclamo.
+
+### Documentos cubiertos por esta política
+
+**Todos**, sin excepción. Hoy son:
+
+| Documento | Fuente (editar aquí) | URL pública |
+|---|---|---|
+| Términos y Condiciones del Servicio | `public/terminos/index.html` | `https://zyntello.com/terminos/` |
+| Política de Privacidad | `public/privacidad/index.html` | `https://zyntello.com/privacidad/` |
+| Eliminación de datos de usuario | `public/eliminacion-datos/index.html` | `https://zyntello.com/eliminacion-datos/` |
+
+> **Las tres URLs son las que se configuran en Meta** (WhatsApp Business): Términos, Privacidad y
+> «URL de instrucciones para la eliminación de datos». Si una de las tres deja de responder 200 o
+> deja de ser cierta, el canal de WhatsApp queda en riesgo.
+
+> Cualquier documento legal que se cree en el futuro (acuerdo de encargo de tratamiento, política
+> de cookies separada, aviso de subencargados, condiciones de un módulo específico, acuerdo de
+> nivel de servicio) **entra automáticamente en esta política** y se agrega a esta tabla.
+
+### Cuándo hay que revisarlos y actualizarlos — disparadores
+
+Al ocurrir cualquiera de estos hechos, la actualización de los documentos legales es **parte de la
+tarea**, no un trabajo posterior:
+
+1. **Se crea un módulo nuevo** → agregarlo a la tabla de módulos de los Términos (§4.1) y a la
+   tabla de datos por módulo (Términos §14 y Privacidad §4).
+2. **Se amplía o cambia el alcance de un módulo existente** → corregir su descripción. Ejemplo
+   real: cuando Car Wash ganó el taller, o Prestamello el catálogo de bienes financiables, su
+   descripción dejó de ser cierta.
+3. **Se empieza a tratar una categoría de dato personal nueva** (documento de identidad,
+   biometría, geolocalización, salud, historial crediticio, fotografía de personas) → Términos §14
+   y Privacidad §4, marcándola como dato de alto impacto si lo es.
+4. **Se integra un tercero nuevo** (pasarela de pago, proveedor de IA, buró de crédito, canal de
+   mensajería, servicio de correo, hosting, administración tributaria) → Términos §15 y
+   Privacidad §5, con el enlace a la política de privacidad de ese tercero.
+5. **Se agrega un canal de comunicación** o cambia cómo se usa WhatsApp → Términos §12 y
+   Privacidad §6.
+6. **Cambian planes, precios, forma de cobro o política de reembolso** → Términos §7 y §8.
+7. **Se opera en un país nuevo** → Privacidad §10 (normativa aplicable) y Términos §17 si trae
+   requisitos fiscales propios.
+8. **Cambian los plazos de conservación, la seguridad o los respaldos** → Privacidad §8 y §11.
+9. **Se publica un portal público nuevo** (enlace o QR sin login) → Términos §14 y Privacidad §4.
+10. **Cambia la razón social, el domicilio, el RNC o el contacto** → §1 de ambos documentos.
+
+### Qué hacer en cada actualización — los cinco pasos, siempre los cinco
+
+1. **Revisar el documento completo**, no solo la sección obvia. Un módulo nuevo suele tocar cuatro
+   secciones a la vez (módulos, datos por módulo, terceros y conservación).
+2. **Subir la versión** en el encabezado, con criterio:
+   - `1.0 → 1.1` — se agrega un módulo, un tercero o una categoría de dato; se corrige una
+     descripción. **No cambia lo que el suscriptor acepta.**
+   - `1.x → 2.0` — cambian obligaciones, plazos, precios, jurisdicción, límites de
+     responsabilidad o el tratamiento de datos. **Cambia lo que el suscriptor acepta** ⇒ además
+     hay que **avisar con 30 días de antelación** (Términos §21 / Privacidad §17).
+3. **Actualizar la fecha** de «Última actualización» en el encabezado.
+4. **Agregar la entrada al Control de cambios** al final del documento: versión, fecha y qué
+   cambió, en lenguaje que se entienda sin abrir el diff. **Las entradas nunca se borran ni se
+   editan** — el historial es acumulativo desde la v1.0 y es la prueba de la evolución del
+   documento.
+5. **Compilar y desplegar.** Editar `public/` no publica nada: hay que correr el build para que
+   pase a `dist/`, commitear `dist/` y desplegar. Verificar la URL pública en producción antes de
+   dar la tarea por cerrada.
+
+```powershell
+# Build + verificación + deploy del sitio (repo zyntello-website)
+& 'C:\Program Files\nodejs\node.exe' 'C:\Users\Sistemas\AppData\Roaming\npm\node_modules\npm\bin\npm-cli.js' run build
+# commitear public/ + dist/ y luego:
+.\deploy-website.ps1
+# verificar en producción (debe responder 200 y traer la versión nueva):
+curl -s https://zyntello.com/terminos/ | Select-String "Versión|Última actualización"
+```
+
+### Reglas de forma que no se negocian
+
+- **Los dos documentos se revisan juntos.** Un cambio casi nunca toca solo uno. Si de verdad solo
+  aplica a uno, dejarlo dicho en el commit.
+- **Coherencia entre ambos.** Términos §14 y Privacidad §4 describen los mismos datos: si
+  divergen, uno de los dos es falso.
+- **Sin dependencias externas** en las páginas: fuentes del sistema, cero CDN, cero scripts de
+  terceros. Deben cargar aunque el rastreador de Meta bloquee todo lo externo.
+- **Accesibles sin login y sin `robots: noindex`.** Meta y las pasarelas las rastrean.
+- **Nada de `[CORCHETES]` ni placeholders en la versión publicada.** Si falta un dato, se redacta
+  sin él o se pregunta; no se publica un hueco.
+- ⚠️ Las plantillas de `app/zyntello-app/docs/legal/*.md` son **borradores históricos** y **NO son
+  la versión vigente**. La fuente de verdad es `public/`.
+- Las páginas declaran que las versiones anteriores están disponibles a solicitud: conservar los
+  commits (nunca reescribir el historial de estos archivos).
+
+### Lo que NUNCA se debe hacer
+
+- ❌ Cerrar un módulo nuevo sin haber tocado los documentos legales.
+- ❌ Actualizar el texto sin subir la versión, la fecha y el control de cambios.
+- ❌ Borrar o reescribir entradas del control de cambios.
+- ❌ Editar `public/` y no desplegar: el documento vigente es el que está en producción.
+- ❌ Afirmar en el documento algo que el sistema no hace (o dejar de mencionar algo que sí hace).
 
 ### Lo que NUNCA se debe hacer
 - ❌ Crear `app/{modulo}/` u otra carpeta hermana de `zyntello-app`
