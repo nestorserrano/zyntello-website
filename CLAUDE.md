@@ -254,7 +254,53 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 **Regla:** Si ves error 403/500 después de deploy → ejecuta esto primero.
 
-### Bitácora reciente (estado actual — 2026-07-27)
+### Bitácora reciente (estado actual — 2026-07-28)
+
+> **PRESTAMELLO FASE 1 (2026-07-27/28) — `[PRE-F1-1]`–`[PRE-F1-5]` + cierre `[PRE-F1]`**: el
+> crédito con criterio. El módulo prestaba dinero **sin ningún criterio de riesgo** —sin
+> evaluación, sin garantías, sin buró, sin forma de decir «sí, pero…»— y el control de límite que
+> sí existía era el peor de los dos mundos: **se veía implementado y no actuaba nunca**.
+> **F1-1** garantías con documentos en disco privado, cobertura **derivada** (nunca guardada: una
+> columna quedaría vieja al retasar el bien) y **liberación automática** al extinguirse la deuda,
+> porque si dependiera de que alguien lo recuerde el cliente que terminó de pagar su carro
+> seguiría con la matrícula retenida. **F1-2** evaluación 4C que solo pide **lo que el sistema no
+> puede saber** —el historial, el DTI y la cobertura se calculan; pedírselos al analista sería
+> pedirle que copie a mano algo que la base sabe mejor— con **snapshot de las reglas**: sin él,
+> cambiar los pesos reescribiría el score de todas las evaluaciones pasadas y un crédito aprobado
+> con 78 pasaría a parecer aprobado con 62 sin que nadie hubiera hecho nada. **F1-3** burós por
+> país: catálogo del TENANT, credenciales por EMPRESA **cifradas** (verificado leyendo la fila
+> cruda), 10 burós de 7 países todos **inactivos y sin verificar** —activar uno sin comprobar su
+> URL mandaría al analista a una página equivocada— y ⚠️ **NUNCA scraping**, con una prueba que
+> falla si aparece cualquier llamada de red: un scraper falla **en silencio** y la evaluación
+> tomaría «sin dato» por «sin deudas» → el crédito se aprobaría por un dato que nunca llegó. El
+> resultado se **COPIA** a la evaluación, porque en la bitácora sola no serviría de nada. **F1-4**
+> preaprobación con **vigencia** (una capacidad de pago medida en enero no dice nada de octubre; no
+> se ofrece «0 = sin vencimiento» porque sería ofrecer volver al defecto) y la **bandeja del
+> oficial**, que no es un listado sino una cola de trabajo: la EDAD de cada fila es el dato, porque
+> en un listado por fecha una solicitud de dos días y una de tres semanas se ven igual. **F1-5** la
+> exposición del cliente son sus CxC **más** el capital de sus préstamos vivos — el dinero que debe
+> no cambia de naturaleza según el módulo que lo registró.
+> **9 defectos reales, ninguno en el blueprint. Los cuatro graves:** (1) ⚠️ **el control de límite
+> NO SE DISPARABA NUNCA** — leía una columna que ningún formulario llena, así que su valor era
+> siempre NULL y el bloque completo se saltaba **en silencio**; (2) ⚠️ **el orden de preferencia de
+> los workflows era PARCIAL en el MOTOR**: con la matriz «50k → 2 firmas / 500k → 3 firmas», un
+> crédito de 600k firmaba su nivel 2 con el aprobador del tramo de 50k y **el comité de los montos
+> altos nunca llegaba a firmar**, sin que nada lo avisara porque la cadena se veía completa
+> (afectaba a revaluación de activos, corridas de CxP y presupuesto — **cuarta vez** que esta forma
+> de defecto aparece); (3) ⚠️ **el handler dejaba las preaprobaciones colgadas para siempre** aunque
+> todos los niveles firmaran; (4) ⚠️ **una prueba de CAR WASH pasaba por la razón equivocada**, con
+> dos defectos: su filtro de comentarios llevaba `/s` sobre `//.*` y **se comía el archivo completo**
+> (haystack vacío = la aserción pasaba siempre), y al corregirlo resultó que además prohibía **leer**
+> el stock y no solo escribirlo. **Y dos pruebas propias que pasaban por la razón equivocada.**
+> **Suite Prestamello: 148 pruebas** (de 53); aceptación de la fase con **171 aserciones** sobre UNA
+> sola solicitud, porque los defectos que las tareas por separado no ven aparecen en las costuras.
+> Detalle y los **13 TODOs de verificación humana** en `app/zyntello-app/zyntello-prestamello-mejoras-blueprint.md`
+> («CIERRE DE LA FASE 1»). ⚠️ Migraciones `2026_07_27_360001`–`360002`, `370001`–`370003`, `380001`,
+> `390001`; cron `prestamello:expirar-preaprobaciones` (06:50).
+> **Reglas nuevas: un control que lee una columna que nadie llena es peor que no tener control ·
+> extender no es alterar (componer en un método nuevo, no cambiar la fórmula común) · un filtro que
+> puede vaciar su entrada necesita una guarda · una aserción sobre el código nombra la ACCIÓN, no la
+> tabla · un dato derivado no se guarda.**
 
 > **CAR WASH post-cierre (2026-07-27) — `[CW-FIX-1]`, `[CW-FIX-2]`**: pedido del director técnico —
 > *«corrige las discrepancias, agrega a la configuración del módulo las opciones donde se requiera
