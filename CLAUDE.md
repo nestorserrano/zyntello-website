@@ -256,6 +256,105 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 ### Bitácora reciente (estado actual — 2026-07-28)
 
+> **CAR WASH post-cierre (2026-07-29) — `[CW-FIX-3]`**: pedido del director técnico — *«al crear un
+> turno no aparecen las marcas y modelos de vehículos… si el vehículo no está en la lista permitir
+> escribirlo y que se guarde en las tablas correspondientes. Adicionalmente, mira el turno del
+> cliente que tiene texto y el vehículo no se dibuja bien»* (con captura del turno CW-000007).
+> ⚠️ **El texto de la captura era un comentario Blade ANIDADO**: Blade no soporta anidarlos —busca el
+> primer `--}}` y cierra ahí—, así que el cierre del interno cerraba también el externo y **la
+> documentación del componente se imprimía como TEXTO en las 10 pantallas** donde se muestra un
+> vehículo, **incluido el ticket que el cliente se lleva**. Llegó hasta producción porque **no lanza
+> excepción**: el HTML sigue siendo válido, solo tiene párrafos de más, y las pruebas afirmaban que la
+> imagen aparecía — que era cierto. ⚠️ **Y la misma clase de trampa dos veces más**: Blade procesa la
+> sintaxis `<x-...>` **también dentro de un `<script>` y dentro de un comentario JS**, así que
+> documentar un método nombrando el componente hizo que intentara renderizarlo a mitad del
+> JavaScript; la vista falló con «unexpected end of file, expecting endif» —un mensaje que no apunta
+> a la causa— y la segunda vez, ya movido al layout, **rompía TODAS las vistas de la aplicación**.
+> Localizado compilando prefijos de 1..N líneas hasta dar con la primera inválida.
+> **El catálogo** (`cw_marcas` + `cw_modelos`): el modelo guarda su **tipo de vehículo sugerido**, y
+> eso corrige la silueta —«Corolla» propone AUTOMÓVIL y el turno deja de mostrar una guagua
+> amarilla—; lo que **no está se escribe y se crea al guardar**, porque atender un vehículo no puede
+> depender de que alguien complete un catálogo primero con el carro esperando en la puerta; y el
+> vehículo **conserva marca y modelo como TEXTO** además de los ids, ya que los que existen no tienen
+> id y la imagen se resuelve por texto — sin esa columna **todos los carros del cliente habrían
+> perdido su miniatura al desplegar**. **Un componente para los cuatro formularios**, no cuatro
+> copias (regla de `D-CW-F1-3-1`, con prueba: en este vertical ya divergieron tres veces), y la
+> pantalla del catálogo por la regla de `[CW-FIX-2]` —*una tabla sin pantalla es una función que no
+> existe*— con 27 marcas y 162 modelos RD cuya siembra cruza el tipo **por silueta y no por nombre**,
+> porque los tipos los nombra cada lavadero («jepeta», «SUV», «camioneta»).
+> **⚠️ Cuatro defectos propios, todos encontrados verificando**: la normalización llevaba un **mapa
+> de tildes escrito a mano** y dejaba fuera todo lo demás («Citroën» → `citro n`, «Škoda» → `koda`),
+> corregido con `Str::ascii()`; un mensaje que decía «créalos y vuelve a sembrar» **no funcionaba**
+> porque sembrar saltaba los existentes; ⚠️ **una prueba mía pasaba por la razón equivocada**
+> (**tercera vez** en el proyecto) — la unicidad la protegía el **UNIQUE de MySQL**, cuyo collation es
+> case-insensitive, así que «TOYOTA» y «Toyota» chocaban en la base **aunque mi normalizador no
+> hiciera nada**; y ⚠️ **mi propio script de verificación dejó el defecto REINYECTADO** al morir con
+> `UnicodeDecodeError` después de escribir la violación y antes de restaurar.
+> **Suite Car Wash: 403** (de 376). ⚠️ Migración `2026_07_28_360001`.
+> **Reglas nuevas: un comentario Blade no se anida · la etiqueta de un componente no se escribe
+> dentro de un `<script>` ni en un comentario JS · lo que el usuario puede teclear se crea al vuelo,
+> no se exige del catálogo · una normalización de texto se hace con `Str::ascii()`, no con un mapa de
+> tildes a mano · un mensaje que dice qué hacer tiene que funcionar cuando se hace · una unicidad que
+> la protege el motor de la base no prueba la del código · un script que modifica archivos para
+> verificar algo restaura en `finally`.**
+
+> **PRESTAMELLO post-cierre F4 (2026-07-29) — `[PRE-FIX-1]`**: pedido del director técnico —
+> *«verifica cobros del día y gestión de cobranza, ya que no hay opciones para gestionar; parecen más
+> reportes que procesos»*. Tenía razón en los dos casos, y al abrirlos aparecieron **siete defectos**
+> que ninguna prueba cubría. ⚠️ **«Gestión de cobranza» tenía CERO botones de acción**, y su propio
+> texto vacío lo admitía: *«Regístralas desde el detalle de cada operación»* — la pantalla llamada
+> «Gestión» mandaba a gestionar a otro sitio. El POST **ya existía y estaba probado**; solo estaba
+> expuesto en el detalle de la operación, a **cinco pasos** de ahí (forma de defecto de
+> `[BAN-F4-FIX]`: funcionalidad alcanzable, pero no desde donde se necesita). ⚠️ **«Cobros del día»
+> mostraba 87 cuotas todas vencidas hacía 211 días**, mezcladas sin distinción —una que vence hoy y
+> una de hace siete meses se veían igual— y su única acción era «Cobrar»: el cobrador que visita y
+> **no** cobra (el cliente no estaba, prometió el viernes, discutió el monto) no tenía dónde registrar
+> el resultado, así que el trabajo hecho **desaparecía**, nadie sabía si a ese cliente ya se le había
+> visitado tres veces, y la ruta del día siguiente salía idéntica a la del anterior.
+> **Los siete defectos**: ⚠️ (1) **el «Cobrado hoy» contaba por `created_at`** —la fecha de captura—,
+> que es el defecto de `[PRE-F4-2a]` corregido en los siete reportes y **sin corregir en la pantalla
+> que el cobrador usa todos los días**: cobra el lunes en la ruta, la oficina teclea el miércoles, y
+> el cobrado del lunes salía en **0** mientras el del miércoles contaba dos días — con eso no se
+> cuadra el día contra la gaveta (cuarta copia del criterio); (2) el KPI usaba `now()` y la tabla
+> `$fecha`, o sea **dos fechas en la misma pantalla**; (3) ⚠️ **el orden era PARCIAL** y con muchas
+> cuotas del mismo día **cambia entre ejecuciones** —el cobrador que imprime su ruta dos veces obtiene
+> dos rutas distintas y no puede tacharlas contra la primera (**sexta vez** en el ecosistema)—;
+> (4) los días de atraso se medían contra «hoy» y no contra la fecha consultada; (5) ⚠️ **tres KPIs se
+> contaban sobre listas con `limit`**: con 55 promesas vigentes el KPI decía **50**, un número
+> plausible y menor que el real que nadie relacionaría con el límite de una lista; (6) las acciones
+> vencidas y las próximas venían juntas, cuando la vencida es la que hay que atender primero; y
+> (7) ⚠️ **no se podía reprogramar una promesa** —el caso real más frecuente— así que había dos
+> salidas malas: marcarla «incumplida» y perder el compromiso nuevo, o dejarla «vigente» con una fecha
+> que ya pasó, **que es justo lo que hace que el tablero muestre promesas vencidas como vivas**.
+> **Lo que se hizo**: la agenda se parte en «Vencen hoy» y «Atrasadas» (lo más viejo primero: es lo que
+> más se enfría), botón **«Gestionar»** en cada fila —el resultado de la visita se registra donde
+> ocurre la visita—, **«+ Registrar gestión»** con selector de operación, **«Atender»** en cada acción
+> de la cola (*una cola de trabajo que no se puede trabajar es un recordatorio*) y **«Reprogramar»**
+> con **rastro en el historial**: si solo cambiara la fecha, el historial diría que el cliente prometió
+> una vez cuando ya lleva tres — y ese es el dato con el que se decide si se sigue negociando o se
+> demanda.
+> ✅ **Discrepancia `D-PRE-F4-1-1` CERRADA**: la fórmula del capital vivo estaba copiada en dos sitios
+> y se había declarado como deuda porque unificar parecía obligar a que el KPI pasara por una
+> subconsulta agregada. **No hacía falta: lo que se repetía era la fórmula, no la agregación.**
+> ⚠️ **Y dos pruebas propias que no protegían lo que decían**: la del orden se escribió comparando
+> tres ejecuciones seguidas y **pasó con el orden parcial puesto** (MySQL devuelve el mismo plan para
+> tres llamadas consecutivas) — reescrita para verificar el `ORDER BY` con `DB::listen`; y una
+> **violación mal inyectada** dejó el archivo con un `\$` literal, así que la prueba falló por error
+> de **sintaxis** y no por la aserción.
+> **Suite Prestamello: 454** (de 441 al cerrar F4). Sin migración: los siete defectos eran de
+> consulta, de orden y de exposición en pantalla.
+> **Reglas nuevas: una pantalla que se llama «Gestión» tiene que permitir gestionar —si su estado
+> vacío dice «hazlo en otro sitio», es un reporte con nombre de proceso· una agenda separa el día del
+> atraso · una cola de trabajo trae la acción con la que se trabaja · un KPI no se cuenta sobre una
+> lista con `limit` · reprogramar es un caso de primera clase y deja rastro · un criterio unificado
+> hay que buscarlo en TODAS las pantallas, no solo en los reportes · una prueba de orden no se
+> verifica comparando ejecuciones seguidas · una violación que rompe la sintaxis no verifica nada.**
+> ⚠️ **Nota de otro módulo**: `CajaService::sesionAbiertaParaEmpresa($empresaId, …)` **ignora su
+> primer parámetro** — los 9 llamadores del ecosistema (Prestamello ×4, Car Wash ×5) le pasan `0`
+> porque no significa nada, y el aislamiento lo hace el global scope de `HasEmpresa`. Funciona, pero
+> la firma promete un filtro que no aplica. **No se cambió**: toca tres módulos y es decisión de
+> alcance del director técnico.
+
 > **PRESTAMELLO FASE 4 (2026-07-29) — `[PRE-F4-1]`–`[PRE-F4-3]` + cierre `[PRE-F4]` · CIERRA EL
 > BLUEPRINT DE PRESTAMELLO (F0→F4)**: la cartera que se puede dirigir. El módulo ya prestaba con
 > criterio (F1), vendía a crédito de verdad (F2) y dirigía la cobranza (F3); lo que no tenía era **con
@@ -833,7 +932,7 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Último commit en **zyntello-app**: `[PRE-F4]` (cierre de la Fase 4 de Prestamello y del blueprint completo F0→F4: la cartera que se puede dirigir — dashboard gerencial, 7 reportes ejecutivos con provisión A–E, e informe mensual del comité) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
+> Último commit en **zyntello-app**: `[PRE-FIX-1]` (post-cierre F4: cobros del día y gestión de cobranza convertidos de reportes a PROCESOS, con 7 defectos corregidos y la discrepancia D-PRE-F4-1-1 cerrada) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
 
 > **CONDOMINIOS correcciones post-cierre (2026-07-24) — `[CND-FIX]`/`[CND-CONFIG]`**: (1) discrepancia D-CND-F3-2 resuelta (incidencias con `area_id`, reporte por área); (2) export de reportes a **Excel real** (.xlsx Maatwebsite) en vez de CSV; (3) **decisiones seleccionables llevadas a "Configuración del módulo"** (`cnd_config`, por empresa: privacidad del informe, voto remoto por defecto, portal reservas/incidencias ON/OFF); (4) **fix del bucle del combo de módulos** — el menú de Condominios enlazaba dashboards de OTROS módulos (CxC/CxP/Presupuesto/Bancos/Caja/Nómina) y eso rompía la detección de módulo activo (esas rutas quedaban "compartidas" y al abrir CxC desde el combo se quedaba en Condominios). Se quitaron; los módulos se abren desde el combo. Migraciones aditivas `160001`/`160002`. **Regla nueva: nunca listar en el menú de un módulo el dashboard/ruta dueña de otro módulo.** Regresión completa VERDE: 952 passed, 4 skipped, 0 failed.
 
