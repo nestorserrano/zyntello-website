@@ -256,6 +256,79 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 ### Bitácora reciente (estado actual — 2026-07-28)
 
+> **PRESTAMELLO FASE 4 (2026-07-29) — `[PRE-F4-1]`–`[PRE-F4-3]` + cierre `[PRE-F4]` · CIERRA EL
+> BLUEPRINT DE PRESTAMELLO (F0→F4)**: la cartera que se puede dirigir. El módulo ya prestaba con
+> criterio (F1), vendía a crédito de verdad (F2) y dirigía la cobranza (F3); lo que no tenía era **con
+> qué mirar la cartera completa** — un gerente con 300 operaciones vivas no podía responder «¿cuánto
+> está en riesgo?», «¿los créditos de marzo se comportan peor que los de enero?» ni «¿cuánta reserva
+> necesito para el cierre?». **F4-1** dashboard gerencial con **una sola fuente** (`kpisGerenciales()`
+> compone los métodos de los reportes, no consulta por su cuenta — prevención del defecto de Bancos
+> F4-4), el PAR **acumulativo** porque tramos sueltos obligarían a sumar mentalmente, los filtros **en
+> el servicio** (en la vista dejarían los KPIs contando la cartera completa mientras la tabla muestra
+> una parte) y un porcentaje sobre cartera cero en **`null`**, no 0 % (ese mes no había nada que medir,
+> y 0 % dice «no hay riesgo»). **F4-2a** apareció al escribir los reportes y es de las que llegan más
+> lejos: ⚠️ **`pre_pagos.fecha_pago` era una columna HUÉRFANA** —existía y el servicio nunca la
+> llenaba, así que todo el módulo contaba por `created_at`, **el instante de captura**: el cliente
+> abona el lunes en la ruta, el cobrador entrega el miércoles, y si el lunes cerraba el mes el
+> recuperado **y el asiento** quedaban en el período equivocado— más el criterio de fecha **escrito
+> tres veces, dos en el mismo servicio y las dos saliendo en el mismo dashboard**. **F4-2** siete
+> reportes que **declaran su cuadre y lo pintan al pie**, con la provisión A–E clasificando por la
+> **cuota más vieja** (el promedio suavizaría justo el dato que importa), contabilizando **solo el
+> DELTA** (asentar el total cada mes multiplicaría el gasto por los meses transcurridos) y con el
+> último tramo **sin techo** porque las operaciones que lo superaran desaparecerían del reporte — justo
+> las más viejas. **F4-3** el informe del comité: los siete reportes en un PDF de nueve secciones con
+> **los cuadres EN EL PAPEL** (un número sin su cuadre se discute como si fuera un hecho verificado) y
+> la **moneda en la portada**; el servicio **no calcula, compone**, y **todo se resuelve a UNA fecha de
+> corte** — si cada bloque usara «ahora», un cobro registrado mientras se genera el PDF haría que el
+> KPI de la primera página no cuadre con la tabla de la cuarta y el descuadre sería **irreproducible**.
+> El envío nace **apagado**: encenderlo manda la cartera completa —capital, mora, provisiones y **los
+> nombres de los clientes morosos**— a una lista de correos, y el **detalle va en el adjunto**, porque
+> un correo se reenvía con un clic. El cron corre **a diario y decide dentro**: un `monthlyOn(3)` que
+> falle se salta el mes completo y el comité no recibe nada.
+> **⚠️ Dos columnas de F4-2 no tenían pantalla** (regla de `[CW-FIX-2]`): el interruptor del asiento de
+> la provisión —que el reporte leía, con el agravante de mostrar el botón de contabilizar sin que el
+> usuario pudiera habilitarlo— y **la escala A–E completa**, cuyos porcentajes son **de REFERENCIA** y
+> sin pantalla habrían quedado como si fueran la norma del país. La escala se guarda **completa**:
+> validar fila por fila permitiría dejar un hueco y un crédito de 65 días caería en ninguna
+> clasificación, quedando sin provisionar.
+> **11 defectos reales, y los tres que más lejos llegaban**: ⚠️ **el acumulado de provisión daba 0**
+> con 369,586 emitidos (solo contaba `procesado`, y el asiento estaba en `pendiente_configuracion`) →
+> **el siguiente cierre habría duplicado el gasto completo**; ⚠️ **el PAR histórico no coincidía con el
+> del dashboard** (67.25 % vs 68.91 %) porque la serie reconstruía cada mes a su cierre y el mes en
+> curso no ha cerrado; y ⚠️ **la proyección salía en 0.00 con 470,130 por vencer** porque el factor
+> histórico era 0 y multiplicaba — ahora lo dice en vez de mostrar un cero que parece un dato. Más un
+> N+1 de 100 consultas, `meses_madurez` en float (Carbon 3), una ruta inexistente que reventaba la
+> vista y el wrapper de TomSelect de 64 px al lado de un botón de 32.
+> **Y cinco pruebas propias que pasaban por la razón equivocada**, las cinco cazadas antes de
+> commitear — entre ellas una con `now()->subMonths(5)` **corrida un día 29** (Carbon desborda febrero
+> al 1 de marzo: habría pasado los días 1-28 y fallado los 29-31) y la de las metas del informe, que
+> tenía todas las operaciones vivas, así que **quitar el filtro de estado no la rompía**.
+> ⚠️ **Y una lección reaprendida**: al leer una captura «vi» un descuadre de 80,000 que no existía —
+> confundí un `0` con un `8` en fuente monoespaciada. **Los números de una captura se leen del DOM.**
+> **Suite Prestamello: 441 pruebas** (de 350 al cerrar F3, de 53 al cerrar F0); **regresión completa
+> del ecosistema VERDE: 2130 passed, 4 skipped, 0 failed (19215 aserciones)**; aceptación de la fase
+> con **50 aserciones** que terminan donde importa: **el KPI del dashboard, la celda del reporte y la
+> línea del PDF son el mismo número**. Detalle, las **10 discrepancias**, los **41 TODOs consolidados**
+> y las **11 cuentas contables** en `app/zyntello-app/zyntello-prestamello-mejoras-blueprint.md`
+> («CIERRE DE LA FASE 4» + «LISTA CONSOLIDADA»).
+> ⚠️ Migraciones `2026_07_29_470001` y `480001`; cron `prestamello:paquete-ejecutivo --confirmar`
+> (07:10). **Reglas nuevas: un dato que todo reporte usa no puede ser una columna huérfana · un
+> acumulado que decide un asiento no puede filtrar por el estado del asiento anterior · una serie
+> histórica y un KPI de hoy usan el mismo método para el mes en curso · un factor histórico que
+> multiplica a cero no da un pronóstico · un informe compuesto no calcula: compone, se resuelve a UNA
+> fecha de corte, declara su moneda y sus cuadres van en el papel · un interruptor peligroso se
+> verifica por el DEFAULT DE LA COLUMNA · una escala de tramos se guarda completa · un porcentaje de
+> referencia sin pantalla se convierte en la norma · los números de una captura se leen del DOM.**
+>
+> ⚠️ **Dos hallazgos FUERA del alcance, para decisión del director técnico**: (1) **los TXT de la DGII
+> (606/607/608) tienen orden PARCIAL** — ordenan solo por fecha, y con dos facturas del mismo día el
+> orden lo decide MySQL: **dos generaciones del mismo TXT no son idénticas**, así que el contador que
+> lo regenere para verificar verá diferencias que no existen (**quinta vez** que esta forma aparece;
+> arreglo de una línea por reporte, no se toca sin autorización porque son reportes fiscales que se
+> entregan a la DGII); y (2) **los snapshots de `tests/Feature/*/snapshots/` no comparan nada**: se
+> escriben con `file_put_contents` y nunca se afirman — son muestras para inspección, no protegen
+> contra ningún cambio de salida.
+
 > **PRESTAMELLO FASE 3 (2026-07-28/29) — `[PRE-F3-1]`–`[PRE-F3-4]` + cierre `[PRE-F3]`**: la
 > cobranza con criterio. El módulo **registraba** la cobranza y no la **dirigía**: con 300
 > operaciones vivas, una atrasada 5 días y otra 200 se veían igual en una lista por fecha; la cartera
@@ -760,7 +833,7 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Último commit en **zyntello-app**: `[PRE-F3]` (cierre de la Fase 3 de Prestamello: la cobranza dirigida — tramos de mora, cartera del cobrador, recordatorios al cliente y alertas internas) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
+> Último commit en **zyntello-app**: `[PRE-F4]` (cierre de la Fase 4 de Prestamello y del blueprint completo F0→F4: la cartera que se puede dirigir — dashboard gerencial, 7 reportes ejecutivos con provisión A–E, e informe mensual del comité) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
 
 > **CONDOMINIOS correcciones post-cierre (2026-07-24) — `[CND-FIX]`/`[CND-CONFIG]`**: (1) discrepancia D-CND-F3-2 resuelta (incidencias con `area_id`, reporte por área); (2) export de reportes a **Excel real** (.xlsx Maatwebsite) en vez de CSV; (3) **decisiones seleccionables llevadas a "Configuración del módulo"** (`cnd_config`, por empresa: privacidad del informe, voto remoto por defecto, portal reservas/incidencias ON/OFF); (4) **fix del bucle del combo de módulos** — el menú de Condominios enlazaba dashboards de OTROS módulos (CxC/CxP/Presupuesto/Bancos/Caja/Nómina) y eso rompía la detección de módulo activo (esas rutas quedaban "compartidas" y al abrir CxC desde el combo se quedaba en Condominios). Se quitaron; los módulos se abren desde el combo. Migraciones aditivas `160001`/`160002`. **Regla nueva: nunca listar en el menú de un módulo el dashboard/ruta dueña de otro módulo.** Regresión completa VERDE: 952 passed, 4 skipped, 0 failed.
 
