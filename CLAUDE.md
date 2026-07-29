@@ -256,6 +256,87 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 ### Bitácora reciente (estado actual — 2026-07-28)
 
+> **PRESTAMELLO FASE 3 (2026-07-28/29) — `[PRE-F3-1]`–`[PRE-F3-4]` + cierre `[PRE-F3]`**: la
+> cobranza con criterio. El módulo **registraba** la cobranza y no la **dirigía**: con 300
+> operaciones vivas, una atrasada 5 días y otra 200 se veían igual en una lista por fecha; la cartera
+> no tenía dueño ni medida; al cliente solo se le hablaba cuando ya debía. **F3-1** tramos de mora
+> configurables —el criterio es del negocio: un prestamista diario considera grave un atraso de 3
+> días y uno hipotecario no se alarma hasta los 60— con los días medidos por **la cuota más vieja** y
+> no por el promedio (el promedio suavizaría justo el dato que importa), el **último tramo sin techo**
+> porque con un número grande las operaciones que lo superen **desaparecerían del tablero** —justo las
+> más viejas— y ⚠️ la promesa incumplida que **ya se marcaba, pero solo si alguien miraba**: se
+> evaluaba al abrir la pantalla, así que si nadie la abría en una semana el dashboard mostraba
+> promesas «vigentes» vencidas hacía días. **F3-2** la comisión se mide por el tramo en que estaba la
+> operación **AL COBRAR** y no por el de hoy: medirla hoy pagaría al revés, porque rescatar una
+> cuenta de 120 días la deja al día y el trabajo pasaría a valer el 1% del tramo «al día» en vez del
+> 8% del que de verdad se trabajó — se penalizaría exactamente lo que se quiere premiar. Los % nacen
+> en **0%** para que encender las comisiones no pague nada por accidente; la cartera **se
+> previsualiza antes de moverse** (y entrar a la pantalla no previsualiza) con rastro de cada
+> traspaso; y las **dos metas van separadas** porque «monto recuperado» es un flujo del mes y «% al
+> día» una foto de hoy — promediarlas daría un número que no significa nada. ⚠️ **NO se crea
+> liquidación propia**: `[FACT-F3-5]` ya la tenía y ya distingue cobradores de vendedores; el único
+> hueco era el puente de identidad. **F3-3** recordatorios al cliente, lo más barato que hace el
+> módulo: un cliente que olvidó la fecha entraba a mora igual que uno que no puede pagar. **Todo nace
+> apagado** —encender los avisos empieza a escribirle a los clientes desde el número de la empresa— y
+> la pantalla trae una **simulación** que muestra el mensaje exacto antes de encender nada. ⚠️ **La
+> clave de idempotencia del blueprint habría mandado el aviso de mora UNA sola vez en la vida de la
+> cuota**; y un **fallo no cuenta como enviado**: el modo «enlace» de WhatsApp se marca FALLIDO a
+> propósito, porque en un cron no hay humano que abra `wa.me`. **F3-4** seis alertas internas que **no
+> reimplementan ninguna detección** —las seis preguntas ya tenían respuesta en el módulo— y que ⚠️
+> **no vencen las preaprobaciones** aunque el blueprint lo pida aquí, porque ya lo hace F1-4 y dos
+> comandos venciendo lo mismo divergirían. La meta se compara contra el **proporcional del mes**: contra
+> el total habría alertado a todos los cobradores los primeros 25 días de cada mes.
+> **11 defectos reales, y la mitad los encontró USAR el módulo, no leer el código**: ⚠️ el orden de la
+> consulta de la ruta era **PARCIAL** y con `limit(100)` no cambiaba el orden sino **qué cuotas
+> entran** (la 100 y la 101 se turnarían entre recargas y una visita del día desaparecería); ⚠️ campos
+> nuevos **`required` rompieron a los llamadores existentes**; **enviando un aviso de verdad** salió
+> que el importe **iba sin moneda** y que el hueco se veía en un doble espacio; **corriendo el
+> comando** salió «vence en **-9 días**», que además revela que el cron no está corriendo; **mirando
+> la captura** salieron el escape de Blade a medio resolver en la lista de variables —el texto que el
+> usuario copia— y un «capital pendiente 20,000» con un saldo de 120,000 (etiqueta plausible, número
+> correcto, contando otra cosa, y es el dato con el que se decide si se demanda); y un seed que corrió
+> dos veces delató que ⚠️ **`pre_operaciones` aceptaba números duplicados** — dos préstamos
+> «OP-000042» y un pago puede quedar aplicado al crédito equivocado, corregido con el UNIQUE que es la
+> segunda guarda de `[CW-F0-6]`, más el generador del número que estaba **duplicado** en dos sitios.
+> **Y tres pruebas propias que pasaban por la razón equivocada**, las tres cazadas antes de commitear.
+> **Suite Prestamello: 350 pruebas** (de 268 al cerrar F2); aceptación de la fase con **180
+> aserciones** sobre UNA sola cartera. Detalle y los **10 TODOs de verificación humana** en
+> `app/zyntello-app/zyntello-prestamello-mejoras-blueprint.md` («CIERRE DE LA FASE 3»).
+> ⚠️ Migraciones `2026_07_28_420001`, `430001`, `440001`, `450001`, `460001`; crones
+> `prestamello:alertas` (06:55) y `prestamello:recordatorios --confirmar` (08:00 — no de madrugada:
+> un WhatsApp de cobranza a las 3 a.m. molesta más de lo que cobra).
+> **Reglas nuevas: el esfuerzo se paga por la dificultad que tenía el trabajo cuando se hizo · un
+> orden parcial con LIMIT no cambia el orden, cambia el contenido · la clave de idempotencia de un
+> aviso recurrente lleva fecha · un fallo registrado no es un envío hecho · un importe en un aviso de
+> cobranza nunca va sin su moneda · un campo nuevo `required` rompe a todos los llamadores que ya
+> existían · una alerta que salta todos los días enseña a ignorar las alertas · un avance se compara
+> contra el proporcional del período · una violación que no se confirma en el código es una
+> verificación imaginaria · una captura también sirve para leer los textos, no solo para ver que la
+> pantalla existe.**
+
+> **PRESTAMELLO FASE 2 (2026-07-28) — `[PRE-F2-1]`–`[PRE-F2-3]` + cierre `[PRE-F2]`**: la venta a
+> crédito de verdad. `venta_credito` era **solo una etiqueta en un ENUM**: el módulo generaba el mismo
+> cuadro que un préstamo, no sabía QUÉ se había vendido, y ⚠️ **el mismo hecho se contaba DOS VECES
+> como salida de dinero** — vender un solar de 500,000 dejaba un egreso en la gaveta de Caja POS Y un
+> crédito a caja en el mayor; ninguno era cierto, y los dos descuadres se descubren en momentos
+> distintos (el arqueo y la conciliación), así que nadie los relacionaba entre sí ni con la venta de un
+> terreno. **F2-1** catálogo de bienes con estados de **transiciones declaradas** (un ENUM libre
+> permitiría saltar de `disponible` a `entregado` sin que nadie pagara nada) y el precio **derivado**,
+> nunca guardado; el candado de stock distingue TRES resultados —hay, no hay, y **no se pudo
+> consultar**— porque tratar el «no sé» como «hay» dejaría pasar la reserva con Inventario apagado y el
+> error se descubriría el día de la entrega con la inicial ya cobrada. **F2-2** el asiento correcto (DR
+> cartera + DR anticipo / CR ingreso) con el precio tomado de **la suma de los débitos** y no del
+> precio de lista, y la **inicial en varios abonos cada uno EN SU FECHA**: usaban `created_at` —el
+> instante de captura— y el cliente abona el lunes mientras el cobrador entrega el miércoles, así que
+> el asiento caía en el período equivocado. **F2-3** estado de cuenta con **fuente única** para el PDF,
+> el portal y el WhatsApp: si cada canal calculara su avance, el papel diría 40% y el teléfono 38%, y
+> esa discusión no se gana explicando la fórmula. **Suite Prestamello: 232 pruebas**; regresión 1920.
+> **Reglas nuevas: un dato derivado no se guarda · «no sé» no es «no hay» · un ENUM de estados sin
+> transiciones permite lo imposible · la fecha de un pago no es la fecha de su captura · un asiento se
+> arma con lo que de verdad lo respalda · si falta una cuenta, mejor sin líneas que descuadrado · un
+> número que el cliente ve en dos sitios se calcula en uno · un porcentaje de avance declara su base ·
+> una prueba de que algo NO ocurre necesita montadas las condiciones para que ocurra.**
+
 > **PRESTAMELLO FASE 1 (2026-07-27/28) — `[PRE-F1-1]`–`[PRE-F1-5]` + cierre `[PRE-F1]`**: el
 > crédito con criterio. El módulo prestaba dinero **sin ningún criterio de riesgo** —sin
 > evaluación, sin garantías, sin buró, sin forma de decir «sí, pero…»— y el control de límite que
@@ -679,7 +760,7 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Último commit en **zyntello-app**: `[CND-FIX]` `c7c115eb` (correcciones post-cierre Condominios: discrepancias + config del módulo + fix bucle del combo de módulos) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
+> Último commit en **zyntello-app**: `[PRE-F3]` (cierre de la Fase 3 de Prestamello: la cobranza dirigida — tramos de mora, cartera del cobrador, recordatorios al cliente y alertas internas) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
 
 > **CONDOMINIOS correcciones post-cierre (2026-07-24) — `[CND-FIX]`/`[CND-CONFIG]`**: (1) discrepancia D-CND-F3-2 resuelta (incidencias con `area_id`, reporte por área); (2) export de reportes a **Excel real** (.xlsx Maatwebsite) en vez de CSV; (3) **decisiones seleccionables llevadas a "Configuración del módulo"** (`cnd_config`, por empresa: privacidad del informe, voto remoto por defecto, portal reservas/incidencias ON/OFF); (4) **fix del bucle del combo de módulos** — el menú de Condominios enlazaba dashboards de OTROS módulos (CxC/CxP/Presupuesto/Bancos/Caja/Nómina) y eso rompía la detección de módulo activo (esas rutas quedaban "compartidas" y al abrir CxC desde el combo se quedaba en Condominios). Se quitaron; los módulos se abren desde el combo. Migraciones aditivas `160001`/`160002`. **Regla nueva: nunca listar en el menú de un módulo el dashboard/ruta dueña de otro módulo.** Regresión completa VERDE: 952 passed, 4 skipped, 0 failed.
 
