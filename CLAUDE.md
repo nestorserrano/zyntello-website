@@ -355,15 +355,30 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > la firma promete un filtro que no aplica. **No se cambió**: toca tres módulos y es decisión de
 > alcance del director técnico.
 
-> ⚠️ **Regresión al cerrar `[PRE-FIX-1]`/`[PRE-FIX-2]`: 2169 passed, 4 skipped, 1 failed.**
-> El único fallo es **de Car Wash y no de Prestamello**: `CarwashReportesTest > el no show solo
-> cuenta las citas cuya hora ya pasó` crea su cita «futura» con `now()->addDays(2)` y consulta el
-> reporte entre `startOfMonth` y `endOfMonth` — corrido el **30 de julio**, esa cita cae el 1 de
-> agosto, **fuera del rango**, y el total da 3 en vez de 4. **Falla los últimos 2 días de cada mes.**
-> Es la misma clase de defecto que `[CW-FIX-3]` documentó para ese módulo (*el «ahora» de una prueba
-> que filtra por período se fija*) y que `[PRE-FIX-2]` corrigió en Prestamello. **No se tocó: Car
-> Wash es trabajo en curso de otra sesión y modificarlo generaría conflicto.** El arreglo es anclar
-> la cita dentro del mes (`now()->startOfMonth()->addDays(N)`) o fijar el «ahora» a mitad de mes.
+> ✅ **CORREGIDO en `[CW-FIX-4]` (2026-07-30)** — el fallo que quedó pendiente al cerrar
+> `[PRE-FIX-1]`. `CarwashReportesTest > el no show solo cuenta las citas cuya hora ya pasó` crea su
+> cita «futura» con `now()->addDays(2)` y consulta el reporte entre `startOfMonth` y `endOfMonth`:
+> corrido el **30 de julio** esa cita cae el 1 de agosto, fuera del rango, y el total da 3 en vez
+> de 4. ⚠️ **Y la ventana era más ancha de lo estimado**: no son «los últimos 2 días» — los días
+> **1, 2 y 3** se salen las citas del PASADO (el día 1, `subDays(2)` cae en el mes anterior).
+> Calculado sobre 2026: **5 días por mes, 60 al año, el 16 % del tiempo**.
+> **Se corrigió anclando el «ahora» a mitad de mes EN ESA PRUEBA**, no en el TestCase: ahí se fija
+> la HORA a propósito y **no** la fecha, porque `[CW-F4-3]` compara contra el mismo día de la
+> semana anterior y mover el día globalmente rompería ese comparativo. ⚠️ **Y no bastaba con anclar
+> las citas al mes** dejando el «ahora» real: la cita futura tiene que seguir siendo futura
+> *respecto al ahora*, o el día 20 ya habría pasado y la prueba pasaría **sin ejercer la regla que
+> dice ejercer**. La guarda verifica la fórmula simulando los 31 días posibles de ejecución en meses
+> de 31, 30 y 28 días más un febrero bisiesto (600 aserciones); las dos violaciones se detectan.
+> ⚠️ **Y delató un problema de método propio**: la regresión reportada como «2170 passed, 0 failed»
+> corrió el 29 antes de medianoche, cuando +2 días daba 31 de julio — **verde por la hora, no por
+> estar bien**. Es exactamente lo que el `CarwashTestCase` ya advertía: *un fallo que depende de
+> CUÁNDO se corre hace que la suite verde deje de significar algo.*
+> **Barrido del ecosistema**: 6 suites combinan fechas futuras con filtros por mes; las 5 de
+> Activos y Prestamello pasan el día 30 (74 pruebas) — sus fechas futuras son intencionales o el
+> rango las cubre. **Suite Car Wash: 404.**
+> **Regla nueva: el «ahora» de una prueba que filtra por PERÍODO se ancla al período, no solo a la
+> hora — y el dato relativo tiene que conservar su relación con ese «ahora», o la prueba pasa sin
+> probar.**
 
 
 > **PRESTAMELLO FASE 4 (2026-07-29) — `[PRE-F4-1]`–`[PRE-F4-3]` + cierre `[PRE-F4]` · CIERRA EL
