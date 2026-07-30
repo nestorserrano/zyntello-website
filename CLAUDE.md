@@ -355,6 +355,17 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > la firma promete un filtro que no aplica. **No se cambió**: toca tres módulos y es decisión de
 > alcance del director técnico.
 
+> ⚠️ **Regresión al cerrar `[PRE-FIX-1]`/`[PRE-FIX-2]`: 2169 passed, 4 skipped, 1 failed.**
+> El único fallo es **de Car Wash y no de Prestamello**: `CarwashReportesTest > el no show solo
+> cuenta las citas cuya hora ya pasó` crea su cita «futura» con `now()->addDays(2)` y consulta el
+> reporte entre `startOfMonth` y `endOfMonth` — corrido el **30 de julio**, esa cita cae el 1 de
+> agosto, **fuera del rango**, y el total da 3 en vez de 4. **Falla los últimos 2 días de cada mes.**
+> Es la misma clase de defecto que `[CW-FIX-3]` documentó para ese módulo (*el «ahora» de una prueba
+> que filtra por período se fija*) y que `[PRE-FIX-2]` corrigió en Prestamello. **No se tocó: Car
+> Wash es trabajo en curso de otra sesión y modificarlo generaría conflicto.** El arreglo es anclar
+> la cita dentro del mes (`now()->startOfMonth()->addDays(N)`) o fijar el «ahora» a mitad de mes.
+
+
 > **PRESTAMELLO FASE 4 (2026-07-29) — `[PRE-F4-1]`–`[PRE-F4-3]` + cierre `[PRE-F4]` · CIERRA EL
 > BLUEPRINT DE PRESTAMELLO (F0→F4)**: la cartera que se puede dirigir. El módulo ya prestaba con
 > criterio (F1), vendía a crédito de verdad (F2) y dirigía la cobranza (F3); lo que no tenía era **con
