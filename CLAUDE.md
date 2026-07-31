@@ -256,6 +256,67 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 ### Bitácora reciente (estado actual — 2026-07-31)
 
+> **RESTAURANTE FASE 1 — SALÓN Y COMANDAS (2026-07-31) — `[REST-F1-1]`, `[REST-F1-3]`, `[REST-F1-4]`
+> + cierre `[REST-F1]`**: F0 dejó el vertical instalable pero **no se podía tomar una comanda**.
+> Ahora sí: mapa de salón con tarjetas vivas, comanda táctil y orden de mostrador. **94 pruebas de
+> la fase** (31 del mapa, 46 de la comanda, aceptación con **76 aserciones**); **regresión completa
+> del ecosistema VERDE: 2351 passed, 4 skipped, 0 failed (22 651 aserciones)**. **Sin migraciones**:
+> las 20 tablas de F0-1 ya traían `turno`, `turno_fecha`, `es_adicion`, `enviada_en`, `servida_en` y
+> `mesa_id` nullable.
+> **El mapa** (F1-1): la tarjeta ENTERA es el botón —mesa libre abre y lleva DIRECTO a comandar, mesa
+> ocupada entra a su cuenta— y los controles de dentro llevan `.stop` (sin él, tocar «⋯» abriría
+> además la comanda, el defecto de `D-CW-F2-3-2`). ⚠️ **El refresco actualiza NÚMEROS, no HTML**, y
+> **la firma es de la ESTRUCTURA, no de los datos**: si cambiara con cada plato, la grilla se
+> reconstruiría cada 10 segundos, la pantalla saltaría y perdería el foco de quien escribe — hay una
+> prueba de que agregar platos NO la cambia. Los minutos NO viajan en el JSON: los lleva el navegador
+> desde `abierta_en`, porque incluirlos haría que la respuesta cambiara cada segundo. Los contadores
+> se **DERIVAN** (una prueba anula una línea y el contador baja solo, regla de `[CW-F4-2]`), y
+> `SalonService` es fuente única del mapa, del endpoint y de los KPIs — pedirlos aparte haría que la
+> cabecera dijera «5 ocupadas» con 6 tarjetas naranjas (`[BAN-F4-4]` en una sola pantalla).
+> **La comanda** (F1-3): ⚠️ **es AJAX porque con un POST por plato cada toque recarga la página** —
+> la carta vuelve al principio y el mesero pierde el scroll; en una mesa de seis son 15 recargas y el
+> pedido acaba en papel. Un ítem sin modificadores se agrega DIRECTO (v2 §5.2). El histórico es
+> inmutable (snapshot de nombre, precio y modificadores), los modificadores **se validan en el
+> SERVIDOR** —solo viajan ids, o bastaría manipular el formulario para cobrar el extra a cero— y un
+> modificador de un grupo que no aplica al ítem **se descarta**. El **turno se asigna en el PRIMER
+> envío** y no cambia después: tres números para una mesa harían que el cliente no supiera cuál es el
+> suyo. **Enviar manda solo lo nuevo** (`enviada_en IS NULL`, no el estado). Lo ya enviado no se
+> borra: se anula con motivo en F2.
+> **Mostrador** (F1-4): `mesa_id` nullable, misma pantalla, y ⚠️ **la MISMA cola de turnos que las
+> mesas** — la cocina tiene una lista, y numerar aparte haría que dos comandas se cantaran como
+> «turno 3» el mismo día. Sin turno todavía se muestra un guion, no un cero.
+> **F1-2 no tiene commit propio, y eso es lo correcto**: `<x-pantalla-completa>` existe desde
+> `[CW-F2-1]`, donde Car Wash lo creó «para que Restaurante lo herede». Se reusa en las tres
+> pantallas con su clave; dos pruebas impiden la copia.
+> ⚠️ **7 defectos propios, y el que más enseña lo encontró la ACEPTACIÓN**: la tarjeta decía
+> **«3 pendientes» con la cocina VACÍA** —una línea nace en `pendiente` pero sin `enviada_en`—, así
+> que el mesero habría creído que su comanda salió, el plato no llega y nadie relaciona el reclamo con
+> un contador (forma de `[PRE-FIX-1]`). Separado en `pendientes` (lo que debe la cocina) y
+> `sin_enviar` (lo que debe el mesero). También: ⚠️ **`abrirMesa` no comprobaba que la comanda viva
+> fuera DE ESA MESA** (tocar la mesa 4 abría la cuenta de la 7 y los platos se cobraban a otra gente)
+> y ⚠️ **`Orden::delivery()` estaba invertida** desde F0-1 —`belongsTo` con las claves cruzadas—: al
+> leer funcionaba por casualidad y `associate()` habría escrito el `orden_id` del delivery **dentro de
+> la clave primaria de la orden**; corregido a `hasOne` aunque el reparto sea F6.
+> ⚠️ **Defecto de F0-3 corregido aquí**: `gruposModificadores` **no era usable con `attach()`** — el
+> pivote tiene `id`/`company_id`/`empresa_id` NOT NULL y F0-3 los llenaba a mano dentro del
+> controlador, así que el siguiente llamador chocaba con un error de MySQL que no apunta a la causa.
+> Ahora hay una puerta única (`MenuItem::vincularGrupos()`) y **se borró la copia**.
+> ⚠️ **Dos notas de método, declaradas**: (1) **la regresión del paso previo se corrió mientras se
+> tocaba el código** —vale para saber que nada ajeno estaba roto, pero no cumple lo que el blueprint
+> pide; se repitió al cerrar con el árbol quieto—; y (2) **otra sesión trabajaba en el mismo módulo**
+> (`[REST-F0-5]`), lo que produjo un **deadlock de MySQL** en `rest_ordenes` (dos suites con
+> `lockForUpdate()` sobre la misma BD de testing) y rojos de pruebas ajenas a medias que **no se
+> tocaron**; `git add` fue archivo por archivo.
+> Ayuda de las 3 pantallas nuevas documentada (el archivo de ayuda dejaba escrito que las de
+> operación se documentan al entregar cada fase). Detalle, las 6 discrepancias y los 4 TODOs en
+> `app/zyntello-app/DISCREPANCIAS-restaurante.md` → «FASE 1».
+> **Reglas nuevas: un contador de trabajo pendiente tiene que decir DE QUIÉN es el pendiente · la
+> firma de un refresco diferencial es de la ESTRUCTURA, no de los datos · lo volátil se pinta en el
+> cliente y lo que no cambia, en el servidor · un pivote con columnas NOT NULL propias no es usable
+> con `attach()` · `sortByDesc` es estable en PHP 8 (el desempate va en la consulta) · una relación
+> invertida funciona al leer y corrompe al escribir · la regresión del paso previo se corre con el
+> árbol quieto · con sesiones paralelas, un rojo se confirma corriendo el archivo solo.**
+
 > **AYUDA DE TODO EL ECOSISTEMA + 7 PANTALLAS QUE NO COMPILABAN + LOS 14 ROJOS DE PRESTAMELLO
 > (2026-07-31) — `[REST-AYUDA-1]`, `[REST-FIX-1]`, `[FIX-VISTAS]`, `[PRE-FIX-2]`, `[AYUDA-2]`**:
 > pedido del director técnico — *«agregar la ayuda para todo el módulo con tooltips de todo y
@@ -1059,7 +1120,7 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Último commit en **zyntello-app**: `[REST-F0]` `6d8fa738` (cierre de la FASE 0 del vertical Restaurante: fundación completa, 56 pruebas, 4 discrepancias documentadas) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
+> Último commit en **zyntello-app**: `[REST-F1]` `58e49a46` (cierre de la FASE 1 del vertical Restaurante: salón, comanda y mostrador; 94 pruebas de la fase, regresión 2351 verdes) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
 
 > **CONDOMINIOS correcciones post-cierre (2026-07-24) — `[CND-FIX]`/`[CND-CONFIG]`**: (1) discrepancia D-CND-F3-2 resuelta (incidencias con `area_id`, reporte por área); (2) export de reportes a **Excel real** (.xlsx Maatwebsite) en vez de CSV; (3) **decisiones seleccionables llevadas a "Configuración del módulo"** (`cnd_config`, por empresa: privacidad del informe, voto remoto por defecto, portal reservas/incidencias ON/OFF); (4) **fix del bucle del combo de módulos** — el menú de Condominios enlazaba dashboards de OTROS módulos (CxC/CxP/Presupuesto/Bancos/Caja/Nómina) y eso rompía la detección de módulo activo (esas rutas quedaban "compartidas" y al abrir CxC desde el combo se quedaba en Condominios). Se quitaron; los módulos se abren desde el combo. Migraciones aditivas `160001`/`160002`. **Regla nueva: nunca listar en el menú de un módulo el dashboard/ruta dueña de otro módulo.** Regresión completa VERDE: 952 passed, 4 skipped, 0 failed.
 
