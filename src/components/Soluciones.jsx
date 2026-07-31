@@ -127,8 +127,17 @@ function combinarModulo(apiData) {
 }
 
 // Slugs que forman parte del ERP y nunca se muestran como módulos standalone.
-// El API marca estos con bundle:true; esta lista actúa como respaldo si el campo aún no está en BD.
-const ERP_BUNDLE_SLUGS = new Set(['erp', 'caja_chica', 'activos_fijos', 'compras', 'presupuesto', 'cxc', 'cxp']);
+// El API los marca con bundle:true; esta lista es el respaldo si el campo no llega.
+//
+// ⚠️ Los slugs son los del admin, tal cual. La versión anterior escribía `caja_chica` y
+// `activos_fijos` con guion bajo cuando el admin dice `cajachica` y `activos`, así que no
+// coincidían con nada, y además le faltaban `bancos` e `inventario`: un respaldo que no
+// respaldaba. Solo se notaría el día que el API dejara de enviar `bundle` — y ese día el
+// sitio ofrecería por separado cuatro módulos que ya vienen incluidos en el bundle.
+const ERP_BUNDLE_SLUGS = new Set([
+  'erp',           // el bundle contenedor: tiene su propio banner, no va como tarjeta
+  'activos', 'bancos', 'cajachica', 'compras', 'cxc', 'cxp', 'inventario', 'presupuesto',
+]);
 
 /* ─── Stars ─────────────────────────────────────────────────────── */
 function Estrellas({ rating }) {
