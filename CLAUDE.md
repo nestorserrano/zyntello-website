@@ -293,10 +293,21 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > 15** en el `TestCase` (desde ahí `subMonths` nunca desborda) y limpiado en `tearDown` porque es
 > global al proceso → **454 passed, 0 failed**. La guarda simula los **31 días posibles** en meses
 > de 31, 30 y 28 días más un febrero bisiesto. ⚠️ **Deuda declarada, no corregida**: **Activos**
-> (5 archivos) y **Bancos** (2) usan `subMonths` sin anclar y **hoy pasan el 31**, pero es
-> latente; no se anclan porque anclar una suite que hoy pasa puede hacer que alguna prueba **pase
-> sin probar** (advertencia literal de `[CW-FIX-4]`) — queda **nombrada** en `LATENTES_SIN_ANCLA`.
-> **Sin migraciones.**
+> (5 archivos) y **Bancos** (2) usaban `subMonths` sin anclar. **CERRADA el mismo dia en
+> `[FECHA-FIX]` `c7d2588b`**, y al abrirla resulto peor de lo estimado: ⚠️ **mi propio barrido
+> tenia un hueco** —busco `subMonths` en PLURAL y se perdio tres archivos con el SINGULAR
+> `addMonth()`, dos de ellos los peores del lote porque ahi el mes **es el dato**:
+> `ReactivarBajaTest` lo usa para el **periodo contable** y `BancosConceptoExtractoTest` para el
+> **periodo de la conciliacion** (desde un 31 de enero, `addMonth()->month` da **marzo** en vez
+> de febrero). Total **10 archivos en 3 suites**. Y ⚠️ **las pruebas pasaban por la HOLGURA de
+> sus umbrales, no por estar bien**: el comentario de la de Bancos dice «una cuenta con 8 meses
+> sin conciliar» y desde el dia 31 eran 7. Lo que costo no fue anclar sino **poder** anclar:
+> se verifico **por violacion** que las dos pruebas cuyo veredicto depende de un umbral siguen
+> ejerciendo su regla (conciliacion 8→1 mes y poliza 10→400 dias: **las dos fallan**, o sea
+> siguen protegiendo). Fuente unica en `AnclaFechaTestCase`, ⚠️ **NO en `HubTestCase`** —lo
+> heredan decenas de suites y anclarlas en bloque es justo lo que puede dejarlas pasando sin
+> probar—, y se **borro la copia** que `[PRE-FIX-2]` habia dejado en Prestamello. **848 passed.**
+> **Sin migraciones en toda la sesion.**
 > **Reglas nuevas: `@json` no acepta un array literal de más de tres elementos (usar `Js::from`)
 > · el atajo de Alpine para un evento colisiona con toda directiva Blade que se llame igual (usar
 > `x-on:evento`) · una vista que ninguna prueba renderiza puede estar rota con la suite en verde ·
