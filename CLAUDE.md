@@ -254,7 +254,97 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 **Regla:** Si ves error 403/500 después de deploy → ejecuta esto primero.
 
-### Bitácora reciente (estado actual — 2026-07-28)
+### Bitácora reciente (estado actual — 2026-07-31)
+
+> **AYUDA DE TODO EL ECOSISTEMA + 7 PANTALLAS QUE NO COMPILABAN + LOS 14 ROJOS DE PRESTAMELLO
+> (2026-07-31) — `[REST-AYUDA-1]`, `[REST-FIX-1]`, `[FIX-VISTAS]`, `[PRE-FIX-2]`, `[AYUDA-2]`**:
+> pedido del director técnico — *«agregar la ayuda para todo el módulo con tooltips de todo y
+> actualización de la ayuda en todos los módulos»* y, al ver los rojos, *«corrige lo que está en
+> rojo aunque no sea de esta sesión, toca los otros módulos… resuelve compras»*.
+> **80 pantallas documentadas** (11 del vertical + 69 de los 6 módulos que no tenían nada) y
+> **41 tooltips**, verificando que **resuelven a un texto real** y no solo que la etiqueta está
+> puesta: cero mudos. ⚠️ **Condominios estaba HUÉRFANO** —13 pantallas escritas y sin registrar,
+> así que el Centro de Ayuda no lo mostraba: trabajo hecho e invisible—. **La causa de raíz era
+> que la ayuda no tenía ni una sola prueba**; ahora `AyudaIntegridadTest` cubre los 25 módulos y
+> `DEUDA_DE_DOCUMENTACION` queda en **cero**. ⚠️ Dos trampas del reparto por prefijo:
+> **ConstructFlow no usa el prefijo `constructflow.`** (es la app original: sus rutas son
+> `projects.*`, `board.*`, `cards.*`) y **`reportes.` lo COMPARTEN todos los módulos** —de las
+> ~300 rutas `reportes.*` solo **21** son del generador; documentar las 300 ahí habría enterrado
+> el generador y puesto la ayuda de cada módulo lejos de donde se busca.
+> ⚠️ **7 PANTALLAS DE 3 MÓDULOS NO COMPILABAN, con la suite en VERDE** porque ninguna prueba las
+> renderizaba. **La directiva `@json` hace `explode(',')` y descarta a partir de la 3ª coma**: con
+> dos comas reconstruye por casualidad, con tres o más deja un corchete sin cerrar — invisible
+> hasta que alguien agrega el cuarto campo. Afectaba a 5 pantallas del vertical y a
+> **`compras/carga-ia/revisar`**, la pantalla de **revisión humana obligatoria de las facturas
+> leídas por IA**: con la única pantalla de aprobación caída, la función completa de `[COM-F1]`
+> quedaba inutilizable. Y en la APK de Events, **`@error` de Alpine** (atajo de `x-on:error`) se
+> interpretaba como la directiva Blade `@error` y abría un `if` que nunca cerraba — la trampa de
+> `[CW-FIX-3]` en un sitio nuevo. **La guarda compila las 1285 vistas del repositorio** (con
+> `nikic/php-parser` en proceso, no `php -l`) y detecta además la **pérdida silenciosa de datos**;
+> ⚠️ tuvo un falso positivo antes de quedar: acusaba a cinco partials que documentan su firma en
+> un comentario Blade — el error de `[REST-F0]` **al revés**, allí el comentario dejaba pasar la
+> prueba y aquí la hacía fallar.
+> ⚠️ **LOS 14 ROJOS DE PRESTAMELLO ERAN DE FECHA: la suite era roja 7 días al año.** La regresión
+> del **30** dio 2 rojos; la del **31**, catorce, sin un solo archivo del módulo modificado.
+> **Carbon no trunca al restar meses: DESBORDA hacia adelante** — desde el 31 de julio,
+> `subMonths(1)` cae el **1 de julio (el mes en curso)**, y `subMonths(2)`/`subMonths(3)` caen
+> **ambos en mayo**, igual que `(4)` y `(5)` en marzo: dos escenarios que la prueba cree de meses
+> distintos se agrupan juntos, y eso es lo que rompía las cosechas. Anclado el «ahora» al **día
+> 15** en el `TestCase` (desde ahí `subMonths` nunca desborda) y limpiado en `tearDown` porque es
+> global al proceso → **454 passed, 0 failed**. La guarda simula los **31 días posibles** en meses
+> de 31, 30 y 28 días más un febrero bisiesto. ⚠️ **Deuda declarada, no corregida**: **Activos**
+> (5 archivos) y **Bancos** (2) usan `subMonths` sin anclar y **hoy pasan el 31**, pero es
+> latente; no se anclan porque anclar una suite que hoy pasa puede hacer que alguna prueba **pase
+> sin probar** (advertencia literal de `[CW-FIX-4]`) — queda **nombrada** en `LATENTES_SIN_ANCLA`.
+> **Sin migraciones.**
+> **Reglas nuevas: `@json` no acepta un array literal de más de tres elementos (usar `Js::from`)
+> · el atajo de Alpine para un evento colisiona con toda directiva Blade que se llame igual (usar
+> `x-on:evento`) · una vista que ninguna prueba renderiza puede estar rota con la suite en verde ·
+> una guarda sobre vistas se hace COMPILANDO, no con un grep · Carbon DESBORDA al restar meses y
+> dos restas distintas pueden colapsar en el mismo mes · el prefijo de ruta de un módulo no
+> siempre es su slug · una prueba sin aserciones no protege de nada · un catálogo de ayuda sin
+> prueba se degrada igual que un criterio verificado con grep.**
+
+### Bitácora anterior (2026-07-30)
+
+> **RESTAURANTE FASE 0 (2026-07-30) — `[REST-F0-1]`, `[REST-F0-0]`, `[REST-F0-2]`–`[REST-F0-4]` +
+> cierre `[REST-F0]`**: arranca el vertical de gastronomía desde CERO. Estado previo verificado,
+> no supuesto: **cero tablas `rest_*`, cero controladores, y `[REST-*]` nunca en el historial** —
+> los dos blueprints de Restaurante llevaban escritos desde julio sin ejecutarse. Entrega la
+> fundación: **20 tablas** con sus modelos, configuración por empresa con **checklist de tres
+> severidades**, 7 conceptos contables en el hub, permisos por rol real (mesero/cocina/cajero/
+> gerente), **asistente de 4 pasos**, 6 CRUD del catálogo, el componente compartido
+> `<x-modal-persistente>`, **carta de ejemplo de 25 ítems** y el menú con accesos cross-module
+> con candado. **Suite Restaurante: 56 pruebas** (no tenía ninguna).
+> ⚠️ **Lo primero fue verificar el ANEXO B con `git log`, y TRES de cinco dependencias resultaron
+> distintas — las tres porque YA EXISTÍAN**: `<x-menu-link-modulo>` lo creó Compras `[COM-F0-4]`,
+> el componente de pantalla completa lo creó Car Wash `[CW-F2-1]` diciendo literalmente «para que
+> Restaurante lo herede», y `[FACT-F2-3]` **sí está hecha**, así que `FacturacionEmisionService`
+> ya acepta y contabiliza la propina legal → **Restaurante no implementa lógica fiscal de
+> propina**, solo pasa el monto.
+> **Cuatro discrepancias con el blueprint**: ⚠️ **su propio orden es imposible** (F0-0 exige
+> probar tablas que crea F0-1); ⚠️ **las dos cuentas de propina legal TIENEN que ser la misma**
+> que la de Facturación, o el pasivo se acumula en una y se cancela en otra y **ninguna llega
+> nunca a cero**; ⚠️ **los accesos cross-module NO van en el sidebar** — no es organización:
+> `ModuleMenu` reclamaría la ruta ajena y **el módulo dueño dejaría de abrirse**, que es lo que
+> pasó en `[CND-FIX]` y volvió a pasar en `[CW-F0-5]`; y el candado **existía pero era un cartel
+> mudo** (`<span>` con `title`, y **en una tablet del mostrador no hay hover**) — ahora abre un
+> modal que dice qué hace el módulo que falta y lleva a Plan y Suscripción.
+> **⚠️ 8 defectos propios, todos antes de commitear**, y los tres que más enseñan: (1) **una
+> prueba mía pasaba con el defecto puesto** y al abrirla resultó que **la implementación
+> equivocada era la mía** — los checkbox ausentes se apagaban, así que partir el formulario en
+> secciones habría apagado el delivery en silencio (`D-BAN-F4-4-3`); (2) **clases dinámicas de
+> Tailwind** (`bg-{{ $color }}-500/10`), que no se compilan y dejan el badge **gris sin avisar**
+> (`[#992]`); y (3) ⚠️ **la prueba del modal fallaba por el comentario que documentaba su propia
+> regla** — el reverso exacto de `[CW-F0-5]`, y el filtro se escribió con `/m` y NUNCA `/s`
+> porque con `/s` se come el archivo y la aserción pasa siempre (`D-PRE-F1-5-2`).
+> Detalle en `app/zyntello-app/DISCREPANCIAS-restaurante.md` (4 discrepancias, 13 decisiones de
+> diseño y **6 TODOs de verificación humana**). ⚠️ Migraciones `2026_07_30_500001`–`500006`.
+> **Reglas nuevas: un blueprint que dice «crear X» hay que verificarlo con `git log` · una prueba
+> que analiza código fuente tiene que mirar CÓDIGO (el comentario que documenta la regla la rompe
+> o la deja pasar) · un checkbox ausente no es un checkbox apagado · las clases de Tailwind no se
+> construyen por concatenación · el menú de un módulo lista solo rutas de ese módulo (tercera vez)
+> · un candado tiene que explicar.**
 
 > **CAR WASH post-cierre (2026-07-29) — `[CW-FIX-3]`**: pedido del director técnico — *«al crear un
 > turno no aparecen las marcas y modelos de vehículos… si el vehículo no está en la lista permitir
@@ -958,7 +1048,7 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Último commit en **zyntello-app**: `[PRE-FIX-1]` (post-cierre F4: cobros del día y gestión de cobranza convertidos de reportes a PROCESOS, con 7 defectos corregidos y la discrepancia D-PRE-F4-1-1 cerrada) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
+> Último commit en **zyntello-app**: `[REST-F0]` `6d8fa738` (cierre de la FASE 0 del vertical Restaurante: fundación completa, 56 pruebas, 4 discrepancias documentadas) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
 
 > **CONDOMINIOS correcciones post-cierre (2026-07-24) — `[CND-FIX]`/`[CND-CONFIG]`**: (1) discrepancia D-CND-F3-2 resuelta (incidencias con `area_id`, reporte por área); (2) export de reportes a **Excel real** (.xlsx Maatwebsite) en vez de CSV; (3) **decisiones seleccionables llevadas a "Configuración del módulo"** (`cnd_config`, por empresa: privacidad del informe, voto remoto por defecto, portal reservas/incidencias ON/OFF); (4) **fix del bucle del combo de módulos** — el menú de Condominios enlazaba dashboards de OTROS módulos (CxC/CxP/Presupuesto/Bancos/Caja/Nómina) y eso rompía la detección de módulo activo (esas rutas quedaban "compartidas" y al abrir CxC desde el combo se quedaba en Condominios). Se quitaron; los módulos se abren desde el combo. Migraciones aditivas `160001`/`160002`. **Regla nueva: nunca listar en el menú de un módulo el dashboard/ruta dueña de otro módulo.** Regresión completa VERDE: 952 passed, 4 skipped, 0 failed.
 
