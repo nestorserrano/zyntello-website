@@ -254,7 +254,75 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 **Regla:** Si ves error 403/500 después de deploy → ejecuta esto primero.
 
-### Bitácora reciente (estado actual — 2026-07-31)
+### Bitácora reciente (estado actual — 2026-08-03)
+
+> **RESTAURANTE FASE 2 — LA COCINA (2026-08-03) — `[REST-F2-1]`–`[REST-F2-3]` + cierre
+> `[REST-F2]`**: F1 dejó al mesero mandando la comanda a cocina, pero **la cocina no tenía dónde
+> verla** — el turno se asignaba y no lo cantaba nadie. **47 pruebas de la fase** (44 del KDS, la
+> aceptación con **53 aserciones**); **regresión completa VERDE: 2407 passed, 4 skipped, 0 failed
+> (22 925 aserciones)**, corrida con el árbol quieto. **Sin migraciones**: las 20 tablas de F0-1 ya
+> traían `estado_kds`, `lista_en`, `servida_en`, `anulada_motivo`, `es_adicion` y el índice
+> `idx_rest_lineas_kds`, escrito para exactamente esta consulta.
+> **El ANEXO B otra vez distinto de lo escrito**: cuatro de seis dependencias YA existían (el
+> componente de pantalla completa de `[CW-F2-1]`, los dos campos de `rest_config` de F0-1 y los
+> cuatro permisos exactos de la sección `cocina` de F0-2). Lo único que no existía en TODO el
+> ecosistema era **cualquier uso de audio**: cero `new Audio`, cero `AudioContext`.
+> **La pantalla** (F2-1): el TURNO es lo más grande porque es lo que se grita al pase, la tarjeta
+> entera avanza la comanda y los controles de dentro llevan `.stop` (`D-CW-F2-3-2`). ⚠️ **El v2
+> pide dos cosas que no encajan solas** —«tarjeta = orden» y «columnas por estado»—: una comanda
+> con la sopa lista y el filete sin empezar no está en ninguna columna. Se resuelve como
+> `[CW-F3-1]` resolvió el taller: **el estado fino se DERIVA al grueso y manda la línea MENOS
+> avanzada**; tomar la más avanzada la pintaría «lista» y el mesero iría a recoger un plato que no
+> existe. ⚠️ **Aquí la lista SÍ se reconstruye, al revés que el mapa de salón**: las mesas son
+> fijas, las comandas ENTRAN y SALEN — lo que evita el parpadeo es que Alpine reconcilie por
+> `:key`, no dejar de renderizar; avisar «pulse actualizar» obligaría al cocinero a tocar la
+> pantalla para ver la comanda que acaba de entrar. ⚠️ Y **la cola no se filtra por fecha sino por
+> orden ABIERTA**: con «turno de hoy», en un local que cierra a las 2 a.m. la comanda que está en
+> la plancha a las 23:59 **desaparecería al dar las 00:00**, con el plato a medio hacer. El
+> cronómetro cuenta desde `enviada_en` (a la cocina no le importa hace cuánto se sentó la mesa) y
+> el ámbar salta al **70 % del umbral**, porque un ámbar que apareciera en el mismo minuto que el
+> rojo no avisaría de nada. Cierra el hueco que F1 dejó escrito: **anular con motivo** una línea ya
+> enviada — no se borra, sale en la banda roja, o el cocinero seguiría preparando un plato que
+> desapareció de la comanda. Y los platos **sin estación se NOMBRAN**: no salen en ningún KDS, y
+> sin el aviso el síntoma es «el plato no llega» y nadie da con la causa.
+> **SERVIDA** (F2-2): ⚠️ marca **solo los platos LISTOS**, nunca los que siguen en la plancha —
+> marcar la comanda entera daría por servido un filete que el cocinero está haciendo, el plato
+> desaparecería del KDS y la mesa esperaría algo que el sistema da por entregado. ⚠️ **La política
+> se valida en el SERVIDOR y no escondiendo el botón**, y el costo no es solo de control:
+> `servida_en` significa «salió por la ventana» o «llegó a la mesa» según la política, así que si
+> los dos actores pudieran escribirla el reporte de F8 mediría dos cosas mezcladas sin que nadie lo
+> notara. Reabrir devuelve a `listo` y no a `pendiente` (está hecho, no vuelve a la plancha).
+> **Los contadores de la tarjeta de mesa se actualizan solos en las dos políticas, y no hay una
+> línea de código para eso**: se derivan de `estado_kds` desde F1-1.
+> **Expeditor y sonido** (F2-3): la cola general marca **cada plato con su estación** —sin eso el
+> que coordina no sabe a quién reclamarle el que falta— y va aparte, porque un cocinero que entrara
+> vería trabajo que no es suyo. ⚠️ **Primer audio del ecosistema**: tono **generado**, no un
+> archivo (un 404 dejaría la pantalla muda sin avisar); el botón **es** el gesto que desbloquea el
+> audio, y la preferencia se lee pero no lo activa sola porque un botón encendido y mudo miente
+> sobre su estado; las comandas del primer render se marcan vistas (o abrir la pantalla soltaría
+> seis pitidos); y el aviso **compara ids, no cantidades** —si entra una y sale otra servida el
+> total no cambia y el pitido se perdería—. Los dos requisitos del director técnico para el polling
+> quedan con prueba: **throttle** y **select mínimo**.
+> ⚠️ **3 defectos propios, y los dos que más enseñan son de MÉTODO**: (1) **el verificador no
+> verificaba nada** — `--filter` con la etiqueta que imprime Pest no matchea ningún método y
+> `artisan test` **sale con código 0 cuando no encuentra pruebas**, así que las 9 violaciones se
+> leyeron como «la prueba pasa con el defecto puesto» (verificación imaginaria de `[PRE-FIX-1]`,
+> esta vez dentro del propio verificador); y (2) al corregirlo salió que **la prueba del orden
+> pasaba con el desempate quitado**, por partida doble: comparaba tres ejecuciones seguidas (MySQL
+> da el mismo plan) y encima `usort` es **estable** en PHP 8, así que dependía de los UUID y salía
+> bien **la mitad de las veces** — intermitente además de inútil. **24 reglas verificadas
+> violándolas: las 24 se detectan.**
+> **El golden master de F0-0 volvió a avisar** (segunda vez, tras F1-1): exigía que
+> `restaurante.kds` NO existiera y falló en cuanto se creó la ruta.
+> Ayuda de las 2 pantallas nuevas documentada. Detalle, las 7 discrepancias y los 6 TODOs en
+> `app/zyntello-app/DISCREPANCIAS-restaurante.md` → «FASE 2».
+> **Reglas nuevas: un verificador que corre la prueba equivocada informa lo mismo que uno que no la
+> corre · una prueba de orden que compara ejecuciones seguidas puede pasar además por el orden de
+> los UUID (intermitente, no solo inútil) · el estado grueso se DERIVA del fino y manda el MENOS
+> avanzado · una lista que cambia se re-renderiza: lo que evita el parpadeo es la clave · un filtro
+> por fecha en una pantalla de operación falla a medianoche · una política que cambia el SIGNIFICADO
+> del dato se valida en el servidor · una acción masiva actúa solo sobre los estados que
+> corresponden · un aviso sonoro compara identidades, no cantidades.**
 
 > **RESTAURANTE FASE 1 — SALÓN Y COMANDAS (2026-07-31) — `[REST-F1-1]`, `[REST-F1-3]`, `[REST-F1-4]`
 > + cierre `[REST-F1]`**: F0 dejó el vertical instalable pero **no se podía tomar una comanda**.
@@ -1120,7 +1188,7 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Último commit en **zyntello-app**: `[REST-F1]` `58e49a46` (cierre de la FASE 1 del vertical Restaurante: salón, comanda y mostrador; 94 pruebas de la fase, regresión 2351 verdes) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
+> Último commit en **zyntello-app**: `[REST-F2]` `890a5ead` (cierre de la FASE 2 del vertical Restaurante: KDS con turnos, botón SERVIDA y cola del expeditor; 47 pruebas de la fase, regresión 2407 verdes) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
 
 > **CONDOMINIOS correcciones post-cierre (2026-07-24) — `[CND-FIX]`/`[CND-CONFIG]`**: (1) discrepancia D-CND-F3-2 resuelta (incidencias con `area_id`, reporte por área); (2) export de reportes a **Excel real** (.xlsx Maatwebsite) en vez de CSV; (3) **decisiones seleccionables llevadas a "Configuración del módulo"** (`cnd_config`, por empresa: privacidad del informe, voto remoto por defecto, portal reservas/incidencias ON/OFF); (4) **fix del bucle del combo de módulos** — el menú de Condominios enlazaba dashboards de OTROS módulos (CxC/CxP/Presupuesto/Bancos/Caja/Nómina) y eso rompía la detección de módulo activo (esas rutas quedaban "compartidas" y al abrir CxC desde el combo se quedaba en Condominios). Se quitaron; los módulos se abren desde el combo. Migraciones aditivas `160001`/`160002`. **Regla nueva: nunca listar en el menú de un módulo el dashboard/ruta dueña de otro módulo.** Regresión completa VERDE: 952 passed, 4 skipped, 0 failed.
 
