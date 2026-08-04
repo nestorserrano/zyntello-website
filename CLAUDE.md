@@ -254,7 +254,92 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 **Regla:** Si ves error 403/500 después de deploy → ejecuta esto primero.
 
-### Bitácora reciente (estado actual — 2026-08-03)
+### Bitácora reciente (estado actual — 2026-08-04)
+
+> **RESTAURANTE FASE 3 — EL COBRO (2026-08-04) — `[REST-F3-1]`–`[REST-F3-4]` + cierre `[REST-F3]`**:
+> F2 dejó la cocina cantando turnos y **no había forma de cobrar la mesa**: el vertical tomaba
+> comandas, las preparaba, y ahí terminaba. Ahora se cobra, el comensal recibe su comprobante, el
+> mesero cobra su propina y el almacén se descarga. **112 pruebas de la fase** (41 del cobro, 32 del
+> comprobante, 15 de propinas, 22 del consumo, aceptación con **51 aserciones**); **suite Restaurante
+> 307 pruebas**; **55 reglas verificadas VIOLÁNDOLAS: las 55 se detectan.**
+> **El ANEXO B otra vez distinto de lo escrito, y dos hallazgos decisivos**: `FacturacionEmisionService`
+> **ya acepta y contabiliza la propina legal** (`[FACT-F2-3]`), así que Restaurante no implementa una
+> sola línea de lógica fiscal de propina; y `LoteService::lotesDisponibles()` **ya ordena FEFO**, así
+> que el consumo no reimplementa el criterio. Lo único que existía sin usarse era
+> `inv_conversiones_unidad`: la tabla y su modelo estaban desde Inventario y **nadie convertía nada**
+> — F3-4 es su primer consumidor del ecosistema.
+> **El cobro** (F3-1): división por personas, ítems o montos, con el **resto de centavos a la última
+> cuenta y no repartido** —repartirlo haría que la suma de las cuentas no diera el total de la mesa y
+> el arqueo cerraría con un descuadre que nadie sabe explicar—. ⚠️ Limpiar una división usa
+> `forceDelete`: `rest_cuentas` tiene SoftDeletes y su UNIQUE **no incluye `deleted_at`**, así que
+> re-dividir chocaba con «Duplicate entry». Y `rest_pagos.monto` guarda lo **ENTREGADO**, no lo
+> aplicado: es lo que el cajero recibió en la mano, y el cuadre real es «entregado − vuelto».
+> **El comprobante** (F3-2): ⚠️ **los dos catálogos fiscales del core no coinciden** —
+> `tiposNcfRD()` no tiene «Consumidor Final» y `loc_fiscal_document_types` sí—, así que las opciones
+> salen de los **consecutivos NCF reales de la empresa** con la descripción que escribió su contador:
+> cero lógica fiscal propia y multi-país gratis (en VE no hay consecutivos, no se pregunta). La
+> validación es del **SERVIDOR**: un crédito fiscal sin RNC se emite igual si nadie lo comprueba, y
+> el error aparece meses después cuando la DGII rechaza la línea del 607 y el cliente descubre que no
+> puede deducir una factura que ya pagó. ⚠️ **El defecto más caro de la fase: el ticket interno
+> consumía un NCF de CRÉDITO FISCAL** — la cascada del core cae a `'FAC'` sin tipo, así que una venta
+> declarada no fiscal gastaba un número de la secuencia autorizada por la DGII, un recurso limitado y
+> auditado, **sin avisar**: la secuencia se agota antes de lo previsto y nadie puede decir en qué se
+> fue. Y el **alta rápida de cliente** existe porque el comensal pide el crédito fiscal EN LA MESA:
+> mandar al cajero al módulo de Clientes a mitad del cobro termina con la factura saliendo a
+> consumidor final «para no hacer esperar», y el cliente pierde su deducción.
+> **Las propinas** (F3-3): ⚠️ **la legal la asienta Facturación y el vertical solo la voluntaria** —
+> asentar las dos registraría el pasivo dos veces y **nunca llegaría a cero**—, y la voluntaria va
+> contra **PASIVO, nunca contra ingresos**: ahí se convertiría en venta del restaurante, con ventas
+> infladas, impuesto sobre dinero ajeno y un gasto que al repartirla no cuadra con nada. El acumulado
+> del mesero **se DERIVA mientras está pendiente y se CONGELA al liquidarse** (recalcular una
+> liquidación pagada reescribiría lo que el mesero ya recibió en la mano), se lee de las CUENTAS y no
+> de la cabecera, y la fecha es la del **COBRO**: una mesa que se sienta a las 23:40 y paga a las
+> 00:15 es del turno siguiente, y es a ESE mesero a quien se le entrega el dinero.
+> **El consumo** (F3-4): ⚠️ **se consume al COBRAR, no al enviar a cocina** —si el stock saliera al
+> mandar la comanda, una comanda anulada dejaría el almacén descontado por un plato que nadie preparó
+> y el descuadre solo saldría en el conteo físico— y ⚠️ **cuando la ORDEN se CIERRA, no por cuenta**:
+> en una mesa dividida en tres, los insumos son de la mesa entera. ⚠️ **Va FUERA de la transacción del
+> cobro**: si fallara dentro, el rollback se llevaría el COBRO y el dinero ya está en la gaveta. El
+> costo se **SELLA** con lo que salió, no con el promedio de hoy —que cambia con la siguiente compra y
+> con él cambiaría el margen de una venta ya cerrada—; una línea sin insumos sella **0** y no null (un
+> servicio cuesta cero de verdad); y **una cortesía también consume**: regalar el plato no devuelve el
+> queso a la nevera. ⚠️ **Sin conversión declarada NO se adivina el factor**: la receta dice «250 g» y
+> el artículo está en kg, así que descontar 250 sacaría 250 KILOS de harina — se deja sin descontar y
+> **se NOMBRA el insumo**. ⚠️ **Sin Inventario contratado la venta fluye igual**, y sin bodega no se
+> inventa una.
+> ⚠️ **El defecto que encontró la ACEPTACIÓN es el que más lejos llegaba: `cobrar()` DOCUMENTABA
+> `tipo_ncf` y `sin_comprobante` como opciones y el cuerpo las IGNORABA.** Solo funcionaba porque el
+> controlador las escribía en la cuenta antes de llamar; el siguiente llamador —el reparto de F6, un
+> seed, el POS— las habría pasado creyendo que servían y **la factura habría salido con el comprobante
+> equivocado sin avisar**. Es la forma de `CajaService::sesionAbiertaParaEmpresa` que `[PRE-FIX-1]`
+> documentó: una firma que promete lo que el cuerpo no aplica.
+> ⚠️ **CINCO pruebas propias pasaban por la razón equivocada, y las cinco por lo mismo — el mismo
+> resultado observable llegaba por otro camino**: una inyección que cambiaba el `concepto_clave` sin
+> tocar la cuenta dejaba **el asiento idéntico** (la violación no era una violación); la de la fila en
+> cero salía antes por otra guarda; la de las cuentas cobradas cobraba las DOS, así que no quedaba
+> ninguna abierta; la de «sin bodega» daba el mismo resultado porque la base rechazaba el movimiento y
+> el rollback dejaba cero movimientos con un aviso que también decía «bodega»; y la idempotencia la
+> protegía **el UNIQUE de MySQL**, no la guarda de código (`[CW-FIX-3]`). Más **tres defectos de
+> método**: la prueba del orden comparaba ejecuciones seguidas y sin empate montado; la de la línea
+> anulada ordenaba por `created_at` con dos filas del mismo segundo y anulaba la equivocada, **dando
+> 90 en vez de 98 y pareciendo un defecto del consumo**; y **el helper `cliente()` del TestCase pone
+> un RNC por defecto**, así que el «Consumidor Final» de la aceptación tenía identificador fiscal y la
+> guarda del crédito fiscal **no se ejercía**.
+> **Y una guarda declarada y NO verificada, con su motivo en el código**: el filtro `estado =
+> 'cobrada'` es hoy redundante con el de fecha —el ENUM solo admite `abierta`/`cobrada`, así que no
+> existe fila con `cobrada_en` puesto y otro estado— y quitar solo uno deja la prueba verde (forma de
+> `[PRE-F1]`). Se conserva para el día que se agregue anular una cuenta ya cobrada.
+> **El golden master de F0-0 volvió a avisar, TERCERA vez** (tras F1-1 y F2-1): exigía que
+> `RecetaService` no existiera y falló en cuanto se creó.
+> Ayuda de las 2 pantallas de impresión documentada. Detalle, las 5 discrepancias y los 6 TODOs en
+> `app/zyntello-app/DISCREPANCIAS-restaurante.md` → «FASE 3». ⚠️ Migración `2026_08_03_510001` (F3-1).
+> **Reglas nuevas: una firma que documenta un parámetro y lo ignora es peor que no tenerlo · una
+> violación tiene que cambiar el COMPORTAMIENTO, no solo el código · cuando dos guardas excluyen las
+> mismas filas, quitar una deja la prueba verde (se declara, no se finge) · una guarda que evita el
+> INTENTO se prueba por su mensaje · el costo de una venta cerrada se SELLA · se consume al cobrar y
+> al cerrar la orden · un fallo de inventario no puede deshacer una venta · sin factor de conversión
+> NO se convierte · una fábrica de pruebas que rellena datos por comodidad puede desactivar la regla
+> que se quiere verificar.**
 
 > **RESTAURANTE FASE 2 — LA COCINA (2026-08-03) — `[REST-F2-1]`–`[REST-F2-3]` + cierre
 > `[REST-F2]`**: F1 dejó al mesero mandando la comanda a cocina, pero **la cocina no tenía dónde
@@ -1188,7 +1273,7 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Último commit en **zyntello-app**: `[REST-F2]` `890a5ead` (cierre de la FASE 2 del vertical Restaurante: KDS con turnos, botón SERVIDA y cola del expeditor; 47 pruebas de la fase, regresión 2407 verdes) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
+> Último commit en **zyntello-app**: `[REST-F3]` `721fa9c9` (cierre de la FASE 3 del vertical Restaurante: cobro, comprobante fiscal, propinas y consumo con FEFO; 112 pruebas de la fase, 55 reglas verificadas violándolas, regresión 2519 verdes) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
 
 > **CONDOMINIOS correcciones post-cierre (2026-07-24) — `[CND-FIX]`/`[CND-CONFIG]`**: (1) discrepancia D-CND-F3-2 resuelta (incidencias con `area_id`, reporte por área); (2) export de reportes a **Excel real** (.xlsx Maatwebsite) en vez de CSV; (3) **decisiones seleccionables llevadas a "Configuración del módulo"** (`cnd_config`, por empresa: privacidad del informe, voto remoto por defecto, portal reservas/incidencias ON/OFF); (4) **fix del bucle del combo de módulos** — el menú de Condominios enlazaba dashboards de OTROS módulos (CxC/CxP/Presupuesto/Bancos/Caja/Nómina) y eso rompía la detección de módulo activo (esas rutas quedaban "compartidas" y al abrir CxC desde el combo se quedaba en Condominios). Se quitaron; los módulos se abren desde el combo. Migraciones aditivas `160001`/`160002`. **Regla nueva: nunca listar en el menú de un módulo el dashboard/ruta dueña de otro módulo.** Regresión completa VERDE: 952 passed, 4 skipped, 0 failed.
 
