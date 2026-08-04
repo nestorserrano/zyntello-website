@@ -256,6 +256,74 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 ### Bitácora reciente (estado actual — 2026-08-04)
 
+> **RESTAURANTE FASE 4 — RECETAS, COSTEO E INGENIERÍA DE MENÚ (2026-08-04) — `[REST-F4-1]`–`[REST-F4-4]`
+> + cierre `[REST-F4]`**: F3 dejó el vertical cobrando y descontando insumos, pero **no había dónde
+> escribir la receta** — `MenuItemController` decía «una receta» en su docblock y su código no guardaba
+> ni una línea, así que el escandallo solo se podía cargar por SQL y el costo del plato (la mitad de la
+> decisión del precio) no existía en pantalla. **88 pruebas de la fase** (23 del escandallo, 26 de
+> costos y márgenes, 20 de la ingeniería de menú, 17 de la variancia, aceptación con **47 aserciones**);
+> **suite Restaurante 398**; **regresión completa VERDE: 2607 passed, 4 skipped, 0 failed (23 592
+> aserciones)**; **57 reglas verificadas VIOLÁNDOLAS: las 57 se detectan.**
+> ⚠️ **La discrepancia que ordenó la fase: F3-4 había PROHIBIDO en el código el costo teórico que F4
+> pide en tres de sus cuatro tareas.** `RecetaService` decía que sería «un segundo número que responde
+> la misma pregunta que `costo_real`». **No es la misma pregunta**: el real contesta «¿cuánto costó ESTA
+> venta?» y se sella; el teórico, «¿cuánto DEBERÍA costar según la receta y los costos de hoy?» — la
+> única que se puede contestar ANTES de vender y por tanto la única con la que se fija un precio. Un
+> plato nuevo no tiene costo real y aun así hay que ponerle precio; y que el teórico cambie cuando sube
+> la harina **es la señal** de erosión del margen, no su defecto. El teórico se DERIVA y el historial
+> se GUARDA, porque el costo de una fecha pasada no se puede volver a calcular.
+> **El escandallo** (F4-1): ⚠️ la conversión de unidades **no se reimplementa** —el conversor de F3-4
+> pasa a público—, o la variancia de F4-4 mediría la diferencia entre dos conversiones en vez de la
+> merma. Cascada del costo declarada: promedio de la bodega **del módulo** → costo estándar del catálogo
+> → nada, y entonces 0 con el insumo **nombrado**. ⚠️ **`articulo_id` era una columna sin formulario**
+> desde F0-1 (el ítem retail no se podía configurar aunque el controlador lo validara) y su validación
+> **aceptaba artículos de otro suscriptor**. ⚠️ Y dos defectos evitados de la familia «un campo ausente
+> no es un campo vacío»: sin Inventario el editor no se renderiza, y sin un marcador explícito guardar
+> el ítem habría **borrado el escandallo completo en silencio**.
+> **Los márgenes** (F4-2): la sugerencia es **margen sobre venta y no markup** (con objetivo 70 %, el
+> markup daría 170 en vez de 333.33 y dejaría un margen real del 41 %), y ⚠️ **el redondeo va HACIA
+> ARRIBA** porque abajo incumpliría en silencio el objetivo que la sugerencia garantiza. ⚠️ **Sin margen
+> mínimo nada está bajo mínimo y el mensaje lo DICE** —un default pondría media carta en rojo, pero
+> callarse se leería como «tu carta está bien»—. ⚠️ **El ítem retail costaba CERO** y aparecía con margen
+> 100 %, la ilusión de `[CW-F4-1]`. ⚠️ Y el costeo de la carta **no es `costoTeorico()` en un bucle**:
+> con 200 platos serían más de mil consultas (el N+1 de `[PRE-F4-1]`).
+> **La ingeniería de menú** (F4-3): la **metodología de Kasavana & Smith está escrita EN EL CÓDIGO** y
+> sus umbrales se muestran y se exportan — sin ellos nadie puede saber por qué un plato cayó en un
+> cuadrante. Popularidad al **70 % de la cuota esperada** (la media pelada dejaría a media carta como
+> impopular por definición) y rentabilidad **EN DINERO** (una bebida con 80 % de margen aporta 80; un
+> plato con 40 %, 240 — lo que paga la nómina son pesos), con el promedio **ponderado** por unidades.
+> Cada cuadrante trae su acción y son distintas: al caballo se le baja el COSTO, al puzzle se le
+> PROMUEVE, y solo el perro sale de la carta. Se excluyen las **cortesías**: un plato regalado veinte
+> veces parecería popular y ruinoso a la vez.
+> **La variancia** (F4-4): ⚠️ **las tres columnas miden cosas distintas** y la pantalla lo explica antes
+> de la tabla — teórico, registrado y **conteo físico**, que es la única que encuentra la merma no
+> registrada. ⚠️ **Y de ahí el aviso más importante: sin toma física la merma NO se puede medir**,
+> porque el consumo automático descuenta exactamente el teórico y la variancia sale 0 por construcción;
+> una tabla de ceros se leería como «todo cuadra». ⚠️ El teórico **no reimplementa la explosión** (si no
+> contara los modificadores, el reporte acusaría de robo a quien vende hamburguesas con queso de más) y
+> ⚠️ **el criterio de «qué es una venta» dejó de estar duplicado**: F4-3 tenía su copia y **se borró**.
+> ⚠️ **Lo que encontró la ACEPTACIÓN es el hallazgo más fino: dos redondeos correctos dejan un residuo.**
+> El costo del plato redondea **una unidad** y el consumo del período redondea el **total** — 0.0011 lb
+> de diferencia que **habría aparecido en el reporte de variancia como si fuera merma**. No entra, pero
+> queda **medido y fijado** con una aserción.
+> ⚠️ **TRES pruebas propias pasaban por la razón equivocada**: el orden de la ingeniería (`usort` es
+> **estable** en PHP 8 y el `GROUP BY` no tenía `ORDER BY` — **cuarta vez** en el vertical), el orden de
+> la variancia (fixture cuyo orden **alfabético** coincidía con el esperado) y el criterio de ventas
+> (filtro de estado **redundante** con el de fecha, la trampa que F3 documentó). Más una violación mal
+> diseñada que era mi error y no de la prueba.
+> ⚠️ **El golden master NO avisó esta vez**: F4 no tenía hueco declarado (F1, F2 y F3-4 sí, y avisó las
+> tres veces). Se le añadieron sus aserciones al cerrar, incluidas **tres que exigen que las funciones
+> compartidas sigan siéndolo**.
+> Ayuda de las 4 pantallas nuevas documentada. Detalle, las 6 discrepancias y los 7 TODOs en
+> `app/zyntello-app/DISCREPANCIAS-restaurante.md` → «FASE 4». ⚠️ Migración `2026_08_04_520001`.
+> **Reglas nuevas: «cuánto costó» y «cuánto debería costar» son dos preguntas distintas · un margen se
+> mide EN DINERO cuando hay que decidir entre platos · el promedio de un umbral va ponderado · un precio
+> sugerido se redondea hacia ARRIBA · `usort` es estable en PHP 8 (cuarta vez) · un fixture cuyo
+> resultado correcto se alcanza por dos caminos no verifica ninguno · un reporte que no puede medir lo
+> que promete tiene que DECIRLO · los umbrales de un reporte se muestran y se exportan · dos redondeos
+> correctos en sitios distintos dejan un residuo que hay que medir, o aparecerá en un reporte de merma
+> como si fuera una pérdida.**
+
 > **RESTAURANTE FASE 3 — EL COBRO (2026-08-04) — `[REST-F3-1]`–`[REST-F3-4]` + cierre `[REST-F3]`**:
 > F2 dejó la cocina cantando turnos y **no había forma de cobrar la mesa**: el vertical tomaba
 > comandas, las preparaba, y ahí terminaba. Ahora se cobra, el comensal recibe su comprobante, el
@@ -1273,7 +1341,7 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Último commit en **zyntello-app**: `[REST-F3]` `721fa9c9` (cierre de la FASE 3 del vertical Restaurante: cobro, comprobante fiscal, propinas y consumo con FEFO; 112 pruebas de la fase, 55 reglas verificadas violándolas, regresión 2519 verdes) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
+> Último commit en **zyntello-app**: `[REST-F4]` `a386a073` (cierre de la FASE 4 del vertical Restaurante: escandallo, costos y márgenes, ingeniería de menú y variancia; 88 pruebas de la fase, 57 reglas verificadas violándolas, regresión 2607 verdes) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
 
 > **CONDOMINIOS correcciones post-cierre (2026-07-24) — `[CND-FIX]`/`[CND-CONFIG]`**: (1) discrepancia D-CND-F3-2 resuelta (incidencias con `area_id`, reporte por área); (2) export de reportes a **Excel real** (.xlsx Maatwebsite) en vez de CSV; (3) **decisiones seleccionables llevadas a "Configuración del módulo"** (`cnd_config`, por empresa: privacidad del informe, voto remoto por defecto, portal reservas/incidencias ON/OFF); (4) **fix del bucle del combo de módulos** — el menú de Condominios enlazaba dashboards de OTROS módulos (CxC/CxP/Presupuesto/Bancos/Caja/Nómina) y eso rompía la detección de módulo activo (esas rutas quedaban "compartidas" y al abrir CxC desde el combo se quedaba en Condominios). Se quitaron; los módulos se abren desde el combo. Migraciones aditivas `160001`/`160002`. **Regla nueva: nunca listar en el menú de un módulo el dashboard/ruta dueña de otro módulo.** Regresión completa VERDE: 952 passed, 4 skipped, 0 failed.
 
