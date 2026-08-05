@@ -254,7 +254,52 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 **Regla:** Si ves error 403/500 después de deploy → ejecuta esto primero.
 
-### Bitácora reciente (estado actual — 2026-08-04)
+### Bitácora reciente (estado actual — 2026-08-05)
+
+> **RESTAURANTE FASE 5 — COMBOS, PROMOCIONES Y MENÚ QR PÚBLICO (2026-08-05) — `[REST-F5-1]`–`[REST-F5-3]`
+> + cierre `[REST-F5]`**: F4 dejó el vertical costeando y decidiendo precios plato por plato, pero la
+> carta seguía siendo una lista plana — no había forma de vender «Pizza + bebida» a precio fijo, de
+> anunciar un descuento por franja horaria, ni de que alguien viera la carta sin loguearse como
+> mesero. **PASO PREVIO**: regresión completa VERDE (2607 passed, la del cierre de F4). **59 pruebas
+> de la fase** (16 de combos, 28 del motor de promociones, 14 del menú público, aceptación con
+> **23 aserciones**); **suite Restaurante 454**; **regresión completa del ecosistema VERDE: 2666
+> passed, 4 skipped, 0 failed (23 757 aserciones)** — de 2607 a 2666, exactamente las 59 de la fase.
+> **El combo** (F5-1): una línea ÚNICA con su propio precio, nunca la suma de sus componentes —
+> venderlo a 600 cuando la pizza sola vale 500 no es un descuento del 8,3 %, es un precio propio.
+> `ComandaService::agregarCombo()` exige EXACTAMENTE una opción por grupo de elección y congela el
+> snapshot en la línea. ⚠️ **El consumo (F3-4) tuvo que aprender a leer el snapshot**: un componente
+> FIJO consume siempre, uno de GRUPO DE ELECCIÓN solo si está en lo elegido — sin la distinción, un
+> «elige tu bebida» habría descontado las DOS alternativas del almacén.
+> **El motor de promociones** (F5-2): el happy hour ES una promoción con franja horaria, no una
+> pantalla aparte. ⚠️ **Lo que encontró leer `CuentaService` completo antes de tocarlo**:
+> `recalcular()` lee el descuento POR CUENTA y no por orden — sin propagarlo, la promoción habría
+> desaparecido en el caso MÁS COMÚN, pedir la cuenta única. Se propaga en `pedirCuenta()`/`unificar()`
+> (copia directa) y en `dividirPorItems()` (reparto proporcional, resto a la última cuenta). ⚠️ **Dos
+> límites declarados**: el reparto por ítems no es exacto al plato que ganó la promoción si el
+> alcance era parcial, y una promoción de alcance ítem/categoría **no alcanza a un combo** (tiene
+> `combo_id`, no `menu_item_id`) — alcance «total» sí funciona, y es el que usa el happy hour.
+> **El menú QR** (F5-3, de solo lectura): mismo patrón «hablador» que `ConsultaPublicaController` —
+> sin login, `sinScopeEmpresa()` + filtro explícito por `company_id` Y `empresa_id`, solo lo marcado
+> `visible_qr` (columna de F0-1 sin consumidor hasta ahora), cache de 60s **por token** (nunca se
+> filtra ni se pisa entre empresas) y `throttle:60,1`. Las promociones vigentes se anuncian con la
+> MISMA `Promocion::vigenteEn()` de F5-2 — si el menú calculara su propia vigencia, el cliente podría
+> ver un happy hour en el QR que la comanda no aplicara. ⚠️ **QR-2 (ordenar desde la mesa) queda
+> DIFERIDA por decisión explícita**: es la primera superficie de ESCRITURA pública del vertical
+> (disponibilidad en tiempo real, anti-spam por mesa/token, confirmación humana antes de cocina) y
+> amerita su propia fase, no una tarea de última hora de una fase de lectura.
+> ⚠️ **El único fallo real de la fase lo encontró la guarda transversal `AnclaFechaTest`, no una
+> revisión de negocio**: un test nuevo (`RestauranteMenuPublicoTest`) usaba `now()->subMonth()` sin
+> anclar para simular un combo vencido — sin ningún motivo semántico para que fuera «hace exactamente
+> un mes» en vez de 35 días atrás. Corregido a `subDays(35)` en `[REST-FIX-2]`, sin anclar toda la
+> suite de Restaurante (que sí depende del reloj real en otras pruebas, como el propio happy hour).
+> Detalle, las 6 discrepancias y los 2 TODOs en `app/zyntello-app/DISCREPANCIAS-restaurante.md` →
+> «FASE 5». **Reglas nuevas: el precio de un combo es el que se configuró, nunca la suma de sus
+> componentes · un fijo consume siempre, uno de elección solo si está en lo elegido · cuando dos
+> servicios comparten un total hay que leer el código de AMBOS antes de asumir dónde vive el número ·
+> dividir y volver a unir una cuenta no puede borrar un descuento ya aplicado · un descuento de
+> alcance parcial se reparte por PESO, no se pierde · el menú público y el motor de promociones
+> evalúan la MISMA vigencia · una superficie de ESCRITURA pública nueva no es una tarea de última
+> hora de una fase de lectura.**
 
 > **RESTAURANTE FASE 4 — RECETAS, COSTEO E INGENIERÍA DE MENÚ (2026-08-04) — `[REST-F4-1]`–`[REST-F4-4]`
 > + cierre `[REST-F4]`**: F3 dejó el vertical cobrando y descontando insumos, pero **no había dónde
@@ -1341,7 +1386,7 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Último commit en **zyntello-app**: `[REST-F4]` `a386a073` (cierre de la FASE 4 del vertical Restaurante: escandallo, costos y márgenes, ingeniería de menú y variancia; 88 pruebas de la fase, 57 reglas verificadas violándolas, regresión 2607 verdes) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
+> Último commit en **zyntello-app**: `[REST-FIX-2]` `a3ad28dc` (fix de anclaje de fecha encontrado por la regresión completa al cerrar la FASE 5 del vertical Restaurante: combos, motor de promociones/happy hour y menú QR público; 59 pruebas de la fase, regresión 2666 verdes) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
 
 > **CONDOMINIOS correcciones post-cierre (2026-07-24) — `[CND-FIX]`/`[CND-CONFIG]`**: (1) discrepancia D-CND-F3-2 resuelta (incidencias con `area_id`, reporte por área); (2) export de reportes a **Excel real** (.xlsx Maatwebsite) en vez de CSV; (3) **decisiones seleccionables llevadas a "Configuración del módulo"** (`cnd_config`, por empresa: privacidad del informe, voto remoto por defecto, portal reservas/incidencias ON/OFF); (4) **fix del bucle del combo de módulos** — el menú de Condominios enlazaba dashboards de OTROS módulos (CxC/CxP/Presupuesto/Bancos/Caja/Nómina) y eso rompía la detección de módulo activo (esas rutas quedaban "compartidas" y al abrir CxC desde el combo se quedaba en Condominios). Se quitaron; los módulos se abren desde el combo. Migraciones aditivas `160001`/`160002`. **Regla nueva: nunca listar en el menú de un módulo el dashboard/ruta dueña de otro módulo.** Regresión completa VERDE: 952 passed, 4 skipped, 0 failed.
 
