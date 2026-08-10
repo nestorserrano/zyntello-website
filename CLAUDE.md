@@ -260,6 +260,63 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 ### Bitácora reciente (estado actual — 2026-08-10)
 
+> **RESTAURANTE post-cierre — LAS OPCIONES QUE NO SE PODÍAN SELECCIONAR (2026-08-10) —
+> `[REST-FIX-1]`**: pedido del director técnico — *«revisa todas las discrepancias encontradas y
+> resuelve para seleccionar las opciones requeridas desde la opción de configuración del módulo,
+> recuerda crear la sección de Cuentas Contables si no existe y verificar la relación con los otros
+> módulos»*. Revisadas las **~40 discrepancias y los TODOs de las ocho fases**, y lo que apareció es
+> la misma familia de defecto que `[BAN-F4-FIX]` y `[CW-FIX-2]`: **funcionalidad implementada,
+> probada y DESPLEGADA que el usuario no puede alcanzar desde ninguna pantalla.**
+> ⚠️ **`rest_config` tenía CINCO columnas en el `$fillable` ausentes del formulario y de la
+> validación**: `redondeo_precio` (F4-2) y las cuatro de alertas de F8-2. **Lo grave son las de
+> alerta**: los umbrales nacen en **0 = desactivado** a propósito, y sin formulario **no había forma
+> de encenderlos** — la alerta de insumo por agotarse y la de lote por vencer, con 26 pruebas y nueve
+> reglas verificadas violándolas, **no podían dispararse NUNCA en producción**. Es idéntico a
+> `saldo_minimo` en Bancos (`D-BAN-F4-6`). Y `redondeo_precio` hacía que el **TODO #2 de la FASE 4
+> fuera imposible de cumplir**: pedía configurar algo que no tenía pantalla. Corregido con una
+> **sección nueva «Alertas del módulo»** que explica por qué nacen apagadas y que la mesa abierta de
+> ayer no tiene umbral (no es preferencia, es un hecho). ⚠️ Tres detalles que no son cosméticos: el
+> master-switch del correo entra en el bloque hidden+checkbox (un checkbox ausente no puede
+> encenderlo por accidente); el responsable vacío se guarda **NULL y no `''`** (con cadena vacía,
+> `whereNotNull()` creería que hay responsable y se notificaría a un usuario inexistente); y
+> `redondeo_precio` vacío es «sin redondeo», no cero.
+> **La guarda que impide la reincidencia**: el defecto se encontró comparando a mano el `$fillable`
+> contra la validación, y **eso se degrada** — ahora una prueba recorre el `$fillable`, descuenta lo
+> que legítimamente no es configurable y exige que todo lo demás esté en la validación **y** en la
+> vista.
+> ⚠️ **El checklist ahora avisa de que el barrido no corre, y es su aviso más importante**: sale
+> directo del hallazgo del deploy de F8. Antes ese fallo era **invisible** —el panel vacío se lee
+> como «no hay problemas»—; ahora dice «no se ha ejecutado nunca» o «lleva **N** días sin correr»
+> (con el número, porque «hace tiempo» no es accionable) y **calla si corrió hoy**.
+> **Cuatro TODOs de markdown pasan a verificación automática**: tipo de transacción de salida (F3 #5),
+> conversiones de unidad (F3 #4 / F4 #6), **toma física** (F4 #5, *el más importante de esa fase*:
+> sin conteo la variancia sale 0 por construcción y una tabla de ceros se lee como «todo cuadra») y
+> umbrales apagados. ⚠️ **La verificación de conversiones NO reimplementa el criterio**: consume el
+> mismo `RecetaService::conversor()` del consumo real — con una copia, el checklist diría «todo bien»
+> mientras el consumo descarta líneas (**cuarta vez** que se evita esta forma en el vertical).
+> ⚠️ **Tres nombres de columna que eran suposiciones mías y estaban mal**, descubiertos comprobando
+> contra el esquema real antes de dar nada por bueno: `inv_tipos_transaccion.es_activo` → **`is_active`**,
+> `inv_inventario_fisico.estado`/`.fecha` → **`status`**/**`aplicado_at`**, y
+> `inv_articulos.unidad_medida_id` → **`uom_base_id`**. Cualquiera de las tres habría reventado el
+> checklist con un 1054 **en la propia pantalla de Configuración**.
+> ✅ **Cuentas Contables: la sección YA existía** y está bien — se comprobó antes de crear nada.
+> Existe desde `[REST-F0-2]`, está en el menú y lee las operaciones del **catálogo del hub**, no de
+> una lista propia; y el vertical **no tiene ni una sola cuenta hardcodeada**.
+> ✅ **Relación con los otros módulos verificada**: Inventario (5 candados), Facturación (3), Caja (1),
+> PSA (1), Contabilidad (vía `ParametroContable`). Prueba nueva: **sin Inventario contratado el
+> checklist no reclama nada de Inventario** (⚠️ hay que desactivarlo explícitamente: `HubTestCase`
+> arranca con el módulo ACTIVO). ⚠️ **Nómina sigue sin relación: es la FASE 7, no implementada.**
+> ⚠️ **Una violación mal diseñada, que era mi error y no de la prueba** (reincidente de F4): quitar el
+> flag del `foreach` **no cambia el comportamiento** porque `validate()` tampoco incluye las claves
+> ausentes, así que la prueba pasaba con razón. **9 pruebas nuevas, 9 reglas verificadas violándolas,
+> las 9 se detectan. Sin migración**: las columnas ya existían, el defecto era que no tenían pantalla.
+> **Reglas nuevas: una columna sin formulario es una función que no existe (tercera vez en el
+> ecosistema, y aquí dejaba dos alertas incapaces de dispararse) · lo que se detecta comparando a mano
+> se convierte en prueba, o se degrada · un proceso programado que no deja rastro es indistinguible de
+> un día tranquilo, y el checklist es donde eso se mira · un TODO que el sistema puede comprobar solo
+> no se escribe en un markdown · antes de consultar la tabla de otro módulo se comprueban los nombres
+> contra el esquema real.**
+
 > **RESTAURANTE FASE 8 — REPORTES, ALERTAS Y SEED DEMO (2026-08-10) — `[REST-F8-1]`–`[REST-F8-3]`
 > + cierre `[REST-F8]`**: F1–F6 dejaron el vertical operando de punta a punta —toma la comanda, la
 > cocina, la cobra con su comprobante fiscal, descuenta insumos, la costea, vende combos con
