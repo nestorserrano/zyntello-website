@@ -153,6 +153,10 @@ c:/wamp64/www/zyntello/         ← Esta carpeta (repo: zyntello-website)
 | `psa_*` | PSA (Professional Services Automation — timesheets, planilla, ponches) |
 | `crm_*` | CRM (pipeline leads, contactos, reportes) |
 | `caj_*` | Caja (POS) — integrado a Facturación, sesiones y movimientos de efectivo |
+| `cw_*` | Car Wash (vertical) |
+| `pre_*` | Prestamello (vertical de préstamos y venta a crédito) |
+| `cnd_*` | Condominios (vertical) |
+| `rest_*` | Restaurante (vertical de gastronomía) |
 
 > Histórico: hasta el commit `[#408]` existían 5 BDs separadas (`zyntello_constructflow`, `zyntello_nomina`, `zyntello_contabilidad`, `zyntello_inventario`, `zyntello_facturacion`). Fueron consolidadas en `zyntello_app`. No volver a crearlas.
 
@@ -254,7 +258,87 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 **Regla:** Si ves error 403/500 después de deploy → ejecuta esto primero.
 
-### Bitácora reciente (estado actual — 2026-08-05)
+### Bitácora reciente (estado actual — 2026-08-10)
+
+> **RESTAURANTE FASE 8 — REPORTES, ALERTAS Y SEED DEMO (2026-08-10) — `[REST-F8-1]`–`[REST-F8-3]`
+> + cierre `[REST-F8]`**: F1–F6 dejaron el vertical operando de punta a punta —toma la comanda, la
+> cocina, la cobra con su comprobante fiscal, descuenta insumos, la costea, vende combos con
+> promociones, la despacha a domicilio y acepta reservas—. Lo que no tenía era **con qué mirar el
+> negocio**: un gerente con 500 órdenes al mes no podía responder «¿a qué hora se llena?», «¿qué
+> plato me está costando dinero?», «¿cuánto tarda la parrilla?», «¿para cuántos días me queda el
+> queso?» ni «¿cuánta propina le debo a cada mesero?». **PASO PREVIO**: regresión completa VERDE con
+> el árbol quieto (2705 passed, la del cierre de F6). **78 pruebas de la fase** (42 de los cinco
+> bloques de reportes, 26 del tablero y las alertas, 10 del seed, aceptación con **97 aserciones**);
+> **15 reglas verificadas VIOLÁNDOLAS: las 15 se detectan**; **regresión completa del ecosistema
+> VERDE: 2783 passed, 4 skipped, 0 failed (24 424 aserciones)** — de 2705 a 2783, exactamente las 78
+> de la fase.
+> ⚠️ **El reporte de cocina NO usa el criterio de ventas, y no es un descuido**: el dinero se ubica
+> por el **cobro** (`cerrada_en`) y el trabajo por el **envío** (`enviada_en`). Una mesa que pide a
+> las 23:40 del lunes y paga a las 00:20 del martes es venta del martes y cocina del lunes, y las
+> dos son correctas — **está explicado en la pantalla antes de la tabla**, para que nadie «unifique»
+> los criterios creyendo que la diferencia es un error. ⚠️ **La prueba anti-copia encontró una copia
+> real** (`descuentos()` reimplementaba el período porque la fuente única devolvía un builder sobre
+> LÍNEAS y los descuentos viven en las CUENTAS): corregido añadiendo `ordenesCerradas()` — **tercera
+> vez** en el vertical, *centralizar no es crear el método, es borrar la copia*. ⚠️ **Los combos van
+> como grupo propio** en el desglose por categoría: filtrarlos dejaría el total sin sumar y el
+> descuadre sería **tanto mayor cuanto mejor venda el combo**. El promedio de preparación se calcula
+> solo sobre lo que tiene `lista_en` y **lo que no lo tiene se cuenta aparte y se nombra** (si no, el
+> día que la cocina deja veinte platos sin marcar saldría con el mejor promedio del mes); el % de
+> devolución va sobre los pedidos **CERRADOS** (si no, baja sola durante el servicio); y la cobertura
+> de insumos **documenta su fórmula en la pantalla** — un «te queda para ~2 días» sin el stock, el
+> consumo diario y la ventana no se puede comprobar y no se usa para comprar. ⚠️ **El cruce PSA
+> «ventas por hora trabajada» NO se implementa**: las horas se calculan emparejando ponches y ese
+> emparejamiento es lógica de PSA — reimplementarlo crearía un **segundo criterio de horas
+> trabajadas** que divergiría de la nómina; se entrega el **puente de identidad** (el código PSA del
+> mesero sale junto al nombre) y queda como TODO.
+> ⚠️ **El hallazgo que más enseña: una prueba propia pasaba con el defecto puesto.** Al verificar por
+> violación se cambió el default de `alerta_cobertura_dias` de 0 a 7 y «con los defaults no dispara
+> ni una alerta» **siguió verde** — porque con fila en `rest_config` el valor sale de la **COLUMNA**,
+> no de la constante del modelo. Es la lección de `[PRE-F4-1]`: **un interruptor peligroso se
+> verifica por el DEFAULT DE LA COLUMNA**. La prueba nueva lee `information_schema`, exige que la
+> constante coincida con la migración y **se verifica con un ALTER TABLE**, porque un default de
+> columna no vive en un archivo. ⚠️ **La mesa abierta de ayer avisa sin umbral y se compara contra el
+> DÍA**: un local que cierra a las 3 a.m. tiene mesas legítimamente abiertas a las 2, y un umbral
+> horario las marcaría todas cada noche (la trampa de medianoche que F2-1 resolvió en el KDS).
+> ⚠️ **El tablero NO es la portada**: `restaurante.dashboard` sigue llevando al mapa de salón — un
+> mesero con una tablet en la mano necesita ver **las mesas**, no un gráfico de ventas; el golden
+> master lo custodia.
+> **El seed** deja ~500 órdenes en 30 días con **urna ponderada** de popularidad para que la
+> ingeniería de menú nazca con sus cuatro cuadrantes (*un seed con distribución plana hace inútil el
+> reporte que llena*). ⚠️ **No consume numeración fiscal**: pasar 30 días por `CobroService` gastaría
+> **~500 NCF de la secuencia autorizada por la DGII** —el defecto que F3-2 corrigió para el ticket
+> interno— así que las órdenes se insertan con `DB::table` y los reportes de Facturación no las
+> muestran, que es lo correcto. ⚠️ **Y el cuadre del reporte de personal detectó un fenómeno REAL de
+> producción**: `rest_turnos_propina` acumula POR MESERO, y una orden de **mostrador o delivery no
+> tiene mesero** — la propina se cobra, entra a la caja, se asienta como pasivo y **no se le asigna a
+> nadie**. El seed la evita para no abrir descuadrado, pero a quién se le asigna es una decisión de
+> negocio pendiente. Que el cuadre lo detectara es para lo que se escribió: es dinero de terceros.
+> ⚠️ **Tres defectos propios**, y el que más enseña: **el mesero que vendió SIN recibir propina salía
+> como «Usuario 42»** (los nombres se resolvían solo para los que tenían fila de propina, no para
+> todas las claves del ranking) — y el mesero sin propina es justo el que hay que mirar. Más
+> `rest_mesas` que identifica por `numero` y no por `nombre`, y **Carbon 3 devolviendo FLOAT en
+> `diffInDays()`** (28.0 y 2.0, mismo defecto de tipo que `[PRE-F4-1]`).
+> ⚠️ **Y el cuarto lo encontró la regresión COMPLETA, no la suite del vertical**: la guarda
+> transversal `AnclaFechaTest` detectó un `now()->addMonth()` usado solo para construir «un día
+> futuro» — **el mes era decoración, no dato**, y desde un día 31 Carbon desborda. Corregido a
+> `addDays(35)`, **sin anclar la suite entera** porque otras pruebas del archivo sí dependen del
+> reloj real (la mesa abierta de ayer, el happy hour vigente). **Segunda vez que esta guarda encuentra
+> un defecto de este vertical** (la primera fue `[REST-FIX-2]` al cerrar F5): la regla operativa que
+> deja el reincidente es **si la prueba solo necesita «futuro» o «pasado», usar DÍAS.**
+> ⚠️ **El golden master NO avisó: cuarta fase seguida sin hueco declarado** (F4, F5, F6 y F8) — el
+> mecanismo se está usando como registro *a posteriori* en vez de guarda *a priori*. Se le añadieron
+> sus aserciones al cerrar. ⚠️ Migración `2026_08_10_550001`; cron nuevo `restaurante:alertas`
+> (06:40) — **sin `schedule:run` el panel de alertas estará siempre vacío**.
+> ⚠️ **La FASE 7 del blueprint NO está implementada** (`git log` va de `[REST-F6]` a `[REST-F8-1]`):
+> F8 no depende de ella, pero la columna «Comisiones» sale en cero con su aviso. **El blueprint v3 no
+> está completo hasta que F7 se ejecute.** Detalle, las 10 discrepancias y los 10 TODOs consolidados
+> en `app/zyntello-app/DISCREPANCIAS-restaurante.md` → «FASE 8».
+> **Reglas nuevas: dos reportes del mismo módulo pueden medir períodos distintos y hay que DECIRLO en
+> pantalla · un desglose que no suma su total esconde justo lo que crece · un promedio se calcula
+> sobre lo que tiene el dato, y lo que no lo tiene se cuenta aparte y se NOMBRA · un porcentaje se
+> calcula sobre lo que ya terminó · un aviso automático lleva su propia cuenta · un interruptor
+> peligroso se verifica por el DEFAULT DE LA COLUMNA · un seed no simula la operación fiscal · un seed
+> con distribución plana hace inútil el reporte que llena.**
 
 > **RESTAURANTE FASE 5 — COMBOS, PROMOCIONES Y MENÚ QR PÚBLICO (2026-08-05) — `[REST-F5-1]`–`[REST-F5-3]`
 > + cierre `[REST-F5]`**: F4 dejó el vertical costeando y decidiendo precios plato por plato, pero la
@@ -1386,7 +1470,7 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Último commit en **zyntello-app**: `[REST-FIX-2]` `a3ad28dc` (fix de anclaje de fecha encontrado por la regresión completa al cerrar la FASE 5 del vertical Restaurante: combos, motor de promociones/happy hour y menú QR público; 59 pruebas de la fase, regresión 2666 verdes) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
+> Último commit en **zyntello-app**: `[REST-F8]` `3d0e9953` (cierre de la FASE 8 del vertical Restaurante: los cinco bloques de reportes, tablero y alertas, seed demo con 30 días de historia; 78 pruebas de la fase, regresión completa 2783 verdes. ⚠️ La **FASE 7** del blueprint sigue sin implementar) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
 
 > **CONDOMINIOS correcciones post-cierre (2026-07-24) — `[CND-FIX]`/`[CND-CONFIG]`**: (1) discrepancia D-CND-F3-2 resuelta (incidencias con `area_id`, reporte por área); (2) export de reportes a **Excel real** (.xlsx Maatwebsite) en vez de CSV; (3) **decisiones seleccionables llevadas a "Configuración del módulo"** (`cnd_config`, por empresa: privacidad del informe, voto remoto por defecto, portal reservas/incidencias ON/OFF); (4) **fix del bucle del combo de módulos** — el menú de Condominios enlazaba dashboards de OTROS módulos (CxC/CxP/Presupuesto/Bancos/Caja/Nómina) y eso rompía la detección de módulo activo (esas rutas quedaban "compartidas" y al abrir CxC desde el combo se quedaba en Condominios). Se quitaron; los módulos se abren desde el combo. Migraciones aditivas `160001`/`160002`. **Regla nueva: nunca listar en el menú de un módulo el dashboard/ruta dueña de otro módulo.** Regresión completa VERDE: 952 passed, 4 skipped, 0 failed.
 
