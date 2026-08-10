@@ -333,12 +333,55 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > F8 no depende de ella, pero la columna «Comisiones» sale en cero con su aviso. **El blueprint v3 no
 > está completo hasta que F7 se ejecute.** Detalle, las 10 discrepancias y los 10 TODOs consolidados
 > en `app/zyntello-app/DISCREPANCIAS-restaurante.md` → «FASE 8».
+> **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`3d0e9953`): migración aplicada, las 2 tablas creadas,
+> el default de columna de los umbrales en **0** comprobado contra `information_schema`, 15 rutas
+> cacheadas sin roturas y el cron programado.
 > **Reglas nuevas: dos reportes del mismo módulo pueden medir períodos distintos y hay que DECIRLO en
 > pantalla · un desglose que no suma su total esconde justo lo que crece · un promedio se calcula
 > sobre lo que tiene el dato, y lo que no lo tiene se cuenta aparte y se NOMBRA · un porcentaje se
 > calcula sobre lo que ya terminó · un aviso automático lleva su propia cuenta · un interruptor
 > peligroso se verifica por el DEFAULT DE LA COLUMNA · un seed no simula la operación fiscal · un seed
-> con distribución plana hace inútil el reporte que llena.**
+> con distribución plana hace inútil el reporte que llena · `schedule:run` se invoca CADA MINUTO.**
+
+> ⚠️⚠️ **HALLAZGO DEL DEPLOY, FUERA DE ALCANCE Y PARA DECISIÓN DEL DIRECTOR TÉCNICO (2026-08-10) —
+> EL CRON DEL SERVIDOR CORRE CADA 18 MINUTOS Y NINGUNA ALERTA PROGRAMADA DEL ECOSISTEMA SE EJECUTA**:
+> el crontab de Bluehost es `*/18 * * * * … schedule:run`. **`schedule:run` no encola nada**: ejecuta
+> lo que está *due* **en el minuto exacto** en que se le invoca, y Laravel lo documenta para correr
+> **cada minuto**. Con `*/18` solo dispara en los minutos **0, 18, 36 y 54** — así que un
+> `dailyAt('06:40')` **no se ejecuta NUNCA**.
+> **La evidencia, medida en producción, no deducida**: las cinco tablas de alertas del ecosistema
+> (`cw_`, `ban_`, `cxp_`, `af_`, `pre_`) están **en cero** — pero cero por sí solo no prueba nada,
+> podrían ser datos limpios. **Lo que lo prueba es la marca**: `cw_config.ultima_ejecucion_alertas`,
+> que `[CW-FIX-2]` estampa **aunque no envíe nada** *precisamente* para distinguir «corrió y no había
+> nada» de «no corrió», dice **2026-07-27 12:47** — el día de su propio deploy, **a las 12:47 y no a
+> las 06:35**, o sea una corrida manual. **14 días sin volver a correr.** La herramienta que aquel
+> commit construyó para responder esta pregunta la respondió.
+> **Diez comandos de siete módulos nunca corren**: `cxp:alertas` 06:20 · `bancos:alertas` 06:25 ·
+> `activos:alertas` 06:30 · `carwash:alertas` 06:35 · `restaurante:alertas` 06:40 · `compras:alertas`
+> 06:40 · `prestamello:expirar-preaprobaciones` 06:50 · `prestamello:alertas` 06:55 ·
+> `prestamello:paquete-ejecutivo` 07:10 · `carwash:recordatorios-mantenimiento` 07:20. **Solo
+> sobreviven los de minuto 0**: `demo:reset` (03:00) y `prestamello:recordatorios` (08:00).
+> ⚠️ **Y explica un síntoma anotado hace meses**: `[PRE-F3]` registró un «preaprobación vence en **-9
+> días**» y dejó escrito que *revelaba que el cron no estaba corriendo*. Era esto, y seguía así — con
+> la consecuencia de que las preaprobaciones **no se vencen solas**, que es justo el defecto que
+> `[PRE-F1-4]` creó la vigencia para evitar.
+> **El fallo es SILENCIOSO**: el módulo se ve perfecto y el panel de alertas se ve vacío, y «vacío» se
+> lee como «no hay problemas». Es literalmente lo que `[CW-FIX-2]` llamó *«el TODO más peligroso»*.
+> **Verificado que el comando de esta fase SÍ funciona**: ejecutado a mano tras el deploy, estampó su
+> marca y encontró **una alerta REAL el primer día** — la orden `ORD-000001` de la mesa 9 de
+> *Comercial Aranza*, **abierta desde el 31/07**, diez días sin cobrar. Es exactamente el caso para el
+> que se diseñó y valida que avise **sin umbral configurable**. Sin correo: `notificar_responsable=0`
+> y los dos umbrales en `0`, leído de la fila real.
+> ⚠️ **NO se corrigió, a propósito.** Cambiar el crontab a `* * * * *` es **una línea**, pero pone a
+> correr **diez comandos que llevan meses parados**, todos a la vez y por primera vez, sobre datos
+> reales de clientes. Es infraestructura del servidor con radio en siete módulos. **Antes de cambiarlo
+> conviene revisar**: el volumen de alertas atrasadas del primer barrido, qué preaprobaciones de
+> Prestamello se vencerán de golpe, y si algún master-switch de correo quedó encendido en otro módulo
+> (el de Restaurante está apagado y verificado; **los otros seis no se revisaron**).
+> **Regla nueva: `schedule:run` se invoca CADA MINUTO — con cualquier otro intervalo, todo comando
+> cuyo minuto no coincida no se ejecuta jamás, y el síntoma es un panel vacío que se lee como “no hay
+> problemas”. Y una marca de ejecución que se estampa aunque no haya nada que hacer es lo único que
+> distingue “corrió y estaba limpio” de “no corrió”.**
 
 > **RESTAURANTE FASE 5 — COMBOS, PROMOCIONES Y MENÚ QR PÚBLICO (2026-08-05) — `[REST-F5-1]`–`[REST-F5-3]`
 > + cierre `[REST-F5]`**: F4 dejó el vertical costeando y decidiendo precios plato por plato, pero la
