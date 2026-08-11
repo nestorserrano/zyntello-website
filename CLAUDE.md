@@ -258,7 +258,102 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 **Regla:** Si ves error 403/500 después de deploy → ejecuta esto primero.
 
-### Bitácora reciente (estado actual — 2026-08-10)
+### Bitácora reciente (estado actual — 2026-08-11)
+
+> **CINCO MÓDULOS DE MEJORA REGISTRADOS EN LOS TRES REPOS (2026-08-11) — `[#505]`, `[#506]`,
+> `[MOD-ADIC-1]`, `[MOD-ADIC-2]`**: pedido del director técnico — *«crear 5 módulos adicionales
+> en admin, website y app, activos y con el costo de stripe, el pago es anual»* y *«luego ejecuta
+> la creación de Módulos_Adicionales»*. Se entrega el **registro completo y vendible** de los
+> cinco, más los **blueprints reescritos**; la implementación va después, uno por sesión.
+> **Regresión completa del ecosistema VERDE: 2802 passed, 4 skipped, 0 failed (24 510
+> aserciones)** — de 2795, exactamente las 7 pruebas nuevas.
+> ⚠️ Migraciones **en el admin**: `2026_08_11_000001` (columna `requiere`) y `000002` (precios
+> nullable). En zyntello-app **no hay migración**.
+>
+> ⚠️ **Los cinco blueprints originales no correspondían a este código.** Usaban `companies(id)`
+> BIGINT y tablas `customers`/`products`/`vendors`/`exchange_rates` que **no existen** aquí, y
+> **ninguno llevaba `empresa_id`** —la regla arquitectural fundamental—. El `04` venía además
+> **corrupto** (basura de una llamada a herramienta a medias y el contenido duplicado) y el `03`
+> tenía texto en chino. Eran genéricos, escritos sin mirar el repositorio.
+>
+> ⚠️⚠️ **Y el `04` pedía construir de cero un Inventario que YA EXISTE completo**: `items`,
+> `warehouses`, `stock_levels`, `stock_movements`, `lot_serials`, `purchase_suggestions` —
+> cuando `inv_*` ya tiene stock multi-bodega, lotes FEFO, costeo promedio/PEPS/UEPS, ROP con
+> alertas, `SugeridoCompraService`, Kardex y conteo físico. Crearlo habría dado **dos verdades
+> del stock**: Facturación, Compras, Restaurante y Car Wash seguirían moviendo `inv_*` y la
+> divergencia solo se vería en el conteo físico, semanas después. **Reenfocado a lo que de
+> verdad falta** (pronóstico de demanda, EOQ, ABC, cobertura) **leyendo `inv_*`, sin crear ni
+> una tabla de stock.** Lo mismo con los otros tres: el `02` no reimplementa 606/607/608, IR-17,
+> NCF ni e-CF —los orquesta y avisa cuándo vencen—; el `03` no recalcula la proyección de saldo
+> —la consume de `TesoreriaAnaliticaService`, cuya fórmula ya se corrigió por doble conteo en
+> `D-BAN-F4-3-1`—; y el `05` no crea tabla de entregas porque **`fact_despachos` ya existe** con
+> guía, firma del receptor y `entregado_at`.
+>
+> **Arquitectura decidida con el director técnico**: cuatro son **extensiones** que viven DENTRO
+> de su módulo padre (`inteligencia`→CRM, `fiscal`→Contabilidad, `flujocaja`→Bancos,
+> `abastecimiento`→Inventario) y **no se venden sueltos**; `rutas` es el único **módulo raíz**.
+> En el website se promocionan como producto propio con badge «Mejora tu módulo X»; en la app
+> aparecen en Plan y Suscripción **validando el padre**.
+>
+> ⚠️ **La dependencia la declara QUIEN VENDE**: columna nueva `modulos.requiere` en el admin, no
+> una lista escrita a mano en el consumidor. Es la lección de `[BUNDLE-FIX-1]`, donde la
+> composición del bundle ERP estaba copiada en la app, se desincronizó, y **dos clientes
+> recibieron 4 de los 8 módulos que pagaban** sin que nada lo avisara. `AdminModulosService::dependencias()`
+> la lee con snapshot *last-known-good*; ⚠️ y su fallback **no es `[]`** como el del bundle —
+> allí un array vacío es el estado seguro, aquí dejaría comprar un hijo sin su padre.
+>
+> ⚠️ **La guarda real está en el SERVIDOR**: `BillingController::checkout()` rechaza la compra
+> sin el padre y fuerza `period=anual`. El botón deshabilitado de la vista es una sugerencia —
+> basta reenviar el formulario para saltarlo (lección de `[PRE-F1]`: *un control que nunca se
+> dispara es peor que no tenerlo*). Y sin forzar el período, el checkout —que usa `'mensual'` por
+> defecto— llegaba a Stripe buscando un `stripe_price_id_mensual` vacío **a propósito** y
+> devolvía «este módulo no tiene precio configurado», un mensaje que suena a avería del sistema
+> cuando la venta mensual sencillamente no existe.
+>
+> ⚠️ **Dos defectos de «cero que se lee como gratis»**, uno encontrado leyendo y otro ejecutando:
+> (1) el API del admin casteaba `(float) $m->precio_mensual` y convertía el NULL en **`0.0`** —
+> el sitio habría anunciado **«USD 0 /mes»** en los cinco; y (2) al sembrar, `precio_mensual` y
+> `precio_anual` resultaron **NOT NULL** en la tabla, y la salida fácil (guardar `0`) era el
+> mismo defecto por la puerta de atrás. Migración `000002` los pasa a nullable — ampliar a NULL
+> no invalida datos existentes, por eso corre en producción sin ventana.
+>
+> ⚠️ **El candado del sidebar NO reintroduce el defecto reincidente.** `<x-menu-link-modulo>`
+> gana la variante `menu` (aditiva), pero la ruta de cada ítem con candado **pertenece al mismo
+> módulo que lo lista** (`inventario.abastecimiento.*` es de Inventario), así que `ModuleMenu` no
+> reclama nada ajeno. Declarar en el menú de un módulo la ruta DUEÑA de otro dejaba al dueño sin
+> poder abrirse y **pasó tres veces** (`[CND-FIX]`, `[CW-F0-5]`, `[REST-F0-4]`): ahora hay una
+> prueba que recorre todo el menú y lo detecta, en vez de una regla escrita en prosa que ya se
+> ignoró tres veces.
+>
+> ⚠️ **Se venden antes de existir, y eso se cubrió**: quien contrate hoy vería «Módulo no
+> contratado» justo después de pagar — un texto que convierte una espera en sospecha de cobro
+> indebido. Ahora ese caso dice **«en preparación»**, no ofrece «Ver planes» y usa otro icono.
+> **Y la regresión destapó lo que faltaba**: `AyudaIntegridadTest` vio `rutas` en el sidebar sin
+> ayuda (justo para lo que se escribió en `[AYUDA-2]`, cuando Condominios llevaba semanas con 13
+> pantallas invisibles). Se declara como **deuda**, no se documenta: escribir la ayuda de
+> pantallas que no existen describiría una interfaz imaginaria. Al investigarlo salió lo de
+> verdad valioso — **qué ve quien contrate uno hoy**: el menú ya estaba protegido con
+> `Route::has()` en sus tres puntos, pero **nadie lo custodiaba**, y ese error no aparecería en
+> desarrollo (donde nadie los tiene contratados) sino **en la cuenta del primer cliente que
+> pague**. Ahora hay prueba.
+>
+> **Precio: USD 100/año los cinco.** ⚠️ Verificar que coincida con el importe de cada Price de
+> Stripe: el que se cobra es el de Stripe, este solo es el que se anuncia.
+> **7 pruebas nuevas (`ModulosMejoraTest`), 2 guardas verificadas VIOLÁNDOLAS: las dos se
+> detectan.** ⚠️ La primera versión de la prueba del menú renderizaba la vista con variables a
+> mano y falló con «Undefined variable `$activeSlug`» — habría probado mi suposición de cómo
+> funciona el menú, no cómo funciona; ahora monta el componente Livewire real.
+> **Reglas nuevas: la dependencia entre módulos la declara quien los vende · un `0` en un precio
+> no se lee como «este plan no existe» sino como GRATIS · un módulo que se vende antes de
+> existir necesita decir «en preparación», no «no contratado» · lo que se detecta comparando a
+> mano se convierte en prueba (el defecto del menú se ignoró tres veces escrito en prosa) · una
+> prueba que renderiza una vista con variables inventadas prueba la suposición, no el código.**
+>
+> ⚠️ **PENDIENTE — decisión del director técnico**: los cinco quedan **activos y cobrables sin
+> estar implementados**. Está cubierto que no rompa nada, pero un cliente puede pagar por algo
+> que aún no puede usar. Pasarlos a `proximo` es una línea por módulo en el seeder.
+
+### Bitácora anterior (2026-08-10)
 
 > **RESTAURANTE post-cierre — LAS OPCIONES QUE NO SE PODÍAN SELECCIONAR (2026-08-10) —
 > `[REST-FIX-1]`**: pedido del director técnico — *«revisa todas las discrepancias encontradas y
@@ -1586,7 +1681,7 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Último commit en **zyntello-app**: `[REST-FIX-2]` `3e2ddb98` (correcciones post-cierre del vertical Restaurante: cinco columnas de configuración que no tenían formulario —dos alertas no podían dispararse nunca—, checklist que avisa de que el barrido no corre, y el defecto de la guarda que leía la sesión. ⚠️ La **FASE 7** del blueprint sigue sin implementar y el **crontab del servidor sigue en `*/18`**) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
+> Ultimo commit en **zyntello-app**: `[MOD-ADIC-2]` `74f89cee` (registro de los 5 modulos de mejora: catalogo con dependencia del modulo padre, candado en el menu, guarda del checkout en el servidor y la deuda de ayuda de `rutas` declarada. ⚠️ La **FASE 7** de Restaurante sigue sin implementar, el **crontab** sigue en `*/18` y los 5 modulos nuevos estan **vendibles pero sin implementar**) | Ultimo commit en **zyntello-admin**: `[#506]` `2283952` | Ultimo commit en **zyntello-website**: `f76bd282`
 
 > **CONDOMINIOS correcciones post-cierre (2026-07-24) — `[CND-FIX]`/`[CND-CONFIG]`**: (1) discrepancia D-CND-F3-2 resuelta (incidencias con `area_id`, reporte por área); (2) export de reportes a **Excel real** (.xlsx Maatwebsite) en vez de CSV; (3) **decisiones seleccionables llevadas a "Configuración del módulo"** (`cnd_config`, por empresa: privacidad del informe, voto remoto por defecto, portal reservas/incidencias ON/OFF); (4) **fix del bucle del combo de módulos** — el menú de Condominios enlazaba dashboards de OTROS módulos (CxC/CxP/Presupuesto/Bancos/Caja/Nómina) y eso rompía la detección de módulo activo (esas rutas quedaban "compartidas" y al abrir CxC desde el combo se quedaba en Condominios). Se quitaron; los módulos se abren desde el combo. Migraciones aditivas `160001`/`160002`. **Regla nueva: nunca listar en el menú de un módulo el dashboard/ruta dueña de otro módulo.** Regresión completa VERDE: 952 passed, 4 skipped, 0 failed.
 
