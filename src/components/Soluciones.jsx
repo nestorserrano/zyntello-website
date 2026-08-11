@@ -40,9 +40,33 @@ const DISPLAY_ESTATICO = {
   cxp:          { icono: '📑', rating: 4.7, reviews: 76,  etiqueta: 'Disponible', previews: [{ label: 'Pagos', icon: '💸' }, { label: 'Cheques', icon: '📄' }, { label: 'Reportes', icon: '📋' }],         categoria: 'Finanzas' },
   'zyntello-psa': { icono: '⏱️', rating: 4.9, reviews: 53,  etiqueta: 'Disponible', previews: [{ label: 'Timesheets', icon: '🕒' }, { label: 'GPS', icon: '📍' }, { label: 'Planilla', icon: '📄' }],       categoria: 'Servicios' },
   prestamello:  { icono: '💵', rating: 4.8, reviews: 22,  etiqueta: 'Nuevo',      previews: [{ label: 'Préstamos', icon: '💵' }, { label: 'Cobros GPS', icon: '📍' }, { label: 'Pagos online', icon: '💳' }], categoria: 'Finanzas' },
+  // Módulos de mejora: se promocionan como producto propio, pero cada uno amplía a otro
+  // módulo y no funciona sin él. El aviso «Requiere X» sale del campo `requiere` del API,
+  // no de esta lista — aquí solo vive lo visual.
+  inteligencia:   { icono: '🧠', rating: 4.8, reviews: 18, etiqueta: 'Nuevo', previews: [{ label: 'Salud', icon: '❤️' }, { label: 'Recomendaciones', icon: '🎯' }, { label: 'NPS', icon: '📊' }],            categoria: 'Inteligencia' },
+  fiscal:         { icono: '🧾', rating: 4.9, reviews: 26, etiqueta: 'Nuevo', previews: [{ label: 'Calendario', icon: '📅' }, { label: 'Alertas', icon: '🔔' }, { label: 'Cumplimiento', icon: '✅' }],       categoria: 'Finanzas' },
+  flujocaja:      { icono: '💧', rating: 4.8, reviews: 21, etiqueta: 'Nuevo', previews: [{ label: 'Proyección', icon: '📈' }, { label: 'Escenarios', icon: '🔀' }, { label: 'Liquidez', icon: '💧' }],        categoria: 'Finanzas' },
+  abastecimiento: { icono: '📈', rating: 4.7, reviews: 19, etiqueta: 'Nuevo', previews: [{ label: 'Pronóstico', icon: '🔮' }, { label: 'EOQ', icon: '⚖️' }, { label: 'ABC', icon: '🔤' }],                     categoria: 'Logística' },
+  rutas:          { icono: '🗺️', rating: 4.8, reviews: 24, etiqueta: 'Nuevo', previews: [{ label: 'Despachos', icon: '🚚' }, { label: 'Visitas', icon: '📍' }, { label: 'Mapa', icon: '🗺️' }],                categoria: 'Logística' },
 }
 
 const DISPLAY_DEFAULT = { icono: '⚡', rating: 4.5, reviews: 10, etiqueta: null, previews: [], categoria: 'Módulo' }
+
+/**
+ * Nombre legible del módulo padre a partir de su slug.
+ *
+ * Se busca primero en los módulos que ya llegaron del API — así el nombre es el que
+ * el admin publica hoy, no una copia que se quedaría vieja al renombrarlo. Solo si no
+ * está cargado se cae a un rótulo derivado del slug, que es mejor que no decir nada.
+ */
+function nombreModulo(slug, listaApps) {
+  if (!slug) return ''
+  const encontrado = (listaApps || []).find(a => a.id === slug)
+  if (encontrado) return encontrado.nombre
+  const meta = DISPLAY_ESTATICO[slug]
+  if (meta && meta.nombre) return meta.nombre
+  return slug.charAt(0).toUpperCase() + slug.slice(1)
+}
 
 /* Datos estáticos completos como fallback si el API falla */
 const APPS_FALLBACK = [
@@ -104,6 +128,9 @@ function combinarModulo(apiData) {
     caracteristicas:Array.isArray(apiData.caracteristicas) ? apiData.caracteristicas : [],
     precio:         apiData.precio_mensual,
     precioAnual:    apiData.precio_mensual_anual,
+    // Total anual (lo que de verdad se cobra). Los módulos sin plan mensual lo anuncian
+    // directamente en vez de un "/mes" derivado que nadie puede pagar.
+    precioAnualTotal: apiData.precio_anual_final || apiData.precio_anual_base || 0,
     ahorroAnual:    ahorroPct,
     color,
     gradiente,
@@ -113,6 +140,13 @@ function combinarModulo(apiData) {
     etiquetaBadge:  ESTADO_BADGE[estado] || null,
     disponible,
     bundle:         !!apiData.bundle,
+    // Slug del módulo padre que hace falta contratar (null = se vende suelto). Lo declara
+    // el admin en `modulos.requiere`; el sitio solo lo muestra. Sin esto, la tarjeta
+    // vendería una mejora sin decir sobre qué mejora.
+    requiere:       apiData.requiere || null,
+    // Módulo sin plan mensual: no se ofrece el precio /mes ni el ahorro anual, porque no
+    // hay con qué comparar. `precio_mensual` llega null a propósito desde el API.
+    soloAnual:      !!apiData.solo_anual,
     url:            apiData.slug === 'zyntello-psa'
       ? '/zyntello-psa.html'
       : apiData.slug === 'events'
@@ -577,6 +611,11 @@ export default function Soluciones() {
                     <span style={{ background: 'rgba(0,0,0,0.28)', backdropFilter: 'blur(4px)', color: 'rgba(255,255,255,0.88)', fontSize: '0.6rem', fontWeight: 700, padding: '2px 8px', borderRadius: '20px' }}>
                       {app.categoria}
                     </span>
+                    {app.requiere && (
+                      <span style={{ background: 'rgba(255,255,255,0.22)', backdropFilter: 'blur(4px)', color: '#fff', fontSize: '0.6rem', fontWeight: 700, padding: '2px 8px', borderRadius: '20px', marginLeft: '5px' }}>
+                        ⚡ Mejora {nombreModulo(app.requiere, apps)}
+                      </span>
+                    )}
                   </div>
                   {app.etiqueta && (
                     <span className="sol-card-badge" style={app.etiquetaBadge ? { background: app.etiquetaBadge.bg, color: app.etiquetaBadge.color } : {}}>
@@ -601,13 +640,34 @@ export default function Soluciones() {
                       </li>
                     ))}
                   </ul>
+                  {app.requiere && (
+                    <p style={{ color: '#fbbf24', fontSize: '0.7rem', margin: '0 0 8px', lineHeight: 1.4 }}>
+                      Requiere <strong>{nombreModulo(app.requiere, apps)}</strong> contratado — sus pantallas viven dentro de ese módulo.
+                    </p>
+                  )}
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: '14px', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
                     <div>
-                      <div style={{ color: app.color, fontWeight: 800, fontSize: '1.15rem', lineHeight: 1 }}>
-                        {simbolo} {formatPrecio(app.precio)}
-                        <span style={{ color: '#475569', fontSize: '0.7rem', fontWeight: 400 }}>/mes</span>
-                      </div>
-                      <div style={{ color: '#334155', fontSize: '0.68rem', marginTop: '2px' }}>desde {simbolo} {formatPrecio(app.precioAnual)}/mes anual</div>
+                      {app.soloAnual ? (
+                        /* Sin plan mensual: se anuncia el anual. Mostrar "$0/mes" —lo que
+                           saldría de un precio null— se leería como gratis. */
+                        <>
+                          <div style={{ color: app.color, fontWeight: 800, fontSize: '1.15rem', lineHeight: 1 }}>
+                            {app.precioAnualTotal > 0 ? `${simbolo} ${formatPrecio(app.precioAnualTotal)}` : 'Consultar'}
+                            {app.precioAnualTotal > 0 && (
+                              <span style={{ color: '#475569', fontSize: '0.7rem', fontWeight: 400 }}>/año</span>
+                            )}
+                          </div>
+                          <div style={{ color: '#334155', fontSize: '0.68rem', marginTop: '2px' }}>Suscripción anual</div>
+                        </>
+                      ) : (
+                        <>
+                          <div style={{ color: app.color, fontWeight: 800, fontSize: '1.15rem', lineHeight: 1 }}>
+                            {simbolo} {formatPrecio(app.precio)}
+                            <span style={{ color: '#475569', fontSize: '0.7rem', fontWeight: 400 }}>/mes</span>
+                          </div>
+                          <div style={{ color: '#334155', fontSize: '0.68rem', marginTop: '2px' }}>desde {simbolo} {formatPrecio(app.precioAnual)}/mes anual</div>
+                        </>
+                      )}
                     </div>
                     <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                       {app.url && app.disponible !== false && (
