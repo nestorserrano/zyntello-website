@@ -308,8 +308,24 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > arranca con el módulo ACTIVO). ⚠️ **Nómina sigue sin relación: es la FASE 7, no implementada.**
 > ⚠️ **Una violación mal diseñada, que era mi error y no de la prueba** (reincidente de F4): quitar el
 > flag del `foreach` **no cambia el comportamiento** porque `validate()` tampoco incluye las claves
-> ausentes, así que la prueba pasaba con razón. **9 pruebas nuevas, 9 reglas verificadas violándolas,
-> las 9 se detectan. Sin migración**: las columnas ya existían, el defecto era que no tenían pantalla.
+> ausentes, así que la prueba pasaba con razón. **10 pruebas nuevas, 10 reglas verificadas
+> violándolas, las 10 se detectan. Sin migración**: las columnas ya existían, el defecto era que no
+> tenían pantalla.
+> ⚠️⚠️ **`[REST-FIX-2]` — y el defecto que más enseña lo encontró VERIFICAR EL DEPLOY, no las
+> pruebas**: al correr el checklist contra los datos **reales de producción**, las tres verificaciones
+> de Inventario **no aparecían** pese a estar el módulo contratado en las dos empresas y no tener
+> ninguna toma física. La causa era mía: el candado usaba el helper **`company()`, que lee la
+> SESIÓN**, y en CLI devuelve `NULL` → `! null?->hasModule()` es `true` → **retornaba temprano y se
+> saltaba las tres verificaciones en silencio** desde cualquier comando, job o script. **Las pruebas
+> no lo veían porque el TestCase sí provee sesión** (la forma «una prueba que pasa por la razón
+> equivocada»). Corregido resolviendo la Company del `$companyId` que el método **ya recibe por
+> parámetro**. **Verificado tras el redeploy**: `company()` sigue siendo NULL en CLI y el checklist ya
+> evalúa Inventario, sin falsos positivos. **Regla nueva: un service que recibe el tenant por
+> parámetro NO lee la sesión para decidir una guarda — si lo hace, la guarda cambia según quién lo
+> llame.**
+> **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`3e2ddb98`): los 5 campos en el formulario, el checklist
+> corriendo contra datos reales sin errores y el aviso de barrido no ejecutado apareciendo donde
+> corresponde. **Sin migración.**
 > **Reglas nuevas: una columna sin formulario es una función que no existe (tercera vez en el
 > ecosistema, y aquí dejaba dos alertas incapaces de dispararse) · lo que se detecta comparando a mano
 > se convierte en prueba, o se degrada · un proceso programado que no deja rastro es indistinguible de
@@ -1570,7 +1586,7 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Último commit en **zyntello-app**: `[REST-F8]` `3d0e9953` (cierre de la FASE 8 del vertical Restaurante: los cinco bloques de reportes, tablero y alertas, seed demo con 30 días de historia; 78 pruebas de la fase, regresión completa 2783 verdes. ⚠️ La **FASE 7** del blueprint sigue sin implementar) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
+> Último commit en **zyntello-app**: `[REST-FIX-2]` `3e2ddb98` (correcciones post-cierre del vertical Restaurante: cinco columnas de configuración que no tenían formulario —dos alertas no podían dispararse nunca—, checklist que avisa de que el barrido no corre, y el defecto de la guarda que leía la sesión. ⚠️ La **FASE 7** del blueprint sigue sin implementar y el **crontab del servidor sigue en `*/18`**) | Último commit en **zyntello-admin**: `[#498]` `59f3ed8` | Último commit en **zyntello-website**: `735fcc0`
 
 > **CONDOMINIOS correcciones post-cierre (2026-07-24) — `[CND-FIX]`/`[CND-CONFIG]`**: (1) discrepancia D-CND-F3-2 resuelta (incidencias con `area_id`, reporte por área); (2) export de reportes a **Excel real** (.xlsx Maatwebsite) en vez de CSV; (3) **decisiones seleccionables llevadas a "Configuración del módulo"** (`cnd_config`, por empresa: privacidad del informe, voto remoto por defecto, portal reservas/incidencias ON/OFF); (4) **fix del bucle del combo de módulos** — el menú de Condominios enlazaba dashboards de OTROS módulos (CxC/CxP/Presupuesto/Bancos/Caja/Nómina) y eso rompía la detección de módulo activo (esas rutas quedaban "compartidas" y al abrir CxC desde el combo se quedaba en Condominios). Se quitaron; los módulos se abren desde el combo. Migraciones aditivas `160001`/`160002`. **Regla nueva: nunca listar en el menú de un módulo el dashboard/ruta dueña de otro módulo.** Regresión completa VERDE: 952 passed, 4 skipped, 0 failed.
 
