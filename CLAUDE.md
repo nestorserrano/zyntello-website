@@ -260,6 +260,100 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 ### Bitácora reciente (estado actual — 2026-08-11)
 
+> **RESTAURANTE FASE 7 — PROPINAS Y COMISIONES A NÓMINA (2026-08-11) — `[REST-F7-1]`–`[REST-F7-3]` ·
+> CIERRA EL BLUEPRINT v3 (F0→F8)**: era la fase que quedó pendiente al ejecutar F8. F3-3 dejaba las
+> propinas acumulándose y F8-1 las mostraba en el reporte, pero **ese dinero no salía del sistema**:
+> la columna «Comisiones» estaba siempre en cero, `nom_novedad_id` no lo escribía nadie y no había
+> pantalla desde la que pagar — el restaurante sabía cuánto le debía a su personal y no tenía forma
+> de pagárselo. **PASO PREVIO**: regresión completa VERDE con el árbol quieto (2804 passed).
+> **18 pruebas de la fase** (3 de configuración, 13 del cierre, aceptación con **27 aserciones**);
+> **8 reglas verificadas VIOLÁNDOLAS: las 8 se detectan**; **regresión completa VERDE: 2822 passed,
+> 4 skipped, 0 failed (24 615 aserciones)** — de 2804 a 2822, exactamente las 18 de la fase.
+> **Lo primero fue verificar el ANEXO B contra el esquema real, y casi todo YA existía** escrito por
+> fases anteriores para este momento: `nom_novedades` (NOM F1-4), `rest_turnos_propina.nom_novedad_id`
+> **desde F0-1 esperando exactamente a esta fase**, `comision_total` como columna que **nadie
+> escribía**, `totalALiquidar()`/`liquidado()` ya escritos, y los dos puentes de identidad
+> (`nom_employees.user_id` para el mesero, `rest_repartidores.nom_employee_id` desde F6). Lo único
+> que faltaba era la configuración de comisiones.
+> ⚠️ **El tratamiento fiscal NO lo decide el vertical**: `cotizable_tss`/`gravable_isr` deciden
+> cuánto se le descuenta al empleado, y fijarlos en el código sería afirmar un criterio fiscal sobre
+> las propinas que **varía por país** y es materia del contador (mismo motivo que el
+> `verificado=false` de `[CXP-F1-1]`). **Decisión del director técnico: configurable por empresa**,
+> con la pantalla diciendo que se consulte al contador, y naciendo en el criterio **conservador** —
+> retener de más se corrige, quedarse corto le deja al empleado una deuda que descubre a fin de año.
+> ⚠️ **Los tres porcentajes nacen en 0 y se verifica por el DEFAULT DE LA COLUMNA**: cada uno paga
+> dinero real por nómina. La comisión del repartidor son **monto por entrega Y porcentaje, que se
+> suman** (decisión del director técnico). ⚠️ **Se calculan al CIERRE y no en cada cobro** (la del
+> mesero es un % de su venta del día) y **RECALCULAN, no incrementan**: con `increment`, cerrar dos
+> veces pagaría dos veces y el error se descubre en la nómina, cuando el dinero ya se transfirió.
+> ⚠️ **Las ventas no se recalculan**: salen de `RestauranteVentasService` y del reporte de delivery —
+> con una consulta propia, «lo que vendió Pedro» tendría **dos respuestas**, la del reporte y la que
+> se le pagó (**quinta vez** que el vertical evita esa forma; dos aserciones del golden master lo
+> impiden). Y **se paga por lo ENTREGADO, no por lo asignado**: pagar un pedido devuelto premiaría la
+> devolución.
+> ⚠️ **El pago va SIEMPRE por nómina, nunca por caja**, y no es preferencia administrativa: la
+> propina es dinero de terceros que el restaurante retiene y debe (F3-3 la asienta contra un PASIVO),
+> así que por la gaveta el pasivo queda abierto para siempre, el arqueo descuadra y la nómina no ve
+> un ingreso que puede tener retenciones. **La aceptación comprueba que no hay ni un movimiento de
+> caja.** Los candados con su motivo: **sin Nómina no se marca el turno** (marcarlo contra una
+> novedad inexistente dejaría esa fila sin poder liquidarse el día que se contrate el módulo — el
+> dinero se perdería); **quien no tiene ficha se NOMBRA, no se filtra** (si se ocultara, su dinero
+> desaparecería del consolidado sin que nadie lo note); **solo períodos abiertos** (en uno cerrado la
+> nómina ya se pagó); y **el export existe siempre**, porque es el papel con el que se entrega el
+> dinero y se firma. La pantalla es un **PROCESO, no un reporte** (lección de `[PRE-FIX-1]`).
+> ⚠️ **Dos hallazgos de verificar por violación**: (1) **una prueba propia pasaba por la razón
+> equivocada** —«sin Nómina» usaba `sinFicha`, así que no liquidaba por falta de ficha y no por el
+> candado—; y (2) **dos guardas redundantes** (el `whereNull` y el `lock+recheck`) que protegen del
+> mismo pago doble, así que quitar solo una deja la prueba verde **con razón**: se declaran y se
+> violan **juntas**, porque **el lock es el único que protege de la CONCURRENCIA** y eso no se puede
+> probar sin dos procesos reales.
+> ⚠️ **Tres nombres de columna que eran suposiciones mías** (`full_name`, `nom_employees` sin
+> `estado`, `created_by` NOT NULL) **y un ENUM**: `nom_employees.employee_type` viene de ConstructFlow
+> (`obrero`/`capataz`/`subcontratista`/`administrativo`) y **un mesero no encaja en ninguno** — queda
+> como TODO del módulo Nómina, no del vertical.
+> ⚠️ **El golden master NO avisó: QUINTA fase seguida sin hueco declarado** (F4, F5, F6, F8 y F7).
+> Con F7 el blueprint v3 queda completo, así que no hay siguiente hueco que escribir. ⚠️ Migración
+> `2026_08_11_560001`; sin tablas nuevas.
+> **Reglas nuevas: el pago del personal va SIEMPRE por nómina, nunca por caja · un criterio fiscal no
+> lo decide el módulo que lo consume, se configura con el default conservador · un importe que va a
+> nómina se calcula al cierre, y la pantalla que lo muestra consolida al abrirse · se paga por lo
+> entregado, no por lo asignado · marcar como pagado sin generar el pago pierde el dinero · cuando
+> dos guardas protegen de lo mismo, se violan juntas y se declara qué aporta cada una.**
+
+> ✅ **LOS DIEZ COMANDOS QUE NO CORRÍAN — RESUELTO SIN TOCAR EL SERVIDOR (2026-08-11) —
+> `[CRON-FIX-1]`**: pedido del director técnico — *«bluehost no me deja cambiar el cron»*. El
+> hallazgo del deploy de la FASE 8 de Restaurante quedaba en manos del hosting; la solución es
+> **mover los horarios a minutos que el cron alcanza**, no cambiar el cron.
+> ⚠️ **Y el crontab de producción ya NO es `*/18` como decía aquella entrada: hoy es `*/15`**,
+> comprobado con `crontab -l` (`MAILTO=""` + `*/15 * * * * … schedule:run`). Con ese intervalo
+> **32 comandos sí corren** —incluidos `zyntello:backup-db` (02:30) y `activos:depreciar`
+> (04:30)— y eran **estos diez** los que no: `cxp:alertas` 06:20→**06:15** · `bancos:alertas`
+> 06:25→**06:30** · `carwash:alertas` 06:35→**06:30** · `cxc:bloqueo-automatico` 06:50→**06:00**
+> · `compras:alertas` 06:40→**06:45** · `prestamello:expirar-preaprobaciones` 06:50→**06:45** ·
+> `prestamello:alertas` 06:55→**07:00** · `prestamello:paquete-ejecutivo` 07:10→**07:15** ·
+> `carwash:recordatorios-mantenimiento` 07:20→**07:15** · `restaurante:alertas` 06:40→**07:30**.
+> ⚠️ **Lo único que el movimiento podía romper era el orden de los dependientes de Prestamello,
+> y se respetó**: `expirar-preaprobaciones` (06:45) vence las caducadas → `alertas` (07:00) avisa
+> de las «por vencer» **sin incluir las que acaban de caducar** → `paquete-ejecutivo` (07:15) lee
+> la cartera que las alertas ya evaluaron. Verificado: **cero comandos huérfanos**.
+> ⚠️ **La guarda es lo que impide que vuelva a pasar.** La regla («`schedule:run` se invoca CADA
+> MINUTO») llevaba escrita en este archivo desde que se descubrió el defecto **y aun así los
+> horarios nuevos seguían cayendo fuera** — escrita en prosa, se degrada. `CronAlcanzableTest`
+> lee los eventos del **scheduler REAL** (`app(Schedule::class)->events()`), **no parsea
+> `routes/console.php`**: parsear probaría lo que dice el texto, no lo que Laravel va a ejecutar.
+> El intervalo vive en una constante, así que el día que el crontab cambie la prueba dice
+> **exactamente qué comandos dejarían de correr** (bajarlo solo relaja; **subirlo** invalida
+> horarios que hoy funcionan).
+> **Verificada VIOLÁNDOLA**: devolviendo `restaurante:alertas` a las 06:40 falla y **nombra ese
+> comando con su minuto**. ⚠️ Y al hacerlo salió **un defecto propio**: `nombreLegible()`
+> documentaba que recortaba la ruta del binario y **no lo hacía** —su patrón aceptaba comilla
+> simple y Laravel usa **dobles** en Windows—, así que el mensaje salía con la ruta completa del
+> PHP local. Es la familia «una firma que documenta lo que el cuerpo no aplica», encontrada solo
+> porque se verificó violando. **Sin migración.**
+> **Regla nueva: cuando el servidor no se puede cambiar, el horario se adapta al servidor — y lo
+> que se detecta comparando a mano se convierte en prueba, incluida la regla que ya estaba
+> escrita y se siguió incumpliendo.**
+
 > **CINCO MÓDULOS DE MEJORA REGISTRADOS EN LOS TRES REPOS (2026-08-11) — `[#505]`, `[#506]`,
 > `[MOD-ADIC-1]`, `[MOD-ADIC-2]`**: pedido del director técnico — *«crear 5 módulos adicionales
 > en admin, website y app, activos y con el costo de stripe, el pago es anual»* y *«luego ejecuta
@@ -511,6 +605,14 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > peligroso se verifica por el DEFAULT DE LA COLUMNA · un seed no simula la operación fiscal · un seed
 > con distribución plana hace inútil el reporte que llena · `schedule:run` se invoca CADA MINUTO.**
 
+> ✅ **RESUELTO en `[CRON-FIX-1]` (2026-08-11)** — ver la entrada de esa fecha al inicio de la
+> bitácora. ⚠️ **Dos datos de abajo quedaron obsoletos y se corrigen aquí**: el crontab **ya no es
+> `*/18`, es `*/15`** (verificado con `crontab -l`), así que **no son «todas» las alertas las que
+> no corrían sino DIEZ comandos** — los demás sí se ejecutan. Y **no se cambió el crontab**: se
+> movieron los horarios a minutos que el intervalo alcanza, porque el hosting no permite bajarlo.
+> Se conserva el texto original porque el método con que se detectó (la marca de ejecución) es lo
+> que resolvió la pregunta y vale para la próxima vez.
+>
 > ⚠️⚠️ **HALLAZGO DEL DEPLOY, FUERA DE ALCANCE Y PARA DECISIÓN DEL DIRECTOR TÉCNICO (2026-08-10) —
 > EL CRON DEL SERVIDOR CORRE CADA 18 MINUTOS Y NINGUNA ALERTA PROGRAMADA DEL ECOSISTEMA SE EJECUTA**:
 > el crontab de Bluehost es `*/18 * * * * … schedule:run`. **`schedule:run` no encola nada**: ejecuta
@@ -1681,7 +1783,12 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[MOD-ADIC-2]` `74f89cee` (registro de los 5 modulos de mejora: catalogo con dependencia del modulo padre, candado en el menu, guarda del checkout en el servidor y la deuda de ayuda de `rutas` declarada. ⚠️ La **FASE 7** de Restaurante sigue sin implementar, el **crontab** sigue en `*/18` y los 5 modulos nuevos estan **vendibles pero sin implementar**) | Ultimo commit en **zyntello-admin**: `[#506]` `2283952` | Ultimo commit en **zyntello-website**: `f76bd282`
+> Ultimo commit en **zyntello-app**: `[REST-F7-2/3]` `cab93cc0` (**FASE 7 de Restaurante ejecutada:
+> el blueprint v3 queda COMPLETO F0→F8** — propinas y comisiones del personal a nomina, con el
+> candado sin Nomina y export para pago manual; 18 pruebas de la fase, regresion completa 2822
+> verdes. ⚠️ Los 5 modulos nuevos siguen **vendibles pero sin implementar**)
+> | Ultimo commit en **zyntello-admin**: `[#506]` `2283952`
+> | Ultimo commit en **zyntello-website**: `ad072f43`
 
 > **CONDOMINIOS correcciones post-cierre (2026-07-24) — `[CND-FIX]`/`[CND-CONFIG]`**: (1) discrepancia D-CND-F3-2 resuelta (incidencias con `area_id`, reporte por área); (2) export de reportes a **Excel real** (.xlsx Maatwebsite) en vez de CSV; (3) **decisiones seleccionables llevadas a "Configuración del módulo"** (`cnd_config`, por empresa: privacidad del informe, voto remoto por defecto, portal reservas/incidencias ON/OFF); (4) **fix del bucle del combo de módulos** — el menú de Condominios enlazaba dashboards de OTROS módulos (CxC/CxP/Presupuesto/Bancos/Caja/Nómina) y eso rompía la detección de módulo activo (esas rutas quedaban "compartidas" y al abrir CxC desde el combo se quedaba en Condominios). Se quitaron; los módulos se abren desde el combo. Migraciones aditivas `160001`/`160002`. **Regla nueva: nunca listar en el menú de un módulo el dashboard/ruta dueña de otro módulo.** Regresión completa VERDE: 952 passed, 4 skipped, 0 failed.
 
