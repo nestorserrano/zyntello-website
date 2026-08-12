@@ -419,6 +419,20 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > simple y Laravel usa **dobles** en Windows—, así que el mensaje salía con la ruta completa del
 > PHP local. Es la familia «una firma que documenta lo que el cuerpo no aplica», encontrada solo
 > porque se verificó violando. **Sin migración.**
+> ⚠️ **Antes de poner a correr diez comandos parados se midió su impacto CONTRA LOS DATOS REALES
+> de producción, no contra los defaults recordados — y es CERO**: `cxc_config` **no tiene ni una
+> fila**, así que el bloqueo automático de clientes aplica su default `false` y **no bloquea a
+> nadie**; Prestamello tiene **0 preaprobaciones por vencer**; Car Wash **0 reglas de
+> mantenimiento**, así que no escribe a ningún cliente; y los master-switch de correo están en
+> **0** (Car Wash, Restaurante, Prestamello) o **sin fila** con el default en `false` (Bancos,
+> CxP, Compras). ⚠️ **El único master-switch de correo ENCENDIDO del ecosistema es Activos Fijos**
+> (`af_config`, las 3 empresas) — y **no lo activa este cambio**: `activos:alertas` está en el
+> minuto 30, que `*/15` ya alcanzaba, o sea que ya venía enviando.
+> ⚠️ **La regresión completa NO se pudo correr: el MySQL local dejó de aceptar conexiones** (1045
+> en 3306 y 3308, con las tres credenciales conocidas). Es entorno, no código — las suites sin BD
+> pasan y todas las que la tocan fallan con el mismo error. Lo que **sí** se verificó:
+> `CronAlcanzableTest` en verde y violándola, y `schedule:list` sobre el scheduler real con **los
+> 42 comandos en minutos 0/15/30/45, cero fuera**.
 > **Regla nueva: cuando el servidor no se puede cambiar, el horario se adapta al servidor — y lo
 > que se detecta comparando a mano se convierte en prueba, incluida la regla que ya estaba
 > escrita y se siguió incumpliendo.**
@@ -1855,7 +1869,9 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > Ultimo commit en **zyntello-app**: `[REST-FIX-3]` `fd7339f4` (**tipos de empleado de verticales +
 > la propina de delivery que se le liquidaba a quien TOMO el pedido en vez de a quien la RECIBIO en
 > la mano**; cuadre `cobrada = asignada + sin asignar` visible en el cierre; 12 pruebas, 8
-> violaciones detectadas, 613 verdes, desplegado y verificado). Anterior: `[REST-F7-2/3]` `cab93cc0` (**FASE 7 de Restaurante ejecutada:
+> violaciones detectadas, 613 verdes, desplegado y verificado). ⚠️ **En paralelo va `[CRON-FIX-1]`
+> `3420e529`**: los diez comandos programados que no se ejecutaban nunca, con sus horarios movidos a
+> multiplos de 15 (el intervalo real del crontab) y su guarda automatica. Anterior: `[REST-F7-2/3]` `cab93cc0` (**FASE 7 de Restaurante ejecutada:
 > el blueprint v3 queda COMPLETO F0→F8** — propinas y comisiones del personal a nomina, con el
 > candado sin Nomina y export para pago manual; 18 pruebas de la fase, regresion completa 2822
 > verdes. ⚠️ Los 5 modulos nuevos siguen **vendibles pero sin implementar**)
