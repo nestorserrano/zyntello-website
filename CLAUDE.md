@@ -260,6 +260,75 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 ### Bitácora reciente (estado actual — 2026-08-11)
 
+> **TIPOS DE EMPLEADO DE VERTICALES + LA PROPINA QUE SE LE PAGABA AL EQUIVOCADO (2026-08-12) —
+> `[REST-FIX-3]`**: pedido del director técnico — *«puedes agregar al Enum los tipos de empleados
+> faltantes: Mesero, Delivery, Mostrador, analiza lo de la propina y define la mejor solución»*.
+> **12 pruebas nuevas, 8 reglas verificadas VIOLÁNDOLAS: las 8 se detectan. Suite Restaurante VERDE
+> con el árbol quieto: 613 passed, 2322 aserciones, 0 failed** (601 en HEAD + 12 = 613, cuadra
+> exacto; ⚠️ el «617» de la bitácora de F7 estaba **sobrecontado**) · Nómina + la guarda que compila
+> las 1285 vistas: **85 passed**. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`fd7339f4`).
+> ⚠️ Migraciones `2026_08_12_570001` (ENUM) y `570002` (config).
+>
+> **El ENUM** venía de ConstructFlow y **un mesero no encajaba en ninguno** de los cuatro: se le
+> ponía `administrativo`, que es falso. ⚠️ **Ampliarlo se verificó contra sus CONSUMIDORES, no solo
+> contra los datos**: los dos únicos que derivan del campo comparan contra `subcontratista`
+> —`DgtExportService` (temporeros del Ministerio de Trabajo) y `ReportePaisService`
+> (`permanente`)—, no contra una lista blanca, así que los tres tipos nuevos caen del lado
+> permanente y **ningún reporte oficial cambia**. ⚠️ **Un defecto propio evitado por leer el
+> esquema**: la migración escribía `NOT NULL DEFAULT 'obrero'` y `SHOW COLUMNS` dice **NOT NULL sin
+> default** — un `MODIFY COLUMN` copia la definición completa, así que habría añadido un default
+> que no existía: hoy un insert sin tipo **falla** (correcto, es obligatorio) y con default pasaría
+> a crear el empleado mal clasificado sin avisar. ⚠️ **La lista estaba COPIADA en SEIS sitios** sin
+> constante en el modelo; fuente única `Employee::TIPOS` y **se borraron las seis copias**.
+>
+> ⚠️⚠️ **LA PROPINA: LA BITÁCORA DECÍA UNA COSA Y EL CÓDIGO HACÍA OTRA, y ese fue el hallazgo.**
+> `[REST-F8-3]` dejó escrito que una orden de mostrador «no tiene mesero», pero leyendo **quién
+> llena** `mesero_id` resulta que **el mostrador Y el delivery lo llenan con `auth()->id()`** — las
+> 126 órdenes sin mesero de producción son **del seed**. Así que la propina no estaba huérfana:
+> estaba **asignada, y en delivery a la persona equivocada** (mesa → quien atendió ✅ · mostrador →
+> quien atendió ✅ · **delivery → quien TOMÓ el pedido ❌**, cuando le corresponde a quien lo
+> ENTREGÓ). ⚠️ **Y eso es PEOR que una propina huérfana**: el cliente se la da en la mano al
+> repartidor y el sistema se la liquidaba por nómina al que contestó el teléfono — una huérfana se
+> ve en un cuadre, **una mal asignada se liquida y se paga** y el repartidor no puede saber que le
+> faltó. Ahora la atribución se decide por **TIPO DE ORDEN** (delivery primero) y **no cae al
+> `mesero_id` cuando falta el repartidor**: caerse ahí es el defecto que se corrige. La
+> infraestructura del repartidor **ya estaba completa** desde F0-1/F6/F7 esperando esto.
+>
+> ⚠️ **El default de mostrador es `atendio`, NO `sin_asignar`**, y esa autocorrección importa: la
+> primera versión lo puso en `sin_asignar` por prudencia con dinero de terceros, pero `atendio` **es
+> el comportamiento vigente** — `sin_asignar` de fábrica habría hecho que esa propina **dejara de
+> liquidarse en todos los locales que ya operan**, introduciendo el defecto que el trabajo cierra.
+> *Los defaults reproducen el comportamiento actual.* Verificado por el **DEFAULT DE LA COLUMNA**.
+> `fondo_comun` queda **fuera de alcance declarado** (exige el emparejamiento de ponches de PSA).
+>
+> **El cuadre es lo que impide que el pasivo crezca sin que nadie lo note**: `cobrada = asignada +
+> sin asignar`, visible SIEMPRE en el cierre del personal y calculado **por diferencia** —así cuadra
+> por construcción y **es auto-corrector**: detecta el dinero huérfano cualquiera sea la causa,
+> incluida una que nadie previó—. Antes, el aviso solo lo veía el cajero en el instante del cobro y
+> se perdía.
+>
+> ⚠️ **El último tramo destapó un defecto propio que habría pagado la propina DOS VECES**: al cerrar
+> el hueco del **pago adelantado** (se cobra antes de asignar repartidor, que es lo habitual),
+> corregir una asignación exige recalcular al repartidor nuevo **y al anterior** — pero
+> `recalcularPara()` hacía `return` temprano cuando los totales bajaban a cero, así que al primero
+> le quedaba el importe viejo **además** de dárselo al segundo. No se **crea** una fila en cero,
+> pero si ya existe el cero **se escribe**.
+>
+> **Verificado en producción**: `company()` sigue siendo NULL en CLI y el cuadre **funciona igual**
+> (recibe el tenant por parámetro, no repite el defecto de `[REST-FIX-2]`); cierra en las dos
+> empresas (1 252.50 y 1 329.50 asignadas, 0.00 sin asignar) sin falsos positivos. **Impacto de
+> datos: CERO**, medido antes de desplegar (90 turnos con 8 950.50 acumulados pero **0 liquidados**).
+> ⚠️ **PENDIENTE del director técnico**: 12 empleados marcados `administrativo` podrían ser meseros
+> o repartidores mal clasificados — reclasificarlos es criterio de Nómina, no de una migración.
+> **Reglas nuevas: un ENUM que se amplía se verifica contra sus CONSUMIDORES · un `MODIFY COLUMN`
+> copia la definición completa (leer `SHOW COLUMNS` antes) · la propina la recibe quien la RECIBE en
+> la mano · una propina mal asignada es peor que una huérfana · un fallback «al menos a alguien»
+> reintroduce el defecto que se corrige · el default de una opción nueva reproduce el comportamiento
+> vigente aunque el otro parezca más prudente · un cuadre se calcula por diferencia, no enumerando
+> los casos que fallan · «no crear una fila en cero» y «no escribir el cero» son reglas distintas y
+> confundirlas paga dos veces · la bitácora de un defecto no es el estado actual: verificar quién
+> llena la columna.**
+
 > **RESTAURANTE FASE 7 — PROPINAS Y COMISIONES A NÓMINA (2026-08-11) — `[REST-F7-1]`–`[REST-F7-3]` ·
 > CIERRA EL BLUEPRINT v3 (F0→F8)**: era la fase que quedó pendiente al ejecutar F8. F3-3 dejaba las
 > propinas acumulándose y F8-1 las mostraba en el reporte, pero **ese dinero no salía del sistema**:
@@ -1783,7 +1852,10 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[REST-F7-2/3]` `cab93cc0` (**FASE 7 de Restaurante ejecutada:
+> Ultimo commit en **zyntello-app**: `[REST-FIX-3]` `fd7339f4` (**tipos de empleado de verticales +
+> la propina de delivery que se le liquidaba a quien TOMO el pedido en vez de a quien la RECIBIO en
+> la mano**; cuadre `cobrada = asignada + sin asignar` visible en el cierre; 12 pruebas, 8
+> violaciones detectadas, 613 verdes, desplegado y verificado). Anterior: `[REST-F7-2/3]` `cab93cc0` (**FASE 7 de Restaurante ejecutada:
 > el blueprint v3 queda COMPLETO F0→F8** — propinas y comisiones del personal a nomina, con el
 > candado sin Nomina y export para pago manual; 18 pruebas de la fase, regresion completa 2822
 > verdes. ⚠️ Los 5 modulos nuevos siguen **vendibles pero sin implementar**)
