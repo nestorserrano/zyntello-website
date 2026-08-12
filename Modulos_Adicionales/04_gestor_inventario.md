@@ -37,20 +37,71 @@ conteo físico, semanas después.
 
 ---
 
-## ANEXO B — Dependencias, verificadas con `git log` y contra el esquema
+## ANEXO B — Dependencias, RE-VERIFICADAS contra el esquema real (2026-08-12)
 
-⚠️ Reverificar antes de implementar: en Restaurante, **tres de cinco** dependencias del
-anexo resultaron distintas de lo escrito, y las tres porque ya existían.
+⚠️ Se reverificó antes de implementar, como el propio anexo pedía — y **la advertencia se
+cumplió otra vez**: de siete dependencias, **dos estaban mal escritas y aparecieron tres
+hallazgos que el anexo no contemplaba**. Uno de ellos habría dejado la función principal
+del módulo sin disparar ninguna alerta.
 
-| Se necesita | Estado | Consecuencia |
+| Se necesita | Estado real | Consecuencia |
 |---|---|---|
-| `inv_stock` con `cantidad_disponible`, `cantidad_reservada`, `stock_minimo` | ✅ existe | `stock_minimo` está en `inv_stock` (por bodega), **no** en `inv_articulos` |
-| `inv_movimientos` + `inv_movimientos_lineas` con `costo_unit_local` | ✅ existe | ⚠️ la columna es `costo_unit_local`, **no** `costo_unitario_local` |
-| `inv_tipos_transaccion` con naturaleza | ✅ existe | ⚠️ el flag es `is_active`, **no** `es_activo` |
+| `inv_stock.cantidad_disponible` | ❌ **NO EXISTE** | La columna es **`cantidad`**. El disponible se **deriva**: `cantidad − cantidad_reservada`. La fórmula de cobertura del blueprint apuntaba a una columna inexistente |
+| `inv_stock.cantidad_reservada`, `stock_minimo` | ✅ existen | pero ver el hallazgo 2: son **legacy** |
+| `inv_movimientos_lineas.costo_unit_local` | ✅ existe | ⚠️ es `costo_unit_local`, **no** `costo_unitario_local` — confirmado |
+| `inv_tipos_transaccion` naturaleza + flag | ✅ existe | ⚠️ el flag es `is_active` — confirmado. `naturaleza` es enum(`entrada`,`salida`,`traslado`,`ajuste`,`ensamble`,`devolucion`) |
 | `SugeridoCompraService` (INV-F5) | ✅ existe | El pronóstico lo **alimenta**; no se crea un sugerido paralelo |
-| `ReordenService::getAlertas()` | ✅ existe | El ROP calculado sustituye al `stock_minimo` manual **solo si el usuario lo aplica** |
-| `inv_articulos.uom_base_id` | ✅ existe | ⚠️ es `uom_base_id`, **no** `unidad_medida_id` |
+| `ReordenService::getAlertas()` | ✅ existe | ⚠️ **pero NO lee `inv_stock`** — ver hallazgo 1 |
+| `inv_articulos.uom_base_id` | ✅ existe | ⚠️ es `uom_base_id`; `unidad_medida_id` **no existe** — confirmado |
 | Conversión de unidades | ✅ `inv_conversiones_unidad` | Usar `RecetaService::conversor()`; **no** reimplementar |
+| `articulo_id` / `bodega_id` | ✅ **bigint unsigned** | confirmado contra `information_schema` |
+
+### ⚠️ Hallazgo 1 — el ROP iba a escribirse donde nadie lo lee
+
+El blueprint decía «aplicar el ROP a `inv_stock.stock_minimo`» y cerrar comprobando que
+`ReordenService` dispara con el valor nuevo. **No dispararía**: `ReordenService::getAlertas()`
+consulta el modelo `CriterioAbastecimiento` → tabla **`inv_criterios_abastecimiento`**, y de
+ahí lee `punto_reorden`, `stock_minimo`, `stock_maximo`, `lote_optimo` y `tiempo_entrega_dias`.
+De `inv_stock` solo toma `cantidad`.
+
+Es la forma de defecto de `[PRE-F1]` al revés — allí un control **leía** una columna que nadie
+llenaba; aquí el módulo **escribiría** una columna que nadie lee. El resultado es idéntico: una
+función que se ve implementada, tiene su botón, su pantalla y su prueba, **y no actúa nunca**.
+
+> **Corregido: el ROP aplicado escribe en `inv_criterios_abastecimiento.punto_reorden`.**
+
+### ⚠️ Hallazgo 2 — `inv_stock.stock_minimo` y `punto_reorden` son LEGACY
+
+`inv_stock` tiene sus propias `stock_minimo`, `stock_maximo` y `punto_reorden`, y existe el
+comando `inventario:migrar-min-max` (`MigrarMinMaxInventario`) que **mueve esos valores hacia
+`inv_criterios_abastecimiento`**. O sea, el ecosistema ya está sacando ese dato de `inv_stock`.
+Escribir ahí sería remar contra la migración en curso y crear **dos verdades del punto de
+reorden** — justo lo que este blueprint advierte evitar en su propia introducción.
+
+### ⚠️ Hallazgo 3 — `inv_criterios_abastecimiento` NO tiene `empresa_id`
+
+Solo tiene `company_id`, y el modelo `CriterioAbastecimiento` **no usa `HasEmpresa`**. En un
+tenant con dos empresas, `getAlertas($companyId)` trae los criterios de **ambas**; luego el
+stock se busca con `Stock` (que sí filtra por empresa), no encuentra el artículo de la otra
+empresa y devuelve **0** → `0 <= punto_reorden` → **alerta falsa de quiebre** para todos los
+artículos de la empresa ajena.
+
+**Medido en producción (2026-08-12): no está ocurriendo** — hay 5 criterios en 2 tenants y
+cada uno tiene **una sola empresa**. Es riesgo latente, no daño activo. Pero este módulo
+escribe **una fila por artículo/bodega**, así que multiplica la superficie.
+
+> **Decisión del director técnico: se corrige en la F0**, con migración aditiva + backfill
+> (el `empresa_id` se deduce del artículo) + `HasEmpresa` en el modelo. Con 5 filas es barato;
+> después de generar miles, no.
+
+### Otros dos, menores
+
+- `inv_stock` tiene **dos** columnas de tránsito: `cantidad_en_transito` decimal(14,4) y
+  `cantidad_transito` decimal(15,4). Es el duplicado que `[#1112]` documentó. **No usar
+  ninguna de las dos sin verificar cuál llena Compras.**
+- El **lead time ya existe**: `inv_criterios_abastecimiento.tiempo_entrega_dias`. El TODO #1
+  («confirmar el lead time real por proveedor, hoy se toma de Compras si existe») parte de una
+  premisa equivocada — el dato ya está en la tabla que el módulo va a usar.
 
 ---
 
@@ -123,8 +174,16 @@ demanda_diaria   = salidas del período / días del período       (media móvil
 stock_seguridad  = Z(nivel_servicio) × desviación × √lead_time
 ROP              = demanda_diaria × lead_time + stock_seguridad
 EOQ              = √( (2 × demanda_anual × costo_pedido) / (costo_unitario × costo_almacenaje_pct) )
-cobertura_dias   = cantidad_disponible / demanda_diaria
+cobertura_dias   = disponible / demanda_diaria
+
+disponible       = inv_stock.cantidad − inv_stock.cantidad_reservada
+lead_time        = inv_criterios_abastecimiento.tiempo_entrega_dias   (ya existe; ver ANEXO B)
 ```
+
+⚠️ **`disponible` se DERIVA, no se lee**: `inv_stock.cantidad_disponible` **no existe** (el
+blueprint la daba por buena). Y la resta importa: contar lo reservado como disponible haría
+que un artículo con todo su stock comprometido en pedidos apareciera como abastecido, y el
+ROP no dispararía hasta que el almacén ya estuviera vacío.
 
 ⚠️ **`demanda_diaria = 0` no da cobertura infinita: da «sin movimiento».** Dividir por cero
 mostraría ∞ días de cobertura para un artículo muerto, que es justo el que hay que revisar.
@@ -137,10 +196,17 @@ inflaría el pronóstico de la bodega origen y dejaría en cero el de la destino
 
 ## Fases
 
-### F0 — Base y golden master
+### F0 — Base, aislamiento y golden master
 Suite propia. Congela el comportamiento actual de Inventario: **el ROP manual sigue
 mandando mientras nadie aplique el calculado**. Declara los huecos de F1–F4 (que las rutas
 de este módulo aún no existen), para que el trabajo posterior tenga que probar que los llenó.
+
+⚠️ **Incluye el arreglo del hallazgo 3**: `empresa_id` en `inv_criterios_abastecimiento`
+(migración aditiva + backfill desde el artículo + `HasEmpresa` en `CriterioAbastecimiento`),
+y `ReordenService` pasa a filtrar por empresa. Va **antes** de que el módulo empiece a escribir
+criterios, no después. La prueba que lo cierra es la que hoy no existe: **dos empresas del
+mismo tenant, cada una con su criterio, y las alertas de una no incluyen los artículos de la
+otra**.
 
 ### F1 — Pronóstico de demanda
 `PronosticoService` + comando `abastecimiento:pronosticar` (nocturno). Pantalla por artículo
@@ -149,9 +215,15 @@ con la serie histórica y el pronóstico. ⚠️ El cálculo **no es un bucle de
 una agregación por artículo/bodega y se procesa en memoria.
 
 ### F2 — ROP, EOQ y stock de seguridad
-`ParametrosService`. Pantalla de propuesta con comparación contra el `stock_minimo` actual y
-botón «Aplicar a Inventario» (registra quién y cuándo). ⚠️ Sin `costo_pedido` y
+`ParametrosService`. Pantalla de propuesta con comparación contra el criterio actual y botón
+«Aplicar a Inventario» (registra quién y cuándo). ⚠️ Sin `costo_pedido` y
 `costo_almacenaje_pct` configurados, el EOQ **se omite y se dice por qué** — no se muestra 0.
+
+⚠️ **Aplicar escribe en `inv_criterios_abastecimiento.punto_reorden`, no en `inv_stock`**
+(hallazgo 1). Es la tabla que `ReordenService` lee, y por tanto la única donde el valor
+aplicado produce una alerta de verdad. Si el criterio no existe todavía para ese
+artículo/bodega, se crea; el `tiempo_entrega_dias` de esa misma fila es el lead time que
+alimenta la fórmula, así que el módulo lee y escribe en el mismo sitio.
 
 ### F3 — Clasificación ABC y cobertura
 ABC por **valor de consumo del período** (cantidad × costo), no por existencia: un artículo
@@ -167,15 +239,22 @@ que **estampa su marca aunque no envíe nada**.
 
 ### Cierre
 Aceptación end-to-end: cargar historial → pronosticar → calcular ROP → aplicarlo a
-`inv_stock` → comprobar que `ReordenService` (el que ya existía) dispara con el valor nuevo.
-Ahí es donde se ve si los dos módulos encajan de verdad.
+**`inv_criterios_abastecimiento`** → comprobar que `ReordenService` (el que ya existía)
+dispara con el valor nuevo. Ahí es donde se ve si los dos módulos encajan de verdad —
+y es justo la comprobación que, con el destino que decía el blueprint, **habría fallado
+o habría pasado por la razón equivocada**.
 
 ---
 
 ## TODOs de verificación humana
 
-1. Confirmar el **lead time real** por proveedor: hoy se toma de Compras si existe; si no,
-   el ROP usa un default que hay que revisar antes de comprar con él.
+1. ~~Confirmar el lead time real por proveedor~~ → **resuelto en la reverificación**: el dato
+   ya existe en `inv_criterios_abastecimiento.tiempo_entrega_dias`, en la misma fila que el
+   módulo lee y escribe. Lo que queda es que el negocio **confirme sus valores**, no buscarlos.
 2. Validar los umbrales ABC con el negocio (80/15/5 es una convención, no una norma).
 3. ⚠️ Decidir si el ROP calculado debe aplicarse automáticamente cuando el usuario lo pida
    **en lote** — hoy es artículo por artículo a propósito.
+4. ⚠️ **Aclarar cuál de las dos columnas de tránsito de `inv_stock` es la buena**
+   (`cantidad_en_transito` vs `cantidad_transito`). El módulo no usa ninguna hasta saberlo:
+   incluir tránsito en la cobertura con la columna equivocada daría siempre 0 y haría que el
+   ROP disparara de más.

@@ -20,9 +20,13 @@
 | 05 | Planificador de Rutas | `rutas` | `rut_*` | **módulo raíz** | — | `price_1U3FKLHgpNgFNBaHNFbjPZx7` |
 
 **Los cinco se venden SOLO en plan anual.** `precio_mensual` y `stripe_price_id_mensual`
-están en NULL a propósito. ⚠️ Falta capturar el **monto anual** en admin → Módulos: hoy
-`precio_anual` está en NULL y la tarjeta del sitio web muestra «Consultar» en lugar de un
-precio.
+están en NULL a propósito — un `0` ahí **no se lee como «este plan no existe», se lee como
+GRATIS**, y el sitio anunciaría «USD 0 /mes».
+
+✅ **Precio capturado el 2026-08-12: USD 100/año los cinco** (`[#506]`), y los cinco pasaron
+a estado `activo` (`[#508]`). El API público ya los sirve con su `precio_anual_final` y su
+Price ID. ⚠️ **Verificar que los USD 100 coincidan con el importe de cada Price en Stripe**:
+el que se cobra es el de Stripe, este solo es el que se anuncia.
 
 ---
 
@@ -87,13 +91,27 @@ no por el valor de una fila (lección de `[PRE-F4-1]` y `[REST-F8-2]`).
 Tercera vez en el ecosistema. Todo lo configurable recorre los **tres** sitios: migración,
 `$fillable` + validación, **y la pantalla**.
 
-### 8. `schedule:run` se invoca CADA MINUTO
+### 8. Un cron nuevo va en un minuto MÚLTIPLO DE 15
 
-⚠️ **El crontab de producción está hoy en `*/18`**, así que ningún comando cuyo minuto no
-sea 0/18/36/54 se ejecuta jamás — hay diez comandos de siete módulos parados. Cualquier
-cron nuevo de estos módulos **no correrá** hasta que eso se corrija. Y todo comando estampa
-su marca de ejecución **aunque no haya hecho nada**: es lo único que distingue «corrió y
-estaba limpio» de «no corrió».
+✅ **Actualizado el 2026-08-12 (`[CRON-FIX-1]`).** El texto anterior decía que el crontab
+estaba en `*/18` y que ningún cron nuevo correría. Las dos cosas cambiaron:
+
+- **El crontab de producción es `*/15`**, verificado con `crontab -l`. Bluehost no permite
+  bajarlo, así que **son los horarios los que se adaptan al servidor**, no al revés.
+- **Los diez comandos parados ya se movieron** a minutos alcanzables. Cero huérfanos.
+
+⚠️ **Al agregar un cron a estos módulos, su minuto tiene que ser 0, 15, 30 o 45** (o un
+intervalo `*/N`, que siempre incluye el 0). `schedule:run` **no encola**: ejecuta lo que
+está *due* en el minuto exacto en que se le invoca, así que un `dailyAt('06:40')` no se
+ejecutaría jamás — y el síntoma es un panel de alertas vacío, que se lee como «no hay
+problemas».
+
+**No hace falta recordarlo**: `tests/Feature/CronAlcanzableTest.php` lee los eventos del
+scheduler real y falla nombrando el comando y su minuto. La regla llevaba escrita en prosa
+desde que se descubrió el defecto y aun así los horarios nuevos seguían cayendo fuera.
+
+Y todo comando estampa su marca de ejecución **aunque no haya hecho nada**: es lo único que
+distingue «corrió y estaba limpio» de «no corrió».
 
 ---
 
