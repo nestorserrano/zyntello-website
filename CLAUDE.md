@@ -258,7 +258,160 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 **Regla:** Si ves error 403/500 después de deploy → ejecuta esto primero.
 
-### Bitácora reciente (estado actual — 2026-08-11)
+### Bitácora reciente (estado actual — 2026-08-29)
+
+> ⚠️ **AVISO DE DOCUMENTACIÓN**: entre el 2026-08-12 y el 2026-08-27 se trabajaron cinco sesiones
+> que **este archivo no registró** (`[ABST-F0-1]`, `[ABST-F1]`, `[ABST-F2]`/`[VISTAS-SOT]`,
+> `[DEMO-FIX-1]`, `[CONT-CTA-4/5]`). Su detalle sí está en `app/zyntello-app/CLAUDE.md`, que es
+> la bitácora técnica. Se anota aquí para que el hueco no se lea como «no pasó nada».
+
+> **LA MAYORIZACIÓN LLEVABA ROTA DESDE SIEMPRE, Y DATOS DEMO PARA 4 MÓDULOS (2026-08-28/29) —
+> `[TENANT-A14]`–`[TENANT-A16]` + `[REST-FIX-2]`**: pedido del director técnico — *«debes corregir
+> el demo reset, crear nuevos seeders para cargar todos los módulos nuevos con datos de demo, así
+> corregir todos los errores… De esta manera nos sirve de test con todas las tablas poblándolas con
+> información de demo»*. **REGRESIÓN COMPLETA VERDE: 2989 passed, 4 skipped (26 423 aserciones)** ·
+> Restaurante 642 passed. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`0199d2c7`). ⚠️ Migraciones
+> `2026_08_28_600009`, `610001`, `620001`.
+>
+> ⚠️⚠️ **Buscando por qué el mayor salía vacío en el demo apareció que no era un hueco de datos:
+> era código de producción que NUNCA pudo correr.** Las tablas, los modelos y sus relaciones usan
+> `periodo_id`; **cinco servicios consultaban `periodo_contable_id`**, que no existe en ninguna —
+> `SaldoService` (5 usos), `AjusteInflacionService` (3), `ConsolidacionService` (2),
+> `DifCambiariaService` (4) y `DiferidoService` (2). ⚠️ **Los otros llamadores del mismo servicio SÍ
+> usaban `periodo_id`** (`AlquilerService`, `ProvisionService`, `generarDesdeRecurrente`,
+> `AsientoDiarioController`): había una convención y cinco servicios se desviaron. Y **falla en
+> silencio**: el controlador atrapa la excepción y muestra «N con error (ver log)».
+>
+> ⚠️ **`SaldoService` es el que llama `postearAsiento()`, así que la MAYORIZACIÓN COMPLETA estaba
+> rota** — ningún asiento podía llegar al mayor desde ninguna pantalla ni módulo. **De ahí sale el
+> pendiente que `[CONT-CTA-5]` anotó en producción**: 61 asientos de diario y cero en el mayor. No
+> era que nadie hubiera mayorizado, **es que no se podía**; y con el mayor vacío el Balance General,
+> el Estado de Resultados, la Balanza y la ficha de cada cuenta salen en **0.00 para todos los
+> clientes**. Verificado en producción con una prueba **en seco** (postear en transacción +
+> rollback): crea el mayor con sus líneas, actualiza los saldos y la base queda idéntica.
+>
+> ⚠️ **Un asiento del demo no cuadraba**: «Cierre nómina semana» tenía 47 901.00 de débito contra
+> 45 901.00 de crédito porque **faltaban las retenciones AL EMPLEADO**. Ahora se DERIVAN de las
+> tasas de ley RD (Ley 87-01), las mismas de `NominaContribService`, y cuadra en 48 379.80. ⚠️ **La
+> retención del empleado NO se acumula en las cuentas «Empleador por Pagar»** —el nombre de una
+> cuenta tiene que decir lo que contiene—: cuentas nuevas 2107 y 2108.
+>
+> ⚠️ **El seeder de mayorización usa el proceso REAL** (`AsientoService::postearAsiento()`), no
+> inserts: con inserts propios habría dos formas de llegar al mayor y la segunda produciría un mayor
+> que los reportes no saben leer. Solo mayoriza los APROBADOS y **deja los 24 borrador**, porque la
+> pantalla de Mayorización existe para postear lo pendiente y si el seeder posteara todo nacería
+> vacía. Y **se salta el asiento que no cuadra NOMBRÁNDOLO**: postear un descuadre deja el Balance
+> descuadrado y eso aparece semanas después sin poder atribuirse a nada.
+>
+> **Datos demo**: Prestamello (núcleo vacío: cero operaciones, cuotas y pagos), Caja POS (sus cuatro
+> tablas en cero) e Inventario (**39 de 49 tablas vacías** → 27: motivos de ajuste, clasificaciones,
+> ubicaciones, conversiones de unidad, criterios de reorden, seriales, traslados y conteo físico).
+> ⚠️ **Los procesos que MUEVEN STOCK usan su servicio real**: marcar un traslado «recibido» a mano
+> dejaría el documento diciendo que la mercancía llegó y el stock diciendo que sigue en origen.
+> Verificado: cero filas de stock en negativo. ⚠️ **Y el conteo físico es el que más importa**: sin
+> toma física aplicada la variancia sale 0 POR CONSTRUCCIÓN y esa tabla de ceros se lee como «todo
+> cuadra» (`[REST-F4-4]`).
+>
+> ⚠️ **Defecto de esquema**: `cobrador_id` era **BIGINT** en tres tablas de Prestamello y
+> `cobradores.id` es **CHAR(36)** — asignar un cobrador era imposible. Migración con **guarda que
+> aborta si la columna ya tiene datos**, y en producción eso salvó a TAPIA (ver pendientes).
+>
+> ⚠️ **Tres defectos más que solo se ven ejecutando**: (1) **ningún traslado se podía aplicar fuera
+> de una petición web** (`auth()->id()` sobre una columna NOT NULL); (2) **el `demo:reset` no
+> limpiaba el mayor** —lo destapó arreglarlo: cada reset dejaba 9 mayores huérfanos, misma forma de
+> `[TENANT-A11]`—; y (3) **tres seeders peleando por `psa_planillas`**: las fases 2 y 3 de PSA
+> **abortaban enteras** perdiendo ponches, timesheets y recibos, y la fase 3 **borraba las planillas
+> de los otros seeders**. ⚠️ El arreglo no es `insertOrIgnore` —la planilla se saltaría en silencio
+> pero sus hijos se insertarían igual, colgando de nada—: se descarta el **PERÍODO completo**.
+>
+> **Medido: tablas vacías del suscriptor demo 334 → 301 · filas demo 6 938 → 30 217 · `demo:reset`
+> sin un solo error** (antes: 634 filas sin tenant por reset y dos seeders abortando).
+>
+> ⚠️ **PENDIENTES del director técnico**: (1) los **61 asientos de producción siguen sin
+> mayorizar** — el fix habilita el botón, postear es decisión contable; (2) **en TAPIA
+> `pre_operaciones.cobrador_id` guarda un `users.id`** (191) y TAPIA no tiene cobradores: hay que
+> decidir qué significa ese campo antes de convertir la columna; (3) **el cron
+> `contabilidad:cuadre-auxiliares` falla todos los lunes** porque `cont_modulos` está **vacía en
+> producción** y su FK no resuelve.
+>
+> **Reglas nuevas: un servicio que consulta una columna inexistente falla en silencio si su llamador
+> atrapa la excepción, y el síntoma es un reporte en cero que se lee como un dato · cuando la mitad
+> de los llamadores usa una clave y la otra mitad otra, la TABLA decide · un asiento que no cuadra
+> no se mayoriza, se nombra · un seeder que llena una tabla usa el proceso real que la llena · el
+> nombre de una cuenta contable tiene que decir lo que contiene · un service que lee `auth()` para
+> una columna NOT NULL no se puede usar fuera de una petición web · arreglar un proceso roto puede
+> destapar que la limpieza nunca lo contempló · cuando varios seeders escriben la misma tabla con
+> UNIQUE se descarta la CLAVE completa, no la fila al insertar · un seeder no borra el trabajo de
+> otro · dos suites en paralelo contra la misma base sin `RefreshDatabase` se contaminan: un rojo se
+> confirma corriendo la suite SOLA.**
+
+
+> **ABASTECIMIENTO FASE 3 — CLASIFICACIÓN ABC Y COBERTURA (2026-08-27) — `[ABST-F3]`,
+> `[ABST-F3-4]`, `[ABST-AYUDA-1]`**: tercera fase del módulo de mejora `abastecimiento` (el `04`
+> de `Modulos_Adicionales`, que vive DENTRO de Inventario). Contesta *en qué artículos está el
+> dinero que rota* y *para cuántos días alcanza lo que hay*. **32 pruebas** (28 que estaban en el
+> árbol + 4 nuevas) · **Abastecimiento + Inventario + guardas de ayuda y vistas: 154 passed,
+> 4 174 aserciones** · **4 reglas nuevas verificadas VIOLÁNDOLAS: las 4 se detectan** · las
+> **1 285 vistas** del repositorio compilan. ⚠️ Migración `2026_08_26_610001`.
+>
+> ⚠️ **La regla ABC no se reimplementa: se DELEGA** en `ConteoCiclicoService::claseParaAcumulado()`,
+> de donde ya salían el reporte ABC-XYZ de Inventario y el plan de conteo cíclico. Con una copia, el
+> mismo artículo podía ser clase A en una pantalla y B en la otra, y el plan de conteo —que decide
+> cada cuántos días se cuenta un artículo POR SU CLASE— habría usado una frecuencia que la otra
+> pantalla contradice. ⚠️ **Y los umbrales nacen en 70/20, NO en el 80/15 del blueprint**: el
+> ecosistema ya clasificaba a 70/90, así que con 80/15 contratar el módulo habría movido de clase
+> artículos que nadie tocó (*el default de una opción nueva reproduce lo vigente*). ⚠️ **La clase C
+> se DERIVA** (100 − A − B): con tres umbrales capturados podrían sumar 97 o 104 y habría artículos
+> sin clase o en dos a la vez.
+>
+> ⚠️ **El defecto de la fase: los importes no decían en qué MONEDA estaban.** «Valor de consumo» y
+> «Costo unitario» salen del costo promedio **funcional**, y ni la pantalla, ni el resumen, ni el
+> CSV lo declaraban — en un tenant multimoneda cada usuario los interpretaba en la suya, y con ese
+> número se decide si un artículo se compra. Corregido en los tres sitios; **la F2 sí lo hacía
+> bien** en el costo de pedido, el defecto era de esta fase. ⚠️ Al corregirlo, el ISO iba a quedar
+> resuelto en **dos** sitios (el método nació privado en el controlador de configuración): se sube a
+> `AbstConfig::isoFuncional()` y **se borra la copia**, con una prueba que recorre los 8 archivos
+> del módulo. ⚠️ **Sin moneda resoluble devuelve vacío, no `DOP`**: un default de país afirmaría una
+> divisa que nadie configuró, y eso es peor que no decir nada porque no hay forma de notarlo.
+>
+> ⚠️⚠️ **Una forma de vista rota que el ecosistema no tenía escrita**: `<th>Valor consumo@if(...)`
+> **no compila la directiva** —Blade exige `\B` antes de la arroba y una letra rompe esa
+> condición— **pero su `@endif` sí**, así que queda un `endif` huérfano y el error apunta a una
+> línea del COMPILADO que no existe en el fuente. La línea de al lado (`Costo unit.@if`) funcionaba
+> **por casualidad**, porque el punto no es letra. Lo detectó **compilar** las vistas, no un grep:
+> es justo el motivo por el que la guarda de `[VISTAS-SOT]` compila en vez de buscar patrones.
+>
+> ⚠️ **Mi propia prueba nueva miraba el COMENTARIO y no el código**: contaba la mención del service
+> de monedas dentro del docblock y acusaba de una copia inexistente (el defecto de `[REST-F0]`).
+> Lo encontró **correr** la prueba, no escribirla.
+>
+> **La ayuda de las 4 pantallas del módulo** (deuda que arrastraban F1, F2 y F3: no tenían ni una
+> línea) queda documentada con sus 20 campos ⚠️ **en `resources/help/inventario.php`, no en un
+> archivo propio**: el módulo no está en el sidebar, así que un `abastecimiento.php` nacería
+> huérfano y el Centro de Ayuda no lo mostraría. Los tooltips **leen el catálogo, no repiten el
+> texto**.
+>
+> ⚠️ **PENDIENTE del director técnico**: los umbrales son configurables, pero el reporte ABC-XYZ de
+> Inventario y el plan de conteo cíclico siguen fijos en 70/90 — al cambiarlos, el mismo artículo
+> puede salir en clases distintas según la pantalla. La pantalla lo AVISA; unificarlo obligaría a
+> que Inventario dependa de un módulo de mejora, y eso es decisión de alcance.
+>
+> ⚠️⚠️ **ENTORNO — la regresión COMPLETA no se pudo correr, y hay dos trampas nuevas**: (1)
+> `phpunit.xml` declara `DB_PASSWORD=""` y el **MySQL local ya pide contraseña**, así que la suite
+> falla con `1045 Access denied` — que parece un desastre y es solo la contraseña; es la misma
+> trampa que `[BAN-F3-FIX]` cerró para el PUERTO y **la causa real de que `[CRON-FIX-1]` anotara que
+> «el MySQL local dejó de aceptar conexiones»**. Se corre con `DB_PASSWORD='...' php artisan test`.
+> (2) **La máquina se queda sin memoria**: el SO responde «el archivo de paginación es demasiado
+> pequeño», PHP muere pidiendo **27 MB** y hasta `taskkill` y `PowerShell` agotan su tiempo de
+> espera. Partir la corrida en tandas no bastó (los `fork` empezaron a fallar). **Se declara en vez
+> de dar por buena una corrida a medias: una suite que no terminó no es una suite verde.**
+>
+> **Reglas nuevas: una directiva Blade pegada a una LETRA no se compila y su `@endif` sí · un
+> importe de un reporte declara su moneda en la pantalla Y en el archivo exportado · cuando la
+> moneda no se puede resolver no se pone la del país · un método privado que hace falta en una
+> segunda pantalla se SUBE, no se copia · una prueba sobre el código dice en QUÉ archivo encontró
+> lo que cuenta · la ayuda de un módulo que vive dentro de otro va en el archivo del padre · una
+> suite que no terminó no es una suite verde.**
 
 > **TIPOS DE EMPLEADO DE VERTICALES + LA PROPINA QUE SE LE PAGABA AL EQUIVOCADO (2026-08-12) —
 > `[REST-FIX-3]`**: pedido del director técnico — *«puedes agregar al Enum los tipos de empleados
@@ -1866,15 +2019,13 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[REST-FIX-3]` `fd7339f4` (**tipos de empleado de verticales +
-> la propina de delivery que se le liquidaba a quien TOMO el pedido en vez de a quien la RECIBIO en
-> la mano**; cuadre `cobrada = asignada + sin asignar` visible en el cierre; 12 pruebas, 8
-> violaciones detectadas, 613 verdes, desplegado y verificado). ⚠️ **En paralelo va `[CRON-FIX-1]`
-> `3420e529`**: los diez comandos programados que no se ejecutaban nunca, con sus horarios movidos a
-> multiplos de 15 (el intervalo real del crontab) y su guarda automatica. Anterior: `[REST-F7-2/3]` `cab93cc0` (**FASE 7 de Restaurante ejecutada:
-> el blueprint v3 queda COMPLETO F0→F8** — propinas y comisiones del personal a nomina, con el
-> candado sin Nomina y export para pago manual; 18 pruebas de la fase, regresion completa 2822
-> verdes. ⚠️ Los 5 modulos nuevos siguen **vendibles pero sin implementar**)
+> Ultimo commit en **zyntello-app**: `[REST-FIX-2]` `0199d2c7` (**la mayorizacion llevaba rota
+> desde siempre: 5 servicios de Contabilidad consultaban `periodo_contable_id` cuando las tablas usan
+> `periodo_id`, asi que NINGUN asiento podia llegar al mayor y toda la contabilidad salia en 0.00 para
+> todos los clientes**; mas datos demo para Prestamello, Caja POS e Inventario, el asiento de nomina
+> que no cuadraba y tres defectos de idempotencia del `demo:reset`. Regresion completa 2989 verdes;
+> desplegado y verificado en produccion. ATENCION: quedan 61 asientos sin mayorizar en produccion — el
+> fix habilita el boton, postear es decision contable del director tecnico)
 > | Ultimo commit en **zyntello-admin**: `[#506]` `2283952`
 > | Ultimo commit en **zyntello-website**: `ad072f43`
 

@@ -27,6 +27,14 @@ dist-ssr
 # Excepción: app/.htaccess sí se versiona para el deploy en Bluehost
 admin/
 app/*
+
+# Repositorio Laravel independiente creado en una sesion anterior (un solo commit,
+# "Initial Laravel project", sin remoto). Se ignora como admin/ y app/*: es un repo
+# anidado y Git no puede versionarlo desde aqui.
+# ATENCION: su sola existencia contradice la regla de arquitectura del CLAUDE.md
+# —"nunca un repo Laravel separado por modulo"—: todo modulo nuevo va DENTRO de
+# app/zyntello-app. Queda declarado para que el director tecnico decida si se elimina.
+zyntello-saas/
 !app/.htaccess
 
 # Artefactos PHP y mobile que no pertenecen al repo del sitio web

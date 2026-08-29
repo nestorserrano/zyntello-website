@@ -105,6 +105,22 @@ escribe **una fila por artículo/bodega**, así que multiplica la superficie.
 
 ---
 
+## ⚠️ Directivas transversales — se cumplen las SIETE, sin excepción
+
+Recordatorio explícito del director técnico (2026-08-12). Aplican a este módulo así:
+
+| Directiva | Cómo aplica aquí |
+|---|---|
+| **1. `company_id` + `empresa_id` SIEMPRE, con `HasEmpresa`** | Las 4 tablas `abst_*` llevan las dos columnas y sus modelos el trait. Y **se arregla `inv_criterios_abastecimiento`, que hoy no las tiene** (hallazgo 3) — el módulo no puede escribir en una tabla que no aísla por empresa |
+| **2. Multimoneda desde el diseño** | `costo_pedido` en **funcional**, declarado en el docblock y **mostrado en la pantalla**; el ABC agrega sobre `costo_promedio_local` (funcional), nunca `_dolar`. Combos de moneda —si alguno hiciera falta— salen de `EmpresaMonedaService::monedasOperativas()`, **jamás** del catálogo de 143 |
+| **3. Mueve inventario ⇒ movimiento de inventario** | ⚠️ **Este módulo NO mueve stock**: solo lee `inv_stock` / `inv_movimientos` y escribe pronósticos y parámetros. Si alguna fase llegara a necesitar mover stock, va por el servicio de Inventario — nunca tocando `inv_stock` a mano |
+| **4. Es contabilizable ⇒ asiento** | **No hay operación contabilizable**: calcular un pronóstico o aplicar un punto de reorden no mueve dinero ni existencias. Por eso este módulo **no** registra en `MovimientoFinancieroService` — y eso se declara, para que nadie lo añada «por simetría» |
+| **5. Es venta ⇒ mueve Facturación** | No aplica: el módulo no vende |
+| **6. Cuentas contables por módulo, nunca hardcodeadas** | No aplica por lo mismo que la 4. **Cero literales de cuenta en el código** — hay prueba de eso en otros módulos y aquí no debe existir ni uno |
+| **7. Integridad transversal / fuente única** | El módulo **consume** `ReordenService`, `SugeridoCompraService`, `RecetaService::conversor()` y `EmpresaMonedaService`. No reimplementa ninguno: la sección «Lo que este módulo NO hace» es esta directiva escrita en concreto |
+
+---
+
 ## Modelo de datos (4 tablas, prefijo `abst_`)
 
 Todas con `id char(36)`, `company_id char(36)`, `empresa_id char(36)`, timestamps y trait
@@ -128,6 +144,17 @@ Configuración por empresa. Una fila por `(company_id, empresa_id)`.
 el EOQ no se puede calcular, y un EOQ inventado con valores por defecto haría que el
 comprador pidiera cantidades sin fundamento creyendo que el sistema las calculó. Con 0, la
 pantalla **dice** que falta configurarlos en vez de mostrar un número.
+
+⚠️ **`costo_pedido` se captura y se guarda en MONEDA FUNCIONAL de la empresa**, siguiendo el
+patrón que ya usa `ban_config.monto_aprobacion_egresos`. No lleva `moneda_id` propio, y eso
+es deliberado: el EOQ lo divide entre `inv_stock.costo_promedio_local`, que **ya está en
+funcional**. Capturarlo en otra moneda sin convertir daría un EOQ silenciosamente erróneo —
+el comprador pediría de más o de menos y nada lo avisaría.
+
+**La pantalla tiene que DECIR en qué moneda se captura**, mostrando el ISO de la funcional
+resuelto con `EmpresaMonedaService::monedasOperativas()` (que devuelve la funcional primero y
+marcada). Un campo «Costo de pedido» sin moneda al lado es una cifra que cada usuario
+interpreta en la suya.
 
 ### `abst_pronosticos`
 Resultado del cálculo nocturno. UNIQUE `(company_id, empresa_id, articulo_id, bodega_id, fecha_calculo)`.
@@ -229,6 +256,13 @@ alimenta la fórmula, así que el módulo lee y escribe en el mismo sitio.
 ABC por **valor de consumo del período** (cantidad × costo), no por existencia: un artículo
 caro que no rota no es clase A. Umbrales configurables (80/15/5 por defecto) **mostrados y
 exportados** — sin ellos nadie puede saber por qué un artículo cayó en su clase.
+
+⚠️ **El costo del valor de consumo sale de `inv_stock.costo_promedio_local`, no de
+`costo_promedio_dolar`.** El sufijo `_local` es la moneda funcional de la empresa, y la
+directiva del ecosistema exige que **los agregados vayan en funcional**. Mezclar artículos
+costeados en dólares con otros en la funcional dentro del mismo ranking ABC pondría en clase A
+a los importados por el tipo de cambio y no por su consumo — que es justo lo que el ABC
+pretende medir.
 
 ### F4 — Alertas y tablero
 Cuatro tipos: cobertura baja, riesgo de quiebre antes del lead time, sobre-stock (cobertura
