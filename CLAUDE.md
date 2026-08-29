@@ -265,6 +265,67 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > `[DEMO-FIX-1]`, `[CONT-CTA-4/5]`). Su detalle sí está en `app/zyntello-app/CLAUDE.md`, que es
 > la bitácora técnica. Se anota aquí para que el hueco no se lea como «no pasó nada».
 
+> **EL COBRADOR DE PRESTAMELLO ERAN LOS 40 USUARIOS DEL TENANT (2026-08-29) —
+> `[PRE-COB-1]`**: pedido del director técnico — *«facturación también tiene cobradores y
+> vendedores, ¿por qué no usamos la misma tabla? debería ser cobradores una única tabla con
+> acceso»*. **3 pruebas nuevas, las 3 verificadas VIOLÁNDOLAS: las 3 se detectan** ·
+> Prestamello **454 passed** · cobradores + comisiones **69 passed** · las 1285 vistas
+> compilan. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`a68bd05f`). ⚠️ Migración
+> `2026_08_29_630002`.
+>
+> **`cobradores` YA era la tabla única** —del core, sin prefijo, como `clientes` o
+> `proveedores`— y Facturación y CxC ya la compartían. **Prestamello nunca la consultó**:
+> resolvía la lista con `User::where('company_id')`, o sea todos los usuarios de la empresa.
+> En el combo «Cobrador» aparecían el contador, la secretaria y el gerente. ⚠️ **Y el reporte
+> de comisiones llamaba al servicio de cálculo UNA VEZ POR USUARIO** para mostrar decenas de
+> filas en 0.00. ⚠️⚠️ **Alguien ya lo había notado**: `PreReporteController` tiene escrito
+> *«ofrecer los 40 usuarios del tenant haría que el gerente busque entre nombres que no
+> devuelven ninguna fila»* — pero eso parcheó **los reportes**; el combo donde se ASIGNA siguió
+> igual.
+>
+> ⚠️ **La migración `600009` de la sesión anterior partía de una premisa falsa y se revierte**:
+> convirtió `cobrador_id` a CHAR(36) mirando el NOMBRE de la columna y no a sus CONSUMIDORES —
+> siete controladores validan `exists:users,id` y la **app móvil** resuelve la cartera con
+> `auth()->id()`. El BIGINT era correcto. **Su guarda («si ya tiene datos, no se toca») es lo
+> que salvó las filas**: solo alcanzó `pre_metas_cobrador`, con 0 filas.
+>
+> **La pieza que une catálogo y operación ya existía**: `cobradores.user_id` estaba en el
+> esquema y nadie la llenaba **porque el formulario no la pedía** (`[CW-FIX-2]`: una columna
+> sin formulario es una función que no existe). Ahora está en el CRUD, **excluyendo a quien ya
+> es otro cobrador** —dos con el mismo `user_id` sumarían sus comisiones sobre la misma
+> persona—. ⚠️ **Un cobrador sin usuario no se ofrece**: sirve en Facturación/CxC pero no puede
+> salir a la ruta con la PWA. ⚠️ **Y se conserva el cobrador que la operación YA tiene** aunque
+> no esté en el catálogo, marcado «(fuera del catálogo)»: sin eso, editar esa operación
+> **borraría su cobrador en silencio**.
+>
+> ⚠️ **El enlace al catálogo va dentro de la pantalla, no en el sidebar** — declarar la ruta de
+> otro módulo en el menú hace que ese módulo deje de abrirse (**tercera vez**: `[CND-FIX]`,
+> `[CW-F0-5]`, `[REST-F0-4]`).
+>
+> **Impacto medido antes de desplegar: CERO.** Agua Yamel —el único cliente real— no tiene
+> cobradores ni usa Prestamello; Comercial Aranza tiene 4 sin usuario (verán el aviso); las 2
+> operaciones de TAPIA siguen resolviendo a `kelobel`.
+>
+> ⚠️⚠️ **HALLAZGO FUERA DE ALCANCE: `vendedor_id` significa cosas distintas según la tabla.**
+> Es **char(36) → `vendedores.id`** en Facturación (clientes, facturas, pedidos, cotizaciones,
+> metas, zonas) y **bigint → `users.id`** en CRM (`crm_leads`, `crm_contactos`). La misma
+> columna, dos tipos y dos destinos: un JOIN escrito asumiendo consistencia devuelve vacío. Y
+> medido: `crm_leads.asignado_a` y `crm_leads.vendedor_id` están poblados **32/32 con cero
+> diferencias** —el mismo dato guardado dos veces— mientras `vendedor_codigo` está en **0 de
+> 32**: la integración del catálogo de `[#642]` se escribió y nunca se llenó. **NO se corrigió
+> porque la decisión es de negocio**: en cobradores el rol es inequívoco, pero un lead puede
+> asignarse a un gerente que no es vendedor formal. Hay que decidirlo antes de tocar 15
+> referencias y migrar 32 leads.
+>
+> **Reglas nuevas: un catálogo del core lo consumen TODOS los módulos que hablan de esa
+> entidad, no solo el que tiene el CRUD · un tipo de columna se verifica contra sus
+> CONSUMIDORES antes de cambiarlo, igual que un ENUM · una lista que ofrece todos los usuarios
+> del tenant no es un combo, es un buscador sin filtro · un parche que arregla solo el reporte
+> deja intacto el sitio donde se captura el dato · una lista filtrada conserva el valor que el
+> registro YA tiene, o editarlo lo borra en silencio · la misma columna con el mismo nombre no
+> puede apuntar a dos tablas distintas según el módulo.**
+
+
 > **LA MAYORIZACIÓN LLEVABA ROTA DESDE SIEMPRE, Y DATOS DEMO PARA 4 MÓDULOS (2026-08-28/29) —
 > `[TENANT-A14]`–`[TENANT-A16]` + `[REST-FIX-2]`**: pedido del director técnico — *«debes corregir
 > el demo reset, crear nuevos seeders para cargar todos los módulos nuevos con datos de demo, así
@@ -2019,13 +2080,13 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[REST-FIX-2]` `0199d2c7` (**la mayorizacion llevaba rota
-> desde siempre: 5 servicios de Contabilidad consultaban `periodo_contable_id` cuando las tablas usan
-> `periodo_id`, asi que NINGUN asiento podia llegar al mayor y toda la contabilidad salia en 0.00 para
-> todos los clientes**; mas datos demo para Prestamello, Caja POS e Inventario, el asiento de nomina
-> que no cuadraba y tres defectos de idempotencia del `demo:reset`. Regresion completa 2989 verdes;
-> desplegado y verificado en produccion. ATENCION: quedan 61 asientos sin mayorizar en produccion — el
-> fix habilita el boton, postear es decision contable del director tecnico)
+> Ultimo commit en **zyntello-app**: `[PRE-COB-1]` `a68bd05f` (**Prestamello ofrecia los 40
+> usuarios del tenant como cobradores en vez del catalogo `cobradores` que ya compartian
+> Facturacion y CxC**; revierte la migracion 600009 que partia de una premisa falsa —la columna
+> guarda un `users.id` a proposito, es lo que la app movil resuelve con `auth()->id()`—. Desplegado
+> y verificado, impacto de datos CERO. ATENCION: `vendedor_id` es char(36)->catalogo en Facturacion
+> y bigint->users en CRM, con `asignado_a` duplicado 32/32 y `vendedor_codigo` en 0/32: pendiente de
+> decision del director tecnico)
 > | Ultimo commit en **zyntello-admin**: `[#506]` `2283952`
 > | Ultimo commit en **zyntello-website**: `ad072f43`
 
