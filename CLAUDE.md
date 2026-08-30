@@ -429,6 +429,72 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > puede apuntar a dos tablas distintas según el módulo.**
 
 
+> **EL COLUMNAR DE NÓMINA, Y LOS RECIBOS QUE NUNCA SE CREARON (2026-08-30) — `[NOM-DEMO-1]`,
+> `[NOM-COL-1]`**: pedido del director técnico — *«tengo nóminas demo calculadas pero en recibo no
+> veo los recibos… necesito un reporte de resumen de pagos por conceptos como un columnar de
+> nómina, agrupados por departamento… cada columna de cada concepto de asignación… total de
+> asignaciones, luego las deducciones, total de deducciones, y el neto; en otra hoja un resumen por
+> departamento; luego otra página con las variaciones contra el período anterior»*.
+> **10 pruebas nuevas, 6 reglas verificadas VIOLÁNDOLAS: las 6 se detectan** · Nómina + guardas de
+> vistas y ayuda **120 passed** · las 1285 vistas compilan.
+> **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`67d0e861`). **Sin migración.**
+>
+> ⚠️⚠️ **Los recibos no faltaban por falta de datos: 90 resultados de nómina colgaban de períodos
+> borrados.** Los crea solo `VolantePdfService::crearRecibos()` y ningún seeder lo llamaba —pero al
+> medirlo apareció lo grave: **`PsaDemoSeeder` borraba TODOS los períodos de la empresa** antes de
+> sembrar los suyos, incluidos los **semanales que `NominaSeeder` acababa de crear unas líneas
+> antes en el mismo `DemoSeeder`**. Como `nom_payroll_results` no cuelga de una FK con cascada, sus
+> resultados quedaban **huérfanos en el acto**: 90 filas sin período, **creciendo ~18 por reset**, y
+> la pantalla las seguía contando como nómina calculada. Es la forma de `[TENANT-A16]`: *un seeder
+> no borra el trabajo de otro.* ⚠️ **Y el tipo de nómina se buscaba por frecuencia** («el primer
+> biweekly de la empresa»), así que PSA adoptaba la quincena de Nómina — la misma raíz del borrado;
+> ahora se busca por CÓDIGO. ⚠️ El fix tiene **dos tiempos** (`[TENANT-A11]`): uno impide crear
+> nuevos y el otro borra por `company_id` directo en vez de por una subconsulta de períodos, que
+> **no alcanzaba a los ya huérfanos** y los hacía inmunes para siempre.
+>
+> **El columnar**: tres hojas sobre **UNA sola matriz**. Si cada hoja armara su consulta, el total
+> del resumen podría no cuadrar con la suma del detalle, y esa discusión no se gana explicando la
+> fórmula. ⚠️ **Las columnas salen de los conceptos que APARECEN en el período, no del catálogo**:
+> uno configurado que nadie cobró solo agregaría una columna de ceros; y **el que un empleado no
+> recibió sale en 0, no ausente**, o su fila no se podría comparar con la de al lado. ⚠️ **El
+> salario base se DERIVA** (bruto − asignaciones), así cuadra por construcción, y **el cuadre se
+> pinta SIEMPRE al pie** —uno que solo aparece al fallar no permite comprobar que el período cerró
+> bien—. ⚠️ **Los importes salen del JSON sellado al calcular, NO del catálogo de conceptos**: el
+> catálogo dice lo que PUEDE pagarse hoy y el resultado lo que SE PAGÓ — recalcular haría que
+> reimprimir una quincena vieja diera cifras distintas al recibo que el empleado ya tiene en la mano.
+>
+> **Variaciones**: el período anterior se resuelve **por FECHA y no por `period_number`**, que se
+> reinicia cada año — por número enfrentaría enero contra diciembre del siguiente. Las dos matrices
+> se leen con **las MISMAS columnas**: con las suyas, un concepto que solo está en uno saldría como
+> si hubiera nacido de la nada. ⚠️ **Un porcentaje sobre cero es `null`, no 100 %** (el importe
+> absoluto sí se muestra) · **un departamento nuevo no tiene variación 0 %**, porque eso afirmaría
+> que se mantuvo igual · **y el que desaparece se muestra como BAJA**, no se omite: escondería una
+> baja completa de plantilla.
+>
+> ⚠️⚠️ **El verificador informó «ninguna se detecta» y era MENTIRA**: no fallaban las pruebas,
+> **reventaba el verificador** al imprimir la salida de PHPUnit (encoding de la consola de Windows),
+> así que el conteo de fallos quedaba en cero. Es la trampa de `[REST-F2]` por una puerta nueva —
+> reescrito para decidir por el **código de salida** y comprobar antes que la línea base esté verde
+> **y ejecute pruebas de verdad** (`artisan test` sale 0 también cuando no encuentra ninguna).
+> Repetido: las 6 se detectan. ⚠️ Y `nom_payroll_results` exige `effective_rate`, `total_hours` y
+> `breakdown` **NOT NULL sin default**: comprobado con `SHOW COLUMNS` antes de insertar.
+>
+> **Medido en producción**: huérfanos **6 → 0** · recibos **0 → 24** · empresas demo con nómina
+> **0 → 3 de 3**. ⚠️ **Los 6 huérfanos eran de la cuenta demo** (creados a las 03:00:05 de hoy por
+> el reset con el código viejo), no de un cliente: se limpiaron solos al ejecutar `demo:reset` con
+> el fix. **Comercial Aranza** —la única con nómina real— queda intacta y su columnar cuadra exacto
+> (207 500.00 − 12 263.25 = 195 236.75, total == suma de subtotales). **Agua Yamel, el único cliente
+> real, no tiene nómina calculada**: no se tocó nada suyo.
+>
+> **Reglas nuevas: un seeder no borra el trabajo de otro, y sin FK en cascada el hijo queda huérfano
+> en el acto · una limpieza por subconsulta no alcanza lo que ya perdió su padre — el fix tiene dos
+> tiempos · las columnas de un reporte salen de lo que APARECE, no del catálogo · un concepto que un
+> empleado no recibió sale en 0, no ausente · los importes de un período salen del JSON sellado al
+> calcular · el período anterior se resuelve por FECHA, no por número · dos períodos que se comparan
+> se leen con la MISMA cabecera · un porcentaje sobre cero es null y el importe absoluto sí se
+> muestra · un departamento nuevo no tiene variación 0 % y el que desaparece se NOMBRA · un
+> verificador que revienta imprimiendo informa lo mismo que uno que no corre.**
+
 > **LA MAYORIZACIÓN LLEVABA ROTA DESDE SIEMPRE, Y DATOS DEMO PARA 4 MÓDULOS (2026-08-28/29) —
 > `[TENANT-A14]`–`[TENANT-A16]` + `[REST-FIX-2]`**: pedido del director técnico — *«debes corregir
 > el demo reset, crear nuevos seeders para cargar todos los módulos nuevos con datos de demo, así
@@ -2183,12 +2249,14 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[AGENTES-1]` `3af67b63` (**el usuario del sistema pasa a
-> OBLIGATORIO en vendedores y cobradores** —una ficha sin usuario no puede operar y deja de
-> ofrecerse—, **el empleado de nomina queda opcional pero la pantalla ya dice que sin el la
-> comision se calcula y NO llega a la nomina**, y los procesos que necesitan un agente avisan de
-> que hay que crearlo Y asociarle el usuario. Desplegado y verificado. ATENCION: Comercial Aranza
-> vera el aviso hasta que asigne usuario a sus 8 fichas; Agua Yamel no usa estos modulos)
+> Ultimo commit en **zyntello-app**: `[NOM-COL-1]` `67d0e861` (**el columnar de
+> nomina** —tres hojas sobre UNA sola matriz: detalle por empleado, resumen por
+> departamento y variacion contra el periodo anterior— y el hallazgo de que **90
+> resultados de nomina colgaban de periodos que otro seeder borraba**, creciendo ~18 por
+> reset, mientras la pantalla los seguia contando como nomina calculada. Verificado en
+> produccion: huerfanos 6 -> 0, recibos 0 -> 24, y el columnar de Comercial Aranza cuadra
+> exacto. ATENCION: siguen los **61 asientos sin mayorizar** de `[REST-FIX-2]` — postear
+> es decision contable del director tecnico)
 > | Ultimo commit en **zyntello-admin**: `[#506]` `2283952`
 > | Ultimo commit en **zyntello-website**: `ad072f43`
 
