@@ -429,6 +429,78 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > puede apuntar a dos tablas distintas según el módulo.**
 
 
+> **EL ASIENTO NACÍA EN LA EMPRESA EQUIVOCADA, Y EL PERÍODO VUELVE A NÓMINA (2026-08-30) —
+> `[CONT-EMP-1]`, `[DEMO-3]`**: tres pedidos del director técnico — *«los asientos en el demoseeder…
+> mayorizar la mitad y la otra mitad para que quede por mayorizar… revisa que en vendedores y
+> cobradores el mismo usuario puede tener las 2 características, corrige… nada de nómina debe
+> hacerse desde psa, solo cargar datos o actualizar tablas, pero el período debe vivir en nómina»*.
+> **9 pruebas nuevas, 8 reglas verificadas VIOLÁNDOLAS: las 8 se detectan** · Contabilidad + Nómina
+> + PSA + demo **226 passed** · vistas y ayuda **18 passed**.
+> **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`f3205fbb`). **Sin migración.**
+>
+> ⚠️⚠️ **Revisando por qué los asientos del demo estaban mal repartidos apareció un defecto de
+> producción**: las tres empresas demo tienen 13 activos fijos y 6 depreciaciones **cada una**, pero
+> los **18 asientos caían todos en una sola**. `IntegracionContableService` resolvía la empresa
+> contable con **`->first()` sobre las activas de la company**, ignorando a qué empresa pertenecía
+> el movimiento — así que un suscriptor con varias empresas manda **todos** sus asientos a una, la
+> que MySQL devuelva primero, y **ni siquiera de forma estable: en local cayeron en una empresa y en
+> producción en otra**. Las demás se quedan con el mayor vacío, y un mayor vacío sale 0.00 en
+> Balance, Estado de Resultados y Balanza: el síntoma se lee como un dato.
+>
+> ⚠️ **El buffer YA guardaba `empresa_id` y el evento YA lo traía**: el dato llegaba hasta la puerta
+> del servicio y ahí se descartaba. ⚠️ **Sin la empresa correcta NO se cae a «la primera que haya»**
+> —eso reintroduce el defecto en silencio y el asiento aparece en la contabilidad de otra empresa—:
+> el buffer queda en `error` y el Monitor lo nombra.
+>
+> ⚠️⚠️ **Y había dos defectos más de la misma familia debajo.** El servicio recibe la empresa por
+> parámetro pero resolvía período, tipo, cuentas y config con modelos que usan `HasEmpresa`, cuyo
+> scope filtra por la empresa de la **SESIÓN** —con el usuario en la empresa A, un asiento de la B
+> fallaba con «no hay período contable», y **en CLI funcionaba por casualidad** porque ahí el scope
+> se desactiva—; y **la relación `SecuenciaAsiento::tipoAsiento()` también lo heredaba**, reventando
+> con «Attempt to read property "codigo" on null», un mensaje que no apunta a la causa. Es la regla
+> de `[REST-FIX-2]` en tres niveles: *un service que recibe el tenant por parámetro no lee la
+> sesión, y sus relaciones tampoco.*
+>
+> **Impacto medido ANTES de tocar**: solo la cuenta demo es multi-empresa. TAPIA, Comercial Aranza y
+> Agua Yamel tienen **una empresa cada uno** → ningún cliente afectado hoy, pero el día que
+> cualquiera cree su segunda, todos sus asientos irían a una sola. Tras el fix: **6/6/6 y cero
+> discrepancias**.
+>
+> **El período vuelve a Nómina**: ⚠️ el código de aplicación **YA cumplía la regla** —`psa_periodos`
+> es una **VISTA** de solo lectura y su controlador solo tiene `index`/`show`—, **el seeder era el
+> único que la rompía**, y no en un sitio sino en **TRES** (el base y las fases 2 y 3), cada uno con
+> su propio tipo de nómina y sus propios uuid v4: tres definiciones del mismo eje de tiempo que nadie
+> podía cuadrar. De esa inversión salió `[NOM-DEMO-1]` —*quien crea el período se siente con derecho
+> a borrarlo*—. Ahora el calendario vive en `NominaSeeder::calendarioPsa()` (16 quincenas) y PSA solo
+> lo **lee**, con **ids UUID v5 deterministas** para poder encontrarlo; ⚠️ **si falta NO se fabrica
+> uno**, se nombra y se omiten los datos que dependen de él.
+>
+> **La mayorización queda a medias**: postear todos los aprobados dejaba **cero** en `APROBADO`, que
+> es justo el estado con el que trabaja la pantalla de Mayorización — quedaban solo borradores, que
+> aún no se pueden postear. Ahora se mayoriza la mitad (hacia arriba) y el resto espera el botón, con
+> orden **total** para que dos corridas no elijan asientos distintos.
+>
+> **El doble rol**: ⚠️ **el sistema siempre lo permitió** —la unicidad de cada CRUD mira solo su
+> propia tabla—, pero **el demo no lo mostraba** y por eso parecía que no se podía. Ana López pasa a
+> ser vendedora V002 **y** cobradora C002 con el mismo usuario: **no hizo falta cambiar código, solo
+> un caso a la vista.**
+>
+> **Verificado en producción tras el reset**: mayorización **2 posteados + 1 aprobado + 8 borrador**
+> en las tres demo · doble rol presente · **16 períodos QUINCENAL-PSA** por empresa creados por
+> Nómina · **0 huérfanos** · asientos de Activos Fijos **6/6/6** · **0 movimientos con asiento en
+> otra empresa**. **Comercial Aranza intacta** (28 asientos, 7 resultados) y **Agua Yamel y TAPIA sin
+> tocar**. ⚠️ **PENDIENTE sin cambios**: los asientos de producción siguen sin mayorizar — el botón
+> funciona, postear es decisión contable.
+>
+> **Reglas nuevas: un asiento pertenece a la empresa DEL MOVIMIENTO, no a «la primera activa del
+> tenant» — y un `->first()` sin orden ni siquiera elige lo mismo en dos servidores · un service que
+> recibe la empresa por parámetro no puede resolver sus datos con modelos que leen la sesión, y sus
+> RELACIONES tampoco · cuando falta la empresa correcta no se cae a otra: mejor sin asiento que en la
+> contabilidad ajena · el dueño de una entidad es quien la crea, y quien la crea se siente con
+> derecho a borrarla · un id que debe encontrarse desde otro seeder es determinista (UUID v5), no
+> aleatorio · un demo que postea todo lo pendiente deja su propia pantalla sin nada que hacer · una
+> capacidad que el sistema permite pero el demo no muestra se lee como una capacidad que no existe.**
+
 > **EL COLUMNAR DE NÓMINA, Y LOS RECIBOS QUE NUNCA SE CREARON (2026-08-30) — `[NOM-DEMO-1]`,
 > `[NOM-COL-1]`**: pedido del director técnico — *«tengo nóminas demo calculadas pero en recibo no
 > veo los recibos… necesito un reporte de resumen de pagos por conceptos como un columnar de
@@ -2249,14 +2321,14 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[NOM-COL-1]` `67d0e861` (**el columnar de
-> nomina** —tres hojas sobre UNA sola matriz: detalle por empleado, resumen por
-> departamento y variacion contra el periodo anterior— y el hallazgo de que **90
-> resultados de nomina colgaban de periodos que otro seeder borraba**, creciendo ~18 por
-> reset, mientras la pantalla los seguia contando como nomina calculada. Verificado en
-> produccion: huerfanos 6 -> 0, recibos 0 -> 24, y el columnar de Comercial Aranza cuadra
-> exacto. ATENCION: siguen los **61 asientos sin mayorizar** de `[REST-FIX-2]` — postear
-> es decision contable del director tecnico)
+> Ultimo commit en **zyntello-app**: `[DEMO-3]` `f3205fbb` (**el asiento nacia en «la
+> primera empresa activa del tenant»** y no en la del movimiento — los 18 asientos de
+> Activos Fijos de las tres empresas demo caian en una sola, y ni siquiera en la misma en
+> local que en produccion; **el periodo de nomina vuelve a Nomina** (PSA lo creaba en TRES
+> seeders distintos), **la mayorizacion del demo queda a medias** para que su pantalla tenga
+> trabajo, y **el demo ya muestra que un usuario puede ser vendedor Y cobrador**. Medido
+> antes de tocar: ningun cliente afectado, solo la cuenta demo es multi-empresa. ATENCION:
+> siguen los asientos de produccion **sin mayorizar** — postear es decision contable)
 > | Ultimo commit en **zyntello-admin**: `[#506]` `2283952`
 > | Ultimo commit en **zyntello-website**: `ad072f43`
 
