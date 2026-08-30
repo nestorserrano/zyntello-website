@@ -265,6 +265,51 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > `[DEMO-FIX-1]`, `[CONT-CTA-4/5]`). Su detalle sí está en `app/zyntello-app/CLAUDE.md`, que es
 > la bitácora técnica. Se anota aquí para que el hueco no se lea como «no pasó nada».
 
+> **EL USUARIO DEL SISTEMA PASA A OBLIGATORIO EN VENDEDORES Y COBRADORES (2026-08-30) —
+> `[AGENTES-1]`**: decisión del director técnico — *«que cada usuario asigne sus vendedores y
+> cobradores, sino hay asignados en los procesos donde se requieran debe indicar que primero
+> debe crearlo y asociarle el usuario del sistema… que el combo de empleado de nómina sea
+> opcional pero que se pueda asociar a nómina para pagar las comisiones»*. **9 pruebas en las
+> dos guardas** · CRM + vendedores + cobradores + comisiones + Prestamello **497 passed** ·
+> las 1285 vistas compilan. **DESPLEGADO Y VERIFICADO** (`3af67b63`). **Sin migración.**
+>
+> ⚠️ **Invierte lo decidido en `[CRM-VEND-1]`**, donde dejé el usuario opcional en vendedores
+> por el comisionista externo. La regla del negocio es otra: los usuarios no ven leads, los
+> ven los vendedores.
+>
+> **Usuario obligatorio** en `store()` **y** `update()`, con mensaje propio que dice **por
+> qué** hace falta —el genérico de Laravel no explica nada— y `paraCombo()` deja de ofrecer
+> las fichas sin usuario. ⚠️ **Las históricas NO se borran**: siguen en la base y editarlas
+> exige completarlas, que es la corrección guiada que se buscaba. Sigue siendo posible que la
+> misma persona sea vendedor Y cobrador.
+>
+> **Empleado de nómina opcional, y ahora la pantalla dice qué se pierde**: el texto anterior
+> contaba lo secundario («se crean los conceptos») y callaba lo que importa —
+> `ComisionNominaService::enviarANomina()` **retorna temprano si no hay `empleado_id`**, así
+> que sin él **la comisión se calcula y se liquida pero NO llega a la nómina**.
+>
+> ⚠️ **El aviso `<x-catalogo-agentes-vacio>` dice las DOS cosas** —crear la ficha Y asociarle
+> el usuario— porque no basta con que el catálogo esté vacío: una ficha sin usuario tampoco se
+> ofrece, y decirle «no hay vendedores» a quien tiene cuatro registrados lo manda a buscar un
+> problema que no existe. En las 5 pantallas que lo necesitan, con el enlace **dentro** de la
+> pantalla y protegido. El aviso a mano de Prestamello se sustituye por el componente.
+>
+> **El demo tenía que cumplir la regla que el sistema exige**: sus 9 agentes pasan a tener
+> usuario propio (creado con el email que la ficha ya traía), o quien explorara la cuenta
+> vería el aviso en vez del módulo funcionando.
+>
+> ⚠️ **Un defecto propio que atrapó `VistasCompilanTest`**: al sustituir el aviso de
+> Prestamello, mi corte dejó un `@endif` huérfano. Lo señaló con su archivo y su línea.
+>
+> **En producción: Agua Yamel no tiene ni vendedores ni cobradores; Comercial Aranza verá el
+> aviso hasta que asigne usuario a sus 8 fichas; las demo se corrigen solas a las 3:00.**
+>
+> **Reglas nuevas: un campo obligatorio nuevo se valida en store Y en update, y su mensaje
+> dice POR QUÉ hace falta · un texto de ayuda cuenta lo que se PIERDE sin el dato, no lo que
+> se crea con él · un aviso de catálogo vacío distingue «no hay ninguno» de «los que hay no
+> sirven todavía» · un seeder de demo tiene que cumplir las reglas que el sistema exige, o la
+> demo enseña los avisos en vez del módulo.**
+
 > **`vendedor_id` SIGNIFICABA DOS COSAS DISTINTAS SEGÚN LA TABLA (2026-08-30) —
 > `[CRM-VEND-1]`**: pedido del director técnico tras `[PRE-COB-1]` — *«vendedores revísalo
 > también»* y, al ver la medición, *«debe ser del catálogo no a un usuario, los usuarios no
@@ -2138,13 +2183,12 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[CRM-VEND-1]` `32519456` (**`vendedor_id` apuntaba a
-> `vendedores.id` en Facturacion y a `users.id` en CRM: la misma columna con dos tipos y dos
-> destinos**; ademas `asignado_a` y `vendedor_id` guardaban el mismo dato 32/32 y la meta de
-> presupuesto se medía por una clave distinta a la venta, con lo que el cumplimiento salia en 0 %.
-> Desplegado y verificado; `asignado_a` conservado 33/33. ATENCION: los 33 leads quedan sin vendedor
-> del catalogo —32 demo y 1 de Comercial Aranza— porque no hay mapeo cierto: el respaldo esta en
-> `storage/app/private/crm-vendedor-map/` y se reasignan desde CRM > Leads)
+> Ultimo commit en **zyntello-app**: `[AGENTES-1]` `3af67b63` (**el usuario del sistema pasa a
+> OBLIGATORIO en vendedores y cobradores** —una ficha sin usuario no puede operar y deja de
+> ofrecerse—, **el empleado de nomina queda opcional pero la pantalla ya dice que sin el la
+> comision se calcula y NO llega a la nomina**, y los procesos que necesitan un agente avisan de
+> que hay que crearlo Y asociarle el usuario. Desplegado y verificado. ATENCION: Comercial Aranza
+> vera el aviso hasta que asigne usuario a sus 8 fichas; Agua Yamel no usa estos modulos)
 > | Ultimo commit en **zyntello-admin**: `[#506]` `2283952`
 > | Ultimo commit en **zyntello-website**: `ad072f43`
 
