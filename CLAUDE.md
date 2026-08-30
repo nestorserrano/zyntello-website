@@ -265,6 +265,64 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > `[DEMO-FIX-1]`, `[CONT-CTA-4/5]`). Su detalle sí está en `app/zyntello-app/CLAUDE.md`, que es
 > la bitácora técnica. Se anota aquí para que el hueco no se lea como «no pasó nada».
 
+> **`vendedor_id` SIGNIFICABA DOS COSAS DISTINTAS SEGÚN LA TABLA (2026-08-30) —
+> `[CRM-VEND-1]`**: pedido del director técnico tras `[PRE-COB-1]` — *«vendedores revísalo
+> también»* y, al ver la medición, *«debe ser del catálogo no a un usuario, los usuarios no
+> ven leads, son los vendedores que también pueden ser cobradores»*. **5 pruebas nuevas, 3
+> verificadas VIOLÁNDOLAS: las 3 se detectan** · CRM + vendedores + cobradores **25 passed**
+> · Facturación + las 1285 vistas **73 passed**. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN**
+> (`32519456`). ⚠️ Migración `2026_08_29_640001`.
+>
+> ⚠️⚠️ **La misma columna, con el mismo nombre, apuntaba a dos tablas distintas**:
+> `char(36)` → `vendedores.id` en Facturación (clientes, facturas, pedidos, cotizaciones,
+> metas, zonas) y **`bigint` → `users.id`** en CRM (`crm_leads`, `crm_contactos`). Un JOIN
+> escrito asumiendo consistencia devuelve vacío. Es peor que el caso de cobradores, donde al
+> menos el nombre de la columna era el único indicio equivocado.
+>
+> **Y en CRM había un campo duplicado y otro muerto**, medido: `asignado_a` y `vendedor_id`
+> poblados **32/32 con cero diferencias** —el mismo dato dos veces— y `vendedor_codigo` en
+> **0 de 33**. ⚠️ `CrmPresupuestoController` traía el comentario *«Usuarios activos de la
+> company (reemplaza vendedores de facturación)»*: esa sustitución dejaba la **meta**
+> midiéndose por `user_id` mientras la **venta** se agrupaba por vendedor, así que el
+> cumplimiento salía en **0 % para todos** sin que nada lo dijera.
+>
+> ⚠️ **`asignado_a` NO se fusiona**, y lo que lo impidió fue el lead 33: los 32 primeros eran
+> idénticos, pero el productivo de Comercial Aranza tiene `vendedor_id=192` y
+> `asignado_a=237` — **personas distintas**. Además `asignado_a` es la **guarda de acceso**
+> (`$lead->asignado_a !== auth()->id()` impide abrir el lead de otro).
+>
+> ⚠️⚠️ **No hay backfill automático, y es deliberado.** Mapear por email **parece** posible
+> —da 3 coincidencias— pero es un falso positivo: **los cuatro vendedores de Comercial Aranza
+> comparten el email de la usuaria que los registró**, así que daría tres candidatos
+> empatados y asignaría la venta al vendedor equivocado. *Una asignación falsa es peor que
+> ninguna: nadie la revisa porque el campo se ve lleno.* Lo no resuelto se vuelca a
+> `storage/app/private/crm-vendedor-map/` antes de tocar la columna, y **`asignado_a` queda
+> intacto (33/33)**: no se pierde quién atendía cada lead.
+>
+> **Diferencia deliberada con cobradores**: un cobrador sin usuario **no** se ofrece (la app
+> móvil resuelve su cartera con `auth()->id()`), pero un vendedor sin usuario **sí** — un
+> comisionista externo es dueño de la venta para metas y comisiones aunque no entre al
+> sistema; lo único que no puede es ver sus leads. ⚠️ **Y una misma persona puede tener ficha
+> de vendedor Y de cobrador con el mismo `user_id`**: son dos roles del mismo empleado, con
+> prueba que lo verifica.
+>
+> ⚠️ **Un defecto propio, encontrado midiendo y no leyendo**: tras el primer `demo:reset` el
+> conteo decía «14 de 14 con vendedor» mientras la pantalla mostraba «sin asignar» — el
+> seeder seguía guardando `$adminUser->id` porque mi script de edición **abortó en un assert
+> antes de escribir**. Lo delató comparar el id guardado contra los ids reales del catálogo.
+>
+> **En producción: 4/4 tipos convertidos, `asignado_a` conservado 33/33, volcado de respaldo
+> generado, 33 leads a reasignar** — 32 demo (se regeneran cada madrugada) y 1 de Comercial
+> Aranza, que es empresa de prueba. **Agua Yamel no usa CRM: 0 leads, 0 contactos.**
+>
+> **Reglas nuevas: la misma columna con el mismo nombre no puede apuntar a dos tablas
+> distintas según el módulo · dos campos poblados al 100 % con cero diferencias son el mismo
+> dato guardado dos veces, pero antes de fusionarlos hay que buscar el caso donde SÍ difieren
+> · un mapeo por email que da varias coincidencias no es un mapeo, es un empate · una meta y
+> su cumplimiento se agrupan por la misma clave o el reporte sale en cero sin decir por qué ·
+> un comentario que dice «reemplaza X» es el rastro de una sustitución que hay que revisar ·
+> un script de edición que aborta en un assert no escribió nada.**
+
 > **EL COBRADOR DE PRESTAMELLO ERAN LOS 40 USUARIOS DEL TENANT (2026-08-29) —
 > `[PRE-COB-1]`**: pedido del director técnico — *«facturación también tiene cobradores y
 > vendedores, ¿por qué no usamos la misma tabla? debería ser cobradores una única tabla con
@@ -2080,13 +2138,13 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[PRE-COB-1]` `a68bd05f` (**Prestamello ofrecia los 40
-> usuarios del tenant como cobradores en vez del catalogo `cobradores` que ya compartian
-> Facturacion y CxC**; revierte la migracion 600009 que partia de una premisa falsa —la columna
-> guarda un `users.id` a proposito, es lo que la app movil resuelve con `auth()->id()`—. Desplegado
-> y verificado, impacto de datos CERO. ATENCION: `vendedor_id` es char(36)->catalogo en Facturacion
-> y bigint->users en CRM, con `asignado_a` duplicado 32/32 y `vendedor_codigo` en 0/32: pendiente de
-> decision del director tecnico)
+> Ultimo commit en **zyntello-app**: `[CRM-VEND-1]` `32519456` (**`vendedor_id` apuntaba a
+> `vendedores.id` en Facturacion y a `users.id` en CRM: la misma columna con dos tipos y dos
+> destinos**; ademas `asignado_a` y `vendedor_id` guardaban el mismo dato 32/32 y la meta de
+> presupuesto se medía por una clave distinta a la venta, con lo que el cumplimiento salia en 0 %.
+> Desplegado y verificado; `asignado_a` conservado 33/33. ATENCION: los 33 leads quedan sin vendedor
+> del catalogo —32 demo y 1 de Comercial Aranza— porque no hay mapeo cierto: el respaldo esta en
+> `storage/app/private/crm-vendedor-map/` y se reasignan desde CRM > Leads)
 > | Ultimo commit en **zyntello-admin**: `[#506]` `2283952`
 > | Ultimo commit en **zyntello-website**: `ad072f43`
 
