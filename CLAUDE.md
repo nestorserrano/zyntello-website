@@ -265,6 +265,37 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > `[DEMO-FIX-1]`, `[CONT-CTA-4/5]`). Su detalle sí está en `app/zyntello-app/CLAUDE.md`, que es
 > la bitácora técnica. Se anota aquí para que el hueco no se lea como «no pasó nada».
 
+> **EL COMBO OFRECÍA EL PLAN DE CUENTAS DE OTRA EMPRESA (2026-08-31) — `[CONT-CTA-6]`**:
+> reporte del director técnico — *«en `parametros-contables/modulo-facturacion` no está cargando
+> las cuentas contables de la empresa activa»*. **3 pruebas nuevas, las 3 verificadas VIOLÁNDOLAS:
+> las 3 se detectan** · Contabilidad **118 passed**. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN**
+> (`0c574cdc`). **Sin migración.**
+>
+> ⚠️⚠️ **Los dos endpoints que alimentan ese modal resolvían la empresa con `->first()` sobre las
+> activas del tenant**, ignorando por completo la empresa de la sesión. Es la misma forma de
+> `[CONT-EMP-1]`. **Medido en producción**: la cuenta demo tiene 3 empresas con 48 cuentas cada una
+> y devolvía **siempre «Distribuidora Mayoreo»**, incluso trabajando en «Constructora Demo».
+>
+> ⚠️ **Y no falla de forma visible**: el combo **sí trae cuentas**, solo que las de otra empresa —
+> con planes distintos, el código guardado no existe en la empresa del documento y el asiento sale
+> en `pendiente_configuracion` semanas después. Se resuelve con `empresa_activa()`: desde `[#833]`
+> `cont_*.empresa_id` **es** `empresas.id`, sin lookup intermedio.
+>
+> ⚠️ **El anti-patrón de `[#1149]` seguía en 10 métodos del mismo archivo**: validaban con
+> `abort_unless` y **dos líneas después redefinían `$company` con `currentCompany`**, que puede ser
+> null y anula la validación. Eliminadas. **Los demás sitios del ecosistema ya acotaban por
+> `empresa_id`** —`IntegracionContableService`, `ContabilidadEmpresaService`,
+> `IntegracionContableConfigController`—: este era el último.
+>
+> **Verificado con datos reales: cero cuentas ajenas en las 6 empresas de los 4 suscriptores**
+> (demo 48/48/48, Agua Yamel 40, Comercial Aranza 61). ⚠️ TAPIA sigue con **0 cuentas**, que es el
+> pendiente ya declarado en `[CONT-CTA-2]`, no un efecto de este cambio.
+>
+> **Reglas nuevas: un combo de configuración contable ofrece lo de la empresa ACTIVA, y el síntoma
+> de no hacerlo no es una lista vacía sino una lista llena de otra empresa · un `abort_unless` que
+> valida `company()` no protege si dos líneas después se redefine con `currentCompany` · cuando un
+> defecto reincide, la guarda mira el CÓDIGO además del comportamiento.**
+
 > **LA CONSOLIDACIÓN NUNCA PUDO EJECUTARSE, Y NINGUNA LÍNEA DE COMPRAS SIN ARTÍCULO
 > (2026-08-31) — `[CONT-CONS-1]`, `[COM-ART-1]`, `[AGENTES-2]`**: cinco pedidos del director
 > técnico — *«cont_homologaciones_cuenta cómo se llena y cuándo la consultan?»* · *«cada empresa
@@ -2388,7 +2419,10 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[AGENTES-2b]` `fdabae39` (**la consolidacion
+> Ultimo commit en **zyntello-app**: `[CONT-CTA-6]` `0c574cdc` (**el combo de cuentas
+> contables ofrecia el plan de OTRA empresa del mismo suscriptor** — `->first()` sobre las
+> activas del tenant en vez de la empresa ACTIVA; verificado en produccion: cero cuentas
+> ajenas en las 6 empresas). Anterior: `[AGENTES-2b]` `fdabae39` (**la consolidacion
 > multiempresa nunca pudo ejecutarse** —siete columnas inexistentes y todo el modulo en el
 > espacio de ids viejo tras `[#833]`—, **ninguna linea de Compras vuelve a nacer sin
 > articulo** en los cinco puntos de captura, y **el usuario interno ya se puede hacer
