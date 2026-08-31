@@ -135,9 +135,9 @@
         asociados (correo electrónico y WhatsApp).
       </p>
       <div class="meta">
-        <span>Última actualización: <strong>28 de julio de 2026</strong></span>
+        <span>Última actualización: <strong>31 de agosto de 2026</strong></span>
         <span>Vigencia: <strong>desde su publicación</strong></span>
-        <span>Versión: <strong><a class="verlink" href="#s25">1.0 — ver control de cambios</a></strong></span>
+        <span>Versión: <strong><a class="verlink" href="#s25">1.1 — ver control de cambios</a></strong></span>
         <span>Idioma original: <strong>español</strong></span>
       </div>
     </div>
@@ -351,6 +351,11 @@
         autorización y el control del propio Suscriptor.
       </p>
       <p>
+        El mismo aislamiento rige el <strong>respaldo descargable</strong> de la sección 18.4: el
+        archivo que el Suscriptor genera contiene únicamente sus propias filas y nunca datos de otro
+        Suscriptor.
+      </p>
+      <p>
         Está expresamente prohibido intentar eludir estos controles de aislamiento (ver sección 11).
       </p>
     </section>
@@ -456,8 +461,9 @@
         días</strong>—:
       </p>
       <ul>
-        <li>el Suscriptor dispone de <strong>treinta (30) días</strong> para solicitar la exportación de
-        sus datos en formatos estándar (CSV, Excel o PDF), sin costo adicional razonable;</li>
+        <li>el Suscriptor dispone de <strong>treinta (30) días</strong> para descargar su respaldo
+        completo por sí mismo (sección 18.4) o para solicitar la exportación de sus datos en formatos
+        estándar (CSV, Excel o PDF), sin costo adicional razonable;</li>
         <li>vencido ese plazo, Zyntello podrá <strong>eliminar definitivamente</strong> los Datos del
         Suscriptor, salvo aquella información que deba conservarse por obligación legal, contable o
         tributaria, o para la defensa de reclamaciones.</li>
@@ -795,16 +801,57 @@
         incidencias que impidan la operación se atienden con prioridad.
       </p>
 
-      <h3>18.3. Respaldos</h3>
+      <h3>18.3. Respaldos de la Plataforma</h3>
       <div class="note">
         <p>
           <b>Zyntello realiza respaldos periódicos de la base de datos.</b> Estos respaldos son una
           medida de recuperación de la Plataforma frente a incidentes de infraestructura y
-          <strong>no sustituyen las exportaciones que el Suscriptor debe realizar</strong> de su propia
-          información crítica. Recomendamos exportar periódicamente los datos relevantes desde los
-          reportes de cada Módulo.
+          <strong>no sustituyen el respaldo que el Suscriptor debe descargar</strong> de su propia
+          información crítica (ver 18.4).
         </p>
       </div>
+
+      <h3>18.4. Respaldo descargable del Suscriptor</h3>
+      <p>
+        La Plataforma incluye, sin costo adicional y para todos los planes, una función de
+        <strong>respaldo autoservicio</strong> en <em>Configuración&nbsp;→&nbsp;Respaldo de datos</em>.
+        Genera un archivo ZIP con el volcado completo de los datos de las Empresas del Suscriptor
+        —clientes, proveedores, artículos, documentos, movimientos y registros contables—, un
+        manifiesto con el detalle de qué se incluyó y un instructivo de restauración.
+      </p>
+      <div class="note ok">
+        <p>
+          <b>Alcance del archivo.</b> Contiene <strong>exclusivamente los datos del Suscriptor que lo
+          genera</strong>. No es un volcado de la base de datos de Zyntello ni incluye información de
+          otros Suscriptores, en aplicación del aislamiento de la sección 6. Los datos técnicos comunes
+          a la Plataforma —sesiones, tokens y notificaciones— quedan fuera, y el propio archivo declara
+          qué se omitió y por qué.
+        </p>
+      </div>
+      <p>
+        <strong>Periodicidad recomendada y avisos.</strong> La Plataforma recuerda descargar el
+        respaldo <strong>todos los viernes</strong> y el <strong>último día de cada mes</strong>. El
+        aviso es un recordatorio operativo: no genera obligación para Zyntello ni traslada al
+        Suscriptor una responsabilidad distinta de la que ya establece esta sección.
+      </p>
+      <p>
+        <strong>Custodia de la copia descargada.</strong> Una vez descargado, el archivo sale de la
+        Plataforma y queda bajo el control exclusivo del Suscriptor, que es responsable de guardarlo
+        en un lugar seguro, de protegerlo y de eliminarlo cuando corresponda. Zyntello
+        <strong>no puede recuperar, rastrear ni eliminar</strong> copias ya descargadas, y no responde
+        por su pérdida, divulgación o uso indebido fuera de la Plataforma.
+      </p>
+      <p>
+        <strong>Restauración.</strong> El archivo está pensado para restaurarse sobre una base de datos
+        vacía. La restauración sobre una cuenta en producción no se ejecuta de forma automática:
+        requiere solicitud al soporte y se realiza de forma asistida, porque sobrescribir datos vigentes
+        es una operación irreversible.
+      </p>
+      <p>
+        En el servidor se conservan los <strong>cinco (5) respaldos más recientes</strong> por
+        Suscriptor; los anteriores se eliminan. La constancia de su generación y descarga se conserva
+        mientras dure la suscripción.
+      </p>
     </section>
 
     <section id="s19">
@@ -962,7 +1009,12 @@
           </thead>
           <tbody>
             <tr>
-              <td>1.0 <span class="vig">Vigente</span></td>
+              <td>1.1 <span class="vig">Vigente</span></td>
+              <td>31 de agosto de 2026</td>
+              <td><strong>Respaldo descargable del Suscriptor.</strong> Se documenta la función de respaldo autoservicio, incluida sin costo en todos los planes: sección <strong>18.4</strong> nueva (qué contiene el archivo, aislamiento frente a otros Suscriptores, periodicidad recomendada de los avisos, custodia de la copia una vez descargada y condiciones de restauración), precisión en <strong>18.3</strong> de que el respaldo de la Plataforma no sustituye al del Suscriptor, mención del aislamiento aplicado al archivo en la sección <strong>6</strong>, y actualización de la sección <strong>9</strong> para reflejar que tras la terminación el Suscriptor puede descargar su respaldo por sí mismo. No cambian precios, obligaciones de pago, límites de responsabilidad ni jurisdicción.</td>
+            </tr>
+            <tr>
+              <td>1.0</td>
               <td>28 de julio de 2026</td>
               <td><strong>Primera publicación.</strong> Documento inicial con 25 secciones: identificación del proveedor, aceptación, definiciones, objeto del servicio con los 21 módulos disponibles, cuenta y usuarios, aislamiento de datos, planes y pagos, cancelación y reembolsos, suspensión y terminación, propiedad intelectual, uso aceptable, comunicaciones por correo y WhatsApp, datos personales y rol de las partes, datos tratados por módulo, terceros y subencargados, inteligencia artificial, cumplimiento fiscal, disponibilidad y respaldos, limitación de responsabilidad, indemnización, modificaciones, ley aplicable, disposiciones generales, contacto y control de cambios.</td>
             </tr>
