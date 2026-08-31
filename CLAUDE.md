@@ -265,6 +265,58 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > `[DEMO-FIX-1]`, `[CONT-CTA-4/5]`). Su detalle sí está en `app/zyntello-app/CLAUDE.md`, que es
 > la bitácora técnica. Se anota aquí para que el hueco no se lea como «no pasó nada».
 
+> **EL DASHBOARD MOSTRABA 300 LOTES SIN ARTÍCULO (2026-08-31) — `[INV-LOTE-1]`**: reporte del
+> director técnico — *«en el dashboard de inventario aparece un resumen lotes por vencer pero no
+> trae los códigos de los artículos… verifica el módulo de lotes, verifica los tooltips de ayuda y
+> la ayuda de los módulos y vistas a ver cuáles faltan»*. **4 reglas verificadas VIOLÁNDOLAS: las 4
+> se detectan** · Inventario **93 passed** · ayuda **8 passed**. **DESPLEGADO Y VERIFICADO EN
+> PRODUCCIÓN** (`068afc8f`). **Sin migración.**
+>
+> ⚠️⚠️ **La consulta y la vista estaban bien: lo que fallaba eran los DATOS.** Medido en producción:
+> **300 de 312 lotes colgaban de artículos borrados**, con **74 750 unidades** presentadas como
+> stock próximo a vencer sin poder decir de qué artículo; `inv_seriales` estaba **al 100 %, 8 de 8**.
+> ⚠️ **El síntoma no es un error sino una celda vacía** —el `?->` de la vista no lanza nada—, así que
+> el defecto podía vivir meses.
+>
+> **La causa**: `InventarioSeeder::limpiar()` borra `inv_articulos` y **nunca** `inv_lotes` ni
+> `inv_seriales`, y esas tablas **no tienen FK** (Bluehost las rechaza), así que el huérfano nace en
+> el acto — la forma de `[NOM-DEMO-1]`. Crecía **~12 por reset** desde el 2026-08-11. ⚠️ El borrado
+> va **por `company_id` DIRECTO**: una subconsulta de artículos no alcanza a los que ya perdieron su
+> padre y quedarían inmunes para siempre.
+>
+> ⚠️ **Un segundo defecto al revisar el módulo**: la ficha del lote listaba los despachos con
+> `sinScopeEmpresa()` y `where('company_id')` a secas — alcanza a **todas las empresas del
+> suscriptor** y mostraría despachos ajenos (forma de `[AGENTES-6]`). La tabla **sí tiene
+> `empresa_id`**: faltaba el filtro, no la columna. Los otros 8 puntos del módulo ya filtraban bien.
+>
+> **La ayuda**: `lotes.show`, `seriales.index` y `seriales.show` existían **sin una línea**. Quedan
+> documentadas con **7 tooltips que LEEN el catálogo**, verificados uno a uno: cero mudos.
+>
+> ⚠️ **Un defecto propio**: mi aserción buscaba `inv_lotes` **a secas** y pasaba por
+> `inv_lotes_auditorias`, que está en la misma lista — **NO detectaba su violación**. Solo lo
+> encontró violarla.
+>
+> ⚠️⚠️ **La cobertura de ayuda del ecosistema, medida**: la guarda existente verifica que cada
+> **módulo** tenga archivo, **no que cada PANTALLA lo tenga**. Comparando rutas contra claves
+> documentadas: **~1 000 pantallas sin ayuda** —Inventario **1 %**, PSA 2 %, Nómina 2 %, Compras 3 %,
+> Contabilidad 4 %, frente a ncf/facturae/docfiscal al **100 %** y Restaurante al 70 %—. El número
+> real es menor (la cuenta incluye callbacks y export que no son pantallas), pero el orden de
+> magnitud se sostiene. ⚠️ **PENDIENTE del director técnico**: documentarlo son varias sesiones y el
+> orden es decisión de alcance. ⚠️ Mi primera medición dio **0 % en TODOS** y era mi criterio, no el
+> sistema: las claves van **sin el prefijo del módulo**.
+>
+> **En producción: lotes 312 → 12, huérfanos 300 → 0, stock fantasma 74 750 → 0, seriales huérfanos
+> 8 → 0, y las 10 filas del widget traen su código.** ⚠️ **Los 300 eran TODOS de la cuenta demo**,
+> medido antes de tocar nada: **Agua Yamel —el único cliente real—, Comercial Aranza y TAPIA tenían
+> cero**.
+>
+> **Reglas nuevas: una relación que rinde una celda vacía con `?->` esconde un huérfano y no lanza
+> nada — cuando una columna sale en blanco se miden los DATOS antes de revisar la consulta · sin FK
+> en cascada el hijo sobrevive a su padre en el acto · una limpieza por company_id directo alcanza a
+> los ya huérfanos, una por subconsulta del padre no · una aserción sobre una subcadena pasa por el
+> nombre más largo que la contiene · una auditoría que da 0 % en todo mide mal, no encontró un
+> sistema roto · una guarda que exige archivo por MÓDULO no dice nada sobre las pantallas de dentro.**
+
 > **LAS 11 PANTALLAS DE CUENTAS CONTABLES AL FORMATO DEL MODELO (2026-08-31) — `[CTAS-STD]`**:
 > pedido del director técnico — *«todos los módulos tienen su enlace en Cuentas Contables, quiero
 > que todos tengan este formato: `parametros-contables/cxp?categoria=otros`»*. **1 guarda nueva
@@ -2489,7 +2541,12 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[CTAS-STD]` `5e2f1b40` (**las 11 pantallas de
+> Ultimo commit en **zyntello-app**: `[INV-LOTE-1]` `068afc8f` (**el dashboard mostraba
+> 300 lotes sin articulo**: el seeder borraba los articulos y nunca los lotes, y sin FK el
+> huerfano nace en el acto — 74 750 unidades de stock fantasma, TODAS de la cuenta demo).
+> ⚠️ **PENDIENTE declarado: ~1 000 pantallas del ecosistema sin ayuda** (Inventario al 1 %,
+> PSA y Nomina al 2 %); documentarlo son varias sesiones y el orden es decision de alcance.
+> Anterior: `[CTAS-STD]` `5e2f1b40` (**las 11 pantallas de
 > Cuentas Contables al formato del modelo**; de paso: Condominios no estaba en el catalogo
 > contable y Prestamello escondia 4 conceptos que nadie podia configurar). Anterior: `[RUTAS-1]` `318cd91b` (**siete pantallas del menu
 > no se podian abrir**: un comodin declarado antes las interceptaba — entre ellas provision de
