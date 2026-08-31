@@ -265,6 +265,46 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > `[DEMO-FIX-1]`, `[CONT-CTA-4/5]`). Su detalle sí está en `app/zyntello-app/CLAUDE.md`, que es
 > la bitácora técnica. Se anota aquí para que el hueco no se lea como «no pasó nada».
 
+> **LAS 11 PANTALLAS DE CUENTAS CONTABLES AL FORMATO DEL MODELO (2026-08-31) — `[CTAS-STD]`**:
+> pedido del director técnico — *«todos los módulos tienen su enlace en Cuentas Contables, quiero
+> que todos tengan este formato: `parametros-contables/cxp?categoria=otros`»*. **1 guarda nueva
+> verificada VIOLÁNDOLA** · Contabilidad + vistas + rutas **126 passed**. **DESPLEGADO Y VERIFICADO
+> EN PRODUCCIÓN** (`5e2f1b40`). **Sin migración.**
+>
+> ⚠️ **Medido primero: había TRES familias y 17 enlaces distintos**, y solo cxp y cxc usaban el
+> formato pedido. Las otras **11 arrastraban el patrón viejo de DOS modales sueltos** —uno para la
+> cuenta y otro para el centro— en vez del modal en cascada CC→Cuenta que `[#1392]` fijó como
+> estándar. Con dos modales sueltos **la cuenta se elige SIN filtrar por centro de costo**, así que
+> se puede guardar una combinación que el plan no admite; y cada copia divergió («Centro» vs
+> «Centro de Costo»). Las 5 vistas de los verticales eran **copias literales**.
+>
+> ⚠️⚠️ **Antes de mover nada hubo que descartar un defecto que NO existía**: el hub resuelve con
+> `entidad_tipo='modulo'` y los verticales guardan en `'carwash'`, `'prestamello'`… — parecía que
+> **escribían donde nadie lee**. Leyendo los DOS lados resultó que no: el vertical resuelve la
+> cuenta él mismo y pasa la línea ya resuelta. *Casi reporto un defecto grave inexistente.* Y eso
+> es lo que hace segura la unificación: el catálogo declara cada vertical con **su mismo
+> `entidad_tipo`** → migración transparente (4 verticales con **0 filas**, Restaurante con 1).
+>
+> **Dos huecos que aparecieron al medir**: ⚠️ **Condominios no estaba en el catálogo contable**
+> (0 conceptos; vivía de una constante local) → declarado con sus 8; y ⚠️⚠️ **Prestamello mostraba
+> 6 conceptos cuando el catálogo declara 10** — los 4 de venta a crédito y provisión de incobrables
+> de `[PRE-F2-2]`/`[PRE-F4-2]` **no se podían configurar desde ninguna pantalla** (verificado: 0
+> empresas). Restaurante gana su ruta genérica, que nunca tuvo.
+>
+> **Quedan fuera con motivo**: Facturación guarda en columnas propias de `fact_configuracion_fiscal`
+> y ya tiene su flag de transición; Inventario es por instancia y la genérica **remite a él**.
+>
+> ⚠️ **La guarda encontró dos vistas más de las que yo había tocado** (activos e inventario), y la
+> guarda que ya existía —`CatalogoConceptosTest`— **frenó el cambio** hasta declarar `'condominios'`
+> en su lista blanca. En producción: los **16 ítems** del menú resuelven y los **17 módulos**
+> declaran conceptos.
+>
+> **Reglas nuevas: cuando el mismo modal existe en tres implementaciones, las copias divergen y el
+> usuario ve tres pantallas distintas para la misma tarea · antes de declarar que una pantalla
+> «escribe donde nadie lee» hay que leer LOS DOS lados · una pantalla que muestra menos conceptos
+> que los declarados esconde configuración que nadie puede completar · un módulo del catálogo sin
+> conceptos abre su pantalla vacía, y eso se comprueba con una prueba.**
+
 > **SIETE PANTALLAS DEL MENÚ NO SE PODÍAN ABRIR (2026-08-31) — `[RUTAS-1]`**: reporte del
 > director técnico — *«en cxp no existe `/cxp/config`, da error»*. **1 guarda nueva, verificada
 > VIOLÁNDOLA en dos archivos distintos: las dos se detectan** · CxP + CxC + Compras + CRM
@@ -2449,7 +2489,9 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[RUTAS-1]` `318cd91b` (**siete pantallas del menu
+> Ultimo commit en **zyntello-app**: `[CTAS-STD]` `5e2f1b40` (**las 11 pantallas de
+> Cuentas Contables al formato del modelo**; de paso: Condominios no estaba en el catalogo
+> contable y Prestamello escondia 4 conceptos que nadie podia configurar). Anterior: `[RUTAS-1]` `318cd91b` (**siete pantallas del menu
 > no se podian abrir**: un comodin declarado antes las interceptaba — entre ellas provision de
 > incobrables, castigos y dunning, que `[CXC-F4]` entrego completas). Anterior: `[CONT-CTA-6]` `0c574cdc` (**el combo de cuentas
 > contables ofrecia el plan de OTRA empresa del mismo suscriptor** — `->first()` sobre las
