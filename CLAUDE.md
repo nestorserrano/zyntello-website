@@ -265,6 +265,63 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > `[DEMO-FIX-1]`, `[CONT-CTA-4/5]`). Su detalle sí está en `app/zyntello-app/CLAUDE.md`, que es
 > la bitácora técnica. Se anota aquí para que el hueco no se lea como «no pasó nada».
 
+> **LAS CREDENCIALES DE CORREO SALÍAN DEL `.env` (2026-08-31) — `[CRM-EMAIL-1]`**: reporte del
+> director técnico — *«me indicas que realice modificaciones al `.env` y que limpie caché, pero yo
+> no soy quien configura el sistema, es el mismo usuario… es un SaaS, quizá no siempre estaré para
+> todos los usuarios»*. **6 reglas verificadas VIOLÁNDOLAS: las 6 se detectan** · CRM + ayuda +
+> rutas + las 1286 vistas **26 passed**. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`6d451171`).
+> ⚠️ Migración `2026_08_31_700001`.
+>
+> ⚠️⚠️ **Tenía razón, y la función no servía para nadie.** «Mis cuentas de correo» le pedía al
+> USUARIO FINAL editar el `.env` y correr `php artisan config:clear` — imposible en un SaaS.
+> **Medido antes de tocar nada: 0 cuentas conectadas y las credenciales VACÍAS**: no estaba mal
+> configurada, **nunca funcionó para nadie, ni para el propio director técnico**. Forma de
+> `[BAN-F4-FIX]`. Ventaja: cambiarla no rompía nada. ⚠️ Los tokens **ya se cifraban** bien; el
+> defecto era solo el origen de las credenciales.
+>
+> **El ecosistema ya tenía el patrón resuelto en CUATRO módulos** —WhatsApp (`cloud_token`), IA de
+> Compras (3 API keys), burós de Prestamello, QuickBooks de PSA—: credenciales cifradas por empresa
+> desde pantalla. El correo del CRM era el único desviado.
+>
+> ⚠️⚠️ **El dato que decidió la arquitectura**: `gmail.send` y `gmail.readonly` son scopes
+> **RESTRINGIDOS**. Una app OAuth única de la plataforma —lo ideal en un SaaS— exige **auditoría de
+> seguridad anual de terceros (USD 15 000–75 000/año)**. ⚠️ La excepción que rescata la
+> alternativa: la app creada **dentro del Workspace del propio cliente, en modo «Internal», NO
+> requiere verificación**. Decisión del director técnico: **los dos caminos, por EMPRESA,
+> configurables por owner o `can_configure`** — OAuth (enviar y leer) y **SMTP con contraseña de
+> aplicación** (solo enviar, sin trámites).
+>
+> ⚠️ **Tres decisiones contra el fallo silencioso**: el SMTP **se prueba antes de guardar** (si no,
+> el vendedor cree que quedó conectado y lo descubre al mandar una cotización) · la empresa viaja
+> en el **`state` del OAuth, no en la sesión** (entre el redirect y el callback puede cambiar de
+> empresa y el token quedaría en la equivocada) · y ⚠️⚠️ **`enviarEmail()` habría reventado con
+> SMTP** —descifra un `access_token` que es NULL— y su `catch` lo devolvía como `false`: la cuenta
+> se conectaría bien y los correos **no saldrían**.
+>
+> **Lo que se ofrece sale de lo configurado**: sin credenciales no hay botones sino un aviso que
+> dice por qué y enlaza solo si tienes permiso (`[AGENTES-4]`). ⚠️ **Un secreto vacío al guardar NO
+> borra el guardado** —la pantalla nunca lo muestra, así que guardar tras cambiar otra cosa lo
+> habría borrado en silencio— y la **URI de redirección se DERIVA** con botón de copiar, porque
+> Google exige que coincida carácter por carácter.
+>
+> ⚠️ **Un defecto propio de método**: el primer script de edición **abortó en un `re.sub` y no
+> escribió nada**; lo delató que el conteo de referencias al `.env` siguiera en 10 tras informar
+> «migrado» (`[CRM-VEND-1]`).
+>
+> **En producción: tabla creada, 3 rutas resuelven, y el cifrado verificado LEYENDO LA FILA CRUDA**
+> —con `DB::table()`, porque el modelo descifra al leer y consultarlo por Eloquent haría pasar la
+> prueba aunque quitaran el cast—. Fila de prueba borrada, scripts retirados (`[#1250]`).
+>
+> **Reglas nuevas: en un SaaS, unas instrucciones que piden editar el `.env` o correr `artisan` no
+> son documentación: son una función que su audiencia no puede activar · antes de elegir
+> arquitectura OAuth hay que mirar la CLASE de scope — los restringidos exigen auditoría anual y
+> descartan la app única de plataforma · una credencial cifrada se verifica leyendo la fila CRUDA ·
+> un secreto que la pantalla no muestra no puede borrarse al guardar vacío · el método que solo
+> puede enviar tiene que decirlo antes de que el usuario se comprometa · un dato que viaja en un
+> redirect OAuth va en el `state`, no en la sesión · al agregar un método de conexión hay que
+> recorrer a sus CONSUMIDORES: el envío descifraba un token que SMTP no tiene y fallaba en
+> silencio.**
+
 > **EL DASHBOARD MOSTRABA 300 LOTES SIN ARTÍCULO (2026-08-31) — `[INV-LOTE-1]`**: reporte del
 > director técnico — *«en el dashboard de inventario aparece un resumen lotes por vencer pero no
 > trae los códigos de los artículos… verifica el módulo de lotes, verifica los tooltips de ayuda y
@@ -2541,7 +2598,10 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[INV-LOTE-1]` `068afc8f` (**el dashboard mostraba
+> Ultimo commit en **zyntello-app**: `[CRM-EMAIL-1]` `6d451171` (**las credenciales de
+> correo salian del .env**: en un SaaS el suscriptor no puede tocarlo — medido, la funcion
+> nunca sirvio para nadie. Ahora por empresa, cifradas, con OAuth y SMTP).
+> Anterior: `[INV-LOTE-1]` `068afc8f` (**el dashboard mostraba
 > 300 lotes sin articulo**: el seeder borraba los articulos y nunca los lotes, y sin FK el
 > huerfano nace en el acto — 74 750 unidades de stock fantasma, TODAS de la cuenta demo).
 > ⚠️ **PENDIENTE declarado: ~1 000 pantallas del ecosistema sin ayuda** (Inventario al 1 %,
