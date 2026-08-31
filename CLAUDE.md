@@ -265,6 +265,73 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > `[DEMO-FIX-1]`, `[CONT-CTA-4/5]`). Su detalle sí está en `app/zyntello-app/CLAUDE.md`, que es
 > la bitácora técnica. Se anota aquí para que el hueco no se lea como «no pasó nada».
 
+> **LA CONSOLIDACIÓN NUNCA PUDO EJECUTARSE, Y NINGUNA LÍNEA DE COMPRAS SIN ARTÍCULO
+> (2026-08-31) — `[CONT-CONS-1]`, `[COM-ART-1]`, `[AGENTES-2]`**: cinco pedidos del director
+> técnico — *«cont_homologaciones_cuenta cómo se llena y cuándo la consultan?»* · *«cada empresa
+> es independiente, no se mezcla nada entre ellas salvo al consolidar, verifica»* · *«en compras
+> borra todo, que no quede nada huérfano en ningún módulo»* · *«que no llegue a recepción ni orden
+> de compra ni facturas de compras documentos sin código de artículo»* · *«en la creación del
+> usuario interno no aparece la opción de hacerlo Cobrador»*.
+> Compras + Inventario **186 passed** · las 1285 vistas compilan · `demo:reset` idempotente.
+> **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`fdabae39`). **Sin migración nueva** — se aplicaron
+> las tres pendientes (`660001`, `670001`, `680001`).
+>
+> ⚠️⚠️ **Preguntar por una tabla destapó que TODO el módulo de consolidación estaba roto.**
+> `cont_homologaciones_cuenta` **no la llena nadie** —no existe pantalla— y su único lector,
+> `ConsolidacionService::ejecutar()`, **no podía correr**: consultaba **SIETE columnas que no
+> existen** (`cuenta_origen_id` por `cuenta_empresa_origen_id`, débito/crédito por `monto_local`,
+> `revertido_por` por `ejecutado_por`…). Misma familia de `[TENANT-A15]`, y pasa inadvertida por
+> lo mismo: **sin datos con los que ejercitarla, la pantalla se ve bien.**
+>
+> ⚠️⚠️ **Y debajo había algo peor: todo el módulo quedó en el espacio de ids VIEJO tras `[#833]`.**
+> `cont_grupos_consolidacion.empresa_controladora_id` y `cont_empresas_consolidadas.empresa_id`
+> apuntan a **`cont_empresas.id`** —el UUID interno— mientras el mayor usa **`empresas.id`**.
+> Aunque las columnas hubieran existido, el `whereHas` no habría encontrado **ni una línea** y la
+> consolidación habría salido **en cero sin decir por qué**. Se traduce con un mapa cargado una
+> vez. **Verificado EJECUTÁNDOLO**: 2 transacciones, activos 450 000,00, y la reversión las borra.
+> ⚠️ **PENDIENTE declarado**: esa tabla sigue sin pantalla.
+>
+> **El aislamiento entre empresas, medido y no supuesto**: el artículo de la empresa 2 **no se ve**
+> desde la 1, cada una tiene su catálogo (37/25/25), el **mismo código existe en las tres** como
+> registros independientes, y **cero artículos o códigos de barra sin `empresa_id`** — que es lo que
+> importa, porque el scope es LAXO con el NULL y una fila sin empresa se vería desde todas.
+>
+> ⚠️ **Cinco puntos de captura de Compras aceptaban líneas sin artículo** (requisición, OC, las tres
+> rutas de recepción, factura de proveedor y factura por IA). **El síntoma no aparece al capturar**:
+> el documento se ve normal, se aprueba y se paga. Aparece después, en tres sitios y sin poder
+> atribuirse a nada — la liquidación no encuentra el stock que recostear, la línea no entra al
+> Kardex, y la trazabilidad del costo por artículo no la ve. En producción son **261 de 286** líneas
+> de recepción: el caso normal, no el raro. Ahora es `required` en los seis sitios, sabiendo que
+> **rompe a los llamadores existentes** — **dos pruebas lo detectaron** y se corrigieron pasando un
+> artículo real. ⚠️ **El servicio también es un artículo**: la requisición de licencias era la única
+> línea sin código posible. **Medido: 15 líneas sin artículo → 0, cero huérfanos, volumen estable en
+> 6/3/3/3 sin acumular.**
+>
+> **El usuario interno ya se puede hacer cobrador.** ⚠️ El sistema siempre lo permitió pero la
+> pantalla no lo ofrecía — *una capacidad que el sistema permite y la pantalla no ofrece se lee como
+> una capacidad que no existe*. ⚠️⚠️ **El vínculo es INVERSO al del vendedor**: el vendedor guarda su
+> código en `users.vendedor_codigo`, el cobrador se apunta desde **su propia ficha**, así que el
+> formulario actualiza el catálogo y hay que **liberar el registro anterior** al cambiar.
+>
+> ⚠️ **Un defecto propio, encontrado midiendo en producción tras el deploy**: la ficha demo nacía
+> **tres veces, una por empresa, apuntando al mismo usuario** — justo lo que la pantalla impide.
+> Corregido con dos tiempos: se acota a la empresa principal y la limpieza borra las anteriores.
+>
+> **En producción: app 200, 0 migraciones pendientes, las 4 tablas contables obsoletas eliminadas,
+> Compras del demo 258 requisiciones acumuladas → 6, líneas del demo sin artículo 0.**
+> ⚠️ **Agua Yamel —el único cliente real— NO usa Compras: impacto CERO.** Quedan 41 líneas
+> históricas sin artículo, **todas de Comercial Aranza (34) y TAPIA (7), que son de prueba**: el
+> `required` solo alcanza a las capturas nuevas.
+>
+> **Reglas nuevas: cuando un módulo entero se queda sin datos, su código puede llevar años sin poder
+> ejecutarse — lo único que lo demuestra es EJECUTARLO · una línea de documento sin artículo no falla
+> al capturarla, falla tres veces después y en módulos distintos · un servicio que se compra también
+> es un artículo · una prueba que envía lo que la aplicación ya rechaza no protege nada · un helper
+> heredado no puede reducir la visibilidad del método homónimo de una subclase: la suite no falla, no
+> arranca · cuando el vínculo vive en la tabla del OTRO lado, el formulario actualiza el catálogo y
+> hay que liberar el registro anterior · un seeder que corre una vez por empresa crea una fila por
+> empresa.**
+
 > **EL USUARIO DEL SISTEMA PASA A OBLIGATORIO EN VENDEDORES Y COBRADORES (2026-08-30) —
 > `[AGENTES-1]`**: decisión del director técnico — *«que cada usuario asigne sus vendedores y
 > cobradores, sino hay asignados en los procesos donde se requieran debe indicar que primero
@@ -2321,15 +2388,15 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[DEMO-3]` `f3205fbb` (**el asiento nacia en «la
-> primera empresa activa del tenant»** y no en la del movimiento — los 18 asientos de
-> Activos Fijos de las tres empresas demo caian en una sola, y ni siquiera en la misma en
-> local que en produccion; **el periodo de nomina vuelve a Nomina** (PSA lo creaba en TRES
-> seeders distintos), **la mayorizacion del demo queda a medias** para que su pantalla tenga
-> trabajo, y **el demo ya muestra que un usuario puede ser vendedor Y cobrador**. Medido
-> antes de tocar: ningun cliente afectado, solo la cuenta demo es multi-empresa. ATENCION:
-> siguen los asientos de produccion **sin mayorizar** — postear es decision contable)
-> | Ultimo commit en **zyntello-admin**: `[#506]` `2283952`
+> Ultimo commit en **zyntello-app**: `[AGENTES-2b]` `fdabae39` (**la consolidacion
+> multiempresa nunca pudo ejecutarse** —siete columnas inexistentes y todo el modulo en el
+> espacio de ids viejo tras `[#833]`—, **ninguna linea de Compras vuelve a nacer sin
+> articulo** en los cinco puntos de captura, y **el usuario interno ya se puede hacer
+> cobrador**. Medido antes de desplegar: **Agua Yamel no usa Compras, impacto CERO**; las 41
+> lineas historicas sin articulo son de las dos empresas de PRUEBA. ATENCION: siguen los
+> asientos de produccion **sin mayorizar** —postear es decision contable— y
+> `cont_homologaciones_cuenta` sigue **sin pantalla**)
+| Ultimo commit en **zyntello-admin**: `[#506]` `2283952`
 > | Ultimo commit en **zyntello-website**: `ad072f43`
 
 > **CONDOMINIOS correcciones post-cierre (2026-07-24) — `[CND-FIX]`/`[CND-CONFIG]`**: (1) discrepancia D-CND-F3-2 resuelta (incidencias con `area_id`, reporte por área); (2) export de reportes a **Excel real** (.xlsx Maatwebsite) en vez de CSV; (3) **decisiones seleccionables llevadas a "Configuración del módulo"** (`cnd_config`, por empresa: privacidad del informe, voto remoto por defecto, portal reservas/incidencias ON/OFF); (4) **fix del bucle del combo de módulos** — el menú de Condominios enlazaba dashboards de OTROS módulos (CxC/CxP/Presupuesto/Bancos/Caja/Nómina) y eso rompía la detección de módulo activo (esas rutas quedaban "compartidas" y al abrir CxC desde el combo se quedaba en Condominios). Se quitaron; los módulos se abren desde el combo. Migraciones aditivas `160001`/`160002`. **Regla nueva: nunca listar en el menú de un módulo el dashboard/ruta dueña de otro módulo.** Regresión completa VERDE: 952 passed, 4 skipped, 0 failed.
