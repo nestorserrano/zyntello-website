@@ -265,6 +265,36 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > `[DEMO-FIX-1]`, `[CONT-CTA-4/5]`). Su detalle sí está en `app/zyntello-app/CLAUDE.md`, que es
 > la bitácora técnica. Se anota aquí para que el hueco no se lea como «no pasó nada».
 
+> **SIETE PANTALLAS DEL MENÚ NO SE PODÍAN ABRIR (2026-08-31) — `[RUTAS-1]`**: reporte del
+> director técnico — *«en cxp no existe `/cxp/config`, da error»*. **1 guarda nueva, verificada
+> VIOLÁNDOLA en dos archivos distintos: las dos se detectan** · CxP + CxC + Compras + CRM
+> **332 passed**. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`318cd91b`). **Sin migración.**
+>
+> ⚠️⚠️ **No era una: eran SIETE.** Laravel resuelve las rutas **en orden de DECLARACIÓN**, no por
+> especificidad, y `GET /cxp/{cxp}` estaba en la línea 77 mientras el grupo `cxp/config` iba en la
+> 131 — así que `/cxp/config` la atendía el `show` con el literal `'config'` como id. Medido con
+> el router: `/cxp/config`, `/cxc/config`, `/cxc/dunning`, `/cxc/provisiones`, `/cxc/castigos`,
+> `/crm/leads/exportar` y `/compras/importaciones/reportes`.
+>
+> ⚠️ **Seis de las siete están enlazadas desde el menú**, entre ellas las tres pantallas que
+> `[CXC-F4]` entregó completas —provisión de incobrables, castigos y dunning—, con sus pruebas y
+> desplegadas: **ninguna se podía abrir**. Es la forma de `[BAN-F4-FIX]`. **Y el fallo es
+> silencioso**: la ruta sale en `route:list`, el controlador y la vista existen y las pruebas del
+> módulo pasan — solo se nota pulsando el ítem del menú.
+>
+> En cxp y cxc el grupo del comodín se mueve **al final del archivo** (en cxc quedaban 4 grupos
+> detrás: moverlos uno a uno solo aplaza el problema al siguiente que alguien agregue); en crm y
+> compras la ruta estática sube por delante. Verificado que ningún módulo perdió rutas.
+>
+> **La guarda le pregunta al ROUTER, no parsea los archivos**: recorre todas las rutas estáticas y
+> comprueba que cada una se resuelva a sí misma, así mide lo que Laravel va a ejecutar y cubre los
+> módulos que se escriban mañana. Nombra la ruta, quién la enlaza y quién la intercepta.
+>
+> **Reglas nuevas: Laravel resuelve por ORDEN DE DECLARACIÓN, no por especificidad — una ruta
+> estática declarada tras un comodín del mismo prefijo no se puede abrir · cuando quedan varios
+> grupos estáticos detrás de un comodín, mover el COMODÍN al final resuelve también los que se
+> agreguen después · una guarda sobre rutas le pregunta al router, no parsea los archivos.**
+
 > **EL COMBO OFRECÍA EL PLAN DE CUENTAS DE OTRA EMPRESA (2026-08-31) — `[CONT-CTA-6]`**:
 > reporte del director técnico — *«en `parametros-contables/modulo-facturacion` no está cargando
 > las cuentas contables de la empresa activa»*. **3 pruebas nuevas, las 3 verificadas VIOLÁNDOLAS:
@@ -2419,7 +2449,9 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[CONT-CTA-6]` `0c574cdc` (**el combo de cuentas
+> Ultimo commit en **zyntello-app**: `[RUTAS-1]` `318cd91b` (**siete pantallas del menu
+> no se podian abrir**: un comodin declarado antes las interceptaba — entre ellas provision de
+> incobrables, castigos y dunning, que `[CXC-F4]` entrego completas). Anterior: `[CONT-CTA-6]` `0c574cdc` (**el combo de cuentas
 > contables ofrecia el plan de OTRA empresa del mismo suscriptor** — `->first()` sobre las
 > activas del tenant en vez de la empresa ACTIVA; verificado en produccion: cero cuentas
 > ajenas en las 6 empresas). Anterior: `[AGENTES-2b]` `fdabae39` (**la consolidacion
