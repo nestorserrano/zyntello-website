@@ -374,6 +374,67 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > nombre más largo que la contiene · una auditoría que da 0 % en todo mide mal, no encontró un
 > sistema roto · una guarda que exige archivo por MÓDULO no dice nada sobre las pantallas de dentro.**
 
+> **EL TRÁNSITO ERAN DOS COLUMNAS Y UNA NO LA ESCRIBÍA NADIE (2026-09-01) —
+> `[INV-TRANSITO-1]`, `[UI-COL-1]`**: cuatro pedidos del director técnico — *«en tránsito son solo
+> las órdenes de compras aprobadas y debe ser universal, `cantidad_en_transito` y
+> `cantidad_transito` debe ser un mismo campo, deja solo uno»* · *«llena el demoseeder con esa
+> información para hacer las pruebas»* · *«el reporte alertas de reorden aparece sin los códigos y
+> descripciones»* · *«evita colocar 2 valores en las columnas de las tablas»*.
+> **3 reglas verificadas VIOLÁNDOLAS: las 3 se detectan** · Compras + Inventario + Facturación +
+> vistas **302 passed**. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`0f8909fa`).
+> ⚠️ Migración `2026_09_01_720001`.
+>
+> ⚠️⚠️ **`inv_stock` tenía DOS columnas para lo mismo, y el síntoma no era un error.**
+> `cantidad_transito` es la VIVA —la escribe la aprobación de la OC y la descuenta la recepción—;
+> `cantidad_en_transito` era **huérfana: no la escribía nadie**, y su único lector era el sugerido
+> de reabastecimiento, que por eso **sumaba siempre 0 y proponía reponer mercancía que ya venía en
+> camino**. *Un número plausible que cuenta otra cosa.* **Medido antes de eliminar: ambas en 0.00**
+> — la migración lo vuelve a comprobar en el instante del DROP, porque la medición de hace días no
+> prueba nada. ⚠️ El docblock de `ClasificacionService` **ya declaraba el problema** y esperaba que
+> el negocio confirmara cuál era la buena; lo que queda abierto ahora es de negocio y no de
+> esquema: **si el tránsito debe entrar en la cobertura**.
+>
+> **El demo pasa por el PROCESO REAL, no marcando estados a mano**: la OC nace en borrador y la
+> aprueba `PurchaseOrderService::aprobar()` —que es quien registra el tránsito—, sus líneas
+> declaran `bodega_destino_id` (sin él la aprobación no sabe a qué almacén entra la mercancía), y
+> la recepción nace en borrador y la postea `ReceiptService::postear()`. ⚠️ **Marcar la recepción
+> posteada a mano dejaba el tránsito contando las 100 unidades de la OC aunque ya hubieran llegado
+> 80**: el demo enseñaba un número inflado. Se agrega además una **segunda OC aprobada SIN
+> recibir**, para que exista el escenario limpio.
+>
+> ⚠️⚠️ **Un defecto de PRODUCCIÓN que encontró cablear el proceso real**: `aprobar()` **reventaba
+> con TypeError** si la línea no traía cuenta de gasto y la empresa no tenía configurado el
+> `gasto_default` de Compras — `comprometerPresupuesto()` pasaba `null` a una firma que exige
+> `string`. **El docblock ya prometía el no-op y el cuerpo no lo aplicaba**, y como `aprobar()` va
+> en transacción se perdía **también el registro del tránsito**. Ahora se omite NOMBRANDO la línea
+> y diciendo qué configurar.
+>
+> **Las alertas de reorden salían sin código ni descripción, y el defecto era de DATOS**:
+> `InventarioSeeder::limpiar()` borra artículos y bodegas y **nunca los criterios**, así que sin FK
+> el huérfano nace en el acto (`[INV-LOTE-1]`, `[PICK-UBI-1]`). **Medido: 8 de 13 colgaban de
+> artículos borrados** — exactamente las 8 filas de la captura. ⚠️ **Los 8 eran de la cuenta demo**,
+> creados a las 03:00 del reset: **cero clientes reales**.
+>
+> **`[UI-COL-1]` — un dato por columna**: una celda con dos datos apilados no se lee en diagonal, no
+> se puede ordenar por ninguno y ensancha la columna de más. Corregidas las **5 celdas** de las tres
+> pantallas de este flujo, con los `colspan` corridos y verificando que cada tabla cuadra.
+> ⚠️ **MEDIDO Y DECLARADO: el patrón está en 122 celdas de 112 vistas** del ecosistema —
+> Contabilidad, PSA, Activos, Compras, Car Wash, Abastecimiento—. Corregirlas todas son varias
+> sesiones y **el orden es decisión de alcance**.
+>
+> **Verificado en producción tras el `demo:reset`**: columna huérfana **eliminada**, 3 OC aprobadas,
+> **tránsito 1 680,00 en 9 filas** con CEM-001 en **20** (100 aprobadas − 80 recibidas) y VAR-001
+> desaparecido por recibirse completo, **criterios huérfanos 8 → 0**, y la pantalla de Alertas
+> renderizando **748 KB** con Código y Descripción en columnas propias.
+>
+> **Reglas nuevas: dos columnas para el mismo dato no producen un error sino un número plausible que
+> cuenta otra cosa — la que no escribe nadie hace que su lector sume siempre cero · un seeder que
+> marca un estado a mano miente en el eslabón siguiente · una línea de documento sin bodega destino
+> no puede registrar en qué almacén entra la mercancía · un no-op prometido en el docblock hay que
+> aplicarlo en el cuerpo: pasar null a una firma que exige string revienta la transacción entera ·
+> un criterio que cuelga del artículo Y de la bodega se borra cuando se borra cualquiera de los dos
+> · un dato por columna: dos apilados no se leen en diagonal ni se pueden ordenar.**
+
 > **EXISTENCIAS POR BODEGA Y EL SALDO QUE NO DESCONTABA LO COBRADO (2026-09-01) —
 > `[INV-MATRIZ-1]`, `[VTA-CLI-1]`, `[KPI-VEND-1]`**: tres pedidos del director técnico — las
 > capturas del reporte de inventario de Hyplast (*«es uno nuevo que va en el módulo de inventario
