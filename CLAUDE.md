@@ -374,6 +374,70 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > nombre más largo que la contiene · una auditoría que da 0 % en todo mide mal, no encontró un
 > sistema roto · una guarda que exige archivo por MÓDULO no dice nada sobre las pantallas de dentro.**
 
+> **VENTAS POR ARTÍCULOS Y PRE-VENTA EN EL ANÁLISIS DE VENTAS (2026-09-01) — `[VTA-MES-3]`**:
+> pedido del director técnico con las capturas de las ocho pestañas de Hyplast — *«será
+> ventas-analisis cambialo ya que zyntello no son solo cajas, son diferentes clientes diferentes
+> medidas, la idea es adaptarlo, no se si ya exista, si existe agrega las pestañas nuevas que
+> faltan»*. **15 reglas verificadas VIOLÁNDOLAS: las 15 se detectan** · Facturación + Inventario +
+> guardas **217 passed**. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`21a2827f` + `c5b543af`).
+> **Sin migración.**
+>
+> **Lo primero fue inventariar, y de las ocho pestañas SEIS ya existían**: faltaban «Ventas por
+> Artículos» y «Pre-Venta». *Antes de construir una pantalla que «falta» hay que medir qué existe.*
+>
+> ⚠️ **La adaptación que el director técnico pidió**: Zyntello **no factura solo cajas**. Cada
+> artículo trae **su** unidad de medida, así que midiendo en cantidad la pantalla **declara las
+> unidades presentes y avisa cuando hay más de una** — sumar 3 unidades con 5 kilos da 8 de nada.
+> Medido en producción: el catálogo mezcla **UND y SAC**, el aviso no es teórico.
+>
+> ⚠️ **Sale del MISMO servicio que el reporte independiente**, así que cuadra por construcción:
+> jerarquía y matriz plana dan **325 857,00 exacto** en las tres empresas. El servicio se extrajo
+> del controlador y **se borró la copia**, igual que la función Alpine del desplegable de filtros —
+> con una copia por vista, corregir el botón **Cerrar** en una dejaría la otra desviada.
+> ⚠️ **Especiales/Regulares SÍ aplica en la jerarquía** —el nivel de arriba es el cliente— al revés
+> que en la matriz por artículo; esa regla vivía en el controlador y **se movió al servicio**, y lo
+> delató una prueba existente que se puso roja al refactorizar.
+>
+> **Pre-Venta responde si el agente va a llegar a la meta.** ⚠️ **Mide PEDIDOS, no facturas**: es lo
+> que cerró con el cliente, se haya facturado o no — medirla por facturas lo castigaría por la
+> demora de despacho, que no depende de él. Y **«Facturado» se deriva de `cantidad_facturada` POR
+> LÍNEA**, porque un pedido se factura a medias y en varias facturas: contarlo por documento daría
+> el pedido completo la primera vez, o nada hasta la última. ⚠️ **La meta sale de
+> `fact_analisis_proyecciones`**, la misma que alimenta «Configurar Proyección» — y solo la
+> granularidad **mensual**, porque con la semanal la columna `mes` guarda el número de semana y una
+> semana ISO puede pertenecer a dos meses. ⚠️ **Las dos pestañas cargan SOLO al abrirse**: sus
+> consultas recorren líneas de documento y cargarlas siempre penalizaría a las otras seis.
+>
+> ⚠️⚠️ **Tres defectos que solo aparecieron midiendo los festivos REALES de producción** — no los
+> encontró escribir el código ni correr las pruebas. **(1) El día de la semana se leía del año del
+> ALTA**: el catálogo guarda los festivos anuales con el año base 2000, y el 19 de septiembre fue
+> **martes en 2000** y cae **sábado en 2026** → restaba días hábiles que sí se trabajan. **(2) El
+> mismo feriado contaba dos veces**: el 15 de septiembre está **duplicado** en el catálogo real.
+> **(3) La proyección se apagaba la primera semana de cada mes**: restaba los feriados del mes
+> COMPLETO a los transcurridos, así que el día 1 con 5 feriados por delante daba `max(0, 1−5) = 0`
+> y decía «sin días transcurridos» con el mes ya empezado — **medido: las 6 empresas de producción
+> la tenían apagada**, y tras el fix **DT pasó de 0 a 1**.
+>
+> **Verificado en producción renderizando la pantalla real**: 866 KB en la pestaña de artículos y
+> 849 KB en Pre-Venta, ambas con el importe real de marzo (145 000,00), app 200, scripts borrados
+> (`[#1250]`). ⚠️ **Alcance: solo la cuenta demo tiene pedidos** (8 entre sus 3 empresas) — **Agua
+> Yamel, el único cliente real, tiene 0 pedidos y 0 facturas**.
+>
+> ⚠️ **Hallazgos fuera de alcance**: dos pedidos del demo tienen total en la **cabecera** y **cero
+> líneas**, así que la Pre-Venta —que suma por líneas, como todo el reporte— los muestra en 0 · y
+> quedaba un **temporal olvidado en el servidor** (`verif_final.php`, de la sesión de `[CONT-CTA-1]`
+> del 26/08, cuyo propio comentario decía «se elimina al terminar»), ya retirado.
+>
+> **Reglas nuevas: antes de construir una pantalla que «falta» hay que inventariar qué existe — seis
+> de las ocho pestañas pedidas ya estaban hechas · la pre-venta se mide por PEDIDOS, no por facturas
+> · lo facturado se deriva de la cantidad facturada POR LÍNEA · un día de la semana leído de una
+> fecha de otro año es el día equivocado: un festivo anual se PROYECTA al año consultado · un
+> catálogo puede tener el mismo feriado duplicado, así que se cuentan fechas ÚNICAS · de los días
+> transcurridos solo salen los feriados que YA ocurrieron · un feriado sin fecha se asume futuro ·
+> una meta que existe en dos granularidades se lee de UNA · una pestaña cuya consulta recorre líneas
+> se carga al abrirse, no al abrir la pantalla · compilar una vista no prueba que se pueda abrir:
+> hay que RENDERIZARLA.**
+
 > **EL MISMO REPORTE TAMBIÉN DESDE INVENTARIO (2026-09-01) — `[VTA-MES-2]`**: pedido del
 > director técnico — *«el de inventario agrégalo también en los reportes de inventario como
 > adicional»*. **3 reglas nuevas verificadas VIOLÁNDOLAS: las 3 se detectan** (10 con las de
@@ -2793,7 +2857,13 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[VTA-MES-2]` `ff7e2217` (**el reporte de ventas
+> Ultimo commit en **zyntello-app**: `[VTA-MES-3]` `c5b543af` (**Ventas por Articulos y
+> Pre-Venta en el Analisis de Ventas**: de las ocho pestanas de Hyplast, seis ya existian.
+> La cantidad declara la unidad de medida de cada articulo — Zyntello no factura solo cajas.
+> ⚠️ Tres defectos que solo aparecieron midiendo los festivos REALES: el dia de la semana se
+> leia del anio del ALTA, el mismo feriado contaba dos veces, y la proyeccion se apagaba la
+> primera semana de cada mes).
+> Anterior: `[VTA-MES-2]` `ff7e2217` (**el reporte de ventas
 > mensuales tambien desde Inventario**: cada modulo declara SU PROPIA ruta al mismo
 > controlador — el menu de un modulo nunca lista la ruta dueña de otro).
 > Anterior: `[VTA-MES-1]` `8fef656c` (**los filtros solo se podian
