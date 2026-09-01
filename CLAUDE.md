@@ -374,6 +374,63 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > nombre más largo que la contiene · una auditoría que da 0 % en todo mide mal, no encontró un
 > sistema roto · una guarda que exige archivo por MÓDULO no dice nada sobre las pantallas de dentro.**
 
+> **EL PICKING SE PREPARA SIGUIENDO EL RECORRIDO DEL ALMACÉN (2026-09-01) — `[PICK-UBI-1]`**:
+> tras preguntar el director técnico por el orden del picking —*«¿el despacho va antes o después?
+> ¿y el orden no va por la ruta de despacho, primero entra el que se entrega de último?»*— eligió
+> el alcance: **«primero Orden por ubicación de bodega y luego el planificador de Rutas»**.
+> **7 reglas verificadas VIOLÁNDOLAS: las 7 se detectan** · Inventario + vistas + ayuda + rutas
+> **121 passed**. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`a2aed911`).
+> ⚠️ Migración `2026_09_01_710001`.
+>
+> **Las respuestas a las tres preguntas, verificadas en el código**: el **despacho va DESPUÉS** del
+> picking y copia `cantidad_preparada` —no la de la factura—, así que la guía dice lo que de verdad
+> se cargó; el **orden no iba por ruta**; y el **LIFO de carga es del módulo `rutas`**, declarado
+> en el menú y vendible desde `[MOD-ADIC-2]` pero **sin implementar** — exige consolidar varios
+> documentos en un camión, que el picking por documento no hace.
+>
+> ⚠️⚠️ **Toda la cadena de ubicaciones estaba MUERTA, medido antes de tocar nada**:
+> `inv_ubicaciones` tenía **12 filas y las 12 huérfanas** (bodegas 412 y 413 inexistentes),
+> `inv_stock.ubicacion_id` estaba en **0 de 51**, `inv_lotes_ubicacion` en 0, y **no había
+> pantalla** desde la que asignar una ubicación.
+>
+> ⚠️ **La causa del huérfano**: `InventarioSeeder::limpiar()` borra `inv_bodegas` y nunca las
+> ubicaciones, y sin FK el huérfano nace en el acto. Es la forma de `[INV-LOTE-1]`, que corrigió
+> lotes y seriales **pero no esto**: las ubicaciones cuelgan de la BODEGA, no del artículo, así que
+> aquel barrido no las alcanzaba. ⚠️ Y **sin pantalla la tabla era una función que no existe**
+> (`[CW-FIX-2]`): por eso la columna llevaba en cero desde el diseño de Inventario.
+>
+> ⚠️ **El código NO sirve como orden**: si el pasillo B está pegado a la puerta y el A al fondo, el
+> recorrido es B → A, y ordenar por código mandaría al bodeguero al fondo y de vuelta. Se declara.
+> Y **se guarda completo de una vez**: un recorrido a medias manda de un extremo al otro sin que
+> nada lo avise.
+>
+> ⚠️ **Lo que no tiene ubicación va AL FINAL**, nunca al principio · **sin bodega elegida no se
+> resuelve ninguna** —la misma pieza puede estar en el pasillo A de un almacén y en el D de otro—,
+> protegido por DOS guardas que se declaran y se violan juntas (`[REST-F7]`) · **la línea guarda el
+> CÓDIGO, no el id**, para que la orden ya impresa siga diciendo dónde se buscó.
+>
+> ⚠️⚠️ **Un defecto de fondo apareció al verificar: el «orden del documento» no existía.**
+> `Pedido::lineas()` y `Factura::lineas()` **no llevan `ORDER BY`**, así que ese orden lo decidía
+> MySQL y podía cambiar entre generaciones **incluso sin ubicaciones**. El desempate final usa la
+> columna `orden` que el documento sí declara — séptima vez que esta forma aparece (`[PRE-FIX-1]`).
+>
+> ⚠️ **Dos defectos propios, los dos cazados verificando por violación**: la prueba de estabilidad
+> pasaba porque **`usort` es ESTABLE en PHP 8** y mi fixture tenía el orden alfabético igual al del
+> documento —quitar el desempate daba lo mismo—; y la vista nueva **no compilaba** por `@json` con
+> más de tres comas, lo cazó `VistasCompilanTest`, escrita justo para eso.
+>
+> **Verificado en producción tras el `demo:reset`**: ubicaciones huérfanas **12 → 0**, **12 con
+> orden declarado**, **25 filas de stock ubicadas** y el picking saliendo en orden de recorrido.
+> ⚠️ **Agua Yamel —el único cliente real— no tenía ninguna ubicación**: las 12 eran de la cuenta
+> demo, así que el impacto de la limpieza fue **cero**.
+>
+> **Reglas nuevas: un huérfano se busca también hacia arriba — las ubicaciones cuelgan de la
+> bodega, no del artículo, y el barrido que corrigió lotes no las alcanzaba · el orden de recorrido
+> de un almacén se DECLARA, no se deriva del código · lo que no está ubicado va al final, nunca al
+> principio · un recorrido se guarda completo, porque a medias manda de un extremo al otro · una
+> relación sin `ORDER BY` no define ningún orden · `usort` es estable en PHP 8, así que un fixture
+> cuyo orden natural coincide con el esperado no ejerce el desempate.**
+
 > **EL ALTA DE PICKING MOSTRABA LOS DOS COMBOS Y GENERABA A CIEGAS (2026-08-31) —
 > `[PICK-UX-1]`**: reporte del director técnico — *«no me gusta la interfaz de la generación del
 > picking… muestra 2 combos pero a la vez dos opciones factura y pedido, puede aparecer uno o el
@@ -2649,7 +2706,11 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[PICK-UX-1]` `7653878e` (**el alta de picking
+> Ultimo commit en **zyntello-app**: `[PICK-UBI-1]` `a2aed911` (**el picking sigue el
+> recorrido del almacen**: toda la cadena de ubicaciones estaba MUERTA —12 huerfanas, 0 de 51
+> stock ubicado, sin pantalla—; ahora hay CRUD con orden de recorrido y el picking se prepara
+> de arriba abajo sin devolverse).
+> Anterior: `[PICK-UX-1]` `7653878e` (**el alta de picking
 > mostraba los dos combos y generaba a ciegas**: el `x-show` iba sobre el `<select>` y TomSelect
 > lo reemplaza con su wrapper; ahora previsualiza en once columnas con lotes y seriales).
 > Anterior: `[CRM-EMAIL-1]` `6d451171` (**las credenciales de
