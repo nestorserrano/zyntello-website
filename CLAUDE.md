@@ -374,6 +374,56 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > nombre más largo que la contiene · una auditoría que da 0 % en todo mide mal, no encontró un
 > sistema roto · una guarda que exige archivo por MÓDULO no dice nada sobre las pantallas de dentro.**
 
+> **LA CUENTA PADRE: NI SE PODÍA IMPORTAR NI SE GUARDABA AL EDITAR (2026-09-01) —
+> `[IMP-JERARQ-1]`**: dos reportes del director técnico cargando el plan de cuentas de **Agua
+> Yamel** (el único cliente real) — *«en la importación no me permite guardar los padres, dice que
+> no existen»* y *«le quité al archivo las cuentas padres y me dejó guardar, pero cuando edito las
+> cuentas hijas no lo guarda, pero no da error»*. **7 pruebas nuevas, 4 reglas verificadas
+> VIOLÁNDOLAS: las 4 se detectan** · Contabilidad **125 passed** · Inventario + Compras
+> **188 passed**. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`de5c5b43`). **Sin migración.**
+>
+> ⚠️⚠️ **Son DOS defectos distintos, y ninguno lanza nada.**
+>
+> **Importar**: el padre se validaba **solo contra la base de datos**. Un plan de cuentas se
+> importa completo, con los padres unas líneas más arriba del **mismo archivo**, así que en la
+> **vista previa** —donde todavía no se ha guardado nada— cada cuenta hija salía con «el código
+> padre no existe» y no se podía aplicar. ⚠️ **El motor SÍ guarda línea por línea al insertar**, así
+> que el padre habría estado ahí: el error vivía **solo en la validación previa** y bloqueaba todo.
+> Y el síntoma **culpa al archivo**, que es lo que llevó al usuario a quitar la columna.
+>
+> **Editar**: el formulario **ofrece** la cuenta padre y `store()` **sí la valida**, pero
+> `update()` no la incluía en sus reglas — `update($validated)` la **descartaba en silencio**. El
+> usuario elegía el padre, guardaba, **no veía ningún error** y la cuenta seguía igual. *Uno acusa
+> al archivo; el otro dice que salió bien y no guardó nada.*
+>
+> **Lo que se hizo**: el motor avisa al importador de cada fila que queda lista —en la vista previa
+> y al aplicar—, y el importador acepta un padre que venga **antes en el archivo**; su código viaja
+> aparte y se resuelve **al guardar**, que es cuando existe de verdad. Un padre que no está ni en la
+> base ni en el archivo **sigue siendo error**. Y `update()` valida el padre, recalcula el nivel y
+> **rechaza el ciclo** — colgar una cuenta de su propia descendiente no lanza nada pero deja una
+> rama cerrada sobre sí misma que ningún reporte jerárquico puede recorrer.
+>
+> ⚠️ **En AMBOS caminos, la cuenta que RECIBE hijas deja de aceptar movimientos**: sin eso, importar
+> el plan completo dejaba a los padres pudiendo recibir asientos, y un asiento contra una cuenta de
+> agrupación descuadra el reporte sin avisar. ⚠️ Una prueba propia lo destapó: el bloque solo corría
+> cuando el padre venía del archivo, no cuando ya estaba en la base —el caso normal—.
+>
+> **Verificado en producción con las cuentas reales**: la vista previa con tres niveles del propio
+> archivo da **3 válidas y 0 errores**; un padre inexistente sigue dando error; y editar `111110`
+> asignándole `111100` **guarda** y sube el nivel de 1 a 2 (revertido tras comprobar).
+>
+> ⚠️ **Estado medido de Agua Yamel: 35 cuentas, TODAS sin padre y TODAS en nivel 1** — el resultado
+> de haber quitado la columna para poder importar. **La importación no las va a arreglar**: el
+> importador omite por duplicado lo que ya existe. Los caminos son editarlas una por una (ahora sí
+> guarda) o borrarlas y reimportar con la columna padre.
+>
+> **Reglas nuevas: un importador con jerarquía valida contra la base Y contra las líneas anteriores
+> del propio archivo — validar solo la base da al padre por inexistente durante toda la vista previa,
+> y el síntoma culpa al archivo · una referencia que puede no existir al PREPARAR se resuelve al
+> GUARDAR, cuando el motor ya insertó la fila anterior · un formulario que ofrece un campo y una
+> validación que no lo incluye producen un guardado que dice que salió bien y no guardó nada · un
+> ciclo en una jerarquía no lanza nada: deja una rama que ningún reporte puede recorrer.**
+
 > **EL TRÁNSITO ERAN DOS COLUMNAS Y UNA NO LA ESCRIBÍA NADIE (2026-09-01) —
 > `[INV-TRANSITO-1]`, `[UI-COL-1]`**: cuatro pedidos del director técnico — *«en tránsito son solo
 > las órdenes de compras aprobadas y debe ser universal, `cantidad_en_transito` y
