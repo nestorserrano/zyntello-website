@@ -374,6 +374,57 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > nombre más largo que la contiene · una auditoría que da 0 % en todo mide mal, no encontró un
 > sistema roto · una guarda que exige archivo por MÓDULO no dice nada sobre las pantallas de dentro.**
 
+> **EL ALTA DE PICKING MOSTRABA LOS DOS COMBOS Y GENERABA A CIEGAS (2026-08-31) —
+> `[PICK-UX-1]`**: reporte del director técnico — *«no me gusta la interfaz de la generación del
+> picking… muestra 2 combos pero a la vez dos opciones factura y pedido, puede aparecer uno o el
+> otro… que las filas sean con el código del artículo, la descripción, cuántos son y cuántos van
+> en varias columnas, además debe tomar en cuenta seriales y lotes»*.
+> **6 reglas verificadas VIOLÁNDOLAS: las 6 se detectan** · Inventario + vistas + rutas
+> **105 passed**. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`7653878e`). **Sin migración.**
+>
+> ⚠️ **Los dos combos: el `x-show` iba sobre el `<select>`**, pero `data-buscar` lo reemplaza con el
+> wrapper de TomSelect — Alpine ocultaba el original y **el wrapper quedaba a la vista**. Es la
+> familia de `[AGENTES-7]`: *TomSelect crea DOM que Alpine no controla*. El `x-show` pasa al DIV
+> contenedor, que envuelve a los dos. El tipo se elige con botones, no con radios.
+>
+> ⚠️⚠️ **Y el defecto de fondo: el picking se generaba A CIEGAS** — no se veía qué artículos
+> entraban, cuánto faltaba por despachar, si había stock ni qué lote tocaba. El bodeguero lo
+> descubría en el almacén, con la orden ya impresa. Ahora previsualiza al elegir el documento, a
+> ancho completo, con **once columnas**: código, descripción, solicitado, despachado, a preparar,
+> disponible, lote sugerido, vencimiento, seriales y el aviso por línea.
+>
+> ⚠️ **«A preparar» es solicitado − despachado, no la cantidad del documento**: con la del
+> documento, un pedido despachado a medias mandaría a buscar el doble. En el pedido sale de
+> `cantidad_entregada`; en la factura hay que **sumar los despachos**, porque una factura no lleva
+> esa cuenta. ⚠️ **El disponible DESCUENTA lo reservado y se acota a la bodega elegida**: el total
+> de la empresa haría creer que hay mercancía que en ese almacén no está.
+>
+> ⚠️ **La previsualización sale del MISMO servicio que el alta** (reusa `cargarOrigen` y
+> `sugerirLote`): con una consulta propia podría prometer un lote y el picking generar otro, y el
+> bodeguero buscaría algo que la orden no dice. ⚠️ **Lotes y seriales solo donde el artículo los
+> maneja** —marcar «sin lote» en uno que no los usa se lee como un problema que no existe— y **el
+> aviso NO bloquea**: preparar parcialmente es legítimo; lo que no puede es descubrirse en el
+> almacén.
+>
+> ⚠️ **Un defecto propio: una prueba pasaba por la razón equivocada.** «El lote se sugiere solo
+> donde se maneja» no detectaba su violación porque el artículo sin lotes **tampoco tenía lotes en
+> la tabla**, así que quitar el guard daba `null` igual. Se le montó un lote viejo —el caso real de
+> un artículo al que se le quitó el control— y entonces sí falla.
+>
+> **Verificado en producción**: la previsualización de `FAC2-000002` devuelve sus 2 líneas con
+> código, solicitado, despachado, disponible y el aviso **«Stock insuficiente: faltan 35»** — el
+> caso exacto que había que ver antes de bajar al almacén. ⚠️ **Hallazgo fuera de alcance**: las
+> líneas de servicios de Facturación no llevan artículo, la misma forma que `[COM-ART-1]` cerró en
+> Compras y aquí sigue abierta.
+>
+> **Reglas nuevas: un `x-show` sobre un `<select>` con TomSelect oculta el original y deja el
+> wrapper a la vista — va en el contenedor · «a preparar» es lo solicitado menos lo despachado, no
+> la cantidad del documento · un disponible que no descuenta lo reservado ni se acota a la bodega
+> promete mercancía que no está · una previsualización sale del MISMO servicio que ejecuta · un
+> aviso de lote en un artículo que no los maneja se lee como un problema inexistente · un aviso de
+> stock no bloquea: lo que no puede es descubrirse en el almacén · una prueba sobre un caso que
+> tampoco tiene datos pasa por la razón equivocada.**
+
 > **LAS 11 PANTALLAS DE CUENTAS CONTABLES AL FORMATO DEL MODELO (2026-08-31) — `[CTAS-STD]`**:
 > pedido del director técnico — *«todos los módulos tienen su enlace en Cuentas Contables, quiero
 > que todos tengan este formato: `parametros-contables/cxp?categoria=otros`»*. **1 guarda nueva
@@ -2598,7 +2649,10 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[CRM-EMAIL-1]` `6d451171` (**las credenciales de
+> Ultimo commit en **zyntello-app**: `[PICK-UX-1]` `7653878e` (**el alta de picking
+> mostraba los dos combos y generaba a ciegas**: el `x-show` iba sobre el `<select>` y TomSelect
+> lo reemplaza con su wrapper; ahora previsualiza en once columnas con lotes y seriales).
+> Anterior: `[CRM-EMAIL-1]` `6d451171` (**las credenciales de
 > correo salian del .env**: en un SaaS el suscriptor no puede tocarlo — medido, la funcion
 > nunca sirvio para nadie. Ahora por empresa, cifradas, con OAuth y SMTP).
 > Anterior: `[INV-LOTE-1]` `068afc8f` (**el dashboard mostraba
