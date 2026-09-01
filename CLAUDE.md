@@ -374,6 +374,39 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > nombre más largo que la contiene · una auditoría que da 0 % en todo mide mal, no encontró un
 > sistema roto · una guarda que exige archivo por MÓDULO no dice nada sobre las pantallas de dentro.**
 
+> **UN SOLO LINK: LA MATRIZ PASA A SER PESTAÑA (2026-09-01) — `[VTA-MES-4]`**: reporte del
+> director técnico — *«vi que no lo dejaste en un solo link como hyplast sino que los separaste por
+> opciones del menú»*. **4 reglas verificadas VIOLÁNDOLAS: las 4 se detectan** (19 con las de
+> `[VTA-MES-3]`) · Facturación + Inventario + guardas **225 passed**. **DESPLEGADO Y VERIFICADO EN
+> PRODUCCIÓN** (`94cdf013`). **Sin migración.**
+>
+> ⚠️ **Tenía razón, y el origen del error es mío**: cuando llegó la primera captura
+> (`[VTA-MES-1]`) yo no sabía que era una **pestaña** de la pantalla de análisis de Hyplast, así que
+> la construí como reporte independiente. Medido antes de tocar nada, el menú de Facturación tenía
+> **dos entradas para lo mismo**: «Análisis de Ventas» en Gestión Comercial y «Ventas mensuales
+> (matriz)» en Reportes. Ahora es **un solo link con nueve pestañas** — *un segundo ítem para la
+> misma matriz obliga al usuario a saber en cuál de los dos sitios buscar.*
+>
+> **Decisión del director técnico**: dos pestañas separadas, no una con toggle. La matriz se extrajo
+> a un partial que sirven **las dos superficies** —la pestaña y la pantalla propia que usa
+> Inventario— y **se borró la copia**; lo mismo con `isoFuncional()`, que al montar la pestaña se me
+> duplicó en los dos controladores y se **subió** al servicio.
+>
+> ⚠️ **Un defecto evitado al montarla**: los dos filtros de la pantalla compartían el id
+> `formFiltros`, así que **Aplicar habría enviado siempre el primero del DOM** y el usuario vería
+> que su filtro no hace nada. ⚠️⚠️ **Y un defecto propio de método**: la prueba de eso **NO detectaba
+> su violación** — buscaba la cadena `'formMensuales'` suelta, que aparece también en el `onchange`
+> del selector de año. Corregida para mirar la **llamada** a `filtroMultiple()`; repetida, se detecta.
+>
+> ⚠️ **Inventario NO se tocó**: conserva su pantalla enfocada. El reporte de inventario tipo
+> Softland que pidió el director técnico es **otro** y queda **pendiente** — su URL en Hyplast pide
+> login, así que hacen falta las capturas.
+>
+> **Reglas nuevas: si en el sistema de referencia algo es una PESTAÑA, replicarlo como pantalla
+> suelta obliga al usuario a saber dónde buscar — y una captura sola no dice si lo que muestra es
+> una pantalla o una pestaña · dos formularios de filtro en la misma pantalla no pueden compartir el
+> id · una aserción sobre una cadena suelta pasa por cualquier otro sitio que la contenga.**
+
 > **VENTAS POR ARTÍCULOS Y PRE-VENTA EN EL ANÁLISIS DE VENTAS (2026-09-01) — `[VTA-MES-3]`**:
 > pedido del director técnico con las capturas de las ocho pestañas de Hyplast — *«será
 > ventas-analisis cambialo ya que zyntello no son solo cajas, son diferentes clientes diferentes
@@ -2857,7 +2890,11 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[VTA-MES-3]` `c5b543af` (**Ventas por Articulos y
+> Ultimo commit en **zyntello-app**: `[VTA-MES-4]` `94cdf013` (**un solo link**: la matriz
+> mensual pasa a ser pestana del Analisis de Ventas — el menu tenia dos entradas para lo
+> mismo. ⚠️ Los dos filtros compartian el id del formulario: Aplicar habria enviado siempre
+> el primero del DOM).
+> Anterior: `[VTA-MES-3]` `c5b543af` (**Ventas por Articulos y
 > Pre-Venta en el Analisis de Ventas**: de las ocho pestanas de Hyplast, seis ya existian.
 > La cantidad declara la unidad de medida de cada articulo — Zyntello no factura solo cajas.
 > ⚠️ Tres defectos que solo aparecieron midiendo los festivos REALES: el dia de la semana se
