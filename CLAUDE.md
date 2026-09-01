@@ -374,6 +374,34 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > nombre más largo que la contiene · una auditoría que da 0 % en todo mide mal, no encontró un
 > sistema roto · una guarda que exige archivo por MÓDULO no dice nada sobre las pantallas de dentro.**
 
+> **EL MISMO REPORTE TAMBIÉN DESDE INVENTARIO (2026-09-01) — `[VTA-MES-2]`**: pedido del
+> director técnico — *«el de inventario agrégalo también en los reportes de inventario como
+> adicional»*. **3 reglas nuevas verificadas VIOLÁNDOLAS: las 3 se detectan** (10 con las de
+> `[VTA-MES-1]`) · guardas + Facturación + Inventario **192 passed**.
+> **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`ff7e2217`). **Sin migración.**
+>
+> ⚠️ **Cada módulo declara SU PROPIA ruta apuntando al MISMO controlador** —ni una línea
+> duplicada—: si el menú de Inventario listara la ruta de Facturación, `ModuleMenu` la reclamaría y
+> **Facturación dejaría de abrirse** desde su selector. Es el defecto de `[CND-FIX]`, `[CW-F0-5]` y
+> `[REST-F0-4]`: **tres veces** en el ecosistema, siempre con la regla escrita en prosa. Ahora hay
+> una **prueba** que recorre el menú de Inventario y falla si aparece una ruta ajena.
+>
+> **El default de agrupación depende de quién pregunta**: Inventario abre **Por Artículo** —quiere
+> saber qué se mueve— y Facturación **Por Cliente**; lo que el usuario pida manda sobre el default.
+> ⚠️ Y **los enlaces se arman con la ruta del módulo desde el que se abrió**: con enlaces fijos,
+> abrirlo desde Inventario sacaría al usuario de su módulo al primer clic en una pestaña.
+>
+> ⚠️ **Un defecto propio**: la prueba del menú buscaba Inventario como módulo raíz y está **ANIDADO
+> bajo el bundle ERP** desde `[BUNDLE-FIX-2]`. Lo encontró correrla.
+>
+> **Verificado en producción**: desde Facturación agrupa por cliente (3 filas) y desde Inventario
+> por artículo (6 filas), **ambas con el mismo total 325 857,00** y con los enlaces de su módulo.
+>
+> **Reglas nuevas: un reporte compartido entre dos módulos declara UNA ruta por módulo apuntando al
+> mismo controlador — el menú de un módulo nunca lista la ruta dueña de otro, y eso se comprueba con
+> una prueba en vez de escribirlo en prosa (cuarta vez) · sus enlaces internos se arman con la ruta
+> del módulo desde el que se abrió · el default de una opción depende de quién abre la pantalla.**
+
 > **LOS FILTROS SOLO SE PODÍAN CERRAR HACIENDO CLIC FUERA (2026-09-01) — `[VTA-MES-1]`**:
 > reporte del director técnico con captura — *«no hay botón aceptar en los filtros solo limpiar,
 > hay que hacer clic fuera, es mejor colocar un botón que cierre el filtro y no hay manera de ver
@@ -2765,7 +2793,10 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[VTA-MES-1]` `8fef656c` (**los filtros solo se podian
+> Ultimo commit en **zyntello-app**: `[VTA-MES-2]` `ff7e2217` (**el reporte de ventas
+> mensuales tambien desde Inventario**: cada modulo declara SU PROPIA ruta al mismo
+> controlador — el menu de un modulo nunca lista la ruta dueña de otro).
+> Anterior: `[VTA-MES-1]` `8fef656c` (**los filtros solo se podian
 > cerrar haciendo clic fuera**: la pantalla de la captura no existia en el ecosistema —era de
 > Hyplast— y se construyo; cada desplegable trae Aplicar y Cerrar, y cerrar DEVUELVE la
 > seleccion a lo aplicado).
