@@ -374,6 +374,68 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > nombre más largo que la contiene · una auditoría que da 0 % en todo mide mal, no encontró un
 > sistema roto · una guarda que exige archivo por MÓDULO no dice nada sobre las pantallas de dentro.**
 
+> **EXISTENCIAS POR BODEGA Y EL SALDO QUE NO DESCONTABA LO COBRADO (2026-09-01) —
+> `[INV-MATRIZ-1]`, `[VTA-CLI-1]`, `[KPI-VEND-1]`**: tres pedidos del director técnico — las
+> capturas del reporte de inventario de Hyplast (*«es uno nuevo que va en el módulo de inventario
+> en reportes, verifica si no existe y créalo o mejora el que existe»*) y dos reportes de
+> producción: *«el KPI de los vendedores está dando error al abrir»* y *«en ventas por clientes la
+> barra indicadora no parece estar correcta. Mira la primera línea 330.400 no se ha cobrado pero
+> indica 50%»*. **9 reglas verificadas VIOLÁNDOLAS: las 9 se detectan** · Inventario **122 passed**
+> · Facturación **110 passed**. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`5edf1bc8`).
+> **Sin migración.**
+>
+> ⚠️ **El KPI de vendedores no se podía abrir por un desajuste de nombres**: el controlador producía
+> `total_ventas` y la tabla leía `ventas_brutas`. **No falla al calcular: falla al RENDERIZAR**, así
+> que la pantalla queda caída entera y **compilar la vista no lo ve** — hay que renderizarla.
+> Corregidas **las tres** claves: arreglar solo la que reventaba habría movido el error a la línea
+> siguiente. ⚠️ Y un defecto propio: mi aserción contaba `10,000.00` esperando 2 y salían **3** —el
+> mismo importe aparece en brutas, netas y total—; reescrita con un segundo vendedor.
+>
+> ⚠️⚠️ **En ventas por cliente la barra estaba BIEN y el defecto era la columna de al lado.** El %
+> mide participación y suma 100 %; lo que fallaba es que **«Saldo pendiente» no descontaba lo
+> cobrado**. Una factura pagada al 100 % salía con todo su importe pendiente y el KPI del encabezado
+> era **igual al total facturado**. **La causa: un alias de SELECT que se llama igual que un accessor
+> del modelo** — el `selectRaw` aliasaba la resta como `saldo` y `Factura::getSaldoAttribute()`
+> **gana sobre la columna del select**, calculando `total - monto_cobrado` sobre un `monto_cobrado`
+> que el agregado no trae. **No lanza nada y el número es plausible.** Se agrega además la columna
+> **% Cobrado** —lo que un reporte de cuentas por cobrar debe responder— y la anterior pasa a
+> **Participación** sin barra: junto a «Cobrado» y «Saldo» se leía como avance de cobro. **Medido en
+> producción: el pendiente baja de 660 387 a 489 287** y el cuadre da exacto en las 3 empresas que
+> facturan. ⚠️ **Una prueba propia pasaba con el defecto puesto**: sin el alias, `saldo_pendiente`
+> no venía, salía `null` y `assertEquals(0.0, null)` **pasa**.
+>
+> **El reporte de inventario se MEJORA, no se duplica**: `matriz-bodega` existía como versión
+> mínima y crear otro daría dos respuestas a la misma pregunta. **Cinco decisiones no se copiaron
+> del sistema de referencia, y cada una sale de MEDIR producción**: las etiquetas de clasificación
+> **las nombra la empresa** (las tres las llaman distinto: «Categoría», «Línea», «Clasificación
+> 1») · agrupa por **grupo** porque **107 artículos lo tienen y solo 12 tienen clasificación** · el
+> filtro de tipo nace **apagado** porque el del sistema de referencia escondería **39 de 51** · el
+> reorden sale de `inv_criterios_abastecimiento` (**13 filas**) y no de las columnas homónimas de
+> `inv_stock` (**0**) · y **«con existencia» incluye lo reservado y lo que viene en tránsito**.
+>
+> ⚠️⚠️ **Un defecto propio que encontró la REGRESIÓN: el cuadre se apagaba en la pantalla por
+> defecto.** Los dos filtros que nacen encendidos lo desactivaban, así que **no se calculaba nunca**
+> sin que el usuario tocara nada — *un cuadre que no se muestra no avisa de nada*. La distinción que
+> lo resuelve: **`solo_existencia` excluye filas en CERO y no cambia la suma**, pero **`solo_activos`
+> sí dejaría fuera el stock de un artículo inactivo**, así que la fuente aplica el MISMO filtro en
+> vez de rendirse. ⚠️ Y otro de método: **mi script de verificación asumió una columna `valor` que el
+> servicio nunca calculó** y acusó a las 6 empresas; el servicio estaba bien.
+>
+> **Verificado en producción: el cuadre APLICA y cuadra exacto en las 6 empresas** (antes se apagaba
+> siempre), las etiquetas salen distintas por empresa y la pantalla real renderiza **811,9 KB**.
+> ⚠️ **Solo la cuenta demo tiene stock: Agua Yamel —el único cliente real— tiene 0 bodegas y 0
+> existencias.** ⚠️ **Declarado**: la matriz mide **cantidades, no valor** — el valorizado vive en su
+> propio reporte y duplicarlo daría dos números que pueden divergir.
+>
+> **Reglas nuevas: un alias de SELECT no puede llamarse igual que un accessor del modelo — el
+> accessor gana y lee columnas que el agregado no trae, sin lanzar nada · un controlador que produce
+> unas claves y una vista que lee otras no falla al calcular, falla al RENDERIZAR: compilar no basta
+> · una prueba que compara contra `null` porque la clave no existe pasa por la razón equivocada ·
+> un cuadre que se apaga con los filtros que nacen encendidos no se calcula nunca: solo lo apagan
+> los que la fuente NO puede reproducir · antes de replicar un reporte de otro sistema hay que MEDIR
+> los datos propios · un script de verificación que asume una clave inexistente acusa al código
+> sano.**
+
 > **UN SOLO LINK: LA MATRIZ PASA A SER PESTAÑA (2026-09-01) — `[VTA-MES-4]`**: reporte del
 > director técnico — *«vi que no lo dejaste en un solo link como hyplast sino que los separaste por
 > opciones del menú»*. **4 reglas verificadas VIOLÁNDOLAS: las 4 se detectan** (19 con las de
