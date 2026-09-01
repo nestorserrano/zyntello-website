@@ -374,6 +374,65 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > nombre más largo que la contiene · una auditoría que da 0 % en todo mide mal, no encontró un
 > sistema roto · una guarda que exige archivo por MÓDULO no dice nada sobre las pantallas de dentro.**
 
+> **LOS FILTROS SOLO SE PODÍAN CERRAR HACIENDO CLIC FUERA (2026-09-01) — `[VTA-MES-1]`**:
+> reporte del director técnico con captura — *«no hay botón aceptar en los filtros solo limpiar,
+> hay que hacer clic fuera, es mejor colocar un botón que cierre el filtro y no hay manera de ver
+> regulares resumen y especiales como aparece al inicio»*.
+> **7 reglas verificadas VIOLÁNDOLAS: las 7 se detectan** · vistas + ayuda + rutas + Facturación
+> **81 passed**. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`8fef656c`). **Sin migración.**
+>
+> ⚠️⚠️ **Lo primero fue buscar la pantalla, y NO EXISTÍA en el ecosistema.** Ninguno de los tres
+> repositorios tenía las pestañas `Todos ⏐ ⭐ Especiales ⏐ Regulares`, ni los desplegables de
+> clientes y artículos, ni el «(Seleccionar todo)» —**cero coincidencias en las 1 286 vistas**—, ni
+> los meses en columnas. **La captura era de otro sistema** —Hyplast, la referencia que ya se usó en
+> CRM y Gestión de Clientes—, no un defecto de Zyntello. Con eso medido, la decisión del director
+> técnico fue **construirla**. *Un reporte con captura no siempre describe la pantalla propia.*
+>
+> **Los tres defectos, resueltos**: cada desplegable trae **Aplicar** (envía la consulta) además del
+> botón global · trae **Cerrar**, y ⚠️ **cerrar DEVUELVE la selección a lo último aplicado** —si
+> dejara las marcas puestas, el botón diría «5 seleccionados» mientras la tabla muestra los 178, un
+> filtro que el reporte no está usando (`[PRE-FIX-1]`)— · y las **tres pestañas están siempre
+> visibles** arrastrando el resto de los filtros. ⚠️ **«Seleccionar todo» actúa solo sobre lo que la
+> búsqueda deja a la vista**: marcar en silencio lo que no se ve haría que el filtro no coincida con
+> la lista que el usuario acaba de leer.
+>
+> ⚠️ **Por cliente y por artículo salen de la MISMA consulta**, así que cuadran por construcción —
+> con consultas separadas «lo que vendí» tendría dos respuestas (quinta vez que el ecosistema evita
+> esta forma). Verificado en producción: las dos dan **325 857,00** exacto. ⚠️ **Por eso el total es
+> la SUMA DE LAS LÍNEAS y no el total facturado**: ITBIS, flete, documentación, transporte y
+> descuento general viven en la cabecera. La diferencia se pinta **siempre** al pie, y ⚠️ **con
+> filtro de artículos el cuadre se APAGA diciéndolo** — esas facturas traen su importe completo y
+> una diferencia ahí no significaría nada.
+>
+> **Especiales y Regulares reusan `fact_clientes_especiales`**, el catálogo que ya alimenta Análisis
+> de Ventas: un cliente no puede ser especial en una pantalla y regular en la otra. Verificado:
+> **272 757 + 53 100 = 325 857**, la partición cuadra exacta. ⚠️ **Sin especiales configurados la
+> vista sale VACÍA y explica por qué** —mostrar la cartera completa haría creer que todos son
+> especiales— y **agrupando por artículo se ignora**, porque clasifica clientes. ⚠️ **Los catálogos
+> de los filtros salen de lo que TIENE VENTAS**, no del catálogo completo: eso explica el
+> «178 opciones» de la captura.
+>
+> ⚠️ **Dos defectos propios, los dos cazados verificando**: **V6 salió NO SE DETECTA** porque
+> `usort` es **ESTABLE en PHP 8** y mi fixture llegaba ya en orden alfabético —la lección de
+> `[PICK-UBI-1]` repetida—; corregido fijando los ids para que el orden de llegada sea el CONTRARIO
+> y poniéndole `ORDER BY` a la consulta para que ese orden deje de decidirlo MySQL. Y ⚠️ **la ayuda
+> nació con los campos como string** cuando `Ayuda::campo()` declara `?array`: **habría reventado
+> con un TypeError al renderizar el primer tooltip**.
+>
+> **Verificado en producción renderizando la pantalla real**: 819 KB de HTML con Aplicar, Cerrar,
+> «(Seleccionar todo)», las tres pestañas, los meses y el cuadre; 2 rutas resuelven y la app
+> responde 200. ⚠️ **Alcance medido antes de cerrar: solo la cuenta demo factura** (13 documentos).
+> **Agua Yamel —el único cliente real— tiene 0 facturas**, igual que Comercial Aranza y TAPIA.
+>
+> **Reglas nuevas: un reporte con captura no siempre describe la pantalla propia — localizarla en el
+> código antes de «corregirla» · un desplegable de filtro necesita Aplicar y Cerrar, y cerrar
+> DEVUELVE la selección o el botón miente sobre lo que el reporte usa · «seleccionar todo» actúa
+> sobre lo visible, no sobre lo que la búsqueda esconde · dos agrupaciones del mismo reporte salen de
+> la MISMA consulta o su total tendrá dos respuestas · un cuadre que no se puede calcular se APAGA
+> diciéndolo · un catálogo de filtro se arma con lo que tiene movimiento · `usort` es estable en
+> PHP 8: para ejercer un desempate hay que fijar el orden de llegada CONTRARIO al esperado
+> (reincidente) · un campo de ayuda es un array label/texto, no un string.**
+
 > **EL PICKING SE PREPARA SIGUIENDO EL RECORRIDO DEL ALMACÉN (2026-09-01) — `[PICK-UBI-1]`**:
 > tras preguntar el director técnico por el orden del picking —*«¿el despacho va antes o después?
 > ¿y el orden no va por la ruta de despacho, primero entra el que se entrega de último?»*— eligió
@@ -2706,7 +2765,11 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[PICK-UBI-1]` `a2aed911` (**el picking sigue el
+> Ultimo commit en **zyntello-app**: `[VTA-MES-1]` `8fef656c` (**los filtros solo se podian
+> cerrar haciendo clic fuera**: la pantalla de la captura no existia en el ecosistema —era de
+> Hyplast— y se construyo; cada desplegable trae Aplicar y Cerrar, y cerrar DEVUELVE la
+> seleccion a lo aplicado).
+> Anterior: `[PICK-UBI-1]` `a2aed911` (**el picking sigue el
 > recorrido del almacen**: toda la cadena de ubicaciones estaba MUERTA —12 huerfanas, 0 de 51
 > stock ubicado, sin pantalla—; ahora hay CRUD con orden de recorrido y el picking se prepara
 > de arriba abajo sin devolverse).
