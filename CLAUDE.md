@@ -374,6 +374,69 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > nombre más largo que la contiene · una auditoría que da 0 % en todo mide mal, no encontró un
 > sistema roto · una guarda que exige archivo por MÓDULO no dice nada sobre las pantallas de dentro.**
 
+> **LAS CUENTAS CONTABLES NO SE ADIVINAN (2026-09-01) — `[INV-PARAM-1]`, `[INV-PARAM-2]`,
+> `[CTAS-PADRE-2]`**: dos pedidos del director técnico —*«aplica lo de Agua Yamel»* y *«corrige lo
+> de los parámetros del inventario»*— y, a mitad del trabajo, una **corrección de rumbo**: *«no
+> debe existir una búsqueda de cuenta contable con código like, mis cuentas contables deben vivir
+> o venir de la configuración de cada módulo en la opción Cuentas Contables, no debe existir
+> ninguna cuenta hardcodeada ni a la mitad ni una parte»*. **5 reglas verificadas VIOLÁNDOLAS: las
+> 5 se detectan** · Inventario + Contabilidad **300 passed**. **DESPLEGADO Y VERIFICADO EN
+> PRODUCCIÓN**. **Sin migración.**
+>
+> **`[CTAS-PADRE-2]` — Agua Yamel, aplicada**: de **0 a 29 cuentas con padre**, de 35 en nivel 1 a
+> **6 raíces y 5 niveles poblados**, **0 conflictos**. Con respaldo del estado previo antes de
+> tocar nada: es la estructura completa del plan de un cliente real. ⚠️⚠️ **El dato que valida la
+> regla del prefijo más largo**: las **20 cuentas que reciben hijas YA estaban marcadas** como
+> agrupación por el contador, y **coinciden exactamente** con las 20 que la derivación identificó
+> — *la jerarquía que el código dedujo de los números es la misma que el contador tenía en la
+> cabeza.*
+>
+> ⚠️⚠️ **`[INV-PARAM-1]` — la herramienta nunca pudo ejecutarse, por TRES defectos encadenados**:
+> el filtro `where('estado','activa')` devolvía **siempre cero** —`empresas.estado` guarda la
+> PROVINCIA— así que la rama «todas las empresas» no procesaba ninguna · el upsert escribía en
+> **tres columnas que no existen** (`tipo_referencia`/`referencia_id`/`campo` en vez de
+> `entidad_tipo`/`entidad_id`/`operacion`), y el `catch` se tragaba la excepción devolviéndola como
+> «fallido» · y omitía `empresa_id` —parte del UNIQUE— recorriendo los grupos por tenant, así que
+> a un grupo de una empresa se le habrían asignado las cuentas del plan de otra. **Es la forma de
+> `[CONT-CONS-1]`.** El fix DELEGA en `ParametroContable::upsertGrupo()`, que ya existía, y **se
+> borró la copia**.
+>
+> ⚠️⚠️ **`[INV-PARAM-2]` — la corrección de rumbo, y el director técnico tenía razón.** Verificando
+> qué resolvería para Agua Yamel salió que `buscarCuentasInventario()` elegía la cuenta por
+> **rangos de código** (`113%`, `511%`, `611%`): en ese plan el 611 es **«Planilla»**, así que la
+> herramienta habría registrado **el costo de ventas y las compras contra la nómina** — y encima
+> reportaba «3 obligatorias resueltas: SI». **No lanza nada**: la cuenta existe y el importe cuadra.
+>
+> ⚠️ **Mi primer arreglo fue afinar la heurística acotándola por tipo de cuenta.** Era la dirección
+> equivocada: **un prefijo de código es una cuenta hardcodeada aunque sea solo la mitad**. Y **la
+> pantalla correcta YA existía** —Inventario → Cuentas Contables, que pinta las 12 operaciones del
+> catálogo por grupo—: la adivinanza era **redundante además de peligrosa**.
+>
+> **Se RETIRA el servicio que adivinaba** —no se deja desconectado: uno así sigue siendo peligroso
+> aunque hoy no lo llame nadie— y lo sustituye un verificador que **SOLO LEE**: informa qué
+> cuentas obligatorias faltan y remite a la pantalla. ⚠️ **Lo que exige sale del MISMO catálogo que
+> pinta la pantalla**, o reclamaría algo que el usuario no puede configurar. **Medido: quedan CERO
+> búsquedas de cuenta por código en todo `app/`** — era el **único sitio del ecosistema** desviado
+> de la directiva.
+>
+> **Verificado en producción leyendo LOS DOS LADOS** (regla de `[CTAS-STD]`): el diagnóstico
+> reporta 0 grupos configurados, y se comprobó que la pantalla guarda con la misma clave que él lee
+> y que `parametros_contables` no tiene ninguna fila de ese tipo — las 218 existentes son de otros
+> módulos. ⚠️ **Impacto real hoy: ninguno** — el buffer contable no tiene ni un movimiento del
+> módulo INV, y **Agua Yamel, Comercial Aranza y TAPIA tienen cero movimientos de inventario**.
+> Pero el día que Comercial Aranza —que ya tiene 4 grupos— empiece a moverlo, sus asientos no
+> encontrarían cuenta: ahora la pantalla lo dice antes.
+>
+> **Reglas nuevas: un prefijo de código de cuenta es una cuenta hardcodeada aunque sea solo la
+> mitad — las cuentas se configuran en el menú de Cuentas Contables del módulo, no se adivinan ·
+> mejorar la puntería de una heurística que no debería existir es ir en la dirección equivocada:
+> antes de afinarla hay que preguntarse si debe existir · una herramienta que adivina y ESCRIBE es
+> peor que una rota — la rota no hacía nada, la afinada habría registrado el costo de ventas contra
+> la nómina · un servicio peligroso se RETIRA, no se deja desconectado · lo que un diagnóstico
+> exige sale del MISMO catálogo que pinta la pantalla · verificar es de solo lectura: elegir la
+> cuenta es del contador · una prueba que se cumple por vacío no ejerce nada · cuando un defecto
+> contamina al vecino, la prueba tiene que mirar al vecino, no al propio.**
+
 > **LA DIVISIÓN GEOGRÁFICA SE LLAMA `estado` EN TODO EL ECOSISTEMA (2026-09-01) —
 > `[GEO-EST-1]`**: pedido del director técnico — *«verifica que provincia = a estado, en algunos
 > países es provincia como RD y otros estado como Venezuela. Debe ser el mismo campo estado,
@@ -3223,7 +3286,11 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[GEO-EST-1]` `187b24ea` (**la division geografica se
+> Ultimo commit en **zyntello-app**: `[INV-PARAM-2]` (**las cuentas contables no se
+> adivinan**: se retiro la busqueda por rango de codigo —en el plan de Agua Yamel resolvia el
+> costo de ventas contra «Planilla»— y la sustituye un verificador de solo lectura. Cero
+> cuentas hardcodeadas en `app/`. ⚠️ Agua Yamel: jerarquia aplicada, 29 cuentas con padre).
+> Anterior: `[GEO-EST-1]` `187b24ea` (**la division geografica se
 > llama `estado` en todo el ecosistema**: de las 133 columnas `estado` solo 8 son geograficas y
 > `inv_bodegas` era la unica desviada; el ROTULO lo resuelve el pais. ⚠️ De paso: el DGT-9
 > exportaba la Provincia en blanco).
