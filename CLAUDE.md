@@ -126,10 +126,17 @@ c:/wamp64/www/zyntello/         ← Esta carpeta (repo: zyntello-website)
 
 > **Solo dos BDs en todo el ecosistema.** Cualquier módulo nuevo va a `ukrmeumy_zyntello` con prefijo de tabla.
 
-| Aplicación | BD producción | BD local | Usuario | Contraseña |
-|---|---|---|---|---|
-| App SaaS unificada (todos los módulos) | `ukrmeumy_zyntello` | `zyntello_app` (puerto 3308) | `ukrmeumy_zyntello_user` | `C3dul@13238162` |
-| Admin interno | `ukrmeumy_zyntello_admin` | `zyntello_admin` | `ukrmeumy_zyntello_user` | `C3dul@13238162` |
+| Aplicación | BD producción | BD local | Usuario |
+|---|---|---|---|
+| App SaaS unificada (todos los módulos) | `ukrmeumy_zyntello` | `zyntello_app` (puerto 3308) | `ukrmeumy_zyntello_user` |
+| Admin interno | `ukrmeumy_zyntello_admin` | `zyntello_admin` | `ukrmeumy_zyntello_user` |
+
+> 🔐 **Las contraseñas NO se documentan aquí.** Viven en el `.env` de cada entorno —
+> el del servidor para producción, el local para desarrollo— y ese archivo está en
+> `.gitignore`. Para leer la local: `grep DB_PASSWORD app/zyntello-app/.env`.
+> ⚠️ Este repositorio (`zyntello-website`) es **PÚBLICO**: cualquier credencial escrita
+> en él queda expuesta en internet y sigue expuesta en el historial de Git aunque
+> después se borre del archivo.
 
 ### Prefijos de tabla en `ukrmeumy_zyntello`
 
@@ -179,7 +186,7 @@ Deploy via **SSH + plink (PuTTY)** del repo `nestorserrano/zyntello-app` a `/hom
 - Key: `C:\wamp64\www\zyntello\zyntello.ppk`
 - Host: `ukrmeumy@ukr.meu.mybluehost.me`
 - Puerto: `2222`
-- Passphrase: `C3dul@13238162`
+- Passphrase: **no se documenta** (repo público — pedírsela al director técnico)
 - Script automatizado: `.\deploy-bluehost.ps1`
 
 **Deploy manual (PowerShell):**
