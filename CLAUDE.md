@@ -374,6 +374,101 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > nombre más largo que la contiene · una auditoría que da 0 % en todo mide mal, no encontró un
 > sistema roto · una guarda que exige archivo por MÓDULO no dice nada sobre las pantallas de dentro.**
 
+> **EL TRÁNSITO EN LA COBERTURA LO DECIDE QUIEN MIRA EL REPORTE (2026-09-01) —
+> `[INV-COBERT-1]`, `[INV-COBERT-2]`**: pedido del director técnico tras `[INV-TRANSITO-1]` —
+> *«el negocio puede configurarlo en el mismo reporte, si se activa un switch que agregue la
+> cobertura de días y ajuste los disponibles… ¿ese reporte debe ir en el Módulo Adicional o ya
+> existe en inventario?»*. **5 reglas verificadas VIOLÁNDOLAS: las 5 se detectan** · Inventario
+> **130 passed** · guardas **13 passed**. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN**
+> (`b8048f71` + `5275ec9b`). **Sin migración.**
+>
+> **La respuesta a la pregunta: el reporte YA EXISTE, y son DOS** —
+> `inventario.reportes.cobertura` (base, mide con el consumo REAL) y la clasificación ABC de
+> Abastecimiento (módulo de mejora, mide con la demanda del PRONÓSTICO)—. No hacía falta crear
+> nada en el módulo adicional.
+>
+> ⚠️⚠️ **La decisión que `[INV-TRANSITO-1]` dejó abierta NO tenía una sola respuesta**: depende
+> de la pregunta. **Sin tránsito** contesta *«¿para cuántos días alcanza lo que puedo despachar
+> HOY?»*; **con tránsito**, *«¿para cuántos días alcanza contando lo que ya compré?»*. Por eso
+> es un **interruptor del propio reporte** y no un default. ⚠️ **Nace APAGADO**: reproduce el
+> comportamiento vigente, y encenderlo alarga la cobertura contando mercancía que todavía no
+> llegó.
+>
+> ⚠️ **FUENTE ÚNICA del criterio**: la fórmula del disponible vive en
+> `CoberturaInventarioService::disponible()` y el ABC de Abastecimiento la **DELEGA** en vez de
+> copiarla — con una copia, el mismo artículo saldría con una cobertura en Inventario y otra en
+> Abastecimiento. **Se borró la copia**, con prueba que lo custodia. ⚠️ La dirección importa:
+> **Abastecimiento consume de Inventario, nunca al revés** — un módulo base no puede depender de
+> uno de mejora vendible. ⚠️ **Lo reservado se descuenta SIEMPRE**: ya tiene dueño.
+>
+> **El reporte DECLARA qué criterio está usando** en las dos posiciones del interruptor, y expone
+> **Existencia / Reservado / En tránsito / Disponible** en columnas propias: un disponible que
+> cambió sin decir de dónde salió la diferencia no se puede comprobar contra el almacén.
+>
+> ⚠️⚠️ **`[INV-COBERT-2]` — el defecto lo encontró MEDIR producción, ya con el switch
+> desplegado**: las **9 filas con tránsito tienen existencia CERO**, y el reporte filtraba
+> `cantidad > 0`, así que **ninguna salía** — justo el caso que motiva encenderlo: *«no tengo
+> nada, pero viene en camino»*, que es cuando el comprador necesita saber que **no debe emitir
+> otra orden**. Es la forma de `[INV-MATRIZ-1]`: *un filtro que apaga justo lo que se quiere
+> ver*. Apagado el interruptor, el filtro no cambia.
+>
+> **Verificado en producción**: **+3 filas por empresa** en las tres demo (25→28, 13→16, 13→16),
+> con `ARE-001` y `BLO-001` pasando de «no salía» a aparecer; la pantalla real renderiza
+> **773 KB apagado / 775 KB encendido**. Las filas nuevas salen con **«sin consumo»**, que es
+> correcto: sin salidas en la ventana la cobertura no se puede medir y el reporte lo dice en vez
+> de inventar un número. ⚠️ **Agua Yamel —el único cliente real— tiene 0 bodegas y 0
+> existencias.**
+>
+> ⚠️ **Una prueba OMITIDA nombrando el motivo**: depende de `abst_config.abc_a_pct`, columna que
+> **otra sesión está migrando ahora mismo**. Los **52 fallos** de `ClasificacionAbcTest` en la
+> regresión son de esa migración a medias, no de este trabajo — confirmado corriendo Inventario
+> solo. ⚠️ Y tres nombres que eran suposiciones mías: `inv_stock` **no tiene `created_at`**, y
+> los ids de `inv_movimientos` son **bigint, no UUID**.
+>
+> ⚠️ **HALLAZGO FUERA DE ALCANCE**: **`empresas.estado` guarda la PROVINCIA**, no un estado de
+> activación (el `$fillable` la declara junto a `pais_iso` y `ciudad`; los datos son cadena vacía
+> y «San Pedro de Macorís»). `MaintenanceController::fixParametrosInventario()` filtra
+> `Empresa::where('estado','activa')` en su rama «todas las empresas»: **siempre devuelve vacío**,
+> así que esa opción de `/zyn-maint/fix-parametros-inventario` **no procesa ninguna** y el
+> resumen sale en 0. **NO se corrigió**: es un proceso masivo sobre datos de clientes y ponerlo a
+> correr sin medir su impacto es lo que `[CRON-FIX-1]` estableció que no se hace.
+>
+> **Reglas nuevas: una decisión de negocio que depende de la pregunta no es un default, es un
+> interruptor del propio reporte · un criterio compartido entre un módulo base y uno de mejora
+> vive en el BASE y el otro lo delega — nunca al revés ni copiado · un reporte con interruptor
+> DECLARA cuál está usando y expone las columnas de las que sale la diferencia · un filtro que
+> excluye el cero apaga justo el caso que motiva encender el interruptor · una prueba que depende
+> de trabajo ajeno en curso se OMITE nombrando el motivo, no se deja roja.**
+
+> **LA JERARQUÍA DEL PLAN DE CUENTAS SE DERIVA DEL CÓDIGO (2026-09-01) — `[CTAS-PADRE-1]`**:
+> pedido del director técnico tras `[IMP-JERARQ-1]`, sobre las 35 cuentas de **Agua Yamel** que
+> quedaron todas sin padre — *«derívalas del padre según el tercer camino»*. **7 pruebas nuevas,
+> 3 reglas verificadas VIOLÁNDOLAS: las 3 se detectan** · Contabilidad + vistas + rutas
+> **138 passed**. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`34a9f1e9`). **Sin migración.**
+>
+> **La jerarquía ya estaba escrita en los números**: `100000` → `110000` → `111000` → `111100` →
+> `111110`. La regla es que el padre es la cuenta cuyo código **significativo** —sin los ceros de
+> relleno— es el prefijo **MÁS LARGO** del de la hija. ⚠️ **El más largo, no el primero**: con
+> `100000`, `110000`, `111000` y `111100` todos son prefijos válidos de `111110`, y colgarla del
+> primero la dejaría **tres niveles** por encima de donde le toca.
+>
+> ⚠️ **Previsualiza SIEMPRE antes de aplicar** —toca la estructura completa del plan de un
+> cliente, y verlo antes es lo que permite detectar un código mal tecleado que colgaría una cuenta
+> de la rama equivocada— · **un padre puesto a mano NO se pisa**: se NOMBRA como conflicto y se
+> deja intacto, porque quien lo asignó sabía algo que el código no dice · **la cuenta que recibe
+> hijas deja de aceptar movimientos** · y **un plan cuyos códigos no expresan jerarquía no propone
+> nada**: mejor no proponer que inventar una jerarquía que el plan no tiene.
+>
+> **Verificado en producción con las cuentas reales**: de las 35, **29 recibirían padre**, **6 son
+> raíz** (Activos, Pasivos, Patrimonio, Ingresos, Costos, Gastos) y **0 conflictos**;
+> `111110 → 111100` sube de nivel 1 a 5. ⚠️ **No se aplicó nada: la previsualización queda a la
+> espera del director técnico.**
+>
+> **Reglas nuevas: cuando el código de un catálogo EXPRESA la jerarquía, esta se DERIVA en vez de
+> capturarse a mano · se toma el prefijo MÁS LARGO, no el primero que coincida · un valor puesto a
+> mano no se pisa: se nombra como conflicto · una operación que toca la estructura completa se
+> previsualiza antes de aplicar.**
+
 > **LA CUENTA PADRE: NI SE PODÍA IMPORTAR NI SE GUARDABA AL EDITAR (2026-09-01) —
 > `[IMP-JERARQ-1]`**: dos reportes del director técnico cargando el plan de cuentas de **Agua
 > Yamel** (el único cliente real) — *«en la importación no me permite guardar los padres, dice que
