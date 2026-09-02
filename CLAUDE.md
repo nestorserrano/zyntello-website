@@ -272,6 +272,69 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > `[DEMO-FIX-1]`, `[CONT-CTA-4/5]`). Su detalle sí está en `app/zyntello-app/CLAUDE.md`, que es
 > la bitácora técnica. Se anota aquí para que el hueco no se lea como «no pasó nada».
 
+> **CAJA CHICA NO ABRÍA: EL PERMISO SE PEDÍA POR EL SLUG DE LA SUSCRIPCIÓN (2026-09-02) —
+> `[PERM-BUNDLE-1]`**: reporte del director técnico — *«hay un usuario facturación en Agua Yamel que
+> se le dio permisos de facturación y cajachica pero en el módulo de caja chica no abre e informa
+> que no está suscrito ese módulo, pero pertenece al ERP y no debe pedir suscripción»*.
+> **8 pruebas nuevas, 3 reglas verificadas VIOLÁNDOLAS: las 3 se detectan** · bundle ERP (CxP, CxC,
+> Bancos, Activos, Compras, Presupuesto) **824 passed, 4 skipped, 0 failed** · menú + vistas + ayuda
+> **35 passed**. **Sin migración.**
+>
+> ⚠️⚠️ **El síntoma culpaba a la suscripción, y la suscripción estaba bien.** Medido en producción
+> antes de tocar nada: el suscriptor tiene **`erp` Y `cajachica` activos**, y el usuario interno
+> tiene **`cajachica.can_view = 1`** … y **`erp.can_view = 0`**. Las pantallas de Caja Chica viven
+> detrás de `module:erp`, así que el middleware pedía el permiso con el slug de la **SUSCRIPCIÓN**
+> en vez del de la **PANTALLA**, que es el que el owner marca en la matriz.
+>
+> ⚠️ **Y el mensaje mentía**: decía «El módulo ERP no está incluido en tu suscripción actual» y
+> llevaba a la pantalla de pago. *Un mensaje que acusa al plan cuando el plan está bien manda al
+> owner a buscar un problema que no existe* — es lo que llevó a reportarlo como error de facturación.
+>
+> ⚠️ **El menú YA usaba la regla correcta**, así que **el ítem se veía y no se abría**. Y al
+> revisarlo apareció una **TERCERA copia** del criterio en la vista Blade del menú, con su propia
+> lista a mano: **tres sitios decidiendo lo mismo, con dos respuestas distintas.**
+>
+> **La fuente única se DERIVA, no se escribe a mano**: `User::puedeVerModulo()` pide el permiso por
+> el módulo de la **PANTALLA** cuando este declara su propia sección en `config/permission_tree.php`
+> —`cajachica`, `activos`, `compras`, `presupuesto`— y por el de la **suscripción** cuando no la
+> tiene —`cxp`, `cxc`, `bancos`—. Con una lista escrita a mano, el siguiente módulo del bundle nace
+> con el defecto. **Las tres copias se borraron.**
+>
+> ⚠️ **El módulo de la pantalla se DECLARA en la ruta** (`module:erp,cajachica`): se descartó
+> derivarlo del nombre, porque `cxp.php` declara rutas como `config.tipos-doc-cxp.*` y el primer
+> segmento no identifica el módulo. Y **el mensaje distingue las dos causas** porque se arreglan en
+> sitios distintos: sin suscripción → pantalla de pago; suscrito sin permiso → *«tu empresa sí lo
+> tiene contratado: pídele al propietario que te lo habilite en Configuración → Usuarios →
+> Permisos»*, nombrando **la pantalla**, no «ERP».
+>
+> ⚠️⚠️ **Mi propia guarda de coherencia NO detectaba su violación**: calculaba el lado del menú
+> **replicando su lógica en la prueba**, así que con el defecto inyectado pasó — demostraba que la
+> regla funciona, no que el menú la use. Corregida montando el **componente Livewire real** más una
+> guarda de código sobre el componente y su vista.
+>
+> ⚠️ **Dos trampas del entorno de pruebas**: el subpath de `APP_URL` hacía que **TODA petición diera
+> 404** sin llegar al middleware (se resuelve con `URL::forceRootUrl`), y el fixture nacía con
+> `plan = 'pro'`, que redirige a la pantalla de pago **antes** del middleware de módulos — con eso,
+> **dos pruebas que esperaban un redirect pasaban por la razón equivocada**.
+>
+> **Impacto medido: nadie pierde acceso que hoy funcione.** El único usuario interno con `erp.view`
+> es el auditor de la cuenta demo, y esa company **no tiene contratados** los cuatro módulos con
+> sección propia. **Agua Yamel gana el acceso que faltaba.**
+>
+> ⚠️ **PENDIENTE — el deploy no se pudo hacer**: el SSH de Bluehost lleva la sesión entera
+> rechazando conexiones (`Network error: Connection refused`), así que la verificación en producción
+> queda sin ejecutar. **No se da por buena una verificación que no se corrió.**
+>
+> **Reglas nuevas: la suscripción y el permiso son dos preguntas distintas y pueden usar slugs
+> distintos — un módulo que se vende dentro de un bundle pero tiene su propia sección de permisos
+> necesita los dos · un mensaje que acusa al plan cuando el plan está bien manda al usuario a buscar
+> un problema que no existe, y nombra la PANTALLA, no el bundle · cuando tres sitios deciden lo
+> mismo, dos ya divergieron: la regla se DERIVA de su catálogo y las copias se borran · el módulo de
+> una pantalla se DECLARA en la ruta, no se deriva del nombre · una guarda de coherencia que replica
+> la lógica del consumidor no detecta que el consumidor deje de usarla: hay que montar el componente
+> REAL · un fixture con plan de pago sin suscripción de Stripe redirige antes del middleware que se
+> quiere ejercer.**
+
 > **CAPTURA SIMPLE, ITBIS OPCIONAL Y EL TEXTO QUE NO SE VEÍA EN CLARO (2026-09-02) —
 > `[FACT-SIMPLE-1]`, `[A11Y-1]`**: dos pedidos del director técnico con capturas — *«en la
 > accesibilidad mejora el color claro con mejores tonos, del texto de las imágenes hay texto que no
@@ -3368,7 +3431,12 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[FACT-SIMPLE-1]` (**captura simple + ITBIS opcional +
+> Ultimo commit en **zyntello-app**: `[PERM-BUNDLE-1]` (**Caja Chica no abria: el permiso se pedia
+> por el slug de la SUSCRIPCION** (`erp`) y no por el de la PANTALLA (`cajachica`), que es el que el
+> owner marca. El menu SI usaba la regla correcta, asi que el item se veia y no se abria — y habia
+> una TERCERA copia del criterio en su vista. ⚠️ **PENDIENTE: sin desplegar**, el SSH de Bluehost
+> rechaza conexiones).
+> Anterior: `[FACT-SIMPLE-1]` (**captura simple + ITBIS opcional +
 > accesibilidad del tema claro**: el texto invisible en claro era OPACIDAD, no tono — 825
 > reemplazos en 296 vistas y los colores pasan a variables CSS. La pantalla simple y el cobro de
 > ITBIS son dos ejes INDEPENDIENTES. ⚠️ De paso: la bodega salia de una columna que NO EXISTE, y
