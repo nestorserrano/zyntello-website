@@ -374,6 +374,71 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > nombre más largo que la contiene · una auditoría que da 0 % en todo mide mal, no encontró un
 > sistema roto · una guarda que exige archivo por MÓDULO no dice nada sobre las pantallas de dentro.**
 
+> **LA DIVISIÓN GEOGRÁFICA SE LLAMA `estado` EN TODO EL ECOSISTEMA (2026-09-01) —
+> `[GEO-EST-1]`**: pedido del director técnico — *«verifica que provincia = a estado, en algunos
+> países es provincia como RD y otros estado como Venezuela. Debe ser el mismo campo estado,
+> verifica todos los módulos y define»*. **3 reglas verificadas VIOLÁNDOLAS: las 3 se detectan** ·
+> geo + vistas + Inventario + Nómina **271 passed**. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN**
+> (`187b24ea`). ⚠️ Migración `2026_09_01_730001`.
+>
+> **Medido primero, y el desorden era mucho menor de lo que parecía**: de las **133 columnas
+> llamadas `estado`** del esquema solo **8 son geográficas** —las demás son estados de documento—,
+> y **6 ya usaban el estándar**. `inv_bodegas` era **la única desviada** (`estado_provincia`).
+> ⚠️ **El costo no es cosmético**: un reporte o un importador que cruce bodegas con clientes por su
+> división geográfica **falla en silencio**, porque la columna se llama distinto en un lado. Y el
+> nombre compuesto no resuelve la ambigüedad: **la reparte**.
+>
+> ⚠️ **Los datos se PRESERVAN**: medido antes de escribir la migración, `estado_provincia` tenía
+> **7 de 14 filas con valor**, así que se **renombra la columna** en vez de borrarla y crearla. Y
+> lleva una rama defensiva: si por un despliegue a medias existieran las dos, **copia el contenido
+> antes de soltar la vieja**.
+>
+> ⚠️⚠️ **Lo que cambia entre países es el RÓTULO, no la columna.** Nuevo helper
+> `etiqueta_estado_geografico()` —mismo patrón que `etiqueta_id_fiscal()`— que lo resuelve por el
+> país de la empresa: **Provincia** en RD/CR/PA, **Estado** en VE/MX/BR, **Departamento** en
+> CO/GT/PE, **State** en US. Aplicado en las **30 etiquetas** de las 15 vistas que lo mostraban
+> fijo como «Estado / Provincia» — *enumerar las dos obliga al usuario a elegir cuál es la suya en
+> un formulario donde el país ya se eligió.*
+>
+> ⚠️ **`nom_employees.provincia` NO se toca, y no es un olvido**: es el campo del formulario
+> **DGT-9 del Ministerio de Trabajo RD**, con su propio consumidor. Nómina guarda la división
+> geográfica en `estado_codigo`, que sí sigue el estándar. Queda **declarado como excepción** con su
+> motivo, o alguien lo unifica creyendo que sobra.
+>
+> ⚠️⚠️ **Y un defecto de PRODUCCIÓN que apareció al revisarlo**: `DgtExportService` exportaba la
+> columna **Provincia del DGT-9 en blanco** — leía `nom_employees.provincia`, **vacía en las 19
+> filas**, mientras `estado_codigo` **sí tiene el dato**. El reporte oficial al Ministerio de
+> Trabajo salía incompleto y **no lanza nada**: es una columna vacía en un TXT. Verificado tras el
+> fix: `provincia=NULL` + `estado_codigo=SP` → **«San Pedro de Macorís»**.
+>
+> ⚠️ **La guarda encontró 8 vistas que mi barrido a mano se saltó** y falló en su primera corrida
+> nombrándolas. Es para lo que se escribió.
+>
+> **Verificado en producción**: columna renombrada, **7 de 7 valores preservados**, **0 columnas
+> desviadas** en todo el esquema, la etiqueta sale distinta por país, y las pantallas reales
+> renderizan **1 023 KB** (clientes) y **852 KB** (bodegas) con «Provincia». ⚠️ **Se renderizaron
+> llamando al CONTROLADOR REAL**: mis dos primeros intentos inventaron las variables de la vista y
+> fallaron — es el defecto de `[MOD-ADIC-2]`, y además el controlador exige `company()`, que sale de
+> `auth()`, así que en CLI hay que autenticar un usuario del tenant.
+>
+> ⚠️ **HALLAZGO FUERA DE ALCANCE**: `MaintenanceController::fixParametrosInventario()` filtra
+> `Empresa::where('estado','activa')` en su rama «todas las empresas», pero `empresas.estado` guarda
+> **la PROVINCIA** — esa consulta **siempre devuelve vacío** y esa opción de
+> `/zyn-maint/fix-parametros-inventario` **no procesa ninguna empresa**, con el resumen en 0 que se
+> lee como «no había nada que hacer». **NO se corrigió**: es un proceso masivo sobre datos de
+> clientes y ponerlo a correr sin medir su impacto es lo que `[CRON-FIX-1]` estableció que no se
+> hace.
+>
+> **Reglas nuevas: la misma división administrativa se llama distinto en cada país pero es UN solo
+> dato — la columna se llama igual y lo que cambia es el RÓTULO, resuelto por el país de la empresa
+> · una columna con nombre compuesto no resuelve la ambigüedad, la reparte · un campo homónimo con
+> un consumidor propio NO es una desviación: se declara como excepción con su motivo · un dato que
+> existe en dos columnas se lee de la que TENGA valor, o el reporte oficial sale en blanco sin
+> lanzar nada · una migración que renombra preserva el contenido; una que borra y crea lo pierde ·
+> un barrido a mano sobre 1 286 vistas se salta archivos · renderizar una vista con variables
+> inventadas prueba la suposición, no el código: hay que llamar al CONTROLADOR, y en CLI eso exige
+> autenticar un usuario porque `company()` sale de `auth()`.**
+
 > **EL TRÁNSITO EN LA COBERTURA LO DECIDE QUIEN MIRA EL REPORTE (2026-09-01) —
 > `[INV-COBERT-1]`, `[INV-COBERT-2]`**: pedido del director técnico tras `[INV-TRANSITO-1]` —
 > *«el negocio puede configurarlo en el mismo reporte, si se activa un switch que agregue la
@@ -3158,7 +3223,11 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[VTA-MES-4]` `94cdf013` (**un solo link**: la matriz
+> Ultimo commit en **zyntello-app**: `[GEO-EST-1]` `187b24ea` (**la division geografica se
+> llama `estado` en todo el ecosistema**: de las 133 columnas `estado` solo 8 son geograficas y
+> `inv_bodegas` era la unica desviada; el ROTULO lo resuelve el pais. ⚠️ De paso: el DGT-9
+> exportaba la Provincia en blanco).
+> Anterior: `[VTA-MES-4]` `94cdf013` (**un solo link**: la matriz
 > mensual pasa a ser pestana del Analisis de Ventas — el menu tenia dos entradas para lo
 > mismo. ⚠️ Los dos filtros compartian el id del formulario: Aplicar habria enviado siempre
 > el primero del DOM).
