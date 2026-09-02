@@ -272,6 +272,81 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > `[DEMO-FIX-1]`, `[CONT-CTA-4/5]`). Su detalle sí está en `app/zyntello-app/CLAUDE.md`, que es
 > la bitácora técnica. Se anota aquí para que el hueco no se lea como «no pasó nada».
 
+> **CAPTURA SIMPLE, ITBIS OPCIONAL Y EL TEXTO QUE NO SE VEÍA EN CLARO (2026-09-02) —
+> `[FACT-SIMPLE-1]`, `[A11Y-1]`**: dos pedidos del director técnico con capturas — *«en la
+> accesibilidad mejora el color claro con mejores tonos, del texto de las imágenes hay texto que no
+> se ve, de los botones»* y *«necesito una opción de factura simple… que los valores obligatorios
+> sean por defecto… también la opción cuando no se cobra ITBIS, no por exento sino que el usuario
+> no requiere impuesto»*, más la aclaración que fijó la arquitectura: *«puede tener pantalla
+> simplificada y cobrar itbis en otra empresa manteniendo la pantalla simple, la bodega debe ser la
+> predeterminada»*. **9 reglas verificadas VIOLÁNDOLAS: las 9 se detectan** · Facturación
+> **130 passed** · guardas transversales **16 passed**. ⚠️ Migraciones `2026_09_02_750001` y
+> `750002`.
+>
+> ⚠️⚠️ **El texto invisible en claro no era de tono, era de OPACIDAD.** Medido antes de tocar nada:
+> **41 variantes de alfa** sobre clases de texto (~11 800 apariciones) y el tema claro parchaba
+> **5**. ⚠️ **Y corrige un número mío**: afirmé que `#475569` al 60 % daría 4.6:1 y **da 2.88:1** —
+> negro puro al 60 % sobre blanco da 5.74:1, así que lo que había que quitar era el alfa, no subir
+> el tono. Los colores pasan a **variables CSS** (12 tokens por tema) en vez de parchearse clase
+> por clase: con parches, cada componente nuevo nace con el defecto. **825 reemplazos en 296
+> vistas, 0 restantes.** La tarjeta de módulo no contratado sube de **1.73:1 a 6.72:1** y el chip
+> «No disponible en demo» de **2.73 a 5.50**. ⚠️ **El modo oscuro quedó IDÉNTICO**, comprobado
+> canal por canal contra los hex originales.
+>
+> ⚠️ **Mi propia guarda destapó un hueco de mi trabajo**: dejé `--c-primary` sin definir en claro —
+> `text-primary` daba **2.41:1 sobre la píldora del ítem activo**, que es justo el «Configuración
+> Gen…» de la captura. Elegido `#9A3412`; se descartó `#C2410C`, más fiel a la marca, porque ahí da
+> 4.16 y no llega a AA.
+>
+> ⚠️ **La captura simple y el ITBIS son DOS EJES INDEPENDIENTES, no un modo.** Con un solo
+> interruptor, activar la vista simple habría apagado el impuesto de quien sí lo cobra — y eso no
+> sale en la pantalla, sale en el 607. `CapturaSimpleService` es fuente única de los dos criterios
+> y lo consumen los tres controladores por un trait. ⚠️ Los defaults reproducen el comportamiento
+> vigente y **se verifican por el DEFAULT DE LA COLUMNA**, no por la constante del modelo. ⚠️ Y la
+> preferencia del usuario es **NULLABLE a propósito**: con un boolean NOT NULL, el default de la
+> empresa no aplicaría a nadie.
+>
+> ⚠️⚠️ **La bodega venía de una columna que NO EXISTE**: el código leía
+> `inv_config_inventario.bodega_ventas_id` y esa columna no está en esa tabla — Eloquent devuelve
+> NULL sin lanzar nada, así que la cascada caía **siempre** a «la primera bodega por orden
+> alfabético». Con dos bodegas de ventas eso descarga el stock del almacén equivocado y el
+> descuadre aparece en el conteo físico semanas después.
+>
+> ⚠️ **Lo que la vista simple no puede esconder lo NOMBRA con su motivo** —esconder un campo cuyo
+> default no existe obliga a inventar el valor— y **la lista de precios nunca se esconde cuando
+> existe**, o se facturaría al precio de la cascada base. ⚠️ **El impuesto lo apaga el SERVIDOR, no
+> un `x-show`**: un campo oculto en el cliente sigue enviándose. La guarda va en **store Y en
+> update** (forma de `[IMP-JERARQ-1]`), y **un documento que ya lleva impuesto no lo pierde al
+> editarse**.
+>
+> ⚠️⚠️ **El límite que apareció al verificar: la configuración era por SUSCRIPTOR, no por empresa.**
+> El controlador ya guardaba con `company_id + empresa_id` —su propio comentario lo dice— pero el
+> **UNIQUE era `(company_id)` a secas**, así que la segunda empresa no podía guardar la suya: MySQL
+> la rechazaba con «Duplicate entry», un error del motor que no dice nada del negocio. **Medido: 3
+> empresas demo y UNA sola fila de configuración**, así que *«cobrar ITBIS en una empresa y no en la
+> otra»* —lo que se pidió— **era imposible**. La migración amplía la clave; es **aditiva** y corre
+> sin ventana. Verificado: la empresa 2 ya cobra distinto que la 1 en el mismo suscriptor.
+>
+> ⚠️ **Tres defectos propios de método**: un script de edición **abortó y no escribió nada** (lo
+> delató que la salida no cambiara) · mi verificador de renderizado **medía mal dos veces** —
+> buscaba «Vista simple», que es el texto del botón solo en modo COMPLETO, y `display:none` suelto,
+> que aparece en cualquier modal oculto (`[INV-LOTE-1]`) · y otro script **asumió una columna
+> inexistente** y acusó al controlador, que estaba bien.
+>
+> **Verificado renderizando el CONTROLADOR real**: 3 pantallas × 4 escenarios, 874–917 KB cada una.
+> La columna de ITBIS se oculta según el impuesto y el rótulo de la barra cambia según el modo —
+> los dos ejes son independientes.
+>
+> **Reglas nuevas: dos decisiones que no se implican no son un modo, son dos interruptores · un
+> default que apaga un impuesto se verifica por el DEFAULT DE LA COLUMNA · un boolean NOT NULL no
+> distingue «no ha elegido» de «eligió que no»: el tercer estado necesita NULL · leer una columna
+> que no existe devuelve NULL sin lanzar nada y la cascada cae al primer registro por orden
+> alfabético · un campo escondido con `x-show` sigue enviándose · lo que no se puede esconder se
+> NOMBRA con su motivo · un controlador puede estar escrito para una clave que el UNIQUE de la base
+> no admite, y el usuario solo ve un «Duplicate entry» · el color de un texto no se arregla con el
+> tono si lleva opacidad · el texto de un botón que cambia con el estado no sirve como marcador de
+> que el botón existe.**
+
 > **LAS CREDENCIALES DE CORREO SALÍAN DEL `.env` (2026-08-31) — `[CRM-EMAIL-1]`**: reporte del
 > director técnico — *«me indicas que realice modificaciones al `.env` y que limpie caché, pero yo
 > no soy quien configura el sistema, es el mismo usuario… es un SaaS, quizá no siempre estaré para
@@ -3293,7 +3368,12 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[INV-PARAM-2]` (**las cuentas contables no se
+> Ultimo commit en **zyntello-app**: `[FACT-SIMPLE-1]` (**captura simple + ITBIS opcional +
+> accesibilidad del tema claro**: el texto invisible en claro era OPACIDAD, no tono — 825
+> reemplazos en 296 vistas y los colores pasan a variables CSS. La pantalla simple y el cobro de
+> ITBIS son dos ejes INDEPENDIENTES. ⚠️ De paso: la bodega salia de una columna que NO EXISTE, y
+> la configuracion fiscal era por SUSCRIPTOR — la segunda empresa no podia guardar la suya).
+> Anterior: `[INV-PARAM-2]` (**las cuentas contables no se
 > adivinan**: se retiro la busqueda por rango de codigo —en el plan de Agua Yamel resolvia el
 > costo de ventas contra «Planilla»— y la sustituye un verificador de solo lectura. Cero
 > cuentas hardcodeadas en `app/`. ⚠️ Agua Yamel: jerarquia aplicada, 29 cuentas con padre).
