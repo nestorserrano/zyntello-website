@@ -272,6 +272,82 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > `[DEMO-FIX-1]`, `[CONT-CTA-4/5]`). Su detalle sí está en `app/zyntello-app/CLAUDE.md`, que es
 > la bitácora técnica. Se anota aquí para que el hueco no se lea como «no pasó nada».
 
+> **CERRAR SESIÓN EN TODOS LOS DISPOSITIVOS + BLUEPRINT DE 2FA CON APP (2026-09-03) —
+> `[SESION-DISPOS-1]`, `[SESION-DISPOS-2]`**: pedido del director técnico tras `[SESION-LOOP-1]` —
+> *«sí, que Recordarme mantenga la sesión, pero que me dé una opción de cerrar sesión en todos los
+> dispositivos cuando tenga una sospecha y me permita ingresar de nuevo. Podemos agregar
+> autenticación de dos pasos… con un sistema como Google Authenticator»*.
+> **10 pruebas nuevas, 3 guardas verificadas VIOLÁNDOLAS: las 3 se detectan** · Auth **37 passed** ·
+> rutas no sombreadas y ayuda en verde. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`baa3779e`).
+> **Sin migración.**
+>
+> **Son las dos mitades de la misma decisión**: una sesión que ya no caduca sola necesita una forma
+> explícita de terminarla a distancia. Pantalla nueva **«Dispositivos conectados»** en el perfil:
+> dispositivo, IP y última actividad de cada sesión, con la actual marcada; **cerrar las demás**
+> (deja conectado aquí) y **cerrar todas incluida esta** (devuelve al login).
+>
+> ⚠️⚠️ **NO se usa `Auth::logoutOtherDevices()`, y ese es el hallazgo.** Ese método **no cierra nada
+> por sí mismo**: marca la sesión actual y CONFÍA en que el middleware `AuthenticateSession` expulse
+> a las demás — y ese middleware **NO está registrado en el grupo `web`** de esta aplicación
+> (verificado). Llamarlo habría dejado una función que se ve implementada y **no expulsa a nadie**,
+> con el agravante de que se usa justo cuando el usuario cree que alguien entró a su cuenta. Se
+> borran las filas de `sessions`, que con el driver `database` es el corte real e inmediato.
+>
+> ⚠️⚠️ **Y borrar las filas TAMPOCO basta sola, que es el punto de todo esto**: quien marcó
+> «Recordarme» —el caso del director técnico— **vuelve a entrar en su siguiente petición**, porque
+> Laravel lo re-autentica con el `remember_token` de su cookie y le abre una sesión nueva. Por eso
+> se **RECICLA el token**; sin eso *la expulsión duraba hasta el próximo clic del intruso*. W Como el
+> token es **uno solo**, eso invalida también la cookie de este dispositivo: el controlador **la
+> reemite** para no autoexpulsarse.
+>
+> ⚠️ **La contraseña se pide aunque ya estés autenticado**: sin ella, cualquiera sentado ante un
+> equipo con la sesión abierta podría expulsar al dueño de todos sus dispositivos. Es lo único que
+> el intruso no tiene. ⚠️ **Y la pantalla queda FUERA del middleware de suscripción**: cerrar la
+> sesión de un dispositivo sospechoso no puede depender de tener el plan al día — con prueba que
+> mira los middlewares REALES de la ruta.
+>
+> ⚠️ **Lo que no se reconoce se NOMBRA**: un `User-Agent` desconocido sale como «Dispositivo
+> desconocido» en vez de caer al más común — *es el dato con el que el usuario decide si una sesión
+> es suya o de un intruso, y decirle «Chrome en Windows» a quien entró desde otra cosa lo lleva a
+> dar por buena la sesión del intruso.*
+>
+> ⚠️⚠️ **`[SESION-DISPOS-2]` — un defecto propio que encontró VERIFICAR, no las pruebas**: la vista
+> asumía `$errors`, que inyecta el middleware `web`. Las pruebas pasaban porque hacen peticiones
+> HTTP reales; **el script de verificación en producción reventó**. Es la forma que
+> `[INV-CFG-EMP-2]` documentó para un partial del layout. No llegaba a afectar a producción —la
+> vista solo la sirve su controlador— pero se corrige igual.
+>
+> ⚠️ **Y dos trampas de método**: mi prueba de aislamiento contaba filas **por IP** y arrastraba las
+> de corridas anteriores (la suite **no usa `RefreshDatabase`**) — corregida para identificar por
+> id; y las pruebas HTTP daban **404** hasta poner `URL::forceRootUrl` en el `setUp`, por el subpath
+> de `APP_URL` local.
+>
+> **Verificado en producción renderizando el controlador real**: **881,2 KB**, la sesión del demo
+> sale como «Chrome en Windows | 179.61.18.240», las tres rutas resuelven y `/profile/sesiones` sin
+> sesión redirige a `/login`. Script de verificación **retirado** (`[#1250]`).
+>
+> **Y el BLUEPRINT de 2FA con app (TOTP)**: `app/zyntello-app/zyntello-2fa-totp-blueprint.md`,
+> **SIN EJECUTAR**. ⚠️ **Lo primero fue medir, y casi todo estaba**: el **2FA por correo YA EXISTE y
+> funciona** (código hasheado, vigencia, reenvío, throttle) — **no se toca: es el rescate del
+> teléfono perdido** —, **`bacon/bacon-qr-code` YA está instalado** (se usa en Activos, Car Wash y
+> e-CF, con `SvgImageBackEnd`, sin depender de GD) y producción corre **PHP 8.3.33** con
+> `gd`/`imagick`/`bcmath`/`openssl`/`sodium`. **La única dependencia nueva posible es la librería
+> TOTP.** Cinco fases; ⚠️ **F3 (anti-reuso del código y ventana de reloj) no se debe posponer**: sin
+> ella el TOTP da una sensación de seguridad que no corresponde a lo que protege.
+> ⚠️ **Dos decisiones PENDIENTES del director técnico**: librería TOTP vs. implementación propia
+> auditada, y si el 2FA se pide en cada login o se recuerda el dispositivo.
+>
+> **Reglas nuevas: `Auth::logoutOtherDevices()` no cierra nada por sí mismo — depende de un
+> middleware que este proyecto no registra, así que la función se vería hecha sin expulsar a nadie ·
+> borrar las filas de `sessions` no expulsa a quien tiene cookie de «Recordarme»: hay que reciclar
+> el `remember_token`, y como es uno solo, hay que reemitir la cookie del dispositivo propio · una
+> acción de seguridad pide la contraseña aunque el usuario ya esté dentro, porque es lo único que el
+> intruso no tiene · lo que no se reconoce se NOMBRA: un dispositivo mal descrito hace que el usuario
+> dé por buena la sesión del intruso · una pantalla de seguridad no puede quedar detrás del
+> middleware de suscripción · una vista no puede asumir `$errors`, y las pruebas HTTP no lo detectan
+> porque el middleware ya lo inyectó · una prueba que cuenta filas por un valor repetible arrastra
+> las de corridas anteriores cuando la suite no usa `RefreshDatabase`.**
+
 > **EL BUCLE DE REDIRECCIONES Y LA SESIÓN QUE EXPIRABA SOLA (2026-09-03) — `[SESION-LOOP-1]`**:
 > reporte del director técnico con captura — *«cuando tarda en usar el sistema o se hacen
 > modificaciones o se actualiza la página da este error y debo borrar la dirección y abrir desde
@@ -3712,7 +3788,12 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[SESION-LOOP-1]` `557f8b55` (**el bucle de redirecciones y la
+> Ultimo commit en **zyntello-app**: `[SESION-DISPOS-2]` `baa3779e` (**cerrar sesion en todos los
+> dispositivos** + **blueprint de 2FA con app (TOTP), sin ejecutar**. ⚠️ `Auth::logoutOtherDevices()`
+> **no cierra nada por si mismo** —depende de `AuthenticateSession`, que este proyecto no registra—
+> y borrar las filas de `sessions` **tampoco basta** con «Recordarme»: hay que reciclar el
+> `remember_token`. ⚠️ El 2FA por correo YA EXISTE y `bacon/bacon-qr-code` YA esta instalado).
+> Anterior: `[SESION-LOOP-1]` `557f8b55` (**el bucle de redirecciones y la
 > sesion que expiraba sola**: el manejador generico se tragaba la `AuthenticationException` —no es
 > `HttpException`— y redirigia a `url()->previous()`, o sea a la pantalla de la que se venia, que
 > tambien esta protegida: **ping-pong entre las dos ultimas paginas**. Y el cache de Bluehost le
