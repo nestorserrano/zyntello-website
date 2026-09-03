@@ -272,6 +272,118 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > `[DEMO-FIX-1]`, `[CONT-CTA-4/5]`). Su detalle sí está en `app/zyntello-app/CLAUDE.md`, que es
 > la bitácora técnica. Se anota aquí para que el hueco no se lea como «no pasó nada».
 
+> **CUATRO SÍNTOMAS, UNA RAÍZ: LA CONFIGURACIÓN ERA POR SUSCRIPTOR (2026-09-03) —
+> `[FORM-TABS-1]`, `[INV-CFG-EMP-1/2]`, `[INV-COSTO-1]`, `[INV-TT-1]`**: cuatro reportes del
+> director técnico en el mismo hilo — *«en los articulos del demo no estás agregando el impuesto
+> cuando se editan no guarda… y el error no se muestra porque es de la primera pestaña y estas en
+> la 4 pestaña y no se ve donde esta el error y el usuario se queda esperando. Analiza para
+> corregir en toda la suite»* · *«en el movimiento del ajuste de inventario no está trayendo el
+> ultimo costo y el costo promedio… creo que debe mantener su costo si es un ajuste»* · *«estoy
+> leyendo los codigos de barras que les configure a los articulos ARE-001 y BLO-001 y no los lee»*
+> · *«agregalas por migracion y corrige lo que has encontrado»*.
+> **12 reglas verificadas VIOLÁNDOLAS: las 12 se detectan** · Inventario **150 passed** ·
+> Facturación **141** · Compras **69** · Car Wash **417** · vistas **4 (2 182 aserciones)**.
+> **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`8c58fa92`). ⚠️ Migraciones `2026_09_03_760001` y
+> `760002`.
+>
+> ⚠️⚠️ **El síntoma del formulario no era del módulo, era del navegador.** Un control `required`
+> dentro de una pestaña inactiva queda con `display:none` —lo que aplica `x-show`— y **un control
+> que no se ve NO ES FOCUSABLE**: el navegador **cancela el envío** y lo único que escribe es «An
+> invalid form control is not focusable» **en la consola**. El usuario pulsa Guardar y no pasa
+> nada. **Medido: 51 campos `required` dentro de pestañas en 19 vistas** — es un patrón del
+> ecosistema, no una pantalla.
+>
+> ⚠️⚠️ **Y el mecanismo obvio no sirve: cuando la validación nativa falla, el evento `submit` NO SE
+> DISPARA.** Mi primera versión lo escuchaba y **la verificación con navegador real la encontró
+> muerta**. El que sí llega es **`invalid`**, uno por control y **solo en fase de CAPTURA**.
+> ⚠️ Solo se interviene si hay un inválido **OCULTO**: con los campos a la vista el navegador ya
+> avisa bien, y sustituirlo cambiaría formularios que hoy funcionan. ⚠️ La pestaña se **DERIVA del
+> DOM**, nunca de una lista a mano — con una lista, el campo que alguien agregue mañana vuelve a
+> quedar sin salto.
+>
+> ⚠️⚠️ **Los otros tres síntomas salían de la MISMA raíz, y es el defecto que `[FACT-SIMPLE-1]`
+> cerró para la configuración fiscal**: `inv_config_inventario` tenía el UNIQUE en **`(company_id)`
+> a secas**. Comprobado EJECUTÁNDOLO: **abrir Inventario → Configuración del módulo desde la
+> segunda empresa revienta con «Duplicate entry»**; y el controlador buscaba solo por company, así
+> que la empresa 2 **veía la config de la 1 y al guardar la PISABA**.
+>
+> ⚠️⚠️ **Lo que no revienta es lo que explicaba el «no lee los códigos»**: sin fila, `$config` es
+> null → `usa_codigos_barra` se evalúa apagado → el alta **descartaba los códigos de barra en
+> silencio**. **Medido: 0 códigos de barra en toda la base** — nunca se guardó ninguno, para ningún
+> cliente. ⚠️ **Y el `update` los BORRABA siempre** y solo los reescribía con el flag encendido:
+> editar un artículo con los códigos desactivados **destruía los que ya tenía**.
+>
+> ⚠️⚠️ **El impuesto general no se configuraba por un código que ya no se genera**: dos seeders
+> pedían `codigo = 'IT01'`, que **solo existe en el fallback legacy**; con la localización cargada
+> el código lo deriva el catálogo del país, la consulta daba **NULL**, la columna es nullable y
+> **nada lanzaba**. Fuente única nueva que resuelve por **ATRIBUTO** con orden **TOTAL**.
+> ⚠️ **Y compras resolvía MAL en mi primera versión** —«Retención ITBIS 30%», porque una retención
+> también aplica a compras y el 30 % gana al 18 %—: **lo encontró MEDIR**. Se **excluyen** las
+> retenciones en vez de exigir `tipo = 'itbis'`, o en otro país el `iva` quedaría fuera.
+>
+> ⚠️ **El escaneo desde Facturación estaba bloqueado por `[PERM-BUNDLE-1]`**: sus pantallas
+> llamaban a la ruta de Inventario, detrás de `module:inventario`, y un usuario de Facturación sin
+> ese permiso recibía un **403** que el `catch` devolvía como «artículo no encontrado». Facturación
+> declara **su propia ruta al mismo controlador** (`[VTA-MES-2]`).
+>
+> ⚠️⚠️ **`[INV-COSTO-1]` — un ajuste MANTIENE el costo del stock.** El alta ponía **cero** si no se
+> capturaba, y en una **entrada** el posteo usaba ese número en **tres sitios**: la capa de costo
+> —**PEPS/UEPS sacarían la mercancía gratis**—, el promedio de la bodega —que se **diluye**— y el
+> último costo. **El descuadre no aparece en el ajuste: aparece en el costo de ventas de todo lo que
+> se venda después.** ⚠️ Y el costo sale del **STOCK de la bodega**, no del estándar de la ficha:
+> medido, **VAR-001 estaba a 550,00 en su bodega y su ficha decía 850,00** — al estándar habría
+> **revaluado la existencia** sin que nadie lo pidiera. Fuente única con la cascada declarada,
+> **de solo lectura** (la llama un GET), el cero **NOMBRADO**, y **cambiar la bodega refresca las
+> líneas** — sin eso el ajuste se registra al costo de otro almacén. Los **tres** caminos de la
+> pantalla asignaban el costo por su cuenta: ahora lo decide uno y las copias se borraron.
+>
+> ⚠️⚠️ **`[INV-TT-1]` — MEDIR cambió la corrección que se pidió**: las dos columnas
+> `requiere_bodega_*` **no las lee nadie** y el requisito **ya lo expresa `naturaleza`**, así que
+> agregarlas habría duplicado el dato (`[INV-TRANSITO-1]`). **No se agregan: se quitan.** Lo que sí
+> apareció: **la pantalla de alta de tipos de transacción no funcionaba** —validaba
+> `prefijo_consecutivo`, que no existe, y el `$fillable` la mandaba al INSERT: **1054**; el listado
+> pintaba el mismo atributo y **la columna «Prefijo» salía vacía**, con la vista de EDICIÓN ya
+> parcheada y el alta roto (`[PRE-COB-1]`)— y **el consumo de insumos de Car Wash nunca pudo
+> correr**, porque `naturaleza = 'consumo'` **no estaba en el ENUM** y revienta con **1265**;
+> `MovimientoService` ya lo trataba: **el código esperaba el valor y el esquema nunca lo tuvo**.
+>
+> **En producción**: UNIQUE ampliado · el ENUM con `consumo` y su `NOT NULL`/`DEFAULT` preservados ·
+> la empresa 2 **ya crea su configuración** · config de inventario **3 → 5 filas** ·
+> las 3 demo **con impuesto general** (antes ninguna) · **códigos de barra 0 → 57**, todos con
+> dígito verificador válido y 0 huérfanos · **`ARE-001` y `BLO-001` resuelven por código Y por
+> código de barra** · las pantallas reales renderizan **852,4 KB** y **786,8 KB** con el avisador
+> presente. ⚠️ **Agua Yamel —el único cliente real— tampoco tenía configuración de inventario**,
+> así que estaba afectada; **no se le tocó nada**: su config la crea la pantalla al abrirse, que es
+> lo que dejó de reventar.
+>
+> ⚠️ **Cuatro defectos propios**, y los tres que más enseñan: mi primer avisador **escuchaba el
+> evento equivocado** · el partial **asumía `$errors`**, que lo inyecta un middleware, y al vivir en
+> el layout **reventaba la vista completa** (lo encontró la regresión) · y **dos pruebas pasaban por
+> la razón equivocada**: una guarda de código que busca una cadena **no ve que el camino se
+> desactive**, y una prueba de orden que compara dos corridas seguidas **pasa con el orden parcial
+> puesto** (reincidente de `[VTA-MES-1]`).
+>
+> ⚠️ **HALLAZGOS FUERA DE ALCANCE**: **las 45 capas de `inv_cost_layers` son TODAS huérfanas** —su
+> `movimiento_linea_id` no resuelve— y **9 están en cero con existencia viva**, todas de TAPIA
+> (empresa de prueba) · el impuesto de TAPIA está **sin `empresa_id`** · y **el escáner solo está en
+> las pantallas de ALTA de Facturación, no en las de EDICIÓN**.
+>
+> **Reglas nuevas: un control `required` que no se ve NO ES FOCUSABLE y el navegador cancela el
+> envío sin avisar — y el evento `submit` no se dispara, así que el aviso se engancha a `invalid` en
+> CAPTURA · solo se interviene cuando el campo está oculto · la pestaña de un campo se DERIVA del
+> DOM · un partial en el layout no puede asumir `$errors` · un `firstOrCreate` con la clave vieja no
+> falla: ENCUENTRA la fila de otra empresa y no crea nada · un `insertOrIgnore` que silencia un
+> choque de clave esconde el defecto · un flag apagado que descarta lo capturado se NOMBRA, y el
+> borrado va DENTRO del flag o editar destruye lo que había · un código de catálogo buscado a mano
+> deja de existir cuando cambia la convención, y `first()` da NULL sin lanzar nada · una retención
+> también «aplica a compras»: el impuesto del documento se resuelve EXCLUYENDO lo que no lo es · un
+> método que recibe la empresa por parámetro necesita `sinScopeEmpresa()` · un ajuste MANTIENE el
+> costo del stock, y sale de la BODEGA, no del estándar de la ficha · una guarda de código que busca
+> una cadena no ve que el camino se desactive: hay que ejercer el comportamiento · antes de agregar
+> una columna hay que medir si alguien la lee y si el dato ya está expresado · un `MODIFY COLUMN`
+> copia la definición completa: se lee del esquema · una clave fuera del `$fillable` se descarta EN
+> SILENCIO, así que quien la escribe cree haber configurado algo.**
+
 > **CAMBIAR LA LISTA DE PRECIOS NO REFRESCABA LAS LÍNEAS (2026-09-02) — `[FACT-SIMPLE-2]`**:
 > reporte del director técnico — *«cuando se cambia la lista de precios, el precio de las líneas
 > existentes no cambia»*, y en el mismo hilo la simplificación: *«no debe aparecer Flete, Doc ni
@@ -3526,17 +3638,22 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[FACT-SIMPLE-2]` `11497999` (**cambiar la lista de precios no
-> refrescaba las lineas**: las vistas de EDICION tenian el selector y NO el manejador, y el endpoint
-> solo consultaba la lista ELEGIDA — el documento se emitia a un precio que la pantalla ya no
-> mostraba. La cascada pasa a fuente unica y se borran las 3 copias; una pedia una columna que no
-> existe y reventaba en silencio. Ademas: escaneo INVISIBLE por velocidad de rafaga, cargos y notas
-> colapsables sin sacar los inputs del DOM. ⚠️ **PENDIENTE: sin desplegar**, el SSH de Bluehost
-> rechaza conexiones).
+> Ultimo commit en **zyntello-app**: `[INV-CFG-EMP-2]` `8c58fa92` (**cuatro sintomas, una raiz: la
+> configuracion era por SUSCRIPTOR**. Un `required` en una pestaña inactiva no es focusable y el
+> navegador **cancela el envio sin avisar** —y el evento `submit` NO se dispara, asi que el aviso
+> va en `invalid`—; `inv_config_inventario` tenia el UNIQUE en `(company_id)`, asi que la 2ª empresa
+> reventaba con «Duplicate entry» y las que no tenian fila **descartaban los codigos de barra en
+> silencio** (medido: **0 en toda la base**); dos seeders pedian un codigo de impuesto que ya no se
+> genera; **un ajuste sin costo entraba a CERO** y diluia el promedio de la bodega; y la pantalla de
+> alta de tipos de transaccion **reventaba con un 1054** mientras el consumo de Car Wash **nunca
+> pudo correr** por un valor que el ENUM no admitia. DESPLEGADO: codigos de barra **0 → 57**,
+> ARE-001 y BLO-001 ya se leen).
+> Anterior: `[FACT-SIMPLE-2]` `11497999` (**cambiar la lista de precios no refrescaba las lineas**:
+> las vistas de EDICION tenian el selector y NO el manejador, y el endpoint solo consultaba la lista
+> ELEGIDA. La cascada pasa a fuente unica y se borran las 3 copias).
 > Anterior: `[PERM-BUNDLE-1]` (**Caja Chica no abria: el permiso se pedia
 > por el slug de la SUSCRIPCION** (`erp`) y no por el de la PANTALLA (`cajachica`), que es el que el
-> owner marca. El menu SI usaba la regla correcta, asi que el item se veia y no se abria — y habia
-> una TERCERA copia del criterio en su vista. ⚠️ **PENDIENTE: sin desplegar**).
+> owner marca. El menu SI usaba la regla correcta, asi que el item se veia y no se abria).
 > Anterior: `[FACT-SIMPLE-1]` (**captura simple + ITBIS opcional +
 > accesibilidad del tema claro**: el texto invisible en claro era OPACIDAD, no tono — 825
 > reemplazos en 296 vistas y los colores pasan a variables CSS. La pantalla simple y el cobro de
