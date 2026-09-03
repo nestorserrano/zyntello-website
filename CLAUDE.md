@@ -409,6 +409,26 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > no admite, y el usuario solo ve un «Duplicate entry» · el color de un texto no se arregla con el
 > tono si lleva opacidad · el texto de un botón que cambia con el estado no sirve como marcador de
 > que el botón existe.**
+>
+> ⚠️⚠️ **AL DESPLEGAR, un cuarto defecto propio — y del tipo que este trabajo existe para evitar.**
+> Mi script de renderizado en producción guardaba el estado previo de la configuración y al final lo
+> devolvía con `$cfg->fill($previo)->save()`. **Imprimió «configuración restaurada (impuesto=1)» y la
+> base quedó en 0**: Constructora Demo SA se quedó con el **ITBIS apagado**, y también dejó un
+> usuario con la preferencia de vista puesta. **No lanza nada.** Lo encontró **leer la base**, no el
+> mensaje del propio script. Corregido con `DB::table()->update()` —sin depender de casts ni del
+> dirty-checking del modelo, que es justo donde falló— y comprobado antes y después: **las 4 empresas
+> con el impuesto en 1 y 0 usuarios con preferencia**. ⚠️ Los escenarios en producción se acotaron a
+> la **cuenta demo**: ninguna empresa de un cliente real se tocó.
+>
+> ⚠️ **Y un quinto, en el build**: la verificación en producción dio **17 OK / 1 FALLO** —quedaban
+> clases de texto con alfa en el CSS compilado—. **Investigado en vez de descartado**: el `content`
+> de Tailwind incluye `storage/framework/views/*.php`, y ese caché tenía las vistas **VIEJAS** en el
+> momento del build. Resuelto con `view:clear` + rebuild (`[A11Y-2]`): **18 OK / 0 fallos**.
+>
+> **Reglas nuevas del despliegue: un script que dice «restaurado» no prueba que restauró — el estado
+> final se verifica LEYENDO la base · un escenario que se prueba en producción se acota a la cuenta
+> demo · Tailwind escanea el caché de vistas compiladas, así que un build con el caché sucio hornea
+> clases que ya no existen en las fuentes.**
 
 > **LAS CREDENCIALES DE CORREO SALÍAN DEL `.env` (2026-08-31) — `[CRM-EMAIL-1]`**: reporte del
 > director técnico — *«me indicas que realice modificaciones al `.env` y que limpie caché, pero yo
