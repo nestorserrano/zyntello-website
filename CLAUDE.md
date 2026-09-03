@@ -272,6 +272,81 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > `[DEMO-FIX-1]`, `[CONT-CTA-4/5]`). Su detalle sí está en `app/zyntello-app/CLAUDE.md`, que es
 > la bitácora técnica. Se anota aquí para que el hueco no se lea como «no pasó nada».
 
+> **CAMBIAR LA LISTA DE PRECIOS NO REFRESCABA LAS LÍNEAS (2026-09-02) — `[FACT-SIMPLE-2]`**:
+> reporte del director técnico — *«cuando se cambia la lista de precios, el precio de las líneas
+> existentes no cambia»*, y en el mismo hilo la simplificación: *«no debe aparecer Flete, Doc ni
+> Transporte en los totales · la lectura del código de barras debe ser invisible, solo debe buscar
+> el artículo cuando lea · el incoterm, moneda y tipo de cambio ya vienen predeterminados · un
+> control para ocultar la línea de escanear que al pedir factura simple se colapse · igual con las
+> Notas · lo mismo en pedido y cotización»*.
+> **7 pruebas nuevas, 6 reglas verificadas VIOLÁNDOLAS: las 6 se detectan** · Facturación + las
+> 1 286 vistas **141 passed**. **Sin migración.**
+>
+> ⚠️⚠️ **El defecto eran DOS, y ninguno lanza nada.** (1) **Las vistas de EDICIÓN tenían el
+> selector y NO el manejador** —sin `x-model` ni `@change`, así que cambiar la lista no hacía
+> absolutamente nada— y son justo las pantallas que **SIEMPRE** llegan con líneas ya capturadas.
+> (2) **El endpoint solo consultaba la lista ELEGIDA**: un artículo ausente de la lista nueva se
+> quedaba con el precio de la anterior, así que **el documento se emitía a un precio que la
+> pantalla ya no mostraba**. *Un precio que no se refresca no da error: da un importe plausible que
+> ya no corresponde a la lista que el documento declara.*
+>
+> ⚠️ **Y el criterio estaba en TRES copias, una con su propio defecto**: el buscador inline pedía la
+> columna **`precio`** cuando la real es `precio_unitario`, así que **reventaba con un 1054 en
+> cuanto había lista de precios** y su `catch` lo devolvía como «sin resultados». Ahora la cascada
+> vive en `PrecioBaseService::resolverCascada()` —lista elegida → lista base → artículo— y las tres
+> la consumen; **las copias se borraron**. Verificado contra datos reales: **890 con la lista y 650
+> sin ella**, que es lo que prueba que el refresco hace algo. ⚠️ **Es de SOLO LECTURA a propósito**:
+> no usa `obtenerListaBase()`, que **CREA** la lista si falta, y estos endpoints son GET — *abrir
+> una pantalla no puede escribir una fila*. Y el **`descuento_pct` viaja con el precio**, o una
+> línea con rebaja se facturaría al precio sin descuento.
+>
+> ⚠️⚠️ **Escaneo INVISIBLE, que es lo pedido**: un lector USB teclea el código y manda Enter, así
+> que no hace falta campo a la vista — se reconoce la ráfaga por su **VELOCIDAD** (menos de 40 ms
+> entre teclas) con mínimo de 4 caracteres, y **no intercepta si el foco está en un campo de
+> captura** (robarle el Enter impediría salir de una celda). El campo visible queda **colapsado**
+> como respaldo y **resuelve contra el mismo endpoint** que el lector.
+>
+> ⚠️ **Flete, documentación y transporte se colapsan pero SIGUEN en el DOM** (`x-show` solo aplica
+> `display:none`) y el bloque **nace ABIERTO si ya traen valor**: con un `@if`, un documento que los
+> tiene **los perdería al editarse** y el total cambiaría sin que nadie tocara esos campos. El botón
+> muestra la suma cuando está cerrado. **Notas colapsables**, abiertas si el documento ya trae
+> texto. Y **Lista de precios y Lugar de entrega quedan en la misma fila**.
+>
+> ⚠️⚠️ **Moneda, tipo de cambio e incoterm salen de la captura simple, pero si la funcional no tiene
+> tasa activa la sección se pinta COMPLETA** — *una tasa asumida que no existe emitiría el documento
+> a un valor inventado*. Medido en la empresa demo: `camposSinDefault = [moneda, lista_precio]`, así
+> que ahí la moneda **sí** se muestra. Es la salvaguarda de `[FACT-SIMPLE-1]` funcionando.
+>
+> ⚠️⚠️ **Dos defectos propios de la MISMA familia, y ya documentada**: escribí **la etiqueta de un
+> componente Blade dentro de un comentario JS** y la vista dejó de compilar con un `unexpected EOF`
+> que **apunta a una línea del compilado** — es `[CW-FIX-3]`, localizado **compilando prefijos**. Y
+> ⚠️ **reincidí DENTRO del propio comentario que advertía del error**.
+>
+> ⚠️ **Dos defectos de método en mis guardas**: mi extractor del cuerpo del manejador buscaba el
+> nombre **a secas** y su primera aparición es el atributo `@change` del `<select>`, que va antes en
+> el archivo — **afirmaba sobre HTML**; y una guarda **NO detectaba su violación** porque el regex
+> usaba `[^}]*` entre la llave y el `return` y en medio hay llaves anidadas. ⚠️ **Y una prueba que se
+> omitía no protegía nada**: la BD de pruebas tiene **720 artículos y 0 ítems de lista** (mi
+> verificación a mano había usado la de desarrollo), así que ahora **monta su propio escenario** con
+> tres precios deliberadamente distintos.
+>
+> **Verificado renderizando el CONTROLADOR real en los dos modos**: escáner y cargos cerrados en
+> simple, abiertos en completo, con los inputs de flete SIEMPRE en el DOM; **859–900 KB** por
+> pantalla. `x-cloak` confirmado en el CSS del manifest, sin rebuild.
+>
+> **Reglas nuevas: un selector que existe pero no está cableado no da error, no hace nada — y la
+> guarda recorre las CINCO pantallas, porque una prueba sobre una no ve que a las otras les falte el
+> manejador · un precio que no se refresca da un importe plausible que ya no corresponde a la lista
+> que el documento declara · una cascada que corre desde un GET no puede usar el helper que CREA ·
+> un lector de código se reconoce por la VELOCIDAD de la ráfaga, y no se intercepta el Enter cuando
+> el foco está en un campo de captura · lo que se colapsa se esconde con `x-show`, nunca con `@if`:
+> el input tiene que seguir en el DOM o el documento pierde el dato al editarse · un bloque colapsado
+> que oculta un valor muestra su total en el botón · la etiqueta de un componente Blade no se escribe
+> en un comentario JS, ni siquiera para advertir de eso (reincidente) · un extractor que busca un
+> nombre a secas apunta al atributo del select · un regex con una clase negada de llaves no cruza
+> llaves anidadas · una prueba que se omite no protege nada, y monta su propio escenario con valores
+> DISTINTOS por nivel · la BD de pruebas no tiene los datos de la de desarrollo.**
+
 > **CAJA CHICA NO ABRÍA: EL PERMISO SE PEDÍA POR EL SLUG DE LA SUSCRIPCIÓN (2026-09-02) —
 > `[PERM-BUNDLE-1]`**: reporte del director técnico — *«hay un usuario facturación en Agua Yamel que
 > se le dio permisos de facturación y cajachica pero en el módulo de caja chica no abre e informa
@@ -3451,11 +3526,17 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[PERM-BUNDLE-1]` (**Caja Chica no abria: el permiso se pedia
+> Ultimo commit en **zyntello-app**: `[FACT-SIMPLE-2]` `11497999` (**cambiar la lista de precios no
+> refrescaba las lineas**: las vistas de EDICION tenian el selector y NO el manejador, y el endpoint
+> solo consultaba la lista ELEGIDA — el documento se emitia a un precio que la pantalla ya no
+> mostraba. La cascada pasa a fuente unica y se borran las 3 copias; una pedia una columna que no
+> existe y reventaba en silencio. Ademas: escaneo INVISIBLE por velocidad de rafaga, cargos y notas
+> colapsables sin sacar los inputs del DOM. ⚠️ **PENDIENTE: sin desplegar**, el SSH de Bluehost
+> rechaza conexiones).
+> Anterior: `[PERM-BUNDLE-1]` (**Caja Chica no abria: el permiso se pedia
 > por el slug de la SUSCRIPCION** (`erp`) y no por el de la PANTALLA (`cajachica`), que es el que el
 > owner marca. El menu SI usaba la regla correcta, asi que el item se veia y no se abria — y habia
-> una TERCERA copia del criterio en su vista. ⚠️ **PENDIENTE: sin desplegar**, el SSH de Bluehost
-> rechaza conexiones).
+> una TERCERA copia del criterio en su vista. ⚠️ **PENDIENTE: sin desplegar**).
 > Anterior: `[FACT-SIMPLE-1]` (**captura simple + ITBIS opcional +
 > accesibilidad del tema claro**: el texto invisible en claro era OPACIDAD, no tono — 825
 > reemplazos en 296 vistas y los colores pasan a variables CSS. La pantalla simple y el cobro de
