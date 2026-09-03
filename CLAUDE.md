@@ -272,6 +272,80 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > `[DEMO-FIX-1]`, `[CONT-CTA-4/5]`). Su detalle sí está en `app/zyntello-app/CLAUDE.md`, que es
 > la bitácora técnica. Se anota aquí para que el hueco no se lea como «no pasó nada».
 
+> **EL BUCLE DE REDIRECCIONES Y LA SESIÓN QUE EXPIRABA SOLA (2026-09-03) — `[SESION-LOOP-1]`**:
+> reporte del director técnico con captura — *«cuando tarda en usar el sistema o se hacen
+> modificaciones o se actualiza la página da este error y debo borrar la dirección y abrir desde
+> `https://app.zyntello.com/` para que pueda volver a entrar; debe el sistema automáticamente
+> mantener la sesión sin expirar hasta que cierre el navegador y si se desconecta por cualquier
+> razón del servidor ir al login automáticamente»* (`ERR_TOO_MANY_REDIRECTS` en `/settings`).
+> **14 pruebas nuevas, 2 guardas verificadas VIOLÁNDOLAS: las 2 se detectan** · Auth **26 passed** ·
+> vistas **4 (2 182 aserciones)** · acceso/menú/rutas **335 passed**.
+> **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`557f8b55`). **Sin migración.**
+>
+> ⚠️⚠️ **El manejador genérico de excepciones se estaba tragando la sesión caída.**
+> `AuthenticationException` **NO es `HttpException`**, así que la lista de exclusiones de
+> `bootstrap/app.php` no la alcanzaba y caía en el bloque de producción, que redirige a
+> **`url()->previous()` — o sea, a la pantalla de la que se venía**. Como esa también está
+> protegida y la sesión ya no existe, respondía con OTRO redirect a la anterior. **Medido
+> reproduciéndolo**: `/settings → /` · `/dashboard → /settings` · `/ayuda → /dashboard` ·
+> `/empresas → /ayuda`: un **ping-pong entre las dos últimas páginas visitadas**. Con eso
+> `redirectGuestsTo` quedaba **anulado**: el usuario nunca llegaba al login, ni recibía el aviso de
+> expiración, ni se reanudaba donde quedó — toda la máquinaria de `[#1485]` estaba muerta.
+>
+> ⚠️⚠️ **Y el bucle lo cerraba el NAVEGADOR, no el servidor**: el caché de páginas de Bluehost
+> (`X-Endurance-Cache-Level: 2`) **añade un segundo `Cache-Control: max-age=300`** encima del
+> `no-cache, private` de Laravel. Medido en producción sobre `/settings`, con las **dos** cabeceras
+> presentes. Así que el navegador guardaba esas 302 cinco minutos y **reproducía la cadena sin
+> volver a preguntarle al servidor**. *Por eso recargar no servía y borrar la barra de direcciones
+> sí: no arreglaba nada, se saltaba el caché* — y por eso el síntoma aparecía «tras un rato» o
+> «tras una modificación», que son los dos momentos en que la sesión deja de valer.
+>
+> ⚠️ **El middleware anti-caché va en `prepend`, no en `append`**: la respuesta que Laravel
+> construye al renderizar una excepción sube por los middlewares **exteriores**, no por los
+> interiores. En `append` quedaba el más interno y **salían sin cabeceras justo las respuestas del
+> bucle**. Lo encontró **medir** el `Cache-Control` en las dos posiciones, no leer el código.
+>
+> ⚠️ **La guarda anti-bucle es para CUALQUIER excepción, no solo la de sesión**: se redirige por
+> error **una sola vez**; si la pantalla de destino falla igual, se muestra el error en vez de
+> encadenar otro salto. **La marca va en FLASH a propósito** — vive exactamente una petición, así
+> que se limpia sola cuando algo carga bien; con una clave normal de sesión habría que borrarla
+> desde otro sitio y el primer error del día siguiente ya no redirigiría.
+>
+> **La sesión pasa a durar hasta que se CIERRE EL NAVEGADOR** (decisión del director técnico:
+> eliminarlo para todos): `expire_on_close` en true y el tope del servidor en **7 días**.
+> ⚠️ **Los defaults van en `config/session.php`, no solo en el `.env`**, que no está en git: un
+> servidor nuevo volvería a los 120 minutos sin que nada lo avisara. ⚠️ **Y el `lifetime` ya no
+> significa «lo que el usuario puede estar quieto» sino el tope del servidor** — no se pone
+> infinito porque con el driver `database` la limpieza de la tabla `sessions` se hace contra ese
+> valor. Se **retira el temporizador de inactividad** del layout; ⚠️ **se conserva el interceptor de
+> `fetch`, que es otra cosa**: no decide cerrar, **reacciona** a que el servidor ya cerró — sin él
+> la pantalla se queda en pie con los botones mudos.
+>
+> ⚠️ **Un defecto propio de método**: mi script de violación de la segunda guarda **abortó por un
+> escape y no escribió nada**, y el «9 passed» se leyó como «la guarda no detecta su violación»
+> cuando **no se había violado nada**. Es la trampa ya documentada; repetido con `assert` sobre el
+> ancla, la guarda **sí** se detecta.
+>
+> **En producción**: las 5 pantallas protegidas resuelven a **`/login` en UN salto** (antes las 5
+> iban a `/`), el **`max-age=300` de Bluehost desapareció** de la respuesta —queda solo
+> `no-store`— y la cookie `zyntello-session` **ya no lleva `expires` ni `Max-Age`**: es cookie de
+> sesión de navegador. ⚠️ **HALLAZGO FUERA DE ALCANCE**: queda `test-proveedor.php` (2026-06-02) en
+> la raíz de la app en el servidor; está fuera del document root, así que no es alcanzable por web.
+> **No se borró**: es decisión del director técnico.
+>
+> **Reglas nuevas: `AuthenticationException` no es `HttpException`, así que una lista de
+> exclusiones por tipo HTTP no la alcanza — y capturarla anula `redirectGuestsTo` sin que nada lo
+> avise · redirigir tras un error solo sirve UNA vez: el segundo salto es el bucle, y la marca que
+> lo impide va en FLASH para que se limpie sola · un redirect a `url()->previous()` entre pantallas
+> protegidas es un ping-pong, porque el destino falla por la misma causa que el origen · la
+> respuesta de una excepción sube por los middlewares EXTERIORES: un middleware de cabeceras en
+> `append` no la alcanza · un intermediario puede AÑADIR un `Cache-Control` encima del de Laravel,
+> y entonces el bucle lo ejecuta el navegador sin tocar el servidor — se cierra con `no-store`, que
+> es imperativo, no con `no-cache` · el default de una política de sesión vive en `config/`, no
+> solo en el `.env`, que no está en git · con `expire_on_close` el `lifetime` deja de ser el
+> timeout de inactividad y pasa a ser el tope del servidor, y no puede ser infinito porque de él
+> depende la limpieza de la tabla `sessions`.**
+
 > **CUATRO SÍNTOMAS, UNA RAÍZ: LA CONFIGURACIÓN ERA POR SUSCRIPTOR (2026-09-03) —
 > `[FORM-TABS-1]`, `[INV-CFG-EMP-1/2]`, `[INV-COSTO-1]`, `[INV-TT-1]`**: cuatro reportes del
 > director técnico en el mismo hilo — *«en los articulos del demo no estás agregando el impuesto
@@ -3638,7 +3712,15 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[INV-CFG-EMP-2]` `8c58fa92` (**cuatro sintomas, una raiz: la
+> Ultimo commit en **zyntello-app**: `[SESION-LOOP-1]` `557f8b55` (**el bucle de redirecciones y la
+> sesion que expiraba sola**: el manejador generico se tragaba la `AuthenticationException` —no es
+> `HttpException`— y redirigia a `url()->previous()`, o sea a la pantalla de la que se venia, que
+> tambien esta protegida: **ping-pong entre las dos ultimas paginas**. Y el cache de Bluehost le
+> añadia un `max-age=300` encima del `no-cache` de Laravel, asi que **el bucle lo ejecutaba el
+> navegador sin tocar el servidor**. La sesion pasa a durar **hasta que se cierre el navegador**.
+> DESPLEGADO: las 5 pantallas protegidas van a `/login` en UN salto y la cookie ya no lleva
+> `Max-Age`).
+> Anterior: `[INV-CFG-EMP-2]` `8c58fa92` (**cuatro sintomas, una raiz: la
 > configuracion era por SUSCRIPTOR**. Un `required` en una pestaña inactiva no es focusable y el
 > navegador **cancela el envio sin avisar** —y el evento `submit` NO se dispara, asi que el aviso
 > va en `invalid`—; `inv_config_inventario` tenia el UNIQUE en `(company_id)`, asi que la 2ª empresa
