@@ -422,6 +422,67 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > timeout de inactividad y pasa a ser el tope del servidor, y no puede ser infinito porque de él
 > depende la limpieza de la tabla `sessions`.**
 
+> **EL CÓDIGO DUPLICADO Y EL ESCANEO QUE AGREGA LÍNEAS (2026-09-03) — `[INV-CODBAR-1]`,
+> `[SCAN-LINEAS-1]`**: dos reportes más del director técnico — *«al escanear un codigo de barras
+> que tenia otro articulo me dio este error de duplicado, debe aparecer un mensaje sweetalert2
+> diciendo que ese codigo ya lo tiene asignado el articulo xxxx»* y, con captura de una pantalla
+> muerta, *«me muestra el articulo encontrado pero no agrega la línea y el boton agregar línea no
+> funciona… debería agregar una línea nueva y posicionarse en la cantidad agregando 1 y si se
+> escanea otra vez sumar la cantidad, crear lineas por cada codigo diferente»*.
+> **7 reglas verificadas VIOLÁNDOLAS: las 7 se detectan** · Inventario **164 passed** ·
+> Facturación **137** · vistas **4 (2 185 aserciones)**.
+> **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`96ea323d`). **Sin migración.**
+>
+> ⚠️⚠️ **El duplicado mostraba el error CRUDO de MySQL, con dos problemas en el mismo mensaje**: no
+> decía **cuál** artículo tiene el código —así no se puede ni quitárselo al otro— y **exponía el
+> SQL, el host y el nombre de la base de datos** al usuario final. Fuente única
+> `articuloQueLoTiene()` que devuelve el ARTÍCULO para nombrarlo, y ⚠️ **el error se lanza con la
+> clave del CAMPO**, así que el avisador de `[FORM-TABS-1]` **salta a la pestaña «Códigos de barra»
+> y lo dice en un SweetAlert2** — reusando lo construido horas antes. ⚠️ El importador validaba con
+> la clave VIEJA (sin `empresa_id`) y **omitía códigos que sí podían entrar** en otra empresa.
+>
+> ⚠️⚠️ **El segundo síntoma era un defecto MÍO, de minutos antes**: puse `await` dentro de un
+> `onScan` que **no era `async`**. Eso es un **SyntaxError**, así que el navegador **descarta el
+> bloque `<script>` ENTERO**: el componente nunca se define, Alpine no monta nada y **la pantalla
+> queda muerta** — sin líneas, sin botones que respondan. Es exactamente la captura. ⚠️ **Lo
+> encontró RENDERIZAR y parsear el JS**: `VistasCompilanTest` compila **Blade**, no JavaScript, así
+> que **una pantalla puede estar rota con la suite en verde**.
+>
+> **El criterio del escaneo estaba en CUATRO copias** —unas sumaban, otras no, y **ninguna
+> posicionaba el cursor**—: ahora vive en un solo sitio que consumen **8 pantallas**. Un código
+> repetido **SUMA**; uno nuevo ocupa la línea vacía o crea una; ⚠️ la cantidad sube por el
+> **FACTOR** del código (el barcode de una caja de 12 no vale 1); el cursor queda en la **cantidad
+> con el valor seleccionado**; y ⚠️ **no se le roba el foco a quien está escribiendo en otro
+> campo**. **Escáner nuevo en las 3 pantallas de EDICIÓN**, que no lo tenían.
+>
+> ⚠️⚠️ **Y volví a caer en la trampa reincidente de Blade, TERCERA vez**: escribí la etiqueta del
+> componente **dentro de un comentario JS** —para documentar dónde vive el criterio— y Blade la
+> procesa ahí: **seis vistas dejaron de compilar**. Lo cazó la guarda escrita para eso.
+>
+> **Guarda nueva**: recorre las 1 286 vistas y falla si hay un `await` en un método sin `async`.
+> ⚠️ Delimita el cuerpo **contando llaves**: con regex daba **68 falsos positivos donde no hay
+> ninguno**, y se descartó validar «que el JS compile» porque neutralizar Blade daba 6 más — **una
+> guarda ruidosa se termina ignorando**.
+>
+> **Verificado con navegador real**: agrega, enfoca la cantidad, **suma a 2** al repetir, crea la
+> línea 2 con otro código, **factor 12 suma 12**, el valor queda seleccionado y no roba el foco
+> ajeno. **En producción**: las 5 pantallas de alta y las 3 de edición con el escáner, y `ARE-001`
+> → `000001`, `BLO-001` → `000002` resolviendo — lo que **confirma el caso de la captura**:
+> `000002` lo tiene `BLO-001`.
+>
+> ⚠️ **PENDIENTE declarado**: en **despachos** y **picking** las líneas **no se capturan** (vienen
+> de la factura), así que ahí el escaneo debe **MARCAR** la fila y avisar si el código no pertenece
+> al documento. Es otro comportamiento y merece su propio trabajo.
+>
+> **Reglas nuevas: un `await` en un método que no es `async` descarta el `<script>` ENTERO y deja la
+> pantalla muerta sin que ninguna prueba falle · compilar Blade no valida el JavaScript · el cuerpo
+> de un método se delimita contando llaves, no con un regex · una guarda ruidosa se termina
+> ignorando: mejor comprobar EL defecto que «que todo compile» · un escaneo repetido SUMA y la
+> cantidad sube por el FACTOR del código · el cursor va a la cantidad, pero no se le roba a quien
+> escribe en otro campo · un duplicado se nombra con su DUEÑO, y el mensaje de un QueryException no
+> va a la pantalla · una fila que el motor marca «omitida» NO es silenciosa: hay que leer qué hace
+> el motor antes de cambiarlo.**
+
 > **CUATRO SÍNTOMAS, UNA RAÍZ: LA CONFIGURACIÓN ERA POR SUSCRIPTOR (2026-09-03) —
 > `[FORM-TABS-1]`, `[INV-CFG-EMP-1/2]`, `[INV-COSTO-1]`, `[INV-TT-1]`**: cuatro reportes del
 > director técnico en el mismo hilo — *«en los articulos del demo no estás agregando el impuesto
