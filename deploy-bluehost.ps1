@@ -1,4 +1,4 @@
-# ============================================================================
+﻿# ============================================================================
 # DEPLOY ZYNTELLO-APP A BLUEHOST VÍA SSH  (DESATENDIDO)
 # ============================================================================
 # Despliega zyntello-app a producción sin pedir nada:
@@ -22,15 +22,19 @@
 #   .\deploy-bluehost.ps1 -Confirmar  # pide S/N antes de desplegar
 # ============================================================================
 
-param([switch]$Confirmar)
+param([switch]$Confirmar, [string]$Puerto)
 
 $ErrorActionPreference = "Continue"
 
 # ── Configuración ───────────────────────────────────────────────────────────
 $KEY     = "C:\wamp64\www\zyntello\zyntello.ppk"
 $HOSTKEY = "SHA256:/J5knqfWDwYYC6DQvknQRMxco7GHIkAyPJQY8w2SFog"   # ed25519 de ukr.meu.mybluehost.me
-$SSHHOST = "ukrmeumy@ukr.meu.mybluehost.me"
-$PORT    = "2222"
+$SSHHOST = "ukrmeumy@162.241.225.12"   # el panel de Bluehost da la IP; antes: ukr.meu.mybluehost.me
+# El panel SSH Management de Bluehost da el comando sin puerto
+#   $ ssh ukrmeumy@162.241.225.12
+# es decir el 22 por defecto. Antes se usaba el 2222 (legacy Bluehost).
+# Se deja parametrizable: .\deploy-bluehost.ps1 -Puerto 2222 si vuelve a cambiar.
+$PORT    = if ($Puerto) { $Puerto } else { "22" }
 $APP_DIR = "public_html/zyntello/app"
 
 # ── Verificar que la clave NO tenga passphrase ──────────────────────────────
@@ -48,6 +52,17 @@ if (Select-String -Path $KEY -Pattern 'Encryption: aes' -Quiet) {
 # ── Ejecutar comando SSH (batch + hostkey, sin prompts) ─────────────────────
 function Invoke-SSHCommand {
     param([string]$Command, [string]$Description)
+
+    # Un comando VACIO hace que plink abra sesion y salga con codigo 0: el paso se
+    # leeria como "Completado" sin haber ejecutado nada. Paso perdido con exito
+    # aparente, que es peor que un fallo. Causa tipica: la continuacion de linea
+    # con backtick roto por finales de linea CR CR LF (PowerShell trata el CR
+    # suelto como salto y separa los parametros de su llamada).
+    if ([string]::IsNullOrWhiteSpace($Command)) {
+        Write-Host "ERROR INTERNO: Invoke-SSHCommand se llamo SIN comando." -ForegroundColor Red
+        Write-Host "  Revisa los finales de linea del script (deben ser CRLF simple, no CR CR LF)." -ForegroundColor Yellow
+        return $false
+    }
 
     Write-Host "`n$Description" -ForegroundColor Cyan
     Write-Host ("=" * 70) -ForegroundColor DarkGray
@@ -149,6 +164,22 @@ Write-Host ""
 Write-Host "Aplicacion actualizada en: https://app.zyntello.com" -ForegroundColor Cyan
 Write-Host ""
 
+# El estado final se VERIFICA comparando el commit, no se da por bueno porque el
+# script llego hasta aqui: si falto el push o el pull no trajo nada, produccion
+# sigue con el codigo viejo y "COMPLETADO" seria falso.
+Write-Host "Verificacion: produccion tiene que estar en el mismo commit que aqui" -ForegroundColor White
+Write-Host ("=" * 70) -ForegroundColor DarkGray
+$local  = (git -C "$PSScriptRoot\app\zyntello-app" rev-parse HEAD | Out-String).Trim()
+$remoto = (plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "cd $APP_DIR && git rev-parse HEAD" | Out-String).Trim()
+Write-Host "  aqui      : $local"
+Write-Host "  produccion: $remoto"
+if ($local -and $remoto -and $local -eq $remoto) {
+    Write-Host "  CUADRA -> produccion recibio este codigo" -ForegroundColor Green
+} else {
+    Write-Host "  NO CUADRA -> produccion NO tiene este codigo" -ForegroundColor Red
+    Write-Host "  Comprueba el push (git push origin master) y vuelve a desplegar." -ForegroundColor Yellow
+}
+Write-Host ""
 Write-Host "Ultimos commits en produccion:" -ForegroundColor White
 Write-Host ("=" * 70) -ForegroundColor DarkGray
 plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "cd $APP_DIR && git log --oneline -5"
