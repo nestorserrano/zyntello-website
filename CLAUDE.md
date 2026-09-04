@@ -422,6 +422,50 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > timeout de inactividad y pasa a ser el tope del servidor, y no puede ser infinito porque de él
 > depende la limpieza de la tabla `sessions`.**
 
+> **LOS DOS ESPACIOS DE CÓDIGOS DE BARRA (2026-09-03) — `[INV-UOM-1]`**: pregunta del director
+> técnico — *«verifica si esta implementado o no primero las conversiones de medida»* y después
+> *«tengo 2 lugares para codigos de barras pero no utilizas el de la conversion? verifica hay una
+> ambiguedad»*. **3 reglas verificadas VIOLÁNDOLAS: las 3 se detectan** · Inventario **169 passed** ·
+> Restaurante **48 passed**. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`77335967`). **Sin
+> migración.**
+>
+> **La respuesta, medida: SÍ está implementado, completo, y la conversión tiene PRIORIDAD.**
+> `inv_articulo_uom` guarda por artículo el empaque, su unidad, su **factor** y **su propio código
+> de barra**; la pestaña «Conversiones UOM» lo captura; y `ScanService` lo busca **primero**.
+> Comprobado ejecutándolo: escanear una «Paleta de 40 sacos» devuelve **factor 40** y el helper de
+> `[SCAN-LINEAS-1]` **suma 40 de una vez**. **El picking también lo usa y ya suma**, acotado al
+> restante — lo que se pidió para el picking ya funcionaba.
+>
+> **Lo que significan**: la pestaña «Códigos de barra» identifica el artículo en su **unidad base**
+> (escanear suma **1**); «Conversiones UOM» da a cada empaque **su propio** código (escanearlo suma
+> **su factor**).
+>
+> ⚠️⚠️ **Y la ambigüedad que señaló es REAL**: `inv_articulo_uom.codigo_barra` **no tiene ningún
+> índice único**. Comprobado ejecutándolo: el código de un empaque se puede poner también en la
+> pestaña de códigos del artículo, **se guarda sin queja**, y al escanearlo **gana el empaque** — el
+> operario cree contar una unidad suelta y **el sistema le suma la paleta entera (100)**, sin avisar.
+> Ahora la validación mira **los DOS espacios** y dice **en cuál** está, porque se corrigen en
+> pestañas distintas. ⚠️ Se acota por la empresa del ARTÍCULO: la tabla **no tiene `empresa_id`**,
+> así que la unicidad no puede expresarse en la base hasta que la tenga — **declarado**.
+> ⚠️ **Y las dos pestañas ahora DICEN para qué es cada una**, que es lo que faltaba.
+>
+> ⚠️ **Dos defectos que aparecieron al medir**: las **10 conversiones de `inv_conversiones_unidad`
+> estaban HUÉRFANAS** —el seeder borra las unidades y no las conversiones, y su guarda `! exists()`
+> **impedía regenerarlas para siempre**—, y su lector es `RecetaService`, así que **el consumo de
+> insumos del restaurante descartaba líneas**. Y **CERO empaques configurados en toda la base**: la
+> capacidad existía completa y nunca se había usado, así que se leía como inexistente.
+>
+> **En producción**: 9 empaques con 0 huérfanos, conversiones huérfanas **10 → 0**, el empaque
+> devuelve **factor 40/100** y el artículo suelto sigue en **1**.
+>
+> **Reglas nuevas: cuando un dato tiene DOS espacios donde vivir, la pantalla dice para qué es cada
+> uno — si no, el usuario reusa el mismo valor y el sistema elige por él · una unicidad que la base
+> no puede expresar se comprueba en el código y se DECLARA · una validación de duplicados mira TODOS
+> los espacios donde el dato puede estar · una cascada que prioriza un espacio convierte un dato
+> repetido en un resultado distinto y plausible · un seeder con guarda `! exists()` no regenera lo
+> que quedó huérfano: lo deja roto para siempre · una capacidad completa sin ni una fila de ejemplo
+> se lee como una capacidad que no existe.**
+
 > **EL CÓDIGO DUPLICADO Y EL ESCANEO QUE AGREGA LÍNEAS (2026-09-03) — `[INV-CODBAR-1]`,
 > `[SCAN-LINEAS-1]`**: dos reportes más del director técnico — *«al escanear un codigo de barras
 > que tenia otro articulo me dio este error de duplicado, debe aparecer un mensaje sweetalert2
