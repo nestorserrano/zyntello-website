@@ -422,6 +422,44 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > timeout de inactividad y pasa a ser el tope del servidor, y no puede ser infinito porque de él
 > depende la limpieza de la tabla `sessions`.**
 
+> **LA PRUEBA QUE DEPENDÍA DEL ESTADO DE LA BASE (2026-09-03) — `[FACT-PRECIO-2]`**: pedido del
+> director técnico — *«revisa lo de PreciosListaRefrescoTest a ver si revienta mas adelante o es
+> necesario corregir»*. **Sí era necesario, y destapó algo de producción.**
+> **2 reglas verificadas VIOLÁNDOLAS: las 2 se detectan** · Facturación + Inventario **319 passed,
+> 0 failed** (antes: 1 rojo intermitente). **DESPLEGADO Y VERIFICADO** (`4d66b824`).
+>
+> ⚠️ La prueba elegía **la empresa más antigua de la base** y sus tres primeros artículos **sin
+> `ORDER BY`**. El síntoma era el peor: **fallaba en la corrida conjunta y pasaba corriendo su
+> archivo sola** — *una prueba que depende de con quién se ejecute vacía de sentido el verde de la
+> suite*. Medido: la base de pruebas arrastra **167 empresas y 720 companies** de suites que no
+> limpian.
+>
+> ⚠️⚠️ **La causa real, reproducida con una trampa**: la empresa elegida **ya tenía su lista base**
+> y la prueba montaba **otra**; con dos, la cascada resolvía desde una u otra **sin orden**.
+> ⚠️ **Mi primera hipótesis era incorrecta y la trampa lo demostró**: creí que bastaba con que los
+> artículos tuvieran precio en cualquier lista, monté eso y **la prueba pasó igual** — una lista que
+> no es ni la elegida ni la base no participa en la cascada.
+>
+> Ahora cada prueba monta **su propio tenant, empresa y artículos** y **limpia lo que crea**
+> (conteos idénticos antes y después). Era lo que la regla de `[FACT-SIMPLE-2]` pedía y se había
+> hecho **a medias**.
+>
+> ⚠️⚠️ **El hallazgo de producción**: `obtenerListaBase()` **declara en su docblock** que solo puede
+> haber una lista base por empresa, pero **la tabla no tiene UNIQUE** y los dos puntos que la
+> resuelven usaban `->first()` **sin orden**: con dos, el precio del mismo artículo **cambiaría
+> entre consultas sin lanzar nada**. Ahora ordenan por `created_at, id` y **los dos eligen la
+> MISMA**. ⚠️ Medido: **0 empresas con dos listas base**, y el formulario **ni ofrece `es_base`** —
+> el riesgo era de un seeder o un import, no de la pantalla.
+>
+> ⚠️ **DECLARADO, no corregido**: los **720 companies residuales** de la BD de pruebas. Limpiarlos a
+> ciegas podría romper suites que dependan de ellos: es decisión de alcance.
+>
+> **Reglas nuevas: una prueba que elige «lo que haya en la base» depende de qué suites corrieron
+> antes, y el síntoma es que falla en conjunto y pasa sola · lo que una prueba crea, la prueba lo
+> borra · un docblock que afirma una unicidad que la base no impone no es garantía: sin UNIQUE, la
+> consulta necesita orden TOTAL · dos puntos que resuelven el mismo dato ordenan igual · una trampa
+> que NO reproduce el defecto refuta la hipótesis, no la confirma.**
+
 > **DESPACHOS POR LO PENDIENTE, Y EL PICKING QUE DICE CUÁNTO SUMÓ (2026-09-03) —
 > `[DESP-SCAN-1]`**: pedido del director técnico — *«si comienza reforzando los despachos y el
 > picking»*. **8 reglas verificadas VIOLÁNDOLAS: las 8 se detectan** · Facturación + Inventario
