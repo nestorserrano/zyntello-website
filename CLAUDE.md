@@ -422,6 +422,48 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > timeout de inactividad y pasa a ser el tope del servidor, y no puede ser infinito porque de él
 > depende la limpieza de la tabla `sessions`.**
 
+> **DESPACHOS POR LO PENDIENTE, Y EL PICKING QUE DICE CUÁNTO SUMÓ (2026-09-03) —
+> `[DESP-SCAN-1]`**: pedido del director técnico — *«si comienza reforzando los despachos y el
+> picking»*. **8 reglas verificadas VIOLÁNDOLAS: las 8 se detectan** · Facturación + Inventario
+> **317 passed**. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`410ece1f`). **Sin migración.**
+>
+> ⚠️⚠️ **El defecto de fondo de despachos no era el escáner: era que se podía despachar dos veces lo
+> mismo.** La pantalla proponía la cantidad **FACTURADA COMPLETA** en cada despacho y el servidor
+> solo validaba `min:0.01` — el `max` vivía en el HTML, que se salta reenviando el formulario. Un
+> segundo despacho de una factura ya despachada a medias **volvía a sacar todo del almacén**, y el
+> descuadre aparece en el conteo físico semanas después. ⚠️ **Medido antes de tocar: 3 despachos y
+> ninguna factura con más de uno**, así que no había llegado a dañar datos.
+>
+> Criterio único `cantidad_pendiente_despacho` que consumen **la pantalla Y el servidor**.
+> ⚠️ Los **anulados no cuentan** (lo anulado no salió del almacén) · el pendiente **nunca es
+> negativo** · **una línea de otra factura no entra** —por el formulario se podía colar— · y el
+> mensaje **nombra las tres cifras**, porque un «cantidad inválida» no dice cuánto se puede sacar.
+>
+> **El escaneo en despachos SELECCIONA, no agrega**: las líneas vienen de la factura, así que
+> agregar despacharía algo no facturado. Marca la fila, suma por el **factor**, respeta el tope y
+> enfoca. ⚠️ **Un código que no está en la factura se AVISA**: es el error que hay que ver **antes
+> de que salga el camión**.
+>
+> **El picking ya usaba el factor y ya sumaba**: lo que faltaba era que **lo dijera**. «Preparado.»
+> a secas no distingue **escanear la paleta de 100** de **escanear 100 veces la unidad**. Ahora dice
+> `+100 (Paleta de 100 bloques) · quedan 20 de 120`, sobre lo que **de verdad se sumó** —el servicio
+> acota al restante **en silencio**— y el cursor va a esa línea.
+>
+> ⚠️⚠️ **Tres pruebas propias pasaban por la razón equivocada, y es la MISMA lección por tercera vez
+> en la sesión**: asertaban sobre el **NOMBRE** de un método, que sigue definido aunque se quite la
+> **LLAMADA**.
+>
+> **En producción**: **0 sobredespachos históricos**, la guarda **rechaza 15 sobre un pendiente de
+> 10** y **acepta exactamente 10**, y la pantalla renderiza **769,4 KB** con escáner, columna «Ya
+> despachada» y el tope pendiente.
+>
+> **Reglas nuevas: un `max` que solo vive en el HTML no es una guarda · lo que se anuló no salió del
+> almacén: no cuenta como despachado · un pendiente negativo no significa nada · una línea de otra
+> factura se puede colar por el formulario · un mensaje de rechazo nombra las tres cifras · en una
+> pantalla cuyas líneas vienen de otro documento el escaneo SELECCIONA, no agrega · un servicio que
+> acota en silencio obliga a que el mensaje diga lo que DE VERDAD pasó · una aserción sobre el
+> NOMBRE de un método no ve que se quite su LLAMADA (tercera vez).**
+
 > **LOS DOS ESPACIOS DE CÓDIGOS DE BARRA (2026-09-03) — `[INV-UOM-1]`**: pregunta del director
 > técnico — *«verifica si esta implementado o no primero las conversiones de medida»* y después
 > *«tengo 2 lugares para codigos de barras pero no utilizas el de la conversion? verifica hay una
