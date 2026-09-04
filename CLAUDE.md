@@ -1227,6 +1227,22 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > final se verifica LEYENDO la base · un escenario que se prueba en producción se acota a la cuenta
 > demo · Tailwind escanea el caché de vistas compiladas, así que un build con el caché sucio hornea
 > clases que ya no existen en las fuentes.**
+>
+> ⚠️⚠️ **Y el «hallazgo fuera de alcance» que reporté ESTABA RESUELTO, y ese es un defecto MÍO de
+> método.** Reporté como pendiente el `[ReceiptService] Unknown column 'requiere_bodega_destino'` de
+> los logs **sin comprobar si seguía vivo**: `[INV-TT-1]` lo había corregido **ese mismo día** —el
+> requisito de bodega lo expresa `naturaleza`, así que las claves no se agregaron, **se quitaron**—.
+> ⚠️ **La ausencia de error en el log NO prueba nada**: un proceso que no corre tampoco falla (regla
+> de `[CW-FIX-2]`). Lo que lo prueba son **los DATOS**: el `demo:reset` de hoy sí corrió —`pur_receipts`
+> **3 filas de hoy**, `inv_movimientos` 21, `fact_facturas` 15— y ese es justo el camino que
+> reventaba. **Ocurrencias por día: 3 el 01/09 · 3 el 02/09 · 3 el 03/09 (03:00, ANTES del deploy)
+> · 0 hoy.** Comprobado además contra el esquema: las dos columnas **no existen** y el `$fillable`
+> **no declara ninguna clave fantasma**. La guarda `TipoTransaccionEsquemaTest` **4 passed** y
+> **verificada VIOLÁNDOLA**: inyectando `requiere_bodega_destino` en `ReceiptService` **falla**.
+>
+> **Regla nueva: antes de reportar un hallazgo fuera de alcance hay que comprobar si sigue vivo —
+> otra sesión puede haberlo corregido el mismo día, y un pendiente falso manda a buscar un problema
+> que ya no existe.**
 
 > **LAS CREDENCIALES DE CORREO SALÍAN DEL `.env` (2026-08-31) — `[CRM-EMAIL-1]`**: reporte del
 > director técnico — *«me indicas que realice modificaciones al `.env` y que limpie caché, pero yo
