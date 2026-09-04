@@ -272,6 +272,80 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > `[DEMO-FIX-1]`, `[CONT-CTA-4/5]`). Su detalle sí está en `app/zyntello-app/CLAUDE.md`, que es
 > la bitácora técnica. Se anota aquí para que el hueco no se lea como «no pasó nada».
 
+> **UN CÓDIGO DEL SEGUNDO FACTOR VALE UNA SOLA VEZ (2026-09-04) — `[TOTP-F3]`, `[#1009]`**:
+> FASE 3 del blueprint de 2FA con aplicación, la que la propia bitácora marcaba como **la que no
+> se debía posponer**. **18 pruebas nuevas, 7 reglas verificadas VIOLÁNDOLAS: las 7 se detectan** ·
+> Auth + vistas + ayuda + rutas **126 passed (3 966 aserciones)**. **Sin migración.**
+> **F1-2 DESPLEGADA Y VERIFICADA EN PRODUCCIÓN** al abrir la sesión (`841b91fa`).
+>
+> ⚠️⚠️ **El defecto era una columna huérfana: `two_factor_ultimo_periodo` se escribía y no la leía
+> nadie.** Un código TOTP vale 30 segundos **para cualquiera que lo tenga** —quien lo vea por
+> encima del hombro, lo intercepte o lo lea de una pantalla compartida—, así que el mismo código
+> **servía dos veces dentro de su ventana y nada lo decía**. Es la forma de `[INV-TRANSITO-1]`.
+>
+> ⚠️⚠️ **El anti-reuso es fuente única y no tiene puerta trasera**: `consumirCodigoTotp()` verifica
+> **y consume en un solo acto**, y **no existe un método que solo verifique**. Si el criterio
+> quedara en manos de cada llamador —el enrolamiento de hoy, el desafío del login de F2, el que se
+> escriba mañana— bastaría que uno se olvidara para que el agujero volviera **en silencio**.
+>
+> ⚠️⚠️ **El consumo es un UPDATE condicional ATÓMICO, no leer-comprobar-escribir**: entre la
+> lectura y la escritura caben dos peticiones con el mismo código, que es exactamente lo que hace
+> quien intercepta uno — lanzarlo a la vez que el dueño. La condición viaja **dentro** del UPDATE,
+> así que decide la base. ⚠️ Y la condición `<` estricta hace **dos** cosas: rechaza el código ya
+> usado e **impide que el contador retroceda**, lo que reabriría una ventana ya cerrada.
+>
+> ⚠️ **La tolerancia de ±30 s ya existía; lo que faltaba era custodiar el número.** La guarda mira
+> el **VALOR por reflexión**, no el comportamiento: una prueba de que ±1 entra **seguiría pasando
+> con el default subido a 5**. Una ventana ancha alarga la vida de un código robado.
+>
+> ⚠️⚠️ **El aviso por correo no es para quien hizo el cambio: es para el DUEÑO por si no fue él.**
+> Desactivar el segundo factor es el movimiento que precede al robo de una cuenta — quien se sienta
+> ante una sesión abierta lo primero que hace es quitarse el estorbo, y sin el aviso el dueño se
+> entera cuando ya no puede entrar. Se envía **siempre**, con catálogo **cerrado** de eventos y
+> **soft-fail** (un SMTP caído no deshace la acción de seguridad). ⚠️ **El correo nunca lleva el
+> secreto ni ningún código**: se reenvía con un clic y se queda en el buzón para siempre.
+>
+> ⚠️ **El mensaje del código rechazado NO distingue «no válido» de «ya usado»**: decírselo a quien
+> reusa un código **le confirma que interceptó uno bueno**.
+>
+> ⚠️⚠️ **Una prueba propia pasaba por la razón equivocada, y lo encontró VERIFICAR**: la de
+> atomicidad montaba el período consumido **igual** al que llegaba, y **MySQL no cuenta como fila
+> modificada un UPDATE que escribe el mismo valor** — así que pasaba por ESO y no por la condición
+> del `WHERE`. Reescrita con un período **mayor**, pasó de **NO SE DETECTA a SE DETECTA**.
+> ⚠️ Y las pruebas de correo leen el **transporte real**, no `Mail::fake()`: el fake **no registra
+> los `Mail::send('vista', …)`** de este módulo, así que una aserción sobre él **pasaría sin que
+> saliera ningún correo**.
+>
+> ⚠️⚠️ **`[#1009]` — el script de deploy decía «COMPLETADO» sin haber desplegado.** Sus finales de
+> línea eran **CR CR LF**; PowerShell trata el CR suelto como salto, así que la continuación con
+> backtick apuntaba a una línea vacía y `Invoke-SSHCommand` **se llamaba sin argumentos** — y
+> **plink con un comando vacío abre sesión y sale con código 0**, o sea que los cuatro pasos se
+> contaban como «Completado» con producción en el commit viejo. Corregido, con guarda que rechaza
+> el comando vacío (**verificada violándola**: aborta con exit 1) y con un cierre que **COMPARA el
+> commit local contra el de producción** en vez de solo imprimirlo.
+>
+> ⚠️ **F3-3 (contador de intentos fallidos y bloqueo) NO se implementa y se DECLARA**: su sitio es
+> el desafío del login, que es la **FASE 2** y todavía no existe. Hacerlo ahora sería **añadir
+> columnas que no lee nadie** — el defecto que esta misma fase cierra. El enrolamiento ya está
+> acotado por `throttle:6,1` y la contraseña. ⚠️ **F2 sigue pendiente**: el aviso de la pantalla
+> («todavía no se pide al iniciar sesión») se retira con ella.
+>
+> **En producción, leyendo la base y no el mensaje del comando**: las 4 columnas con su tipo real
+> (`enum` nullable, **TEXT**, `bigint unsigned`), **`sin_metodo_tras_backfill` en 0**, las 4 rutas
+> resolviendo **fuera del middleware `subscription`** con `throttle:6,1` en las tres POST, y la app
+> en 200. ⚠️ **22 usuarios y CERO con 2FA activo**: el despliegue no podía dejar a nadie fuera.
+>
+> **Reglas nuevas: verificar y consumir un código de un solo uso son UN acto — si se pueden llamar
+> por separado, algún llamador se olvidará · un anti-reuso de leer-comprobar-escribir no protege de
+> dos peticiones simultáneas: la condición va DENTRO del UPDATE · un contador de un solo uso solo
+> avanza, y retroceder reabre una ventana cerrada · MySQL no cuenta como fila modificada un UPDATE
+> que escribe el mismo valor, y una prueba puede pasar por ESO · el default de un umbral de
+> seguridad se custodia por su VALOR · un aviso de cambio de seguridad es para el DUEÑO por si no
+> fue él · un mensaje que distingue «ya usado» de «no válido» le confirma al atacante que su código
+> era bueno · `Mail::fake()` no registra `Mail::send()` con vista · una columna cuyo lector no
+> existe todavía no se crea: se declara · un CR suelto rompe la continuación con backtick de
+> PowerShell, y plink con comando vacío sale 0: un deploy puede cantar COMPLETADO sin desplegar.**
+
 > **LOS HUERFANOS: SE BORRA LO QUE NO SE PUEDE AUDITAR CONTRA NADA (2026-09-04) —
 > `[HUERF-1]`**: pedido del director tecnico tras `[TEST-LIMPIO-1]` — *«limpia todos los huerfanos,
 > y resuelve los del log segun mejor resuelva, solo me importa manejar los logs generados por Agua
@@ -4175,14 +4249,22 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[TOTP-F1-2]` `edcebdd7` (**enrolamiento del segundo factor por
+> Ultimo commit en **zyntello-app**: `[TOTP-F3]` `17bcc93a` (**un codigo del segundo factor vale UNA
+> sola vez**. ⚠️⚠️ `two_factor_ultimo_periodo` **se escribia y no la leia nadie**: el mismo codigo
+> servia dos veces dentro de su ventana de 30 s y **nada lo decia**. Ahora `consumirCodigoTotp()`
+> verifica **Y consume en un solo acto** —no existe un metodo que solo verifique, para que ningun
+> llamador pueda olvidarse— con un **UPDATE condicional ATOMICO**: leer-comprobar-escribir no
+> protege de dos peticiones simultaneas, que es lo que hace quien intercepta el codigo. ⚠️ El aviso
+> por correo de un cambio del 2FA es **para el DUENO por si no fue el**. ⚠️ **F3-3 declarada, no
+> hecha**: su sitio es el desafio del login (**FASE 2**, pendiente). **DESPLEGADO**: F1-2 en
+> produccion con las 4 columnas verificadas y `sin_metodo_tras_backfill` en 0).
+> Anterior: `[TOTP-F1-2]` `edcebdd7` (**enrolamiento del segundo factor por
 > app, con el QR bajo llave**. ⚠️ Los dos candados viven en el CONTROLADOR: con el metodo confirmado
 > la pantalla devuelve el QR **en NULL** —quien lo vuelva a ver **clona el segundo factor**— y el
 > secreto se genera **solo si no hay uno pendiente**, porque regenerarlo invalida el QR ya escaneado
 > **sin que nada lo diga**. ⚠️ Y dos defectos del interruptor del perfil: activar el 2FA **no
 > declaraba el metodo** y desactivarlo **conservaba el secreto de la app**. El secreto va cifrado en
-> columna TEXT y FUERA del `$fillable`; su cifrado se verifica leyendo la fila **CRUDA**. **SIN
-> DESPLEGAR**).
+> columna TEXT y FUERA del `$fillable`; su cifrado se verifica leyendo la fila **CRUDA**).
 > Anterior: `[HUERF-1]` `69b24096` (**los huerfanos: se borra lo que no se puede auditar contra
 > nada**. Medido antes de tocar: **CERO filas del log son de Agua Yamel** (por causante y por sujeto) y
 > **10 068 de 10 740 eran huerfanas**. ⚠️ Los 479 huerfanos de tablas hijas **no eran «sin
