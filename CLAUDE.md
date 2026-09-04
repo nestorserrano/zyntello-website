@@ -272,6 +272,76 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > `[DEMO-FIX-1]`, `[CONT-CTA-4/5]`). Su detalle sí está en `app/zyntello-app/CLAUDE.md`, que es
 > la bitácora técnica. Se anota aquí para que el hueco no se lea como «no pasó nada».
 
+> **LOS HUERFANOS: SE BORRA LO QUE NO SE PUEDE AUDITAR CONTRA NADA (2026-09-04) —
+> `[HUERF-1]`**: pedido del director tecnico tras `[TEST-LIMPIO-1]` — *«limpia todos los huerfanos,
+> y resuelve los del log segun mejor resuelva, solo me importa manejar los logs generados por Agua
+> Yamel el resto lo puedes limpiar, sino se puede puedes limpiarlos todos, el resto resuelvelo con
+> logica del negocio»*. **2 guardas nuevas verificadas VIOLANDOLAS: las 2 se detectan** · guardas
+> **12 passed** · Contabilidad **132 passed**. **DESPLEGADO Y VERIFICADO EN PRODUCCION**
+> (`69b24096`). **Sin migracion.**
+>
+> **Cierra los tres pendientes que `[TEST-LIMPIO-1]` habia DECLARADO y no corregido**: los 479
+> huerfanos restantes, los «162 sin `company_id`» y las 10 740 filas de `activity_log`.
+>
+> ⚠️⚠️ **El dato que decidio el alcance, medido antes de tocar nada: CERO filas del log son de Agua
+> Yamel** —comprobado por `causer_id` (0 de sus usuarios) **y** por sujeto vivo (0)— y **10 068 de
+> 10 740 eran huerfanas**, el **94 %** de la tabla. Asi que no habia que separar nada: lo que se
+> borra no se podia auditar contra nada, y lo del unico cliente real no existia.
+>
+> ⚠️⚠️ **Y el otro dato cambio el diagnostico del pendiente anterior**: los 479 huerfanos **no eran
+> «sin `company_id`»** —eran de **~35 companies que YA NO EXISTEN**, con el patron 5+5+5+1+3 por
+> company: son los residuos de los resets antiguos de la cuenta demo, cuando borrar el padre dejaba
+> las hijas colgando. Por eso el fix de `[TEST-LIMPIO-1]` no los alcanzaba: **borraba por el
+> `company_id` del demo, y esos apuntan a tenants borrados**. El barrido nuevo no pregunta de quien
+> es la fila: pregunta si su PADRE existe.
+>
+> **Criterio**: se borra lo que **no se puede auditar contra nada**. ⚠️ **NO se borra por antiguedad
+> ni por tenant**: lo que sigue teniendo padre se conserva, sea de quien sea — y eso se ve en el
+> resultado, porque de `PayrollPeriod` se borraron 798 y **se conservaron 672 con sujeto vivo**.
+> ⚠️ Una fila **sin `subject_type`** o de una **clase ausente del codigo** NO se toca: puede ser un
+> `namespace` renombrado, no un borrado.
+>
+> ⚠️ **La lista de 11 relaciones es EXPLICITA a proposito**: derivarla del esquema exigiria FK que
+> este proyecto no tiene —Bluehost las rechaza— y adivinarla por el nombre de la columna borraria
+> filas buenas, porque hay `articulo_id` que apuntan a catalogos distintos segun el modulo.
+>
+> ⚠️⚠️ **La prueba de «la fila que no apunta a nadie» se custodia por el ESQUEMA, no con datos, y eso
+> lo decidio MEDIR**: las **11 columnas padre son NOT NULL** (`SHOW COLUMNS`), asi que ese caso **no
+> es alcanzable hoy** — insertar un NULL da un **1048**, no un huerfano. Mi primera version lo
+> intentaba y **pedia algo imposible**. Ahora la prueba falla el dia que una relacion pase a ser
+> nullable **sin** que se haya escrito la prueba que lo ejerza de verdad, y la guarda `whereNotNull`
+> se conserva para esa relacion futura: *una fila que no apunta a nadie no perdio su padre, nunca lo
+> tuvo.*
+>
+> ⚠️⚠️ **Dos verificaciones IMAGINARIAS propias, seguidas, y de causas distintas**: la primera murio
+> **antes de escribir** el archivo (respaldo a `/tmp`, que no existe en el Python de Windows) y la
+> segunda **altero la base de DESARROLLO en vez de la de pruebas** —el `php -r` bootstrapea la
+> conexion por defecto, y `artisan test` usa `zyntello_app_testing`—. Las dos informaron «7 passed» y
+> las dos se leyeron como «la guarda no detecta su violacion» **cuando no se habia violado nada**. Es
+> la trampa ya documentada por tercera vez. Repetidas bien: **las 2 se detectan**, y se comprobo
+> LEYENDO `information_schema` que las dos bases quedaron como estaban.
+>
+> **El respaldo se validó antes de borrar** (4,6 MB, las **6 tablas** presentes y `Dump completed`):
+> *un dump truncado no es un respaldo, y el mensaje del propio comando no lo prueba.*
+>
+> **En produccion, leyendo la base y no el mensaje del comando**: huerfanos **479 → 0** (segunda
+> pasada: «sin huerfanos») · `activity_log` **10 740 → 672**, todas con sujeto vivo · **0 filas sin
+> company viva** en las 5 tablas · y **Agua Yamel intacta**, con sus 2 actividades y su cliente en
+> pie (ninguna era huerfana). El barrido queda cableado en **dos sitios**: `demo:reset` lo **DELEGA**
+> al terminar —con dos copias del criterio, una podria borrar lo que la otra conserva— y hay barrido
+> semanal los **lunes 01:45**, ⚠️ minuto **alcanzable** por el cron de 15 minutos de Bluehost
+> (`[CRON-FIX-1]`).
+>
+> **Reglas nuevas: un huerfano no se busca por tenant sino por PADRE — los residuos de un borrado
+> viejo apuntan a un tenant que tampoco existe, y una limpieza por `company_id` no los alcanza nunca
+> · lo que conserva su padre se conserva, sea de quien sea: el criterio no es la antiguedad ni el
+> dueño · una entrada de log de una clase que ya no esta en el codigo puede ser un namespace
+> renombrado, no un borrado · un caso que el ESQUEMA no permite no se prueba con datos falsos: se
+> custodia por el esquema y la prueba falla el dia que pase a ser posible · un respaldo se valida
+> antes de borrar (tablas presentes y cierre del dump), no por el mensaje del comando · un script de
+> verificacion que muere antes de escribir informa lo mismo que uno que no corrio, y un `php -r` que
+> bootstrapea la app NO apunta a la base de pruebas (tercera vez).**
+
 > **EL SEGUNDO FACTOR POR APP: ENROLAMIENTO CON EL QR BAJO LLAVE (2026-09-04) —
 > `[TOTP-F1-2]`**: FASE 1 tarea 2 del blueprint de 2FA con aplicación de autenticación, pedido del
 > director técnico en `[SESION-DISPOS-1]` — *«podemos agregar autenticación de dos pasos… con un
@@ -4112,7 +4182,14 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **sin que nada lo diga**. ⚠️ Y dos defectos del interruptor del perfil: activar el 2FA **no
 > declaraba el metodo** y desactivarlo **conservaba el secreto de la app**. El secreto va cifrado en
 > columna TEXT y FUERA del `$fillable`; su cifrado se verifica leyendo la fila **CRUDA**. **SIN
-> DESPLEGAR**). Anterior: `[TOTP-F1-1]` `dcf0b08a` (`TotpService`, fuente unica del segundo factor,
+> DESPLEGAR**).
+> Anterior: `[HUERF-1]` `69b24096` (**los huerfanos: se borra lo que no se puede auditar contra
+> nada**. Medido antes de tocar: **CERO filas del log son de Agua Yamel** (por causante y por sujeto) y
+> **10 068 de 10 740 eran huerfanas**. ⚠️ Los 479 huerfanos de tablas hijas **no eran «sin
+> company_id»**: eran de **~35 companies que YA NO EXISTEN** —residuos de resets viejos del demo—, y
+> por eso una limpieza por `company_id` no los alcanzaba nunca. **DESPLEGADO**: huerfanos **479 → 0**,
+> `activity_log` **10 740 → 672** (todas con sujeto vivo) y **Agua Yamel intacta**).
+> Anterior: `[TOTP-F1-1]` `dcf0b08a` (`TotpService`, fuente unica del segundo factor,
 > verificada contra los vectores del RFC 6238). Anterior: `[TOTP-F0]` `35232984` (golden master del
 > 2FA por correo, antes de tocar una linea — **es el camino de rescate de quien pierda el telefono**).
 > Anterior: `[SESION-DISPOS-2]` `baa3779e` (**cerrar sesion en todos los
