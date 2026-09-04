@@ -272,6 +272,78 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > `[DEMO-FIX-1]`, `[CONT-CTA-4/5]`). Su detalle sí está en `app/zyntello-app/CLAUDE.md`, que es
 > la bitácora técnica. Se anota aquí para que el hueco no se lea como «no pasó nada».
 
+> **EL SEGUNDO FACTOR POR APP: ENROLAMIENTO CON EL QR BAJO LLAVE (2026-09-04) —
+> `[TOTP-F1-2]`**: FASE 1 tarea 2 del blueprint de 2FA con aplicación de autenticación, pedido del
+> director técnico en `[SESION-DISPOS-1]` — *«podemos agregar autenticación de dos pasos… con un
+> sistema como Google Authenticator»*. Sigue a `[TOTP-F0]` (golden master del 2FA por correo, antes
+> de tocar una línea) y `[TOTP-F1-1]` (`TotpService` verificado contra los vectores del RFC 6238).
+> **25 pruebas nuevas, 7 reglas verificadas VIOLÁNDOLAS: las 7 se detectan** · Auth + vistas + ayuda
+> + rutas **108 passed (3 925 aserciones)**. ⚠️ Migración `2026_09_04_770001`.
+>
+> **F1-1 dejó el motor y no había forma de configurarlo.** Ahora la pantalla «Configurar app de
+> autenticación» del perfil recorre los cuatro pasos: escanear el QR, **guardar la clave en texto
+> por si el teléfono se pierde**, teclear el código de 6 dígitos con la contraseña, y activar.
+>
+> ⚠️⚠️ **Los dos candados de la fase viven en el CONTROLADOR, no en la plantilla.** Con el método ya
+> confirmado, la pantalla devuelve secreto, clave legible y QR **en NULL**: si el candado estuviera
+> en el Blade, un cambio de vista lo perdería — y **quien vuelva a ver ese QR clona el segundo factor
+> en otro teléfono**. Y el secreto se genera **solo si no hay uno pendiente**: regenerarlo en cada
+> visita invalidaría el QR que el usuario acaba de escanear, y **nada lo diría** — se leería como
+> «la app no funciona».
+>
+> ⚠️⚠️ **Y dos defectos que salieron al revisar el interruptor del perfil**: activar el 2FA
+> **no declaraba el método** —el flag quedaba encendido con el método en NULL y el desafío del login
+> no sabría qué preguntar—, y desactivarlo **conservaba el secreto de la app**: el usuario cree que
+> lo apagó y su enrolamiento sigue intacto en la base. El aviso de la desactivación se decide
+> **leyendo el estado ANTES de escribir**.
+>
+> ⚠️ **El secreto es una credencial**: cast `encrypted` y columna **TEXT** —el payload cifrado con IV
+> y MAC no cabe en los 32 caracteres del secreto en claro— y las cuatro columnas **FUERA del
+> `$fillable`**, escritas solo con `forceFill()`, para que ningún `update($request->all())` del
+> ecosistema pueda tocar el segundo factor. **El cifrado se verifica leyendo la fila CRUDA con
+> `DB::table()`**: el modelo descifra al leer, así que por Eloquent la prueba pasaría aunque alguien
+> quitara el cast.
+>
+> ⚠️ **Ninguna decisión puede cerrar la puerta.** Regenerar **devuelve el método al correo** hasta
+> que el nuevo secreto se confirme (dejarlo en `totp` apuntaría a un secreto que el teléfono no
+> tiene) · desvincular **no apaga el segundo factor**, lo devuelve al correo si estaba activo —el
+> correo es el rescate de quien pierda el teléfono— · con el flag activo y el método en NULL,
+> `metodoSegundoFactor()` responde **`'correo'`** y lo registra, porque responder `null` dejaría al
+> usuario sin poder entrar · y el mensaje del código inválido **nombra las dos causas reales**
+> (entrada equivocada de la app / reloj desfasado), que se arreglan en sitios distintos.
+>
+> ⚠️ **El QR no puede bloquear la configuración**: data-URI **SVG** con `SvgImageBackEnd`, sin
+> depender de GD ni Imagick (Bluehost), y su generación en `try/catch` que devuelve `null` —quedarse
+> sin QR no impide configurar el segundo factor mientras la clave en texto siga en pantalla—.
+> ⚠️ Las **4 rutas quedan FUERA del middleware `subscription`**: configurar el segundo factor no
+> puede depender de tener el plan al día, con prueba que mira los middlewares **REALES** de la ruta.
+>
+> ⚠️ **La migración es aditiva con guardas `hasColumn` por columna**, y `two_factor_metodo` es
+> **nullable a propósito** (el tercer estado «no ha elegido»). Su **backfill se comprueba LEYENDO la
+> base en el instante del deploy**, no por el número que devolvió el `update`: una fila con el 2FA
+> activo y sin método declarado es un defecto que hay que ver, no un dato.
+>
+> ⚠️ **Dos notas de método**: el **heredoc de Bash revienta con UTF-8** en un archivo largo —ahí sí
+> se cae a la herramienta dedicada—; y `migrate` dijo «Nothing to migrate» sobre una migración que
+> parecía nueva: en vez de darlo por bueno, **se comprobaron las 4 columnas con `Schema::hasColumn`**.
+>
+> ⚠️ **PENDIENTE del blueprint**: **F3 (anti-reuso del código y ventana de reloj) no se debe
+> posponer** — hoy **un código se puede reusar dentro de su ventana de 30 s**, y sin ella el TOTP da
+> una sensación de seguridad que no corresponde a lo que protege. Y siguen abiertas las dos
+> decisiones del director técnico: librería TOTP vs. implementación propia auditada (esta fase fue
+> con implementación propia + 21 pruebas contra los vectores del RFC), y si el 2FA se pide en cada
+> login o se recuerda el dispositivo.
+>
+> **Reglas nuevas: un candado contra clonar el segundo factor vive en el CONTROLADOR, no en la
+> plantilla · un secreto que se regenera en cada visita invalida el QR ya escaneado y el fallo se lee
+> como «la app no funciona» · activar un segundo factor sin declarar su MÉTODO deja al desafío sin
+> saber qué preguntar · desactivarlo sin borrar el enrolamiento deja al usuario creyendo que lo apagó
+> · un método que se regenera vuelve al camino de rescate hasta que el nuevo se confirme · un secreto
+> TOTP es una credencial: cifrado, columna TEXT y FUERA del `$fillable` · el cifrado se verifica
+> leyendo la fila CRUDA · una pantalla de seguridad no puede quedar detrás del middleware de
+> suscripción, y eso se comprueba con los middlewares REALES · un backfill se mide LEYENDO la base en
+> el instante del deploy · un heredoc largo con UTF-8 revienta en el shell.**
+
 > **CERRAR SESIÓN EN TODOS LOS DISPOSITIVOS + BLUEPRINT DE 2FA CON APP (2026-09-03) —
 > `[SESION-DISPOS-1]`, `[SESION-DISPOS-2]`**: pedido del director técnico tras `[SESION-LOOP-1]` —
 > *«sí, que Recordarme mantenga la sesión, pero que me dé una opción de cerrar sesión en todos los
@@ -4033,7 +4105,17 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[SESION-DISPOS-2]` `baa3779e` (**cerrar sesion en todos los
+> Ultimo commit en **zyntello-app**: `[TOTP-F1-2]` `edcebdd7` (**enrolamiento del segundo factor por
+> app, con el QR bajo llave**. ⚠️ Los dos candados viven en el CONTROLADOR: con el metodo confirmado
+> la pantalla devuelve el QR **en NULL** —quien lo vuelva a ver **clona el segundo factor**— y el
+> secreto se genera **solo si no hay uno pendiente**, porque regenerarlo invalida el QR ya escaneado
+> **sin que nada lo diga**. ⚠️ Y dos defectos del interruptor del perfil: activar el 2FA **no
+> declaraba el metodo** y desactivarlo **conservaba el secreto de la app**. El secreto va cifrado en
+> columna TEXT y FUERA del `$fillable`; su cifrado se verifica leyendo la fila **CRUDA**. **SIN
+> DESPLEGAR**). Anterior: `[TOTP-F1-1]` `dcf0b08a` (`TotpService`, fuente unica del segundo factor,
+> verificada contra los vectores del RFC 6238). Anterior: `[TOTP-F0]` `35232984` (golden master del
+> 2FA por correo, antes de tocar una linea — **es el camino de rescate de quien pierda el telefono**).
+> Anterior: `[SESION-DISPOS-2]` `baa3779e` (**cerrar sesion en todos los
 > dispositivos** + **blueprint de 2FA con app (TOTP), sin ejecutar**. ⚠️ `Auth::logoutOtherDevices()`
 > **no cierra nada por si mismo** —depende de `AuthenticateSession`, que este proyecto no registra—
 > y borrar las filas de `sessions` **tampoco basta** con «Recordarme»: hay que reciclar el
