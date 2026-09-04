@@ -272,6 +272,86 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > `[DEMO-FIX-1]`, `[CONT-CTA-4/5]`). Su detalle sí está en `app/zyntello-app/CLAUDE.md`, que es
 > la bitácora técnica. Se anota aquí para que el hueco no se lea como «no pasó nada».
 
+> **EL SEGUNDO FACTOR YA SE PIDE AL ENTRAR, Y NADIE SE QUEDA FUERA — CIERRA EL BLUEPRINT
+> (2026-09-04/05) — `[TOTP-F1-3]`, `[TOTP-F2]`, `[TOTP-F3-3]`, `[TOTP-F4]`, `[#1011]`**:
+> últimas fases del blueprint de 2FA con aplicación, que queda **COMPLETO (F0 → F4)**.
+> **38 pruebas nuevas, 20 reglas verificadas VIOLÁNDOLAS: las 20 se detectan** · Auth + vistas +
+> ayuda + rutas **164 passed (4 092 aserciones)** · Facturación + Inventario **319 passed** (el
+> middleware nuevo toca TODAS las peticiones web). **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN**
+> (`8ae8452d`). ⚠️ Migraciones `2026_09_05_780001`, `780002` y `780003`.
+>
+> **Lo que faltaba**: F3 dejó el anti-reuso, pero **el segundo factor por app seguía sin pedirse al
+> entrar** — el usuario configuraba su aplicación y el login le mandaba un correo. Y no se podía
+> empezar a pedir sin darle antes una salida a quien pierda el teléfono.
+>
+> ⚠️⚠️ **Defecto de producción corregido: el login mandaba el código por correo SIEMPRE**, incluso
+> a quien tenía la app configurada. Ese correo **enseña un código válido a cualquiera con acceso al
+> buzón** y **contradice a la pantalla**, que le pide el de la app mientras le llega otro distinto.
+>
+> ⚠️⚠️ **Sin códigos de recuperación, un teléfono perdido es una cuenta perdida** — y en un SaaS eso
+> termina con soporte reseteando cuentas a mano, que convierte «convencer a una persona por
+> teléfono» en el camino más corto para entrar a una cuenta ajena. Ocho de un solo uso, mostrados
+> **UNA vez**, hasheados. ⚠️ **Tabla propia y no un JSON**: con JSON, marcar uno como usado obliga
+> a reescribir la lista entera —dos peticiones se pisan— y no queda registro de **cuándo** se usó
+> cada uno, que es el dato con el que se investiga un acceso sospechoso.
+>
+> **Un solo campo acepta las tres cosas** —código de la app, del correo y de recuperación— y el
+> usuario no tiene que saber cuál usa. ⚠️ **La validación NO puede ser `digits:6`**: un código de
+> recuperación tiene 10 caracteres con letras, así que el rescate quedaría inalcanzable **antes de
+> llegar a comprobarse**. ⚠️ Y **«Reenviar» no sirve de atajo**: quien tiene la app pasa por el
+> rescate «No tengo mi teléfono», que sí exige el **correo verificado** — mandarlo a uno sin
+> verificar sería entregarle el segundo factor a quien lo puso.
+>
+> ⚠️⚠️ **El bloqueo por intentos es TEMPORAL (15 min tras 5 fallos), y eso no es blandura**: uno
+> permanente convierte la fuerza bruta en una **denegación de servicio contra el dueño** — a
+> cualquiera que conozca un correo le bastaría fallar cinco veces para dejar a esa persona fuera
+> hasta que llame a soporte, que es justo el camino que el 2FA existe para cerrar. ⚠️ Contar el
+> fallo vive en el SERVICIO: si el llamador tuviera que acordarse, la siguiente puerta al desafío
+> nacería sin límite y **nada lo diría**.
+>
+> ⚠️ **El mensaje de rechazo no dice de qué tipo era el código**: cada distinción le confirma algo a
+> quien está probando.
+>
+> **`[TOTP-F4]` — la empresa puede exigirlo, y el propietario devolver el acceso.** El owner
+> reinicia el 2FA de quien perdió el teléfono, con **su** contraseña y **rastro en la bitácora de
+> actividad** —⚠️ es exactamente la operación que usaría un atacante con acceso de owner—, y **no
+> apaga el segundo factor: lo devuelve al correo**. El interruptor «exigir a todos» es **por
+> TENANT** (se entra al sistema una vez, y el login ocurre antes de elegir empresa), nace
+> **APAGADO** —verificado por el **DEFAULT DE LA COLUMNA**— y abre un **período de gracia de 7
+> días**: ⚠️⚠️ bloquear el día que se enciende dejaría fuera a **toda la empresa a la vez**, porque
+> en ese momento nadie lo tiene configurado, y el owner lo apagaría creyendo que está roto.
+> ⚠️⚠️ **La lista de rutas exentas del middleware no es comodidad**: sin ella redirige al perfil
+> estando ya en el perfil — `ERR_TOO_MANY_REDIRECTS`, el defecto de `[SESION-LOOP-1]`.
+>
+> ⚠️⚠️ **Un defecto propio que encontró la PRUEBA, no leer el código**: el middleware usaba
+> **`$user->company`**, propiedad que **no existe** en `User` (es `currentCompany`). Eloquent
+> devuelve **NULL sin lanzar nada**, así que **la política quedaba INERTE**: el interruptor se veía
+> en la pantalla, se guardaba en la base y **no bloqueaba a nadie**.
+>
+> ⚠️ **Y tres trampas del entorno de pruebas**: la migración corrió en **desarrollo y no en
+> testing** (nueve rojos con un 1146 que parecía un defecto de código) · `plan => 'pro'` sin Stripe
+> **redirige antes** del middleware que se quiere ejercer (`[PERM-BUNDLE-1]`) · y ⚠️⚠️ **sin fila
+> en `empresa_members`, `EnsureEmpresaActiva` manda a `/empresas`** y la petición **no llega nunca
+> al controlador**, con el rojo acusando al código equivocado. Lo resolvió **volcar el destino del
+> redirect**, no releer el middleware.
+>
+> **En producción, leyendo la base**: las 3 migraciones aplicadas · tabla de códigos creada ·
+> `exigir_2fa` y los contadores con **default 0** · **0 tenants con la exigencia encendida** · las
+> 6 rutas nuevas resuelven · `ExigirSegundoFactor` registrado al final del grupo `web` · app 200.
+> ⚠️ **Impacto medido antes de desplegar: CERO** — 22 usuarios y **ninguno con 2FA activo**, así
+> que el cambio del login no altera hoy la forma de entrar de nadie.
+>
+> **Reglas nuevas: un código de un solo uso se guarda en tabla propia, no en un JSON — la fecha de
+> uso es el dato con el que se investiga · la validación del campo del desafío no puede tener la
+> forma de UNO de los códigos que acepta · un botón de «reenviar» sin guarda es un atajo para
+> saltarse el método elegido · un bloqueo por intentos permanente es una denegación de servicio
+> contra el dueño · un código expirado también cuenta como intento · la política de un tenant se
+> verifica por el DEFAULT DE LA COLUMNA · un middleware que redirige tiene que eximir su propio
+> destino o es un bucle · leer una propiedad que no existe en un modelo devuelve NULL sin lanzar
+> nada y deja la función inerte · un reporte de adopción dice lo que el login VA A PEDIR, no lo que
+> guarda la columna · sin fila en `empresa_members` la petición no llega al controlador y el rojo
+> acusa al código equivocado.**
+
 > **UN CÓDIGO DEL SEGUNDO FACTOR VALE UNA SOLA VEZ (2026-09-04) — `[TOTP-F3]`, `[#1009]`**:
 > FASE 3 del blueprint de 2FA con aplicación, la que la propia bitácora marcaba como **la que no
 > se debía posponer**. **18 pruebas nuevas, 7 reglas verificadas VIOLÁNDOLAS: las 7 se detectan** ·
@@ -4265,7 +4345,18 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[TOTP-F3]` `17bcc93a` (**un codigo del segundo factor vale UNA
+> Ultimo commit en **zyntello-app**: `[TOTP-F4]` `893edf50` (**CIERRA el blueprint del segundo
+> factor por app (F0 -> F4)**. El login ya pide el codigo de la app o del correo segun el metodo de
+> cada usuario; **un codigo vale UNA sola vez**; hay **codigos de recuperacion** —8 de un solo uso,
+> mostrados una vez, en tabla propia— y rescate «No tengo mi telefono» por correo **verificado**;
+> el metodo se **bloquea 15 min** tras 5 fallos —⚠️ TEMPORAL: uno permanente seria una denegacion
+> de servicio contra el dueño—; cada cambio **avisa al dueño por correo**; y el tenant puede
+> **exigirlo a todo el equipo** con 7 dias de gracia. ⚠️⚠️ Defecto propio que encontro la PRUEBA:
+> el middleware usaba `$user->company`, propiedad **inexistente** —es `currentCompany`—, asi que la
+> politica quedaba **INERTE**: se guardaba en la base y no bloqueaba a nadie. **DESPLEGADO**:
+> 3 migraciones, 0 tenants con la exigencia encendida, impacto CERO —22 usuarios y ninguno con 2FA
+> activo—).
+> Anterior: `[TOTP-F3]` `17bcc93a` (**un codigo del segundo factor vale UNA
 > sola vez**. ⚠️⚠️ `two_factor_ultimo_periodo` **se escribia y no la leia nadie**: el mismo codigo
 > servia dos veces dentro de su ventana de 30 s y **nada lo decia**. Ahora `consumirCodigoTotp()`
 > verifica **Y consume en un solo acto** —no existe un metodo que solo verifique, para que ningun
