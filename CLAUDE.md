@@ -422,6 +422,66 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > timeout de inactividad y pasa a ser el tope del servidor, y no puede ser infinito porque de él
 > depende la limpieza de la tabla `sessions`.**
 
+> **LA BASE DE PRUEBAS Y EL `demo:reset` DEJAN DE ACUMULAR (2026-09-04) — `[TEST-LIMPIO-1]`**:
+> pedido del director técnico — *«limpia las 720 compañias residuales y que no vuelva a suceder ni
+> poblando con el demoseeder ni con demo:reset»*. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN**
+> (`2306bb4c`). **Sin migración.**
+>
+> **La limpieza**: la base de pruebas arrastraba **720 companies, 167 empresas y ~10 000 filas en
+> 105 tablas** desde junio. Ahora **0 companies, 0 empresas, 0 filas con `company_id`**. Comando
+> nuevo `test:limpiar-residuos` (simula por defecto), con **dos guardas verificadas violándolas**:
+> sin `APP_ENV=testing` se niega, y apuntando a una base cuyo nombre no contenga «testing»,
+> también — *con solo la primera, un `.env` mal apuntado borraría datos de un cliente*.
+>
+> ⚠️⚠️ **Tres defectos propios en el comando, los tres encontrados EJECUTÁNDOLO**: borró las 9 962
+> filas dependientes y **dejó las 720 companies en pie** —`companies` tiene `id`, no `company_id`,
+> así que nunca entraba en la lista— · **salía antes de barrer los huérfanos previos** y en la
+> corrida siguiente decía «ya está limpia» con 300 usuarios dentro · y un **`catch` mudo se tragaba
+> un 1451 de FK** (ConstructFlow **sí** tiene claves foráneas) dejando dos filas sin decir por qué.
+>
+> **La prevención en las pruebas**: `Tests\TestCase` borra el tenant que una prueba **olvida**
+> borrar. Verificado con una prueba que no limpia: con el barrido todo queda en 0. **Tras ~700
+> pruebas: 0 residuos.** ⚠️ Cuando no hay nada que borrar **no se toca nada** —ni las FK—: una
+> versión previa limpiaba igual y **rompía pruebas que sí limpian**.
+>
+> ⚠️⚠️ **Se DESCARTÓ `DB::listen` para barrer solo las tablas tocadas**: el listener se registra en
+> la **CONEXIÓN**, que sobrevive a la prueba, así que cada prueba añadía uno que nunca se quitaba y
+> los de pruebas ya destruidas seguían capturando consultas ajenas. **Rompió 9 pruebas de
+> Contabilidad.** El diseño final recorre las 547 tablas **solo cuando una prueba olvidó limpiar**.
+> Verificado: **3 corridas seguidas en 197 passed**.
+>
+> ⚠️ **CORRIJO una atribución mía**: dije que el barrido rompía 3 pruebas comparando **una corrida
+> contra otra**, y ese conjunto es intermitente de por sí — la comparación no era válida.
+>
+> **La prevención en el demo**: `demo:reset` acumulaba **~50 filas por corrida** (medido en tres
+> resets). ⚠️ **Doce tablas hijas que ningún seeder limpiaba** —`cliente_actividades/notas/tareas`
+> al **425 de 430** huérfanos— porque sus padres se borran y **sin FK el huérfano nace en el acto**
+> (`[INV-LOTE-1]` otra vez). Y ⚠️⚠️ **`activity_log` +193 por reset**, con **ninguna fila con
+> `causer_id`** —el seeder corre en CLI—: no se podía ni saber quién las causó ni limpiarlas por
+> tenant. *La causa no era la falta de limpieza, era generarlas: **sembrar no es una acción de
+> usuario auditable**.* El log se apaga durante la siembra y **se restaura siempre**, o silenciaría
+> la auditoría de la aplicación entera sin avisar.
+>
+> **Medido tras el fix: delta 0 filas en 580 tablas** entre dos resets, en local **y en producción**.
+> Y en producción los **huérfanos bajan de 2 387 a 479**, con `inv_cost_layers`, `inv_costos_promedio`
+> y los tres `af_*` en **0**.
+>
+> ⚠️ **DECLARADO, no corregido**: **162 huérfanos SIN `company_id`** que el fix no alcanza (y una
+> fila sin tenant se ve desde todas las empresas, porque el scope es laxo con el NULL) · **45
+> huérfanos de Comercial Aranza y TAPIA y 2 de Agua Yamel**, que son tenants reales · y las **10 740
+> filas de `activity_log` históricas**, donde 755 tienen causante real y no hay forma segura de
+> separar las del seeder: **borrar auditoría de producción sin saber de quién es cada fila no se
+> hace**.
+>
+> **Reglas nuevas: la tabla de tenants se borra APARTE de las que cuelgan de ella (su clave es `id`)
+> · una limpieza que sale antes cuando «no hay nada» deja los huérfanos previos para siempre · un
+> `catch` mudo en una limpieza esconde el motivo · `DB::listen` se registra en la CONEXIÓN, que
+> sobrevive a la prueba · un barrido que actúa cuando no hay nada que borrar rompe las pruebas que sí
+> limpian · una limpieza que filtra por una columna vacía no borra nada · sembrar no es auditable: el
+> log se apaga en la siembra y se RESTAURA siempre · una comparación de una sola corrida contra un
+> conjunto intermitente no demuestra nada · el umbral de una guarda de acumulación es generoso a
+> propósito.**
+
 > **LA PRUEBA QUE DEPENDÍA DEL ESTADO DE LA BASE (2026-09-03) — `[FACT-PRECIO-2]`**: pedido del
 > director técnico — *«revisa lo de PreciosListaRefrescoTest a ver si revienta mas adelante o es
 > necesario corregir»*. **Sí era necesario, y destapó algo de producción.**
