@@ -131,9 +131,9 @@
         <a href="#s9">solicitud de eliminación de datos</a>.
       </p>
       <div class="meta">
-        <span>Última actualización: <strong>31 de agosto de 2026</strong></span>
+        <span>Última actualización: <strong>4 de septiembre de 2026</strong></span>
         <span>Vigencia: <strong>desde su publicación</strong></span>
-        <span>Versión: <strong><a class="verlink" href="#s19">1.1 — ver control de cambios</a></strong></span>
+        <span>Versión: <strong><a class="verlink" href="#s19">1.2 — ver control de cambios</a></strong></span>
         <span>Idioma original: <strong>español</strong></span>
       </div>
     </div>
@@ -234,8 +234,8 @@
           <tbody>
             <tr>
               <td><strong>Cuenta y usuarios</strong></td>
-              <td>Nombre, correo electrónico, contraseña cifrada de forma irreversible, rol, permisos, empresa a la que pertenece.</td>
-              <td>Crear y administrar la cuenta, autenticación, verificación en dos pasos, control de acceso.</td>
+              <td>Nombre, correo electrónico, contraseña cifrada de forma irreversible, rol, permisos, empresa a la que pertenece. Si el Usuario activa la verificación en dos pasos: la clave de su aplicación de autenticación (<strong>cifrada</strong>), sus códigos de recuperación (<strong>cifrados de forma irreversible</strong>) y el registro de intentos fallidos. Ninguno de estos datos es legible por Zyntello.</td>
+              <td>Crear y administrar la cuenta, autenticación, verificación en dos pasos (por correo o por aplicación de autenticación), recuperación del acceso, control de acceso.</td>
               <td>Ejecución del contrato</td>
             </tr>
             <tr>
@@ -586,14 +586,20 @@
         <li><strong>aislamiento estricto de datos</strong> entre suscriptores y entre empresas de un
         mismo suscriptor, aplicado de forma automática en cada consulta;</li>
         <li>control de acceso por roles y permisos granulares por módulo;</li>
-        <li><strong>verificación en dos pasos</strong> por correo electrónico, activable por el usuario;</li>
+        <li><strong>verificación en dos pasos</strong> activable por el usuario, por correo
+        electrónico o mediante una aplicación de autenticación del teléfono (estándar TOTP), con
+        códigos de recuperación de un solo uso, bloqueo temporal tras varios intentos fallidos y
+        aviso por correo de cualquier cambio en ella;</li>
         <li>cifrado en base de datos de las credenciales de integraciones de terceros;</li>
         <li>bitácora de auditoría de acciones sobre documentos y configuraciones;</li>
         <li>respaldos periódicos con verificación de integridad y copia fuera del servidor principal;</li>
         <li>el <strong>respaldo autoservicio</strong> del Suscriptor aplica el mismo aislamiento: se
         construye filtrando exclusivamente sus filas, excluye los datos técnicos comunes a la
         Plataforma y declara en su manifiesto qué quedó fuera;</li>
-        <li>cierre automático de sesión por inactividad.</li>
+        <li>la sesión se cierra al cerrar el navegador, y en todo caso vence en el servidor a los
+        siete días;</li>
+        <li>pantalla de <strong>dispositivos conectados</strong> desde la que el usuario puede cerrar
+        a distancia las sesiones abiertas en otros equipos.</li>
       </ul>
       <p>
         Ningún sistema es completamente infalible. Si ocurriera una brecha que afecte a sus datos, la
@@ -749,7 +755,12 @@
           </thead>
           <tbody>
             <tr>
-              <td>1.1 <span class="vig">Vigente</span></td>
+              <td>1.2 <span class="vig">Vigente</span></td>
+              <td>4 de septiembre de 2026</td>
+              <td><strong>Verificación en dos pasos con aplicación de autenticación y política de sesión.</strong> Se añaden a la tabla de la sección <strong>4</strong> los datos que se guardan cuando el Usuario activa la verificación en dos pasos por aplicación: la clave de la aplicación (cifrada), los códigos de recuperación (cifrados de forma irreversible) y el registro de intentos fallidos; ninguno es legible por Zyntello. Se actualizan las medidas de la sección <strong>11</strong> con el nuevo método, el bloqueo temporal por intentos fallidos y el aviso por correo de cualquier cambio en la verificación. Se <strong>corrige</strong> la descripción de la política de sesión, que decía «cierre automático por inactividad»: desde el 3 de septiembre de 2026 la sesión se cierra al cerrar el navegador, con vencimiento en el servidor a los siete días, y existe una pantalla de dispositivos conectados para cerrarlas a distancia.</td>
+            </tr>
+            <tr>
+              <td>1.1</td>
               <td>31 de agosto de 2026</td>
               <td><strong>Respaldo y portabilidad autoservicio.</strong> Se documenta la función que permite al Suscriptor generar y descargar por su cuenta una copia completa de los datos de sus empresas: sección <strong>9.4</strong> nueva (qué contiene el archivo, aislamiento garantizado frente a otros Suscriptores, datos técnicos que quedan fuera y responsabilidad sobre la copia una vez descargada), mención en <strong>9.1</strong> como forma de ejercer la portabilidad sin solicitud previa, plazo de conservación propio en la tabla de la sección <strong>8</strong> y precisión en la sección <strong>11</strong> de que el respaldo aplica el mismo aislamiento entre Suscriptores. No cambian las finalidades, las bases legales ni los destinatarios del tratamiento.</td>
             </tr>
