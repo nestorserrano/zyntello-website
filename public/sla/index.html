@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acuerdo de Nivel de Servicio (SLA) | Zyntello</title>
+<meta name="description" content="Acuerdo de Nivel de Servicio de Zyntello, S.R.L. — canales de soporte, horarios, prioridades, tiempos de primera respuesta, licencias incluidas y alcance del servicio.">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;padding:0 clamp(1.25rem,3vw,2.75rem)}
+
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:88ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:clamp(2rem,3.5vw,4rem);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:95ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:95ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note.ok{border-left-color:var(--ok);background:rgba(52,211,153,.05)}
+  .note b{color:#fff}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:600px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">Inicio</a>
+        <a href="/terminos/">Términos del Servicio</a>
+        <a href="/privacidad/">Privacidad</a>
+        <a href="/eliminacion-datos/">Eliminación de datos</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">Documento legal</span>
+      <h1>Acuerdo de Nivel de Servicio</h1>
+      <p class="lead">
+        Este Acuerdo (en adelante, el <strong>SLA</strong>) describe el soporte que
+        <strong>Zyntello, S.R.L.</strong> presta a los Suscriptores de su plataforma
+        <code>app.zyntello.com</code>: por qué canales se atiende, en qué horario, con qué
+        prioridades, en cuánto tiempo respondemos, qué está incluido y qué se factura aparte.
+        Complementa los <a href="/terminos/">Términos y Condiciones</a> y no los sustituye.
+      </p>
+      <div class="meta">
+        <span>Última actualización: <strong>5 de septiembre de 2026</strong></span>
+        <span>Vigencia: <strong>desde su publicación</strong></span>
+        <span>Versión: <strong><a class="verlink" href="#s12">1.0 — ver control de cambios</a></strong></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="grid">
+
+      <aside class="toc">
+        <h2>Contenido</h2>
+        <ol>
+          <li><a href="#s1">Identificación y objeto</a></li>
+          <li><a href="#s2">Definiciones</a></li>
+          <li><a href="#s3">Canales de soporte</a></li>
+          <li><a href="#s4">Horario de atención</a></li>
+          <li><a href="#s5">Clasificación de prioridades</a></li>
+          <li><a href="#s6">Tiempos de primera respuesta</a></li>
+          <li><a href="#s7">Qué incluye el soporte</a></li>
+          <li><a href="#s8">Qué no incluye y qué se factura</a></li>
+          <li><a href="#s9">Licencias de uso incluidas</a></li>
+          <li><a href="#s10">Disponibilidad del servicio</a></li>
+          <li><a href="#s11">Exclusiones y límites</a></li>
+          <li><a href="#s12">Control de cambios</a></li>
+        </ol>
+      </aside>
+
+      <article>
+
+<section id="s1">
+  <h2 class="sec"><span class="n">1.</span> Identificación y objeto</h2>
+  <p>
+    <strong>Zyntello, S.R.L.</strong>, sociedad constituida en la República Dominicana, presta el
+    servicio de soporte descrito en este documento a todo Suscriptor con una suscripción vigente
+    de la plataforma <code>app.zyntello.com</code>.
+  </p>
+  <p>
+    Contacto de soporte: <a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a> ·
+    WhatsApp <a href="https://wa.me/18296399877">+1 829 639 9877</a> ·
+    Administración: <a href="mailto:info@zyntello.com">info@zyntello.com</a>.
+  </p>
+  <div class="note">
+    <b>Este SLA se aplica mientras la suscripción esté al día.</b> Una cuenta suspendida por falta
+    de pago conserva sus datos conforme a los Términos, pero queda fuera de los tiempos de
+    respuesta comprometidos aquí.
+  </div>
+</section>
+
+<section id="s2">
+  <h2 class="sec"><span class="n">2.</span> Definiciones</h2>
+  <ul>
+    <li><strong>Incidencia:</strong> cualquier solicitud de soporte que el Suscriptor reporta.</li>
+    <li><strong>Primera respuesta:</strong> el momento en que una persona de Zyntello responde la
+    incidencia con un diagnóstico, una pregunta concreta o una solución.
+    <strong>No</strong> es el acuse automático de recibo.</li>
+    <li><strong>Hora hábil:</strong> hora transcurrida dentro del horario de atención de la
+    sección 4. Una incidencia reportada un viernes a las 17:00 con compromiso de 4 horas hábiles
+    se responde a más tardar el lunes a las 11:00.</li>
+    <li><strong>Tiempo de resolución:</strong> el que toma dejar la incidencia cerrada. Depende de
+    su naturaleza y <strong>no se compromete</strong> en este SLA; lo que se compromete es la
+    primera respuesta.</li>
+  </ul>
+  <div class="note warn">
+    <b>Por qué no comprometemos el tiempo de resolución.</b> Una duda de uso se resuelve en la
+    misma respuesta; un defecto que exige corregir código, probarlo y desplegarlo, no. Prometer un
+    plazo único para las dos cosas sería incumplirlo en la mitad de los casos.
+  </div>
+</section>
+
+<section id="s3">
+  <h2 class="sec"><span class="n">3.</span> Canales de soporte</h2>
+  <p>El soporte se solicita por cualquiera de estos canales:</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Canal</th><th>Cómo</th><th>Para qué sirve mejor</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Correo electrónico</strong></td>
+          <td><a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a></td>
+          <td>Canal principal. Deja constancia escrita de todo el caso y permite adjuntar capturas y archivos.</td>
+        </tr>
+        <tr>
+          <td><strong>WhatsApp</strong></td>
+          <td><a href="https://wa.me/18296399877">+1 829 639 9877</a></td>
+          <td>Consultas cortas y avisos urgentes. Todo caso que requiera seguimiento se traslada a correo.</td>
+        </tr>
+        <tr>
+          <td><strong>Formulario web</strong></td>
+          <td><a href="https://zyntello.com/#contacto">zyntello.com</a></td>
+          <td>Cuando todavía no se tiene acceso a la plataforma ni al correo registrado.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">
+    <b>Qué acelera la respuesta.</b> Indicar la empresa y el módulo donde ocurre, qué se esperaba
+    y qué pasó, y adjuntar una captura de pantalla. Con esos tres datos la mayoría de las
+    incidencias se resuelven en la primera respuesta, sin ida y vuelta.
+  </div>
+</section>
+
+<section id="s4">
+  <h2 class="sec"><span class="n">4.</span> Horario de atención</h2>
+  <p>
+    <strong>Lunes a viernes, de 8:00 a 18:00</strong>, hora de la República Dominicana (GMT-4),
+    excepto los días feriados nacionales dominicanos.
+  </p>
+  <p>
+    Fuera de ese horario se pueden reportar incidencias por cualquier canal: quedan registradas y
+    su tiempo de respuesta empieza a contar al inicio del siguiente día hábil.
+  </p>
+</section>
+
+<section id="s5">
+  <h2 class="sec"><span class="n">5.</span> Clasificación de prioridades</h2>
+  <p>
+    La prioridad la asigna Zyntello según el <strong>impacto real</strong> sobre la operación del
+    Suscriptor, no según la urgencia con que se reporte. Si el Suscriptor no está de acuerdo con
+    la clasificación, puede solicitar su revisión indicando el impacto concreto.
+  </p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Prioridad</th><th>Qué significa</th><th>Ejemplos</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Crítica</strong></td>
+          <td>La plataforma no está disponible, o un módulo contratado es inutilizable para toda la empresa y no hay alternativa.</td>
+          <td>No se puede iniciar sesión · No se puede facturar · Un módulo completo devuelve error</td>
+        </tr>
+        <tr>
+          <td><strong>Alta</strong></td>
+          <td>Una función importante falla o arroja datos incorrectos, pero existe una forma de seguir operando.</td>
+          <td>Un reporte muestra cifras que no cuadran · Un documento no se puede anular</td>
+        </tr>
+        <tr>
+          <td><strong>Normal</strong></td>
+          <td>Una función secundaria falla, o hay una duda de uso o de configuración.</td>
+          <td>Cómo configurar un consecutivo · Un filtro no aplica como se espera</td>
+        </tr>
+        <tr>
+          <td><strong>Baja</strong></td>
+          <td>Sugerencias, mejoras y consultas que no afectan la operación.</td>
+          <td>Solicitud de una columna nueva en un listado · Consulta sobre una función futura</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s6">
+  <h2 class="sec"><span class="n">6.</span> Tiempos de primera respuesta</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Prioridad</th><th>Primera respuesta</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Crítica</strong></td><td>4 horas hábiles</td></tr>
+        <tr><td><strong>Alta</strong></td><td>8 horas hábiles</td></tr>
+        <tr><td><strong>Normal</strong></td><td>1 día hábil</td></tr>
+        <tr><td><strong>Baja</strong></td><td>3 días hábiles</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    El plazo se cuenta desde que la incidencia llega por uno de los canales de la sección 3,
+    dentro del horario de la sección 4.
+  </p>
+  <div class="note warn">
+    <b>Si incumplimos el plazo.</b> El Suscriptor puede escalar el caso escribiendo a
+    <a href="mailto:info@zyntello.com">info@zyntello.com</a> con el asunto original. Un
+    incumplimiento reiterado y documentado de los tiempos de esta sección faculta al Suscriptor a
+    cancelar su suscripción sin penalidad, con efecto al final del período ya pagado.
+  </div>
+</section>
+
+<section id="s7">
+  <h2 class="sec"><span class="n">7.</span> Qué incluye el soporte</h2>
+  <p>Sin costo adicional, dentro de la suscripción vigente:</p>
+  <ul>
+    <li><strong>Corrección de defectos de la plataforma.</strong> Si algo no funciona como está
+    documentado, corregirlo es nuestra obligación y nunca se factura.</li>
+    <li><strong>Dudas de uso</strong> de los módulos contratados.</li>
+    <li><strong>Configuración</strong> de los módulos contratados: consecutivos, cuentas
+    contables, impuestos, permisos y parámetros.</li>
+    <li><strong>Incidencias de acceso</strong>: recuperación de contraseña, verificación en dos
+    pasos y usuarios bloqueados.</li>
+    <li><strong>Orientación</strong> sobre cómo aprovechar una función existente.</li>
+  </ul>
+  <div class="note ok">
+    <b>Reportar un defecto nunca cuesta.</b> Si el problema lo causó la plataforma, corregirlo
+    entra siempre en el soporte incluido, cualquiera que sea el tiempo que tome.
+  </div>
+</section>
+
+<section id="s8">
+  <h2 class="sec"><span class="n">8.</span> Qué no incluye y qué se factura</h2>
+  <p>
+    Los siguientes trabajos <strong>se cotizan y se facturan aparte</strong>, y
+    <strong>ninguno se ejecuta sin la aprobación previa y por escrito</strong> del Suscriptor:
+  </p>
+  <ul>
+    <li><strong>Importación o carga masiva</strong> de datos desde otro sistema.</li>
+    <li><strong>Capacitación</strong> del personal del Suscriptor.</li>
+    <li><strong>Reportes a medida</strong> distintos de los que la plataforma ya ofrece.</li>
+    <li><strong>Desarrollos o adaptaciones</strong> específicas para el Suscriptor.</li>
+    <li><strong>Restauración de respaldos</strong> por causa ajena a la plataforma.</li>
+    <li><strong>Corrección de datos</strong> cuando el error no lo causó la plataforma.</li>
+  </ul>
+  <div class="note warn">
+    <b>Nada facturable avanza sin autorización.</b> Antes de ejecutar cualquiera de estos trabajos
+    se envía una cotización con su alcance y su importe. Solo puede aprobarla quien tenga permiso
+    para gestionar la facturación de la cuenta. Sin esa aprobación el trabajo no se realiza ni se
+    acumulan horas.
+  </div>
+</section>
+
+<section id="s9">
+  <h2 class="sec"><span class="n">9.</span> Licencias de uso incluidas</h2>
+  <p>
+    Cada suscripción incluye dos clases de acceso, descritas en detalle en la
+    <a href="/terminos/#s5">sección 5.3 de los Términos</a>:
+  </p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Clase</th><th>Incluidos</th><th>Alcance</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Usuarios del Suscriptor</strong></td>
+          <td>3 por cuenta<br>(el propietario incluido)</td>
+          <td>Acceden a <strong>todas</strong> las empresas de la cuenta, con los permisos de su rol: Administrador, Transacciones, Consulta o Reportes.</td>
+        </tr>
+        <tr>
+          <td><strong>Usuarios internos</strong></td>
+          <td>5 por cuenta</td>
+          <td>Cada uno queda asignado a <strong>una sola empresa</strong>; sus permisos, configurables módulo por módulo, alcanzan únicamente esa empresa.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Ambos cupos se pueden ampliar escribiendo a
+    <a href="mailto:info@zyntello.com">info@zyntello.com</a>; la ampliación se factura según la
+    tarifa vigente. Un usuario desactivado sigue ocupando su licencia hasta que se le retira de la
+    cuenta. Las cuentas técnicas que Zyntello utiliza para prestar soporte
+    <strong>no consumen licencias del Suscriptor</strong>.
+  </p>
+</section>
+
+<section id="s10">
+  <h2 class="sec"><span class="n">10.</span> Disponibilidad del servicio</h2>
+  <p>
+    Zyntello procura la mayor disponibilidad posible de la plataforma y aplica respaldos
+    periódicos con verificación de integridad, conforme a la
+    <a href="/terminos/#s18">sección 18 de los Términos</a>.
+  </p>
+  <div class="note warn">
+    <b>La meta de disponibilidad la fijan los Términos, no este documento.</b> Los
+    <a href="/terminos/#s18">Términos del Servicio</a> declaran un objetivo mensual del
+    <strong>99.5&nbsp;%</strong> y aclaran que, salvo pacto expreso y escrito, es una
+    <strong>meta operativa y no un compromiso con penalizaciones</strong>: la plataforma se aloja
+    en infraestructura de terceros cuya disponibilidad no controlamos. Este SLA no altera esa meta
+    ni añade penalizaciones sobre ella. Lo que sí compromete son los <strong>tiempos de primera
+    respuesta</strong> de la sección 6 y la comunicación oportuna de cualquier interrupción
+    relevante.
+  </div>
+  <p>
+    Las <strong>ventanas de mantenimiento programado</strong> se avisan con al menos 24 horas de
+    antelación por correo electrónico, y se procuran fuera del horario de atención.
+  </p>
+</section>
+
+<section id="s11">
+  <h2 class="sec"><span class="n">11.</span> Exclusiones y límites</h2>
+  <p>Este SLA no cubre:</p>
+  <ul>
+    <li>Fallas de la conexión a internet, los equipos o la red del Suscriptor.</li>
+    <li>Interrupciones causadas por servicios de terceros ajenos a Zyntello: pasarelas de pago,
+    proveedores de correo, administraciones tributarias o servicios de mensajería.</li>
+    <li>El uso de la plataforma de forma contraria a los Términos.</li>
+    <li>Las consecuencias de datos cargados incorrectamente por el Suscriptor o sus usuarios.</li>
+    <li>Los módulos no contratados.</li>
+    <li>La cuenta de demostración, cuyos datos se eliminan a diario.</li>
+    <li>Los casos de fuerza mayor previstos en los Términos.</li>
+  </ul>
+  <div class="note">
+    <b>Decisiones fiscales y contables.</b> Zyntello provee la herramienta; la responsabilidad
+    sobre las declaraciones, los asientos y la elección de cuentas es del Suscriptor y su
+    contador, conforme a la <a href="/terminos/#s17">sección 17 de los Términos</a>.
+  </div>
+</section>
+
+<section id="s12">
+  <h2 class="sec"><span class="n">12.</span> Control de cambios</h2>
+  <p>
+    Registro completo y acumulativo de todas las versiones de este documento desde su primera
+    publicación. Las versiones anteriores están disponibles a solicitud escribiendo a
+    <a href="mailto:info@zyntello.com">info@zyntello.com</a>.
+  </p>
+  <div class="note">
+    <b>Cómo leer las versiones.</b> Un cambio de <strong>versión menor</strong> (1.0 &rarr; 1.1)
+    precisa o amplía lo ya descrito sin alterar los compromisos. Un cambio de
+    <strong>versión mayor</strong> (1.x &rarr; 2.0) modifica tiempos, alcance o condiciones, y se
+    comunica con <strong>30 días de antelación</strong>.
+  </div>
+  <div class="tbl chg">
+    <table>
+      <thead>
+        <tr><th>Versión</th><th>Fecha</th><th>Cambios</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1.0 <span class="vig">Vigente</span></td>
+          <td>5 de septiembre de 2026</td>
+          <td><strong>Primera publicación.</strong> Documento inicial con 12 secciones: identificación y objeto, definiciones, canales de soporte, horario de atención, clasificación de prioridades en cuatro niveles, tiempos de primera respuesta comprometidos, alcance del soporte incluido, trabajos facturables con aprobación previa obligatoria, licencias de uso incluidas (3 usuarios del Suscriptor y 5 usuarios internos), disponibilidad del servicio —cuya meta del 99.5&nbsp;% la fijan los <a href="/terminos/#s18">Términos</a>, no este documento—, exclusiones y control de cambios.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+      </article>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>República Dominicana</li>
+          <li><a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Documentos legales</h4>
+        <ul>
+          <li><a href="/terminos/">Términos y Condiciones</a></li>
+          <li><a href="/privacidad/">Política de Privacidad</a></li>
+          <li><a href="/eliminacion-datos/">Eliminación de datos</a></li>
+          <li><a href="/sla/">Acuerdo de Nivel de Servicio</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy">&copy; 2026 Zyntello, S.R.L. Todos los derechos reservados.</div>
+  </div>
+</footer>
+
+</body>
+</html>

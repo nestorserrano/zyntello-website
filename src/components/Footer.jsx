@@ -81,7 +81,7 @@ export default function Footer() {
         {/* Línea inferior */}
         <div className="pt-3 text-center" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
           <div className="d-flex justify-content-center flex-wrap gap-3 mb-2">
-            {[['/terminos/', 'Términos del Servicio'], ['/privacidad/', 'Política de Privacidad'], ['/eliminacion-datos/', 'Eliminación de datos']].map(([href, label], i) => (
+            {[['/terminos/', 'Términos del Servicio'], ['/privacidad/', 'Política de Privacidad'], ['/sla/', 'Acuerdo de Nivel de Servicio'], ['/eliminacion-datos/', 'Eliminación de datos']].map(([href, label], i) => (
               <a key={i} href={href} style={{ color: '#475569', textDecoration: 'none', fontSize: '0.83rem' }}
                 onMouseEnter={e => e.target.style.color = '#60a5fa'}
                 onMouseLeave={e => e.target.style.color = '#475569'}>

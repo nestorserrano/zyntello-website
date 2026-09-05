@@ -58,6 +58,9 @@
 **Zyntello, S.R.L.** vende suscripciones mensuales a módulos de software empresarial (SaaS B2B). Todos los módulos viven bajo `app.zyntello.com` dentro de una sola app Laravel multi-tenant.
 
 - **Correo:** info@zyntello.com
+- **Correo de soporte:** soporte@zyntello.com — canal principal del
+  [Acuerdo de Nivel de Servicio](https://zyntello.com/sla/) y el que citan los mensajes de cuota
+  de licencias agotada. ⚠️ Está atendido: no sustituirlo por `info@` en textos de cara al cliente.
 - **Teléfono / WhatsApp:** +1 829 639 9877
 
 ---
@@ -4973,6 +4976,7 @@ Los vendedores de Constructora NO aparecen en Servicios, las facturas NO se mezc
 | Términos y Condiciones del Servicio | `public/terminos/index.html` | `https://zyntello.com/terminos/` |
 | Política de Privacidad | `public/privacidad/index.html` | `https://zyntello.com/privacidad/` |
 | Eliminación de datos de usuario | `public/eliminacion-datos/index.html` | `https://zyntello.com/eliminacion-datos/` |
+| Acuerdo de Nivel de Servicio | `public/sla/index.html` | `https://zyntello.com/sla/` |
 
 > **Las tres URLs son las que se configuran en Meta** (WhatsApp Business): Términos, Privacidad y
 > «URL de instrucciones para la eliminación de datos». Si una de las tres deja de responder 200 o

@@ -131,9 +131,9 @@
         <a href="#s9">solicitud de eliminación de datos</a>.
       </p>
       <div class="meta">
-        <span>Última actualización: <strong>4 de septiembre de 2026</strong></span>
+        <span>Última actualización: <strong>5 de septiembre de 2026</strong></span>
         <span>Vigencia: <strong>desde su publicación</strong></span>
-        <span>Versión: <strong><a class="verlink" href="#s19">1.2 — ver control de cambios</a></strong></span>
+        <span>Versión: <strong><a class="verlink" href="#s19">1.3 — ver control de cambios</a></strong></span>
         <span>Idioma original: <strong>español</strong></span>
       </div>
     </div>
@@ -585,7 +585,11 @@
         <li>cifrado del tráfico en tránsito mediante TLS;</li>
         <li><strong>aislamiento estricto de datos</strong> entre suscriptores y entre empresas de un
         mismo suscriptor, aplicado de forma automática en cada consulta;</li>
-        <li>control de acceso por roles y permisos granulares por módulo;</li>
+        <li><strong>control de acceso con dos alcances distintos</strong>: los usuarios del propio
+        Suscriptor acceden a todas las empresas de la cuenta con los permisos de su rol, mientras
+        que los <strong>usuarios internos</strong> —pensados para personal temporal o externo—
+        quedan asignados a <strong>una sola empresa</strong> y sus permisos, configurados módulo
+        por módulo, alcanzan <strong>únicamente los datos de esa empresa</strong>;</li>
         <li><strong>verificación en dos pasos</strong> activable por el usuario, por correo
         electrónico o mediante una aplicación de autenticación del teléfono (estándar TOTP), con
         códigos de recuperación de un solo uso, bloqueo temporal tras varios intentos fallidos y
@@ -755,7 +759,12 @@
           </thead>
           <tbody>
             <tr>
-              <td>1.2 <span class="vig">Vigente</span></td>
+              <td>1.3 <span class="vig">Vigente</span></td>
+              <td>5 de septiembre de 2026</td>
+              <td><strong>Alcance de acceso de cada clase de usuario.</strong> Se precisa en la sección <strong>11</strong> que el control de acceso tiene dos alcances distintos: los usuarios del propio Suscriptor acceden a todas las empresas de la cuenta con los permisos de su rol, mientras que los <strong>usuarios internos</strong> —destinados a personal temporal o externo— quedan asignados a una sola empresa y sus permisos alcanzan únicamente los datos de esa empresa. La redacción anterior hablaba de «roles y permisos granulares por módulo» sin distinguir hasta dónde llega cada uno. No cambian las categorías de datos tratados, los plazos de conservación, los destinatarios ni los derechos del titular.</td>
+            </tr>
+            <tr>
+              <td>1.2</td>
               <td>4 de septiembre de 2026</td>
               <td><strong>Verificación en dos pasos con aplicación de autenticación y política de sesión.</strong> Se añaden a la tabla de la sección <strong>4</strong> los datos que se guardan cuando el Usuario activa la verificación en dos pasos por aplicación: la clave de la aplicación (cifrada), los códigos de recuperación (cifrados de forma irreversible) y el registro de intentos fallidos; ninguno es legible por Zyntello. Se actualizan las medidas de la sección <strong>11</strong> con el nuevo método, el bloqueo temporal por intentos fallidos y el aviso por correo de cualquier cambio en la verificación. Se <strong>corrige</strong> la descripción de la política de sesión, que decía «cierre automático por inactividad»: desde el 3 de septiembre de 2026 la sesión se cierra al cerrar el navegador, con vencimiento en el servidor a los siete días, y existe una pantalla de dispositivos conectados para cerrarlas a distancia.</td>
             </tr>
@@ -798,6 +807,7 @@
           <li><a href="/terminos/">Términos del Servicio</a></li>
           <li><a href="/privacidad/">Política de Privacidad</a></li>
           <li><a href="/eliminacion-datos/">Eliminación de datos</a></li>
+          <li><a href="/sla/">Acuerdo de Nivel de Servicio</a></li>
         </ul>
       </div>
       <div>
