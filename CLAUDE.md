@@ -268,7 +268,144 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 **Regla:** Si ves error 403/500 después de deploy → ejecuta esto primero.
 
-### Bitácora reciente (estado actual — 2026-08-29)
+### Bitácora reciente (estado actual — 2026-09-05)
+
+> **LOS PERMISOS DE UN USUARIO INTERNO SON DE SU EMPRESA, Y LOS LEGALES YA LO DICEN
+> (2026-09-05) — `[LIC-5]`, `[LIC-6]`, `[LIC-7]`, `[#1013]`**: continúa el plan de licencias por
+> tenant (`docs/superpowers/plans/2026-09-04-licencias-por-tenant.md`), cuyas tareas 1-4 quedaron
+> hechas la sesión anterior. Cierra las **tareas 5, 6, 7 y 8**, con lo que el plan queda completo.
+> **15 pruebas nuevas, 9 guardas verificadas VIOLÁNDOLAS: las 9 se detectan** · permisos +
+> licencias **42 passed** · vistas, menú, ayuda y rutas **114 passed (4 078 aserciones)** ·
+> CRM + Contabilidad + Activos **252 passed** · Facturación + Inventario + Auth **470 passed**.
+> ⚠️ Migración `2026_09_05_800005` (app) y `2026_09_04_000001` (admin).
+>
+> ⚠️⚠️ **ESTADO DEL DESPLIEGUE — LA APP QUEDO SIN DESPLEGAR.** Website y admin SI están en
+> producción y verificados; los cuatro commits de la app (`[LIC-5]`…`[LIC-7]`) están en
+> GitHub y **no en el servidor**: el SSH de Bluehost pasó a rechazar conexiones a mitad del
+> deploy. **Y eso deja una incoherencia que hay que cerrar cuanto antes**: la Privacidad 1.3
+> ya publicada afirma que los usuarios internos ven solo los datos de su empresa, y el código
+> que lo hace cierto es `[LIC-5]`, que todavía no está allá — es exactamente el orden que
+> este mismo trabajo dice que no se debe seguir. Hoy no afecta a ningún cliente real (Agua
+> Yamel tiene UNA empresa, así que la afirmación le es cierta de hecho), pero **la app se
+> despliega en cuanto el SSH vuelva**, con su migración.
+>
+> ⚠️⚠️ **`[LIC-5]` — el aislamiento de PERMISOS no existía, y los legales ya lo afirmaban.** Las
+> dos tablas de permisos granulares solo tenían `company_id`, así que el permiso de un interno
+> alcanzaba a **todas** las empresas del tenant a las que el owner le hubiera dado acceso. El
+> aislamiento de DATOS sí funcionaba —lo da `empresa_members`—, pero no se podía decir «factura en
+> la empresa A y solo consulta en la B», que es justo lo que un contratista externo necesita.
+>
+> ⚠️⚠️ **Y el plan contemplaba UNA tabla de las dos.** `tn_permission_grants` guarda las claves
+> finas y es la que leen `hasGrant()`/`grantedKeys()` (**259 filas en producción contra 36**);
+> `tn_permissions` la **deriva** el controlador «para compatibilidad». Acotar una sola dejaba el
+> defecto vivo por la otra puerta. El filtro pasa a **fuente única** (`empresaDeSusPermisos()`) que
+> consultan los tres puntos de lectura: con el criterio escrito en cada uno, el primero que se
+> olvidara devolvería el permiso a ser global **sin que nada lo dijera**.
+>
+> ⚠️⚠️ **El backfill del plan no habría resuelto nada, y su propia prueba lo habría cantado.**
+> Habría dejado **20 permisos y 190 claves sin empresa** contra una prueba que exige 0. Medido:
+> **16 + 166 eran HUÉRFANOS** de tres usuarios y tres tenants **que ya no existen** —residuo de
+> resets viejos del demo, la familia de `[HUERF-1]`, que barrió 11 tablas y **no estas dos**— y el
+> resto del demo. Se eliminan: no hay empresa que asignarles y no le dan permiso a nadie, pero
+> dejarlos en NULL los devolvería a ser globales el día que alguien los lea.
+> ⚠️ **El backfill NUNCA amplía el acceso**: replica el permiso a las empresas donde el interno YA
+> es miembro activo —así nadie pierde de un día para otro un acceso que venía usando— y, si no es
+> miembro de ninguna, lo ancla a la empresa principal, que lo acota de «todas» a «una» sin abrirle
+> ninguna, porque quien da la entrada es la membresía. ⚠️ `empresa_members.user_id` es `char(36)` y
+> `tn_permissions.user_id` es `bigint`: sin castear, el cruce no devuelve **ni una fila**.
+>
+> ⚠️ **Tres defectos propios del código que salieron al recorrer los consumidores, ninguno en el
+> plan**: el DELETE de `updatePermissions()` decía en su comentario «en esta empresa» y filtraba
+> por **tenant** —configurar al contratista en la empresa B le habría borrado en silencio lo de la
+> A—; el `updateOrCreate` buscaba por `(user, company, module)`, así que guardar en B **habría
+> pisado la fila de A**; y el UNIQUE `tn_pg_unique` era `(user_id, company_id, permission_key)`, o
+> sea que conceder la misma clave en dos empresas **revienta con un 1062** la primera vez que un
+> owner lo intente. ⚠️ Y `EnsureMemberCapability`, que el plan daba como consumidor clave, **no
+> consulta `tn_permissions` en absoluto**: solo la menciona en un comentario y deja pasar a todo
+> interno sin verificar nada.
+>
+> ⚠️⚠️ **Una copia MUERTA del criterio, encontrada por MEDIR y no por leer.** El sidebar hacía su
+> propia consulta a `tn_permissions` con seis banderas por módulo cuyo único consumidor era
+> `$__hasAnyModule`… **que no leía nadie**: el menú lo pinta `@livewire('module-menu')`, que
+> resuelve con `puedeVerModulo()`. Lo destapó que **mi primera prueba del menú siguiera pasando al
+> quitar el filtro que decía cubrir** — pasaba por una razón distinta de la que su nombre afirmaba.
+> Se **retira** en vez de acotarla: dejarla acotada aparentaría que el sidebar decide permisos.
+>
+> **`[LIC-6]` — el owner ve su consumo** («1 de 3», «1 de 5») antes de chocar con el límite, desde
+> el **mismo** servicio que aplica el rechazo: con una consulta propia podría leer «2 de 3» y
+> recibir igual un rechazo, y esa contradicción se lee como un error del sistema y no como una
+> cuota llena. Un cliente que descubre su cuota **al recibir el rechazo** lo vive como una
+> restricción escondida.
+>
+> ⚠️⚠️ **`[LIC-7]` — lo importante no era la cuota: el primer `demo:reset` habría dejado al interno
+> demo SIN UN SOLO PERMISO.** `PlataformaDemoSeeder` escribía las dos tablas sin `empresa_id`, así
+> que sus 4 permisos y 24 claves habrían nacido en NULL, y toda la funcionalidad que ese seeder
+> existe para mostrar volvería a ser invisible. ⚠️ Y un hueco anterior: **ninguno de los dos
+> internos demo tenía fila en `empresa_members`**, o sea que **no podían entrar** —
+> `EnsureEmpresaActiva` los manda a `/empresas`—. Verificado **EJECUTANDO el reset real**, no solo
+> con la prueba: el auditor queda con 1 empresa y todo con empresa, el cobrador pasa de 0 a 1.
+>
+> ⚠️ **La cuota del demo queda PENDIENTE y es OPERATIVA** (decisión del director técnico: ampliarla
+> en `admin.clientes`). El demo tiene **17 usuarios de tenant en desarrollo y 15 en producción**
+> contra un límite base de 3, porque `[AGENTES-1]` exige usuario del sistema por cada vendedor y
+> cobrador y el demo tiene **11 agentes**. Se descartó recortar el seeder: dejaría al demo
+> enseñando el aviso de «crea la ficha y asóciale el usuario» en vez del módulo funcionando.
+> ⚠️⚠️ **Conflicto de fondo DECLARADO**: la misma regla llevaría a **Comercial Aranza a necesitar 9
+> licencias** (8 agentes + owner) contra un límite de 3. Hoy no le pega porque sus 8 agentes están
+> sin usuario, pero chocará el día que cumpla `[AGENTES-1]`. ⚠️ Medido en el admin de producción:
+> los tres clientes reales están en **3/5** y **la cuenta demo ni siquiera está registrada como
+> cliente**, así que hoy caería al límite base.
+>
+> **`[#1013]` — los legales v1.3 y el SLA nuevo, DESPLEGADOS Y VERIFICADOS**: los tres documentos
+> llevaban desde el 4 de septiembre escritos y **sin publicar** — editar `public/` no publica nada.
+> SLA nuevo en `/sla/` con 12 secciones (canales, horario, prioridades, tiempos de primera
+> respuesta, qué se factura aparte y las licencias incluidas); **Términos 1.3** documenta en §5.3
+> los cupos y que **las cuentas técnicas de Zyntello no consumen licencias del cliente**;
+> **Privacidad 1.3** distingue los dos alcances de acceso. ⚠️⚠️ **Esa afirmación de la Privacidad
+> era FALSA hasta hoy** y la hizo cierta `[LIC-5]` esta misma sesión: *un documento legal no se
+> publica antes que el código que lo sostiene.*
+>
+> ⚠️ **Tres incoherencias corregidas ANTES de publicar**: el SLA argumentaba que no se debe
+> comprometer un porcentaje de disponibilidad mientras los Términos declaran una meta del **99.5 %**
+> —ahora **remite** a esa meta en vez de contradecirla—; los Términos **no mencionaban el SLA en su
+> cuerpo**, solo en el pie, así que nacía huérfano del contrato marco (la §18.2 gana la remisión); y
+> **el pie del SITIO no lo enlazaba**, así que el documento nacía **invisible** desde zyntello.com.
+> ⚠️ `eliminacion-datos` **no sube de versión**: lo único que cambia es el enlace del pie.
+> ⚠️ `soporte@zyntello.com` queda **declarado** en este archivo: es el canal principal del SLA y el
+> que citan los mensajes de cuota agotada, y no estaba documentado en ninguna parte frente a **73
+> usos de `info@`** — la próxima sesión lo habría tomado por un error.
+>
+> ⚠️ **Dos verificaciones propias que informaron lo contrario de la verdad.** La primera corrida del
+> verificador de guardas cantó **«NO SE DETECTA» en las cinco** y era falso: `--filter` no matchea
+> el nombre bonito que imprime Pest y **`artisan test` sale 0 cuando no encuentra pruebas** — la
+> trampa de `[REST-F2]` otra vez. Corregido a los nombres de método y con una comprobación de que
+> la prueba llegó a correr. Y el check de que la home enlaza el SLA dio **0** porque buscaba
+> comillas simples en un bundle **minificado**.
+>
+> ⚠️ **La regresión amplia quedó SIN CORRER**: el MySQL local (`wampmysqld64`) se detuvo a mitad y
+> no hay permiso para arrancarlo desde aquí. Los 4 rojos de `RestauranteSeedDemoTest` son **todos
+> error de conexión, ninguna aserción**, y hay que reconfirmarlos con el servicio arriba. *No se da
+> por buena una suite que no terminó.*
+>
+> ⚠️⚠️ **HALLAZGO DE SEGURIDAD, fuera de alcance**: el `origin` de los repos clonados en el servidor
+> lleva un **token de GitHub en texto plano dentro de la URL** (`https://ghp_…@github.com/…`), así
+> que cualquiera con acceso de lectura a `.git/config` en el hosting compartido se lo lleva. **No se
+> tocó**: rotar un token y reescribir los remotes de los tres repos de producción es una operación
+> con radio propio y es decisión del director técnico.
+>
+> **Reglas nuevas: un permiso sin la dimensión que lo acota es un permiso GLOBAL, y el aislamiento
+> de datos no lo suple · cuando el mismo dato vive en dos tablas, acotar una sola deja el defecto
+> vivo por la otra puerta · la dimensión que acota un permiso va en la CLAVE del `updateOrCreate`,
+> no en los valores · un UNIQUE que no incluye la dimensión nueva revienta la primera vez que
+> alguien la use de verdad · un backfill de permisos nunca amplía el acceso: lo mantiene o lo acota
+> · una copia del criterio que ya no decide nada se RETIRA, no se acota · una prueba que sigue
+> pasando al quitar la guarda que dice cubrir está midiendo otra cosa · `--filter` matchea el nombre
+> del MÉTODO, y `artisan test` sale 0 sin pruebas: un verificador puede cantar «no se detecta» sin
+> haber violado nada · un documento legal no se publica antes que el código que lo sostiene · dos
+> documentos legales que dan cifras distintas sobre lo mismo hacen que el lector dé uno por
+> desactualizado · un documento que nadie enlaza desde el sitio nace invisible.**
+
+### Bitácora anterior (2026-08-29)
 
 > ⚠️ **AVISO DE DOCUMENTACIÓN**: entre el 2026-08-12 y el 2026-08-27 se trabajaron cinco sesiones
 > que **este archivo no registró** (`[ABST-F0-1]`, `[ABST-F1]`, `[ABST-F2]`/`[VISTAS-SOT]`,
