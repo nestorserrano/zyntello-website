@@ -268,7 +268,86 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 **Regla:** Si ves error 403/500 después de deploy → ejecuta esto primero.
 
-### Bitácora reciente (estado actual — 2026-09-05)
+### Bitácora reciente (estado actual — 2026-09-06)
+
+> **EL COBRADOR ES LA FICHA, NO EL USUARIO — Y DOCE CASTS QUE NO LANZABAN NADA (2026-09-06) —
+> `[DEMO-GEST-1]`, `[AGENTES-8]`, `[AGENTES-9]`**: cierra el pendiente que `[PRE-COB-1]` dejó
+> declarado el 2026-08-29 y que `[AGENTES-8]` volvió urgente. **Prestamello 459 passed** (455 + 2
+> desactualizadas corregidas + 2 guardas nuevas) · **Facturación + CxC 470… 311 passed**, sin tocar
+> · **5 guardas verificadas VIOLÁNDOLAS: las 5 se detectan**. **DESPLEGADO Y VERIFICADO EN
+> PRODUCCIÓN** (`3105dd90`). ⚠️ Migración `2026_09_06_820001`.
+>
+> ⚠️⚠️ **`cobrador_id` significaba DOS COSAS DISTINTAS según el módulo**: la **ficha**
+> (`char(36)`) en `fact_facturas`/`fact_pedidos`/`fact_cotizaciones`, y el **usuario** (`bigint`)
+> en `pre_operaciones`/`pre_pagos`/`pre_metas_cobrador`. Un JOIN escrito asumiendo consistencia
+> devuelve vacío y **no lanza nada**. Se cierra ahora porque `[AGENTES-8]` permitió cobradores
+> **sin usuario** —la licencia limita cuántos ENTRAN, no cuántos cobran— y con `cobrador_id =
+> user_id` esos cobradores **no podían recibir ni una operación**: medido en producción, **4 de 9**.
+>
+> ⚠️⚠️ **ESTA CONVERSIÓN YA SE INTENTÓ Y SE REVIRTIÓ** (migración `600009`): se hizo mirando el
+> **NOMBRE** de la columna y no a sus **CONSUMIDORES**, y `[PRE-COB-1]` la deshizo. Por eso aquí
+> van todos **en el mismo commit** — sin eso, vuelve a romper la PWA del cobrador.
+>
+> ⚠️⚠️ **DOCE CASTS `(int)` SOBRE UN UUID, Y NINGUNO LANZA NADA.** Sin `strict_types`,
+> `"23ac5610-…"` se convierte en **`23`** y uno que empiece por letra en **`0`**. El filtro no
+> falla: **devuelve CERO filas**, un resultado plausible que el gerente lee como «este cobrador no
+> tiene cartera». Alcanzaba al dashboard gerencial, a los **dos reportes** que filtran por
+> cobrador, a la **generación de la liquidación de comisiones** y a la **meta del mes**.
+> ⚠️ **El peor estaba en la reasignación de cartera**: comparaba `(int)` contra `(int)`, así que
+> dos fichas que empiecen por la misma cifra **colapsaban al mismo número** — «reasignar al mismo
+> cobrador» daba **falso positivo** y la operación se quedaba sin mover, en silencio.
+>
+> ⚠️ **Seis firmas `int $cobradorId` pasan a `string`**, y **los dos sitios que resolvían el
+> NOMBRE del cobrador desde `users`** pasan a leer la ficha: con un UUID, `User::find()` no
+> encuentra nada y la alerta salía como **«Cobrador #9f8a1b2c-…»** y la fila del informe del comité
+> como **«Sin nombre»** — una meta sin saber de quién es.
+>
+> ⚠️ **La app móvil resuelve la cartera por la FICHA** del usuario autenticado y ya no por
+> `auth()->id()`. **Sin ficha no se filtra nada**: es el dueño o el supervisor, que ve la agenda
+> completa — el mismo comportamiento de antes. ⚠️ Y `Cobrador::paraCombo()` devuelve el id de la
+> ficha y deja de filtrar por `conUsuario()`: los que no tienen acceso salen **MARCADOS**
+> («sin app movil»), porque descubrirlo **después** de asignarles la cartera es peor que verlo al
+> elegir. ⚠️ **Accessor `name` → `nombre`** en la ficha: cinco vistas leen `$op->cobrador->name` y
+> una propiedad inexistente **devuelve null sin fallar** — habrían empezado a pintar un guion sin
+> que nada lo dijera.
+>
+> ⚠️⚠️ **Dos de los doce casts NO los detectaba NINGUNA prueba**, y eso es lo que más enseña: las
+> de reportes y comisiones llaman al **SERVICIO**, y el cast vive en el **CONTROLADOR**. Se
+> convierten en guarda —*lo que se encuentra leyendo el código a mano se degrada*— y **verificadas
+> violándolas**: devolver el `(int)` las deja en rojo con el UUID convertido en `0`.
+>
+> ⚠️⚠️ **Y un verificador propio cantó «NO SE DETECTA» sin haber violado nada**: apuntaba a
+> `PreReportesTest`, **que no existe** (el real es `PrestamelloReportesEjecutivosTest`), y
+> `artisan test` **sale 0 cuando no encuentra pruebas**. Es la trampa de `[REST-F2]` por enésima
+> vez. Repetido contra el archivo real y **con comprobación de que la prueba llegó a correr**.
+>
+> ⚠️ **Helper `cobrador()` en `PrestamelloTestCase`**: un fixture que guarde un `users.id` **pasa
+> igual** —la columna es `char(36)` y la comparación cuadra consigo misma— pero **deja de ejercer
+> el JOIN** con el catálogo, y los nombres saldrían vacíos sin que la prueba lo note. Cuatro
+> archivos de prueba lo tenían así.
+>
+> **En producción, leyendo la base y no el mensaje del comando**: **cero filas sin ficha medidas
+> ANTES de migrar** —por eso la migración no abortó, que es lo que hace si alguna apunta a un
+> usuario sin ficha— · las 3 columnas `bigint(20) unsigned` → **`char(36)`** · **38 de 38 filas**
+> conservan su cobrador y apuntan a fichas reales (6 + 31 + 1), **cero pérdida** · el combo de
+> Comercial Aranza pasa de **0 a 4** cobradores ofrecidos · `OP-000004 → cobrador->name = 'Luis
+> García'` con clase `Tablas\Cobrador` · app **200** · script de verificación retirado (`[#1250]`).
+>
+> **`[AGENTES-8]` y `[DEMO-GEST-1]`**, que llevaban dos días en GitHub **y no en el servidor**,
+> quedan desplegados en el mismo empujón: el agente puede existir **sin usuario del sistema** —hace
+> todo menos entrar— y el demo enseña una cartera comercial de **37 fichas** en vez de un cliente
+> suelto.
+>
+> **Reglas nuevas: un cast `(int)` sobre un id que pasó a ser UUID no lanza nada — devuelve `0` o
+> el prefijo numérico, y el síntoma es un reporte vacío que se lee como un dato · cuando una
+> columna cambia de tipo se recorren TODOS sus consumidores: casts, firmas y los sitios que
+> resuelven el NOMBRE desde la tabla vieja · una prueba que llama al SERVICIO no cubre un cast que
+> vive en el CONTROLADOR · un fixture que guarda el id de otra tabla pasa igual cuando ambas
+> columnas son `char(36)`: la comparación cuadra consigo misma pero deja de ejercer el JOIN · un
+> verificador que apunta a un archivo de prueba INEXISTENTE informa lo mismo que uno que no corrió
+> · una conversión de tipo que ya se revirtió una vez se repite con sus consumidores en el MISMO
+> commit.**
+
 
 > **LOS PERMISOS DE UN USUARIO INTERNO SON DE SU EMPRESA, Y LOS LEGALES YA LO DICEN
 > (2026-09-05) — `[LIC-5]`, `[LIC-6]`, `[LIC-7]`, `[#1013]`**: continúa el plan de licencias por
@@ -279,15 +358,17 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > CRM + Contabilidad + Activos **252 passed** · Facturación + Inventario + Auth **470 passed**.
 > ⚠️ Migración `2026_09_05_800005` (app) y `2026_09_04_000001` (admin).
 >
-> ⚠️⚠️ **ESTADO DEL DESPLIEGUE — LA APP QUEDO SIN DESPLEGAR.** Website y admin SI están en
-> producción y verificados; los cuatro commits de la app (`[LIC-5]`…`[LIC-7]`) están en
-> GitHub y **no en el servidor**: el SSH de Bluehost pasó a rechazar conexiones a mitad del
-> deploy. **Y eso deja una incoherencia que hay que cerrar cuanto antes**: la Privacidad 1.3
-> ya publicada afirma que los usuarios internos ven solo los datos de su empresa, y el código
-> que lo hace cierto es `[LIC-5]`, que todavía no está allá — es exactamente el orden que
-> este mismo trabajo dice que no se debe seguir. Hoy no afecta a ningún cliente real (Agua
-> Yamel tiene UNA empresa, así que la afirmación le es cierta de hecho), pero **la app se
-> despliega en cuanto el SSH vuelva**, con su migración.
+> ✅ **RESUELTO — la app SÍ está desplegada** (comprobado el 2026-09-06 leyendo el historial del
+> servidor: `[LIC-5]` `d1d44568`, `[LIC-6]` `aa782ec3` y `[LIC-7]` `9e1c742c` están en producción,
+> y `migrate:status` no reporta ninguna pendiente). El aviso original decía que los cuatro commits
+> se habían quedado en GitHub porque el SSH de Bluehost empezó a rechazar conexiones a mitad del
+> deploy, y con ello que la Privacidad 1.3 —ya publicada— afirmaba algo que el código todavía no
+> sostenía. **Esa incoherencia está cerrada.**
+>
+> ⚠️ Se conserva el texto porque la regla que dejó vale igual: *un documento legal no se publica
+> antes que el código que lo sostiene.* ⚠️ Y porque el aviso siguió aquí **días después de dejar de
+> ser cierto**: antes de arrastrar un pendiente hay que comprobar si sigue vivo — uno falso manda a
+> buscar un problema que ya no existe.
 >
 > ⚠️⚠️ **`[LIC-5]` — el aislamiento de PERMISOS no existía, y los legales ya lo afirmaban.** Las
 > dos tablas de permisos granulares solo tenían `company_id`, así que el permiso de un interno
@@ -4485,17 +4566,25 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[TOTP-F4]` `893edf50` (**CIERRA el blueprint del segundo
-> factor por app (F0 -> F4)**. El login ya pide el codigo de la app o del correo segun el metodo de
-> cada usuario; **un codigo vale UNA sola vez**; hay **codigos de recuperacion** —8 de un solo uso,
-> mostrados una vez, en tabla propia— y rescate «No tengo mi telefono» por correo **verificado**;
-> el metodo se **bloquea 15 min** tras 5 fallos —⚠️ TEMPORAL: uno permanente seria una denegacion
-> de servicio contra el dueño—; cada cambio **avisa al dueño por correo**; y el tenant puede
-> **exigirlo a todo el equipo** con 7 dias de gracia. ⚠️⚠️ Defecto propio que encontro la PRUEBA:
-> el middleware usaba `$user->company`, propiedad **inexistente** —es `currentCompany`—, asi que la
-> politica quedaba **INERTE**: se guardaba en la base y no bloqueaba a nadie. **DESPLEGADO**:
-> 3 migraciones, 0 tenants con la exigencia encendida, impacto CERO —22 usuarios y ninguno con 2FA
-> activo—).
+> Ultimo commit en **zyntello-app**: `[AGENTES-9]` `0748e70a` (**el cobrador de Prestamello es la
+> FICHA, no el usuario del sistema**. `cobrador_id` significaba dos cosas distintas segun el
+> modulo, declarado desde `[PRE-COB-1]`; se cierra ahora porque `[AGENTES-8]` permitio cobradores
+> **sin usuario** y con `cobrador_id = user_id` esos 4 de produccion **no podian recibir nada**.
+> ⚠️⚠️ **Doce casts `(int)` sobre un UUID que NO lanzan nada**: `"23ac5610-…"` se vuelve `23` y uno
+> que empiece por letra `0`, asi que el filtro devuelve **cero filas** y eso se lee como «este
+> cobrador no tiene cartera» — alcanzaba al dashboard gerencial, a dos reportes, a la liquidacion
+> de comisiones y a la meta del mes. ⚠️ El peor, en la **reasignacion de cartera**: dos fichas que
+> empiecen por la misma cifra colapsaban al mismo numero y «reasignar al mismo cobrador» daba
+> falso positivo. ⚠️ **Dos de los doce no los detectaba ninguna prueba** —las de reportes y
+> comisiones llaman al SERVICIO y el cast vive en el CONTROLADOR—: se convierten en guarda.
+> **DESPLEGADO**: `bigint` → `char(36)` en las 3 tablas, **38 de 38 filas** apuntan a fichas
+> reales, cero perdida, y el combo de Comercial Aranza pasa de **0 a 4** cobradores).
+> Anterior: `[AGENTES-8]` `e66c6ef8` (un agente puede existir **sin usuario del sistema**: hace
+> todo menos entrar. La ficha no consume licencia — lo que la licencia limita es cuantos ENTRAN.
+> Invierte `[AGENTES-1]`, que llevaba a un tenant con 8 agentes a necesitar 9 licencias teniendo
+> 3). Anterior: `[DEMO-GEST-1]` `36e9a6ec` (el demo enseña una cartera comercial de 37 fichas de
+> gestion, no un cliente suelto).
+> Anterior: `[TOTP-F4]` `893edf50` (CIERRA el blueprint del segundo factor por app, F0 -> F4).
 > Anterior: `[TOTP-F3]` `17bcc93a` (**un codigo del segundo factor vale UNA
 > sola vez**. ⚠️⚠️ `two_factor_ultimo_periodo` **se escribia y no la leia nadie**: el mismo codigo
 > servia dos veces dentro de su ventana de 30 s y **nada lo decia**. Ahora `consumirCodigoTotp()`
