@@ -403,6 +403,85 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 ### Bitácora reciente (estado actual — 2026-09-06)
 
+> **EL AGENTE SE ACOTA POR TENANT *Y* EMPRESA, Y LA DIRECTIVA SUBE A SUPERIOR (2026-09-06) —
+> `[AGENTES-12]`, `[#1017]`**: pregunta del director técnico tras `[AGENTES-10]` — *«pero todos
+> esos cambios de agentes los has validado con tenant `company_id` + `empresa_id` activa»*.
+> **No estaban validados, y la pregunta destapó cuatro huecos.** 6 pruebas nuevas, **3 guardas
+> verificadas VIOLÁNDOLAS: las 3 se detectan** · Facturación **155 passed** · Prestamello
+> **459 passed** · Agentes **22 passed** · CRM **13 passed**, todas corriendo SOLAS. **Sin
+> migración.**
+>
+> ⚠️⚠️ **EN GITHUB Y NO EN PRODUCCIÓN — decisión del director técnico.** El `git push` de este
+> trabajo **arrastró 8 commits de una sesión PARALELA** (`[SOP-F1-0]`…`[SOP-F1-6]`, con la
+> migración `2026_09_06_800001` y cambios en el flujo de 2FA) que ya estaban commiteados en la
+> rama: *`git push` sube toda la rama, no el commit propio.* Desplegar habría llevado a producción
+> una fase ajena a medias, así que **se espera a que esa sesión cierre y verifique lo suyo**.
+> ⚠️ Impacto de esperar, medido: las cuatro fugas solo alcanzan a un suscriptor con **2+ empresas**,
+> y hoy la única multi-empresa es **la cuenta demo** — los tres clientes reales tienen una sola.
+>
+> ⚠️⚠️ **`sinScopeEmpresa()` apaga el global scope ENTERO, o sea las DOS condiciones** — y cada
+> consulta que lo desactiva tiene que reponerlas a mano. Ahí se colaron los cuatro cruces, y
+> **ninguno falla**: los cuatro muestran una pantalla plausible con los datos de otro.
+> **(1)** El CRUD de agentes filtraba solo `company_id`: mostraba —y dejaba **EDITAR** pegando el
+> id en la URL— los agentes de **todas** las empresas del suscriptor. **(2)** El combo resolvía
+> `$incluirIds` **sin filtrar nada**: un id de otro suscriptor se pintaba con su nombre real.
+> **(3)** La cartera móvil de Prestamello y la agenda de CxC resolvían la ficha del cobrador por
+> tenant a secas — un usuario con ficha en la empresa A, **trabajando en la B**, veía la cartera de
+> A (clientes y deudas de otra empresa) y podía registrar gestiones sobre ella. **(4)** El alta de
+> un lead resolvía el `vendedor_id` **que llega del REQUEST** sin acotar.
+>
+> ⚠️ **El criterio estaba en SEIS sitios y DOS ya habían divergido.** Pasa a fuente única
+> (`Agente::scopeDelTenant`), que reproduce además el **`orWhereNull('empresa_id')`** del global
+> scope: sin esa rama, los agentes globales del tenant **desaparecen de todas las pantallas** al
+> desactivarlo.
+>
+> **El aislamiento se prueba con DOS suscriptores y DOS empresas REALES**: con uno solo no se puede
+> ver un cruce aunque lo haya. Y la prueba custodia por **estructura** que ningún
+> `sinScopeEmpresa()` del módulo vuelva a filtrar por `company_id` a secas — *lo que se detecta
+> leyendo el código a mano se degrada.*
+>
+> ⚠️ **Un defecto propio, y es la trampa de la SUBCADENA por TERCERA vez en la sesión**: la guarda
+> de columnas enteras acusaba a **`sop_sesiones.agente_user_id`** —de la sesión paralela— por
+> contener «agente», cuando esa columna apunta a **`users`** y `users.id` **sí** es `bigint`. Se
+> acota **declarando la excepción con su motivo** (`*_user_id` es el USUARIO, no la ficha) en vez
+> de silenciarla: *una guarda ruidosa se termina ignorando.* **Verificada violándola**: pasando
+> `pre_reasignaciones_cartera.cobrador_anterior_id` a `bigint` **falla y la nombra**.
+>
+> ⚠️⚠️ **Los 2 rojos de CxC NO eran míos, y confirmarlo exigió el método completo**: fallaban con
+> **nombres distintos en cada corrida** y aparecían **también con mis cambios fuera** (`git stash`).
+> Los **5 archivos implicados pasan corriendo SOLOS** → es contaminación entre pruebas dentro de la
+> propia suite CxC, preexistente. ⚠️ Mi primera comparación **no valía**: medí 2 archivos contra la
+> carpeta completa de una corrida anterior. **Una comparación de alcances distintos no demuestra
+> nada.** Lo mismo con los 9 rojos de Facturación: corriendo su carpeta sola, **155 passed, 0
+> failed**.
+>
+> **Regresión completa: 3 533 passed, 8 failed, 5 skipped (29 096 aserciones, 51 min).** Los
+> fallos visibles son de **Restaurante**, que **no consume agentes** (comprobado) y ya tenía rojos
+> declarados. ⚠️ Corrió **mientras se tocaba el código**, así que no atribuye nada por sí sola: lo
+> que sostiene el trabajo son las cuatro suites corridas solas al cerrar.
+>
+> **`[#1017]` — la directiva de aislamiento pasa a SUPERIOR**, decisión del director técnico —
+> *«no puedo siempre estar recordándote… es una directiva superior, nada se debe mezclar entre
+> tenants o empresas»*. ⚠️⚠️ **Y tiene razón: llevaba meses escrita a mitad del archivo y se siguió
+> incumpliendo** — cuatro huecos de golpe en un módulo recién entregado. Sube al **inicio** de los
+> dos `CLAUDE.md`, justo tras la directiva de idioma, enlazada desde la instrucción de inicio de
+> sesión, con checklist de cierre; y la sección anterior pasa a ser **REMISIÓN, no segunda copia**
+> —*dos copias del mismo criterio siempre divergen, que es justo el defecto que la regla existe
+> para evitar.*
+>
+> **Reglas nuevas: `sinScopeEmpresa()` apaga las DOS condiciones, y reponer solo `company_id` deja
+> ver las otras empresas del mismo suscriptor · el filtro repuesto vive en un scope con NOMBRE y
+> fuente única, y reproduce el `orWhereNull('empresa_id')` o los registros globales desaparecen ·
+> un id que llega del REQUEST se resuelve acotado por las dos dimensiones, o pegarlo en la URL abre
+> la ficha ajena · el aislamiento se prueba con DOS tenants y DOS empresas: con uno no se ve el
+> cruce aunque exista · una guarda que busca una SUBCADENA acusa a la columna del vecino, y la
+> excepción se DECLARA con su motivo en vez de silenciarla (tercera vez) · un rojo se confirma
+> corriendo la suite sola, y comparar dos alcances distintos no demuestra nada · una regresión
+> corrida con el árbol en movimiento no atribuye nada · `git push` sube TODA la rama, así que puede
+> publicar el trabajo de una sesión paralela — y entonces el deploy deja de ser una decisión
+> propia.**
+
+
 > **VENDEDORES Y COBRADORES PASAN A SER UNA TABLA, Y ESO DESTAPÓ SIETE DEFECTOS (2026-09-06) —
 > `[AGENTES-9]`, `[AGENTES-9-FIX]`, `[AGENTES-10]`, `[AGENTES-10-FIX]`, `[#1015]`**: cierra los dos
 > pendientes que `[PRE-COB-1]` dejó declarados el 2026-08-29. **Prestamello 459 passed** ·
@@ -4796,7 +4875,19 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[AGENTES-10]` `7eda5afc` (**vendedores y cobradores pasan a
+> Ultimo commit en **zyntello-app**: `[AGENTES-12]` `17dce3529` (**el agente se acota por tenant Y
+> empresa**. ⚠️⚠️ **EN GITHUB Y NO EN PRODUCCION**, por decision del director tecnico: el push
+> arrastro 8 commits de una sesion PARALELA (`[SOP-F1-*]`, con migracion y cambios de 2FA) que ya
+> estaban en la rama —*`git push` sube toda la rama*— y desplegar habria llevado una fase ajena a
+> medias. ⚠️ `sinScopeEmpresa()` apaga el global scope ENTERO: reponer solo `company_id` deja ver
+> **las otras empresas del mismo suscriptor**. Cuatro huecos, ninguno falla —los cuatro muestran
+> una pantalla plausible con datos de otro—: el CRUD dejaba **EDITAR** la ficha de otra empresa
+> pegando el id en la URL · el combo resolvia `$incluirIds` **sin filtrar nada** · la cartera movil
+> y la agenda de CxC enseñaban **la cartera de otra empresa** · y el alta de lead resolvia el
+> `vendedor_id` del REQUEST sin acotar. El criterio pasa a fuente unica `Agente::scopeDelTenant`
+> —estaba en SEIS sitios y **dos ya habian divergido**—. Impacto hoy: solo la cuenta demo es
+> multi-empresa).
+> Anterior: `[AGENTES-10]` `7eda5afc` (**vendedores y cobradores pasan a
 > ser UNA tabla: `agentes`**. Eran **dos tablas identicas** —las 14 columnas, tipo por tipo— para
 > un solo concepto: dos fichas de la misma persona podian divergir y **nadie lo notaba** hasta que
 > un reporte mostraba dos filas del mismo empleado. ⚠️ **Los ids se CONSERVAN**, asi que las 23
