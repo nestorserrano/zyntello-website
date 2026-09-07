@@ -270,6 +270,103 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 ### Bitácora reciente (estado actual — 2026-09-06)
 
+> **VENDEDORES Y COBRADORES PASAN A SER UNA TABLA, Y ESO DESTAPÓ SIETE DEFECTOS (2026-09-06) —
+> `[AGENTES-9]`, `[AGENTES-9-FIX]`, `[AGENTES-10]`, `[AGENTES-10-FIX]`, `[#1015]`**: cierra los dos
+> pendientes que `[PRE-COB-1]` dejó declarados el 2026-08-29. **Prestamello 459 passed** ·
+> Facturación + CxC + CRM + Agentes + transversales **355 passed** · **12 guardas verificadas
+> VIOLÁNDOLAS: las 12 se detectan**. **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN**.
+> ⚠️ Migraciones `2026_09_06_820001` y `830001`.
+>
+> ⚠️⚠️ **`[AGENTES-9]` — `cobrador_id` significaba DOS COSAS distintas según el módulo**: la ficha
+> (`char(36)`) en Facturación y el usuario (`bigint`) en Prestamello. Se cierra porque
+> `[AGENTES-8]` permitió cobradores **sin usuario**, y con `cobrador_id = user_id` esos **4 de
+> producción no podían recibir ni una operación**. ⚠️ La conversión **ya se intentó y se revirtió**
+> (`600009`): se hizo mirando el NOMBRE de la columna y no a sus CONSUMIDORES.
+>
+> ⚠️⚠️ **DOCE CASTS `(int)` SOBRE UN UUID, Y NINGUNO LANZA NADA.** Sin `strict_types`,
+> `"23ac5610-…"` se convierte en **`23`** y uno que empiece por letra en **`0`**. El filtro no
+> falla: **devuelve CERO filas**, que el gerente lee como «este cobrador no tiene cartera».
+> Alcanzaba al dashboard gerencial, a dos reportes, a la liquidación de comisiones y a la meta del
+> mes. ⚠️ El peor, en la **reasignación de cartera**: comparaba `(int)` contra `(int)`, así que dos
+> fichas que empiecen por la misma cifra **colapsaban al mismo número** y «reasignar al mismo
+> cobrador» daba **falso positivo**, dejando la operación sin mover **en silencio**.
+> ⚠️ **Dos de los doce no los detectaba NINGUNA prueba**: las de reportes y comisiones llaman al
+> **SERVICIO**, y el cast vive en el **CONTROLADOR**.
+>
+> ⚠️⚠️ **`[AGENTES-10]` — `vendedores` y `cobradores` eran DOS TABLAS IDÉNTICAS**: las 14 columnas
+> coinciden tipo por tipo, para un solo concepto. Dos fichas de la misma persona podían divergir en
+> nombre, email o plan de comisión y **nadie lo notaba** hasta que un reporte mostraba dos filas
+> del mismo empleado. Ahora hay una: `agentes`, con `puede_vender` / `puede_cobrar`.
+>
+> ⚠️ **Los ids se CONSERVAN, y eso es lo que hace viable el corte limpio**: las 23 columnas que
+> referencian agentes ya eran `char(36)` y siguen apuntando al mismo valor — **no se tocó ni una**.
+> En producción: **19 fichas → 18 agentes** (Ana López fusionada, con los dos roles) ·
+> **105 referencias antes = 105 después, 0 huérfanas** · 0 choques de código.
+> ⚠️ **La identidad para fusionar es `user_id`, NUNCA el email**: tres agentes de un tenant
+> comparten el correo de la usuaria que los registró (`[CRM-VEND-1]` ya lo documentó), así que por
+> email se habrían fusionado **tres personas distintas**.
+> ⚠️ **Un solo `plan_comision_id`**: `fact_planes_comision` ya trae `pct_ventas` **y** `pct_cobros`
+> en el mismo plan. Lo que sí es por rol es la LIQUIDACIÓN (`tipo_agente`), que se conserva.
+>
+> ⚠️⚠️ **El barrido por MODELO no vio CINCO formas de nombrar la tabla, y las cinco revientan con
+> el `DROP`**: `DB::table('vendedores')` —7 sitios, **uno de ellos un CRON de las 06:00**, y un
+> cron roto **no lo ve nadie**— · `exists:vendedores,id` en **16 reglas de 8 controladores**, que
+> no dan error de validación sino **SQL en mitad del formulario** · ternarios · `leftJoin` · y
+> `Schema::hasTable('vendedores')` en **6 sitios de seeders**, donde el bloque **no se ejecutaría
+> NUNCA** y el demo dejaría de sembrar agentes **en silencio**.
+>
+> ⚠️⚠️ **SIETE DEFECTOS DE PRODUCCIÓN aparecieron al hacerlo**, y los tres que más enseñan:
+> **(1)** `PreMovilController` respondía **500** —un closure `function () use ()` sin capturar su
+> variable, y un closure NO toma el scope exterior como sí hace `fn ()`—; la rama vivía dentro de
+> un `when()` que **no evalúa su callback** salvo con un cobrador con ficha y cartera viva, el
+> único caso que importa y el que ninguna prueba montaba. **Medido: 1 cobrador con 6 operaciones
+> sin poder abrir su agenda.** Lo encontró el **golden master**, no las 459 pruebas del módulo.
+> **(2)** `PrestamelloComisionService` **no podía liquidar NINGUNA comisión**: buscaba por
+> `user_id` un id que ya era la ficha, y fallaba diciendo «no tiene ficha vinculada a su usuario»
+> **justo a quien sí la tiene**. **(3)** `CxcAgendaController` identificaba al cobrador **por su
+> EMAIL**: con tres fichas compartiendo correo, esa persona abría la agenda, veía **la cartera de
+> otro cobrador** y podía registrar gestiones a su nombre — no fallaba, mostraba una agenda
+> plausible.
+>
+> ⚠️ Los otros cuatro: el seeder de Prestamello guardaba el `user_id` (**38 huérfanas por reset**)
+> · la limpieza del demo borraba **POR ROL**, así que un agente sin rol sobrevivía y reventaba el
+> UNIQUE del código en el siguiente reset · `TenantUsersController` vinculaba los dos roles con la
+> **misma llamada**, y la segunda **liberaba la ficha que la primera acababa de vincular** · y
+> ⚠️⚠️ **la pantalla nueva NO ABRÍA**: las pestañas usaban `[null => 'Todos', …]` y **PHP convierte
+> una clave `null` en la cadena VACÍA**, así que `$conteos[$valor ?? 'todos']` buscaba
+> `$conteos[""]`. **`VistasCompilanTest` no lo veía porque COMPILAR NO ES RENDERIZAR**, y mis
+> propias pruebas leían `getData()` sin `render()`.
+>
+> **La pantalla**: un CRUD `agentes` con pestañas Todos/Vendedores/Cobradores sustituye a los dos —
+> dos pantallas sobre una tabla vuelven a invitar a crear dos fichas de la misma persona. Quitar un
+> rol con historial se **IMPIDE y se explica**, con la guarda en el **SERVIDOR** (un checkbox
+> oculto se sigue enviando). Los dos flags nacen en 0 **por el DEFAULT DE LA COLUMNA**.
+>
+> ⚠️ **Tres defectos propios de método**: dos trampas de la **SUBCADENA** —el reemplazo
+> `Vendedor::class` alcanzó a `MetaVendedor::class` y `CrmPresupuestoVendedor::class`, inventando
+> clases que no existen— y una guarda que **nació RUIDOSA**, acusando a 19 `compact('vendedores',
+> …)` que son nombres de VARIABLE: *una guarda ruidosa se termina ignorando*.
+>
+> **En producción, leyendo la base**: `bigint` → `char(36)` en las 3 tablas de Prestamello, **38 de
+> 38 filas** apuntando a fichas reales · tablas viejas eliminadas · **18 agentes** (10 venden, 9
+> cobran, **1 con los dos roles**, 0 sin rol) · **105 referencias, 0 huérfanas** · las **3 pestañas
+> renderizan** (849,9 / 836,7 / 833,8 KB) · el **cron de CxC sale exit 0** · `demo:reset` con
+> **0 huérfanas** · app 200.
+>
+> **Reglas nuevas: un cast `(int)` sobre un id que pasó a ser UUID no lanza nada — devuelve `0` o
+> el prefijo numérico, y el síntoma es un reporte vacío que se lee como un dato · un barrido por
+> MODELO no ve a quien nombra la TABLA: hay tres formas y las tres revientan ·
+> `Schema::hasTable()` de una tabla que ya no existe no falla, el bloque NO SE EJECUTA, y eso es
+> peor que un error · una limpieza que filtra por rol deja vivo lo que no lo tiene y choca con el
+> UNIQUE después · dos llamadas idénticas a un sincronizador se pisan · una clave `null` de array
+> es la cadena VACÍA, y `?? 'default'` no la rescata · compilar una vista no es renderizarla, y
+> `getData()` tampoco · una prueba que llama al SERVICIO no cubre un cast que vive en el
+> CONTROLADOR · un reemplazo por texto alcanza a los nombres que CONTIENEN el patrón · una guarda
+> que busca una cadena suelta acusa a los nombres de variable, y una guarda ruidosa se termina
+> ignorando · un closure `function () {}` no captura el scope exterior como `fn ()`, y el fallo
+> solo se dispara en la rama que ninguna prueba monta.**
+
+
 > **EL COBRADOR ES LA FICHA, NO EL USUARIO — Y DOCE CASTS QUE NO LANZABAN NADA (2026-09-06) —
 > `[DEMO-GEST-1]`, `[AGENTES-8]`, `[AGENTES-9]`**: cierra el pendiente que `[PRE-COB-1]` dejó
 > declarado el 2026-08-29 y que `[AGENTES-8]` volvió urgente. **Prestamello 459 passed** (455 + 2
@@ -4566,23 +4663,36 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[AGENTES-9]` `0748e70a` (**el cobrador de Prestamello es la
-> FICHA, no el usuario del sistema**. `cobrador_id` significaba dos cosas distintas segun el
-> modulo, declarado desde `[PRE-COB-1]`; se cierra ahora porque `[AGENTES-8]` permitio cobradores
-> **sin usuario** y con `cobrador_id = user_id` esos 4 de produccion **no podian recibir nada**.
+> Ultimo commit en **zyntello-app**: `[AGENTES-10]` `7eda5afc` (**vendedores y cobradores pasan a
+> ser UNA tabla: `agentes`**. Eran **dos tablas identicas** —las 14 columnas, tipo por tipo— para
+> un solo concepto: dos fichas de la misma persona podian divergir y **nadie lo notaba** hasta que
+> un reporte mostraba dos filas del mismo empleado. ⚠️ **Los ids se CONSERVAN**, asi que las 23
+> columnas que referencian agentes no se tocaron: **19 fichas → 18 agentes**, **105 referencias
+> antes = 105 despues, 0 huerfanas**. ⚠️ La fusion va por `user_id`, **nunca por email**: tres
+> agentes comparten el correo de quien los registro. ⚠️⚠️ **El barrido por MODELO no vio CINCO
+> formas de nombrar la tabla** —`DB::table()`, `exists:`, ternarios, `leftJoin` y
+> `Schema::hasTable()`—, y las cinco revientan con el DROP; una estaba en un **CRON de las 06:00**,
+> y un cron roto no lo ve nadie. ⚠️⚠️ **Siete defectos de produccion aparecieron al hacerlo**: la
+> agenda del cobrador respondia **500** por un closure sin capturar su variable · la liquidacion de
+> comisiones **no podia ejecutarse** · y **CxC identificaba al cobrador por su EMAIL**, asi que con
+> tres fichas del mismo correo esa persona veia **la cartera de otro** y podia registrar gestiones
+> a su nombre. **DESPLEGADO**: 18 agentes, 1 con los dos roles, 0 huerfanas, las 3 pestañas
+> renderizan y el cron de CxC sale exit 0).
+> Anterior: `[AGENTES-10-FIX]` `6510f080` (**la pantalla nueva no abria**: una clave `null` de
+> array es la **cadena VACIA** en PHP, asi que `$conteos[$valor ?? 'todos']` buscaba `$conteos[""]`
+> — y **compilar la vista no lo veia**, porque compilar no es renderizar).
+> Anterior: `[AGENTES-9-FIX]` `1d4314bc` (**la agenda del cobrador respondia 500**: un closure
+> `function () use ()` sin capturar `$fichaCobrador`. Solo se disparaba con un cobrador con ficha y
+> cartera viva —el unico caso que importa— y lo encontro el **golden master**, no las 459 pruebas
+> de Prestamello. Medido: 1 cobrador con 6 operaciones sin poder abrir su agenda).
+> Anterior: `[AGENTES-9]` `3105dd90` (**el cobrador de Prestamello es la FICHA, no el usuario**.
 > ⚠️⚠️ **Doce casts `(int)` sobre un UUID que NO lanzan nada**: `"23ac5610-…"` se vuelve `23` y uno
 > que empiece por letra `0`, asi que el filtro devuelve **cero filas** y eso se lee como «este
-> cobrador no tiene cartera» — alcanzaba al dashboard gerencial, a dos reportes, a la liquidacion
-> de comisiones y a la meta del mes. ⚠️ El peor, en la **reasignacion de cartera**: dos fichas que
-> empiecen por la misma cifra colapsaban al mismo numero y «reasignar al mismo cobrador» daba
-> falso positivo. ⚠️ **Dos de los doce no los detectaba ninguna prueba** —las de reportes y
-> comisiones llaman al SERVICIO y el cast vive en el CONTROLADOR—: se convierten en guarda.
-> **DESPLEGADO**: `bigint` → `char(36)` en las 3 tablas, **38 de 38 filas** apuntan a fichas
-> reales, cero perdida, y el combo de Comercial Aranza pasa de **0 a 4** cobradores).
+> cobrador no tiene cartera». ⚠️ **Dos de los doce no los detectaba ninguna prueba** —las de
+> reportes y comisiones llaman al SERVICIO y el cast vive en el CONTROLADOR—).
 > Anterior: `[AGENTES-8]` `e66c6ef8` (un agente puede existir **sin usuario del sistema**: hace
-> todo menos entrar. La ficha no consume licencia — lo que la licencia limita es cuantos ENTRAN.
-> Invierte `[AGENTES-1]`, que llevaba a un tenant con 8 agentes a necesitar 9 licencias teniendo
-> 3). Anterior: `[DEMO-GEST-1]` `36e9a6ec` (el demo enseña una cartera comercial de 37 fichas de
+> todo menos entrar. La ficha no consume licencia — lo que la licencia limita es cuantos ENTRAN).
+> Anterior: `[DEMO-GEST-1]` `36e9a6ec` (el demo enseña una cartera comercial de 37 fichas de
 > gestion, no un cliente suelto).
 > Anterior: `[TOTP-F4]` `893edf50` (CIERRA el blueprint del segundo factor por app, F0 -> F4).
 > Anterior: `[TOTP-F3]` `17bcc93a` (**un codigo del segundo factor vale UNA
