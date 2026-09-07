@@ -403,6 +403,87 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 ### Bitácora reciente (estado actual — 2026-09-07)
 
+> **EL VENCIMIENTO YA CORTA EL ACCESO, Y EL OBSERVER REVIVIÓ (2026-09-07) — `[VENC-0]`…`[VENC-4]`,
+> `[VENC-FIX]`**: ejecuta entero el plan del vencimiento, por subagentes con revisión por tarea y
+> revisión final de rama. **APLICADO Y VERIFICADO EN PRODUCCIÓN.** Sin migración: no se creó ni una
+> columna.
+>
+> ⚠️⚠️ **El defecto de fondo: NADA escribía `estado = 'vencida'`.** Solo `PagoController` lo LEÍA,
+> para recuperarse de él. O sea que el vencimiento existía como **aviso** y no como **hecho**: una
+> suscripción seguía dando acceso para siempre pasado su período pagado. **Medido: 21 de 22 activas
+> estaban vencidas, de 7 a 74 días.**
+>
+> ⚠️⚠️ **Y el scheduler del admin NUNCA CORRE**: el crontab de Bluehost solo invoca el `artisan` de
+> la APP y no se puede cambiar. La prueba: su `alertas-vencimiento.log` **no existía**, así que las
+> alertas de vencimiento **nunca se han enviado** — lo que explica que nadie notara las 21 vencidas.
+> Por eso la lógica se queda en el admin (su dominio) y **el scheduler de la app actúa de gatillo**
+> con `Schedule::exec`, en el minuto **45** o no se ejecutaría jamás (`[CRON-FIX-1]`).
+>
+> **Lo que abarata el diseño: no se creó ni un estado ni una columna.** `pendiente_pago` ya lo
+> trataba la app como ACTIVO y `vencida` como inactivo, así que **la gracia es un estado que ya
+> existía** —añadir un `gracia_hasta` habría sido un segundo registro del mismo hecho— y la app no
+> cambió ni una línea de lógica, solo el gatillo.
+>
+> ⚠️⚠️ **LA REVISIÓN FINAL DE RAMA ENCONTRÓ 7 HALLAZGOS QUE NINGUNA REVISIÓN POR TAREA VIO**, porque
+> cada una miraba solo su propio diff y los defectos vivían en las costuras. Los dos que más
+> enseñan son **míos**:
+> **(1)** la Tarea 3 **no logró su objetivo**: arreglé `store()` y había un segundo botón vivo,
+> `confirmar()`, con el mismo defecto — el período no avanzaba y el barrido re-vencía lo recién
+> pagado; **(2)** mi arreglo de la Tarea 1 **cambió un defecto por otro**: `addMonthNoOverflow()` no
+> desborda pero **DERIVA** el día de cobro para siempre (31/01 → 28/02 → 28/03…) y el cliente pierde
+> días pagados cada mes. Se ancla al día de `inicio`; verificado con 8 ciclos: **marzo recupera el
+> 31** y el 29 de febrero vuelve en 2028.
+>
+> ⚠️ Los otros: el aviso que la T3 añadió **no lo pintaba el layout** (un aviso invisible es una
+> función que no existe) · `renovar()` y **dos** puntos del webhook eran copias divergentes del
+> criterio que `avanzarPeriodoPorPago()` declara ser el único · y se **ignoraba el período que el
+> propio pago declara**, así que un pago de tres meses avanzaba uno y `pagos` y `suscripciones`
+> quedaban afirmando períodos distintos sobre el mismo dinero.
+>
+> ⚠️ **Un hallazgo mío sobre el propio arreglo**: su corte en `renovar()` iba directo a `vencida`,
+> **saltándose los 10 días de gracia** y siendo una TERCERA copia del criterio. El re-revisor
+> confirmó la objeción y su arreglo fue mejor que el mío: **`pendiente_pago`**, que conserva el
+> acceso igual que dejarlo `activa` —así que no abre ventana nueva— y **delega el umbral a su único
+> dueño**, el comando.
+>
+> ⚠️⚠️ **EL OBSERVER REVIVIÓ, y descubrir que estaba muerto fue lo que salvó el diseño.** Su
+> `updated()` calculaba `['activa','trial']` y **`pendiente_pago` NO estaba**, mientras la app SÍ lo
+> trata como activo: los dos lados discrepaban sobre el mismo hecho. Con la conexión activada, poner
+> a alguien en gracia le habría **apagado** el acceso — lo contrario de la gracia. Alineado el admin
+> a la app (el spec manda), y **verificado ejercitándolo sobre una cuenta de prueba**:
+> `pendiente_pago` → acceso **1**, `vencida` → **0**.
+> ⚠️ Su conexión `zyntello_app` llevaba **desde el 2026-05-12** fallando con **1045** porque el
+> `.env` del admin no declaraba las `DB_APP_*`. Ahora **476 filas visibles y 0 errores**.
+>
+> **Verificado en producción leyendo los dos lados**: gatillo `45 8 * * *` con «Next Due: en 16
+> horas» · medición **1 en gracia + 20 cortadas, 0 de Agua Yamel** · tras aplicar, y forzando el
+> sync desde la app: **Agua Yamel 11 módulos (intacta)** · Comercial Aranza **1** —`restaurante`, el
+> único en gracia, o sea que **la gracia conserva el acceso, demostrado en producción**— · TAPIA
+> **0** · corrida final sin acotar **0 y 0**, sin listas de excepción.
+>
+> ⚠️ **Respaldos antes de escribir**: los 21 `UPDATE` de reversión de las suscripciones, y el `.env`
+> del admin (2924 B idénticos). El primer intento de tocar el `.env` **murió con la conexión
+> cortada**, y comprobé que **NO hubo escritura parcial** antes de reintentar — con un script subido,
+> no por stdin.
+>
+> ⚠️ **PENDIENTES declarados**: las **alertas de vencimiento siguen muertas** (viven en el scheduler
+> del admin, que no corre; medidas con `--dry-run`: hoy no alcanzarían a nadie, porque solo miran
+> hacia adelante) · el candado nuevo del webhook de Stripe **quita la redundancia** de que un evento
+> de estatus rescate un pago perdido — **aparcado a propósito**: sería construir una alerta para una
+> integración que se va a sustituir, y hoy 0 pagos pasan por Stripe · y `renovar()` de una
+> suscripción **ya activa** sigue sin avanzar el período, que es un hueco preexistente.
+>
+> **Reglas nuevas: un vencimiento que solo AVISA no es un vencimiento — mientras nadie escriba el
+> estado, la suscripción da acceso para siempre · la gracia es un ESTADO que ya existe, no una fecha
+> nueva · un cron que no se puede cambiar se aprovecha: la lógica se queda en su dominio y el
+> scheduler que sí corre actúa de gatillo · reactivar sin avanzar el período deja el mecanismo
+> mordiéndose la cola, y el síntoma es «pagué y me sacaron otra vez» · `addMonthNoOverflow()` no
+> desborda pero DERIVA el día de cobro, y hay que anclarlo al día de contratación · arreglar UN punto
+> de entrada no cierra el defecto si hay un segundo botón vivo con la misma forma · un aviso que el
+> layout no pinta es una función que no existe · una revisión por tarea no ve lo que vive en las
+> costuras: la revisión de rama es otra cosa, no una repetición · dos lados que discrepan sobre qué
+> estado da acceso producen lo contrario de lo diseñado el día que ambos funcionen.**
+
 > **EL COBRO DUPLICADO, Y EL OBSERVER QUE LLEVABA CUATRO MESES MUERTO (2026-09-07) — `[#514]`,
 > `[#515]`**: cierra el hallazgo comercial que `[#513]` declaró y no corrigió. **Verificado
 > ejecutándolo y VIOLÁNDOLO** (el repo del admin no tiene runner: `vendor/` va sin dev) ·
