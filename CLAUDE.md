@@ -466,10 +466,27 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > cortada**, y comprobé que **NO hubo escritura parcial** antes de reintentar — con un script subido,
 > no por stdin.
 >
-> ⚠️ **PENDIENTES declarados**: las **alertas de vencimiento siguen muertas** (viven en el scheduler
-> del admin, que no corre; medidas con `--dry-run`: hoy no alcanzarían a nadie, porque solo miran
-> hacia adelante) · el candado nuevo del webhook de Stripe **quita la redundancia** de que un evento
-> de estatus rescate un pago perdido — **aparcado a propósito**: sería construir una alerta para una
+> ✅ **`[VENC-6]` — LAS ALERTAS DE VENCIMIENTO YA SE ENVÍAN.** Llevaban desde que se escribieron
+> **sin enviarse nunca**, y no por un defecto suyo: viven en el scheduler del admin, que no corre.
+> Ahora tienen su gatillo desde la app (09:00 los 15 días, 09:15 los 3), **medidas con `--dry-run`
+> antes de encenderlas**: hoy no alcanzan a nadie, porque solo miran `periodo_fin` **entre hoy y
+> hoy+N** y todo lo vencido está en el pasado. ⚠️ El orden respecto al corte de las 08:45 da igual
+> —la alerta mira hacia ADELANTE y el vencimiento solo toca períodos PASADOS, así que son conjuntos
+> disjuntos—. Los tres gatillos verificados en producción, en minutos 45, 0 y 15.
+>
+> ⚠️⚠️ **Y EL REEMBOLSO A AGUA YAMEL NO EXISTE: no llegó a pagar nada.** La nota que `[#515]` dejó
+> afirmando «reembolso proporcional PENDIENTE: 288.49 USD» era **falsa**, y se retiró de las dos
+> suscripciones con rastro en la auditoría. Lo que lo destapó fue mirar sus pagos: los tres tienen
+> como `referencia` un **id de suscripción de Stripe** (`sub_…`), **no de un cobro**, y Stripe está
+> en modo TEST — son artefactos del flujo de prueba, no dinero recibido.
+> ⚠️⚠️ **HALLAZGO CONTABLE DECLARADO, no corregido**: sus 3 pagos siguen marcados `pagado` por
+> **2 100 USD que nunca entraron**, y son parte de los **40 registros** que ya estaban señalados
+> como `metodo = stripe` sin un solo `stripe_payment_id`. Los reportes filtran `estado = 'pagado'`,
+> así que **el MRR está inflado por dinero que no existe**. No se tocó ninguno: son datos
+> financieros y su corrección es decisión del director técnico.
+>
+> ⚠️ **PENDIENTES declarados**: el candado nuevo del webhook de Stripe **quita la redundancia** de
+> que un evento de estatus rescate un pago perdido — **aparcado a propósito**: sería blindar una
 > integración que se va a sustituir, y hoy 0 pagos pasan por Stripe · y `renovar()` de una
 > suscripción **ya activa** sigue sin avanzar el período, que es un hueco preexistente.
 >
