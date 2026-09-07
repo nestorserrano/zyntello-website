@@ -401,7 +401,271 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 **Regla:** Si ves error 403/500 después de deploy → ejecuta esto primero.
 
-### Bitácora reciente (estado actual — 2026-09-06)
+### Bitácora reciente (estado actual — 2026-09-07)
+
+> **LA MESA DE AYUDA: F2 COMPLETA, Y LO QUE DESTAPÓ MEDIR ANTES DE PLANIFICAR (2026-09-06/07) —
+> `[SOP-F2-0]`…`[SOP-F2-9b]`, `[#507]`, `[#1020]`, `[#1021]`**: ejecuta entera la **FASE 2** del
+> blueprint de soporte, la que el propio spec marcaba como *«la más grande»*. Un usuario del tenant
+> abre un caso, un agente lo atiende con un hilo que distingue lo que el cliente ve de las notas
+> internas, y **nada facturable avanza sin la autorización de quien puede darla**. **61 pruebas
+> nuevas** (soporte completo: **109 passed**) · **17 guardas verificadas VIOLÁNDOLAS** ·
+> transversales **18 passed (2 244 aserciones)** · motor de aprobaciones **63 passed**, sin
+> regresiones en los diez módulos que lo usan. ⚠️ Migraciones `2026_09_06_810001` y `810002`.
+> **NI EN GITHUB NI EN PRODUCCIÓN**, por decisión del director técnico.
+>
+> ⚠️⚠️ **LO PRIMERO FUE MEDIR, y eso cambió el diseño antes de escribir una línea.** El spec dejaba
+> **R-3 abierto** —*«el motor de aprobaciones asume que solicitante y aprobador son del mismo
+> tenant; aquí el solicitante es un agente externo»*— y mandaba leerlo en F2. Leído:
+> `ApprovalEngine::request()` recibe `$requestedBy` como **parámetro explícito**, saca el
+> `company_id` del **DOCUMENTO** y el aprobador del `ApprovalWorkflow` **del tenant**, y no valida
+> que el solicitante pertenezca a él. **Se reusa el motor: NO se crea `sop_aprobaciones`**, que era
+> la alternativa que el spec contemplaba.
+>
+> ⚠️⚠️ **Pero la misma lectura destapó la trampa**: si no se le pasa `$requestedBy`, cae a
+> `Auth::id()` — y durante una sesión de soporte ese es la **CUENTA TÉCNICA**. La solicitud de
+> autorización quedaría firmada por una cuenta que no es de nadie, y **el cliente no sabría a quién
+> le está autorizando un gasto**. Va explícito, con prueba que lo custodia.
+>
+> ⚠️ **Y una decisión que el spec dejaba abierta, ahora tomada y justificada: las horas facturables
+> NO se apoyan en PSA.** Medido: PSA tiene timesheets con aprobación, pero **sus timesheets viven en
+> el tenant del CLIENTE** y las horas de soporte son de **Zyntello**. Apoyarse en él metería horas
+> de Zyntello en la contabilidad del cliente, exigiría que el tenant tuviera PSA contratado, y
+> crearía un segundo criterio de «horas trabajadas».
+>
+> **Lo que sostiene el diseño**: **UNA sola bandeja con tres puertas** (`canal` = portal · chat ·
+> correo) — el chat de F4 y el correo de F3 **no serán sistemas aparte**, serán un mensaje de este
+> mismo hilo; con tablas separadas, «qué se atendió hoy» tendría dos respuestas y una quedaría
+> vieja. La **numeración es GLOBAL** (`SOP-000123`) y **no usa `ConsecutivoService`**, que numera
+> por tenant: dos clientes tendrían un `SOP-000045` cada uno y el número dejaría de identificar un
+> caso en el asunto de un correo — y de ese token depende el hilado de F3, que además **no puede
+> usar el sufijo `+`** (el Exim de Bluehost lo acepta con un `250` y **pierde el mensaje sin
+> rebote**).
+>
+> ⚠️⚠️ **Dos decisiones de esquema que, si se pierden, dejan las métricas sin significado**, las dos
+> con prueba y verificadas violándolas: **`esperando_cliente`** —el tiempo que un ticket espera al
+> CLIENTE no cuenta contra el SLA de Zyntello; sin ese estado, un caso que esperó cuatro días una
+> respuesta ajena aparece como cuatro días de incumplimiento propio, y con dos o tres así el
+> indicador deja de mirarse— y **el UNIQUE global del número**.
+>
+> ⚠️ **El mensaje nace `publica`, y esa dirección importa**: si el default fuera `interna`, un agente
+> que responde y olvida marcarlo dejaría al cliente esperando una respuesta que ya está escrita y
+> que no puede ver. Y **solo una respuesta PÚBLICA DE UN AGENTE sella la primera respuesta del
+> SLA**: si una nota interna la sellara, el indicador diría que se respondió en diez minutos
+> mientras el cliente sigue sin recibir una sola palabra.
+>
+> ⚠️ **Excepción de aislamiento DECLARADA**: `sop_tipos_incidencia` y `sop_agentes` **no llevan
+> `company_id` ni `empresa_id`** porque son catálogos de **Zyntello** —su catálogo de servicios y su
+> plantilla—, no datos del cliente: que cada suscriptor tuviera los suyos haría imposible responder
+> «cuántas incidencias de acceso atendimos este mes». `sop_tickets` sí lleva las dos, con
+> `empresa_id` **nullable** porque un caso puede ser del tenant entero.
+>
+> ⚠️⚠️ **La AUTO-REVISIÓN del plan contra el spec cazó un hueco real antes de ejecutar nada**:
+> `sop_agentes` no tenía pantalla, y **sin un agente en la tabla no se puede asignar ni un solo
+> ticket** — la bandeja habría nacido inutilizable. Es la lección de `[CW-FIX-2]`: *una tabla sin
+> pantalla es una función que no existe.* Tarea 1b nueva.
+>
+> ⚠️⚠️ **Y un hallazgo que vino de una directiva que OTRA SESIÓN introdujo a mitad de este trabajo**
+> («toda tabla nueva nace con su diccionario»): **el grupo por DEFECTO es `negocio`**, así que las
+> cinco tablas `sop_*` nacían **VISIBLES en el Diccionario de Datos del suscriptor**. Dos de ellas
+> son directamente catálogos de Zyntello: el cliente habría visto **la plantilla de soporte de su
+> proveedor y su catálogo de servicios**. Clasificadas como `plataforma`. ⚠️ La guarda pasaba igual,
+> y no es un fallo suyo: vigila que nadie meta en `plataforma` algo que el suscriptor necesita, no
+> lo contrario. **Lo destapó preguntar EN QUÉ GRUPO cae cada tabla, no correr la prueba.**
+>
+> ⚠️ **De las CUATRO aprobaciones del spec (D-9) se implementa UNA** —el trabajo cotizado— y las
+> otras tres se declaran con su motivo: la de acceso ya la cubre F1 por otro camino, la de cierre
+> necesita que el cliente pueda decir «esto no quedó resuelto», y la de cambio de riesgo necesita
+> una noción de riesgo que no existe en ninguna tabla. *Implementarlas sin los estados que las
+> disparan produciría tres flujos que nadie puede ejercer, y una aprobación que nunca se dispara es
+> peor que no tenerla* (`[PRE-F1]`).
+>
+> **La vista del admin es de SOLO LECTURA y sin un solo botón** (`[#507]`): dos superficies que
+> escriben la misma bandeja acaban divergiendo (`[VTA-MES-4]`). ⚠️ Con **falla suave**, que cubre el
+> riesgo **R-2**: si el `.env` de producción del admin no tiene `DB_APP_*`, la ficha del cliente
+> —que muestra su suscripción y sus pagos— **no puede caerse** por una sección secundaria.
+> ⚠️⚠️ **Las pruebas del admin NO se pueden correr y se declara**: su `vendor/autoload.php` se generó
+> con `--no-dev` —vendor va commiteado para Bluehost— así que PHPUnit no está en el autoload;
+> reinstalar dev cambiaría `vendor/`, que el repo versiona para producción. El servicio se verificó
+> **EJECUTÁNDOLO** contra la base real, con las cinco comprobaciones en OK y **0 filas residuales**.
+>
+> **Los legales suben a Privacidad 1.5, SLA 1.2 y Términos 1.5** (`[#1020]`, `[#1021]`). ⚠️⚠️ Lo que
+> de verdad había que declarar es **el ADJUNTO**: para explicar un problema es habitual adjuntar una
+> captura del propio sistema, y ahí pueden ir **nombres, importes y saldos de los clientes del
+> suscriptor** — tratamiento de datos personales de terceros que no estaba cubierto. Y el SLA
+> declara que **el tiempo esperando al cliente no cuenta** contra los plazos: es la contrapartida
+> contractual del estado `esperando_cliente`.
+>
+> ⚠️⚠️ **TRES VECES una violación no detectó nada, y las tres veces la culpa era de la VIOLACIÓN o
+> del FIXTURE, no de la prueba** — es la lección de método de esta fase:
+> **(1)** en la numeración global violé con `max('company_id')` —un valor cualquiera— en vez de
+> `company()?->id`, que es lo que alguien escribiría al equivocarse; con la realista fallan **tres**
+> pruebas. **(2)** el adjunto ajeno se creaba en la tabla **sin archivo en el disco**, así que la
+> descarga daba 404 por «el archivo no está» y quitar el filtro de tenant no se notaba; con el
+> archivo puesto de verdad, **falla**. **(3)** pasar `companyId: null` no rompía nada… porque
+> `ApprovalEngine` hace `$companyId ??= $document->company_id` — una salvaguarda del motor, no un
+> hueco: con un company de otro tenant, **falla**.
+>
+> ⚠️ **Y una prueba HTTP moría antes de llegar a lo que decía ejercer**: daba **403 en vez de 404**,
+> parándose en el `abort_unless` sin alcanzar el filtro de tenant. **Aceptar el 403 la habría dejado
+> verde aunque `show()` no filtrara nada.** Se monta la empresa activa de verdad —fila en
+> `empresa_members` + clave de sesión— y se añade la del **otro lado** (que el cliente *sí* abre su
+> propio caso), porque un filtro demasiado estricto lo dejaría sin ver sus tickets y la primera
+> seguiría pasando.
+>
+> ⚠️ **Dos defectos del propio plan, cazados al ejecutarlo**: `"El estado «$nuevo» no existe"` —el
+> `»` es multibyte y PHP lo tomaba como parte del nombre de la variable, así que lanzaba
+> `Undefined variable` en vez de la excepción esperada— y **tres pruebas escritas con una remisión**
+> («setUp igual a AbrirTicketTest») donde debía haber código: se escribieron completas, porque cada
+> archivo de prueba monta y limpia lo suyo. Corregidos **en el plan**, no solo en los archivos.
+>
+> ⚠️ **PENDIENTES declarados**: **R-1 BLOQUEA F3** —no hay worker de colas y hay 4 sitios que envían
+> con `->queue()`: hay que medir el `.env` de producción antes de construir el correo, o se estaría
+> apoyando la mesa de ayuda en algo roto—; **R-2** sigue sin verificar en producción (la falla suave
+> hace que su ausencia no rompa nada); y **F4 (chat con IA)** depende de F2, que ya está.
+>
+> **Reglas nuevas: una violación que no reproduce el defecto REAL informa lo mismo que no haber
+> violado nada (tres veces en una fase) · un fixture de aislamiento que puede dar el resultado
+> correcto por dos caminos no verifica ninguno · una prueba que muere en el `abort_unless` no llega
+> a la guarda que dice ejercer, y aceptar su código de error la deja verde para siempre · el grupo
+> por DEFECTO de una clasificación decide lo que nace visible, y eso se comprueba preguntando en qué
+> grupo cae cada tabla, no corriendo la prueba · un catálogo del proveedor no puede salir en el
+> diccionario de datos del cliente · una remisión a otro archivo de prueba obliga a leer dos para
+> entender uno · un carácter multibyte pegado a una variable interpolada rompe su nombre · las
+> horas de quien presta el servicio no viven en la contabilidad de quien lo recibe.**
+
+
+> **EL ACCESO DE SOPORTE: F1 COMPLETA, Y DOS BLOQUEOS QUE DEJABAN AL AGENTE ATRAPADO
+> (2026-09-06) — `[SOP-F1-0]`…`[SOP-F1-9]`, `[#1019]`**: ejecuta entera la **FASE 1** del blueprint
+> de soporte (`docs/superpowers/specs/2026-09-01-soporte-tickets-design.md`), que llevaba cinco días
+> escrita y **sin una sola casilla marcada**. Un agente de Zyntello ya entra al espacio de cualquier
+> tenant **sin usuario ni contraseña del cliente**, en solo lectura elevable, administra sus usuarios,
+> y todo queda registrado y **visible para el dueño**. **48 pruebas nuevas, 14 guardas verificadas
+> VIOLÁNDOLAS: las 14 se detectan** · guardas transversales **14 passed (2 214 aserciones)** ·
+> auth + menú + ayuda **254 passed** · las **1 286 vistas compilan**. ⚠️ Migración
+> `2026_09_06_800001`. **NI EN GITHUB NI EN PRODUCCIÓN**, por decisión del director técnico.
+>
+> ⚠️⚠️ **DOS BLOQUEOS TOTALES, el mismo defecto por puertas distintas, y ninguno estaba en el
+> plan.** Los dos dejaban al agente **atrapado dentro del tenant**, y los dos los encontró EJECUTAR.
+> **(1)** `ExigirSegundoFactor` —registrado por `[TOTP-F4]` **cuatro días después** de escribirse el
+> plan— alcanza a toda petición autenticada, y la cuenta técnica **no tiene 2FA**: con `exigir_2fa`
+> encendido y la gracia vencida, la petición salía **302 hacia el perfil** de una cuenta que no es de
+> nadie. **(2)** El grupo de rutas iba detrás de `super_admin`, que mira `is_super_admin` del usuario
+> **AUTENTICADO** — y durante la sesión el autenticado es la **cuenta técnica**: el agente no podía
+> elevar a escritura, no podía gestionar usuarios y **no podía ni salir por su propia ruta**.
+>
+> ⚠️ **El síntoma del primero habría sido el peor posible**: intermitente y atribuido al módulo
+> equivocado. Soporte funcionaría con todos los clientes menos con los que encendieron la política, y
+> el agente reportaría «no puedo entrar a este cliente» sin nada que apunte al 2FA. **Medido: 0
+> tenants con la exigencia activa**, así que el defecto habría entrado en producción **dormido** y
+> despertado el día que un cliente usara una función de seguridad que se le vendió.
+>
+> **La corrección de fondo es la misma en los dos: la autoridad la trae el AGENTE, no la cuenta con
+> la que se navega.** La exención del 2FA va en el **SERVICIO** y no en el middleware —es fuente
+> única, y solo en el middleware el aviso de la barra seguiría pidiéndole al agente que configure un
+> 2FA que no debe tener—; y el middleware nuevo `soporte_autorizado` comprueba al agente **en CADA
+> petición**, así que retirarle el acceso lo corta aunque su sesión siga viva. ⚠️ **El segundo factor
+> no desaparece: se traslada a donde SÍ hay dueño** — `abrir()` rechaza al agente que no tenga el
+> suyo, y queda **más** exigente que la política del tenant. Un TOTP en la cuenta técnica sería un
+> secreto compartido entre agentes, y eso no es un segundo factor.
+>
+> ⚠️⚠️ **Y un candado que va AL REVÉS, declarado como exento**: `EnsureMemberCapability` resuelve la
+> membresía del usuario autenticado para darle sus capacidades. **Filtrar ahí deja al agente con un
+> 403 en cada pantalla.** Ninguna de las dos guardas lo detectaría: las dos comprueban que se
+> **filtre**, no que no se filtre **de más**, así que lleva su propio paso de verificación.
+>
+> ⚠️⚠️ **La Tarea 2b declaraba 3 sitios donde la cuenta técnica se colaría: son 32 consultas en 25
+> archivos**, escritas de **CUATRO formas distintas** —`User::where` (19), `DB::table('users')` (8),
+> `whereHas('companyMemberships')` (3) y `$company->members()` (2)— y las tres que el plan no vio son
+> justo las que un `grep` de `User::` no encuentra. *Un barrido por MODELO no ve a quien nombra la
+> TABLA*, la lección de `[AGENTES-10]` escrita **tres días después** de este plan; y la cuarta forma
+> ni siquiera consulta `users`. Con solo tres corregidos, la cuenta habría salido ofrecida en
+> dieciocho combos del cliente, el buzón de soporte habría recibido la operación de cada uno, y
+> `EnviarAvisoCondominio` habría hecho **`Auth::login()`** con ella.
+>
+> ⚠️ `settings.members` la listaba con su botón «Quitar miembro» —que dejaría al agente fuera a mitad
+> de sesión— mientras el contador de licencias de al lado **sí la excluye**: el owner leería
+> «3 miembros» junto a «2 de 3», la contradicción que `[LIC-6]` existe para evitar.
+>
+> **Lo que sostiene el diseño**: el agente **no atraviesa el scope de tenant**, se hace **miembro
+> temporal** con una cuenta técnica, así que `HasEmpresa` y `company()` siguen funcionando sin
+> tocarse. El modo lectura se impone en la **capa de persistencia** (eventos `saving`/`deleting`),
+> **no por método HTTP**: Livewire hace POST para todo —incluido renderizar el menú de toda la app—,
+> así que bloquear POST habría dejado la aplicación rota durante cada sesión de lectura. Y **lanza
+> excepción, no devuelve `false`**: con `false`, los controladores que no lo comprueban dirían
+> «guardado con éxito» sin guardar nada.
+>
+> ⚠️ **La bitácora no puede apoyarse en la auditoría existente**: `DocumentAuditObserver` cubre una
+> lista blanca de ~25 modelos financieros y deja fuera clientes, artículos, usuarios y
+> configuraciones — justo lo que soporte toca. Se escuchan los eventos **genéricos** de Eloquent. Y
+> ⚠️⚠️ **el saneo no es un detalle**: el ecosistema guarda credenciales cifradas por empresa —token de
+> WhatsApp, API keys de IA, burós de Prestamello— y un diff crudo las metería en la bitácora **en
+> claro**; se enmascara por fragmento del nombre de columna y **la columna se conserva** aunque su
+> valor se oculte.
+>
+> ⚠️ **La ventana de escritura dura 30 minutos, menos que los 120 de la sesión**: es el nivel
+> peligroso y **no debe sobrevivir a un café** — una sesión elevada olvidada abierta deja al
+> siguiente que se siente ante ese equipo escribiendo en datos de un cliente.
+>
+> ⚠️⚠️ **EL PLAN AFIRMABA SEIS COSAS QUE NO ERAN CIERTAS, y las seis las encontró ejecutarlo.** Su
+> **H-4** daba por imposible el candado de licencias («no existe ningún conteo en todo el código»):
+> `[LIC-2]` ya lo tenía **y ya excluye la cuenta de soporte**, con dos pruebas. Su **H-1** declaraba
+> el rol «Consulta» inasignable por un ENUM en plural: **el ENUM y `member_roles.php` dicen
+> `consulta`, en singular** —medido en las dos bases— y lo que revienta con un **1265 «Data
+> truncated»** es justo el valor que el plan mandaba escribir… **propagado a la validación de la
+> Tarea 8**, donde habría dejado al agente **sin poder poner a nadie en solo lectura**. Más **tres
+> fixtures de agente sin 2FA** y **tres sin `is_super_admin`**, un `URL::forceRootUrl(config('app.url'))`
+> que **reproducía** el subpath en vez de evitarlo (404 antes de llegar al middleware), y una
+> aserción que buscaba el nombre «Soporte Zyntello» en toda la página cuando **el layout lo muestra
+> legítimamente** en el menú de usuario. **Los seis corregidos EN EL PLAN**, no solo en los archivos.
+>
+> ⚠️ **Un hecho «verificado» que nadie vuelve a ejercer se degrada igual que una regla escrita en
+> prosa**: el de H-1 llevaba cinco días mandando a evitar un rol perfectamente válido.
+>
+> **Los legales suben a 1.4** (`[#1019]`): Privacidad **§12 nueva** —con qué base, con qué identidad,
+> con qué alcance, qué queda registrado, cómo se marca la emergencia, dónde lo audita el cliente y
+> qué **NO** hacemos: ni fines comerciales, ni estadísticos, ni entrenamiento de modelos— y Términos
+> **§18.3** con la cláusula de aceptación. ⚠️ **Los dos nombran la ruta exacta** —Configuración →
+> Accesos de soporte—: *un consentimiento contractual sobre el acceso a los datos solo es defendible
+> si el cliente tiene una pantalla desde donde comprobarlo.* Verificado: control de cambios ampliado
+> **sin tocar las cuatro entradas anteriores**, una sola versión vigente y **0 enlaces rotos** tras
+> renumerar 8 secciones de Privacidad y 2 subsecciones de Términos.
+>
+> ⚠️⚠️ **NO SE DESPLIEGA NADA, decisión del director técnico** — ni la app ni los legales. *Un
+> documento legal no se publica antes que el código que lo sostiene*, y publicarlos hoy afirmaría un
+> acceso de soporte que producción todavía no tiene. ⚠️ Además `git push` **sube toda la rama**, así
+> que arrastraría los commits de la sesión paralela que ya esperaban.
+>
+> ⚠️ **PENDIENTE declarado**: el **SLA** publicado no menciona el acceso de soporte y la §18.2 de los
+> Términos remite a él; ampliarlo es la parte de F5 que el spec marca como decisión del director
+> técnico, junto con los tiempos comprometidos.
+>
+> ⚠️ **Tres defectos propios de método**, y los dos que más enseñan: nombré un archivo de prueba
+> distinto de su clase y **`artisan test` salió 0 con «No tests found»** (la trampa de `[REST-F2]`
+> otra vez); y al revertir una violación el marcador `// VIOLACION` resultó ser **PREFIJO** de
+> `// VIOLACION-2FA`, así que se pisaron y dejaron el archivo corrupto con las pruebas en rojo por un
+> motivo inventado — **lo cantó el `assert` de comprobación, no el resultado de las pruebas**. Es la
+> trampa de la SUBCADENA por enésima vez. El tercero: el script que aplicó los 32 filtros metió el
+> scope **DENTRO** de un closure de `whereHas` —donde `$q` es de `CompanyMember` y no tiene ese scope,
+> así que habría reventado al ejecutarse—, lo duplicó y se saltó una segunda consulta del mismo
+> archivo; **los tres los cazó revisar el DIFF**, no confiar en el resumen del script.
+>
+> ⚠️ **Y un límite de la guarda, encontrado ejecutándola**: lee la expresión hasta el primer `;`, así
+> que **un closure MULTILÍNEA esconde el filtro que va después**. Las dos consultas de
+> `GestionClientesController` pasan a `fn` de una línea y queda escrito por qué. Acusa de más, que es
+> el lado seguro. ⚠️ Y **por archivo acusaba a 41** que no tienen nada que ver con usuarios: *una
+> guarda ruidosa se termina ignorando.*
+>
+> **Reglas nuevas: la autoridad de un agente la trae ÉL, no la cuenta con la que navega — un
+> middleware que mira al usuario autenticado deja atrapado a quien entró con una cuenta técnica · un
+> candado puede fallar por filtrar DE MÁS, y ninguna prueba de «se filtró» lo detecta · un pendiente
+> se comprueba antes de arrastrarlo, porque otro trabajo puede haberlo cerrado · un hecho verificado
+> que nadie vuelve a ejercer se degrada como una regla en prosa · un campo obligatorio nuevo rompe a
+> los llamadores que ya existían, y eso se corrige en el PLAN, no solo en el archivo · una guarda que
+> mira el archivo entero acusa a quien no tiene nada que ver · una expresión leída hasta el primer
+> `;` no cruza un closure multilínea · un marcador de violación que es PREFIJO de otro se pisa al
+> revertir · el diff se revisa: el resumen de un script que edita 25 archivos no prueba que editara
+> bien.**
+
 
 > **EL AGENTE SE ACOTA POR TENANT *Y* EMPRESA, Y LA DIRECTIVA SUBE A SUPERIOR (2026-09-06) —
 > `[AGENTES-12]`, `[#1017]`**: pregunta del director técnico tras `[AGENTES-10]` — *«pero todos
@@ -4875,7 +5139,14 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[AGENTES-12]` `17dce3529` (**el agente se acota por tenant Y
+> Ultimo commit en **zyntello-app**: `[SOP-F2-9b]` `27b3abf37` (**la mesa de ayuda F2 completa**:
+> tickets con hilo y notas internas, adjuntos en disco privado, bandeja del agente con el reloj
+> del SLA que se detiene esperando al cliente, y **nada facturable sin la autorizacion de quien
+> puede darla**. ⚠️⚠️ **NI EN GITHUB NI EN PRODUCCION**, igual que F1. ⚠️ R-3 medido y CERRADO:
+> el motor de aprobaciones SI admite solicitante externo, asi que se reusa — pero hay que
+> pasarle el AGENTE explicito o cae a `Auth::id()`, que en una sesion de soporte es la CUENTA
+> TECNICA. ⚠️ Las 5 tablas `sop_*` nacian VISIBLES en el diccionario del cliente: clasificadas
+> como plataforma). Anterior: `[AGENTES-12]` `17dce3529` (**el agente se acota por tenant Y
 > empresa**. ⚠️⚠️ **EN GITHUB Y NO EN PRODUCCION**, por decision del director tecnico: el push
 > arrastro 8 commits de una sesion PARALELA (`[SOP-F1-*]`, con migracion y cambios de 2FA) que ya
 > estaban en la rama —*`git push` sube toda la rama*— y desplegar habria llevado una fase ajena a
