@@ -34,6 +34,133 @@
 
 ---
 
+## 🔒 DIRECTIVA SUPERIOR — AISLAMIENTO `company_id` + `empresa_id` (MANDATORIA, SIN EXCEPCIÓN)
+
+> **Está por encima de cualquier otra consideración técnica: rendimiento, elegancia, comodidad o
+> plazo. Los datos de dos suscriptores NUNCA se mezclan, y los de dos empresas del mismo
+> suscriptor TAMPOCO.**
+>
+> No es una convención del proyecto: es la promesa que Zyntello le vende a cada cliente y la que
+> afirman los documentos legales publicados. Un cruce no produce un error que alguien vea — produce
+> **una pantalla plausible con los datos de otro**, y eso se descubre cuando un cliente ve el nombre
+> de un tercero en su propio sistema.
+
+### La regla, en una línea
+
+**Toda tabla, todo modelo, toda consulta, toda vista, todo combo, todo reporte, todo endpoint,
+todo seeder y toda prueba se acota por `company_id` Y por `empresa_id`. Las dos, siempre.**
+
+### Al crear una TABLA
+
+1. Lleva **`company_id`** y **`empresa_id`**, salvo que esté en la lista cerrada de excepciones
+   (más abajo). No hay una tercera opción.
+2. Su UNIQUE **incluye las dos columnas**. ⚠️ Un UNIQUE que se olvida de `empresa_id` no falla al
+   escribirlo: **revienta con un 1062 la primera vez que la segunda empresa lo use de verdad**, y
+   el usuario solo ve «Duplicate entry» — un error del motor que no dice nada del negocio.
+   (Pasó en `inv_config_inventario`, en `fact_configuracion_fiscal` y en `tn_permission_grants`.)
+3. Si la tabla guarda un permiso, una configuración o una preferencia, la dimensión que la acota va
+   **en la CLAVE del `updateOrCreate`, nunca en los valores**: si va en los valores, guardar en la
+   empresa B **pisa la fila de la A** sin decir nada.
+
+### Al crear un MODELO
+
+1. Usa el trait **`HasEmpresa`**, cuyo global scope filtra `company_id` **y** `empresa_id`.
+2. ⚠️ **El scope es LAXO con el NULL**: una fila **sin `empresa_id` se ve desde TODAS las empresas
+   del tenant.** Por eso una fila huérfana de empresa no es un detalle cosmético — es una fuga.
+   Hay que medir que no existan (`WHERE empresa_id IS NULL`), no suponerlo.
+
+### ⚠️⚠️ `sinScopeEmpresa()` — la puerta por la que se cuelan los cruces
+
+`sinScopeEmpresa()` **apaga el global scope entero**, o sea las DOS condiciones. Cada consulta que
+lo use **tiene que reponerlas a mano**, y ahí es donde se cuela el defecto:
+
+- Filtrar solo `company_id` → se ven **los datos de otras empresas del mismo suscriptor**.
+- No filtrar nada → se ven **los de otros suscriptores**.
+
+**Reglas de uso, obligatorias:**
+
+1. `sinScopeEmpresa()` **solo** en seeders, procesos por CLI que reciben el tenant por parámetro,
+   reportes cross-empresa explícitamente autorizados, y catálogos globales del tenant.
+   **NUNCA en un endpoint operativo** para «que se vea todo».
+2. Siempre que se use, la reposición del filtro va en un **scope con nombre y fuente única**
+   (ej. `scopeDelTenant($companyId, $empresaId)` de `App\Models\Tablas\Agente`), **nunca escrita a
+   mano en cada consulta**: con el criterio repetido en seis sitios, el primero que se olvide
+   devuelve el dato a ser global **y nada lo dice**. (Medido: de seis copias, **dos ya habían
+   divergido**.)
+3. Ese scope reproduce **exactamente** lo que hace el global scope, incluido el
+   `orWhereNull('empresa_id')` de los registros globales del tenant — sin esa rama, los registros
+   globales **desaparecen de todas las pantallas** al desactivar el scope.
+4. Un método que **recibe la empresa por parámetro NO puede resolver sus datos con modelos que
+   leen la sesión**, y **sus relaciones tampoco**: con el usuario en la empresa A, un proceso de la
+   B falla o —peor— escribe en la empresa equivocada. En CLI el scope está desactivado, así que
+   **funciona por casualidad en la consola y falla en la web**, o al revés.
+
+### Al escribir un CONTROLADOR
+
+```php
+$empresa = empresa_activa();
+$company = company();
+abort_unless($empresa && $company, 403);
+```
+
+⚠️ Y no basta con ponerlo: **un `abort_unless` que valida `company()` no protege si dos líneas
+después se redefine `$company` con `currentCompany`**, que puede ser null. Ese anti-patrón ya
+apareció en 10 métodos de un mismo archivo.
+
+⚠️ **Un id que llega del REQUEST o de la URL se resuelve SIEMPRE acotado por las dos dimensiones.**
+Sin eso, pegar el id de otra empresa en la URL abre —y deja EDITAR— su ficha, y la pantalla no
+muestra nada raro.
+
+### Al escribir una VISTA, un COMBO o un REPORTE
+
+1. Un combo se llena con lo de la **empresa ACTIVA**. ⚠️ El síntoma de no hacerlo **no es una lista
+   vacía: es una lista llena de otra empresa** — y el usuario elige de ahí sin sospechar nada.
+2. Los ids que un documento ya trae (`$incluirIds`) también se resuelven acotados: vienen de un
+   documento, pero el documento pudo capturarse mal.
+3. Un reporte cross-empresa **declara en pantalla** que lo es. Si no lo declara, no lo es.
+
+### Al escribir un SEEDER
+
+Un seeder que corre una vez por empresa **crea una fila por empresa**. Si la entidad es del tenant
+(una por suscriptor), se acota a la empresa principal **y la limpieza borra las anteriores**, o el
+UNIQUE revienta en el siguiente reset.
+
+### Al escribir una PRUEBA
+
+**El aislamiento se prueba con DOS suscriptores y DOS empresas reales, no con uno.** Una prueba que
+monta un solo tenant no puede ver un cruce ni aunque lo haya. Y toda consulta que use
+`sinScopeEmpresa()` necesita **una guarda estructural** que falle si alguien vuelve a filtrar solo
+por `company_id` — *lo que se detecta leyendo el código a mano se degrada; lo que se convierte en
+prueba, no.*
+
+### Las ÚNICAS excepciones (lista cerrada)
+
+Catálogos compartidos a nivel tenant, sin `empresa_id`:
+
+1. **Países** (`paises`)
+2. **Estados y ciudades** (`estados`, `ciudades`)
+3. **Monedas** (`monedas`)
+
+**Todo lo demás lleva las dos columnas**: clientes, proveedores, artículos, agentes, facturas,
+cobros, pagos, movimientos, planes de comisión, empleados, permisos, configuraciones, preferencias,
+consecutivos y cualquier dato operativo o de configuración.
+
+> Si crees haber encontrado una excepción nueva, **no la implementes**: se declara, se justifica por
+> escrito con su motivo y se decide con el director técnico. Una excepción no declarada es una fuga
+> que nadie va a volver a mirar.
+
+### Checklist antes de dar por terminado cualquier trabajo
+
+- [ ] ¿Las tablas nuevas tienen `company_id` **y** `empresa_id`?
+- [ ] ¿El UNIQUE incluye las dos?
+- [ ] ¿Cada `sinScopeEmpresa()` repone las dos condiciones, desde una fuente única?
+- [ ] ¿Los ids que llegan del request se resuelven acotados por las dos?
+- [ ] ¿Los combos y reportes muestran solo la empresa activa?
+- [ ] ¿Hay filas con `empresa_id` NULL que deberían tenerlo? (medirlo, no suponerlo)
+- [ ] ¿Hay una prueba con **dos tenants y dos empresas** que falle si el filtro se quita?
+
+---
+
 ## 🔑 INSTRUCCIÓN PARA INICIAR SESIÓN
 
 > **SIEMPRE hacer esto al comenzar cualquier sesión de trabajo en Zyntello:**
@@ -50,6 +177,12 @@
 > $company = company();
 > abort_unless($empresa && $company, 403);
 > ```
+>
+> ⚠️⚠️ **Y antes de escribir una sola línea, releer la
+> [DIRECTIVA SUPERIOR de aislamiento `company_id` + `empresa_id`](#-directiva-superior--aislamiento-company_id--empresa_id-mandatoria-sin-excepción)
+> que está al inicio de este archivo.** No se crea ninguna tabla, vista, combo, consulta ni prueba
+> sin la doble protección. Es la directiva que más veces se ha incumplido teniéndola escrita, así
+> que **se lee, no se recuerda.**
 
 ---
 
@@ -5231,6 +5364,12 @@ rutas. ⚠️ En MyISAM las transacciones no revierten y `lockForUpdate()` es un
 Cuando se pida crear una nueva funcionalidad de negocio (CRM, RRHH, encuestas, lo que sea), **siempre** se agrega como módulo dentro de `app/zyntello-app/`. Detalles del checklist completo en `app/zyntello-app/CLAUDE.md`.
 
 ### Arquitectura de aislamiento: Tenant + Empresa
+
+> ⚠️ **El criterio completo vive en la
+> [DIRECTIVA SUPERIOR](#-directiva-superior--aislamiento-company_id--empresa_id-mandatoria-sin-excepción)
+> al inicio de este archivo.** Lo de aquí abajo es su resumen operativo: si los dos textos llegaran
+> a discrepar, **manda la directiva superior** — dos copias del mismo criterio siempre divergen, y
+> ese es justo el defecto que esta regla existe para evitar.
 
 **Regla fundamental:** TODO se separa por `company_id` (tenant) + `empresa_id` (empresa activa).
 
