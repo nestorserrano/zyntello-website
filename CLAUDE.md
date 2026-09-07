@@ -5509,6 +5509,9 @@ Los vendedores de Constructora NO aparecen en Servicios, las facturas NO se mezc
 9. **📜 DOCUMENTOS LEGALES** — actualizar Términos y Privacidad con el módulo nuevo, subir la
    versión, la fecha y el control de cambios, y **desplegar**. Ver la directiva de documentos
    legales más abajo. **Un módulo no está terminado si los documentos legales no lo mencionan.**
+10. **📖 DICCIONARIO DE DATOS** — toda tabla nueva nace con su entrada en
+    `resources/diccionario/{modulo}.php`. Ver la directiva completa más abajo.
+    **Una tabla sin diccionario rompe `DiccionarioCompletoTest`.**
 
 ### ⚠️ DIRECTIVA TRANSVERSAL OBLIGATORIA — todo módulo nuevo debe contemplar
 
@@ -5523,6 +5526,8 @@ Los vendedores de Constructora NO aparecen en Servicios, las facturas NO se mezc
 7. **Documentos legales al día** — todo módulo nuevo o cambio de alcance de un módulo existente
    obliga a revisar y adaptar los documentos legales públicos. Ver la directiva completa en la
    sección siguiente.
+8. **Diccionario de datos al día** — toda tabla nueva se documenta en el acto. Ver la directiva
+   completa más abajo. **Una tabla sin diccionario rompe la suite.**
 
 ---
 
@@ -5636,6 +5641,113 @@ curl -s https://zyntello.com/terminos/ | Select-String "Versión|Última actuali
 - ❌ `$connection` en modelos o migraciones
 - ❌ BD nueva o conexión nueva en `config/database.php`
 - ❌ `Route::prefix` en `web.php` (va dentro del archivo de rutas del módulo)
+
+---
+
+## 📖 DIRECTIVA — TODA TABLA NUEVA NACE CON SU DICCIONARIO (MANDATORIA)
+
+> **Una tabla sin diccionario es una tabla que el suscriptor no puede entender.** El diccionario
+> no es documentación técnica: es la pantalla donde el cliente descubre **qué guarda su sistema**,
+> **para qué sirve cada dato** y **con qué se relaciona** — y desde donde arma sus reportes.
+
+### La regla, en una línea
+
+**Toda tabla nueva se declara en `resources/diccionario/{modulo}.php` en el mismo trabajo que la
+crea. No en el siguiente.**
+
+### Qué se escribe
+
+```php
+'inv_movimientos' => [
+    'nombre'          => 'Movimientos de mercancía',   // el nombre de NEGOCIO, no el técnico
+    'significado'     => 'Para qué sirve en la OPERACIÓN del suscriptor.',
+    'cuando_se_llena' => 'En qué momento y desde qué pantallas se crean sus filas.',
+    'pantalla'        => 'inventario.operaciones.movimientos.index',   // opcional
+    'campos' => [
+        'costo_unitario' => 'Texto corto.',
+        'naturaleza' => [                              // forma completa, para los ENUM
+            'etiqueta' => 'Naturaleza',
+            'texto'    => 'Qué decide este campo.',
+            'valores'  => ['entrada' => 'Suma al almacén.', 'salida' => 'Resta del almacén.'],
+        ],
+    ],
+],
+```
+
+**Genera el andamiaje —columnas y valores de ENUM ya listados— con:**
+
+```bash
+php artisan diccionario:andamiaje {tabla}              # imprime el bloque para pegarlo
+php artisan diccionario:andamiaje {tabla} --escribir   # lo añade al archivo del módulo
+php artisan diccionario:andamiaje                      # lista las tablas nuevas que faltan
+```
+
+### Lo que NO hay que escribir
+
+- **Las universales** (`id`, `company_id`, `empresa_id`, `created_at`…): su significado no cambia
+  entre tablas y ya están en `config/diccionario_datos.php`. El andamiaje las omite.
+- **Las columnas `*_id` cuya relación declara el modelo**: su descripción se **DERIVA** del destino
+  y sale correcta sola. El andamiaje también las omite.
+
+### Lo que SÍ hay que escribir sin excepción
+
+⚠️⚠️ **Los nombres ambiguos.** `tipo` aparece en **108 columnas** y `numero` en **46**, y significan
+algo distinto en cada tabla. **No se pueden resolver por descripción genérica**: hacerlo dejaría
+108 columnas que *parecen* documentadas y describen otra cosa — y nadie volvería a mirarlas, porque
+el campo se ve lleno. La lista completa está en `config/diccionario_datos.php` → `ambiguos`.
+
+⚠️ **Los valores de cada ENUM, todos.** En este sistema el valor suele ser *la* información:
+`estado = 'pendiente_configuracion'` o `naturaleza = 'consumo'` no dicen nada solos. La guarda
+comprueba los **dos sentidos**: un valor del esquema sin texto **falta**, y un texto para un valor
+que ya no existe en el ENUM **sobra** (alguien cambió el esquema y no el diccionario).
+
+### La clasificación: ninguna tabla nace invisible
+
+Cada tabla pertenece a un grupo, declarado en `config/diccionario_datos.php`:
+
+| Grupo | Se muestra | Cuándo usarlo |
+|---|---|---|
+| **negocio** *(default)* | sí | Todo dato del suscriptor. Una tabla nueva cae aquí sola. |
+| **catalogo_compartido** | sí, con aviso | Sus filas son comunes a todas las empresas del tenant. |
+| **plataforma** | **no** | Infraestructura de Laravel y el cobro de Zyntello al cliente. |
+
+⚠️ El default es `negocio` **a propósito**: una tabla nueva se ve desde el primer día. Meterla en
+`plataforma` la esconde del suscriptor, así que solo va ahí lo que de verdad no le sirve.
+
+### La guarda: `DiccionarioCompletoTest`
+
+No es ceremonia. `[CRON-FIX-1]` dejó registrado que la regla del cron **llevaba meses escrita en
+este archivo y se seguía incumpliendo**: solo la prueba lo frenó. Vigila tres cosas:
+
+1. **Una tabla NUEVA sin diccionario falla** — comparando contra la línea base congelada.
+2. **La deuda de las viejas no puede SUBIR** — nadie agrega columnas sin describir.
+3. **Toda tabla está clasificada** — es lo que impide que otra nazca invisible.
+
+⚠️⚠️ **El trinquete es deliberado.** Exigir el 100 % haría nacer la prueba **roja con ~5.400
+campos pendientes** y se quedaría roja varias sesiones — y una suite roja permanente **se ignora**,
+igual que una alerta que salta todos los días. La línea base **solo puede bajar**: cada sesión que
+documente un módulo la baja y la prueba fija ese avance.
+
+```bash
+# Tras documentar un módulo, baja la línea base (se mide contra la BD de PRUEBAS)
+APP_ENV=testing DB_DATABASE=zyntello_app_testing php artisan diccionario:linea-base
+```
+
+⚠️ **El comando NO sube la deuda sin `--subir`**: si lo hiciera, cualquiera podría «arreglar» una
+prueba roja corriéndolo, y la guarda dejaría de guardar nada.
+
+⚠️ **Y se mide contra la base de PRUEBAS, no la de desarrollo.** Medido: difieren en
+`cont_asientos_mayor.modulo_origen_id` (9.445 columnas contra 9.446), y esa sola columna hacía
+fallar el trinquete sin que hubiera deuda nueva. Es la trampa de `[HUERF-1]`: un comando que
+bootstrapea la app **no** apunta a la base de pruebas.
+
+### Lo que NUNCA se debe hacer
+
+- ❌ Crear una tabla y dejar su diccionario «para después».
+- ❌ Resolver un nombre ambiguo con una descripción genérica.
+- ❌ Documentar unos valores de ENUM y no todos.
+- ❌ Correr `diccionario:linea-base --subir` para tapar una prueba roja.
+- ❌ Meter en `plataforma` una tabla que el suscriptor necesita ver.
 
 ---
 
