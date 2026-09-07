@@ -403,6 +403,94 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 ### Bitácora reciente (estado actual — 2026-09-07)
 
+> **EL COBRO DUPLICADO, Y EL OBSERVER QUE LLEVABA CUATRO MESES MUERTO (2026-09-07) — `[#514]`,
+> `[#515]`**: cierra el hallazgo comercial que `[#513]` declaró y no corrigió. **Verificado
+> ejecutándolo y VIOLÁNDOLO** (el repo del admin no tiene runner: `vendor/` va sin dev) ·
+> **8 suscripciones canceladas, 0 duplicados restantes, los 3 clientes conservan el acceso**.
+> **APLICADO Y VERIFICADO EN PRODUCCIÓN.** Sin migración.
+>
+> ⚠️ **El duplicado era MAYOR de lo que dije al declararlo: TRES módulos, no dos.** `inventario`
+> también, porque ya tenía `bundle = 1` desde antes de `[#513]`. Y los importes pactados no son
+> los del catálogo — contabilidad se pactó a 30.00, no a 32.00. *Lo que reporté de memoria estaba
+> corto; lo corrigió medir.*
+>
+> **Medido antes de tocar nada**: **Agua Yamel** (el único real, anual) pagaba `erp` 1 500 **más**
+> contabilidad 300 y facturacion 300 → **600/año duplicados**, con los períodos pagados hasta
+> **2027-08-25** y **351 días sin usar**. Comercial Aranza y TAPIA (prueba) sumaban 80/mes cada una,
+> con **todo vencido hace ~70 días y sin renovar**, así que no había cobro corriendo.
+>
+> ⚠️⚠️ **Y hay que decirlo con precisión: cuando Agua Yamel pagó —el 25/08, hace 13 días— el ERP NO
+> incluía esos módulos.** El cobro no fue indebido entonces: **el duplicado lo creó `[#513]` hoy**
+> al meterlos en el bundle. Es a futuro, no retroactivo.
+>
+> ⚠️⚠️ **`[#514]` ERA EL BLOQUEADOR, y lo encontró leer el código antes de cancelar nada.**
+> `SuscripcionObserver` escribe directo en `company_modules` de la app y **no sabía nada del
+> bundle** (`grep bundle` daba 0), así que cancelar la suscripción SUELTA de un módulo del bundle
+> **apagaba el acceso que el ERP sí paga**. La app lo repone, pero **no en el acto**:
+> `sincronizarAccesos()` está cacheado **5 minutos** y **no reintenta cuando el acceso falla**.
+> ⚠️ Y el fallo es silencioso: el módulo desaparece del menú y se lee como «todavía no está hecho»,
+> no como un error de facturación. Es la forma de `[BUNDLE-FIX-1]`.
+>
+> **Las dos condiciones de la guarda hacen falta**: que el módulo vaya **dentro** del bundle **y**
+> que **este** cliente lo tenga activo — sin la segunda se regalaría acceso. Excluye la suscripción
+> que se está modificando (al cancelar el propio `erp`, preguntar «¿tiene erp activo?» sobre la fila
+> que acaba de cancelarse debe responder NO). **Solo frena apagar, nunca encender.** Y ante un error
+> de consulta responde `false`, o sea deja apagar: un fallo no puede volverse un acceso que nadie
+> contrató. **Verificada en las dos direcciones y VIOLÁNDOLA**: sin ella, el primer caso falla y el
+> módulo se apaga.
+>
+> ⚠️⚠️ **Y aplicarla destapó que ESE OBSERVER NUNCA HA FUNCIONADO EN PRODUCCIÓN.** El `.env` del
+> admin **no declara las credenciales de la base de la app** —solo `ZYNTELLO_APP_URL`—, así que la
+> conexión cae a `root@localhost` y falla con **1045**; hay 4 de esos errores en el log desde
+> **2026-05-12**. Consecuencia: el mensaje del panel **«acceso revocado en la plataforma» es
+> FALSO** — nunca revocó nada. Lo que sostiene el acceso es `sincronizarAccesos()` **desde la app**.
+> ⚠️ **NO se arregló la conexión**: activarla pondría a correr un camino muerto desde hace cuatro
+> meses, y eso sin medir su impacto es lo que `[CRON-FIX-1]` estableció que no se hace. La guarda es
+> justo el prerrequisito para poder encenderlo algún día sin romper accesos.
+>
+> **Se cancela también en STRIPE, y no es un extra**: el admin decía `activa` en 8 suscripciones y
+> Stripe decía `canceled` en **5** — los dos lados llevaban tiempo desincronizados y el panel mentía
+> sobre cinco. Se cancelan **por el MODELO**, no con un UPDATE, para que el Observer y la auditoría
+> se enteren.
+>
+> ⚠️⚠️ **El reembolso NO se registró como pago, a propósito.** `pagos.estado` no modela «reembolso
+> debido» y `pagos.metodo` solo admite medios de cobro, así que inventar la fila habría creado **un
+> registro que afirma un movimiento que no ha ocurrido** — exactamente el defecto de los 40 pagos
+> marcados `stripe` que Stripe nunca vio. El importe queda en `suscripciones.notas` y en la
+> auditoría. ⚠️ Y **Stripe está en TEST, así que el reembolso no se puede ejecutar por Stripe**: es
+> una operación fuera de banda.
+>
+> **Verificado leyendo los DOS lados**: duplicados restantes **0** · Agua Yamel **2 100 → 1 500**,
+> Comercial Aranza 784 → 704, TAPIA 759 → 679 · **8 canceladas, 0 sin la nota del motivo, 8 entradas
+> de auditoría** · y los **tres clientes conservan `facturacion`, `contabilidad` e `inventario`
+> ACTIVOS**, comprobado desde la app forzando `sincronizarAccesos()`. Respaldo con los 8 `UPDATE` de
+> reversión capturado **antes** de escribir. Los 3 dominios en pie y **0 errores nuevos**.
+>
+> ⚠️ **Un rastro que NO sirve de prueba, y por qué**: la guarda registra con `Log::info`, pero
+> `LOG_LEVEL=error` y hay **0 líneas INFO en todo el log**, así que su ausencia no dice nada. Lo que
+> sí lo prueba: **8 cancelaciones y 0 errores del Observer**: antes, cada una habría intentado la
+> escritura entre bases y habría fallado con 1045 — como falló mi propia simulación.
+>
+> ⚠️ **REEMBOLSO PENDIENTE DE EJECUTAR: Agua Yamel, 288.49 × 2 = 576.98 USD** (351 de 365 días).
+> ⚠️ **Y declarado, no corregido**: los reportes filtran `pagos.estado = 'pagado'`, así que los 600
+> originales siguen contando como ingreso — el MRR queda sobrevalorado en lo reembolsado hasta que se
+> decida cómo netea un reembolso en la métrica.
+>
+> ⚠️ **Dos defectos propios**: un `assert` de un script de edición **abortó antes de escribir** y el
+> `pscp` subió el archivo viejo (la trampa ya documentada — se corrigió con la herramienta de
+> edición); y el mensaje «Stripe: cancelada (estaba 'canceled')» es engañoso porque `$sub->cancel()`
+> **muta el objeto** y la interpolación imprime el estado POSTERIOR.
+>
+> **Reglas nuevas: un observer que sincroniza accesos tiene que conocer el bundle, o cancelar una
+> suscripción redundante apaga lo que otro contrato paga · una guarda de acceso necesita las DOS
+> condiciones (que el bundle lo conceda Y que este cliente lo tenga), y solo frena APAGAR · un
+> mensaje de éxito que afirma un efecto que su conexión no puede producir miente durante meses sin
+> que nada falle · no se registra un movimiento de dinero que no ha ocurrido: si el esquema no lo
+> modela, va en la nota y en la auditoría · el importe pactado no es el del catálogo, así que un
+> duplicado se mide contra `suscripciones.monto` · un período ya vencido no deja nada por devolver ·
+> un rastro que el nivel de log filtra no sirve como prueba: hay que buscar la evidencia que SÍ se
+> registra · `$sub->cancel()` muta el objeto y el mensaje imprime el estado posterior.**
+
 > **LA VENTA DUAL, Y STRIPE EN MODO TEST DENTRO DE PRODUCCIÓN (2026-09-07) — `[#1024]`,
 > `[#1025]`, `[#513]`**: continúa el trabajo que `[#512]` dejó a medias **a propósito**. Ese
 > commit separó en el admin las dos preguntas que `modulos.bundle` contestaba a la vez
