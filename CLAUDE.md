@@ -403,6 +403,118 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 
 ### Bitácora reciente (estado actual — 2026-09-07)
 
+> **LA VENTA DUAL, Y STRIPE EN MODO TEST DENTRO DE PRODUCCIÓN (2026-09-07) — `[#1024]`,
+> `[#1025]`, `[#513]`**: continúa el trabajo que `[#512]` dejó a medias **a propósito**. Ese
+> commit separó en el admin las dos preguntas que `modulos.bundle` contestaba a la vez
+> —«contratar el ERP concede este módulo» y «no se vende por separado»— pero **no marcó los
+> flags de venta dual**, porque ninguno de los dos consumidores leía la columna nueva: marcarlos
+> habría hecho **DESAPARECER** esos módulos de las dos vitrinas, el defecto contrario al que se
+> corregía. **7 pruebas nuevas · 4 guardas verificadas VIOLÁNDOLAS: las 4 se detectan** ·
+> módulos + Stripe **45 passed** · vistas/JS/rutas/ayuda **14 passed (3 621 aserciones)**.
+> **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN.** **Sin migración** (la columna ya existía).
+>
+> ⚠️ **El orden no era preferencia, era la condición**: el código sube primero, el dato después.
+> Los dos consumidores escondían todo lo que tuviera `bundle = 1` — la app en
+> `settings/billing.blade.php` y el sitio en `Soluciones.jsx`.
+>
+> ⚠️⚠️ **`slugsBundleErp()` NO se toca, y eso es la mitad del diseño**: sigue gobernando el
+> **ACCESO** (contratar el ERP concede el módulo). Lo que cambia es quién decide qué se
+> **OFRECE**, y eso pasa a ser `vendible_suelto`. Son dos preguntas y ahora tienen dos fuentes.
+>
+> ⚠️⚠️ **El respaldo NO puede ser `false`, y es lo que sostiene el flag.** En `slugsBundleErp()`
+> una lista vacía es el estado seguro —no concede accesos que nadie contrató—; aquí, al pie de la
+> letra, **dejaría la vitrina SIN UN SOLO módulo** y nadie podría comprar nada, con el admin caído
+> y sin que nada lo avisara. Sin dato se cae a `!bundle`, que es lo que se sabía antes de `[#512]`
+> — la misma regla de su backfill (`IF(bundle=1,0,1)`) y del respaldo de su API. Tres sitios, una
+> sola regla.
+>
+> ⚠️⚠️ **Y LA AUSENCIA SE MIRA POR SLUG, NO SOBRE LA LISTA ENTERA. Lo encontró MEDIR contra los
+> datos reales de producción, no leer el código.** Mi primera versión preguntaba «¿está entre los
+> vendibles del admin?», y **`caja` (POS) no está en la tabla `modulos` del admin** —su propia
+> ficha en `PricingService::MODULES` ya lo decía, «hoy no figura en su catálogo»— así que la
+> respuesta era «no» y **se caía de la vitrina**: los módulos ofrecidos pasaban de **19 a 18, en
+> silencio**. Un módulo que el admin no lista conserva lo declarado en la app, que es su
+> comportamiento vigente. Con su guarda, verificada violándola.
+>
+> ⚠️ **En el sitio, `ERP_BUNDLE_SLUGS` baja de nueve slugs a UNO, y no es limpieza**: era el
+> respaldo de «qué esconder porque va en el bundle» **e incluía `inventario`**, así que dejarlo
+> habría seguido escondiendo lo que el admin sí ofrece. Queda solo `erp`, y por **presentación y
+> no por venta**: tiene su propio banner y saldría dos veces en la misma pantalla.
+>
+> **Verificado contra los datos REALES de producción, leídos del API público del admin y no
+> supuestos**: sitio **25 tarjetas antes y 25 después**, app **19 ofrecidos antes y 19 después**,
+> cero de más y cero de menos → **nadie vio un cambio el día del deploy**. Y la prueba de que el
+> orden valió la pena: con `inventario` en venta dual **aparece** con la regla nueva y **NO
+> aparecía** con la vieja. La pantalla real **RENDERIZA** (961,7 KB, 20 tarjetas) con `caja`
+> conservada y `cxp` —solo bundle— correctamente fuera.
+>
+> **`[#513]` — la venta dual aplicada, decisión del director técnico: Facturación y Contabilidad
+> sí, Inventario NO.** ⚠️ **Impacto medido ANTES de escribir un solo dato: CERO acceso nuevo** —
+> los tres tenants (Agua Yamel incluida, el único cliente real) **ya las tenían contratadas**.
+> Verificado leyendo la base tras el cambio: las dos con `bundle=1` **Y** `vendible_suelto=1`, el
+> bundle pasa de 8 a **10 módulos**, y las dos **siguen apareciendo** en las dos vitrinas.
+>
+> ⚠️ **HALLAZGO COMERCIAL DECLARADO, no corregido**: los tres clientes pagan `erp` (150/mes) **y
+> además** `facturacion` (30) y `contabilidad` (32) **por separado**. Con esos módulos dentro del
+> ERP, esas suscripciones sueltas son **cobro duplicado**. No se toca ninguna suscripción: es
+> decisión del director técnico.
+>
+> ⚠️⚠️ **STRIPE: LA CLAVE DE PRODUCCIÓN ESTÁ EN MODO TEST, y lo encontró el verificador en su
+> PRIMERA corrida real.** Confirmado por dos caminos —el propio informe y el prefijo del `.env`
+> del servidor—: **`app.zyntello.com` Y `admin.zyntello.com` corren `sk_test_`**. Hoy **nadie
+> puede pagar de verdad**: todo checkout va al entorno de pruebas.
+> ⚠️ **Medido, y por eso no hay cobro real perdido**: los **40 pagos** registrados están marcados
+> `metodo = stripe` y **NINGUNO tiene `stripe_payment_id`** — los 40 se registraron a mano con
+> referencia. Pero el campo `metodo` no dice la verdad: quien audite «cuánto cobró Stripe» verá 40
+> pagos que Stripe nunca vio.
+> ⚠️⚠️ **Y lo que el propio verificador advierte en su docblock**: al pasar a live **todos los
+> Price ID guardados dejan de resolver** —un Price de test no existe en live— y cada checkout
+> respondería «este módulo no tiene precio configurado». Hoy hay 24 planes en OK; **el día del
+> cambio serían 0**.
+>
+> ⚠️⚠️ **El defecto de cobro que destapó, y era 12 VECES peor de lo que decía el informe**: el
+> Price anual de **Reportes** no apuntaba al Price mensual —eran ids distintos— sino que estaba
+> creado con el **importe anual y el intervalo MENSUAL**: cobraba **1.500 USD cada MES**. Un
+> cliente anual habría pagado **18.000 en vez de 1.500**. Lo dijo LEER el Price, no el resumen.
+>
+> **Los 3 planes no cobrables, cerrados en TEST** (decisión del director técnico: cerrarlos antes
+> de tocar live, para que el pase a live sea sustituir ids y no descubrir defectos): Price nuevo
+> de Contabilidad mensual (32.00/mes) y anual (312.00/año) —no tenía ninguno— y el de Reportes
+> anual **correcto** (1.500,00/año), con el defectuoso **ARCHIVADO** para que nadie lo vuelva a
+> elegir. ⚠️ **Los importes salen del CATÁLOGO**, que es el precio publicado: crear un Price con
+> otro importe es justo el defecto que el verificador denuncia. ⚠️ Todos cuelgan del Product único
+> `Zyntello SaaS`, que es la convención que ya existía. ⚠️ El script **aborta si la clave no es de
+> test** y es **idempotente** (busca por metadata antes de crear).
+> **Verificado re-corriendo el verificador: `Errores: 0 · avisos: 0`, exit 0** — «todo lo que se
+> ofrece tiene precio real, en el importe y la periodicidad publicados».
+>
+> ⚠️ **Un defecto propio de la prueba**: el regex de la vista usaba `[^)]*` y la condición real
+> lleva paréntesis anidados —`! ($module['vendible_suelto'] ?? true)`—, así que la clase negada se
+> detenía en el primer `)` y **no encontraba nunca la condición correcta**.
+> ⚠️ **Y una trampa del entorno**: el `artisan tinker --execute` sobre plink **revienta al escapar
+> `$` y `\`** (`unexpected T_NS_SEPARATOR`). Se resuelve **subiendo un script en ASCII con
+> `pscp`**, ejecutándolo y **retirándolo** — los cinco se retiraron y se comprobó con `ls`.
+>
+> ⚠️ **PENDIENTES declarados**: el **pase a LIVE** sigue sin hacer y es la pieza grande (crear el
+> catálogo en Stripe live, migrar los 26 Price ID, cambiar claves **y** `STRIPE_WEBHOOK_SECRET`, y
+> volver a verificar) · el **cobro duplicado** de los tres clientes · **`inventario` se queda con
+> `vendible_suelto = 0`** y su precio 22.00 publicado pasa a ser dato muerto, porque solo se
+> obtiene dentro del ERP · y un **`Unknown column` ajeno** en el log (50 ocurrencias entre el 31/08
+> y el 06/09, **0 hoy**): no se puede afirmar si sigue vivo, hay que medirlo antes de perseguirlo.
+>
+> **Reglas nuevas: dos preguntas que no se implican no comparten columna, y mientras la comparten
+> el caso que las distingue es INEXPRESABLE · el código que lee un dato sube ANTES que el dato, o
+> marcarlo esconde justo lo que se quería mostrar · un respaldo `[]` significa «no hay dato» en un
+> sitio y «no hay nada» en otro: el mismo valor no puede ser el estado seguro de las dos preguntas
+> · la ausencia de un dato se mira POR CLAVE, no sobre la lista entera — el catálogo local declara
+> módulos que el admin no conoce · una lista de respaldo que ya no respalda se RETIRA, porque
+> sigue escondiendo lo que la fuente nueva sí ofrece · un regex con una clase negada de `)` no
+> cruza un paréntesis anidado (segunda vez con clases negadas) · una clave de pruebas en
+> producción no falla: cobra en un entorno que no existe, y el síntoma es un pago registrado que
+> el proveedor nunca vio · un Price con el importe correcto y la periodicidad equivocada cobra 12
+> veces de más, y eso solo se ve LEYENDO el Price · `artisan tinker --execute` por plink revienta
+> al escapar: se sube un script en ASCII, se ejecuta y se retira.**
+
 > **LA MESA DE AYUDA: F2 COMPLETA, Y LO QUE DESTAPÓ MEDIR ANTES DE PLANIFICAR (2026-09-06/07) —
 > `[SOP-F2-0]`…`[SOP-F2-9b]`, `[#507]`, `[#1020]`, `[#1021]`**: ejecuta entera la **FASE 2** del
 > blueprint de soporte, la que el propio spec marcaba como *«la más grande»*. Un usuario del tenant
@@ -5139,7 +5251,21 @@ plink -i $KEY -P $PORT -batch $SSHHOST "rm -rf /home4/ukrmeumy/public_html/zynte
 > **LISTA CONSOLIDADA de TODOs de verificación humana**). ⚠️ Migración `2026_07_24_170001` obligatoria
 > en producción; configurar los 6 conceptos contables nuevos de BANC por empresa.
 
-> Ultimo commit en **zyntello-app**: `[SOP-F2-9b]` `27b3abf37` (**la mesa de ayuda F2 completa**:
+> Ultimo commit en **zyntello-app**: `[#1024]` `c34201fb5` (**la vitrina de la app decide por
+> `vendible_suelto`, no por `bundle`** — cierra lo que `[#512]` dejo a medias a proposito.
+> **DESPLEGADO Y VERIFICADO EN PRODUCCION**, junto al sitio (`[#1025]` `d1a172ad`) y a la venta
+> dual aplicada en el admin (`[#513]`: Facturacion y Contabilidad, Inventario NO).
+> ⚠️⚠️ `slugsBundleErp()` NO se toca: sigue gobernando el ACCESO. Lo que cambia es quien decide
+> que se OFRECE. ⚠️⚠️ El respaldo NO puede ser `false` —dejaria la vitrina SIN UN SOLO modulo—:
+> sin dato se cae a `!bundle`. ⚠️⚠️ Y la ausencia se mira POR SLUG: `caja` no esta en el catalogo
+> del admin y **se caia de la vitrina**, 19 ofrecidos pasaban a 18 en silencio; lo encontro MEDIR
+> produccion. Verificado: 25 tarjetas antes y despues en el sitio, 19 y 19 en la app -> nadie vio
+> un cambio. ⚠️⚠️ **STRIPE ESTA EN MODO TEST EN PRODUCCION** (app Y admin), asi que hoy nadie
+> puede pagar de verdad — los 40 pagos marcados `stripe` no tienen ni un `stripe_payment_id`. Los
+> 3 planes no cobrables quedan CERRADOS en test (`Errores: 0`), incluido el Price anual de
+> Reportes que cobraba **1.500 cada MES**. **El pase a LIVE sigue PENDIENTE**: al cambiar la
+> clave, los 26 Price ID de test dejan de resolver de golpe)
+> Anterior: `[SOP-F2-9b]` `27b3abf37` (**la mesa de ayuda F2 completa**:
 > tickets con hilo y notas internas, adjuntos en disco privado, bandeja del agente con el reloj
 > del SLA que se detiene esperando al cliente, y **nada facturable sin la autorizacion de quien
 > puede darla**. ⚠️⚠️ **NI EN GITHUB NI EN PRODUCCION**, igual que F1. ⚠️ R-3 medido y CERRADO:
