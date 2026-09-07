@@ -140,6 +140,17 @@ function combinarModulo(apiData) {
     etiquetaBadge:  ESTADO_BADGE[estado] || null,
     disponible,
     bundle:         !!apiData.bundle,
+    // ¿Se ofrece por separado? Es OTRA pregunta que «va dentro del ERP»: un módulo puede
+    // hacer las dos cosas, y hasta que el admin las separó en `[#512]` el caso era
+    // inexpresable. Inventario lo sufría: precio publicado y nadie podía comprarlo.
+    //
+    // ⚠️ El respaldo es `!bundle`, no `true`: reproduce lo que se sabía antes de la
+    // separación —la misma regla del backfill del admin y del respaldo de su API— en vez de
+    // inventar un valor. Con `true`, una base sin la columna ofrecería los módulos del
+    // bundle por separado; con `false`, el grid se quedaría vacío.
+    vendibleSuelto: apiData.vendible_suelto !== undefined
+      ? !!apiData.vendible_suelto
+      : !apiData.bundle,
     // Slug del módulo padre que hace falta contratar (null = se vende suelto). Lo declara
     // el admin en `modulos.requiere`; el sitio solo lo muestra. Sin esto, la tarjeta
     // vendería una mejora sin decir sobre qué mejora.
@@ -160,17 +171,18 @@ function combinarModulo(apiData) {
   }
 }
 
-// Slugs que forman parte del ERP y nunca se muestran como módulos standalone.
-// El API los marca con bundle:true; esta lista es el respaldo si el campo no llega.
+// Slugs que nunca van como tarjeta del grid, por un motivo de PRESENTACIÓN y no de venta.
 //
-// ⚠️ Los slugs son los del admin, tal cual. La versión anterior escribía `caja_chica` y
-// `activos_fijos` con guion bajo cuando el admin dice `cajachica` y `activos`, así que no
-// coincidían con nada, y además le faltaban `bancos` e `inventario`: un respaldo que no
-// respaldaba. Solo se notaría el día que el API dejara de enviar `bundle` — y ese día el
-// sitio ofrecería por separado cuatro módulos que ya vienen incluidos en el bundle.
+// ⚠️ Antes esta lista era el respaldo de «qué esconder porque va en el bundle», y llevaba
+// los ocho módulos del ERP. Ese trabajo pasó a `vendibleSuelto`, que lo declara el admin
+// (`modulos.vendible_suelto`). Mantenerlos aquí volvería a esconder lo que el admin sí
+// ofrece: `inventario` estaba en esta lista, así que aunque el API lo declare vendible el
+// grid lo seguiría saltando — y ese es exactamente el defecto que se está corrigiendo.
+//
+// Queda solo `erp` porque tiene su propio banner arriba: no es que no se venda, es que ya
+// está presentado en otro sitio y saldría dos veces en la misma pantalla.
 const ERP_BUNDLE_SLUGS = new Set([
-  'erp',           // el bundle contenedor: tiene su propio banner, no va como tarjeta
-  'activos', 'bancos', 'cajachica', 'compras', 'cxc', 'cxp', 'inventario', 'presupuesto',
+  'erp',
 ]);
 
 /* ─── Stars ─────────────────────────────────────────────────────── */
@@ -588,9 +600,10 @@ export default function Soluciones() {
             </div>
           </div>
 
-          {/* Grid de apps — se excluyen módulos del bundle ERP y el slug 'erp' */}
+          {/* Grid de apps — se ofrece lo que el admin declara vendible por separado, NO lo
+              que está fuera del bundle: un módulo puede ir dentro del ERP y venderse solo. */}
           <div className="sol-grid">
-            {apps.filter(app => !app.bundle && !ERP_BUNDLE_SLUGS.has(app.id)).map(app => (
+            {apps.filter(app => app.vendibleSuelto && !ERP_BUNDLE_SLUGS.has(app.id)).map(app => (
               <div key={app.id} className="sol-card"
                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = `0 20px 52px ${app.color}30`; e.currentTarget.style.borderColor = `${app.color}44` }}
                 onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)' }}
