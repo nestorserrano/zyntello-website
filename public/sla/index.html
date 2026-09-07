@@ -131,9 +131,9 @@
         Complementa los <a href="/terminos/">Términos y Condiciones</a> y no los sustituye.
       </p>
       <div class="meta">
-        <span>Última actualización: <strong>5 de septiembre de 2026</strong></span>
+        <span>Última actualización: <strong>6 de septiembre de 2026</strong></span>
         <span>Vigencia: <strong>desde su publicación</strong></span>
-        <span>Versión: <strong><a class="verlink" href="#s12">1.0 — ver control de cambios</a></strong></span>
+        <span>Versión: <strong><a class="verlink" href="#s13">1.1 — ver control de cambios</a></strong></span>
       </div>
     </div>
   </div>
@@ -153,11 +153,12 @@
           <li><a href="#s5">Clasificación de prioridades</a></li>
           <li><a href="#s6">Tiempos de primera respuesta</a></li>
           <li><a href="#s7">Qué incluye el soporte</a></li>
-          <li><a href="#s8">Qué no incluye y qué se factura</a></li>
-          <li><a href="#s9">Licencias de uso incluidas</a></li>
-          <li><a href="#s10">Disponibilidad del servicio</a></li>
-          <li><a href="#s11">Exclusiones y límites</a></li>
-          <li><a href="#s12">Control de cambios</a></li>
+          <li><a href="#s8">Acceso de soporte a la cuenta</a></li>
+      <li><a href="#s9">Qué no incluye y qué se factura</a></li>
+          <li><a href="#s10">Licencias de uso incluidas</a></li>
+          <li><a href="#s11">Disponibilidad del servicio</a></li>
+          <li><a href="#s12">Exclusiones y límites</a></li>
+          <li><a href="#s13">Control de cambios</a></li>
         </ol>
       </aside>
 
@@ -328,7 +329,62 @@
 </section>
 
 <section id="s8">
-  <h2 class="sec"><span class="n">8.</span> Qué no incluye y qué se factura</h2>
+  <h2 class="sec"><span class="n">8.</span> Acceso de soporte a la cuenta</h2>
+  <p>Hay incidencias que no se pueden diagnosticar desde fuera: un asiento que no cuadra, un
+  documento que no emite, un permiso que no surte efecto. Para resolverlas, un agente de soporte
+  puede necesitar <strong>entrar al espacio de trabajo del Suscriptor y ver sus datos</strong>.
+  Esta sección declara con qué límites ocurre y —sobre todo— cómo el Suscriptor lo comprueba por
+  su cuenta.</p>
+
+  <h3>8.1. Cómo entra el agente</h3>
+  <ul>
+    <li><strong>Nunca con las credenciales de una persona del Suscriptor.</strong> No pedimos ni
+    usamos el usuario ni la contraseña de nadie de su equipo. El agente entra con una
+    <strong>cuenta técnica de Zyntello</strong>, distinta de las suyas.</li>
+    <li><strong>Toda acción queda firmada con el nombre del agente real</strong>, no con el de la
+    cuenta técnica ni con el de un usuario del Suscriptor. En la bitácora se ve quién hizo qué.</li>
+    <li>La cuenta técnica <strong>no consume ninguna de las licencias incluidas</strong> en su plan
+    (ver sección 9) y no aparece en su lista de usuarios ni en los desplegables del sistema.</li>
+    <li>El agente debe haber verificado su identidad en dos pasos para poder abrir el acceso.</li>
+  </ul>
+
+  <h3>8.2. Solo lectura por defecto</h3>
+  <p>El acceso <strong>nace en solo lectura</strong>: el agente ve, pero el sistema le impide
+  guardar cualquier cambio. Para modificar algo tiene que <strong>elevar la sesión declarando un
+  motivo</strong>, y esa elevación <strong>caduca sola</strong> — no queda abierta indefinidamente
+  aunque el agente olvide cerrarla.</p>
+
+  <h3>8.3. Qué queda registrado</h3>
+  <p>De cada acceso se guardan el agente, la fecha y hora de entrada y de salida, el motivo
+  declarado, la dirección IP y si el acceso estaba autorizado o fue de emergencia. Si la sesión se
+  elevó a escritura, se registra además <strong>el detalle de cada dato modificado</strong>.</p>
+
+  <h3>8.4. Acceso de emergencia</h3>
+  <p>Cuando la incidencia impide esperar una autorización previa —un bloqueo que deja al Suscriptor
+  sin poder operar, por ejemplo— el agente puede entrar declarando el motivo. Ese acceso queda
+  <strong>marcado como no autorizado</strong> y el propietario de la cuenta <strong>recibe un
+  aviso</strong>. No es un permiso silencioso: es un acceso que se declara y se nota.</p>
+
+  <h3>8.5. Cómo lo audita usted</h3>
+  <div class="note ok">
+    <b>No hace falta pedírnoslo.</b> El propietario de la cuenta consulta el historial completo de
+    accesos de soporte en cualquier momento, desde <strong>Configuración → Accesos de
+    soporte</strong>: quién entró, cuándo, por qué, con qué nivel y si el acceso estaba autorizado.
+  </div>
+
+  <h3>8.6. Qué no hacemos</h3>
+  <ul>
+    <li>No accedemos a sus datos con fines comerciales, estadísticos ni de entrenamiento de
+    modelos de inteligencia artificial.</li>
+    <li>No extraemos copias de su información fuera de lo necesario para resolver la incidencia.</li>
+    <li>No usamos el acceso de soporte para operaciones de negocio por cuenta del Suscriptor: si
+    hace falta capturar o corregir datos de forma masiva, es un trabajo facturable y se cotiza
+    aparte (ver sección 10).</li>
+  </ul>
+</section>
+
+<section id="s9">
+  <h2 class="sec"><span class="n">9.</span> Qué no incluye y qué se factura</h2>
   <p>
     Los siguientes trabajos <strong>se cotizan y se facturan aparte</strong>, y
     <strong>ninguno se ejecuta sin la aprobación previa y por escrito</strong> del Suscriptor:
@@ -349,8 +405,8 @@
   </div>
 </section>
 
-<section id="s9">
-  <h2 class="sec"><span class="n">9.</span> Licencias de uso incluidas</h2>
+<section id="s10">
+  <h2 class="sec"><span class="n">10.</span> Licencias de uso incluidas</h2>
   <p>
     Cada suscripción incluye dos clases de acceso, descritas en detalle en la
     <a href="/terminos/#s5">sección 5.3 de los Términos</a>:
@@ -381,8 +437,8 @@
   </p>
 </section>
 
-<section id="s10">
-  <h2 class="sec"><span class="n">10.</span> Disponibilidad del servicio</h2>
+<section id="s11">
+  <h2 class="sec"><span class="n">11.</span> Disponibilidad del servicio</h2>
   <p>
     Zyntello procura la mayor disponibilidad posible de la plataforma y aplica respaldos
     periódicos con verificación de integridad, conforme a la
@@ -404,8 +460,8 @@
   </p>
 </section>
 
-<section id="s11">
-  <h2 class="sec"><span class="n">11.</span> Exclusiones y límites</h2>
+<section id="s12">
+  <h2 class="sec"><span class="n">12.</span> Exclusiones y límites</h2>
   <p>Este SLA no cubre:</p>
   <ul>
     <li>Fallas de la conexión a internet, los equipos o la red del Suscriptor.</li>
@@ -424,8 +480,8 @@
   </div>
 </section>
 
-<section id="s12">
-  <h2 class="sec"><span class="n">12.</span> Control de cambios</h2>
+<section id="s13">
+  <h2 class="sec"><span class="n">13.</span> Control de cambios</h2>
   <p>
     Registro completo y acumulativo de todas las versiones de este documento desde su primera
     publicación. Las versiones anteriores están disponibles a solicitud escribiendo a
@@ -444,7 +500,12 @@
       </thead>
       <tbody>
         <tr>
-          <td>1.0 <span class="vig">Vigente</span></td>
+          <td>1.1 <span class="vig">Vigente</span></td>
+          <td>6 de septiembre de 2026</td>
+          <td><strong>Acceso de soporte a la cuenta.</strong> Se añade la sección <strong>8</strong>, que declara una operación que la versión anterior no cubría: para diagnosticar ciertas incidencias, un agente de soporte puede necesitar entrar al espacio de trabajo del Suscriptor y ver sus datos. Se declaran los límites —el agente <strong>nunca</strong> usa las credenciales de una persona del Suscriptor sino una cuenta técnica que no consume licencias ni aparece en sus listas; el acceso nace en <strong>solo lectura</strong> y elevarlo exige declarar un motivo y caduca solo; queda registrado el agente, la fecha, el motivo, la IP y el detalle de lo modificado; un acceso sin autorización previa se marca como tal y avisa al propietario— y, sobre todo, que el Suscriptor lo <strong>audita por su cuenta</strong> desde <strong>Configuración → Accesos de soporte</strong>, sin solicitarlo. Se declara además qué NO hacemos: ni fines comerciales, estadísticos o de entrenamiento de modelos, ni operaciones de negocio por cuenta del Suscriptor —eso es trabajo facturable de la sección 10—. Las secciones 8 a 12 anteriores pasan a numerarse 9 a 13; su contenido no cambia. <strong>No cambian</strong> los canales, el horario, la clasificación de prioridades, los tiempos de primera respuesta comprometidos, las licencias incluidas ni la meta de disponibilidad.</td>
+        </tr>
+        <tr>
+          <td>1.0</td>
           <td>5 de septiembre de 2026</td>
           <td><strong>Primera publicación.</strong> Documento inicial con 12 secciones: identificación y objeto, definiciones, canales de soporte, horario de atención, clasificación de prioridades en cuatro niveles, tiempos de primera respuesta comprometidos, alcance del soporte incluido, trabajos facturables con aprobación previa obligatoria, licencias de uso incluidas (3 usuarios del Suscriptor y 5 usuarios internos), disponibilidad del servicio —cuya meta del 99.5&nbsp;% la fijan los <a href="/terminos/#s18">Términos</a>, no este documento—, exclusiones y control de cambios.</td>
         </tr>
