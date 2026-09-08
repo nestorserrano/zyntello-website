@@ -1,0 +1,540 @@
+# Reglas aprendidas — ecosistema Zyntello
+
+> Destiladas de los bloques «Reglas nuevas» de la bitácora del ecosistema. Cada una salió de
+> un defecto real: no son buenas prácticas genéricas.
+>
+> Las específicas de la app SaaS están en
+> [`app/zyntello-app/docs/REGLAS-APRENDIDAS.md`](../app/zyntello-app/docs/REGLAS-APRENDIDAS.md)
+> (502 reglas). El relato completo, en [`bitacora/`](bitacora/ecosistema-historico.md).
+
+---
+
+- un vencimiento que solo AVISA no es un vencimiento — mientras nadie escriba el > estado, la suscripción da acceso para siempre.
+- la gracia es un ESTADO que ya existe, no una fecha > nueva.
+- un cron que no se puede cambiar se aprovecha: la lógica se queda en su dominio y el > scheduler que sí corre actúa de gatillo.
+- reactivar sin avanzar el período deja el mecanismo > mordiéndose la cola, y el síntoma es «pagué y me sacaron otra vez».
+- `addMonthNoOverflow()` no > desborda pero DERIVA el día de cobro, y hay que anclarlo al día de contratación.
+- arreglar UN punto > de entrada no cierra el defecto si hay un segundo botón vivo con la misma forma.
+- un aviso que el > layout no pinta es una función que no existe.
+- una revisión por tarea no ve lo que vive en las > costuras: la revisión de rama es otra cosa, no una repetición.
+- dos lados que discrepan sobre qué > estado da acceso producen lo contrario de lo diseñado el día que ambos funcionen.
+- un observer que sincroniza accesos tiene que conocer el bundle, o cancelar una > suscripción redundante apaga lo que otro contrato paga.
+- una guarda de acceso necesita las DOS > condiciones (que el bundle lo conceda Y que este cliente lo tenga), y solo frena APAGAR.
+- un > mensaje de éxito que afirma un efecto que su conexión no puede producir miente durante meses sin > que nada falle.
+- no se registra un movimiento de dinero que no ha ocurrido: si el esquema no lo > modela, va en la nota y en la auditoría.
+- el importe pactado no es el del catálogo, así que un > duplicado se mide contra `suscripciones.monto`.
+- un período ya vencido no deja nada por devolver.
+- > un rastro que el nivel de log filtra no sirve como prueba: hay que buscar la evidencia que SÍ se > registra.
+- `$sub->cancel()` muta el objeto y el mensaje imprime el estado posterior.
+- dos preguntas que no se implican no comparten columna, y mientras la comparten > el caso que las distingue es INEXPRESABLE.
+- el código que lee un dato sube ANTES que el dato, o > marcarlo esconde justo lo que se quería mostrar.
+- un respaldo `[]` significa «no hay dato» en un > sitio y «no hay nada» en otro: el mismo valor no puede ser el estado seguro de las dos preguntas >.
+- la ausencia de un dato se mira POR CLAVE, no sobre la lista entera — el catálogo local declara > módulos que el admin no conoce.
+- una lista de respaldo que ya no respalda se RETIRA, porque > sigue escondiendo lo que la fuente nueva sí ofrece.
+- un regex con una clase negada de `)` no > cruza un paréntesis anidado (segunda vez con clases negadas).
+- una clave de pruebas en > producción no falla: cobra en un entorno que no existe, y el síntoma es un pago registrado que > el proveedor nunca vio.
+- un Price con el importe correcto y la periodicidad equivocada cobra 12 > veces de más, y eso solo se ve LEYENDO el Price.
+- `artisan tinker --execute` por plink revienta > al escapar: se sube un script en ASCII, se ejecuta y se retira.
+- una violación que no reproduce el defecto REAL informa lo mismo que no haber > violado nada (tres veces en una fase).
+- un fixture de aislamiento que puede dar el resultado > correcto por dos caminos no verifica ninguno.
+- una prueba que muere en el `abort_unless` no llega > a la guarda que dice ejercer, y aceptar su código de error la deja verde para siempre.
+- el grupo > por DEFECTO de una clasificación decide lo que nace visible, y eso se comprueba preguntando en qué > grupo cae cada tabla, no corriendo la prueba.
+- un catálogo del proveedor no puede salir en el > diccionario de datos del cliente.
+- una remisión a otro archivo de prueba obliga a leer dos para > entender uno.
+- un carácter multibyte pegado a una variable interpolada rompe su nombre.
+- las > horas de quien presta el servicio no viven en la contabilidad de quien lo recibe.
+- la autoridad de un agente la trae ÉL, no la cuenta con la que navega — un > middleware que mira al usuario autenticado deja atrapado a quien entró con una cuenta técnica.
+- un > candado puede fallar por filtrar DE MÁS, y ninguna prueba de «se filtró» lo detecta.
+- un pendiente > se comprueba antes de arrastrarlo, porque otro trabajo puede haberlo cerrado.
+- un hecho verificado > que nadie vuelve a ejercer se degrada como una regla en prosa.
+- un campo obligatorio nuevo rompe a > los llamadores que ya existían, y eso se corrige en el PLAN, no solo en el archivo.
+- una guarda que > mira el archivo entero acusa a quien no tiene nada que ver.
+- una expresión leída hasta el primer > `;` no cruza un closure multilínea.
+- un marcador de violación que es PREFIJO de otro se pisa al > revertir.
+- el diff se revisa: el resumen de un script que edita 25 archivos no prueba que editara > bien.
+- `sinScopeEmpresa()` apaga las DOS condiciones, y reponer solo `company_id` deja > ver las otras empresas del mismo suscriptor.
+- el filtro repuesto vive en un scope con NOMBRE y > fuente única, y reproduce el `orWhereNull('empresa_id')` o los registros globales desaparecen.
+- > un id que llega del REQUEST se resuelve acotado por las dos dimensiones, o pegarlo en la URL abre > la ficha ajena.
+- el aislamiento se prueba con DOS tenants y DOS empresas: con uno no se ve el > cruce aunque exista.
+- una guarda que busca una SUBCADENA acusa a la columna del vecino, y la > excepción se DECLARA con su motivo en vez de silenciarla (tercera vez).
+- un rojo se confirma > corriendo la suite sola, y comparar dos alcances distintos no demuestra nada.
+- una regresión > corrida con el árbol en movimiento no atribuye nada.
+- `git push` sube TODA la rama, así que puede > publicar el trabajo de una sesión paralela — y entonces el deploy deja de ser una decisión > propia.
+- un cast `(int)` sobre un id que pasó a ser UUID no lanza nada — devuelve `0` o > el prefijo numérico, y el síntoma es un reporte vacío que se lee como un dato.
+- un barrido por > MODELO no ve a quien nombra la TABLA: hay tres formas y las tres revientan.
+- > `Schema::hasTable()` de una tabla que ya no existe no falla, el bloque NO SE EJECUTA, y eso es > peor que un error.
+- una limpieza que filtra por rol deja vivo lo que no lo tiene y choca con el > UNIQUE después.
+- dos llamadas idénticas a un sincronizador se pisan.
+- una clave `null` de array > es la cadena VACÍA, y `?? 'default'` no la rescata.
+- compilar una vista no es renderizarla, y > `getData()` tampoco.
+- una prueba que llama al SERVICIO no cubre un cast que vive en el > CONTROLADOR.
+- un reemplazo por texto alcanza a los nombres que CONTIENEN el patrón.
+- una guarda > que busca una cadena suelta acusa a los nombres de variable, y una guarda ruidosa se termina > ignorando.
+- un closure `function () {}` no captura el scope exterior como `fn ()`, y el fallo > solo se dispara en la rama que ninguna prueba monta.
+- cuando una > columna cambia de tipo se recorren TODOS sus consumidores: casts, firmas y los sitios que > resuelven el NOMBRE desde la tabla vieja.
+- una prueba que llama al SERVICIO no cubre un cast que > vive en el CONTROLADOR.
+- un fixture que guarda el id de otra tabla pasa igual cuando ambas > columnas son `char(36)`: la comparación cuadra consigo misma pero deja de ejercer el JOIN.
+- un > verificador que apunta a un archivo de prueba INEXISTENTE informa lo mismo que uno que no corrió >.
+- una conversión de tipo que ya se revirtió una vez se repite con sus consumidores en el MISMO > commit.
+- un permiso sin la dimensión que lo acota es un permiso GLOBAL, y el aislamiento > de datos no lo suple.
+- cuando el mismo dato vive en dos tablas, acotar una sola deja el defecto > vivo por la otra puerta.
+- la dimensión que acota un permiso va en la CLAVE del `updateOrCreate`, > no en los valores.
+- un UNIQUE que no incluye la dimensión nueva revienta la primera vez que > alguien la use de verdad.
+- un backfill de permisos nunca amplía el acceso: lo mantiene o lo acota >.
+- una copia del criterio que ya no decide nada se RETIRA, no se acota.
+- una prueba que sigue > pasando al quitar la guarda que dice cubrir está midiendo otra cosa.
+- `--filter` matchea el nombre > del MÉTODO, y `artisan test` sale 0 sin pruebas: un verificador puede cantar «no se detecta» sin > haber violado nada.
+- un documento legal no se publica antes que el código que lo sostiene.
+- dos > documentos legales que dan cifras distintas sobre lo mismo hacen que el lector dé uno por > desactualizado.
+- un documento que nadie enlaza desde el sitio nace invisible.
+- un código de un solo uso se guarda en tabla propia, no en un JSON — la fecha de > uso es el dato con el que se investiga.
+- la validación del campo del desafío no puede tener la > forma de UNO de los códigos que acepta.
+- un botón de «reenviar» sin guarda es un atajo para > saltarse el método elegido.
+- un bloqueo por intentos permanente es una denegación de servicio > contra el dueño.
+- un código expirado también cuenta como intento.
+- la política de un tenant se > verifica por el DEFAULT DE LA COLUMNA.
+- un middleware que redirige tiene que eximir su propio > destino o es un bucle.
+- leer una propiedad que no existe en un modelo devuelve NULL sin lanzar > nada y deja la función inerte.
+- un reporte de adopción dice lo que el login VA A PEDIR, no lo que > guarda la columna.
+- sin fila en `empresa_members` la petición no llega al controlador y el rojo > acusa al código equivocado.
+- verificar y consumir un código de un solo uso son UN acto — si se pueden llamar > por separado, algún llamador se olvidará.
+- un anti-reuso de leer-comprobar-escribir no protege de > dos peticiones simultáneas: la condición va DENTRO del UPDATE.
+- un contador de un solo uso solo > avanza, y retroceder reabre una ventana cerrada.
+- MySQL no cuenta como fila modificada un UPDATE > que escribe el mismo valor, y una prueba puede pasar por ESO.
+- el default de un umbral de > seguridad se custodia por su VALOR.
+- un aviso de cambio de seguridad es para el DUEÑO por si no > fue él.
+- un mensaje que distingue «ya usado» de «no válido» le confirma al atacante que su código > era bueno.
+- `Mail::fake()` no registra `Mail::send()` con vista.
+- una columna cuyo lector no > existe todavía no se crea: se declara.
+- un CR suelto rompe la continuación con backtick de > PowerShell, y plink con comando vacío sale 0: un deploy puede cantar COMPLETADO sin desplegar.
+- un huerfano no se busca por tenant sino por PADRE — los residuos de un borrado > viejo apuntan a un tenant que tampoco existe, y una limpieza por `company_id` no los alcanza nunca >.
+- lo que conserva su padre se conserva, sea de quien sea: el criterio no es la antiguedad ni el > dueño.
+- una entrada de log de una clase que ya no esta en el codigo puede ser un namespace > renombrado, no un borrado.
+- un caso que el ESQUEMA no permite no se prueba con datos falsos: se > custodia por el esquema y la prueba falla el dia que pase a ser posible.
+- un respaldo se valida > antes de borrar (tablas presentes y cierre del dump), no por el mensaje del comando.
+- un script de > verificacion que muere antes de escribir informa lo mismo que uno que no corrio, y un `php -r` que > bootstrapea la app NO apunta a la base de pruebas (tercera vez).
+- un candado contra clonar el segundo factor vive en el CONTROLADOR, no en la > plantilla.
+- un secreto que se regenera en cada visita invalida el QR ya escaneado y el fallo se lee > como «la app no funciona».
+- activar un segundo factor sin declarar su MÉTODO deja al desafío sin > saber qué preguntar.
+- desactivarlo sin borrar el enrolamiento deja al usuario creyendo que lo apagó >.
+- un método que se regenera vuelve al camino de rescate hasta que el nuevo se confirme.
+- un secreto > TOTP es una credencial: cifrado, columna TEXT y FUERA del `$fillable`.
+- el cifrado se verifica > leyendo la fila CRUDA.
+- una pantalla de seguridad no puede quedar detrás del middleware de > suscripción, y eso se comprueba con los middlewares REALES.
+- un backfill se mide LEYENDO la base en > el instante del deploy.
+- un heredoc largo con UTF-8 revienta en el shell.
+- `Auth::logoutOtherDevices()` no cierra nada por sí mismo — depende de un > middleware que este proyecto no registra, así que la función se vería hecha sin expulsar a nadie.
+- > borrar las filas de `sessions` no expulsa a quien tiene cookie de «Recordarme»: hay que reciclar > el `remember_token`, y como es uno solo, hay que reemitir la cookie del dispositivo propio.
+- una > acción de seguridad pide la contraseña aunque el usuario ya esté dentro, porque es lo único que el > intruso no tiene.
+- lo que no se reconoce se NOMBRA: un dispositivo mal descrito hace que el usuario > dé por buena la sesión del intruso.
+- una pantalla de seguridad no puede quedar detrás del > middleware de suscripción.
+- una vista no puede asumir `$errors`, y las pruebas HTTP no lo detectan > porque el middleware ya lo inyectó.
+- una prueba que cuenta filas por un valor repetible arrastra > las de corridas anteriores cuando la suite no usa `RefreshDatabase`.
+- `AuthenticationException` no es `HttpException`, así que una lista de > exclusiones por tipo HTTP no la alcanza — y capturarla anula `redirectGuestsTo` sin que nada lo > avise.
+- redirigir tras un error solo sirve UNA vez: el segundo salto es el bucle, y la marca que > lo impide va en FLASH para que se limpie sola.
+- un redirect a `url()->previous()` entre pantallas > protegidas es un ping-pong, porque el destino falla por la misma causa que el origen.
+- la > respuesta de una excepción sube por los middlewares EXTERIORES: un middleware de cabeceras en > `append` no la alcanza.
+- un intermediario puede AÑADIR un `Cache-Control` encima del de Laravel, > y entonces el bucle lo ejecuta el navegador sin tocar el servidor — se cierra con `no-store`, que > es imperativo, no con `no-cache`.
+- el default de una política de sesión vive en `config/`, no > solo en el `.env`, que no está en git.
+- con `expire_on_close` el `lifetime` deja de ser el > timeout de inactividad y pasa a ser el tope del servidor, y no puede ser infinito porque de él > depende la limpieza de la tabla `sessions`.
+- la tabla de tenants se borra APARTE de las que cuelgan de ella (su clave es `id`) >.
+- una limpieza que sale antes cuando «no hay nada» deja los huérfanos previos para siempre.
+- un > `catch` mudo en una limpieza esconde el motivo.
+- `DB::listen` se registra en la CONEXIÓN, que > sobrevive a la prueba.
+- un barrido que actúa cuando no hay nada que borrar rompe las pruebas que sí > limpian.
+- una limpieza que filtra por una columna vacía no borra nada.
+- sembrar no es auditable: el > log se apaga en la siembra y se RESTAURA siempre.
+- una comparación de una sola corrida contra un > conjunto intermitente no demuestra nada.
+- el umbral de una guarda de acumulación es generoso a > propósito.
+- una prueba que elige «lo que haya en la base» depende de qué suites corrieron > antes, y el síntoma es que falla en conjunto y pasa sola.
+- lo que una prueba crea, la prueba lo > borra.
+- un docblock que afirma una unicidad que la base no impone no es garantía: sin UNIQUE, la > consulta necesita orden TOTAL.
+- dos puntos que resuelven el mismo dato ordenan igual.
+- una trampa > que NO reproduce el defecto refuta la hipótesis, no la confirma.
+- un `max` que solo vive en el HTML no es una guarda.
+- lo que se anuló no salió del > almacén: no cuenta como despachado.
+- un pendiente negativo no significa nada.
+- una línea de otra > factura se puede colar por el formulario.
+- un mensaje de rechazo nombra las tres cifras.
+- en una > pantalla cuyas líneas vienen de otro documento el escaneo SELECCIONA, no agrega.
+- un servicio que > acota en silencio obliga a que el mensaje diga lo que DE VERDAD pasó.
+- una aserción sobre el > NOMBRE de un método no ve que se quite su LLAMADA (tercera vez).
+- cuando un dato tiene DOS espacios donde vivir, la pantalla dice para qué es cada > uno — si no, el usuario reusa el mismo valor y el sistema elige por él.
+- una unicidad que la base > no puede expresar se comprueba en el código y se DECLARA.
+- una validación de duplicados mira TODOS > los espacios donde el dato puede estar.
+- una cascada que prioriza un espacio convierte un dato > repetido en un resultado distinto y plausible.
+- un seeder con guarda `! exists()` no regenera lo > que quedó huérfano: lo deja roto para siempre.
+- una capacidad completa sin ni una fila de ejemplo > se lee como una capacidad que no existe.
+- un `await` en un método que no es `async` descarta el `<script>` ENTERO y deja la > pantalla muerta sin que ninguna prueba falle.
+- compilar Blade no valida el JavaScript.
+- el cuerpo > de un método se delimita contando llaves, no con un regex.
+- una guarda ruidosa se termina > ignorando: mejor comprobar EL defecto que «que todo compile».
+- un escaneo repetido SUMA y la > cantidad sube por el FACTOR del código.
+- el cursor va a la cantidad, pero no se le roba a quien > escribe en otro campo.
+- un duplicado se nombra con su DUEÑO, y el mensaje de un QueryException no > va a la pantalla.
+- una fila que el motor marca «omitida» NO es silenciosa: hay que leer qué hace > el motor antes de cambiarlo.
+- un control `required` que no se ve NO ES FOCUSABLE y el navegador cancela el > envío sin avisar — y el evento `submit` no se dispara, así que el aviso se engancha a `invalid` en > CAPTURA.
+- solo se interviene cuando el campo está oculto.
+- la pestaña de un campo se DERIVA del > DOM.
+- un partial en el layout no puede asumir `$errors`.
+- un `firstOrCreate` con la clave vieja no > falla: ENCUENTRA la fila de otra empresa y no crea nada.
+- un `insertOrIgnore` que silencia un > choque de clave esconde el defecto.
+- un flag apagado que descarta lo capturado se NOMBRA, y el > borrado va DENTRO del flag o editar destruye lo que había.
+- un código de catálogo buscado a mano > deja de existir cuando cambia la convención, y `first()` da NULL sin lanzar nada.
+- una retención > también «aplica a compras»: el impuesto del documento se resuelve EXCLUYENDO lo que no lo es.
+- un > método que recibe la empresa por parámetro necesita `sinScopeEmpresa()`.
+- un ajuste MANTIENE el > costo del stock, y sale de la BODEGA, no del estándar de la ficha.
+- una guarda de código que busca > una cadena no ve que el camino se desactive: hay que ejercer el comportamiento.
+- antes de agregar > una columna hay que medir si alguien la lee y si el dato ya está expresado.
+- un `MODIFY COLUMN` > copia la definición completa: se lee del esquema.
+- una clave fuera del `$fillable` se descarta EN > SILENCIO, así que quien la escribe cree haber configurado algo.
+- un selector que existe pero no está cableado no da error, no hace nada — y la > guarda recorre las CINCO pantallas, porque una prueba sobre una no ve que a las otras les falte el > manejador.
+- un precio que no se refresca da un importe plausible que ya no corresponde a la lista > que el documento declara.
+- una cascada que corre desde un GET no puede usar el helper que CREA.
+- > un lector de código se reconoce por la VELOCIDAD de la ráfaga, y no se intercepta el Enter cuando > el foco está en un campo de captura.
+- lo que se colapsa se esconde con `x-show`, nunca con `@if`: > el input tiene que seguir en el DOM o el documento pierde el dato al editarse.
+- un bloque colapsado > que oculta un valor muestra su total en el botón.
+- la etiqueta de un componente Blade no se escribe > en un comentario JS, ni siquiera para advertir de eso (reincidente).
+- un extractor que busca un > nombre a secas apunta al atributo del select.
+- un regex con una clase negada de llaves no cruza > llaves anidadas.
+- una prueba que se omite no protege nada, y monta su propio escenario con valores > DISTINTOS por nivel.
+- la BD de pruebas no tiene los datos de la de desarrollo.
+- la suscripción y el permiso son dos preguntas distintas y pueden usar slugs > distintos — un módulo que se vende dentro de un bundle pero tiene su propia sección de permisos > necesita los dos.
+- un mensaje que acusa al plan cuando el plan está bien manda al usuario a buscar > un problema que no existe, y nombra la PANTALLA, no el bundle.
+- cuando tres sitios deciden lo > mismo, dos ya divergieron: la regla se DERIVA de su catálogo y las copias se borran.
+- el módulo de > una pantalla se DECLARA en la ruta, no se deriva del nombre.
+- una guarda de coherencia que replica > la lógica del consumidor no detecta que el consumidor deje de usarla: hay que montar el componente > REAL.
+- un fixture con plan de pago sin suscripción de Stripe redirige antes del middleware que se > quiere ejercer.
+- dos decisiones que no se implican no son un modo, son dos interruptores.
+- un > default que apaga un impuesto se verifica por el DEFAULT DE LA COLUMNA.
+- un boolean NOT NULL no > distingue «no ha elegido» de «eligió que no»: el tercer estado necesita NULL.
+- leer una columna > que no existe devuelve NULL sin lanzar nada y la cascada cae al primer registro por orden > alfabético.
+- un campo escondido con `x-show` sigue enviándose.
+- lo que no se puede esconder se > NOMBRA con su motivo.
+- un controlador puede estar escrito para una clave que el UNIQUE de la base > no admite, y el usuario solo ve un «Duplicate entry».
+- el color de un texto no se arregla con el > tono si lleva opacidad.
+- el texto de un botón que cambia con el estado no sirve como marcador de > que el botón existe.
+- un script que dice «restaurado» no prueba que restauró — el estado > final se verifica LEYENDO la base.
+- un escenario que se prueba en producción se acota a la cuenta > demo.
+- Tailwind escanea el caché de vistas compiladas, así que un build con el caché sucio hornea > clases que ya no existen en las fuentes.
+- antes de reportar un hallazgo fuera de alcance hay que comprobar si sigue vivo — > otra sesión puede haberlo corregido el mismo día, y un pendiente falso manda a buscar un problema > que ya no existe.
+- en un SaaS, unas instrucciones que piden editar el `.env` o correr `artisan` no > son documentación: son una función que su audiencia no puede activar.
+- antes de elegir > arquitectura OAuth hay que mirar la CLASE de scope — los restringidos exigen auditoría anual y > descartan la app única de plataforma.
+- una credencial cifrada se verifica leyendo la fila CRUDA.
+- > un secreto que la pantalla no muestra no puede borrarse al guardar vacío.
+- el método que solo > puede enviar tiene que decirlo antes de que el usuario se comprometa.
+- un dato que viaja en un > redirect OAuth va en el `state`, no en la sesión.
+- al agregar un método de conexión hay que > recorrer a sus CONSUMIDORES: el envío descifraba un token que SMTP no tiene y fallaba en > silencio.
+- una relación que rinde una celda vacía con `?->` esconde un huérfano y no lanza > nada — cuando una columna sale en blanco se miden los DATOS antes de revisar la consulta.
+- sin FK > en cascada el hijo sobrevive a su padre en el acto.
+- una limpieza por company_id directo alcanza a > los ya huérfanos, una por subconsulta del padre no.
+- una aserción sobre una subcadena pasa por el > nombre más largo que la contiene.
+- una auditoría que da 0 % en todo mide mal, no encontró un > sistema roto.
+- una guarda que exige archivo por MÓDULO no dice nada sobre las pantallas de dentro.
+- un prefijo de código de cuenta es una cuenta hardcodeada aunque sea solo la > mitad — las cuentas se configuran en el menú de Cuentas Contables del módulo, no se adivinan.
+- > mejorar la puntería de una heurística que no debería existir es ir en la dirección equivocada: > antes de afinarla hay que preguntarse si debe existir.
+- una herramienta que adivina y ESCRIBE es > peor que una rota — la rota no hacía nada, la afinada habría registrado el costo de ventas contra > la nómina.
+- un servicio peligroso se RETIRA, no se deja desconectado.
+- lo que un diagnóstico > exige sale del MISMO catálogo que pinta la pantalla.
+- verificar es de solo lectura: elegir la > cuenta es del contador.
+- una prueba que se cumple por vacío no ejerce nada.
+- cuando un defecto > contamina al vecino, la prueba tiene que mirar al vecino, no al propio.
+- la misma división administrativa se llama distinto en cada país pero es UN solo > dato — la columna se llama igual y lo que cambia es el RÓTULO, resuelto por el país de la empresa >.
+- una columna con nombre compuesto no resuelve la ambigüedad, la reparte.
+- un campo homónimo con > un consumidor propio NO es una desviación: se declara como excepción con su motivo.
+- un dato que > existe en dos columnas se lee de la que TENGA valor, o el reporte oficial sale en blanco sin > lanzar nada.
+- una migración que renombra preserva el contenido; una que borra y crea lo pierde.
+- > un barrido a mano sobre 1 286 vistas se salta archivos.
+- renderizar una vista con variables > inventadas prueba la suposición, no el código: hay que llamar al CONTROLADOR, y en CLI eso exige > autenticar un usuario porque `company()` sale de `auth()`.
+- una decisión de negocio que depende de la pregunta no es un default, es un > interruptor del propio reporte.
+- un criterio compartido entre un módulo base y uno de mejora > vive en el BASE y el otro lo delega — nunca al revés ni copiado.
+- un reporte con interruptor > DECLARA cuál está usando y expone las columnas de las que sale la diferencia.
+- un filtro que > excluye el cero apaga justo el caso que motiva encender el interruptor.
+- una prueba que depende > de trabajo ajeno en curso se OMITE nombrando el motivo, no se deja roja.
+- cuando el código de un catálogo EXPRESA la jerarquía, esta se DERIVA en vez de > capturarse a mano.
+- se toma el prefijo MÁS LARGO, no el primero que coincida.
+- un valor puesto a > mano no se pisa: se nombra como conflicto.
+- una operación que toca la estructura completa se > previsualiza antes de aplicar.
+- un importador con jerarquía valida contra la base Y contra las líneas anteriores > del propio archivo — validar solo la base da al padre por inexistente durante toda la vista previa, > y el síntoma culpa al archivo.
+- una referencia que puede no existir al PREPARAR se resuelve al > GUARDAR, cuando el motor ya insertó la fila anterior.
+- un formulario que ofrece un campo y una > validación que no lo incluye producen un guardado que dice que salió bien y no guardó nada.
+- un > ciclo en una jerarquía no lanza nada: deja una rama que ningún reporte puede recorrer.
+- dos columnas para el mismo dato no producen un error sino un número plausible que > cuenta otra cosa — la que no escribe nadie hace que su lector sume siempre cero.
+- un seeder que > marca un estado a mano miente en el eslabón siguiente.
+- una línea de documento sin bodega destino > no puede registrar en qué almacén entra la mercancía.
+- un no-op prometido en el docblock hay que > aplicarlo en el cuerpo: pasar null a una firma que exige string revienta la transacción entera.
+- > un criterio que cuelga del artículo Y de la bodega se borra cuando se borra cualquiera de los dos >.
+- un dato por columna: dos apilados no se leen en diagonal ni se pueden ordenar.
+- un alias de SELECT no puede llamarse igual que un accessor del modelo — el > accessor gana y lee columnas que el agregado no trae, sin lanzar nada.
+- un controlador que produce > unas claves y una vista que lee otras no falla al calcular, falla al RENDERIZAR: compilar no basta >.
+- una prueba que compara contra `null` porque la clave no existe pasa por la razón equivocada.
+- > un cuadre que se apaga con los filtros que nacen encendidos no se calcula nunca: solo lo apagan > los que la fuente NO puede reproducir.
+- antes de replicar un reporte de otro sistema hay que MEDIR > los datos propios.
+- un script de verificación que asume una clave inexistente acusa al código > sano.
+- si en el sistema de referencia algo es una PESTAÑA, replicarlo como pantalla > suelta obliga al usuario a saber dónde buscar — y una captura sola no dice si lo que muestra es > una pantalla o una pestaña.
+- dos formularios de filtro en la misma pantalla no pueden compartir el > id.
+- una aserción sobre una cadena suelta pasa por cualquier otro sitio que la contenga.
+- antes de construir una pantalla que «falta» hay que inventariar qué existe — seis > de las ocho pestañas pedidas ya estaban hechas.
+- la pre-venta se mide por PEDIDOS, no por facturas >.
+- lo facturado se deriva de la cantidad facturada POR LÍNEA.
+- un día de la semana leído de una > fecha de otro año es el día equivocado: un festivo anual se PROYECTA al año consultado.
+- un > catálogo puede tener el mismo feriado duplicado, así que se cuentan fechas ÚNICAS.
+- de los días > transcurridos solo salen los feriados que YA ocurrieron.
+- un feriado sin fecha se asume futuro.
+- > una meta que existe en dos granularidades se lee de UNA.
+- una pestaña cuya consulta recorre líneas > se carga al abrirse, no al abrir la pantalla.
+- compilar una vista no prueba que se pueda abrir: > hay que RENDERIZARLA.
+- un reporte compartido entre dos módulos declara UNA ruta por módulo apuntando al > mismo controlador — el menú de un módulo nunca lista la ruta dueña de otro, y eso se comprueba con > una prueba en vez de escribirlo en prosa (cuarta vez).
+- sus enlaces internos se arman con la ruta > del módulo desde el que se abrió.
+- el default de una opción depende de quién abre la pantalla.
+- un reporte con captura no siempre describe la pantalla propia — localizarla en el > código antes de «corregirla».
+- un desplegable de filtro necesita Aplicar y Cerrar, y cerrar > DEVUELVE la selección o el botón miente sobre lo que el reporte usa.
+- «seleccionar todo» actúa > sobre lo visible, no sobre lo que la búsqueda esconde.
+- dos agrupaciones del mismo reporte salen de > la MISMA consulta o su total tendrá dos respuestas.
+- un cuadre que no se puede calcular se APAGA > diciéndolo.
+- un catálogo de filtro se arma con lo que tiene movimiento.
+- `usort` es estable en > PHP 8: para ejercer un desempate hay que fijar el orden de llegada CONTRARIO al esperado > (reincidente).
+- un campo de ayuda es un array label/texto, no un string.
+- un huérfano se busca también hacia arriba — las ubicaciones cuelgan de la > bodega, no del artículo, y el barrido que corrigió lotes no las alcanzaba.
+- el orden de recorrido > de un almacén se DECLARA, no se deriva del código.
+- lo que no está ubicado va al final, nunca al > principio.
+- un recorrido se guarda completo, porque a medias manda de un extremo al otro.
+- una > relación sin `ORDER BY` no define ningún orden.
+- `usort` es estable en PHP 8, así que un fixture > cuyo orden natural coincide con el esperado no ejerce el desempate.
+- un `x-show` sobre un `<select>` con TomSelect oculta el original y deja el > wrapper a la vista — va en el contenedor.
+- «a preparar» es lo solicitado menos lo despachado, no > la cantidad del documento.
+- un disponible que no descuenta lo reservado ni se acota a la bodega > promete mercancía que no está.
+- una previsualización sale del MISMO servicio que ejecuta.
+- un > aviso de lote en un artículo que no los maneja se lee como un problema inexistente.
+- un aviso de > stock no bloquea: lo que no puede es descubrirse en el almacén.
+- una prueba sobre un caso que > tampoco tiene datos pasa por la razón equivocada.
+- cuando el mismo modal existe en tres implementaciones, las copias divergen y el > usuario ve tres pantallas distintas para la misma tarea.
+- antes de declarar que una pantalla > «escribe donde nadie lee» hay que leer LOS DOS lados.
+- una pantalla que muestra menos conceptos > que los declarados esconde configuración que nadie puede completar.
+- un módulo del catálogo sin > conceptos abre su pantalla vacía, y eso se comprueba con una prueba.
+- Laravel resuelve por ORDEN DE DECLARACIÓN, no por especificidad — una ruta > estática declarada tras un comodín del mismo prefijo no se puede abrir.
+- cuando quedan varios > grupos estáticos detrás de un comodín, mover el COMODÍN al final resuelve también los que se > agreguen después.
+- una guarda sobre rutas le pregunta al router, no parsea los archivos.
+- un combo de configuración contable ofrece lo de la empresa ACTIVA, y el síntoma > de no hacerlo no es una lista vacía sino una lista llena de otra empresa.
+- un `abort_unless` que > valida `company()` no protege si dos líneas después se redefine con `currentCompany`.
+- cuando un > defecto reincide, la guarda mira el CÓDIGO además del comportamiento.
+- cuando un módulo entero se queda sin datos, su código puede llevar años sin poder > ejecutarse — lo único que lo demuestra es EJECUTARLO.
+- una línea de documento sin artículo no falla > al capturarla, falla tres veces después y en módulos distintos.
+- un servicio que se compra también > es un artículo.
+- una prueba que envía lo que la aplicación ya rechaza no protege nada.
+- un helper > heredado no puede reducir la visibilidad del método homónimo de una subclase: la suite no falla, no > arranca.
+- cuando el vínculo vive en la tabla del OTRO lado, el formulario actualiza el catálogo y > hay que liberar el registro anterior.
+- un seeder que corre una vez por empresa crea una fila por > empresa.
+- un campo obligatorio nuevo se valida en store Y en update, y su mensaje > dice POR QUÉ hace falta.
+- un texto de ayuda cuenta lo que se PIERDE sin el dato, no lo que > se crea con él.
+- un aviso de catálogo vacío distingue «no hay ninguno» de «los que hay no > sirven todavía».
+- un seeder de demo tiene que cumplir las reglas que el sistema exige, o la > demo enseña los avisos en vez del módulo.
+- la misma columna con el mismo nombre no puede apuntar a dos tablas > distintas según el módulo.
+- dos campos poblados al 100 % con cero diferencias son el mismo > dato guardado dos veces, pero antes de fusionarlos hay que buscar el caso donde SÍ difieren >.
+- un mapeo por email que da varias coincidencias no es un mapeo, es un empate.
+- una meta y > su cumplimiento se agrupan por la misma clave o el reporte sale en cero sin decir por qué.
+- > un comentario que dice «reemplaza X» es el rastro de una sustitución que hay que revisar.
+- > un script de edición que aborta en un assert no escribió nada.
+- un catálogo del core lo consumen TODOS los módulos que hablan de esa > entidad, no solo el que tiene el CRUD.
+- un tipo de columna se verifica contra sus > CONSUMIDORES antes de cambiarlo, igual que un ENUM.
+- una lista que ofrece todos los usuarios > del tenant no es un combo, es un buscador sin filtro.
+- un parche que arregla solo el reporte > deja intacto el sitio donde se captura el dato.
+- una lista filtrada conserva el valor que el > registro YA tiene, o editarlo lo borra en silencio.
+- la misma columna con el mismo nombre no > puede apuntar a dos tablas distintas según el módulo.
+- un asiento pertenece a la empresa DEL MOVIMIENTO, no a «la primera activa del > tenant» — y un `->first()` sin orden ni siquiera elige lo mismo en dos servidores.
+- un service que > recibe la empresa por parámetro no puede resolver sus datos con modelos que leen la sesión, y sus > RELACIONES tampoco.
+- cuando falta la empresa correcta no se cae a otra: mejor sin asiento que en la > contabilidad ajena.
+- el dueño de una entidad es quien la crea, y quien la crea se siente con > derecho a borrarla.
+- un id que debe encontrarse desde otro seeder es determinista (UUID v5), no > aleatorio.
+- un demo que postea todo lo pendiente deja su propia pantalla sin nada que hacer.
+- una > capacidad que el sistema permite pero el demo no muestra se lee como una capacidad que no existe.
+- un seeder no borra el trabajo de otro, y sin FK en cascada el hijo queda huérfano > en el acto.
+- una limpieza por subconsulta no alcanza lo que ya perdió su padre — el fix tiene dos > tiempos.
+- las columnas de un reporte salen de lo que APARECE, no del catálogo.
+- un concepto que un > empleado no recibió sale en 0, no ausente.
+- los importes de un período salen del JSON sellado al > calcular.
+- el período anterior se resuelve por FECHA, no por número.
+- dos períodos que se comparan > se leen con la MISMA cabecera.
+- un porcentaje sobre cero es null y el importe absoluto sí se > muestra.
+- un departamento nuevo no tiene variación 0 % y el que desaparece se NOMBRA.
+- un > verificador que revienta imprimiendo informa lo mismo que uno que no corre.
+- un servicio que consulta una columna inexistente falla en silencio si su llamador > atrapa la excepción, y el síntoma es un reporte en cero que se lee como un dato.
+- cuando la mitad > de los llamadores usa una clave y la otra mitad otra, la TABLA decide.
+- un asiento que no cuadra > no se mayoriza, se nombra.
+- un seeder que llena una tabla usa el proceso real que la llena.
+- el > nombre de una cuenta contable tiene que decir lo que contiene.
+- un service que lee `auth()` para > una columna NOT NULL no se puede usar fuera de una petición web.
+- arreglar un proceso roto puede > destapar que la limpieza nunca lo contempló.
+- cuando varios seeders escriben la misma tabla con > UNIQUE se descarta la CLAVE completa, no la fila al insertar.
+- un seeder no borra el trabajo de > otro.
+- dos suites en paralelo contra la misma base sin `RefreshDatabase` se contaminan: un rojo se > confirma corriendo la suite SOLA.
+- una directiva Blade pegada a una LETRA no se compila y su `@endif` sí.
+- un > importe de un reporte declara su moneda en la pantalla Y en el archivo exportado.
+- cuando la > moneda no se puede resolver no se pone la del país.
+- un método privado que hace falta en una > segunda pantalla se SUBE, no se copia.
+- una prueba sobre el código dice en QUÉ archivo encontró > lo que cuenta.
+- la ayuda de un módulo que vive dentro de otro va en el archivo del padre.
+- una > suite que no terminó no es una suite verde.
+- un ENUM que se amplía se verifica contra sus CONSUMIDORES.
+- un `MODIFY COLUMN` > copia la definición completa (leer `SHOW COLUMNS` antes).
+- la propina la recibe quien la RECIBE en > la mano.
+- una propina mal asignada es peor que una huérfana.
+- un fallback «al menos a alguien» > reintroduce el defecto que se corrige.
+- el default de una opción nueva reproduce el comportamiento > vigente aunque el otro parezca más prudente.
+- un cuadre se calcula por diferencia, no enumerando > los casos que fallan.
+- «no crear una fila en cero» y «no escribir el cero» son reglas distintas y > confundirlas paga dos veces.
+- la bitácora de un defecto no es el estado actual: verificar quién > llena la columna.
+- el pago del personal va SIEMPRE por nómina, nunca por caja.
+- un criterio fiscal no > lo decide el módulo que lo consume, se configura con el default conservador.
+- un importe que va a > nómina se calcula al cierre, y la pantalla que lo muestra consolida al abrirse.
+- se paga por lo > entregado, no por lo asignado.
+- marcar como pagado sin generar el pago pierde el dinero.
+- cuando > dos guardas protegen de lo mismo, se violan juntas y se declara qué aporta cada una.
+- cuando el servidor no se puede cambiar, el horario se adapta al servidor — y lo > que se detecta comparando a mano se convierte en prueba, incluida la regla que ya estaba > escrita y se siguió incumpliendo.
+- la dependencia entre módulos la declara quien los vende.
+- un `0` en un precio > no se lee como «este plan no existe» sino como GRATIS.
+- un módulo que se vende antes de > existir necesita decir «en preparación», no «no contratado».
+- lo que se detecta comparando a > mano se convierte en prueba (el defecto del menú se ignoró tres veces escrito en prosa).
+- una > prueba que renderiza una vista con variables inventadas prueba la suposición, no el código.
+- un service que recibe el tenant por > parámetro NO lee la sesión para decidir una guarda — si lo hace, la guarda cambia según quién lo > llame.
+- una columna sin formulario es una función que no existe (tercera vez en el > ecosistema, y aquí dejaba dos alertas incapaces de dispararse).
+- lo que se detecta comparando a mano > se convierte en prueba, o se degrada.
+- un proceso programado que no deja rastro es indistinguible de > un día tranquilo, y el checklist es donde eso se mira.
+- un TODO que el sistema puede comprobar solo > no se escribe en un markdown.
+- antes de consultar la tabla de otro módulo se comprueban los nombres > contra el esquema real.
+- dos reportes del mismo módulo pueden medir períodos distintos y hay que DECIRLO en > pantalla.
+- un desglose que no suma su total esconde justo lo que crece.
+- un promedio se calcula > sobre lo que tiene el dato, y lo que no lo tiene se cuenta aparte y se NOMBRA.
+- un porcentaje se > calcula sobre lo que ya terminó.
+- un aviso automático lleva su propia cuenta.
+- un interruptor > peligroso se verifica por el DEFAULT DE LA COLUMNA.
+- un seed no simula la operación fiscal.
+- un seed > con distribución plana hace inútil el reporte que llena.
+- `schedule:run` se invoca CADA MINUTO.
+- `schedule:run` se invoca CADA MINUTO — con cualquier otro intervalo, todo comando > cuyo minuto no coincida no se ejecuta jamás, y el síntoma es un panel vacío que se lee como “no hay > problemas”. Y una marca de ejecución que se estampa aunque no haya nada que hacer es lo único que > distingue “corrió y estaba limpio” de “no corrió”.
+- el precio de un combo es el que se configuró, nunca la suma de sus > componentes.
+- un fijo consume siempre, uno de elección solo si está en lo elegido.
+- cuando dos > servicios comparten un total hay que leer el código de AMBOS antes de asumir dónde vive el número.
+- > dividir y volver a unir una cuenta no puede borrar un descuento ya aplicado.
+- un descuento de > alcance parcial se reparte por PESO, no se pierde.
+- el menú público y el motor de promociones > evalúan la MISMA vigencia.
+- una superficie de ESCRITURA pública nueva no es una tarea de última > hora de una fase de lectura.
+- «cuánto costó» y «cuánto debería costar» son dos preguntas distintas.
+- un margen se > mide EN DINERO cuando hay que decidir entre platos.
+- el promedio de un umbral va ponderado.
+- un precio > sugerido se redondea hacia ARRIBA.
+- `usort` es estable en PHP 8 (cuarta vez).
+- un fixture cuyo > resultado correcto se alcanza por dos caminos no verifica ninguno.
+- un reporte que no puede medir lo > que promete tiene que DECIRLO.
+- los umbrales de un reporte se muestran y se exportan.
+- dos redondeos > correctos en sitios distintos dejan un residuo que hay que medir, o aparecerá en un reporte de merma > como si fuera una pérdida.
+- una firma que documenta un parámetro y lo ignora es peor que no tenerlo.
+- una > violación tiene que cambiar el COMPORTAMIENTO, no solo el código.
+- cuando dos guardas excluyen las > mismas filas, quitar una deja la prueba verde (se declara, no se finge).
+- una guarda que evita el > INTENTO se prueba por su mensaje.
+- el costo de una venta cerrada se SELLA.
+- se consume al cobrar y > al cerrar la orden.
+- un fallo de inventario no puede deshacer una venta.
+- sin factor de conversión > NO se convierte.
+- una fábrica de pruebas que rellena datos por comodidad puede desactivar la regla > que se quiere verificar.
+- un verificador que corre la prueba equivocada informa lo mismo que uno que no la > corre.
+- una prueba de orden que compara ejecuciones seguidas puede pasar además por el orden de > los UUID (intermitente, no solo inútil).
+- el estado grueso se DERIVA del fino y manda el MENOS > avanzado.
+- una lista que cambia se re-renderiza: lo que evita el parpadeo es la clave.
+- un filtro > por fecha en una pantalla de operación falla a medianoche.
+- una política que cambia el SIGNIFICADO > del dato se valida en el servidor.
+- una acción masiva actúa solo sobre los estados que > corresponden.
+- un aviso sonoro compara identidades, no cantidades.
+- un contador de trabajo pendiente tiene que decir DE QUIÉN es el pendiente.
+- la > firma de un refresco diferencial es de la ESTRUCTURA, no de los datos.
+- lo volátil se pinta en el > cliente y lo que no cambia, en el servidor.
+- un pivote con columnas NOT NULL propias no es usable > con `attach()`.
+- `sortByDesc` es estable en PHP 8 (el desempate va en la consulta).
+- una relación > invertida funciona al leer y corrompe al escribir.
+- la regresión del paso previo se corre con el > árbol quieto.
+- con sesiones paralelas, un rojo se confirma corriendo el archivo solo.
+- `@json` no acepta un array literal de más de tres elementos (usar `Js::from`) >.
+- el atajo de Alpine para un evento colisiona con toda directiva Blade que se llame igual (usar > `x-on:evento`).
+- una vista que ninguna prueba renderiza puede estar rota con la suite en verde.
+- > una guarda sobre vistas se hace COMPILANDO, no con un grep.
+- Carbon DESBORDA al restar meses y > dos restas distintas pueden colapsar en el mismo mes.
+- el prefijo de ruta de un módulo no > siempre es su slug.
+- una prueba sin aserciones no protege de nada.
+- un catálogo de ayuda sin > prueba se degrada igual que un criterio verificado con grep.
+- un blueprint que dice «crear X» hay que verificarlo con `git log`.
+- una prueba > que analiza código fuente tiene que mirar CÓDIGO (el comentario que documenta la regla la rompe > o la deja pasar).
+- un checkbox ausente no es un checkbox apagado.
+- las clases de Tailwind no se > construyen por concatenación.
+- el menú de un módulo lista solo rutas de ese módulo (tercera vez) >.
+- un candado tiene que explicar.
+- un comentario Blade no se anida.
+- la etiqueta de un componente no se escribe > dentro de un `<script>` ni en un comentario JS.
+- lo que el usuario puede teclear se crea al vuelo, > no se exige del catálogo.
+- una normalización de texto se hace con `Str::ascii()`, no con un mapa de > tildes a mano.
+- un mensaje que dice qué hacer tiene que funcionar cuando se hace.
+- una unicidad que > la protege el motor de la base no prueba la del código.
+- un script que modifica archivos para > verificar algo restaura en `finally`.
+- una pantalla que se llama «Gestión» tiene que permitir gestionar —si su estado > vacío dice «hazlo en otro sitio», es un reporte con nombre de proceso.
+- una agenda separa el día del > atraso.
+- una cola de trabajo trae la acción con la que se trabaja.
+- un KPI no se cuenta sobre una > lista con `limit`.
+- reprogramar es un caso de primera clase y deja rastro.
+- un criterio unificado > hay que buscarlo en TODAS las pantallas, no solo en los reportes.
+- una prueba de orden no se > verifica comparando ejecuciones seguidas.
+- una violación que rompe la sintaxis no verifica nada.
+- el «ahora» de una prueba que filtra por PERÍODO se ancla al período, no solo a la > hora — y el dato relativo tiene que conservar su relación con ese «ahora», o la prueba pasa sin > probar.
+- un dato que todo reporte usa no puede ser una columna huérfana.
+- un > acumulado que decide un asiento no puede filtrar por el estado del asiento anterior.
+- una serie > histórica y un KPI de hoy usan el mismo método para el mes en curso.
+- un factor histórico que > multiplica a cero no da un pronóstico.
+- un informe compuesto no calcula: compone, se resuelve a UNA > fecha de corte, declara su moneda y sus cuadres van en el papel.
+- un interruptor peligroso se > verifica por el DEFAULT DE LA COLUMNA.
+- una escala de tramos se guarda completa.
+- un porcentaje de > referencia sin pantalla se convierte en la norma.
+- los números de una captura se leen del DOM.
+- el esfuerzo se paga por la dificultad que tenía el trabajo cuando se hizo.
+- un > orden parcial con LIMIT no cambia el orden, cambia el contenido.
+- la clave de idempotencia de un > aviso recurrente lleva fecha.
+- un fallo registrado no es un envío hecho.
+- un importe en un aviso de > cobranza nunca va sin su moneda.
+- un campo nuevo `required` rompe a todos los llamadores que ya > existían.
+- una alerta que salta todos los días enseña a ignorar las alertas.
+- un avance se compara > contra el proporcional del período.
+- una violación que no se confirma en el código es una > verificación imaginaria.
+- una captura también sirve para leer los textos, no solo para ver que la > pantalla existe.
+- un dato derivado no se guarda.
+- un ENUM de estados sin > transiciones permite lo imposible.
+- la fecha de un pago no es la fecha de su captura.
+- un asiento se > arma con lo que de verdad lo respalda.
+- si falta una cuenta, mejor sin líneas que descuadrado.
+- un > número que el cliente ve en dos sitios se calcula en uno.
+- un porcentaje de avance declara su base.
+- > una prueba de que algo NO ocurre necesita montadas las condiciones para que ocurra.
+- un control que lee una columna que nadie llena es peor que no tener control.
+- > extender no es alterar (componer en un método nuevo, no cambiar la fórmula común).
+- un filtro que > puede vaciar su entrada necesita una guarda.
+- una aserción sobre el código nombra la ACCIÓN, no la > tabla.
+- un dato que el negocio ajusta por caso no puede ser global.
+- una decisión ya > declarada en la configuración manda en todo lo que dependa de ella.
+- un proceso programado tiene > que dejar rastro de que corrió, incluso cuando no hizo nada.
+- un checklist sin severidades es ruido >.
+- una TABLA sin pantalla es una función que no existe.
+- un cuadre que no se muestra no avisa de nada.
+- lo que falta se nombra, no se > filtra.
+- un contador que se puede derivar no se guarda.
+- un porcentaje sobre cero es null, no > 100%.
+- una alerta que no se puede apagar se ignora entera.
+- un total en la cabecera no es una factura.
+- una prueba que verifica UNA regla > tiene que aislarla, o pasa por la razón equivocada.
+- una columna sin > formulario es una función que no existe.
+- una columna sin formulario es una función que no existe.
+- un enlace del checklist > es parte del checklist.
+- dos pantallas parecidas necesitan nombres que se distingan.
+- una > constante que responde a «cada cuánto lo hace la empresa» es configuración.
+- un cambio que crea un caso nuevo debe revisar quién lo va a recibir.
+- una guarda > se pone sobre la ACCIÓN, no sobre el estado.
+- un asiento que cuadra pero no se posteó no es un > asiento.
+- el software avisa, > las decisiones con terceros son del humano (un cheque vencido NO se anula solo).
+- todo orden de preferencia tiene > que ser TOTAL.
+- nunca listar en el menú de un módulo el dashboard/ruta dueña de otro módulo.
+- la reversa del hub (`revertirEvento`) ahora.
