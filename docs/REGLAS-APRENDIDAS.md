@@ -538,3 +538,11 @@
 - todo orden de preferencia tiene > que ser TOTAL.
 - nunca listar en el menú de un módulo el dashboard/ruta dueña de otro módulo.
 - la reversa del hub (`revertirEvento`) ahora.
+- una pantalla desplegada a la que nadie enlaza es una pantalla que no existe, y el defecto reaparece un piso mas arriba de donde se corrigio.
+- un flag que gobierna un acceso y no tiene formulario acaba en 0 usuarios y la funcion entera respondiendo 403.
+- el privilegio que abre el espacio de todos los clientes va FUERA del $fillable, y sacarlo se mide antes para no desactivar nada en silencio.
+- una cuenta de plataforma NUNCA vive dentro de la company demo: el reset se la lleva y el sintoma no apunta a nada.
+- una contrasena entra por STDIN, nunca como argumento: en un hosting compartido `ps` es de todos.
+- la salida coloreada rompe una comprobacion de «la prueba corrio», y la verificacion se invalida a si misma sin ser falsa.
+- una violacion construida con un valor que puede ser NULL no viola nada.
+- un pendiente se comprueba antes de arrastrarlo: puede estar cerrado y medirse con la clave equivocada.

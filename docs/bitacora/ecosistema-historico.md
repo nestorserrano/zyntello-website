@@ -7,7 +7,111 @@
 
 ---
 
-### Bitácora reciente (estado actual — 2026-09-07)
+### Bitácora reciente (estado actual — 2026-09-08)
+
+> **LA BANDEJA DE SOPORTE NO SE PODÍA ALCANZAR NI USAR (2026-09-08) — `[#1037]`, `[#513]`**:
+> pregunta del director técnico — *«continúa con el módulo de soporte en admin, no veo el acceso,
+> quizá falte, estará en otra fase»*. **No faltaba ninguna fase: faltaban tres cosas, y las tres
+> las destapó medir producción.** 6 pruebas nuevas · **4 guardas verificadas VIOLÁNDOLAS: las 4 se
+> detectan** · soporte **115 passed** · auth + licencias + permisos **193 passed**.
+> **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (app `4e82b5621`, admin `559401c`). **Sin migración.**
+>
+> ⚠️⚠️ **Lo primero fue medir, y el diagnóstico salió del revés de lo que la pregunta sugería.**
+> La sección de soporte del admin **existe y funciona**: conecta a la base de la app y los 4
+> clientes están vinculados. Salía vacía porque **hay 0 tickets** — nadie ha abierto un caso. Lo
+> roto estaba en la app.
+>
+> ⚠️⚠️ **Defecto 1 — las pantallas del agente no se alcanzaban desde NINGÚN sitio.** La bandeja, la
+> lista de tenants y el catálogo de agentes llevaban desplegadas desde F2 y solo se llegaba a ellas
+> **escribiendo la URL a mano**: ni el menú, ni la barra superior, ni las propias vistas de soporte
+> enlazaban a ellas (medido: cero referencias a `soporte.bandeja`/`soporte.tenants`/`soporte.catalogo`
+> fuera de la carpeta). Es la forma de `[BAN-F4-FIX]` — *funcionalidad implementada, probada y
+> desplegada que el usuario no puede alcanzar*. ⚠️ Y lo irónico: la Tarea 1b de F2 se añadió porque
+> *«una tabla sin pantalla es una función que no existe»*, y **el mismo defecto reapareció un piso
+> más arriba** — la pantalla existía y no tenía puerta.
+>
+> ⚠️⚠️ **Defecto 2 — nadie podía entrar aunque hubiera enlace: 0 usuarios `is_super_admin` de 22.**
+> `soporte_autorizado` lo exige, así que la bandeja que F2 entregó completa **respondía 403 a todo
+> el mundo**. Y el flag **no tiene formulario en ninguna parte**: solo se enciende escribiendo en la
+> base — otra vez `[CW-FIX-2]`.
+>
+> ⚠️⚠️ **Defecto 3 — no existía la cuenta del agente, y el atajo obvio era una trampa.** Los **6
+> usuarios `@zyntello.com` de producción pertenecen a la company DEMO**, que `demo:reset` borra y
+> recrea **todas las noches a las 3:00**: un agente creado ahí funciona hoy y desaparece mañana, con
+> el síntoma «soporte dejó de entrar» y ninguna causa a la vista. Por eso la cuenta del agente nace
+> con **`company_id = NULL`** —la columna es nullable, comprobado en el esquema— y la bandeja **no
+> exige empresa activa** (`web`+`auth`+`soporte_autorizado`, medido con los middlewares REALES de la
+> ruta), así que un agente sin tenant entra sin problema.
+>
+> **`soporte:crear-agente`**, que simula por defecto como el resto de comandos que escriben en
+> producción. Lo que aporta sobre un `UPDATE` a mano son sus **dos guardas**: rechaza un correo que
+> pertenezca a un suscriptor —`is_super_admin` no le daría «un permiso más», le daría **la cartera
+> completa de Zyntello con los datos de los competidores de su propia empresa**— y rechaza la cuenta
+> demo. ⚠️ La contraseña entra por **STDIN, nunca como argumento**: un argumento queda en el
+> historial del shell y a la vista de `ps` en un hosting **compartido**.
+>
+> ⚠️ **`is_super_admin` sale del `$fillable`.** Medido antes de tocarlo: **ningún** punto del código
+> lo asignaba en masa, así que quitarlo no desactiva nada en silencio. Lo que cierra es que mañana
+> alguien añada un `...$request->all()` al registro público y abra una escalada de privilegios sin
+> notarlo. Con prueba que lo custodia.
+>
+> ⚠️ **El acceso se pone en el ADMIN, decisión del director técnico** (`[#513]`), y la bandeja sigue
+> viviendo en la app a propósito: dos superficies que escriben la misma bandeja acaban divergiendo
+> y *«qué se atendió hoy»* tendría dos respuestas (`[VTA-MES-4]`). La URL sale de
+> `config('app.zyntello_app_url')`, que ya existía, y **se corrige de paso la copia hardcodeada que
+> `[#507]` había dejado** en la ficha del cliente.
+>
+> ⚠️⚠️ **DOS verificaciones propias que informaron lo contrario de la verdad, y las dos se cazaron
+> solas.** (1) El verificador de guardas cantó **«LA PRUEBA NO CORRIÓ» en las cuatro**: la salida de
+> Pest trae **códigos ANSI**, así que `Tests:` no iba seguido de un espacio y mi comprobación
+> anti-imaginaria lo leyó como que no se ejecutó nada. Corregido con `--colors=never`. (2) Ya
+> corregido, la guarda del `company_id` salió **«NO SE DETECTA»** — y la culpa era de **mi
+> violación**, no de la prueba: `Company::query()->value('id')` devuelve **null** en la base de
+> pruebas, así que la violación **no cambiaba nada**. Con un UUID literal, se detecta. Es la lección
+> de F2 por tercera vez: *una violación que no reproduce el defecto REAL informa lo mismo que no
+> haber violado nada.*
+>
+> ⚠️ **Y una corrección de la sesión anterior**: el informe del deploy dijo que **R-2 seguía
+> abierto** (el `.env` del admin sin la conexión a la base de la app). **Era falso**: medí la clave
+> `app_zyntello` cuando el servicio usa `zyntello_app`. La conexión está bien configurada y lee
+> producción. **R-2 queda CERRADO.**
+>
+> ⚠️ **La guarda de la Tarea 2b acusó al comando nuevo** y se declara EXENTA con su motivo escrito,
+> que es lo que la propia guarda pide: no resuelve «los usuarios de un tenant», busca **un correo
+> concreto** en todo el sistema, y filtrar ahí haría que un correo existente pareciera libre y el
+> INSERT chocara contra el UNIQUE.
+>
+> **En producción, leyendo la base y no el mensaje del comando**: **3 cuentas de agente**
+> (`soporte@`, `soporte1@`, `admin@`), las 3 con `is_super_admin`, **sin company**, verificadas y
+> con hash bcrypt · **3 fichas activas** en `sop_agentes` · **0 dentro del demo** · 10 tipos de
+> incidencia. Y la prueba que de verdad cierra el trabajo: **login real por HTTP** con la cuenta del
+> agente → **`/soporte/bandeja` 200, `/soporte` 200, `/soporte/catalogo/agentes` 200**. El menú del
+> admin, renderizado en producción con los cuatro roles: **super_admin y admin ven Soporte; finance
+> y viewer no.**
+>
+> ⚠️⚠️ **PENDIENTE DECLARADO — hoy no hay NIVELES de agente.** El director técnico pidió dos agentes
+> y un «super admin con acceso total», pero `soporte_autorizado` solo mira `is_super_admin`: **los
+> tres tienen exactamente el mismo poder** y los tres pueden entrar al espacio de cualquier cliente.
+> Distinguir «agente que solo atiende casos» de «administrador» exige un nivel que no existe en
+> ninguna tabla, y **una autorización que se cree más fina de lo que es resulta peor que una
+> gruesa declarada**. Es decisión de alcance.
+>
+> ⚠️ **Y el segundo factor sigue sin configurar**: la bandeja funciona sin él, pero **entrar al
+> espacio de un tenant lo exige** (`[SOP-F1]`) — el agente lo pone desde su perfil, que es el único
+> sitio donde el secreto no pasa por terceros.
+>
+> **Reglas nuevas: una pantalla desplegada a la que nadie enlaza es una pantalla que no existe, y
+> el defecto reaparece un piso más arriba de donde se corrigió · un flag que gobierna un acceso y no
+> tiene formulario acaba en 0 usuarios y la función entera respondiendo 403 · el privilegio que abre
+> el espacio de todos los clientes va FUERA del `$fillable`, y sacarlo se mide antes para no
+> desactivar nada en silencio · una cuenta de plataforma NUNCA vive dentro de la company demo: el
+> reset se la lleva y el síntoma no apunta a nada · una contraseña entra por STDIN, nunca como
+> argumento, porque en un hosting compartido `ps` es de todos · la salida coloreada rompe una
+> comprobación de «la prueba corrió» y la verificación se invalida a sí misma sin ser falsa · una
+> violación construida con un valor que puede ser NULL no viola nada (tercera vez) · un pendiente se
+> comprueba antes de arrastrarlo: R-2 llevaba un día declarado como abierto y estaba cerrado.**
+
+### Bitácora anterior (2026-09-07)
 
 > **EL VENCIMIENTO YA CORTA EL ACCESO, Y EL OBSERVER REVIVIÓ (2026-09-07) — `[VENC-0]`…`[VENC-4]`,
 > `[VENC-FIX]`**: ejecuta entero el plan del vencimiento, por subagentes con revisión por tarea y
