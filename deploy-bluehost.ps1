@@ -96,11 +96,42 @@ function Invoke-SSHCommand {
 # justo entre dos pulls. El codigo no tenia ningun defecto -- la pantalla funciona
 # y no se reproduce despues -- pero el usuario vio un error. Con dos sesiones
 # desplegando a la vez, la ventana se multiplica.
+# Comprueba el estado REAL del sitio. 503 = en mantenimiento, 200 = arriba.
+function Get-EstadoApp {
+    try {
+        return (Invoke-WebRequest -Uri "https://app.zyntello.com/login" -Method Head `
+            -TimeoutSec 20 -UseBasicParsing -ErrorAction Stop).StatusCode
+    } catch {
+        return $_.Exception.Response.StatusCode.value__
+    }
+}
+
 function Enter-Mantenimiento {
     # --retry hace que el navegador reintente solo en 15 s en vez de mostrar un error seco.
-    return (Invoke-SSHCommand `
+    $ok = Invoke-SSHCommand `
         -Command "cd $APP_DIR && /usr/local/bin/php artisan down --retry=15" `
-        -Description "[0/5] Poniendo la app en mantenimiento (evita el 500 durante la copia)...")
+        -Description "[0/5] Poniendo la app en mantenimiento (evita el 500 durante la copia)..."
+
+    # ⚠️⚠️ NO se decide por el codigo de salida de plink. El SSH de Bluehost corta la
+    # conexion CON FRECUENCIA *despues* de haber ejecutado el comando: plink devuelve
+    # "Connection reset by peer" y codigo 1, pero el `artisan down` YA CORRIO.
+    #
+    # Paso de verdad el 2026-09-09: el script leyo ese 1 como fallo, aborto ANTES de
+    # entrar en el try -- asi que el `finally` nunca corrio -- y dejo el sitio en
+    # mantenimiento. Justo lo que el mantenimiento venia a evitar, por otra puerta.
+    #
+    # El estado se COMPRUEBA, no se deduce del codigo de salida.
+    $codigo = Get-EstadoApp
+
+    if ($codigo -eq 503) {
+        if (-not $ok) {
+            Write-Host "  (plink dio error pero la app SI esta en mantenimiento: se continua)" -ForegroundColor Yellow
+        }
+        return $true
+    }
+
+    Write-Host "  La app responde ${codigo}: NO esta en mantenimiento." -ForegroundColor Red
+    return $false
 }
 
 # ⚠️⚠️ Se llama SIEMPRE, tambien cuando un paso intermedio falla. Un deploy que
@@ -124,11 +155,17 @@ function Exit-Mantenimiento {
         plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "rm -f $APP_DIR/storage/framework/maintenance.php" 2>&1 | Out-Null
     }
 
-    # No se da por buena la palabra del comando: se COMPRUEBA que el sitio responde.
-    $codigo = try {
-        (Invoke-WebRequest -Uri "https://app.zyntello.com/login" -Method Head -TimeoutSec 20 `
-            -UseBasicParsing -ErrorAction Stop).StatusCode
-    } catch { $_.Exception.Response.StatusCode.value__ }
+    # No se da por buena la palabra del comando: se COMPRUEBA que el sitio responde, y si
+    # no lo hace se REINTENTA. El SSH de Bluehost se cae a menudo justo al cerrar, asi que
+    # un solo intento fallido no significa que la app siga caida... ni que este arriba.
+    $codigo = Get-EstadoApp
+
+    for ($i = 1; $i -le 3 -and $codigo -ne 200; $i++) {
+        Write-Host "  Responde $codigo; reintento $i de 3..." -ForegroundColor Yellow
+        Start-Sleep -Seconds 10
+        plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "rm -f $APP_DIR/storage/framework/maintenance.php" 2>&1 | Out-Null
+        $codigo = Get-EstadoApp
+    }
 
     if ($codigo -eq 200) {
         Write-Host "  La app responde 200: esta arriba" -ForegroundColor Green
