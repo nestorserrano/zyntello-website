@@ -555,3 +555,5 @@
 - una ruta que aborta por falta de SESION no sirve para probar un PERMISO: la prueba pasaria sin el middleware.
 - un global scope que se desactiva sin empresa activa hace que su violacion no viole nada: hay que montar el escenario donde SI filtra.
 - una pantalla que nadie puede abrir puede llevar anios rota, y el defecto entero aparece el dia que alguien recibe el permiso.
+
+- el deploy con `git merge` sobre el directorio que sirve Apache NO es atómico: una petición durante la copia da un 500 que NO se reproduce después, y se pierde el rato buscando un defecto que no existe. Envolverlo en `artisan down`/`up`, con el `up` incondicional.

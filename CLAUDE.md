@@ -369,6 +369,32 @@ El archivo `.env` de producción NO está en Git (está en `.gitignore`). Contie
 
 **Regla:** Usar `git pull` directo en `public_html/zyntello/app/`. Si usas `rsync`, SIEMPRE `--exclude='.env'`.
 
+### ⚠️⚠️ El deploy NO es atómico: una petición durante el `git merge` puede dar 500
+
+**Medido el 2026-09-08.** Un `Undefined variable $stats` apareció en producción a las 20:31, y las
+horas lo explicaron: cayó **entre dos `git pull`** del servidor (20:28:49 y 20:37:11). El código no
+tenía ningún defecto —el controlador pasaba la variable y la pantalla funciona— pero Apache sirvió
+una petición **mientras los archivos se estaban reemplazando**.
+
+El síntoma es desconcertante porque **no se reproduce después**: el error dice que falta una
+variable que sí existe, y al ir a mirarlo la pantalla va bien. Se pierde el rato buscando un
+defecto que no está.
+
+⚠️ **Con DOS sesiones desplegando** —algo habitual en este proyecto— la ventana se multiplica.
+
+**Recomendación**: envolver el deploy en modo mantenimiento.
+
+```powershell
+plink -i $KEY -P $PORT -batch $SSHHOST "cd public_html/zyntello/app && /usr/local/bin/php artisan down --retry=15"
+# … fetch, merge, migrate, optimize:clear, config:cache, route:cache …
+plink -i $KEY -P $PORT -batch $SSHHOST "cd public_html/zyntello/app && /usr/local/bin/php artisan up"
+```
+
+⚠️ **El `up` va SIEMPRE, incluso si un paso intermedio falla**: un deploy que revienta a medias con
+la app en `down` la deja caída para todos, que es peor que el 500 puntual que se quería evitar. Y
+si dos sesiones despliegan a la vez, la segunda `up` puede levantar la app mientras la primera aún
+copia — coordinarlo o desplegar de una en una.
+
 ⚠️ **IMPORTANTE — Permisos de directorio después de cada deploy:**
 
 **El problema:** Después de cada `rsync` o `git pull`, los directorios pierden permisos de lectura. Apache (usuario `nobody`) no puede acceder → Error 403/500.
