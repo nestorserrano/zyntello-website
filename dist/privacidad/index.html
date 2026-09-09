@@ -133,7 +133,7 @@
       <div class="meta">
         <span>Última actualización: <strong>9 de septiembre de 2026</strong></span>
         <span>Vigencia: <strong>desde su publicación</strong></span>
-        <span>Versión: <strong><a class="verlink" href="#s20">1.6 — ver control de cambios</a></strong></span>
+        <span>Versión: <strong><a class="verlink" href="#s20">1.7 — ver control de cambios</a></strong></span>
         <span>Idioma original: <strong>español</strong></span>
       </div>
     </div>
@@ -675,6 +675,26 @@
         adjuntos que se enviaron para otra cosa. <strong>Se recorta la cita del mensaje anterior</strong>
         para no duplicar información, y el archivo que exceda el tamaño admitido no se guarda: se
         anota su nombre en el caso para que el agente pueda pedirlo por otra vía.</li>
+        <li><strong>El asistente con inteligencia artificial.</strong> La plataforma incluye un
+        asistente que responde dudas de uso. Cuando usted le pregunta, se envían a un proveedor de
+        inteligencia artificial (<strong>Anthropic</strong>, actuando como <strong>subencargado</strong>)
+        <strong>únicamente dos cosas</strong>: <strong>el texto de su pregunta</strong> y
+        <strong>documentación de Zyntello</strong> sobre el módulo desde el que pregunta.
+        <ul>
+          <li><strong>NO se envían datos de su negocio ni de sus clientes.</strong> Ni nombres, ni
+          importes, ni saldos, ni registros de su base de datos. El texto que se manda se construye
+          exclusivamente con nuestros manuales: el componente que lo arma <strong>no consulta la base
+          de datos</strong>, y eso está verificado con una prueba automática que falla si algún día
+          la consultara.</li>
+          <li><strong>Lo único suyo que viaja es lo que usted escriba en la pregunta.</strong> Por eso
+          le pedimos no incluir en ella datos personales de terceros: para explicar cómo se emite una
+          factura no hace falta el nombre del cliente.</li>
+          <li><strong>Las respuestas se guardan</strong> para no volver a consultar al proveedor ante
+          la misma pregunta. Ese archivo contiene <strong>solo</strong> preguntas de uso y respuestas
+          basadas en nuestra documentación.</li>
+          <li><strong>El asistente no ejecuta acciones</strong> ni modifica su información: solo
+          explica.</li>
+        </ul></li>
         <li><strong>Los correos que no se pueden identificar.</strong> Si un mensaje llega al buzón de
         soporte y <strong>no se puede determinar de qué Suscriptor proviene</strong> —porque el
         remitente no corresponde a ningún usuario registrado—, <strong>no se agrega a ningún caso</strong>:
@@ -834,7 +854,24 @@
           </thead>
           <tbody>
             <tr>
-              <td>1.6 <span class="vig">Vigente</span></td>
+              <td>1.7 <span class="vig">Vigente</span></td>
+              <td>9 de septiembre de 2026</td>
+              <td><strong>El asistente con inteligencia artificial.</strong> Se amplía la sección
+                  <strong>12.1</strong> para declarar una función nueva y el <strong>subencargado</strong> que
+                  interviene: al usar el asistente se envían a <strong>Anthropic</strong> únicamente
+                  <strong>el texto de la pregunta</strong> y <strong>documentación de Zyntello</strong> del módulo
+                  correspondiente. Se declara expresamente que <strong>NO se envían datos de negocio ni personales
+                  del Suscriptor</strong> —ni nombres, ni importes, ni saldos, ni registros de la base de datos—
+                  porque el componente que arma ese texto <strong>no consulta la base de datos</strong>, y que eso
+                  está verificado con una prueba automática que falla si algún día la consultara. Se advierte que
+                  lo único del Suscriptor que viaja es lo que él mismo escriba en la pregunta, se declara que las
+                  respuestas se guardan para no repetir consultas y que ese archivo contiene solo preguntas de uso
+                  y respuestas basadas en nuestra documentación, y que <strong>el asistente no ejecuta acciones</strong>.
+                  <strong>No cambian</strong> las finalidades, las bases legales, los plazos de conservación ni los
+                  derechos del titular.</td>
+            </tr>
+            <tr>
+              <td>1.6</td>
               <td>9 de septiembre de 2026</td>
               <td><strong>El correo enviado a soporte entra al sistema.</strong> Se amplía la sección
                   <strong>12.1</strong> con una vía de entrada que la versión anterior no cubría: un mensaje
