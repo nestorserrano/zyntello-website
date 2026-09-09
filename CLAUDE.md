@@ -161,6 +161,44 @@ consecutivos y cualquier dato operativo o de configuración.
 
 ---
 
+## 📦 DIRECTIVA DE ENTREGA COMPLETA — NADA SE ENTREGA A MEDIAS (MANDATORIA)
+
+> **Decisión del director técnico, 2026-09-09.** Nace de una cuenta concreta: **1.034 pantallas y
+> 5.434 campos hubo que documentarlos DESPUÉS**, en sesiones enteras dedicadas a ir detrás de
+> trabajo ya entregado. Hacerlo en el momento cuesta minutos; hacerlo después cuesta semanas — y
+> mientras tanto **el suscriptor pagó una pantalla que no sabe usar.**
+
+### La regla, en una línea
+
+**Toda pantalla, vista o sección nueva se entrega CON su ayuda, sus tooltips, su diccionario de
+datos y —si aplica— su reporte. En el MISMO trabajo que la crea, no en el siguiente.**
+
+No es documentación de cortesía: **es parte del producto.** Una pantalla sin ayuda es una pantalla
+que el usuario no usa, y un campo sin explicar es un campo que se llena mal.
+
+| # | Artefacto | Dónde | Si falta… |
+|---|---|---|---|
+| 1 | Ayuda de la pantalla | entrada en `resources/help/{modulo}.php` **+** `@section('ayudaClave', ...)` en la vista | el panel «?» no aparece y **nada lo dice** |
+| 2 | Tooltips de los campos | `<x-help.campo>` tras cada `<label>` | el usuario adivina qué va en el campo |
+| 3 | Diccionario de la tabla | `resources/diccionario/{modulo}.php` | el dato queda sin explicar y la suite falla |
+| 4 | Reporte, si aplica | decidir si se ofrece como origen y con qué etiquetas | el usuario ve ids crudos, o ve una tabla interna |
+
+⚠️⚠️ **Escribir la ayuda y CONECTARLA son DOS actos, y al segundo le falta síntoma.** Sin el
+`@section('ayudaClave')` el panel no se pinta: no hay error ni log. **Medido: 115+ pantallas
+tenían su texto escrito y commiteado, y el suscriptor nunca lo vio.**
+
+⚠️ **La calidad del texto no la puede exigir ninguna guarda**, y es la mitad del valor: la ayuda se
+escribe diciendo **qué le cuesta dinero, tiempo o acceso** a quien usa la pantalla, nunca
+describiendo cómo funciona el código. *«Lo mejor para el suscriptor es una vista útil para sus
+operaciones.»*
+
+**El detalle operativo —comandos, guardas, la comprobación campo por campo y qué decidir sobre los
+reportes— está en el Paso 8 de [`app/zyntello-app/CLAUDE.md`](app/zyntello-app/CLAUDE.md).**
+Custodian la regla `AyudaCompletoTest`, `AyudaIntegridadTest` y `DiccionarioCompletoTest`: son
+trinquetes, así que **una pantalla nueva sin ayuda o sin tooltips pone la suite roja hoy**.
+
+---
+
 ## 🔑 INSTRUCCIÓN PARA INICIAR SESIÓN
 
 > **SIEMPRE hacer esto al comenzar cualquier sesión de trabajo en Zyntello:**
@@ -183,6 +221,12 @@ consecutivos y cualquier dato operativo o de configuración.
 > que está al inicio de este archivo.** No se crea ninguna tabla, vista, combo, consulta ni prueba
 > sin la doble protección. Es la directiva que más veces se ha incumplido teniéndola escrita, así
 > que **se lee, no se recuerda.**
+>
+> ⚠️ **Y antes de dar por terminada una pantalla, la
+> [DIRECTIVA DE ENTREGA COMPLETA](#-directiva-de-entrega-completa--nada-se-entrega-a-medias-mandatoria):**
+> su ayuda, sus tooltips, su diccionario y su reporte van **en el mismo trabajo que la crea**.
+> Lo que se deja «para después» se convierte en sesiones enteras de ir detrás del trabajo ya
+> entregado — ya pasó con 1.034 pantallas y 5.434 campos.
 
 ---
 
