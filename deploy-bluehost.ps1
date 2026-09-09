@@ -2,7 +2,14 @@
 # DEPLOY ZYNTELLO-APP A BLUEHOST VÍA SSH  (DESATENDIDO)
 # ============================================================================
 # Despliega zyntello-app a producción sin pedir nada:
-#   git pull en public_html → optimize:clear → migrate → limpiar vistas+permisos → rebuild cache
+#   artisan down → git pull → optimize:clear → migrate → limpiar vistas+permisos
+#   → rebuild cache → artisan up
+#
+# ⚠️ EL MODO MANTENIMIENTO NO ES OPCIONAL: el deploy NO es atomico. `git pull`
+#   reemplaza los archivos del directorio que Apache sirve, y una peticion que
+#   caiga en esa ventana ve el codigo a medio actualizar -> 500 AL USUARIO.
+#   Medido el 2026-09-08 en produccion. El `up` va en un `finally`, asi que la app
+#   se levanta AUNQUE un paso falle.
 #
 # ACCESO SSH SIN PROMPTS:
 #   - Usa la clave zyntello.ppk SIN passphrase (quitada con PuTTYgen).
@@ -80,6 +87,58 @@ function Invoke-SSHCommand {
     }
 }
 
+# ── Modo mantenimiento ──────────────────────────────────────────────────────
+# ⚠️⚠️ POR QUE EXISTE: el deploy NO es atomico. `git pull` reemplaza los archivos
+# del directorio que Apache esta sirviendo, asi que una peticion que caiga en esa
+# ventana ve el codigo a medio actualizar y devuelve un 500 AL USUARIO.
+#
+# Medido el 2026-09-08: un "Undefined variable $stats" aparecio en produccion
+# justo entre dos pulls. El codigo no tenia ningun defecto -- la pantalla funciona
+# y no se reproduce despues -- pero el usuario vio un error. Con dos sesiones
+# desplegando a la vez, la ventana se multiplica.
+function Enter-Mantenimiento {
+    # --retry hace que el navegador reintente solo en 15 s en vez de mostrar un error seco.
+    return (Invoke-SSHCommand `
+        -Command "cd $APP_DIR && /usr/local/bin/php artisan down --retry=15" `
+        -Description "[0/5] Poniendo la app en mantenimiento (evita el 500 durante la copia)...")
+}
+
+# ⚠️⚠️ Se llama SIEMPRE, tambien cuando un paso intermedio falla. Un deploy que
+# revienta con la app en `down` la deja CAIDA PARA TODOS, que es mucho peor que el
+# 500 puntual que se queria evitar.
+#
+# ⚠️ Y si `artisan up` no puede correr -- porque el codigo recien traido esta roto
+# y la app no arranca -- se borra el archivo de mantenimiento A MANO. Sin esa
+# segunda via, un despliegue con un error de sintaxis dejaria el sitio apagado y
+# el propio comando para levantarlo tampoco funcionaria.
+function Exit-Mantenimiento {
+    Write-Host "`n[5/5] Levantando la app..." -ForegroundColor Cyan
+    Write-Host ("=" * 70) -ForegroundColor DarkGray
+
+    $r = plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "cd $APP_DIR && /usr/local/bin/php artisan up" 2>&1
+
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host $r
+    } else {
+        Write-Host "artisan up fallo; borrando el archivo de mantenimiento a mano..." -ForegroundColor Yellow
+        plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "rm -f $APP_DIR/storage/framework/maintenance.php" 2>&1 | Out-Null
+    }
+
+    # No se da por buena la palabra del comando: se COMPRUEBA que el sitio responde.
+    $codigo = try {
+        (Invoke-WebRequest -Uri "https://app.zyntello.com/login" -Method Head -TimeoutSec 20 `
+            -UseBasicParsing -ErrorAction Stop).StatusCode
+    } catch { $_.Exception.Response.StatusCode.value__ }
+
+    if ($codigo -eq 200) {
+        Write-Host "  La app responde 200: esta arriba" -ForegroundColor Green
+    } else {
+        Write-Host "  ATENCION: la app respondio $codigo. Puede seguir en mantenimiento." -ForegroundColor Red
+        Write-Host "  Levantar a mano:" -ForegroundColor Yellow
+        Write-Host "    plink -i $KEY -P $PORT -batch $SSHHOST `"rm -f $APP_DIR/storage/framework/maintenance.php`"" -ForegroundColor White
+    }
+}
+
 # ── Banner ──────────────────────────────────────────────────────────────────
 Write-Host ""
 Write-Host "=====================================================================" -ForegroundColor Magenta
@@ -102,55 +161,76 @@ if ($Confirmar) {
 }
 
 # ============================================================================
-# PASO 1: PULL DESDE GITHUB EN EL DIRECTORIO ACTIVO
+# ⚠️⚠️ TODO EL DESPLIEGUE VA DENTRO DE try/finally.
+#
+# El `finally` levanta la app SIEMPRE, tambien cuando un paso hace `exit 1`
+# (en PowerShell el finally se ejecuta igualmente al salir con `exit`). Sin eso,
+# un deploy que reviente a mitad dejaria el sitio en mantenimiento para todos --
+# peor que el 500 puntual que el mantenimiento venia a evitar.
 # ============================================================================
-$success = Invoke-SSHCommand `
-    -Command "cd $APP_DIR && git pull origin master" `
-    -Description "[1/4] Pull desde GitHub en $APP_DIR..."
-
-if (-not $success) {
-    Write-Host "`nError en pull de GitHub. Abortando deployment." -ForegroundColor Red
+if (-not (Enter-Mantenimiento)) {
+    Write-Host "`nNo se pudo poner la app en mantenimiento. Se aborta ANTES de tocar nada:" -ForegroundColor Red
+    Write-Host "desplegar sin esa proteccion es lo que provoca los 500 durante la copia." -ForegroundColor Yellow
     exit 1
 }
 
-# ============================================================================
-# PASO 2: LIMPIAR CACHE Y EJECUTAR MIGRACIONES
-# ============================================================================
-$success = Invoke-SSHCommand `
-    -Command "cd $APP_DIR && /usr/local/bin/php artisan optimize:clear && /usr/local/bin/php artisan migrate --force" `
-    -Description "[2/4] Limpiar cache de Laravel y ejecutar migraciones..."
+try {
 
-if (-not $success) {
-    Write-Host "`nError en migraciones. Revisa logs del servidor." -ForegroundColor Red
-    Write-Host "   Log: storage/logs/deploy-migrate.log" -ForegroundColor Yellow
-    exit 1
-}
+    # ============================================================================
+    # PASO 1: PULL DESDE GITHUB EN EL DIRECTORIO ACTIVO
+    # ============================================================================
+    $success = Invoke-SSHCommand `
+        -Command "cd $APP_DIR && git pull origin master" `
+        -Description "[1/4] Pull desde GitHub en $APP_DIR..."
 
-# ============================================================================
-# PASO 3: LIMPIAR VISTAS COMPILADAS + PERMISOS DE STORAGE
-# ----------------------------------------------------------------------------
-# En Bluehost el git pull deja storage/framework/views con permisos restrictivos,
-# y el view:cache del paso siguiente NO puede sobrescribir las vistas compiladas
-# viejas -> el runtime sigue sirviendo una vista obsoleta/corrupta (error Blade).
-# Por eso, SIEMPRE: borrar vistas compiladas + recrear carpetas + chmod 777.
-# ============================================================================
-$success = Invoke-SSHCommand `
-    -Command "cd $APP_DIR && rm -rf storage/framework/views/* && mkdir -p storage/framework/views storage/framework/cache storage/framework/sessions && chmod -R 777 storage bootstrap/cache" `
-    -Description "[3/4] Limpiar vistas compiladas + arreglar permisos de storage..."
+    if (-not $success) {
+        Write-Host "`nError en pull de GitHub. Abortando deployment." -ForegroundColor Red
+        exit 1
+    }
 
-if (-not $success) {
-    Write-Host "`nAdvertencia: no se pudieron ajustar permisos/limpiar vistas. Puede haber vistas obsoletas." -ForegroundColor Yellow
-}
+    # ============================================================================
+    # PASO 2: LIMPIAR CACHE Y EJECUTAR MIGRACIONES
+    # ============================================================================
+    $success = Invoke-SSHCommand `
+        -Command "cd $APP_DIR && /usr/local/bin/php artisan optimize:clear && /usr/local/bin/php artisan migrate --force" `
+        -Description "[2/4] Limpiar cache de Laravel y ejecutar migraciones..."
 
-# ============================================================================
-# PASO 4: RECONSTRUIR CACHE OPTIMIZADO
-# ============================================================================
-$success = Invoke-SSHCommand `
-    -Command "cd $APP_DIR && /usr/local/bin/php artisan config:cache && /usr/local/bin/php artisan route:cache && /usr/local/bin/php artisan view:cache" `
-    -Description "[4/4] Reconstruir cache optimizado (config/routes/views)..."
+    if (-not $success) {
+        Write-Host "`nError en migraciones. Revisa logs del servidor." -ForegroundColor Red
+        Write-Host "   Log: storage/logs/deploy-migrate.log" -ForegroundColor Yellow
+        exit 1
+    }
 
-if (-not $success) {
-    Write-Host "`nError al reconstruir cache. La app deberia funcionar, pero sin optimizacion." -ForegroundColor Yellow
+    # ============================================================================
+    # PASO 3: LIMPIAR VISTAS COMPILADAS + PERMISOS DE STORAGE
+    # ----------------------------------------------------------------------------
+    # En Bluehost el git pull deja storage/framework/views con permisos restrictivos,
+    # y el view:cache del paso siguiente NO puede sobrescribir las vistas compiladas
+    # viejas -> el runtime sigue sirviendo una vista obsoleta/corrupta (error Blade).
+    # Por eso, SIEMPRE: borrar vistas compiladas + recrear carpetas + chmod 777.
+    # ============================================================================
+    $success = Invoke-SSHCommand `
+        -Command "cd $APP_DIR && rm -rf storage/framework/views/* && mkdir -p storage/framework/views storage/framework/cache storage/framework/sessions && chmod -R 777 storage bootstrap/cache" `
+        -Description "[3/4] Limpiar vistas compiladas + arreglar permisos de storage..."
+
+    if (-not $success) {
+        Write-Host "`nAdvertencia: no se pudieron ajustar permisos/limpiar vistas. Puede haber vistas obsoletas." -ForegroundColor Yellow
+    }
+
+    # ============================================================================
+    # PASO 4: RECONSTRUIR CACHE OPTIMIZADO
+    # ============================================================================
+    $success = Invoke-SSHCommand `
+        -Command "cd $APP_DIR && /usr/local/bin/php artisan config:cache && /usr/local/bin/php artisan route:cache && /usr/local/bin/php artisan view:cache" `
+        -Description "[4/4] Reconstruir cache optimizado (config/routes/views)..."
+
+    if (-not $success) {
+        Write-Host "`nError al reconstruir cache. La app deberia funcionar, pero sin optimizacion." -ForegroundColor Yellow
+    }
+
+
+} finally {
+    Exit-Mantenimiento
 }
 
 # ============================================================================
