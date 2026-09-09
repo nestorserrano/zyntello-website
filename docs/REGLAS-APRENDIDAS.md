@@ -546,3 +546,12 @@
 - la salida coloreada rompe una comprobacion de «la prueba corrio», y la verificacion se invalida a si misma sin ser falsa.
 - una violacion construida con un valor que puede ser NULL no viola nada.
 - un pendiente se comprueba antes de arrastrarlo: puede estar cerrado y medirse con la clave equivocada.
+- atender y administrar son dos permisos, no uno: si la unica llave abre las dos puertas, dar soporte entrega la cartera completa de clientes.
+- la autoridad la da la FICHA, no un flag global que ademas abre otros paneles.
+- un cambio de nivel se SINCRONIZA en los dos sentidos, o degradar a alguien no le quita nada mientras la pantalla dice que si.
+- una puerta de salida nunca se cierra con llave: quien pierde el nivel con la sesion viva se queda atrapado dentro.
+- el default de un nivel es el MENOS peligroso, y ahi el backfill NO reproduce lo vigente cuando lo vigente es el defecto.
+- un campo ausente no pisa lo que ya existe, y eso vale para el nombre igual que para el nivel.
+- una ruta que aborta por falta de SESION no sirve para probar un PERMISO: la prueba pasaria sin el middleware.
+- un global scope que se desactiva sin empresa activa hace que su violacion no viole nada: hay que montar el escenario donde SI filtra.
+- una pantalla que nadie puede abrir puede llevar anios rota, y el defecto entero aparece el dia que alguien recibe el permiso.

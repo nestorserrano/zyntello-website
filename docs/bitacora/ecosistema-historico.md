@@ -9,6 +9,91 @@
 
 ### Bitácora reciente (estado actual — 2026-09-08)
 
+> **SOPORTE DEJA DE SER TODO O NADA, Y ESO DESTAPÓ EL PANEL DE PLATAFORMA (2026-09-08) —
+> `[#1041]`, `[#1042]`, `[#1043]`**: pedido del director técnico — *«quien asigna los casos debe
+> ser soporte; el admin sigue siendo admin con superpoderes que no debe tener soporte»*.
+> **18 pruebas nuevas** · **6 guardas verificadas VIOLÁNDOLAS: las 6 se detectan** · soporte
+> **128 passed** · auth + permisos + diccionario + vistas **169 passed**.
+> **DESPLEGADO Y VERIFICADO EN PRODUCCIÓN** (`37439771`). ⚠️ Migración `2026_09_08_110000`.
+>
+> ⚠️⚠️ **El defecto de fondo: atender un caso y entrar al espacio de un cliente eran EL MISMO
+> permiso.** La única llave de la zona era `users.is_super_admin` — y ese flag abre además
+> **`/super-admin`**, el panel con la lista de TODAS las companies. O sea que a las tres cuentas
+> de agente creadas el día anterior se les había entregado **la cartera completa de Zyntello para
+> responder un ticket**.
+>
+> **La frontera**: `agente` → la BANDEJA (ver casos, **repartírselos entre compañeros**, responder,
+> cambiar estados); `admin` → todo eso **más** entrar al tenant, elevar a escritura, gestionar sus
+> usuarios y dar de alta agentes. ⚠️ **Asignar es trabajo de soporte, no un superpoder**: es como
+> se reparten la cola, y era lo que el director técnico pedía explícitamente.
+>
+> ⚠️⚠️ **La autoridad pasa a darla la FICHA (`sop_agentes.nivel`), no el flag.** Un agente ya **no
+> necesita `is_super_admin`** y por tanto no ve `/super-admin`. El criterio vive en
+> `AutoridadSoporte`, **fuente única** que consultan los dos middlewares y la vista: con una copia
+> por consumidor, el primero que se olvide de una rama ensancha el permiso sin que nada lo diga —
+> `[AGENTES-12]` midió que de seis copias del mismo criterio **dos ya habían divergido**.
+>
+> ⚠️ **El comando SINCRONIZA el flag en los dos sentidos**, no solo lo enciende: bajar a alguien a
+> `agente` **se lo retira**. Sin eso, degradar a un agente no le habría quitado nada mientras la
+> pantalla decía «Agente» — *un cambio de nivel que no cambia el acceso es peor que no ofrecerlo.*
+>
+> ⚠️ **SALIR queda al alcance de cualquiera con sesión de soporte**, a propósito: ponerla tras el
+> nivel admin dejaría **dentro** del tenant, sin forma de salir, a quien pierda el nivel con la
+> sesión viva. *Una puerta de salida no se cierra con llave.* Es el bloqueo total que `[SOP-F1-7]`
+> ya había documentado, evitado esta vez por diseño.
+>
+> ⚠️ **El default de la columna es `agente`**, el nivel MENOS peligroso — verificado por el DEFAULT
+> DE LA COLUMNA, no por la constante. ⚠️⚠️ Y el backfill **NO reproduce el comportamiento vigente**,
+> al revés de lo que manda la regla general: lo vigente **es el defecto que se corrige**, así que
+> marcar a los tres como `admin` habría dejado a los dos agentes con los superpoderes que se venían
+> a quitar. Solo `admin@zyntello.com` sube de nivel.
+>
+> ⚠️⚠️ **Y el trabajo destapó que `/super-admin` LLEVABA ROTO** (`[#1043]`): la vista lee `$stats` y
+> el controlador solo pasaba `$companies` → **`Undefined variable $stats` al RENDERIZAR**, no al
+> calcular, así que compilar la vista no lo veía (forma de `[KPI-VEND-1]`). **Estuvo invisible
+> porque producción tenía 0 usuarios con el flag: nadie podía abrirlo.** Salió a la luz al quedar
+> una única cuenta de administrador de plataforma. Los cuatro contadores se **midieron contra el
+> esquema** antes de escribirlos (`cf_projects.status` es un enum con `active`; «Con suscripción»
+> son las empresas con al menos un módulo activo, que es lo que de verdad da acceso).
+>
+> ⚠️ **Tres defectos propios, los tres cazados VERIFICANDO y no leyendo:**
+> **(1)** Metí `soporte.usuarios` entre las rutas probadas por HTTP, y esa aborta con **403 por
+> falta de SESIÓN**, no por el nivel: la prueba «el agente no alcanza los superpoderes» **habría
+> pasado igual sin el middleware nuevo**. Sale del HTTP y se custodia por estructura.
+> **(2)** La **simulación en producción** —antes de aplicar nada— reveló que ajustar solo el nivel
+> **cambiaba además el nombre**: sin `--nombre`, el comando lo derivaba del correo y «Soporte
+> Zyntello» habría pasado a «Soporte». *Quien lanza el comando para una cosa no tiene por qué
+> descubrir que cambió otra* (`[#1042]`).
+> **(3)** La violación del `sinScopeEmpresa()` del panel salió **«NO SE DETECTA»** — y la culpa era
+> del ESCENARIO: `HasEmpresa` **se desactiva cuando no hay empresa activa** (lo dice su propio
+> docblock) y el administrador no tiene ninguna, así que la violación no violaba nada. Montando una
+> empresa activa distinta de la de la obra, **se detecta**. Tercera vez que aparece esta forma.
+>
+> ⚠️ **Y una prueba de `[#1037]` falló, y era CORRECTO que fallara**: afirmaba que el comando
+> enciende el flag a todo agente. Ese comportamiento cambió a propósito; la aserción se actualizó
+> explicando por qué.
+>
+> **En producción, con LOGIN REAL y no leyendo la base**:
+> `soporte@` → `/soporte/bandeja` **200** · `/soporte` **403** · `/soporte/catalogo/agentes`
+> **403** · `/super-admin` **403**.
+> `admin@` → las cuatro en **200**, incluido el panel que antes reventaba.
+> Leyendo la base: **1 solo `is_super_admin`** (antes 3), **0 agentes con el flag**, **0 admins sin
+> él**, y el default de la columna en `agente`.
+>
+> **Reglas nuevas: atender y administrar son dos permisos, no uno — si la única llave abre las dos
+> puertas, dar soporte entrega la cartera completa de clientes · la autoridad la da la FICHA, no un
+> flag global que además abre otros paneles · un cambio de nivel se SINCRONIZA en los dos sentidos,
+> o degradar a alguien no le quita nada mientras la pantalla dice que sí · una puerta de salida
+> nunca se cierra con llave · el default de un nivel es el MENOS peligroso, y ahí el backfill NO
+> reproduce lo vigente cuando lo vigente es el defecto · un campo ausente no pisa lo que ya existe,
+> y eso vale para el nombre igual que para el nivel · una ruta que aborta por falta de SESIÓN no
+> sirve para probar un permiso: la prueba pasaría sin el middleware · un global scope que se
+> desactiva sin empresa activa hace que su violación no viole nada — hay que montar el escenario
+> donde SÍ filtra · una pantalla que nadie puede abrir puede llevar años rota, y el día que alguien
+> reciba el permiso se encuentra el defecto entero.**
+
+### Bitácora anterior (2026-09-08, mañana)
+
 > **LA BANDEJA DE SOPORTE NO SE PODÍA ALCANZAR NI USAR (2026-09-08) — `[#1037]`, `[#513]`**:
 > pregunta del director técnico — *«continúa con el módulo de soporte en admin, no veo el acceso,
 > quizá falte, estará en otra fase»*. **No faltaba ninguna fase: faltaban tres cosas, y las tres
