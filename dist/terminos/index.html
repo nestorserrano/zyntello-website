@@ -135,9 +135,9 @@
         asociados (correo electrónico y WhatsApp).
       </p>
       <div class="meta">
-        <span>Última actualización: <strong>7 de septiembre de 2026</strong></span>
+        <span>Última actualización: <strong>11 de septiembre de 2026</strong></span>
         <span>Vigencia: <strong>desde su publicación</strong></span>
-        <span>Versión: <strong><a class="verlink" href="#s25">1.5 — ver control de cambios</a></strong></span>
+        <span>Versión: <strong><a class="verlink" href="#s25">1.6 — ver control de cambios</a></strong></span>
         <span>Idioma original: <strong>español</strong></span>
       </div>
     </div>
@@ -274,6 +274,9 @@
             <tr><td><strong>Generador de Reportes</strong></td><td>Constructor visual de reportes sobre orígenes de datos autorizados, columnas calculadas, subtotales, exportación y envío programado.</td></tr>
             <tr><td><strong>Administración de Condominios</strong></td><td>Unidades y residentes, alícuotas, cuotas de mantenimiento, fondos de reserva, áreas comunes y reservas, incidencias, asambleas con votación, comunicaciones y portal del residente.</td></tr>
             <tr><td><strong>Prestamello</strong></td><td>Préstamos y ventas a crédito: solicitudes, evaluación de riesgo, garantías, tablas de amortización, cobranza y rutas de cobro, recibos digitales, pagos en línea y catálogo de bienes financiables.</td></tr>
+            <tr><td><strong>Restaurante</strong></td><td>Operación de un restaurante, cafetería, bar o comida rápida: mapa de mesas, comanda del mesero con modificadores, cocina en pantalla, división y cobro de cuentas, recetas con costo por plato, carta con código QR para el comensal, delivery, reservas y cuadre de turno.</td></tr>
+            <tr><td><strong>Gestor Inteligente de Inventarios</strong> <span class="mini">(mejora de Inventario)</span></td><td>Pronóstico de demanda, punto de reorden, lote económico de compra y clasificación ABC sobre el movimiento que ya registra Inventario. Requiere el módulo Inventario contratado.</td></tr>
+            <tr><td><strong>Planificador de Rutas</strong></td><td>Planificación y ejecución de rutas de <strong>despacho</strong> (entregar mercancía o facturas) y de <strong>visita</strong> (recorrer la cartera comercial): ordenación de paradas sobre mapa, asignación de vehículo y conductor, aplicación de campo para el conductor y, si el Suscriptor lo activa, seguimiento de la ubicación durante la ruta. Los estados de entrega se escriben en Facturación y las visitas en la bitácora del cliente: el módulo no lleva un registro paralelo.</td></tr>
             <tr><td><strong>Car Wash</strong></td><td>Operación de lavado y taller: turnos y bahías, servicios, vehículos y clientes, tienda, comisiones de lavadores, membresías y fidelización, mantenimiento programado y tablero de operación.</td></tr>
           </tbody>
         </table>
@@ -718,6 +721,8 @@
             <tr><td><strong>Zyntello Events</strong></td><td>Datos de participantes: nombre, documento de identidad, correo, teléfono, organización, fotografía cuando se captura, registros de acceso y asistencia.</td></tr>
             <tr><td><strong>Condominios</strong></td><td>Datos de residentes y propietarios, unidad, alícuota, estado de cuenta, reservas de áreas comunes, incidencias reportadas con fotografías, votos en asamblea.</td></tr>
             <tr><td><strong>Prestamello</strong></td><td>Datos del solicitante y de sus fiadores, documentos de identidad, ingresos y egresos declarados, patrimonio, referencias, <strong>consultas a burós de crédito</strong>, garantías y sus documentos, historial de pagos, <strong>geolocalización</strong> del personal de cobro en ruta.</td></tr>
+            <tr><td><strong>Restaurante</strong></td><td>Nombre y datos de contacto del comensal cuando hay reserva o pedido para llevar; en <strong>delivery</strong>, la <strong>dirección de entrega, su referencia y el teléfono</strong>; el repartidor asignado; y, del personal, el mesero que atiende cada cuenta y las <strong>propinas</strong> que le corresponden.</td></tr>
+            <tr><td><strong>Planificador de Rutas</strong></td><td>Direcciones de entrega y visita de los clientes y sus <strong>coordenadas geográficas</strong>; datos del transportista, del vehículo y del conductor asignado; y, cuando el Suscriptor activa el seguimiento, la <strong>ubicación del conductor registrada de forma repetida durante la ruta</strong>, con la hora de llegada y salida de cada parada y el resultado de cada entrega o visita.</td></tr>
             <tr><td><strong>Car Wash</strong></td><td>Datos del cliente y de sus vehículos: placa, marca, modelo, color, odómetro, fotografías del vehículo, historial de servicios.</td></tr>
             <tr><td><strong>Caja · Bancos · Contabilidad</strong></td><td>Datos bancarios de la Empresa, beneficiarios de cheques y transferencias, movimientos y asientos con referencia a terceros.</td></tr>
             <tr><td><strong>Inventario · Activos Fijos</strong></td><td>Responsables asignados a activos, custodios, registros de conteo e inventario físico.</td></tr>
@@ -754,6 +759,7 @@
             <tr><td><strong>Proveedor de correo saliente</strong></td><td>Entrega de correos transaccionales y de documentos enviados por el Suscriptor.</td></tr>
             <tr><td><strong>Proveedores de inteligencia artificial</strong></td><td>Extracción asistida de datos de facturas y documentos, cuando el Suscriptor activa esa función (ver sección 16).</td></tr>
             <tr><td><strong>Administraciones tributarias</strong></td><td>Validación y transmisión de comprobantes fiscales electrónicos y consulta de contribuyentes, cuando el Suscriptor lo habilita.</td></tr>
+            <tr><td><strong>Proveedor de mapas</strong></td><td>Conversión de direcciones en coordenadas, cálculo de distancias y trazado de recorridos en el Planificador de Rutas. El Suscriptor elige cuál usar entre <strong>OpenStreetMap</strong> (opción predeterminada, sin contrato ni credenciales), <strong>Google Maps</strong>, <strong>HERE</strong> y <strong>Mapbox</strong>; para los tres últimos se usan las credenciales del propio Suscriptor. Se les envían direcciones y coordenadas de las paradas, no el nombre del cliente ni el contenido del pedido.</td></tr>
             <tr><td><strong>Burós de crédito</strong></td><td>Consulta de historial crediticio en el Módulo Prestamello, únicamente con las credenciales y bajo la autorización del propio Suscriptor.</td></tr>
           </tbody>
         </table>
@@ -1088,7 +1094,12 @@
           </thead>
           <tbody>
             <tr>
-              <td>1.5 <span class="vig">Vigente</span></td>
+              <td>1.6 <span class="vig">Vigente</span></td>
+              <td>11 de septiembre de 2026</td>
+              <td><strong>Tres módulos que faltaban y el proveedor de mapas.</strong> La sección <strong>4</strong> no listaba <strong>Restaurante</strong>, el <strong>Gestor Inteligente de Inventarios</strong> ni el <strong>Planificador de Rutas</strong>, que ya se ofrecen: se incorporan con su alcance. La sección <strong>14</strong> declara los datos personales de los dos que tratan datos de personas: en <strong>Restaurante</strong>, los del comensal en reservas y pedidos, la <strong>dirección y el teléfono de delivery</strong>, el repartidor y las <strong>propinas</strong> del mesero; en <strong>Planificador de Rutas</strong>, las direcciones y <strong>coordenadas</strong> de las paradas y la <strong>ubicación del conductor durante la ruta</strong> cuando el Suscriptor activa el seguimiento. La sección <strong>15</strong> incorpora un <strong>subencargado nuevo</strong>, el <strong>proveedor de mapas</strong> (OpenStreetMap por defecto, o Google Maps, HERE o Mapbox con las credenciales del propio Suscriptor), al que se envían direcciones y coordenadas de las paradas y nunca el nombre del cliente ni el contenido del pedido. La Política de Privacidad lo desarrolla en sus secciones 3, 4, 5 y 8 (versión 1.8). No cambian precios, obligaciones de pago, plazos, límites de responsabilidad ni jurisdicción.</td>
+            </tr>
+            <tr>
+              <td>1.5</td>
               <td>7 de septiembre de 2026</td>
               <td><strong>Abrir un caso de soporte no obliga a nada.</strong> Se precisa en la sección <strong>18.3</strong> que reportar una incidencia no genera obligación de pago: si la atención requiere un trabajo fuera del soporte incluido, Zyntello lo cotiza y espera la <strong>autorización previa</strong> de un usuario con permiso de facturación antes de ejecutarlo, y sin ella el trabajo no avanza ni acumula horas. Es la contrapartida contractual del portal de casos que el Acuerdo de Nivel de Servicio documenta en su sección 8.7 (versión 1.2), y de los datos de la mesa de ayuda que la Política de Privacidad documenta en su 12.1 (versión 1.5). No cambian precios, obligaciones de pago, plazos, límites de responsabilidad ni jurisdicción.</td>
             </tr>

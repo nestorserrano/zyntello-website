@@ -131,9 +131,9 @@
         <a href="#s9">solicitud de eliminación de datos</a>.
       </p>
       <div class="meta">
-        <span>Última actualización: <strong>9 de septiembre de 2026</strong></span>
+        <span>Última actualización: <strong>11 de septiembre de 2026</strong></span>
         <span>Vigencia: <strong>desde su publicación</strong></span>
-        <span>Versión: <strong><a class="verlink" href="#s20">1.7 — ver control de cambios</a></strong></span>
+        <span>Versión: <strong><a class="verlink" href="#s20">1.8 — ver control de cambios</a></strong></span>
         <span>Idioma original: <strong>español</strong></span>
       </div>
     </div>
@@ -309,6 +309,7 @@
             <tr><td><strong>Zyntello Events</strong></td><td>Nombre, documento de identidad, correo, teléfono, organización, fotografía cuando se captura, y registros de acceso y asistencia.</td></tr>
             <tr><td><strong>Condominios</strong></td><td>Datos de residentes y propietarios, unidad, alícuota, estado de cuenta, reservas de áreas comunes, incidencias con fotografías y votos en asamblea.</td></tr>
             <tr><td><strong>Prestamello</strong></td><td>Datos del solicitante y sus fiadores, documentos de identidad, ingresos y egresos declarados, patrimonio, referencias, <strong>resultado de consultas a burós de crédito</strong>, garantías y sus documentos, historial de pagos y <strong>ubicación geográfica</strong> del personal de cobro en ruta.</td></tr>
+            <tr><td><strong>Planificador de Rutas</strong></td><td>Direcciones de entrega y de visita de los clientes y sus <strong>coordenadas geográficas</strong>; datos del transportista, del vehículo y del conductor asignado; y, cuando el Suscriptor activa el seguimiento, la <strong>ubicación del conductor registrada de forma repetida durante la jornada</strong> (de manera predeterminada cada 30 segundos), junto con la hora de llegada y salida de cada parada y el resultado de cada entrega o visita.</td></tr>
             <tr><td><strong>Car Wash</strong></td><td>Datos del cliente y de sus vehículos: placa, marca, modelo, color, odómetro, fotografías del vehículo e historial de servicios.</td></tr>
             <tr><td><strong>ConstructFlow</strong></td><td>Personal asignado a obra, documentos y fotografías de avance.</td></tr>
             <tr><td><strong>Inventario · Activos Fijos</strong></td><td>Responsables y custodios de activos, registros de conteo e inventario físico.</td></tr>
@@ -318,11 +319,23 @@
       </div>
       <div class="note warn">
         <p>
-          <b>Datos de especial impacto.</b> Los módulos de Nómina, PSA y Prestamello permiten tratar
-          documentos de identidad, remuneraciones, información asociada a ausencias por salud,
-          fotografías del rostro, ubicación geográfica de personal e historial crediticio. Es
-          responsabilidad del Suscriptor informar previamente a los titulares, contar con base legal o
-          consentimiento y activar solo las verificaciones estrictamente necesarias.
+          <b>Datos de especial impacto.</b> Los módulos de Nómina, PSA, Prestamello y Planificador de
+          Rutas permiten tratar documentos de identidad, remuneraciones, información asociada a
+          ausencias por salud, fotografías del rostro, ubicación geográfica de personal e historial
+          crediticio. Es responsabilidad del Suscriptor informar previamente a los titulares, contar
+          con base legal o consentimiento y activar solo las verificaciones estrictamente necesarias.
+        </p>
+        <p>
+          <strong>Seguimiento continuo de la ubicación de un trabajador.</strong> Conviene distinguir
+          dos cosas que no son iguales aunque las dos sean ubicación. En Nómina, PSA y Prestamello se
+          registra <strong>un punto en un momento concreto</strong>: al marcar entrada o salida, al
+          atender una orden o al gestionar un cobro. El Planificador de Rutas, en cambio, puede
+          registrar la posición del conductor <strong>de forma repetida mientras dura la ruta</strong>,
+          lo que permite reconstruir su recorrido del día. Es un tratamiento más intrusivo y por eso
+          <strong>nace desactivado</strong>: solo funciona si el Suscriptor lo enciende y el conductor
+          inicia la ruta desde su dispositivo. Antes de activarlo, el Suscriptor debe informar a la
+          persona afectada de qué se registra, durante cuánto tiempo y para qué, y contar con base
+          legal o con su consentimiento. Fuera de la jornada o de la ruta no se registra ubicación.
         </p>
       </div>
       <p>
@@ -354,6 +367,7 @@
             <tr><td><strong>Proveedores de inteligencia artificial</strong></td><td>Imagen o texto del documento a interpretar, cuando el Suscriptor activa esa función con sus propias credenciales.</td><td>Extracción asistida de datos de facturas (ver sección 16).</td></tr>
             <tr><td><strong>Administraciones tributarias</strong></td><td>Los datos del comprobante fiscal exigidos por la normativa.</td><td>Validación y transmisión de comprobantes fiscales electrónicos.</td></tr>
             <tr><td><strong>Burós de crédito</strong></td><td>Identificación del solicitante, con las credenciales y bajo la autorización del propio Suscriptor.</td><td>Consulta de historial crediticio en el módulo Prestamello.</td></tr>
+            <tr><td><strong>Proveedor de mapas</strong> (OpenStreetMap, Google Maps, HERE o Mapbox, según elija el Suscriptor)</td><td>Direcciones y coordenadas de las paradas de una ruta. No se les envía el nombre del cliente ni el contenido del pedido.</td><td>Convertir una dirección en coordenadas, calcular distancias y trazar el recorrido, cuando el Suscriptor usa el Planificador de Rutas.</td></tr>
             <tr><td><strong>Web3Forms</strong></td><td>Nombre, correo y mensaje del formulario del sitio web.</td><td>Entrega de consultas comerciales a nuestro correo.</td></tr>
             <tr><td><strong>Autoridades competentes</strong></td><td>Lo estrictamente requerido por una orden legal válida.</td><td>Cumplimiento de obligaciones legales.</td></tr>
             <tr><td><strong>Asesores profesionales</strong></td><td>Lo estrictamente necesario.</td><td>Contabilidad, auditoría y defensa legal.</td></tr>
@@ -440,6 +454,7 @@
           <tbody>
             <tr><td>Cuenta y datos operativos del Suscriptor</td><td>Mientras la suscripción esté activa, más <strong>30 días</strong> tras la terminación para permitir la exportación. Luego se eliminan.</td></tr>
             <tr><td>Datos de facturación y comprobantes fiscales</td><td><strong>10 años</strong>, o el plazo que imponga la normativa fiscal aplicable si es distinto.</td></tr>
+            <tr><td>Historial de posiciones de una ruta (Planificador de Rutas)</td><td><strong>90 días</strong> desde que la ruta se cierra. Después se conserva únicamente el resumen de la ruta —paradas, horas de llegada y salida, distancia y resultado de cada entrega o visita—, que es lo que hace falta para los informes de cumplimiento, y <strong>se borra el rastro punto a punto</strong>, que es el dato que permitiría reconstruir el recorrido de una persona. Si el Suscriptor no activa el seguimiento, no se genera ningún historial de posiciones.</td></tr>
             <tr><td>Registros técnicos y bitácora de auditoría</td><td><strong>12 meses</strong>, salvo que se requieran por más tiempo para investigar un incidente de seguridad.</td></tr>
             <tr><td>Cuenta de demostración</td><td>Se <strong>elimina automáticamente todos los días</strong> mediante un proceso programado.</td></tr>
             <tr><td>Respaldos</td><td>Ciclo de rotación de <strong>30 días</strong>. Los datos eliminados desaparecen de los respaldos al completarse el ciclo.</td></tr>
@@ -854,7 +869,27 @@
           </thead>
           <tbody>
             <tr>
-              <td>1.7 <span class="vig">Vigente</span></td>
+              <td>1.8 <span class="vig">Vigente</span></td>
+              <td>11 de septiembre de 2026</td>
+              <td><strong>El Planificador de Rutas y el seguimiento de la ubicación de un conductor.</strong>
+                  Entra el módulo <strong>Planificador de Rutas</strong> en la sección <strong>4</strong>, con
+                  los datos que trata: direcciones y <strong>coordenadas</strong> de las paradas, transportista,
+                  vehículo y conductor asignado, y la ubicación del conductor durante la ruta.
+                  Se añade a la sección <strong>3</strong> una explicación que faltaba y que no es un matiz:
+                  <strong>registrar un punto al marcar entrada</strong> —lo que ya hacían Nómina, PSA y
+                  Prestamello— <strong>no es lo mismo que registrar la posición repetidamente durante toda la
+                  jornada</strong>, porque lo segundo permite reconstruir el recorrido de una persona. Se declara
+                  que ese seguimiento <strong>nace desactivado</strong> y que fuera de la ruta no se registra
+                  ubicación. En la sección <strong>5</strong> se declara un <strong>destinatario nuevo</strong>:
+                  el <strong>proveedor de mapas</strong> (OpenStreetMap, Google Maps, HERE o Mapbox, a elección
+                  del Suscriptor), al que se envían direcciones y coordenadas de las paradas —no el nombre del
+                  cliente ni el contenido del pedido—. Y en la sección <strong>8</strong> se fija un plazo de
+                  conservación propio para el <strong>rastro punto a punto</strong>: <strong>90 días</strong>
+                  tras cerrar la ruta, después de los cuales se conserva solo el resumen que necesitan los
+                  informes y se borra el recorrido detallado.</td>
+            </tr>
+            <tr>
+              <td>1.7</td>
               <td>9 de septiembre de 2026</td>
               <td><strong>El asistente con inteligencia artificial.</strong> Se amplía la sección
                   <strong>12.1</strong> para declarar una función nueva y el <strong>subencargado</strong> que
