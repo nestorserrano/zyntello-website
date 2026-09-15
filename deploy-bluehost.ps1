@@ -3,7 +3,12 @@
 # ============================================================================
 # Despliega zyntello-app a producción sin pedir nada:
 #   artisan down → git pull → optimize:clear → migrate → limpiar vistas+permisos
-#   → rebuild cache → artisan up
+#   → artisan up → rebuild cache
+#
+# ⚠️⚠️ La cache va DESPUES de levantar la app, y no es un detalle de orden: cuando
+#   iba antes, `view:cache` tumbaba el SSH de Bluehost, el `artisan up` ya no podia
+#   correr y el sitio se quedaba en 503 POR RECONSTRUIR UNA CACHE. Paso el
+#   2026-09-15. La app funciona sin cache optimizada; caida, no.
 #
 # ⚠️ EL MODO MANTENIMIENTO NO ES OPCIONAL: el deploy NO es atomico. `git pull`
 #   reemplaza los archivos del directorio que Apache sirve, y una peticion que
@@ -254,20 +259,41 @@ try {
         Write-Host "`nAdvertencia: no se pudieron ajustar permisos/limpiar vistas. Puede haber vistas obsoletas." -ForegroundColor Yellow
     }
 
-    # ============================================================================
-    # PASO 4: RECONSTRUIR CACHE OPTIMIZADO
-    # ============================================================================
-    $success = Invoke-SSHCommand `
-        -Command "cd $APP_DIR && /usr/local/bin/php artisan config:cache && /usr/local/bin/php artisan route:cache && /usr/local/bin/php artisan view:cache" `
-        -Description "[4/4] Reconstruir cache optimizado (config/routes/views)..."
-
-    if (-not $success) {
-        Write-Host "`nError al reconstruir cache. La app deberia funcionar, pero sin optimizacion." -ForegroundColor Yellow
-    }
-
-
 } finally {
     Exit-Mantenimiento
+}
+
+# ============================================================================
+# PASO 4: RECONSTRUIR CACHE OPTIMIZADO -- DESPUES de levantar la app
+# ----------------------------------------------------------------------------
+# ⚠️⚠️ Medido el 2026-09-15, y costo el sitio caido: los tres `artisan` iban
+# ENCADENADOS EN UNA SOLA CONEXION y dentro del `try`, o sea ANTES de levantar la
+# app. `view:cache` compila mas de mil vistas y **tumba el SSH de Bluehost**
+# ("Remote side unexpectedly closed network connection"). Al caerse esa conexion,
+# el servidor deja de aceptar las siguientes, asi que el `artisan up` del
+# `finally` tampoco pudo correr -- y la app se quedo en mantenimiento, con un 503
+# para todos, POR RECONSTRUIR UNA CACHE.
+#
+# La cache es una optimizacion: la app funciona sin ella, compilando cada vista la
+# primera vez que se pide. Cambiar el sitio caido por unos milisegundos de primera
+# carga es el peor intercambio posible, asi que ahora va despues del `up`.
+#
+# ⚠️ Y los tres van en conexiones SEPARADAS: encadenados, el pesado se lleva por
+# delante a los otros dos. Medido: por separado, `config:cache` y `route:cache`
+# pasan sin problema y solo `view:cache` tumba la conexion.
+# ============================================================================
+Write-Host "`n[4/4] Reconstruir cache optimizado (la app YA esta arriba)..." -ForegroundColor Cyan
+Write-Host ("=" * 70) -ForegroundColor DarkGray
+
+foreach ($paso in @('config:cache', 'route:cache', 'view:cache')) {
+    $r = plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "cd $APP_DIR && /usr/local/bin/php artisan $paso" 2>&1
+
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "  $paso OK" -ForegroundColor Green
+    } else {
+        # No es un fallo del despliegue: la app esta arriba y sirve igual.
+        Write-Host "  $paso no se pudo completar (la app funciona sin el)" -ForegroundColor Yellow
+    }
 }
 
 # ============================================================================
