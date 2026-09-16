@@ -557,3 +557,4 @@
 - una pantalla que nadie puede abrir puede llevar anios rota, y el defecto entero aparece el dia que alguien recibe el permiso.
 
 - el deploy con `git merge` sobre el directorio que sirve Apache NO es atómico: una petición durante la copia da un 500 que NO se reproduce después, y se pierde el rato buscando un defecto que no existe. Envolverlo en `artisan down`/`up`, con el `up` incondicional.
+- el modo mantenimiento de Laravel son DOS archivos y solo uno decide el 503: `storage/framework/down` es el ESTADO (lo lee `FileBasedMaintenanceMode::active()`) y `storage/framework/maintenance.php` es solo el atajo precompilado que incluye `public/index.php`. Borrar el segundo deja el sitio caído — Laravel arranca, ve `down` y sigue en 503 — así que la vía de rescate de un deploy tiene que borrar los dos, empezando por `down`. La pista que lo delata es la cabecera `retry-after`, que la pone el propio mantenimiento.

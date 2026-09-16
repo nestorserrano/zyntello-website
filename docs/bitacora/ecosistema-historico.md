@@ -9,6 +9,26 @@
 
 ### Bitácora reciente (estado actual — 2026-09-08)
 
+> **EL RESCATE DEL DEPLOY BORRABA EL ARCHIVO EQUIVOCADO (2026-09-16) — `[#1060]`**: con el sitio
+> en 503 tras un deploy fallido se borró `storage/framework/maintenance.php` —la vía de rescate que
+> documentaban el script, `CLAUDE.md` y la memoria— y **la app siguió caída**. `php artisan up` sí
+> la levantó.
+>
+> ⚠️⚠️ **El modo mantenimiento de Laravel son DOS archivos y solo uno decide el 503:**
+> `storage/framework/down` es **el ESTADO** —`FileBasedMaintenanceMode::active()` hace
+> `file_exists()` sobre él— y `storage/framework/maintenance.php` es **solo el atajo** precompilado
+> que incluye `public/index.php` para responder sin arrancar Laravel. Borrando solo el atajo queda
+> el estado: Laravel arranca, ve `down` y sigue en 503.
+>
+> ⚠️ **El síntoma despista dos veces**: el archivo que acabas de borrar ya no existe *y* la app
+> sigue caída, así que se concluye «el 503 ya no es el mantenimiento» y se va a buscar a otro sitio.
+> Lo que lo delató fue la cabecera **`retry-after: 15`** — la que pone el mantenimiento de Laravel,
+> con el valor exacto que usa nuestro `--retry=15`.
+>
+> Verificado **leyendo el código del framework en `vendor/`**, no probando en el servidor: con este
+> SSH sale más barato. Los tres `rm` del script borran ya `down` primero. Sin prueba automática —
+> el script vive en este repo, que no tiene suite—: la guarda es su propio comentario.
+
 > **SOPORTE DEJA DE SER TODO O NADA, Y ESO DESTAPÓ EL PANEL DE PLATAFORMA (2026-09-08) —
 > `[#1041]`, `[#1042]`, `[#1043]`**: pedido del director técnico — *«quien asigna los casos debe
 > ser soporte; el admin sigue siendo admin con superpoderes que no debe tener soporte»*.
