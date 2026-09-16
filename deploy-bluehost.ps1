@@ -1,4 +1,4 @@
-﻿# ============================================================================
+# ============================================================================
 # DEPLOY ZYNTELLO-APP A BLUEHOST VÍA SSH  (DESATENDIDO)
 # ============================================================================
 # Despliega zyntello-app a producción sin pedir nada:
@@ -61,37 +61,6 @@ if (Select-String -Path $KEY -Pattern 'Encryption: aes' -Quiet) {
     exit 1
 }
 
-# ── Ejecutar comando SSH (batch + hostkey, sin prompts) ─────────────────────
-function Invoke-SSHCommand {
-    param([string]$Command, [string]$Description)
-
-    # Un comando VACIO hace que plink abra sesion y salga con codigo 0: el paso se
-    # leeria como "Completado" sin haber ejecutado nada. Paso perdido con exito
-    # aparente, que es peor que un fallo. Causa tipica: la continuacion de linea
-    # con backtick roto por finales de linea CR CR LF (PowerShell trata el CR
-    # suelto como salto y separa los parametros de su llamada).
-    if ([string]::IsNullOrWhiteSpace($Command)) {
-        Write-Host "ERROR INTERNO: Invoke-SSHCommand se llamo SIN comando." -ForegroundColor Red
-        Write-Host "  Revisa los finales de linea del script (deben ser CRLF simple, no CR CR LF)." -ForegroundColor Yellow
-        return $false
-    }
-
-    Write-Host "`n$Description" -ForegroundColor Cyan
-    Write-Host ("=" * 70) -ForegroundColor DarkGray
-
-    $result = plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "$Command" 2>&1
-
-    if ($LASTEXITCODE -eq 0) {
-        Write-Host $result
-        Write-Host "Completado" -ForegroundColor Green
-        return $true
-    } else {
-        Write-Host $result -ForegroundColor Red
-        Write-Host "Error (codigo: $LASTEXITCODE)" -ForegroundColor Red
-        return $false
-    }
-}
-
 # ── Modo mantenimiento ──────────────────────────────────────────────────────
 # ⚠️⚠️ POR QUE EXISTE: el deploy NO es atomico. `git pull` reemplaza los archivos
 # del directorio que Apache esta sirviendo, asi que una peticion que caiga en esa
@@ -109,34 +78,6 @@ function Get-EstadoApp {
     } catch {
         return $_.Exception.Response.StatusCode.value__
     }
-}
-
-function Enter-Mantenimiento {
-    # --retry hace que el navegador reintente solo en 15 s en vez de mostrar un error seco.
-    $ok = Invoke-SSHCommand `
-        -Command "cd $APP_DIR && /usr/local/bin/php artisan down --retry=15" `
-        -Description "[0/5] Poniendo la app en mantenimiento (evita el 500 durante la copia)..."
-
-    # ⚠️⚠️ NO se decide por el codigo de salida de plink. El SSH de Bluehost corta la
-    # conexion CON FRECUENCIA *despues* de haber ejecutado el comando: plink devuelve
-    # "Connection reset by peer" y codigo 1, pero el `artisan down` YA CORRIO.
-    #
-    # Paso de verdad el 2026-09-09: el script leyo ese 1 como fallo, aborto ANTES de
-    # entrar en el try -- asi que el `finally` nunca corrio -- y dejo el sitio en
-    # mantenimiento. Justo lo que el mantenimiento venia a evitar, por otra puerta.
-    #
-    # El estado se COMPRUEBA, no se deduce del codigo de salida.
-    $codigo = Get-EstadoApp
-
-    if ($codigo -eq 503) {
-        if (-not $ok) {
-            Write-Host "  (plink dio error pero la app SI esta en mantenimiento: se continua)" -ForegroundColor Yellow
-        }
-        return $true
-    }
-
-    Write-Host "  La app responde ${codigo}: NO esta en mantenimiento." -ForegroundColor Red
-    return $false
 }
 
 # ⚠️⚠️ Se llama SIEMPRE, tambien cuando un paso intermedio falla. Un deploy que
@@ -219,64 +160,103 @@ if ($Confirmar) {
 }
 
 # ============================================================================
-# ⚠️⚠️ TODO EL DESPLIEGUE VA DENTRO DE try/finally.
+# ⚠️⚠️ EL DESPLIEGUE SE EJECUTA ENTERO EN EL SERVIDOR, NO DESDE AQUI.
 #
-# El `finally` levanta la app SIEMPRE, tambien cuando un paso hace `exit 1`
-# (en PowerShell el finally se ejecuta igualmente al salir con `exit`). Sin eso,
-# un deploy que reviente a mitad dejaria el sitio en mantenimiento para todos --
-# peor que el 500 puntual que el mantenimiento venia a evitar.
+# Medido el 2026-09-16: el SSH de Bluehost corta toda sesion que DURE unos
+# segundos. `git rev-parse` pasa siempre; `php artisan` -- que tarda lo que tarda
+# arrancar Laravel -- la tumba SIEMPRE. No es una racha ni el bloqueo temporal por
+# conexiones repetidas: es reproducible. Ese dia el deploy no pudo ni empezar,
+# porque moria en el `artisan down` del paso 0.
+#
+# Y no era Laravel: lanzado desacoplado, el mismo comando contestaba
+# "Laravel Framework 12.58.0" sin una queja. Lo que no aguanta es la CONEXION.
+#
+# Asi que `deploy-remoto.sh` se sube con pscp, se lanza con `(nohup ... &)` --
+# la sesion SSH se puede caer acto seguido sin llevarselo por delante -- y desde
+# aqui se sigue su log. Las protecciones no se pierden: el mantenimiento, el `up`
+# incondicional (ahora un `trap EXIT` del propio script) y el aborto si no se pudo
+# entrar en mantenimiento viven dentro de el.
 # ============================================================================
-if (-not (Enter-Mantenimiento)) {
-    Write-Host "`nNo se pudo poner la app en mantenimiento. Se aborta ANTES de tocar nada:" -ForegroundColor Red
-    Write-Host "desplegar sin esa proteccion es lo que provoca los 500 durante la copia." -ForegroundColor Yellow
-    exit 1
+function Get-LogRemoto {
+    param([string]$Archivo)
+
+    # Un solo intento puede caer por el corte tipico del SSH; con tres, un corte
+    # suelto no se lee como "el deploy no avanza".
+    for ($i = 1; $i -le 3; $i++) {
+        $r = plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "tail -200 ~/$Archivo 2>/dev/null" 2>&1
+        if ($LASTEXITCODE -eq 0) { return ($r | Out-String) }
+    }
+    return $null
 }
 
-try {
+function Invoke-DeployRemoto {
+    param(
+        [string]$Modo,
+        [string]$LogRemoto,
+        [string]$Descripcion,
+        [int]$EsperaMaximaSegundos = 900
+    )
 
-    # ============================================================================
-    # PASO 1: PULL DESDE GITHUB EN EL DIRECTORIO ACTIVO
-    # ============================================================================
-    $success = Invoke-SSHCommand `
-        -Command "cd $APP_DIR && git pull origin master" `
-        -Description "[1/4] Pull desde GitHub en $APP_DIR..."
+    Write-Host "`n$Descripcion" -ForegroundColor Cyan
+    Write-Host ("=" * 70) -ForegroundColor DarkGray
 
-    if (-not $success) {
-        Write-Host "`nError en pull de GitHub. Abortando deployment." -ForegroundColor Red
-        exit 1
+    $sh = Join-Path $PSScriptRoot "deploy-remoto.sh"
+    if (-not (Test-Path $sh)) {
+        Write-Host "  ERROR: no se encontro $sh" -ForegroundColor Red
+        return $null
     }
 
-    # ============================================================================
-    # PASO 2: LIMPIAR CACHE Y EJECUTAR MIGRACIONES
-    # ============================================================================
-    $success = Invoke-SSHCommand `
-        -Command "cd $APP_DIR && /usr/local/bin/php artisan optimize:clear && /usr/local/bin/php artisan migrate --force" `
-        -Description "[2/4] Limpiar cache de Laravel y ejecutar migraciones..."
+    # ⚠️ pscp y no un `echo ... > archivo` por SSH: una linea de comando larga es
+    # justo lo que corta esta conexion, y el contenido no necesita escaparse.
+    pscp -i $KEY -P $PORT -hostkey $HOSTKEY -batch $sh "${SSHHOST}:zyn-deploy.sh" 2>&1 | Out-Null
 
-    if (-not $success) {
-        Write-Host "`nError en migraciones. Revisa logs del servidor." -ForegroundColor Red
-        Write-Host "   Log: storage/logs/deploy-migrate.log" -ForegroundColor Yellow
-        exit 1
+    $lanzado = plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} `
+        "chmod +x ~/zyn-deploy.sh && (nohup bash ~/zyn-deploy.sh $Modo > /dev/null 2>&1 &) ; echo LANZADO" 2>&1
+
+    # ⚠️ El lanzamiento puede devolver error con el script YA corriendo: el corte
+    # llega despues de ejecutar. No se decide por el codigo de salida -- se mira el
+    # log, que es el efecto.
+    if ("$lanzado" -notmatch 'LANZADO') {
+        Write-Host "  (el lanzamiento no confirmo; se comprueba el log igualmente)" -ForegroundColor Yellow
     }
 
-    # ============================================================================
-    # PASO 3: LIMPIAR VISTAS COMPILADAS + PERMISOS DE STORAGE
-    # ----------------------------------------------------------------------------
-    # En Bluehost el git pull deja storage/framework/views con permisos restrictivos,
-    # y el view:cache del paso siguiente NO puede sobrescribir las vistas compiladas
-    # viejas -> el runtime sigue sirviendo una vista obsoleta/corrupta (error Blade).
-    # Por eso, SIEMPRE: borrar vistas compiladas + recrear carpetas + chmod 777.
-    # ============================================================================
-    $success = Invoke-SSHCommand `
-        -Command "cd $APP_DIR && rm -rf storage/framework/views/* && mkdir -p storage/framework/views storage/framework/cache storage/framework/sessions && chmod -R 777 storage bootstrap/cache" `
-        -Description "[3/4] Limpiar vistas compiladas + arreglar permisos de storage..."
+    $limite = (Get-Date).AddSeconds($EsperaMaximaSegundos)
+    $log    = $null
 
-    if (-not $success) {
-        Write-Host "`nAdvertencia: no se pudieron ajustar permisos/limpiar vistas. Puede haber vistas obsoletas." -ForegroundColor Yellow
+    while ((Get-Date) -lt $limite) {
+        Start-Sleep -Seconds 10
+        $log = Get-LogRemoto -Archivo $LogRemoto
+        if ($log -and $log -match '\[FIN\]') { break }
+        if ($log) {
+            $ultima = ($log -split "`n" | Where-Object { $_.Trim() } | Select-Object -Last 1)
+            Write-Host "  ... $ultima" -ForegroundColor DarkGray
+        }
     }
 
-} finally {
+    if (-not ($log -match '\[FIN\]')) {
+        Write-Host "  El script remoto no termino dentro de $EsperaMaximaSegundos s." -ForegroundColor Red
+    }
+
+    Write-Host ""
+    Write-Host $log
+    return $log
+}
+
+$log = Invoke-DeployRemoto -Modo "deploy" -LogRemoto "zyn-deploy.log" `
+    -Descripcion "[1/2] Desplegando (mantenimiento -> merge -> migrate -> up)..."
+
+# ⚠️ Red de seguridad: si el script remoto no llego a su `trap` -- porque lo mato
+# el servidor, no porque fallara un paso -- la app se quedaria en mantenimiento.
+# `Exit-Mantenimiento` comprueba por HTTP y borra los dos archivos si hace falta.
+if (-not ($log -match '\[FIN\]') -or (Get-EstadoApp) -ne 200) {
+    Write-Host "`n  La app no responde 200: se fuerza el levantado." -ForegroundColor Yellow
     Exit-Mantenimiento
+}
+
+if ($log -notmatch '\[DEPLOY-OK\]') {
+    Write-Host "`nEl despliegue NO llego al final. Revisa el log de arriba." -ForegroundColor Red
+    Write-Host "La app se levanto igualmente: lo que quedo es el codigo VIEJO." -ForegroundColor Yellow
+    exit 1
 }
 
 # ============================================================================
@@ -294,23 +274,17 @@ try {
 # primera vez que se pide. Cambiar el sitio caido por unos milisegundos de primera
 # carga es el peor intercambio posible, asi que ahora va despues del `up`.
 #
-# ⚠️ Y los tres van en conexiones SEPARADAS: encadenados, el pesado se lleva por
-# delante a los otros dos. Medido: por separado, `config:cache` y `route:cache`
-# pasan sin problema y solo `view:cache` tumba la conexion.
+# ⚠️ Los tres corren ya DENTRO de `deploy-remoto.sh`, desacoplados de la sesion
+# SSH, asi que `view:cache` -- el que compila mas de mil vistas y tumbaba la
+# conexion -- ya no se lleva por delante a nadie: la conexion puede caerse sin
+# que el proceso se entere. Antes hacia falta una conexion por paso; ahora no.
+#
+# ⚠️ Y ningun fallo suyo tumba el despliegue, por eso el resultado se ignora
+# (`| Out-Null`): la app ya esta arriba y sirve igual sin cache optimizada.
 # ============================================================================
-Write-Host "`n[4/4] Reconstruir cache optimizado (la app YA esta arriba)..." -ForegroundColor Cyan
-Write-Host ("=" * 70) -ForegroundColor DarkGray
-
-foreach ($paso in @('config:cache', 'route:cache', 'view:cache')) {
-    $r = plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "cd $APP_DIR && /usr/local/bin/php artisan $paso" 2>&1
-
-    if ($LASTEXITCODE -eq 0) {
-        Write-Host "  $paso OK" -ForegroundColor Green
-    } else {
-        # No es un fallo del despliegue: la app esta arriba y sirve igual.
-        Write-Host "  $paso no se pudo completar (la app funciona sin el)" -ForegroundColor Yellow
-    }
-}
+Invoke-DeployRemoto -Modo "cache" -LogRemoto "zyn-cache.log" `
+    -Descripcion "[2/2] Reconstruir cache optimizado (la app YA esta arriba)..." `
+    -EsperaMaximaSegundos 600 | Out-Null
 
 # ============================================================================
 # RESUMEN FINAL
