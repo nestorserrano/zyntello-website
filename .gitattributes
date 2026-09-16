@@ -1,0 +1,8 @@
+# Los scripts que se EJECUTAN EN EL SERVIDOR van siempre con saltos LF.
+#
+# Con CRLF, bash lee el retorno de carro como parte del comando y el script muere
+# con errores que no dicen nada del problema real ("$'\r': command not found",
+# o un `fi` que "no se esperaba"). En Windows el checkout los convertiria a CRLF
+# sin avisar, asi que se fija aqui: el deploy se rompe en el servidor, no aqui,
+# y el sintoma no se parece a la causa.
+*.sh text eol=lf
