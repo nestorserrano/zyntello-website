@@ -180,12 +180,19 @@ if ($Confirmar) {
 function Get-LogRemoto {
     param([string]$Archivo)
 
-    # Un solo intento puede caer por el corte tipico del SSH; con tres, un corte
-    # suelto no se lee como "el deploy no avanza".
-    for ($i = 1; $i -le 3; $i++) {
-        $r = plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "tail -200 ~/$Archivo 2>/dev/null" 2>&1
-        if ($LASTEXITCODE -eq 0) { return ($r | Out-String) }
-    }
+    # ⚠️⚠️ UN SOLO INTENTO, a proposito, y el motivo costo un deploy entero el
+    # 2026-09-16: **Bluehost bloquea el SSH cuando se abren muchas conexiones
+    # seguidas**, y consultar el log ES abrir una conexion. Con reintentos y una
+    # vuelta cada 10 s, seguir un deploy de 15 minutos pedia ~270 conexiones: el
+    # servidor empezo a responder "Connection refused" a TODO, asi que el script
+    # se quedo ciego a su propio despliegue -- que mientras tanto iba bien -- y
+    # acabo cantando que produccion se habia quedado con el codigo viejo.
+    #
+    # Vigilar algo no puede costar mas que hacerlo. Si una lectura falla, se
+    # espera a la siguiente vuelta: el script remoto corre desacoplado y no
+    # depende de que le miremos.
+    $r = plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "tail -200 ~/$Archivo 2>/dev/null" 2>&1
+    if ($LASTEXITCODE -eq 0) { return ($r | Out-String) }
     return $null
 }
 
@@ -220,21 +227,42 @@ function Invoke-DeployRemoto {
         Write-Host "  (el lanzamiento no confirmo; se comprueba el log igualmente)" -ForegroundColor Yellow
     }
 
-    $limite = (Get-Date).AddSeconds($EsperaMaximaSegundos)
-    $log    = $null
+    # ⚠️ Una vuelta por minuto, no cada 10 s: cada vuelta es una conexion SSH y
+    # Bluehost bloquea al que abre muchas seguidas (ver `Get-LogRemoto`). Un deploy
+    # dura minutos, no segundos: mirarlo 15 veces basta para seguirlo y no gasta el
+    # cupo que necesita el propio despliegue.
+    $limite   = (Get-Date).AddSeconds($EsperaMaximaSegundos)
+    $log      = $null
+    $vueltas  = 0
+    $ilegible = 0
 
     while ((Get-Date) -lt $limite) {
-        Start-Sleep -Seconds 10
-        $log = Get-LogRemoto -Archivo $LogRemoto
-        if ($log -and $log -match '\[FIN\]') { break }
-        if ($log) {
+        Start-Sleep -Seconds 60
+        $vueltas++
+        $leido = Get-LogRemoto -Archivo $LogRemoto
+
+        if ($leido) {
+            $log = $leido
+            if ($log -match '\[FIN\]') { break }
             $ultima = ($log -split "`n" | Where-Object { $_.Trim() } | Select-Object -Last 1)
             Write-Host "  ... $ultima" -ForegroundColor DarkGray
+        } else {
+            $ilegible++
+            Write-Host "  (vuelta ${vueltas}: no se pudo leer el log; el deploy sigue por su cuenta)" -ForegroundColor DarkGray
         }
     }
 
     if (-not ($log -match '\[FIN\]')) {
-        Write-Host "  El script remoto no termino dentro de $EsperaMaximaSegundos s." -ForegroundColor Red
+        # ⚠️⚠️ Distinguir las dos cosas, porque llevan a decisiones opuestas: que no
+        # podamos LEER el log no dice nada del despliegue -- corre desacoplado -- y
+        # dar eso por un fallo fue exactamente lo que paso el 2026-09-16.
+        if ($ilegible -eq $vueltas -and $vueltas -gt 0) {
+            Write-Host "  NO SE PUDO LEER EL LOG en ninguna de las $vueltas vueltas." -ForegroundColor Yellow
+            Write-Host "  Eso NO significa que el deploy fallara: el script remoto corre" -ForegroundColor Yellow
+            Write-Host "  desacoplado. Se comprueba abajo por el COMMIT y por HTTP." -ForegroundColor Yellow
+        } else {
+            Write-Host "  El script remoto no termino dentro de $EsperaMaximaSegundos s." -ForegroundColor Red
+        }
     }
 
     Write-Host ""
@@ -253,10 +281,29 @@ if (-not ($log -match '\[FIN\]') -or (Get-EstadoApp) -ne 200) {
     Exit-Mantenimiento
 }
 
+# ⚠️⚠️ Aqui NO se decide por el log, y el motivo es de 2026-09-16: el log no se
+# pudo leer -- Bluehost habia bloqueado el SSH por las conexiones del propio
+# polling -- y el script dio el deploy por fallido anunciando que produccion se
+# habia quedado con el codigo viejo. Era falso: el despliegue habia corrido.
+#
+# La verdad es el COMMIT que tiene produccion. El log sirve para SEGUIR el deploy;
+# para juzgarlo, se mira el efecto.
 if ($log -notmatch '\[DEPLOY-OK\]') {
-    Write-Host "`nEl despliegue NO llego al final. Revisa el log de arriba." -ForegroundColor Red
-    Write-Host "La app se levanto igualmente: lo que quedo es el codigo VIEJO." -ForegroundColor Yellow
-    exit 1
+    Write-Host "`nEl log no confirma el despliegue. Se comprueba por el commit:" -ForegroundColor Yellow
+
+    $esperado = (git -C "$PSScriptRoot\app\zyntello-app" rev-parse HEAD | Out-String).Trim()
+    $puesto   = (plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "cd $APP_DIR && git rev-parse HEAD" | Out-String).Trim()
+
+    Write-Host "  aqui      : $esperado"
+    Write-Host "  produccion: $puesto"
+
+    if ($esperado -and $puesto -and $esperado -eq $puesto) {
+        Write-Host "  El codigo SI llego: el deploy corrio aunque no pudieramos verlo." -ForegroundColor Green
+    } else {
+        Write-Host "`n  Produccion NO tiene este codigo. La app esta arriba con el ANTERIOR." -ForegroundColor Red
+        Write-Host "  Revisa ~/zyn-deploy.log en el servidor cuando el SSH responda." -ForegroundColor Yellow
+        exit 1
+    }
 }
 
 # ============================================================================
