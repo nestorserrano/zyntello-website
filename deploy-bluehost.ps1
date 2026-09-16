@@ -144,9 +144,25 @@ function Enter-Mantenimiento {
 # 500 puntual que se queria evitar.
 #
 # ⚠️ Y si `artisan up` no puede correr -- porque el codigo recien traido esta roto
-# y la app no arranca -- se borra el archivo de mantenimiento A MANO. Sin esa
+# y la app no arranca -- se borran los archivos de mantenimiento A MANO. Sin esa
 # segunda via, un despliegue con un error de sintaxis dejaria el sitio apagado y
 # el propio comando para levantarlo tampoco funcionaria.
+#
+# ⚠️⚠️ SON DOS ARCHIVOS, y borrar solo uno NO levanta la app. Costo un rato el
+# 2026-09-16, con el sitio caido y sin entender por que el rescate no hacia nada:
+#
+#   storage/framework/down            <- EL ESTADO. Es el unico que decide el 503:
+#                                        FileBasedMaintenanceMode::active() lo lee.
+#   storage/framework/maintenance.php <- solo el ATAJO precompilado que incluye
+#                                        public/index.php para responder sin
+#                                        arrancar Laravel.
+#
+# Borrando solo `maintenance.php` se quita el atajo pero queda el estado: Laravel
+# arranca, ve `down` y SIGUE devolviendo 503 -- con su `retry-after: 15`, que es
+# lo que despista, porque parece que el mantenimiento se quito y el 503 viene de
+# otro sitio. Por eso `artisan up` si funcionaba: borra los dos.
+#
+# El imprescindible es `down`. Va PRIMERO en los `rm` de aqui abajo.
 function Exit-Mantenimiento {
     Write-Host "`n[5/5] Levantando la app..." -ForegroundColor Cyan
     Write-Host ("=" * 70) -ForegroundColor DarkGray
@@ -157,7 +173,7 @@ function Exit-Mantenimiento {
         Write-Host $r
     } else {
         Write-Host "artisan up fallo; borrando el archivo de mantenimiento a mano..." -ForegroundColor Yellow
-        plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "rm -f $APP_DIR/storage/framework/maintenance.php" 2>&1 | Out-Null
+        plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "rm -f $APP_DIR/storage/framework/down $APP_DIR/storage/framework/maintenance.php" 2>&1 | Out-Null
     }
 
     # No se da por buena la palabra del comando: se COMPRUEBA que el sitio responde, y si
@@ -168,7 +184,7 @@ function Exit-Mantenimiento {
     for ($i = 1; $i -le 3 -and $codigo -ne 200; $i++) {
         Write-Host "  Responde $codigo; reintento $i de 3..." -ForegroundColor Yellow
         Start-Sleep -Seconds 10
-        plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "rm -f $APP_DIR/storage/framework/maintenance.php" 2>&1 | Out-Null
+        plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "rm -f $APP_DIR/storage/framework/down $APP_DIR/storage/framework/maintenance.php" 2>&1 | Out-Null
         $codigo = Get-EstadoApp
     }
 
@@ -177,7 +193,7 @@ function Exit-Mantenimiento {
     } else {
         Write-Host "  ATENCION: la app respondio $codigo. Puede seguir en mantenimiento." -ForegroundColor Red
         Write-Host "  Levantar a mano:" -ForegroundColor Yellow
-        Write-Host "    plink -i $KEY -P $PORT -batch $SSHHOST `"rm -f $APP_DIR/storage/framework/maintenance.php`"" -ForegroundColor White
+        Write-Host "    plink -i $KEY -P $PORT -batch $SSHHOST `"rm -f $APP_DIR/storage/framework/down $APP_DIR/storage/framework/maintenance.php`"" -ForegroundColor White
     }
 }
 
