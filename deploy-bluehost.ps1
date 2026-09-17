@@ -276,6 +276,20 @@ $log = Invoke-DeployRemoto -Modo "deploy" -LogRemoto "zyn-deploy.log" `
 # ⚠️ Red de seguridad: si el script remoto no llego a su `trap` -- porque lo mato
 # el servidor, no porque fallara un paso -- la app se quedaria en mantenimiento.
 # `Exit-Mantenimiento` comprueba por HTTP y borra los dos archivos si hace falta.
+# ⚠️⚠️ Si el deploy se abstuvo porque OTRA sesion esta desplegando, aqui no se
+# toca nada: el 503 es SUYO. Forzar el levantado le quitaria el mantenimiento en
+# mitad de su copia de archivos -- el 500 al usuario que el mantenimiento existe
+# para evitar, provocado justo por la red que venia a proteger.
+#
+# Paso el 2026-09-16: dos sesiones desplegaron a la vez, esta leyo el 503 de la
+# otra como suyo, y ademas su polling bloqueo el SSH y dejo a la otra sin poder
+# aplicar sus migraciones. Ninguna sabia de la otra.
+if ($log -match 'otro deploy en curso') {
+    Write-Host "`n  OTRA SESION esta desplegando: no se toca el mantenimiento." -ForegroundColor Yellow
+    Write-Host "  Espera a que termine y vuelve a desplegar." -ForegroundColor Yellow
+    exit 1
+}
+
 if (-not ($log -match '\[FIN\]') -or (Get-EstadoApp) -ne 200) {
     Write-Host "`n  La app no responde 200: se fuerza el levantado." -ForegroundColor Yellow
     Exit-Mantenimiento

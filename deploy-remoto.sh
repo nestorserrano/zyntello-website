@@ -41,7 +41,39 @@ if [ "$MODO" = "cache" ]; then
 fi
 
 LOG=$HOME/zyn-deploy.log
+
+# !! CANDADO: se comprueba ANTES de instalar el trap y ANTES de tocar nada.
+#
+# Medido el 2026-09-16, y explica un rato entero perdido: DOS sesiones desplegaron
+# a la vez. La otra tenia la app en mantenimiento mientras esta creia que el 503
+# era suyo; su merge entro 25 minutos despues del intento de aqui, y sus
+# migraciones se quedaron sin aplicar. Ninguna de las dos tenia forma de saber de
+# la otra.
+#
+# !! El `exit` de aqui NO pasa por el trap, a proposito: levantar la app seria
+# quitarle el mantenimiento a la sesion que SI esta desplegando, justo mientras
+# copia archivos -- el 500 al usuario que el mantenimiento existe para evitar.
+LOCK=$HOME/zyn-deploy.lock
+if [ -f "$LOCK" ]; then
+    EDAD=$(( $(date +%s) - $(stat -c %Y "$LOCK" 2>/dev/null || echo 0) ))
+    # Media hora: un deploy tarda minutos. Pasada esa edad el candado es basura de
+    # un deploy que murio, y retenerlo mas seria bloquear los despliegues para
+    # siempre por un archivo que nadie borro.
+    if [ "$EDAD" -lt 1800 ]; then
+        : > $LOG
+        echo "[ERROR] otro deploy en curso (candado de ${EDAD}s). No se toca nada." >> $LOG
+        echo "[FIN]" >> $LOG
+        exit 1
+    fi
+    # !! Se guarda para escribirlo DESPUES: el `: > $LOG` de abajo trunca el archivo
+    # y un aviso escrito aqui se perderia -- justo el que explica por que se ignoro
+    # un candado.
+    AVISO_CANDADO="candado viejo (${EDAD}s): se descarta"
+fi
+echo "$$ $(date)" > "$LOCK"
+
 : > $LOG
+[ -n "$AVISO_CANDADO" ] && echo "$AVISO_CANDADO" >> $LOG
 
 # !! El `up` va en un trap EXIT, no al final: un deploy que revienta a mitad con
 # la app en `down` la deja CAIDA PARA TODOS, que es mucho peor que el 500 puntual
@@ -60,6 +92,7 @@ levantar() {
     else
         echo "[5] mantenimiento retirado" >> $LOG
     fi
+    rm -f $LOCK
     echo "[FIN]" >> $LOG
 }
 trap levantar EXIT
