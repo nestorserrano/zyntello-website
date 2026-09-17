@@ -379,7 +379,22 @@ $local  = (git -C "$PSScriptRoot\app\zyntello-app" rev-parse HEAD | Out-String).
 $remoto = (plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "cd $APP_DIR && git rev-parse HEAD" | Out-String).Trim()
 Write-Host "  aqui      : $local"
 Write-Host "  produccion: $remoto"
-if ($local -and $remoto -and $local -eq $remoto) {
+# ⚠️⚠️ TRES desenlaces, no dos. Medido el 2026-09-16: el deploy funciono entero
+# —merge, migrate, up y las tres caches OK— y esta comprobacion dijo
+# "NO CUADRA -> produccion NO tiene este codigo" porque plink murio con
+# "Remote side unexpectedly closed network connection" y $remoto llego VACIO.
+# Produccion tenia el commit correcto: se comprobo a mano un minuto despues.
+#
+# Un falso negativo aqui cuesta mas que no comprobar: manda a repetir un deploy
+# que ya salio bien —con su ventana de 500 y su modo mantenimiento— y la proxima
+# vez que diga la verdad ya no se le creera. "No cuadra" y "no lo pude leer" se
+# arreglan en sitios distintos, asi que no pueden decirse con la misma frase.
+if (-not $remoto) {
+    Write-Host "  NO SE PUDO COMPROBAR -> la conexion no devolvio el commit" -ForegroundColor Yellow
+    Write-Host "  Esto NO dice que el deploy fallara: los pasos de arriba ya informaron." -ForegroundColor Yellow
+    Write-Host "  Leelo a mano (es un comando corto, git nunca tumba la conexion):" -ForegroundColor Yellow
+    Write-Host "    plink -i `$KEY -P `$PORT -batch `$SSHHOST `"cd $APP_DIR && git rev-parse HEAD`"" -ForegroundColor DarkGray
+} elseif ($local -and $local -eq $remoto) {
     Write-Host "  CUADRA -> produccion recibio este codigo" -ForegroundColor Green
 } else {
     Write-Host "  NO CUADRA -> produccion NO tiene este codigo" -ForegroundColor Red
