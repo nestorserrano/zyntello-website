@@ -9,8 +9,13 @@
 # !! POR QUE EXISTE, medido el 2026-09-16: el SSH de Bluehost corta toda sesion
 # que DURE unos segundos. `git rev-parse` pasa siempre y `php artisan` -- que
 # tarda lo que tarda arrancar Laravel -- la tumba SIEMPRE, con
-# "Remote side unexpectedly closed network connection". No es una racha ni un
-# bloqueo por conexiones repetidas: es reproducible.
+# "Remote side unexpectedly closed network connection".
+#
+# ! Ese "siempre" hay que cogerlo con pinzas: la medida se tomo con el SSH ya
+# degradado por un bloqueo que la propia sesion habia provocado. Mas tarde el
+# mismo patron fallo cinco veces seguidas y despues funciono a la primera. Puede
+# ser la duracion, el bloqueo, o las dos. Lo que NO depende de cual sea es el
+# diseno de aqui: lanzar desacoplado y verificar por el efecto aguanta las dos.
 #
 # Ese dia el deploy no pudo ni empezar: moria en el `artisan down` del paso 0.
 # Y no era Laravel -- lanzado desacoplado, el mismo comando respondia
