@@ -79,6 +79,46 @@ echo "$$ $(date)" > "$LOCK"
 # la app en `down` la deja CAIDA PARA TODOS, que es mucho peor que el 500 puntual
 # que el mantenimiento venia a evitar.
 levantar() {
+    # !! ANTES de levantar: si el merge entro y las migraciones NO, la app arranca
+    # con CODIGO NUEVO y ESQUEMA VIEJO -- y eso no da ningun error visible. Arranca
+    # bien y solo revienta la pantalla que usa la columna que falta, el dia que
+    # alguien la abra. Es el peor de los dos estados, porque no se parece a un
+    # fallo.
+    #
+    # Paso el 2026-09-16: un deploy se corto entre el merge y el migrate, la app
+    # quedo levantada y tres migraciones pendientes pasaron horas sin que nada lo
+    # dijera. Se descubrio preguntando, no porque el deploy avisara.
+    #
+    # Por eso se MIDE y se grita en el log. No se aborta el levantado: la app
+    # caida es peor, y con el esquema viejo la mayoria de pantallas funciona.
+    # !! Se distingue "cero pendientes" de "no se pudo medir", y no es sutileza: si
+    # `migrate:status` falla, `grep -c` devuelve 0 igual que si todo estuviera al
+    # dia -- y la guarda cantaria OK sin haber comprobado nada. Es el patron de la
+    # guarda cuyo sujeto se agota, que pasa en verde sin mirar.
+    cd $APP || echo "[!!] no se pudo entrar en $APP para medir migraciones" >> $LOG
+    ESTADO_MIG=$($PHP artisan migrate:status 2>&1)
+    if [ -z "$ESTADO_MIG" ] || ! echo "$ESTADO_MIG" | grep -q "Migration name\|Ran\|Pending"; then
+        echo "[!!] NO SE PUDO MEDIR si quedan migraciones pendientes." >> $LOG
+        echo "[!!] Comprobar a mano: /zyn-maint/migrate-status?key=<MAINTENANCE_KEY>" >> $LOG
+        PENDIENTES=-1
+    else
+        PENDIENTES=$(echo "$ESTADO_MIG" | grep -c "Pending")
+    fi
+    # !! El -1 es "no se sabe", y NO puede caer en la rama del "[ok]": un `ok`
+    # escrito justo debajo de "no se pudo medir" se lee como que todo esta bien, y
+    # ese es el mensaje que hace que nadie vaya a comprobarlo. Medido al probar
+    # esta misma guarda, que escribia las dos cosas a la vez.
+    if [ "$PENDIENTES" -lt 0 ]; then
+        :
+    elif [ "$PENDIENTES" -gt 0 ]; then
+        echo "[!!] QUEDAN $PENDIENTES MIGRACIONES PENDIENTES" >> $LOG
+        echo "[!!] Produccion tiene el CODIGO NUEVO con el ESQUEMA VIEJO." >> $LOG
+        echo "[!!] Las pantallas que usen lo nuevo van a fallar SIN AVISO previo." >> $LOG
+        echo "[!!] Aplicarlas: /zyn-maint/migrate-y-limpiar?key=<MAINTENANCE_KEY>" >> $LOG
+    else
+        echo "[ok] sin migraciones pendientes" >> $LOG
+    fi
+
     echo "[5] levantando la app" >> $LOG
     cd $APP && $PHP artisan up >> $LOG 2>&1
     # !! SON DOS ARCHIVOS y solo uno decide el 503:

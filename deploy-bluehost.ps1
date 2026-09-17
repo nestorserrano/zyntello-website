@@ -284,6 +284,18 @@ $log = Invoke-DeployRemoto -Modo "deploy" -LogRemoto "zyn-deploy.log" `
 # Paso el 2026-09-16: dos sesiones desplegaron a la vez, esta leyo el 503 de la
 # otra como suyo, y ademas su polling bloqueo el SSH y dejo a la otra sin poder
 # aplicar sus migraciones. Ninguna sabia de la otra.
+# ⚠️⚠️ Los avisos del script remoto se REPITEN aparte, porque si no se pierden: el
+# log se vuelca entero y un `[!!] QUEDAN 3 MIGRACIONES PENDIENTES` queda enterrado
+# entre cuarenta lineas de salida normal. Ese aviso es el que separa un despliegue
+# bueno de uno que dejo produccion con el codigo nuevo y el esquema viejo.
+$avisos = ($log -split "`n") | Where-Object { $_ -match '\[!!\]' }
+if ($avisos) {
+    Write-Host ""
+    Write-Host ("!" * 70) -ForegroundColor Red
+    $avisos | ForEach-Object { Write-Host "  $($_.Trim())" -ForegroundColor Red }
+    Write-Host ("!" * 70) -ForegroundColor Red
+}
+
 if ($log -match 'otro deploy en curso') {
     Write-Host "`n  OTRA SESION esta desplegando: no se toca el mantenimiento." -ForegroundColor Yellow
     Write-Host "  Espera a que termine y vuelve a desplegar." -ForegroundColor Yellow
