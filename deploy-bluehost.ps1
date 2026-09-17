@@ -403,8 +403,26 @@ if (-not $remoto) {
 Write-Host ""
 Write-Host "Ultimos commits en produccion:" -ForegroundColor White
 Write-Host ("=" * 70) -ForegroundColor DarkGray
-plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "cd $APP_DIR && git log --oneline -5"
+
+# ⚠️⚠️ Esta lista es DECORATIVA y su fallo NO puede decidir el exito del deploy.
+# Medido dos veces el 2026-09-16 y el 2026-09-17: el deploy salio perfecto —CUADRA,
+# mismo commit, las tres caches con su `INFO ... successfully`— y el script termino
+# en exit 1 porque este ultimo plink murio con «Remote side unexpectedly closed
+# network connection». Quien solo mira el codigo de salida lee «fallo» y vuelve a
+# desplegar algo que ya estaba bien, con su modo mantenimiento y su ventana de 500.
+#
+# Es la misma familia que [#1127]: el ULTIMO comando no es el resultado del trabajo.
+try {
+    plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "cd $APP_DIR && git log --oneline -5"
+} catch {
+    Write-Host "  (no se pudo leer la lista; es decorativa y no afecta al deploy)" -ForegroundColor DarkGray
+}
 Write-Host ""
+
+# ⚠️ El codigo de salida lo decide la VERIFICACION, no lo que pasara el ultimo.
+if ($local -and $remoto -and $local -eq $remoto) {
+    exit 0
+}
 
 # ── Graphify: NO se ejecuta en el deploy (es un artefacto local manual).
 #    Refrescar a mano cuando se necesite:  pwsh ./graphify-refresh.ps1
