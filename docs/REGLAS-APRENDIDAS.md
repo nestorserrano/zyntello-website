@@ -9,6 +9,14 @@
 
 ---
 
+- el EULA de un software que se INSTALA no es el contrato de un SaaS, pero compararse con él encuentra huecos: el documento equivocado puede llevar a la pregunta correcta.
+- una licencia MIT/BSD/CC obliga de VERDAD cuando el JS viaja al navegador: eso es redistribuir, y la atribución deja de ser teórica.
+- antes de afirmar que un paquete propietario dentro de `vendor/` no está expuesto, mirar si el repo es público — con `gh repo view`, no de memoria.
+- un inventario de licencias se MIDE sobre `composer.lock` y `node_modules`; leerlo del `composer.json` deja fuera los transitivos, que son donde vive el copyleft.
+- insertar una sección numerada en un documento legal rompe sus referencias cruzadas EN SILENCIO: lo nuevo entra como subsección o como cláusula de una lista existente.
+- una renuncia total de garantías contradice el SLA del mismo proveedor: hay que exceptuar expresamente los compromisos que sí se asumen.
+- un documento legal publicado se verifica leyendo su CONTENIDO en la URL, y con un control que debe fallar al lado.
+
 - un vencimiento que solo AVISA no es un vencimiento — mientras nadie escriba el > estado, la suscripción da acceso para siempre.
 - la gracia es un ESTADO que ya existe, no una fecha > nueva.
 - un cron que no se puede cambiar se aprovecha: la lógica se queda en su dominio y el > scheduler que sí corre actúa de gatillo.

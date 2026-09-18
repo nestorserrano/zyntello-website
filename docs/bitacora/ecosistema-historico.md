@@ -9,6 +9,44 @@
 
 ### Bitácora reciente (estado actual — 2026-09-08)
 
+> **LA LICENCIA DE VS CODE NO ERA EL DOCUMENTO, PERO LA PREGUNTA SÍ ERA BUENA (2026-09-18) —
+> `[#1148]`**: el director técnico preguntó si Zyntello debía tener los términos de licencia de
+> Visual Studio Code. **No**: ese es un EULA de software que se instala en el equipo del usuario, y
+> Zyntello es SaaS —su equivalente son los Términos del Servicio, que ya cubrían 10 de sus 12
+> secciones—. Pero **compararlo sección por sección destapó cuatro huecos reales**, y ese es el
+> valor: la pregunta llevaba a un documento equivocado y aun así encontró trabajo pendiente.
+>
+> ⚠️⚠️ **La obligación de atribuir era REAL, no formalismo.** Los iconos de la interfaz son **Font
+> Awesome Free, licencia CC BY 4.0, que EXIGE citar al autor**, y el JS de las librerías **sí se
+> redistribuye** —viaja al navegador de cada usuario—, así que las cláusulas de atribución
+> MIT/BSD/Apache aplican de verdad. Había 111 paquetes en producción y **ni una línea** sobre
+> componentes de terceros en los Términos. Nace `public/avisos-terceros/` (v1.0).
+>
+> ⚠️ **El inventario se MIDIÓ, no se supuso**: `composer.lock` y `node_modules` dieron 95 MIT,
+> 4 LGPL, 2 duales BSD/GPL (se usan bajo BSD), 1 comercial. Y antes de afirmar nada sobre Flux
+> —propietario, dentro de `vendor/`— se comprobó con `gh repo view` que **`zyntello-app` es
+> privado**: de ser público, distribuirlo habría sido un incumplimiento de su licencia.
+>
+> ⚠️⚠️ **No se renumeró ninguna sección de los Términos, y es la decisión que evitó el defecto**:
+> el documento tiene referencias cruzadas a las secciones 6, 9, 12 y 18, y su cláusula de
+> supervivencia nombra «10, 13, 19, 20, 22 y 23». Insertar una sección numerada en medio habría
+> dejado **todas esas remisiones apuntando a otro sitio, sin que nada fallara**. Lo nuevo entró como
+> subsección (10.1, 22.1) o como cláusula de una lista existente (11, 23).
+>
+> ⚠️ **Una renuncia total de garantías habría contradicho el SLA.** La exclusión de garantías
+> implícitas de la 19 tuvo que decir expresamente que **no afecta** a los compromisos del 18 ni del
+> Acuerdo de Nivel de Servicio; sin esa salvedad, el mismo documento prometía y desprometía.
+>
+> **Pendientes que dejó la revisión, declarados y NO resueltos**: (1) ⚠️⚠️ la app carga tipografías
+> de **Google Fonts** y scripts de **jsDelivr** y **cdnjs**, que reciben la IP del navegador de cada
+> usuario, y **la Política de Privacidad no los menciona entre sus subencargados** — se resuelve
+> allí, no en los Avisos; (2) cualquier URL inexistente de `zyntello.com` responde **500, no 404**
+> (medido), defecto anterior a este trabajo.
+>
+> Términos **1.6 → 1.7**. Publicado y verificado por contenido en las cinco URLs de producción.
+
+---
+
 > **EL RESCATE DEL DEPLOY BORRABA EL ARCHIVO EQUIVOCADO (2026-09-16) — `[#1060]`**: con el sitio
 > en 503 tras un deploy fallido se borró `storage/framework/maintenance.php` —la vía de rescate que
 > documentaban el script, `CLAUDE.md` y la memoria— y **la app siguió caída**. `php artisan up` sí
