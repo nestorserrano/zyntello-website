@@ -1,16 +1,62 @@
-# React + Vite
+# zyntello.com — sitio web corporativo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sitio institucional de **Zyntello, S.R.L.**, empresa dominicana de software empresarial. Presenta
+la plataforma SaaS, sus módulos y las formas de contacto.
 
-Currently, two official plugins are available:
+🌐 **[zyntello.com](https://zyntello.com)**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Qué es Zyntello
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Zyntello desarrolla y opera una plataforma de gestión empresarial por suscripción: contabilidad,
+facturación con comprobantes fiscales, nómina, inventario, cuentas por cobrar y pagar, punto de
+venta, CRM y varios verticales (restaurante, car wash, condominios, préstamos), entre otros.
 
-## Expanding the ESLint configuration
+Opera desde **República Dominicana**, con soporte en Venezuela, Colombia, Guatemala y Costa Rica.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Correo:** info@zyntello.com · **Soporte:** soporte@zyntello.com
+- **Teléfono / WhatsApp:** +1 829 639 9877
+
+---
+
+## Este repositorio
+
+Solo el sitio público. La plataforma SaaS vive en repositorios aparte y privados.
+
+**Stack:** React 19 · Vite 8 · Tailwind CSS
+
+```bash
+npm install
+npm run dev      # servidor de desarrollo
+npm run build    # genera dist/
+```
+
+### Estructura
+
+```
+src/
+├── components/     Secciones de la página (Hero, Servicios, Soluciones, Portafolio, Contacto…)
+├── hooks/          Hooks reutilizables
+└── styles/         Estilos compartidos
+dist/               Build de producción (se versiona: el hosting sirve estos archivos)
+public/             Recursos estáticos y páginas complementarias
+```
+
+> `dist/` se commitea a propósito: el despliegue publica esa carpeta directamente.
+
+---
+
+## Documentos legales
+
+Las políticas que rigen el uso de la plataforma se publican en el sitio y se mantienen al día con
+los módulos que se ofrecen:
+
+- [Política de privacidad](https://zyntello.com/privacidad/)
+- [Términos y condiciones](https://zyntello.com/terminos/)
+- [Acuerdo de Nivel de Servicio (SLA)](https://zyntello.com/sla/)
+- [Eliminación de datos](https://zyntello.com/eliminacion-datos/)
+
+---
+
+© Zyntello, S.R.L. — República Dominicana. Todos los derechos reservados.
