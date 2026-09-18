@@ -344,6 +344,7 @@ c:/wamp64/www/zyntello/         ← Esta carpeta (repo: zyntello-website)
 | `pre_*` | Prestamello (vertical de préstamos y venta a crédito) |
 | `cnd_*` | Condominios (vertical) |
 | `rest_*` | Restaurante (vertical de gastronomía) |
+| `nav_*` | Navegación (favoritos y últimos accesos del menú, por usuario y empresa) |
 
 > Histórico: hasta el commit `[#408]` existían 5 BDs separadas (`zyntello_constructflow`, `zyntello_nomina`, `zyntello_contabilidad`, `zyntello_inventario`, `zyntello_facturacion`). Fueron consolidadas en `zyntello_app`. No volver a crearlas.
 
