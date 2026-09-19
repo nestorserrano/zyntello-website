@@ -1,0 +1,34 @@
+# ============================================================================
+# zyntello.com — sitio estatico (React + Vite compilado a dist/)
+# ============================================================================
+#
+# POR QUE EXISTE ESTE ARCHIVO
+#
+# El .htaccess de /home4/ukrmeumy/public_html/ es de WordPress —lo puso otro de
+# los dominios alojados en esta misma cuenta— y reescribe a /index.php TODO lo
+# que no sea un archivo o un directorio real. Ese index.php NO existe, asi que
+# cualquier URL inexistente de zyntello.com respondia 500 en vez de 404.
+# Medido el 2026-09-18 con /nada-de-nada, /zzz.html y /terminos/inexistente:
+# las tres daban 500, mientras la portada y las paginas reales daban 200.
+#
+# Un 500 no es un 404 mas feo: Google lo lee como averia del servidor y
+# reintenta la URL en vez de descartarla.
+#
+# COMO LO CORRIGE
+#
+# Las reglas de mod_rewrite de un directorio padre NO se heredan cuando el hijo
+# declara las suyas (ese es el comportamiento por defecto; heredarlas exige un
+# RewriteOptions Inherit explicito). Con RewriteEngine On y ninguna regla, la
+# reescritura de WordPress deja de aplicarse en este arbol y Apache vuelve a
+# resolver los archivos por si mismo.
+#
+# NO tocar el .htaccess del directorio padre: es de otros dominios de la cuenta.
+# ============================================================================
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+</IfModule>
+
+# El sitio son archivos estaticos: una URL que no existe es un 404, no un 500.
+ErrorDocument 404 /404.html

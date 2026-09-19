@@ -131,9 +131,9 @@
         <a href="#s9">solicitud de eliminación de datos</a>.
       </p>
       <div class="meta">
-        <span>Última actualización: <strong>11 de septiembre de 2026</strong></span>
+        <span>Última actualización: <strong>18 de septiembre de 2026</strong></span>
         <span>Vigencia: <strong>desde su publicación</strong></span>
-        <span>Versión: <strong><a class="verlink" href="#s20">1.8 — ver control de cambios</a></strong></span>
+        <span>Versión: <strong><a class="verlink" href="#s20">1.9 — ver control de cambios</a></strong></span>
         <span>Idioma original: <strong>español</strong></span>
       </div>
     </div>
@@ -369,6 +369,9 @@
             <tr><td><strong>Burós de crédito</strong></td><td>Identificación del solicitante, con las credenciales y bajo la autorización del propio Suscriptor.</td><td>Consulta de historial crediticio en el módulo Prestamello.</td></tr>
             <tr><td><strong>Proveedor de mapas</strong> (OpenStreetMap, Google Maps, HERE o Mapbox, según elija el Suscriptor)</td><td>Direcciones y coordenadas de las paradas de una ruta. No se les envía el nombre del cliente ni el contenido del pedido.</td><td>Convertir una dirección en coordenadas, calcular distancias y trazar el recorrido, cuando el Suscriptor usa el Planificador de Rutas.</td></tr>
             <tr><td><strong>Web3Forms</strong></td><td>Nombre, correo y mensaje del formulario del sitio web.</td><td>Entrega de consultas comerciales a nuestro correo.</td></tr>
+            <tr><td><strong>Redes de distribución de contenido y tipografías web</strong> (jsDelivr, Cloudflare&nbsp;cdnjs, unpkg, Google&nbsp;Fonts y Bunny&nbsp;Fonts)</td><td>La <strong>dirección IP</strong> del dispositivo, el navegador y la pantalla desde la que se solicita el recurso. <strong>No reciben</strong> datos de la cuenta, ni contenido de las pantallas, ni identificadores de sesión.</td><td>Entregar al navegador las bibliotecas, tipografías e iconos que componen la interfaz. Se cargan en <strong>todas</strong> las pantallas de la Plataforma. El detalle de cada componente está en los <a href="/avisos-terceros/">Avisos de software de terceros</a>.</td></tr>
+            <tr><td><strong>QuickChart</strong></td><td>El <strong>enlace público de registro</strong> de un evento. No se le envía ningún dato de personas ni de la cuenta.</td><td>Generar la imagen del código QR de un evento cuando la Plataforma no puede componerlo por sí misma. Solo en el módulo Events.</td></tr>
+            <tr><td><strong>Servicio de tasas de cambio</strong> (exchangerate-api)</td><td>La dirección IP del visitante del <strong>sitio web público</strong> <code>zyntello.com</code>. No interviene en la Plataforma.</td><td>Mostrar precios convertidos en la página de soluciones.</td></tr>
             <tr><td><strong>Autoridades competentes</strong></td><td>Lo estrictamente requerido por una orden legal válida.</td><td>Cumplimiento de obligaciones legales.</td></tr>
             <tr><td><strong>Asesores profesionales</strong></td><td>Lo estrictamente necesario.</td><td>Contabilidad, auditoría y defensa legal.</td></tr>
           </tbody>
@@ -379,6 +382,21 @@
         credenciales que el Suscriptor configura para integrarse con terceros se almacenan
         <strong>cifradas</strong> en nuestra base de datos.
       </p>
+      <div class="note">
+        <p>
+          <b>Los tres últimos destinatarios no reciben nada que nosotros les enviemos.</b> Cuando una
+          pantalla necesita una tipografía o una biblioteca que se sirve desde el servidor de un
+          tercero, es <strong>el navegador del propio usuario</strong> el que se la pide
+          directamente, y en esa petición viaja su dirección IP, como en cualquier visita a un sitio
+          web. Es inherente a cargar un recurso externo: no es una cesión de datos que Zyntello
+          decida hacer con la información de la cuenta, y por eso estos proveedores no ven ni un
+          cliente, ni una factura, ni un empleado, ni la sesión de nadie.
+        </p>
+        <p>
+          Se declaran porque reciben un dato personal —la dirección IP— y porque el suscriptor tiene
+          derecho a saberlo, no porque haya un flujo de datos de negocio hacia ellos.
+        </p>
+      </div>
     </section>
 
     <section id="s6">
@@ -434,6 +452,12 @@
         Plataforma, los datos se transfieren y almacenan en ese país. Los procesadores de pago, el
         proveedor de correo saliente, WhatsApp y Meta, y los proveedores de inteligencia artificial
         también pueden tratar datos fuera del país de origen del Suscriptor.
+      </p>
+      <p>
+        Lo mismo ocurre, en menor medida, con las <strong>redes de distribución de contenido y los
+        proveedores de tipografías web</strong> de la sección 5: sus servidores están repartidos por
+        todo el mundo y el navegador se conecta al más cercano, de modo que la dirección IP del
+        usuario puede tratarse fuera de su país. Es el único dato que reciben.
       </p>
       <p>
         Para los titulares sujetos al Reglamento General de Protección de Datos de la Unión Europea,
@@ -767,6 +791,19 @@
         Puede eliminar o bloquear las cookies desde la configuración de su navegador, teniendo en cuenta
         que hacerlo impedirá iniciar sesión en la Plataforma.
       </p>
+
+      <h3>14.1. Recursos servidos desde terceros</h3>
+      <p>
+        Cosa distinta de las cookies, y que conviene no confundir con ellas: parte de las tipografías,
+        iconos y bibliotecas de la interfaz se sirven desde los servidores de terceros que enumera la
+        sección 5. <strong>Ninguno de ellos instala cookies</strong> ni nos devuelve identificador
+        alguno del usuario, pero la conexión existe, y en ella viaja su dirección IP.
+      </p>
+      <p>
+        Lo decimos porque la ausencia de cookies publicitarias no equivale a la ausencia de conexiones
+        a terceros, y una política que solo hablara de cookies dejaría fuera lo que de verdad ocurre
+        al abrir una pantalla.
+      </p>
     </section>
 
     <section id="s15">
@@ -869,7 +906,12 @@
           </thead>
           <tbody>
             <tr>
-              <td>1.8 <span class="vig">Vigente</span></td>
+              <td>1.9 <span class="vig">Vigente</span></td>
+              <td>18 de septiembre de 2026</td>
+              <td><strong>Los terceros que reciben la dirección IP al cargar una pantalla.</strong> La sección <strong>5</strong> no declaraba tres destinatarios que sí existen, y se incorporan: <strong>(1)</strong> las <strong>redes de distribución de contenido y los proveedores de tipografías web</strong> —jsDelivr, Cloudflare cdnjs, unpkg, Google Fonts y Bunny Fonts—, desde los que se sirven las bibliotecas, tipografías e iconos de la interfaz; se cargan en <strong>todas</strong> las pantallas de la Plataforma y reciben la dirección IP, el navegador y la pantalla solicitada, nunca datos de la cuenta ni identificadores de sesión. <strong>(2)</strong> <strong>QuickChart</strong>, que genera la imagen del código QR de un evento y recibe únicamente el enlace público de registro, solo en el módulo Events. <strong>(3)</strong> el <strong>servicio de tasas de cambio</strong> que consulta el sitio web público, que recibe la IP del visitante y no interviene en la Plataforma. Se añade tras la tabla la explicación de por qué estos tres no son una cesión de datos de negocio: es <strong>el navegador del propio usuario</strong> el que pide el recurso, y en esa petición viaja su IP como en cualquier visita a un sitio web. La sección <strong>7</strong> extiende las transferencias internacionales a estos proveedores, cuyos servidores están repartidos por el mundo. La sección <strong>14.1</strong> aclara que <strong>ninguno instala cookies</strong>, y que la ausencia de cookies publicitarias no equivale a la ausencia de conexiones a terceros. El detalle técnico de cada componente está en los <a href="/avisos-terceros/">Avisos de software de terceros</a>, publicados con la versión 1.7 de los <a href="/terminos/">Términos</a>. No cambian finalidades, plazos de conservación, derechos del titular ni las bases legales del tratamiento.</td>
+            </tr>
+            <tr>
+              <td>1.8</td>
               <td>11 de septiembre de 2026</td>
               <td><strong>El Planificador de Rutas y el seguimiento de la ubicación de un conductor.</strong>
                   Entra el módulo <strong>Planificador de Rutas</strong> en la sección <strong>4</strong>, con
