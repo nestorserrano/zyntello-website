@@ -16,6 +16,13 @@
 - insertar una sección numerada en un documento legal rompe sus referencias cruzadas EN SILENCIO: lo nuevo entra como subsección o como cláusula de una lista existente.
 - una renuncia total de garantías contradice el SLA del mismo proveedor: hay que exceptuar expresamente los compromisos que sí se asumen.
 - un documento legal publicado se verifica leyendo su CONTENIDO en la URL, y con un control que debe fallar al lado.
+- un 500 donde debia haber un 404 puede no venir del sitio: en hosting compartido el `.htaccess` del directorio padre es de OTRO dominio y se hereda.
+- las reglas de rewrite del padre dejan de aplicarse en cuanto el hijo declara `RewriteEngine On`, aunque no declare ni una regla — y el `.htaccess` del padre no se toca, porque no es tuyo.
+- un `.htaccess` puesto en la raiz de un sitio se hereda hacia los subdirectorios que son OTROS hosts: la verificacion son los tres, no el que arreglaste.
+- que un tercero reciba la IP del usuario no es una cesion de datos de negocio, pero se declara igual: lo pide el navegador del propio usuario, y eso hay que explicarlo, no dejarlo implicito.
+- la ausencia de cookies publicitarias no equivale a la ausencia de conexiones a terceros: una politica que solo hable de cookies deja fuera lo que pasa al abrir una pantalla.
+- un recurso externo en el LAYOUT afecta a todas las pantallas: antes de llamarlo marginal, medir en que vista esta.
+- un comando que por PowerShell no escribe NADA en 60 s se reintenta por Bash antes de diagnosticarlo: el archivo de salida vacio hace culpar al comando cuando falla el canal.
 
 - un vencimiento que solo AVISA no es un vencimiento — mientras nadie escriba el > estado, la suscripción da acceso para siempre.
 - la gracia es un ESTADO que ya existe, no una fecha > nueva.

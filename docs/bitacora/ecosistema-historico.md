@@ -9,6 +9,43 @@
 
 ### Bitácora reciente (estado actual — 2026-09-08)
 
+> **EL 500 DE `zyntello.com` LO CAUSABA OTRO DOMINIO DE LA CUENTA (2026-09-18) — `[#1149]`**:
+> cualquier URL inexistente del sitio respondía **500 en vez de 404**. No había nada roto en el
+> sitio: `/home4/ukrmeumy/public_html/.htaccess` es **de WordPress, y lo puso otro de los dominios
+> alojados en la misma cuenta** (hyplast, medesa, serviemtec…). Reescribe a `/index.php` todo lo que
+> no sea archivo o directorio real, **y ese `index.php` no existe**. La regla **se hereda** en
+> `public_html/zyntello/`.
+>
+> ⚠️ **Un 500 no es un 404 más feo**: Google lo lee como avería del servidor y reintenta la URL en
+> vez de descartarla.
+>
+> Se cierra con un `.htaccess` **propio del sitio**: las reglas de `mod_rewrite` del padre **no se
+> heredan cuando el hijo declara las suyas**, así que `RewriteEngine On` sin ninguna regla basta
+> para desactivar la reescritura de WordPress en este árbol. ⚠️⚠️ **No se toca el `.htaccess` del
+> padre: es de otros dominios.** Se añade `public/404.html` (noindex, el diseño de los legales).
+>
+> ⚠️ Ese `.htaccess` **se hereda hacia `app/` y `admin/`**, así que la verificación incluyó los tres
+> hosts: sitio 200, URL inexistente **404**, `app.zyntello.com/login` 200, una ruta inexistente de
+> la app 404 (el de Laravel, que sigue mandando) y el admin 302 → 200 sin bucle.
+>
+> **Y la Privacidad 1.8 → 1.9**: la sección 5 no declaraba tres destinatarios reales —las redes de
+> distribución y tipografías web, QuickChart y el servicio de tasas del sitio público—.
+> ⚠️⚠️ **Google Fonts está en `layouts/app.blade.php` y `layouts/guest.blade.php`**: o sea en
+> **todas** las pantallas. Medirlo es lo que lo convirtió de detalle en hallazgo.
+>
+> ⚠️ **Lo que había que explicar no era la lista, sino qué NO son**: no hay flujo de datos de
+> negocio hacia ellos; es **el navegador del propio usuario** el que pide el recurso, y en esa
+> petición viaja su IP como en cualquier visita a un sitio web. Se declaran porque la IP es un dato
+> personal. La **14.1** añade el matiz que faltaba: ninguno instala cookies, y **la ausencia de
+> cookies publicitarias no equivale a la ausencia de conexiones a terceros**.
+>
+> ⚠️ **Nota operativa de la sesión**: `npm run build` y `deploy-website.ps1` se colgaron **sin
+> escribir una sola línea** por PowerShell (300 s, 240 s, 420 s), y los mismos comandos por **Bash**
+> tardaron **843 ms** y segundos. El archivo de salida vacío empuja a culpar al comando; era el
+> shell. Ver `feedback_powershell_cuelga_y_bash_no`.
+
+---
+
 > **LA LICENCIA DE VS CODE NO ERA EL DOCUMENTO, PERO LA PREGUNTA SÍ ERA BUENA (2026-09-18) —
 > `[#1148]`**: el director técnico preguntó si Zyntello debía tener los términos de licencia de
 > Visual Studio Code. **No**: ese es un EULA de software que se instala en el equipo del usuario, y
