@@ -140,6 +140,27 @@ Catálogos compartidos a nivel tenant, sin `empresa_id`:
 1. **Países** (`paises`)
 2. **Estados y ciudades** (`estados`, `ciudades`)
 3. **Monedas** (`monedas`)
+4. **Identificaciones tributarias** (`nits`) — *declarada el 2026-09-20 por el director técnico*
+
+   **El motivo**: un mismo cliente o proveedor lo es de **todas las empresas** del suscriptor. El
+   RNC de una empresa no cambia según con cuál de tus sucursales facture, así que partir el
+   catálogo por empresa obligaría a registrar el mismo contribuyente tantas veces como empresas
+   tenga el suscriptor — y bastaría con que una copia tuviera el número mal escrito para que las
+   facturas de esa empresa salieran con un RNC inválido.
+
+   ⚠️ **La excepción es solo para `empresa_id`. `company_id` sigue siendo obligatorio**, y se
+   resuelve por `Nit::delTenant()` y `Nit::reglaExiste()`, nunca a mano. Hasta `[AISL-NIT]` el
+   `nit_id` llegaba del formulario sin acotar y validado con `exists:nits,id`, que comprueba que el
+   id exista **pero no que sea tuyo**: pegando el id de otro suscriptor, su número de
+   identificación fiscal se copiaba al cliente propio, sin ningún error.
+
+   ⚠️ **Pendiente de decidir**: si `nits` debe pasar a ser un catálogo **de plataforma** por país,
+   alimentado del padrón oficial de cada organismo —DGII en RD, SENIAT en Venezuela, DIAN en
+   Colombia, SAT en Guatemala, Hacienda en Costa Rica—. Tendría sentido para el padrón oficial,
+   que es público, pero **hoy la tabla contiene lo que cada suscriptor ha registrado**: nombres
+   escritos por él, alias propios y actividades económicas suyas. Volverla global sin separar
+   ambas cosas expondría entre suscriptores justo lo que `[AISL-NIT]` acaba de cerrar. Si se hace,
+   son **dos** catálogos: el oficial, global y de solo lectura, y el del tenant.
 
 **Todo lo demás lleva las dos columnas**: clientes, proveedores, artículos, agentes, facturas,
 cobros, pagos, movimientos, planes de comisión, empleados, permisos, configuraciones, preferencias,
