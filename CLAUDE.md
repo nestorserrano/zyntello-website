@@ -135,7 +135,8 @@ prueba, no.*
 
 ### Las ÚNICAS excepciones (lista cerrada)
 
-Catálogos compartidos a nivel tenant, sin `empresa_id`:
+Catálogos compartidos a nivel tenant, sin `empresa_id`
+(las dos últimas, además, sin `company_id`: son de **plataforma**):
 
 1. **Países** (`paises`)
 2. **Estados y ciudades** (`estados`, `ciudades`)
@@ -154,13 +155,47 @@ Catálogos compartidos a nivel tenant, sin `empresa_id`:
    id exista **pero no que sea tuyo**: pegando el id de otro suscriptor, su número de
    identificación fiscal se copiaba al cliente propio, sin ningún error.
 
-   ⚠️ **Pendiente de decidir**: si `nits` debe pasar a ser un catálogo **de plataforma** por país,
-   alimentado del padrón oficial de cada organismo —DGII en RD, SENIAT en Venezuela, DIAN en
-   Colombia, SAT en Guatemala, Hacienda en Costa Rica—. Tendría sentido para el padrón oficial,
-   que es público, pero **hoy la tabla contiene lo que cada suscriptor ha registrado**: nombres
-   escritos por él, alias propios y actividades económicas suyas. Volverla global sin separar
-   ambas cosas expondría entre suscriptores justo lo que `[AISL-NIT]` acaba de cerrar. Si se hace,
-   son **dos** catálogos: el oficial, global y de solo lectura, y el del tenant.
+   ✅ **DECIDIDO el 2026-09-20 e implementado en `[NIT-GLOBAL-1]`: son DOS catálogos.**
+   `nits` sigue siendo del tenant, con su `company_id` obligatorio. El padrón oficial vive aparte,
+   en `nits_oficiales` (ver excepción 5).
+
+5. **Padrón oficial de identificaciones** (`nits_oficiales`) — *declarado el 2026-09-20*
+
+   **Sin `company_id` ni `empresa_id`.** Es lo que publica el organismo de cada país —DGII en RD,
+   SENIAT en Venezuela, DIAN en Colombia, SAT en Guatemala, Hacienda en Costa Rica—. Lo mantiene
+   **Zyntello**; para el suscriptor es **solo consulta**.
+
+   **El flujo, y no hay otro** (`App\Services\Nits\ResolverNit`):
+   1. Se busca en el catálogo del suscriptor (`nits`). Si está, se devuelve.
+   2. Si no, se busca en el padrón y **se COPIA** al del suscriptor (`origen = 'padron'`).
+   3. Si tampoco está, se crea **en el tenant** (`origen = 'propio'`). **Nunca en el padrón.**
+
+   ⚠️⚠️ **Por qué se copia y no se lee siempre el padrón**: una factura tiene que seguir diciendo
+   a quién se emitió **aunque el padrón cambie**. Si apuntara al global y el organismo corrigiera
+   un nombre, las facturas viejas cambiarían de destinatario retroactivamente.
+
+   ⚠️⚠️ **Por qué DOS tablas y no una con `company_id` nullable**: `nits` contiene lo que cada
+   suscriptor escribió —nombres, alias propios, actividades suyas—. Con una sola tabla, el scope
+   es **laxo con el NULL**: bastaría un `updateOrCreate` que olvidara el `company_id` para
+   publicarle su dato a todos los demás suscriptores, **y sin ningún síntoma**.
+
+6. **Posiciones del Ministerio de Trabajo** (`nom_posiciones_mt`) — *declarado el 2026-09-20,
+   implementado en `[MT-GLOBAL-1]`*
+
+   `company_id` y `empresa_id` **admiten NULL**: esas filas son el catálogo oficial del país,
+   igual para todos los que operan en él, y lo mantiene Zyntello. El suscriptor **puede** añadir
+   una posición propia que su Ministerio aún no publica, y esa solo la ve él —`scopeParaTenant()`
+   devuelve «las suyas + las de plataforma»—.
+
+   ⚠️ Esta excepción nació de un desajuste: el modelo ya estaba escrito así, pero `[AISL-11]` puso
+   la columna NOT NULL y dejó la rama `whereNull('company_id')` **imposible de cumplir** — y el
+   seeder reventaba en cada `demo:reset` con un 1048 que un `catch` se tragaba.
+
+   ⚠️⚠️ **En las dos, el UNIQUE usa una columna GENERADA** (`COALESCE(company_id, '_plataforma_')`)
+   porque **en MySQL un UNIQUE no restringe los NULL**: sin ella, el catálogo global admitiría el
+   mismo código infinitas veces y el índice no diría nada. Y comprobar que un índice «existe» por
+   su NOMBRE no basta — hay que comparar **sus columnas**: `uk_posicion_mt` ya existía con las
+   columnas de antes, la migración lo dio por bueno y la protección no se puso.
 
 **Todo lo demás lleva las dos columnas**: clientes, proveedores, artículos, agentes, facturas,
 cobros, pagos, movimientos, planes de comisión, empleados, permisos, configuraciones, preferencias,
