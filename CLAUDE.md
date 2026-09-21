@@ -280,6 +280,60 @@ trinquetes, así que **una pantalla nueva sin ayuda o sin tooltips pone la suite
 
 ---
 
+## 🪢 PRECEDENCIA — ponytail opera DENTRO de las directivas, nunca por encima
+
+> **Incorporado el 2026-09-21.** El plugin `ponytail` está instalado a nivel de usuario y un hook
+> `SessionStart` lo activa en **cada sesión**, en modo `full`. Empuja la solución más perezosa que
+> funcione: YAGNI, librería estándar antes que código propio, función nativa antes que dependencia,
+> una línea antes que cincuenta.
+>
+> **Se queda activo, y está bien que lo esté** — en este proyecto sobra abstracción especulativa.
+> Pero su criterio se aplica **después** de las directivas de arriba, nunca contra ellas.
+
+### Por qué hace falta escribirlo
+
+La heurística de ponytail —«¿de verdad hace falta que esto exista?»— es correcta casi siempre y
+**peligrosa exactamente donde este proyecto se juega el negocio**: el segundo filtro, el segundo
+UNIQUE, el segundo tenant de la prueba y la ayuda de la pantalla **parecen** trabajo de más, porque
+**la versión recortada funciona**. Pasa las pruebas de un solo tenant, no lanza ninguna excepción y
+la pantalla se ve bien.
+
+⚠️⚠️ **Ese es el punto**: recortar el aislamiento no produce un error que alguien vea — produce
+**una pantalla plausible con los datos de otro**, y se descubre cuando un cliente lee el nombre de
+un tercero en su propio sistema. «Lo más simple que funciona» no lo detecta, porque **funciona**.
+
+### Lo que NO es recortable (lista cerrada)
+
+Si ponytail señala algo de esta lista como sobreingeniería, **la respuesta es no**, y no hace falta
+justificarlo cada vez:
+
+1. **`company_id` + `empresa_id`** en toda tabla, consulta, combo, reporte, seeder y endpoint — y
+   **en el UNIQUE**. Las dos columnas, siempre.
+2. La **reposición del filtro** después de cada `sinScopeEmpresa()`, desde un scope con nombre y
+   fuente única, incluido su `orWhereNull('empresa_id')`.
+3. El `abort_unless($empresa && $company, 403)` de cada acción, y la **resolución acotada** de todo
+   id que llegue del request o de la URL.
+4. `DelTenant::existe()` en lugar de `Rule::exists` para cualquier tabla con `company_id`.
+5. La prueba con **dos suscriptores y dos empresas**. Una prueba de un solo tenant no puede ver un
+   cruce ni aunque lo haya: es más corta y **no mide nada**.
+6. La entrega completa de una pantalla: **ayuda + `@section('ayudaClave')` + tooltips + diccionario
+   + reporte**, en el mismo trabajo que la crea.
+7. El **español** en respuestas, código, comentarios, commits, mensajes y pruebas.
+
+### Lo que SÍ debe recortar — y conviene que lo haga
+
+Capas con una sola implementación, interfaces sin segundo implementador, dependencias que Laravel o
+PHP ya traen, helpers que reinventan `Collection` o `Str`, parámetros «por si acaso», y boilerplate
+copiado de otra pantalla que aquí no hace nada.
+
+### El marcador `ponytail:`
+
+Un comentario `ponytail:` marca un atajo deliberado nombrando su techo y su disparador de revisión,
+y `/ponytail-debt` los cosecha en un libro de deuda. ⚠️ **Nunca se usa para diferir un punto de la
+lista cerrada**: esos no son deuda, son la promesa que se le vende al suscriptor.
+
+---
+
 ## 🔑 INSTRUCCIÓN PARA INICIAR SESIÓN
 
 > **SIEMPRE hacer esto al comenzar cualquier sesión de trabajo en Zyntello:**
@@ -308,6 +362,11 @@ trinquetes, así que **una pantalla nueva sin ayuda o sin tooltips pone la suite
 > su ayuda, sus tooltips, su diccionario y su reporte van **en el mismo trabajo que la crea**.
 > Lo que se deja «para después» se convierte en sesiones enteras de ir detrás del trabajo ya
 > entregado — ya pasó con 1.034 pantallas y 5.434 campos.
+>
+> ⚠️ **Y si la sesión arranca con `ponytail` activo** (lo hace por defecto, con un hook), su criterio
+> de «lo más simple que funcione» va **después** de las dos directivas de arriba, nunca contra ellas:
+> [PRECEDENCIA — ponytail opera DENTRO de las directivas](#-precedencia--ponytail-opera-dentro-de-las-directivas-nunca-por-encima).
+> Ahí está la **lista cerrada de lo que no es recortable**. Se apaga con `/ponytail off`.
 
 ---
 
