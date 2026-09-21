@@ -334,6 +334,54 @@ lista cerrada**: esos no son deuda, son la promesa que se le vende al suscriptor
 
 ---
 
+---
+
+## 🎨 SKILLS DE DISEÑO — quién manda (decidido el 2026-09-21)
+
+> Con `ui-ux-pro-max` instalado hay **19 skills de UI/diseño disponibles a la vez**, repartidas
+> entre plugins de usuario y el `.agents/skills/` del repo. **Varias se contradicen por
+> definición** —`minimalist-ui` frente a `industrial-brutalist-ui`—, así que sin árbitro la
+> elección sale distinta cada vez y las pantallas dejan de parecerse entre sí.
+
+### El orden, y no hay otro
+
+1. **Las convenciones de este proyecto** (este archivo) y las trampas de UI ya medidas. Mandan
+   siempre, por encima de cualquier skill.
+2. **`ui-ux-pro-max` es la skill de diseño por defecto.** Se eligió por dos motivos medibles, no
+   estéticos: es **plugin de usuario**, así que está en los cinco proyectos sin instalar nada
+   (las de `.agents/skills/` son por repo y difieren), y es la única que cubre **React y Bootstrap, que es el stack de este sitio**.
+   Aporta datos —paletas, pares tipográficos, stacks— en vez de una estética única, así que no
+   pelea con el aspecto que la app ya tiene.
+3. **Las skills de gusto solo si el usuario las nombra.** `minimalist-ui`,
+   `industrial-brutalist-ui`, `high-end-visual-design`, `stitch-design-taste`, `gpt-taste`,
+   `emil-design-eng`, `design-taste-frontend`, `image-taste-frontend`,
+   `redesign-existing-projects` y `frontend-design` son **direcciones estéticas incompatibles
+   entre sí**. Nunca por iniciativa propia: aplicar una a una pantalla existente la deja distinta
+   del resto de la app, y el usuario no pidió un rediseño.
+
+⚠⚠ **Ninguna skill de diseño autoriza a rediseñar lo que ya funciona.** Si el encargo es añadir
+un campo, se añade el campo. «De paso modernicé la pantalla» es trabajo que nadie pidió y que hay
+que revisar entero.
+
+### ⚠⚠ Las skills que envían material a terceros
+
+`design` (logos, iconos, programa de identidad, fotos para redes) y `banner-design` **no son
+locales**: mandan el material a **Gemini, Atlas Cloud o MuAPI** y necesitan `GEMINI_API_KEY` o
+equivalente. **No se usan sin autorización explícita del director técnico**, y esa clave no se
+escribe jamás en un archivo versionado.
+
+### Lo que ninguna skill puede cambiar
+- El **español** en todo texto de pantalla, etiqueta, mensaje y error.
+- Vistas a **ancho completo**, filtros en **una sola línea**, confirmaciones con **SweetAlert2**,
+  **TomSelect solo en combos grandes** (≤10 opciones → `select` nativo) y **nunca un UUID a la
+  vista del usuario**.
+- Las trampas sin síntoma: un `required` **oculto** cancela el envío sin disparar el `submit`; un
+  `await` sin `async` descarta el `<script>` completo; un `integrity` que no cuadra bloquea el
+  recurso y solo lo dice la consola; el **doble atributo `class`** deja los modales sin cerrar con
+  clic fuera.
+- ⚠ Este repo es **PÚBLICO**: ninguna clave de las skills de diseño puede acabar en él, y
+  borrarla después **no la quita del historial**.
+
 ## 🔑 INSTRUCCIÓN PARA INICIAR SESIÓN
 
 > **SIEMPRE hacer esto al comenzar cualquier sesión de trabajo en Zyntello:**
