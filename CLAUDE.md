@@ -136,7 +136,7 @@ prueba, no.*
 ### Las ÚNICAS excepciones (lista cerrada)
 
 Catálogos compartidos a nivel tenant, sin `empresa_id`
-(las dos últimas, además, sin `company_id`: son de **plataforma**):
+(la 5, la 6 y la 7, además, sin `company_id`: son de **plataforma**):
 
 1. **Países** (`paises`)
 2. **Estados y ciudades** (`estados`, `ciudades`)
@@ -196,6 +196,31 @@ Catálogos compartidos a nivel tenant, sin `empresa_id`
    mismo código infinitas veces y el índice no diría nada. Y comprobar que un índice «existe» por
    su NOMBRE no basta — hay que comparar **sus columnas**: `uk_posicion_mt` ya existía con las
    columnas de antes, la migración lo dio por bueno y la protección no se puso.
+
+7. **Puertos y aeropuertos del mundo** (`puertos`) — *declarado el 2026-09-20, implementado en
+   `[PUERTO-1..4]`*
+
+   **Sin `company_id` ni `empresa_id`.** Es el **UN/LOCODE** que publican las Naciones Unidas:
+   28.035 puntos de embarque en 239 países, el mismo código que entienden las navieras y las
+   aduanas. El puerto de Burgas es `BGBOJ` para todo el mundo — no lo define cada suscriptor, no
+   cambia entre empresas y no es un dato de operación. Lo mantiene **Zyntello**; para el suscriptor
+   es **solo consulta**. Se carga con `php artisan puertos:importar`.
+
+   ⚠️⚠️ **El nombre del país va en la propia tabla**, no se resuelve contra `paises`: ahí están los
+   194 estados soberanos y **52 de los 232 con puerto no están** —Puerto Rico, Curazao, Aruba, Hong
+   Kong, las Islas Vírgenes—, que para una empresa dominicana son destinos de exportación
+   habituales. El combo los ofrecía como «PR», «CW», «AW». Y **no se arreglan metiéndolos en
+   `paises`**: ese catálogo decide qué ley se le aplica a una empresa, así que añadirlos los
+   volvería elegibles como país de la empresa, con sus pantallas de parámetros vacías.
+
+   ✅ **El catálogo del suscriptor sigue existiendo aparte**: `pur_puertos`, de Compras, con sus dos
+   columnas obligatorias. Del padrón **se COPIA** lo que haga falta —igual que `nits` copia de
+   `nits_oficiales`— y lo que el estándar no tiene (Punta Cana no está en el UN/LOCODE) se crea
+   ahí a mano y solo lo ve quien lo creó.
+
+   ⚠️⚠️ **Por qué se copia y no se apunta**: una compra tiene que seguir diciendo por dónde entró la
+   mercancía **aunque el estándar cambie**. Si apuntara al padrón y las Naciones Unidas corrigieran
+   un nombre, los documentos viejos cambiarían de puerto retroactivamente.
 
 **Todo lo demás lleva las dos columnas**: clientes, proveedores, artículos, agentes, facturas,
 cobros, pagos, movimientos, planes de comisión, empleados, permisos, configuraciones, preferencias,
