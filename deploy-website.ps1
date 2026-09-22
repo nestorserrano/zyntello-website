@@ -68,14 +68,57 @@ if ($Build) {
 }
 
 # PASO 1: pull en el clon del repo
-$ok = Invoke-SSHCommand -Command "cd $REPO_DIR && git pull origin master" -Description "[1/2] Pull GitHub en repositories/zyntello-website..."
+$ok = Invoke-SSHCommand -Command "cd $REPO_DIR && git pull origin master" -Description "[1/3] Pull GitHub en repositories/zyntello-website..."
 if (-not $ok) { Write-Host "`nError en pull. Abortando." -ForegroundColor Red; exit 1 }
 
 # PASO 2: copiar el build al document root del sitio
 $ok = Invoke-SSHCommand `
     -Command "/bin/mkdir -p $WEB_ROOT && /bin/cp -rf $REPO_DIR/dist/. $WEB_ROOT/" `
-    -Description "[2/2] Copiar dist/. -> $WEB_ROOT ..."
+    -Description "[2/3] Copiar dist/. -> $WEB_ROOT ..."
 if (-not $ok) { Write-Host "`nError al copiar dist. Abortando." -ForegroundColor Red; exit 1 }
+
+# PASO 3: podar los assets huerfanos
+# ---------------------------------------------------------------------------
+# `cp -rf` COPIA pero no BORRA, y Vite pone un hash nuevo en el nombre de cada
+# build. Cada despliegue deja atras el JS y el CSS del anterior, y nadie los
+# vuelve a mirar: el 2026-09-21 habia 27 huerfanos acumulados desde abril,
+# 7,3 MB de archivos que no referencia ningun HTML.
+#
+# No da ningun error ni rompe el sitio - por eso crece sin que nadie lo note.
+#
+# La lista de conservacion se calcula LEYENDO los HTML publicados (y lo que
+# esos propios archivos referencien, porque Vite puede partir el bundle), no
+# de una lista escrita a mano que se quedaria vieja al primer cambio.
+# Si la lista saliera vacia, se aborta sin borrar nada: una lista vacia
+# significa que el grep fallo, no que no haga falta ningun asset.
+# ---------------------------------------------------------------------------
+$PODA = @'
+cd WEB_ROOT_PLACEHOLDER || exit 1
+[ -d assets ] || { echo "sin directorio assets, nada que podar"; exit 0; }
+
+grep -rho "assets/[A-Za-z0-9_.-]*" --include="*.html" . | sed "s|assets/||" | sort -u > /tmp/zy_keep.txt
+for f in $(cat /tmp/zy_keep.txt); do
+  [ -f "assets/$f" ] && grep -oh "assets/[A-Za-z0-9_.-]*" "assets/$f" 2>/dev/null | sed "s|assets/||"
+done | sort -u >> /tmp/zy_keep.txt
+sort -u /tmp/zy_keep.txt -o /tmp/zy_keep.txt
+
+if [ ! -s /tmp/zy_keep.txt ]; then echo "ABORTADO: lista de conservacion vacia, no se borra nada"; exit 1; fi
+
+ls -1 assets/ | sort > /tmp/zy_all.txt
+comm -23 /tmp/zy_all.txt /tmp/zy_keep.txt > /tmp/zy_del.txt
+N=$(wc -l < /tmp/zy_del.txt)
+if [ "$N" -eq 0 ]; then echo "sin huerfanos"; else
+  while read -r x; do [ -n "$x" ] && rm -f -- "assets/$x" && echo "podado: $x"; done < /tmp/zy_del.txt
+fi
+echo "conservados: $(wc -l < /tmp/zy_keep.txt) | peso: $(du -sh assets/ | cut -f1)"
+rm -f /tmp/zy_keep.txt /tmp/zy_all.txt /tmp/zy_del.txt
+'@
+# El here-string se guarda con CRLF (es un archivo de Windows) y bash lo
+# rechaza con un error de sintaxis por el retorno de carro. Hay que
+# normalizar a LF antes de enviarlo por SSH.
+$PODA = $PODA.Replace("WEB_ROOT_PLACEHOLDER", $WEB_ROOT).Replace("`r`n", "`n")
+$ok = Invoke-SSHCommand -Command $PODA -Description "[3/3] Podar assets huerfanos..."
+if (-not $ok) { Write-Host "`nAviso: la poda fallo. El sitio esta desplegado igualmente." -ForegroundColor Yellow }
 
 Write-Host ""
 Write-Host "=====================================================================" -ForegroundColor Green
