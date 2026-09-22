@@ -200,9 +200,10 @@ function combinarModulo(apiData) {
     soloAnual:      !!apiData.solo_anual,
     url:            apiData.slug === 'zyntello-psa'
       ? '/zyntello-psa.html'
-      : apiData.slug === 'events'
-        ? 'https://app.zyntello.com/demo/events'
-        : (apiData.url || `https://app.zyntello.com/demo/${apiData.slug}`),
+      // ⚠️ Sin inventar URLs. Si el admin no declara una, NO hay landing: antes
+      // el sitio se fabricaba `/demo/{slug}`, y esa ruta inventada es la que
+      // acababa en un 404 sin que nada lo avisara.
+      : (apiData.url || null),
     // ⚠️ No basta con que el admin declare una `url`: la declara para todos.
     // Solo los de LANDINGS_PUBLICAS llevan a una pagina que se pueda abrir.
     tieneLanding:   LANDINGS_PUBLICAS.has(apiData.slug),
@@ -244,34 +245,31 @@ const APP_CHECKOUT_URL = 'https://app.zyntello.com/checkout'
 
 /* ─── Módulos con landing pública ────────────────────────────────────────────
  *
- * ⚠️⚠️ El admin declara una `url` para LOS 34 módulos, pero solo 14 llevan a
- * una landing que un visitante sin cuenta pueda abrir. Medido el 2026-09-21:
+ * Al 2026-09-21 los 34 módulos tienen landing pública. No siempre fue así: el
+ * admin BORRABA la landing en cuanto el módulo se activaba, dando por hecho que
+ * Laravel atendía /{slug}, y eso solo era cierto para seis. Catorce acababan en
+ * /login y cinco en un 404. Corregido en zyntello-admin [#515].
  *
- *     14  responden 200 con su landing
- *      7  redirigen a /login  (condominios, events, restaurante, prestamello,
- *                              reportes, carwash, rutas)
- *      5  dan 404             (crm, inteligencia, fiscal, flujocaja,
- *                              abastecimiento)
+ * ⚠️ La lista sigue existiendo —en vez de dar por buenas todas— porque el admin
+ * declara una `url` para todos los módulos SIEMPRE, la landing exista o no.
+ * Desde el navegador no hay forma de comprobarlo antes de la pulsación: la
+ * respuesta es de otro dominio y CORS lo impide. Un botón que lleva al inicio
+ * de sesión se ve exactamente igual que uno que lleva a la landing.
  *
- * Por eso esta lista existe: mandar «Conoce más» a la `url` del admin sin
- * comprobarla llevaría a doce visitantes de cada veintiséis a una pantalla de
- * inicio de sesión o a un 404 — y desde el navegador no hay forma de saberlo
- * antes de la pulsación, porque la respuesta es de otro dominio.
- *
- * ⚠️ Esta lista SE QUEDA VIEJA sola. Cuando se publique una landing nueva hay
- * que añadir su slug, y para eso está la guarda:
+ * ⚠️ Y se queda vieja sola, sin avisar. Para eso está la guarda:
  *
  *     node scripts/verificar-landings.mjs
  *
- * que compara esta lista contra la realidad y falla si sobra o falta alguna.
- *
- * ✅ Lo definitivo es un campo `landing_publica` en el admin; mientras no
- * exista, esta lista es la única fuente que no miente.
+ * que la compara con la realidad y sale con código 1 si sobra o falta alguna.
+ * Ejecutarla al publicar un módulo nuevo.
  * ─────────────────────────────────────────────────────────────────────────── */
 export const LANDINGS_PUBLICAS = new Set([
-  'zyntello-psa', 'proyectos', 'tareas', 'facturacion', 'inventario',
-  'encuestas', 'contabilidad', 'constructflow', 'doctores', 'nomina',
-  'supermercado', 'ferreteria', 'dental', 'alquileres', 'erp',
+  'zyntello-psa', 'crm', 'proyectos', 'tareas', 'facturacion', 'inventario',
+  'encuestas', 'contabilidad', 'condominios', 'constructflow', 'events',
+  'restaurante', 'doctores', 'nomina', 'cajachica', 'activos', 'supermercado',
+  'compras', 'ferreteria', 'presupuesto', 'dental', 'cxc', 'alquileres', 'cxp',
+  'prestamello', 'erp', 'reportes', 'bancos', 'carwash', 'inteligencia',
+  'fiscal', 'flujocaja', 'abastecimiento', 'rutas',
 ])
 
 /* ─── Modal de Registro + Pago ──────────────────────────────────── */
