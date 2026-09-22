@@ -595,7 +595,7 @@ export default function WhatsAppChat() {
         {/* Panel del chat */}
         {abierto && (
           <div className="rounded-4 overflow-hidden mb-3 shadow-lg"
-            style={{ width: 'min(360px, calc(100vw - 2rem))', background: '#0f172a', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column' }}>
+            style={{ width: 'min(360px, calc(100vw - 2rem))', background: 'var(--zy-tarjeta)', border: '1px solid var(--zy-borde-medio)', display: 'flex', flexDirection: 'column' }}>
 
             {/* Cabecera */}
             <div className="d-flex align-items-center justify-content-between px-4 py-3" style={{ background: '#075e54' }}>
@@ -613,13 +613,13 @@ export default function WhatsAppChat() {
 
             {/* Mensajes */}
             <div className="px-3 py-3 d-flex flex-column gap-2"
-              style={{ overflowY: 'auto', maxHeight: 320, background: '#111827', scrollbarWidth: 'thin' }}>
+              style={{ overflowY: 'auto', maxHeight: 320, background: 'var(--zy-fondo)', scrollbarWidth: 'thin' }}>
               {mensajes.map(m => (
                 <div key={m.id} className={`d-flex ${m.tipo === 'user' ? 'justify-content-end' : 'justify-content-start'}`}>
                   <div className="px-3 py-2"
                     style={{
-                      maxWidth: '85%', color: '#f1f5f9', fontSize: '0.875rem', lineHeight: 1.55,
-                      background: m.tipo === 'user' ? '#075e54' : '#1e293b',
+                      maxWidth: '85%', color: 'var(--zy-texto)', fontSize: '0.875rem', lineHeight: 1.55,
+                      background: m.tipo === 'user' ? 'rgba(52,211,153,0.16)' : 'rgba(255,255,255,0.06)',
                       borderRadius: m.tipo === 'user' ? '16px 4px 16px 16px' : '4px 16px 16px 16px'
                     }}
                     dangerouslySetInnerHTML={{ __html: bold(m.texto) }}
@@ -631,10 +631,10 @@ export default function WhatsAppChat() {
               {esperando && (
                 <div className="d-flex justify-content-start">
                   <div className="px-3 py-2 d-flex gap-1 align-items-center"
-                    style={{ background: '#1e293b', borderRadius: '4px 16px 16px 16px' }}>
+                    style={{ background: 'rgba(255,255,255,0.06)', borderRadius: '4px 16px 16px 16px' }}>
                     {[0, 1, 2].map(i => (
                       <span key={i} style={{
-                        width: 7, height: 7, borderRadius: '50%', background: '#60a5fa', display: 'block',
+                        width: 7, height: 7, borderRadius: '50%', background: 'var(--zy-indigo-claro)', display: 'block',
                         animation: `typing 1.2s ease-in-out ${i * 0.2}s infinite`
                       }} />
                     ))}
@@ -649,11 +649,11 @@ export default function WhatsAppChat() {
                     <button key={i} onClick={() => seleccionarOpcion(op)}
                       className="text-start px-3 py-2 rounded-3 fw-medium"
                       style={{
-                        background: 'rgba(37,211,102,0.07)', border: '1px solid rgba(37,211,102,0.22)',
-                        color: '#4ade80', fontSize: '0.83rem', cursor: 'pointer', transition: 'background 0.15s'
+                        background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(52,211,153,0.32)',
+                        color: '#6ee7b7', fontSize: '0.83rem', cursor: 'pointer', transition: 'background 0.15s'
                       }}
-                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(37,211,102,0.15)'}
-                      onMouseLeave={e => e.currentTarget.style.background = 'rgba(37,211,102,0.07)'}>
+                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(52,211,153,0.14)'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}>
                       {op}
                     </button>
                   ))}
@@ -664,7 +664,7 @@ export default function WhatsAppChat() {
             </div>
 
             {/* Input libre */}
-            <div className="d-flex gap-2 px-3 py-3" style={{ borderTop: '1px solid rgba(255,255,255,0.07)', background: '#0f172a' }}>
+            <div className="d-flex gap-2 px-3 py-3" style={{ borderTop: '1px solid var(--zy-borde)', background: 'var(--zy-tarjeta)' }}>
               <input
                 ref={inputRef}
                 type="text"
@@ -674,9 +674,9 @@ export default function WhatsAppChat() {
                 placeholder={modoOtro ? 'Escribe tu respuesta aquí...' : 'Escribe tu mensaje...'}
                 className="form-control rounded-3"
                 style={{
-                  background: '#1e293b',
-                  border: `1px solid ${modoOtro ? 'rgba(37,211,102,0.5)' : 'rgba(255,255,255,0.1)'}`,
-                  color: '#f1f5f9',
+                  background: 'var(--zy-fondo-alto)',
+                  border: `1px solid ${modoOtro ? 'rgba(52,211,153,0.6)' : 'var(--zy-borde-medio)'}`,
+                  color: 'var(--zy-texto)',
                   fontSize: '0.875rem',
                   transition: 'border-color 0.2s'
                 }}

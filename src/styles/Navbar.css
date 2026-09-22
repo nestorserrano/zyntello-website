@@ -1,89 +1,219 @@
-/* Barra de navegación */
-.navbar {
+/* ===========================================================================
+   Navbar - tema oscuro, cristal ahumado, seccion activa marcada
+   =========================================================================== */
+
+.zy-nav {
   position: fixed;
-  top: 0;
-  width: 100%;
+  inset: 0 0 auto 0;
+  z-index: 1030;
+  height: var(--zy-navbar-h);
+  /* Opaco desde el principio. Con un fondo translucido, el desfile de
+     capacidades del hero se veia POR DETRAS de los enlaces del menu al llegar
+     a una seccion por ancla: texto sobre texto, y el contraste dejaba de estar
+     garantizado sin que nada fallara. El estado compacto solo anade el borde. */
+  background: rgba(8, 8, 12, .86);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border-bottom: 1px solid transparent;
+  transition: background var(--zy-t-medio) var(--zy-curva),
+              border-color var(--zy-t-medio) var(--zy-curva);
+}
+
+.zy-nav-compacto {
+  background: rgba(8, 8, 12, .96);
+  border-bottom-color: var(--zy-borde);
+}
+
+.zy-nav-caja {
+  height: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 1rem 5%;
-  background: rgba(10, 10, 20, 0.95);
-  backdrop-filter: blur(10px);
-  z-index: 1000;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  justify-content: space-between;
+  gap: 16px;
 }
 
-.navbar-logo {
+/* -- Marca --------------------------------------------------------------- */
+.zy-nav-marca {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 11px;
+  flex-shrink: 0;
 }
+.zy-nav-marca img { height: 58px; width: auto; }
 
-.logo-texto {
-  font-size: 1.3rem;
+.zy-nav-marca-texto { display: flex; flex-direction: column; line-height: 1.1; }
+.zy-nav-marca-texto strong {
+  font-family: var(--zy-display);
+  color: var(--zy-texto);
+  font-size: 1.45rem;
   font-weight: 700;
-  color: #fff;
-  letter-spacing: 0.5px;
+  letter-spacing: -.035em;
 }
-
-.logo-subtitulo {
-  font-size: 0.7rem;
-  color: #60a5fa;
-  letter-spacing: 1px;
+.zy-nav-marca-texto small {
+  color: var(--zy-texto-tenue);
+  font-size: .6rem;
+  letter-spacing: .13em;
   text-transform: uppercase;
+  font-weight: 500;
+  margin-top: 3px;
 }
 
-.navbar-links {
+/* -- Menu ---------------------------------------------------------------- */
+.zy-nav-menu {
   display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-left: auto;
+}
+
+.zy-nav-lista {
+  display: flex;
+  align-items: center;
+  gap: 2px;
   list-style: none;
-  gap: 2rem;
   margin: 0;
-  padding: 0;
+  background: rgba(255, 255, 255, .04);
+  border: 1px solid var(--zy-borde);
+  border-radius: 999px;
+  padding: 4px;
 }
 
-.navbar-links a {
-  color: #cbd5e1;
-  text-decoration: none;
-  font-size: 0.95rem;
-  transition: color 0.2s;
+.zy-nav-enlace {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  color: var(--zy-texto-suave);
+  font-family: var(--zy-display);
+  font-size: .9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: color var(--zy-t-medio), background var(--zy-t-medio);
+}
+.zy-nav-enlace:hover { color: var(--zy-texto); background: rgba(255, 255, 255, .06); }
+
+/* La seccion activa se marca con color Y con un fondo propio: el color solo no
+   basta para quien no distingue el indigo del gris. */
+.zy-nav-enlace-activo {
+  color: var(--zy-texto);
+  background: rgba(99, 102, 241, .22);
+  box-shadow: inset 0 0 0 1px rgba(99, 102, 241, .45);
 }
 
-.navbar-links a:hover {
-  color: #60a5fa;
+.zy-nav-acciones {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
 }
 
-.btn-contacto {
-  background: #3b82f6;
-  color: #fff !important;
-  padding: 0.5rem 1.2rem;
-  border-radius: 6px;
-  transition: background 0.2s !important;
+.zy-nav-acceso {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
+  color: var(--zy-texto-medio);
+  font-family: var(--zy-display);
+  font-weight: 500;
+  font-size: .92rem;
 }
+.zy-nav-acceso:hover { color: var(--zy-texto); }
 
-.btn-contacto:hover {
-  background: #2563eb;
-}
+.zy-nav-cta { min-height: 46px; padding: 12px 24px; font-size: .92rem; }
 
-.menu-btn {
+/* -- Hamburguesa --------------------------------------------------------- */
+.zy-nav-hamburguesa {
   display: none;
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 1.5rem;
+  width: 48px; height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--zy-borde-medio);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .05);
+  color: var(--zy-texto);
   cursor: pointer;
+  transition: background var(--zy-t-medio);
+}
+.zy-nav-hamburguesa:hover { background: rgba(255, 255, 255, .1); }
+
+/* -- Punto de corte MEDIDO, no adivinado ------------------------------------
+   Medido en el navegador: marca 393 px + menu 850 px + 16 de hueco + 96 de
+   margenes = la barra horizontal necesita 1354 px de ventana. Con el corte en
+   1200 px, a 1280 el boton de Contacto se salia de la pantalla y no habia
+   forma de pulsarlo - y no se veia como un error, se veia como si no
+   existiera.
+
+   La solucion tiene dos partes:
+     1. Por debajo de 1500 px se oculta el lema de la marca (ahi sobra), con
+        lo que la barra baja a ~1180 px.
+     2. Por debajo de 1260 px se pliega en hamburguesa.
+   Si manana se anade una seccion al menu, hay que VOLVER A MEDIR: este numero
+   depende del contenido, no del dispositivo.
+   ------------------------------------------------------------------------- */
+@media (max-width: 1499.98px) {
+  .zy-nav-marca-texto small { display: none; }
 }
 
-@media (max-width: 768px) {
-  .menu-btn { display: block; }
-  .navbar-links {
-    display: none;
+@media (max-width: 1259.98px) {
+  .zy-nav-hamburguesa { display: inline-flex; }
+
+  .zy-nav-menu {
+    position: fixed;
+    inset: var(--zy-navbar-h) 0 auto 0;
     flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: rgba(10,10,20,0.98);
-    padding: 1.5rem 5%;
-    gap: 1.2rem;
+    align-items: stretch;
+    gap: 6px;
+    padding: 20px 20px 28px;
+    background: var(--zy-fondo-alto);
+    border-bottom: 1px solid var(--zy-borde);
+    box-shadow: var(--zy-sombra-3);
+    max-height: calc(100svh - var(--zy-navbar-h));
+    overflow-y: auto;
+
+    /* Cerrado: fuera de pantalla Y fuera del orden de tabulacion.
+       Solo con opacity: 0 los enlaces siguen siendo enfocables con el
+       tabulador y el foco se va a un menu invisible - un fallo que no se ve
+       con el raton y deja el teclado perdido. */
+    transform: translateY(-12px);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform var(--zy-t-medio) var(--zy-curva),
+                opacity var(--zy-t-medio) var(--zy-curva),
+                visibility var(--zy-t-medio);
   }
-  .navbar-links.abierto { display: flex; }
+
+  .zy-nav-menu-abierto { transform: none; opacity: 1; visibility: visible; }
+
+  .zy-nav-lista {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+  .zy-nav-enlace { min-height: 52px; padding: 0 16px; font-size: 1.02rem; border-radius: var(--zy-radio-sm); }
+
+  .zy-nav-acciones {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--zy-borde);
+  }
+  .zy-nav-acceso {
+    justify-content: center;
+    border: 1px solid var(--zy-borde-medio);
+    border-radius: 999px;
+    min-height: 50px;
+  }
+  .zy-nav-cta { width: 100%; }
+}
+
+@media (max-width: 575.98px) {
+  .zy-nav-marca img { height: 48px; }
+  .zy-nav-marca-texto strong { font-size: 1.28rem; }
 }

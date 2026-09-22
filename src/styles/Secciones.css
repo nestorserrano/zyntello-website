@@ -1,0 +1,505 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Zyntello — Por qué, Portafolio, Nosotros, Contacto y pie · TEMA OSCURO
+   Un solo archivo: cuatro secciones que comparten rejilla y tarjeta. Tenerlas
+   en cuatro hojas distintas solo repartía el mismo CSS en más sitios.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ═══ Por qué Zyntello ════════════════════════════════════════════════════ */
+.zy-porque { overflow: hidden; }
+
+.zy-porque-cabecera {
+  max-width: 660px;
+  margin-bottom: clamp(30px, 3.6vw, 52px);
+}
+.zy-porque-cta { margin-top: clamp(20px, 2.4vw, 30px); }
+
+.zy-porque-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  /* Dos columnas como máximo. Con `auto-fit` a 330 px entraban CUATRO en un
+     monitor de 1440, y cada razón se quedaba en una columna de texto de seis
+     palabras: se lee peor que en el móvil, y el ancho no avisa de nada. */
+  grid-template-columns: 1fr;
+  border-top: 1px solid var(--zy-borde);
+}
+
+.zy-porque-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: start;
+  gap: 18px;
+  padding: clamp(20px, 2.2vw, 28px) clamp(16px, 1.8vw, 26px) clamp(20px, 2.2vw, 28px) 4px;
+  border-bottom: 1px solid var(--zy-borde);
+  transition: background var(--zy-t-medio) var(--zy-curva);
+}
+.zy-porque-item:hover { background: rgba(255, 255, 255, .025); }
+
+/* Línea de color que crece desde la izquierda al pasar por encima */
+.zy-porque-item::before {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -1px;
+  height: 1px;
+  width: 0;
+  background: var(--zy-color-acento, var(--zy-indigo));
+  transition: width var(--zy-t-lento) var(--zy-curva);
+}
+.zy-porque-item:hover::before { width: 100%; }
+
+.zy-porque-num {
+  font-family: var(--zy-display);
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--zy-texto-tenue);
+  padding-top: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.zy-porque-icono {
+  width: 46px; height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--zy-radio-sm);
+  background: color-mix(in srgb, currentColor 13%, transparent);
+  border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+  transition: box-shadow var(--zy-t-medio);
+}
+.zy-porque-item:hover .zy-porque-icono {
+  box-shadow: 0 0 30px color-mix(in srgb, currentColor 35%, transparent);
+}
+
+.zy-porque-titulo {
+  font-family: var(--zy-display);
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: var(--zy-texto);
+  margin-bottom: 7px;
+  letter-spacing: -.015em;
+}
+.zy-porque-desc {
+  color: var(--zy-texto-suave);
+  font-size: .92rem;
+  line-height: 1.65;
+  margin: 0;
+}
+
+@media (min-width: 992px) {
+  .zy-porque-lista { grid-template-columns: repeat(2, 1fr); column-gap: 48px; }
+}
+
+/* ═══ Portafolio ══════════════════════════════════════════════════════════ */
+.zy-port { overflow: hidden; }
+
+.zy-port-halo {
+  width: 620px; height: 620px;
+  bottom: -20%; left: -12%;
+  background: radial-gradient(circle, rgba(251, 113, 133, .26) 0%, transparent 66%);
+  opacity: .5;
+}
+
+.zy-port-cabecera {
+  max-width: 680px;
+  margin-bottom: clamp(30px, 3.6vw, 52px);
+}
+
+.zy-port-rejilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 310px), 1fr));
+  gap: clamp(12px, 1.2vw, 18px);
+}
+
+.zy-port-tarjeta {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(22px, 2vw, 28px) clamp(20px, 1.8vw, 26px);
+}
+
+.zy-port-cima {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.zy-port-icono {
+  width: 46px; height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--zy-radio-sm);
+  background: color-mix(in srgb, currentColor 13%, transparent);
+  border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+}
+
+.zy-port-categoria {
+  font-family: var(--zy-display);
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.zy-port-titulo {
+  font-family: var(--zy-display);
+  font-size: 1.18rem;
+  font-weight: 600;
+  line-height: 1.28;
+  letter-spacing: -.02em;
+  margin-bottom: 12px;
+}
+
+.zy-port-resultado {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  color: var(--zy-texto-suave);
+  font-size: .92rem;
+  line-height: 1.6;
+  margin-bottom: 22px;
+  flex-grow: 1;
+}
+.zy-port-resultado svg { margin-top: 3px; flex-shrink: 0; }
+
+.zy-port-tecnologias { display: flex; flex-wrap: wrap; gap: 7px; }
+.zy-port-tec {
+  background: rgba(255, 255, 255, .045);
+  border: 1px solid var(--zy-borde);
+  border-radius: 999px;
+  padding: 5px 13px;
+  font-size: .75rem;
+  color: var(--zy-texto-tenue);
+}
+
+/* ═══ Nosotros ════════════════════════════════════════════════════════════ */
+.zy-nos { overflow: hidden; }
+
+.zy-nos-halo {
+  width: 660px; height: 660px;
+  top: -12%; right: -16%;
+  background: radial-gradient(circle, rgba(99, 102, 241, .3) 0%, transparent 66%);
+  opacity: .45;
+}
+
+.zy-nos-lema {
+  margin-bottom: clamp(38px, 4.6vw, 66px);
+  max-width: 1100px;
+}
+.zy-nos-lema p {
+  font-family: var(--zy-display);
+  font-size: clamp(1.7rem, 4.6vw, 3.8rem);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -.045em;
+  color: var(--zy-texto);
+  margin: 0;
+}
+
+.zy-nos-parrafo {
+  color: var(--zy-texto-suave);
+  font-size: 1.02rem;
+  line-height: 1.85;
+  margin-block: 22px 0;
+  max-width: 560px;
+}
+
+.zy-nos-paises {
+  margin-top: clamp(22px, 2.6vw, 32px);
+  padding: clamp(18px, 1.8vw, 22px) clamp(18px, 1.9vw, 24px);
+  border-radius: var(--zy-radio-lg);
+  background: rgba(255, 255, 255, .03);
+  border: 1px solid var(--zy-borde);
+}
+.zy-nos-paises-rotulo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--zy-texto-tenue);
+  font-family: var(--zy-display);
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.zy-nos-paises-rotulo svg { color: var(--zy-indigo-claro); }
+.zy-nos-paises-lista { display: flex; flex-wrap: wrap; gap: 8px; }
+.zy-nos-pais {
+  background: rgba(99, 102, 241, .14);
+  border: 1px solid rgba(99, 102, 241, .3);
+  color: var(--zy-indigo-claro);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: .83rem;
+  font-weight: 500;
+}
+.zy-nos-pais-remoto {
+  background: rgba(255, 255, 255, .04);
+  border-color: var(--zy-borde);
+  color: var(--zy-texto-tenue);
+}
+
+.zy-nos-cta { margin-top: clamp(22px, 2.6vw, 30px); }
+
+.zy-nos-cifras {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(10px, 1.1vw, 16px);
+}
+.zy-nos-cifra {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: clamp(18px, 1.9vw, 26px) clamp(16px, 1.6vw, 22px);
+}
+.zy-nos-cifra-icono {
+  width: 42px; height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: color-mix(in srgb, currentColor 13%, transparent);
+  border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+}
+.zy-nos-cifra-num {
+  font-family: var(--zy-display);
+  font-size: 1.9rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.03em;
+  color: var(--zy-texto);
+}
+.zy-nos-cifra-lbl {
+  color: var(--zy-texto-suave);
+  font-size: .86rem;
+  line-height: 1.45;
+}
+
+/* ═══ Contacto ════════════════════════════════════════════════════════════ */
+.zy-cont { overflow: hidden; }
+
+.zy-cont-intro { margin-bottom: clamp(24px, 2.8vw, 36px); }
+
+.zy-cont-canales {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.zy-cont-canal {
+  display: flex;
+  gap: 15px;
+  padding: 16px 14px;
+  border-radius: var(--zy-radio-sm);
+  transition: background var(--zy-t-medio);
+}
+.zy-cont-canal:hover { background: rgba(255, 255, 255, .035); }
+
+.zy-cont-canal-icono {
+  width: 42px; height: 42px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(99, 102, 241, .13);
+  border: 1px solid rgba(99, 102, 241, .28);
+  color: var(--zy-indigo-claro);
+}
+.zy-cont-canal-titulo {
+  font-family: var(--zy-display);
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--zy-texto-tenue);
+  margin-bottom: 4px;
+}
+.zy-cont-canal-valor {
+  color: var(--zy-texto-medio);
+  font-size: .94rem;
+  line-height: 1.5;
+  display: block;
+}
+.zy-cont-canal-enlace { color: var(--zy-indigo-claro); font-weight: 500; }
+.zy-cont-canal-enlace:hover { color: var(--zy-coral-claro); }
+
+.zy-cont-form {
+  background: rgba(16, 16, 24, .82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--zy-borde);
+  border-radius: var(--zy-radio-lg);
+  padding: clamp(20px, 2.4vw, 32px);
+}
+
+.zy-cont-label {
+  display: block;
+  font-family: var(--zy-display);
+  font-size: .82rem;
+  font-weight: 500;
+  color: var(--zy-texto-medio);
+  margin-bottom: 8px;
+}
+
+.zy-cont-ayuda {
+  margin: 8px 0 0;
+  font-size: .82rem;
+  color: var(--zy-texto-tenue);
+}
+
+.zy-cont-aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 15px 17px;
+  border-radius: var(--zy-radio-sm);
+  font-size: .92rem;
+  margin-bottom: 22px;
+}
+.zy-cont-aviso-ok {
+  background: rgba(52, 211, 153, .12);
+  border: 1px solid rgba(52, 211, 153, .35);
+  color: #6ee7b7;
+}
+.zy-cont-aviso-error {
+  background: rgba(248, 113, 113, .12);
+  border: 1px solid rgba(248, 113, 113, .35);
+  color: #fca5a5;
+}
+.zy-cont-aviso-error a { color: #fca5a5; text-decoration: underline; }
+
+/* ═══ Pie ═════════════════════════════════════════════════════════════════ */
+.zy-pie {
+  position: relative;
+  overflow: hidden;
+  background: var(--zy-fondo-alto);
+  border-top: 1px solid var(--zy-borde);
+  padding: clamp(44px, 4.6vw, 76px) 0 26px;
+}
+
+.zy-pie-halo {
+  width: 700px; height: 700px;
+  top: -40%; left: 50%;
+  margin-left: -350px;
+  background: radial-gradient(circle, rgba(99, 102, 241, .3) 0%, transparent 64%);
+  opacity: .4;
+}
+
+.zy-pie-llamada {
+  text-align: center;
+  padding-bottom: clamp(36px, 4.2vw, 62px);
+  margin-bottom: clamp(32px, 3.6vw, 52px);
+  border-bottom: 1px solid var(--zy-borde);
+}
+.zy-pie-llamada-titulo {
+  font-family: var(--zy-display);
+  font-size: clamp(1.6rem, 3.4vw, 2.8rem);
+  font-weight: 700;
+  letter-spacing: -.04em;
+  line-height: 1.08;
+  margin-bottom: 30px;
+  text-wrap: balance;
+}
+.zy-pie-llamada-botones {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.zy-pie-cuerpo { padding-bottom: clamp(26px, 3vw, 40px); }
+
+.zy-pie-marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.zy-pie-marca img { height: 56px; width: auto; }
+.zy-pie-marca strong {
+  font-family: var(--zy-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--zy-texto);
+  letter-spacing: -.035em;
+}
+
+.zy-pie-lema {
+  color: var(--zy-indigo-claro);
+  font-size: .9rem;
+  font-style: italic;
+  margin-bottom: 16px;
+}
+.zy-pie-texto {
+  color: var(--zy-texto-tenue);
+  font-size: .86rem;
+  line-height: 1.75;
+  max-width: 380px;
+}
+
+.zy-pie-contactos {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+.zy-pie-contactos a {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--zy-texto-medio);
+  font-size: .88rem;
+  width: fit-content;
+}
+.zy-pie-contactos a svg { color: var(--zy-indigo-claro); }
+.zy-pie-contactos a:hover { color: var(--zy-texto); }
+
+.zy-pie-titulo {
+  font-family: var(--zy-display);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--zy-texto-tenue);
+  margin-bottom: 18px;
+}
+
+.zy-pie-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.zy-pie-lista a {
+  color: var(--zy-texto-suave);
+  font-size: .88rem;
+  transition: color var(--zy-t-medio);
+}
+.zy-pie-lista a:hover { color: var(--zy-indigo-claro); }
+
+.zy-pie-acceso { margin-top: 26px; width: 100%; }
+
+.zy-pie-final {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 24px;
+  border-top: 1px solid var(--zy-borde);
+  color: var(--zy-texto-tenue);
+  font-size: .84rem;
+}
+.zy-pie-dominio { font-family: var(--zy-display); font-weight: 600; color: var(--zy-indigo-claro); }
+
+/* Hueco para el botón flotante de WhatsApp, que si no se sienta encima del
+   dominio y lo tapa justo en la esquina donde el ojo lo busca. */
+@media (min-width: 768px) {
+  .zy-pie-final { padding-right: 88px; }
+}
+
+/* ═══ Adaptación ══════════════════════════════════════════════════════════ */
+@media (max-width: 767.98px) {
+  .zy-porque-item { grid-template-columns: auto 1fr; padding: 24px 16px 24px 0; row-gap: 12px; }
+  .zy-porque-num { grid-row: 1; padding-top: 14px; }
+  .zy-porque-texto { grid-column: 1 / -1; }
+
+  .zy-nos-cifras { grid-template-columns: 1fr; }
+  .zy-cont-form { padding: 22px 18px; }
+  .zy-pie-llamada-botones .zy-btn { width: 100%; }
+}

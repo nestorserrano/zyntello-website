@@ -1,135 +1,149 @@
-const servicios = [
+import Icono from './Icono'
+import '../styles/Servicios.css'
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   El objeto social de Zyntello, S.R.L., traducido a lo que el cliente compra.
+   El orden es deliberado: primero lo que la empresa vende como producto propio
+   (plataforma, IA, ERP), después los servicios que la sostienen, y al final la
+   consultoría de datos. Cambiar el orden cambia lo que el visitante cree que
+   somos.
+   ───────────────────────────────────────────────────────────────────────────── */
+const SERVICIOS = [
   {
-    icono: '🤖',
+    icono: 'cuadricula', acento: '#6366f1', acento2: '#fb7185', grupo: 'Plataforma',
+    titulo: 'Plataforma SaaS Zyntello',
+    descripcion: 'Nuestro ERP modular en la nube. Contratas solo los módulos que usas y los tienes funcionando el mismo día, sin instalar nada.',
+    destacado: true,
+    marcas: ['34 módulos', 'Multi-empresa', 'Multi-moneda', 'Fiscal por país'],
+    enlace: { texto: 'Ver los módulos y precios', href: '#soluciones' },
+  },
+  {
+    icono: 'robot', acento: '#a78bfa', grupo: 'Inteligencia Artificial',
     titulo: 'Automatización con IA',
-    descripcion: 'Implementamos agentes de Inteligencia Artificial que automatizan tareas, generan reportes y conectan tus sistemas existentes. Menos trabajo manual, más decisiones inteligentes.',
-    items: ['Agentes IA para tareas repetitivas', 'Generación automática de reportes', 'Conexión entre sistemas existentes', 'Flujos de trabajo inteligentes'],
-    color: '#8b5cf6'
+    descripcion: 'Agentes y modelos que ejecutan las tareas repetitivas, generan los reportes y conectan entre sí los sistemas que ya tienes.',
   },
   {
-    icono: '⚙️',
+    icono: 'servidor', acento: '#6366f1', grupo: 'Sistemas de gestión',
     titulo: 'ERP y CRM',
-    descripcion: 'Personalizamos e implementamos Softland, ODOO y otras plataformas ERP/CRM adaptadas al flujo real de tu empresa. Integración con bases de datos existentes incluida.',
-    items: ['Softland ERP / Profit 2K8 & 2K12', 'ODOO y plataformas abiertas', 'Integración con bases de datos actuales', 'Capacitación y soporte continuo'],
-    color: '#3b82f6'
+    descripcion: 'Desarrollo, personalización e implementación de Softland, Profit, ODOO y plataformas abiertas, adaptadas al flujo real de tu empresa.',
   },
   {
-    icono: '🔧',
-    titulo: 'Soporte Técnico TI',
-    descripcion: 'Soporte especializado en infraestructura, redes, servidores y sistemas. SLA adaptados a tu operación, atención local en RD y remota para toda la región.',
-    items: ['Infraestructura y redes empresariales', 'Servidores y sistemas operativos', 'SLA adaptados a tu operación', 'Presencial en RD·VE·CO·GT·CR — Remoto global'],
-    color: '#f59e0b'
+    icono: 'codigo', acento: '#22d3ee', grupo: 'Desarrollo',
+    titulo: 'Aplicaciones a la medida',
+    descripcion: 'Construidas sobre las bases de datos que ya usas. No hay que empezar de cero para resolver un problema concreto.',
   },
   {
-    icono: '👥',
-    titulo: 'Colocación de Personal TI',
-    descripcion: 'Conectamos empresas con talento tecnológico calificado. Perfiles desde técnicos de soporte hasta arquitectos de sistemas y especialistas en IA.',
-    items: ['Técnicos de soporte y redes', 'Desarrolladores y analistas', 'Arquitectos de sistemas', 'Especialistas en IA y datos'],
-    color: '#10b981'
+    icono: 'salvavidas', acento: '#fb7185', grupo: 'Operación',
+    titulo: 'Soporte técnico TI',
+    descripcion: 'Infraestructura, redes, servidores y sistemas, con niveles de servicio acordados según cómo opera tu empresa.',
   },
   {
-    icono: '🖥️',
-    titulo: 'Venta de Equipos y Soluciones',
-    descripcion: 'Equipos, servidores, dispositivos de red y licencias de software empresarial con asesoría técnica incluida. Marcas líderes con garantía y soporte local.',
-    items: ['Computadoras y servidores', 'Dispositivos de red (switches, routers)', 'Licencias software empresarial', 'Asesoría técnica incluida'],
-    color: '#06b6d4'
+    icono: 'escudo', acento: '#34d399', grupo: 'Operación',
+    titulo: 'Nube y ciberseguridad',
+    descripcion: 'Servicios en la nube, protección de la información y gestión de infraestructura: que esté disponible, y que solo entre quien debe.',
   },
   {
-    icono: '🏗️',
-    titulo: 'Consultoría y Transformación Digital',
-    descripcion: 'Evaluamos tu infraestructura y procesos actuales, diseñamos la hoja de ruta tecnológica y te acompañamos en cada paso de la implementación.',
-    items: ['Diagnóstico de infraestructura actual', 'Hoja de ruta tecnológica', 'Arquitectura de sistemas', 'Acompañamiento en implementación'],
-    color: '#f97316'
+    icono: 'equipo', acento: '#fbbf24', grupo: 'Talento',
+    titulo: 'Colocación de personal TI',
+    descripcion: 'Desde técnicos de soporte hasta arquitectos de sistemas y especialistas en Inteligencia Artificial.',
   },
   {
-    icono: '📒',
-    titulo: 'Consultoría Contable',
-    descripcion: 'Asesoría contable y financiera integrada con tus sistemas ERP. Procesos de contabilidad, reportes fiscales y análisis financiero para tomar mejores decisiones.',
-    items: ['Configuración contable en ERP', 'Reportes financieros y fiscales', 'Análisis de estados financieros', 'Asesoría en cumplimiento normativo'],
-    color: '#14b8a6'
+    icono: 'caja', acento: '#94a3b8', grupo: 'Equipos',
+    titulo: 'Importación y venta de equipos',
+    descripcion: 'Hardware, software y soluciones tecnológicas, con la asesoría técnica incluida en la compra.',
   },
   {
-    icono: '📣',
-    titulo: 'Marketing Digital',
-    descripcion: 'Diseño y ejecución de estrategias de marketing digital para posicionar tu marca, atraer clientes y medir resultados con datos reales.',
-    items: ['Gestión de redes sociales', 'Posicionamiento SEO / SEM', 'Publicidad digital (Google Ads, Meta)', 'Analítica de audiencias y conversión'],
-    color: '#a855f7'
+    icono: 'brujula', acento: '#818cf8', grupo: 'Consultoría',
+    titulo: 'Transformación digital',
+    descripcion: 'Diagnóstico de lo que tienes, hoja de ruta tecnológica, arquitectura de sistemas y acompañamiento en la implementación.',
   },
   {
-    icono: '🗳️',
-    titulo: 'Consultoría Electoral & Política',
-    descripcion: 'Consultoría estratégica para procesos electorales y campañas políticas basada en datos, análisis de percepción ciudadana e inteligencia de mercado.',
-    items: ['Encuestas electorales y sondeos', 'Análisis de percepción ciudadana', 'Estrategia de campaña basada en datos', 'Monitoreo de tendencias y opinión pública'],
-    color: '#ef4444'
+    icono: 'birrete', acento: '#c084fc', grupo: 'Consultoría',
+    titulo: 'Capacitación y formación',
+    descripcion: 'En el ERP implantado y en herramientas de IA, para que el equipo use de verdad lo que la empresa compró.',
   },
   {
-    icono: '📊',
-    titulo: 'Encuestas & Estudios de Mercado',
-    descripcion: 'Investigación de opinión pública, análisis de tendencias, censos, muestreos y procesamiento de datos estadísticos para organismos públicos y privados.',
-    items: ['Encuestas de opinión pública', 'Censos y muestreos poblacionales', 'Análisis demográfico y socioeconómico', 'Visualización y reportes estadísticos'],
-    color: '#0ea5e9'
-  }
+    icono: 'libro', acento: '#2dd4bf', grupo: 'Consultoría',
+    titulo: 'Consultoría contable',
+    descripcion: 'Asesoría contable y financiera integrada con tus sistemas: procesos, reportes fiscales y análisis para decidir con números reales.',
+  },
+  {
+    icono: 'megafono', acento: '#f472b6', grupo: 'Datos y mercado',
+    titulo: 'Marketing digital',
+    descripcion: 'Posicionamiento, campañas y analítica. Se mide el resultado, no las impresiones.',
+  },
+  {
+    icono: 'urna', acento: '#f87171', grupo: 'Datos y mercado',
+    titulo: 'Consultoría electoral',
+    descripcion: 'Estrategia de campaña basada en datos: percepción ciudadana, inteligencia de mercado y monitoreo de tendencias.',
+  },
+  {
+    icono: 'grafico', acento: '#38bdf8', grupo: 'Datos y mercado',
+    titulo: 'Encuestas y estudios de mercado',
+    descripcion: 'Investigación de opinión, censos, muestreos y procesamiento estadístico para el sector público y privado.',
+  },
 ]
 
 export default function Servicios() {
   return (
-    <section id="servicios" style={{ background: '#0f172a', padding: '5rem 0' }}>
-      <div className="container-fluid px-4 px-lg-5">
+    <section id="servicios" className="zy-serv">
+      <span className="zy-filo zy-filo-arriba" aria-hidden="true" />
+      <div className="zy-malla" aria-hidden="true" />
+      <div className="zy-halo zy-serv-halo" aria-hidden="true" />
 
-        <div className="text-center mb-5">
-          <p className="text-uppercase fw-semibold mb-2" style={{ color: '#60a5fa', letterSpacing: '2px', fontSize: '0.85rem' }}>
-            ¿Qué ofrecemos?
-          </p>
-          <h2 className="fw-black mb-3" style={{ fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', color: '#f1f5f9' }}>
-            Nuestros Servicios
+      <div className="container-fluid px-4 px-lg-5 position-relative">
+
+        <header className="zy-serv-cabecera zy-revelar">
+          <p className="zy-eyebrow">Qué hacemos</p>
+          <h2 className="zy-titulo">
+            Catorce formas de que la tecnología<br className="d-none d-lg-block" />
+            <span className="zy-degradado">deje de ser tu problema</span>
           </h2>
-          <p className="mx-auto" style={{ color: '#94a3b8', maxWidth: '580px', fontSize: '1.05rem', lineHeight: 1.7 }}>
-            No vendemos software enlatado. Construimos o adaptamos la tecnología exacta que tu empresa necesita.
+          <p className="zy-subtitulo">
+            No vendemos software enlatado. Cada implementación parte de entender cómo funciona
+            tu empresa — y construimos o adaptamos la tecnología exacta que necesita.
           </p>
-        </div>
+        </header>
 
-        <div className="row g-4">
-          {servicios.map((s, i) => (
-            <div key={i} className="col-sm-6 col-xl-3">
-              <div
-                className="h-100 p-4 rounded-4"
-                style={{
-                  background: 'rgba(255,255,255,0.03)',
-                  border: '1px solid rgba(255,255,255,0.07)',
-                  transition: 'transform 0.25s, border-color 0.25s',
-                  cursor: 'default'
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.transform = 'translateY(-6px)'
-                  e.currentTarget.style.borderColor = s.color + '66'
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.transform = 'translateY(0)'
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'
-                }}
-              >
-                <div className="mb-3" style={{ fontSize: '2.2rem' }}>{s.icono}</div>
-                <div className="fw-bold mb-2" style={{
-                  color: '#f1f5f9', fontSize: '1.1rem',
-                  borderLeft: `3px solid ${s.color}`, paddingLeft: '0.65rem', lineHeight: 1.3
-                }}>
-                  {s.titulo}
+        <div className="zy-serv-rejilla">
+          {SERVICIOS.map((s, i) => (
+            <article
+              key={s.titulo}
+              className={`zy-tarjeta zy-serv-tarjeta zy-revelar ${s.destacado ? 'zy-serv-destacada' : ''}`}
+              style={{
+                '--zy-color-acento': s.acento,
+                '--zy-color-acento2': s.acento2 || s.acento,
+                transitionDelay: `${Math.min(i, 9) * 50}ms`,
+              }}
+            >
+              <span className="zy-serv-icono" style={{ color: s.acento }}>
+                <Icono nombre={s.icono} size={s.destacado ? 30 : 24} />
+              </span>
+
+              <span className="zy-serv-grupo">{s.grupo}</span>
+              <h3 className="zy-serv-titulo">{s.titulo}</h3>
+              <p className="zy-serv-desc">{s.descripcion}</p>
+
+              {s.marcas && (
+                <div className="zy-serv-marcas">
+                  {s.marcas.map(m => <span key={m} className="zy-serv-marca">{m}</span>)}
                 </div>
-                <p className="mb-3" style={{ color: '#94a3b8', fontSize: '0.92rem', lineHeight: 1.65 }}>
-                  {s.descripcion}
-                </p>
-                <ul className="list-unstyled mb-0">
-                  {s.items.map((item, j) => (
-                    <li key={j} className="mb-1" style={{ color: s.color, fontSize: '0.85rem', opacity: 0.9 }}>
-                      ✓ {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+              )}
+
+              {s.enlace && (
+                <a href={s.enlace.href} className="zy-enlace zy-serv-enlace">
+                  {s.enlace.texto}
+                  <Icono nombre="flecha" size={16} className="zy-flecha" />
+                </a>
+              )}
+            </article>
           ))}
         </div>
 
+        <p className="zy-serv-nota zy-revelar">
+          ¿No aparece lo que buscas? Nuestro objeto social cubre cualquier actividad de
+          tecnología y automatización empresarial. <a href="#contacto">Pregúntanos</a>.
+        </p>
       </div>
     </section>
   )

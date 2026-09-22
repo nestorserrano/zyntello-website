@@ -1,215 +1,218 @@
-/* Sección Hero */
-.hero {
-  min-height: 100vh;
+/* ═══════════════════════════════════════════════════════════════════════════
+   Hero — tema oscuro, titular a pantalla, fondo animado
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.zy-hero {
+  position: relative;
+  /* ⚠️ `min-height: 100svh` a secas deja el hero más alto que un portátil de
+     640 px: el titular ocupa la pantalla entera y los botones quedan debajo
+     del pliegue, sin nada que indique que hay que bajar. Solo se pide la
+     pantalla entera donde el contenido de verdad cabe (ver el final). */
+  min-height: auto;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  padding-top: calc(var(--zy-navbar-h) + clamp(28px, 3.4vw, 52px));
+  padding-bottom: clamp(96px, 9vw, 124px);   /* sitio para el desfile */
+  text-align: center;
+  background: var(--zy-fondo);
+}
+
+.zy-hero-contenido {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1040px;
+  margin-inline: auto;
+}
+
+.zy-hero-halo-1 {
+  width: 620px; height: 620px;
+  top: -22%; left: 50%;
+  margin-left: -310px;
+  background: radial-gradient(circle, rgba(99, 102, 241, .5) 0%, transparent 66%);
+  opacity: .5;
+}
+.zy-hero-halo-2 {
+  width: 480px; height: 480px;
+  bottom: -20%; right: -6%;
+  background: radial-gradient(circle, rgba(251, 113, 133, .38) 0%, transparent 66%);
+  opacity: .42;
+}
+
+/* ── Insignia superior ──────────────────────────────────────────────────── */
+.zy-hero-insignia {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 8rem 5% 4rem;
-  background: linear-gradient(135deg, #0a0a14 0%, #0f172a 50%, #1e1b4b 100%);
-  gap: 3rem;
+  gap: 10px;
+  margin: 0 auto clamp(20px, 2.4vw, 30px);
+  padding: 8px 18px 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .045);
+  border: 1px solid var(--zy-borde-medio);
+  backdrop-filter: blur(10px);
+  color: var(--zy-texto-medio);
+  font-size: .82rem;
+  font-weight: 500;
 }
 
-.hero-contenido {
-  flex: 1;
-  max-width: 600px;
+.zy-hero-latido {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--zy-exito);
+  box-shadow: 0 0 12px var(--zy-exito);
+  animation: zy-pulso 2.2s ease-in-out infinite;
 }
 
-.hero-etiqueta {
-  color: #60a5fa;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 1rem;
+/* ── Titular ────────────────────────────────────────────────────────────── */
+.zy-hero-titulo {
+  font-family: var(--zy-display);
+  font-size: clamp(2.2rem, 5vw, 4.4rem);
+  font-weight: 700;
+  line-height: .99;
+  letter-spacing: -.045em;
+  margin-bottom: clamp(16px, 1.8vw, 24px);
+  text-wrap: balance;
 }
 
-.hero-titulo {
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  font-weight: 800;
-  color: #f1f5f9;
-  line-height: 1.2;
-  margin-bottom: 1.5rem;
+.zy-hero-bajada {
+  color: var(--zy-texto-suave);
+  font-size: clamp(1.02rem, 1.5vw, 1.2rem);
+  line-height: 1.75;
+  max-width: 620px;
+  margin: 0 auto clamp(26px, 3vw, 36px);
+  text-wrap: pretty;
 }
 
-.resaltado {
-  color: #60a5fa;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.hero-descripcion {
-  color: #94a3b8;
-  font-size: 1.1rem;
-  line-height: 1.7;
-  margin-bottom: 2.5rem;
-}
-
-.hero-botones {
+.zy-hero-botones {
   display: flex;
-  gap: 1rem;
+  gap: 14px;
   flex-wrap: wrap;
-}
-
-.btn-primario {
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-  color: #fff;
-  padding: 0.9rem 2rem;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.btn-primario:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(59,130,246,0.4);
-}
-
-.btn-secundario {
-  border: 2px solid rgba(255,255,255,0.2);
-  color: #f1f5f9;
-  padding: 0.9rem 2rem;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: border-color 0.2s, color 0.2s;
-}
-
-.btn-secundario:hover {
-  border-color: #60a5fa;
-  color: #60a5fa;
-}
-
-/* Tarjeta de estadísticas */
-.hero-imagen {
-  flex: 1;
-  display: flex;
   justify-content: center;
 }
 
-.hero-card {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 20px;
-  padding: 3rem 2.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  backdrop-filter: blur(10px);
-  min-width: 260px;
-}
-
-.hero-stat {
-  display: flex;
-  flex-direction: column;
+.zy-hero-nota {
+  display: inline-flex;
   align-items: center;
-  text-align: center;
+  gap: 9px;
+  margin-top: 24px;
+  color: var(--zy-texto-tenue);
+  font-size: .86rem;
+}
+.zy-hero-nota svg { color: var(--zy-exito); }
+
+/* ── Cifras ─────────────────────────────────────────────────────────────── */
+.zy-hero-cifras {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  margin-top: clamp(32px, 3.6vw, 48px);
+  background: var(--zy-borde);        /* las líneas separadoras son el hueco */
+  border: 1px solid var(--zy-borde);
+  border-radius: var(--zy-radio);
+  overflow: hidden;
 }
 
-.stat-numero {
-  font-size: 2.5rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.zy-hero-cifra {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: clamp(16px, 1.8vw, 22px) 14px;
+  background: rgba(8, 8, 12, .72);
+  backdrop-filter: blur(8px);
+  transition: background var(--zy-t-medio);
 }
+.zy-hero-cifra:hover { background: rgba(99, 102, 241, .1); }
 
-.stat-label {
-  color: #94a3b8;
-  font-size: 0.9rem;
-  margin-top: 0.3rem;
-}
-
-/* ── Letras difusas gigantes ────────────────── */
-.hero-watermark {
-  position: absolute;
-  font-size: clamp(9rem, 22vw, 18rem);
-  font-weight: 900;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(96, 165, 250, 0.07);
-  white-space: nowrap;
-  pointer-events: none;
-  user-select: none;
-  letter-spacing: -8px;
-  filter: blur(5px);
-  z-index: 0;
-  top: 42%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%);
+.zy-hero-cifra-num {
+  font-family: var(--zy-display);
+  font-size: clamp(1.6rem, 2.6vw, 2.3rem);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  color: var(--zy-texto);
   line-height: 1;
 }
-
-.hero-watermark-2 {
-  font-size: clamp(6rem, 15vw, 13rem);
-  -webkit-text-stroke: 1px rgba(139, 92, 246, 0.05);
-  top: auto;
-  bottom: 5%;
-  left: 5%;
-  transform: none;
-  filter: blur(7px);
+.zy-hero-cifra-lbl {
+  color: var(--zy-texto-tenue);
+  font-size: .78rem;
+  line-height: 1.35;
 }
 
-/* ── Elementos flotantes animados ────────────── */
-.hero-floats {
+/* ── Desfile de capacidades ─────────────────────────────────────────────── */
+.zy-hero-desfile {
   position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 0;
+  left: 0; right: 0; bottom: 38px;
+  z-index: 2;
 }
 
-.hero-float {
-  position: absolute;
-}
-
-/* Tres trayectorias distintas */
-.hero-float-a {
-  animation: hero-float-a ease-in-out infinite alternate;
-}
-.hero-float-b {
-  animation: hero-float-b ease-in-out infinite alternate;
-}
-.hero-float-c {
-  animation: hero-float-c ease-in-out infinite alternate;
-}
-
-@keyframes hero-float-a {
-  0%   { transform: translateY(0px)   rotate(-5deg) scale(1);    opacity: 0.4; }
-  100% { transform: translateY(-26px) rotate(5deg)  scale(1.07); opacity: 0.7; }
-}
-@keyframes hero-float-b {
-  0%   { transform: translateY(0px)   translateX(0px)  rotate(3deg)  scale(1.02); opacity: 0.3; }
-  100% { transform: translateY(-20px) translateX(12px) rotate(-3deg) scale(0.96); opacity: 0.65; }
-}
-@keyframes hero-float-c {
-  0%   { transform: translateY(0px)   translateX(0px)   rotate(0deg)  scale(1);    opacity: 0.35; }
-  50%  { transform: translateY(-16px) translateX(-10px) rotate(-4deg) scale(1.05); opacity: 0.55; }
-  100% { transform: translateY(-28px) translateX(8px)   rotate(4deg)  scale(0.97); opacity: 0.65; }
-}
-
-.hero-float-icon {
-  border-radius: 18px;
-  display: flex;
+.zy-hero-capacidad {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  background: rgba(96, 165, 250, 0.08);
-  border: 1px solid rgba(96, 165, 250, 0.15);
-  box-shadow: 0 0 32px rgba(96, 165, 250, 0.12);
-  backdrop-filter: blur(8px);
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .035);
+  border: 1px solid var(--zy-borde);
+  color: var(--zy-texto-tenue);
+  font-family: var(--zy-display);
+  font-size: .8rem;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
-@media (max-width: 768px) {
-  .hero {
-    flex-direction: column;
-    text-align: center;
-  }
-  .hero-botones { justify-content: center; }
-  .hero-card { flex-direction: row; gap: 1.5rem; padding: 2rem; }
+/* ── Indicador de scroll ────────────────────────────────────────────────── */
+.zy-hero-bajar {
+  position: absolute;
+  z-index: 3;
+  /* Se centra con margen, no con translateX: la animación `zy-bajar` también
+     escribe `transform`, así que un translateX aquí se perdería en el primer
+     fotograma y el botón saltaría a la izquierda. */
+  left: 50%;
+  margin-left: -21px;
+  bottom: 100px;
+  width: 42px; height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid var(--zy-borde-medio);
+  color: var(--zy-texto-medio);
+  animation: zy-bajar 2.4s ease-in-out infinite;
+}
+.zy-hero-bajar:hover { color: var(--zy-texto); border-color: var(--zy-indigo); }
 
-  /* En móvil los floats son más pequeños y solo algunos visibles */
-  .hero-float-b { display: none; }
-  .hero-watermark { font-size: clamp(5rem, 28vw, 9rem); }
+/* ── Adaptación ─────────────────────────────────────────────────────────── */
+
+/* Solo pide la pantalla entera donde el contenido de verdad cabe. */
+@media (min-width: 992px) and (min-height: 820px) {
+  .zy-hero { min-height: 100svh; }
+}
+
+@media (max-width: 1199.98px) {
+  .zy-hero { padding-top: calc(var(--zy-navbar-h) + 44px); }
+  .zy-hero-bajar { display: none; }
+}
+
+@media (max-width: 767.98px) {
+  .zy-hero { padding-bottom: 116px; }
+  .zy-hero-insignia { font-size: .74rem; padding: 7px 14px 7px 11px; }
+  .zy-hero-titulo { font-size: clamp(2.1rem, 10vw, 3.2rem); letter-spacing: -.04em; }
+  .zy-hero-bajada { font-size: 1rem; margin-bottom: 30px; }
+  .zy-hero-botones { flex-direction: column; align-items: stretch; }
+  .zy-hero-botones .zy-btn { width: 100%; }
+  .zy-hero-nota { font-size: .8rem; line-height: 1.5; text-align: left; }
+
+  /* Dos columnas: cuatro cifras en 360 px dejan el número en 11 px */
+  .zy-hero-cifras { grid-template-columns: repeat(2, 1fr); margin-top: 40px; }
+  .zy-hero-capacidad { font-size: .75rem; padding: 7px 14px; }
+  .zy-hero-desfile { bottom: 28px; }
+}
+
+/* Pantalla baja (portátil 1366×640, tableta apaisada) */
+@media (max-height: 760px) and (min-width: 992px) {
+  .zy-hero { padding-top: calc(var(--zy-navbar-h) + 36px); padding-bottom: 108px; }
+  .zy-hero-titulo { font-size: clamp(2.4rem, 5vw, 4rem); margin-bottom: 20px; }
+  .zy-hero-bajada { margin-bottom: 28px; }
+  .zy-hero-cifras { margin-top: 36px; }
+  .zy-hero-cifra { padding: 16px 12px; }
 }

@@ -1,3 +1,5 @@
+@import './styles/tokens.css';
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -6,17 +8,52 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: var(--zy-navbar-h);
+  -webkit-text-size-adjust: 100%;
+  color-scheme: dark;         /* barras de scroll y controles nativos en oscuro */
 }
 
 body {
-  margin: 0;
-  background: #0a0a14;
-  color: #f1f5f9;
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--zy-fondo);
+  color: var(--zy-texto);
+  font-family: var(--zy-texto-fuente);
+  font-size: 16px;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
-#root {
-  width: 100%;
-  min-height: 100vh;
+#root { width: 100%; min-height: 100vh; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--zy-display);
+  color: var(--zy-texto);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: 1.08;
 }
+
+p { color: var(--zy-texto-suave); }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; }
+strong { color: var(--zy-texto); font-weight: 700; }
+
+/* ── Foco visible: nunca se quita, se hace bonito ────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--zy-indigo-claro);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+::selection { background: rgba(99, 102, 241, .4); color: #fff; }
+
+/* Barra de scroll acorde al lienzo oscuro */
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-track { background: var(--zy-fondo); }
+::-webkit-scrollbar-thumb {
+  background: #2a2a38;
+  border-radius: 99px;
+  border: 3px solid var(--zy-fondo);
+}
+::-webkit-scrollbar-thumb:hover { background: #3a3a4c; }

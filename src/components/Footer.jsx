@@ -1,97 +1,105 @@
+import Icono from './Icono'
+
+const SERVICIOS = [
+  'Plataforma SaaS Zyntello', 'ERP y CRM', 'Automatización con IA',
+  'Aplicaciones a la medida', 'Soporte técnico TI', 'Nube y ciberseguridad',
+  'Personal TI especializado', 'Venta de equipos', 'Transformación digital',
+  'Capacitación en TI e IA',
+]
+
+const EMPRESA = [
+  ['#nosotros',   'Quiénes somos'],
+  ['#porque',     'Por qué Zyntello'],
+  ['#portafolio', 'Portafolio'],
+  ['#soluciones', 'Plataforma y precios'],
+  ['#contacto',   'Contacto'],
+]
+
+const LEGALES = [
+  ['/terminos/',          'Términos y condiciones'],
+  ['/privacidad/',        'Política de privacidad'],
+  ['/sla/',               'Acuerdo de nivel de servicio'],
+  ['/eliminacion-datos/', 'Eliminación de datos'],
+  ['/avisos-terceros/',   'Avisos de terceros'],
+]
+
 export default function Footer() {
   return (
-    <footer className="w-100" style={{ background: '#060610', borderTop: '1px solid rgba(255,255,255,0.06)', padding: '4rem 0 2rem' }}>
-      <div className="container-fluid px-4 px-lg-5">
-        <div className="row g-4 mb-4">
+    <footer className="zy-pie">
+      <div className="zy-halo zy-pie-halo" aria-hidden="true" />
 
-          {/* Marca y lema */}
+      <div className="container-fluid px-4 px-lg-5 position-relative">
+
+        {/* Llamada final */}
+        <div className="zy-pie-llamada zy-revelar">
+          <h2 className="zy-pie-llamada-titulo">
+            ¿Empezamos por <span className="zy-degradado">lo que más te duele</span>?
+          </h2>
+          <div className="zy-pie-llamada-botones">
+            <a href="#contacto" className="zy-btn zy-btn-primario">
+              Agendar una consulta
+              <Icono nombre="flecha" size={18} className="zy-flecha" />
+            </a>
+            <a href="https://wa.me/18296399877" className="zy-btn zy-btn-fantasma">
+              <Icono nombre="chat" size={18} />
+              Escribir por WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <div className="row g-5 zy-pie-cuerpo">
+
           <div className="col-lg-4">
-            <div className="fw-bold text-white mb-1" style={{ fontSize: '1.4rem' }}>Zyntello</div>
-            <p className="mb-3" style={{ color: '#60a5fa', fontSize: '0.85rem', fontStyle: 'italic', lineHeight: 1.6 }}>
+            <div className="zy-pie-marca">
+              <img src="/logos/zyntello_isotipo_transparente.png" alt="" width="56" height="56" />
+              <strong>Zyntello</strong>
+            </div>
+            <p className="zy-pie-lema">
               Datos que revelan. Tecnología que transforma. Resultados que perduran.
             </p>
-            <p style={{ color: '#475569', fontSize: '0.88rem', lineHeight: 1.7, maxWidth: '300px' }}>
-              Empresa de tecnología empresarial especializada en IA y automatización. Presencia en RD, Venezuela, Colombia, Guatemala y Costa Rica. Soporte remoto a toda la región.
+            <p className="zy-pie-texto">
+              Zyntello, S.R.L. — desarrollo, implementación y comercialización de soluciones
+              tecnológicas empresariales basadas en Inteligencia Artificial, automatización de
+              procesos y consultoría en tecnologías de la información.
             </p>
+
+            <div className="zy-pie-contactos">
+              <a href="mailto:info@zyntello.com"><Icono nombre="correo" size={15} /> info@zyntello.com</a>
+              <a href="https://wa.me/18296399877"><Icono nombre="chat" size={15} /> +1 829 639 9877</a>
+              <a href="mailto:soporte@zyntello.com"><Icono nombre="salvavidas" size={15} /> soporte@zyntello.com</a>
+            </div>
           </div>
 
-          {/* Servicios */}
-          <div className="col-sm-4 col-lg-2 offset-lg-2">
-            <div className="fw-semibold text-white mb-3" style={{ fontSize: '0.9rem' }}>Servicios</div>
-            <ul className="list-unstyled d-flex flex-column gap-2">
-              {['Automatización con IA', 'ERP y CRM', 'Soporte Técnico TI', 'Consultoría Contable', 'Marketing Digital', 'Consultoría Electoral', 'Encuestas & Mercado', 'Transformación Digital'].map((s, i) => (
-                <li key={i}>
-                  <a href="#servicios" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.88rem' }}
-                    onMouseEnter={e => e.target.style.color = '#60a5fa'}
-                    onMouseLeave={e => e.target.style.color = '#475569'}>
-                    {s}
-                  </a>
-                </li>
-              ))}
+          <div className="col-6 col-lg-3">
+            <h3 className="zy-pie-titulo">Servicios</h3>
+            <ul className="zy-pie-lista">
+              {SERVICIOS.map(s => <li key={s}><a href="#servicios">{s}</a></li>)}
             </ul>
           </div>
 
-          {/* Empresa */}
-          <div className="col-sm-4 col-lg-2">
-            <div className="fw-semibold text-white mb-3" style={{ fontSize: '0.9rem' }}>Empresa</div>
-            <ul className="list-unstyled d-flex flex-column gap-2">
-              {[['#nosotros','Quiénes Somos'], ['#porque','Por qué Zyntello'], ['#portafolio','Portafolio'], ['#contacto','Contacto']].map(([href, label], i) => (
-                <li key={i}>
-                  <a href={href} style={{ color: '#475569', textDecoration: 'none', fontSize: '0.88rem' }}
-                    onMouseEnter={e => e.target.style.color = '#60a5fa'}
-                    onMouseLeave={e => e.target.style.color = '#475569'}>
-                    {label}
-                  </a>
-                </li>
-              ))}
+          <div className="col-6 col-lg-2">
+            <h3 className="zy-pie-titulo">Empresa</h3>
+            <ul className="zy-pie-lista">
+              {EMPRESA.map(([href, texto]) => <li key={href}><a href={href}>{texto}</a></li>)}
             </ul>
           </div>
 
-          {/* Contacto */}
-          <div className="col-sm-4 col-lg-2">
-            <div className="fw-semibold text-white mb-3" style={{ fontSize: '0.9rem' }}>Contacto</div>
-            <ul className="list-unstyled d-flex flex-column gap-2">
-              <li>
-                <a href="https://zyntello.com" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.88rem' }}
-                  onMouseEnter={e => e.target.style.color = '#60a5fa'}
-                  onMouseLeave={e => e.target.style.color = '#475569'}>
-                  zyntello.com
-                </a>
-              </li>
-              <li>
-                <a href="mailto:info@zyntello.com" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.88rem' }}
-                  onMouseEnter={e => e.target.style.color = '#60a5fa'}
-                  onMouseLeave={e => e.target.style.color = '#475569'}>
-                  info@zyntello.com
-                </a>
-              </li>
-              <li>
-                <a href="https://wa.me/18296399877" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.88rem' }}
-                  onMouseEnter={e => e.target.style.color = '#60a5fa'}
-                  onMouseLeave={e => e.target.style.color = '#475569'}>
-                  +1 829 639 9877
-                </a>
-              </li>
-              <li style={{ color: '#475569', fontSize: '0.88rem' }}>República Dominicana</li>
+          <div className="col-12 col-lg-3">
+            <h3 className="zy-pie-titulo">Legal</h3>
+            <ul className="zy-pie-lista">
+              {LEGALES.map(([href, texto]) => <li key={href}><a href={href}>{texto}</a></li>)}
             </ul>
+            <a href="https://app.zyntello.com" className="zy-btn zy-btn-fantasma zy-pie-acceso">
+              Acceder a la plataforma
+              <Icono nombre="flecha" size={16} className="zy-flecha" />
+            </a>
           </div>
 
         </div>
 
-        {/* Línea inferior */}
-        <div className="pt-3 text-center" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-          <div className="d-flex justify-content-center flex-wrap gap-3 mb-2">
-            {[['/terminos/', 'Términos del Servicio'], ['/privacidad/', 'Política de Privacidad'], ['/sla/', 'Acuerdo de Nivel de Servicio'], ['/eliminacion-datos/', 'Eliminación de datos'], ['/avisos-terceros/', 'Avisos de software de terceros']].map(([href, label], i) => (
-              <a key={i} href={href} style={{ color: '#475569', textDecoration: 'none', fontSize: '0.83rem' }}
-                onMouseEnter={e => e.target.style.color = '#60a5fa'}
-                onMouseLeave={e => e.target.style.color = '#475569'}>
-                {label}
-              </a>
-            ))}
-          </div>
-          <p style={{ color: '#334155', fontSize: '0.83rem', margin: 0 }}>
-            © 2026 Zyntello S.R.L. Todos los derechos reservados. · RD · Venezuela · Colombia · Guatemala · Costa Rica · Soporte remoto global
-          </p>
+        <div className="zy-pie-final">
+          <span>© {new Date().getFullYear()} Zyntello, S.R.L. — República Dominicana. Todos los derechos reservados.</span>
+          <span className="zy-pie-dominio">zyntello.com</span>
         </div>
 
       </div>

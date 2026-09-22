@@ -1,86 +1,84 @@
-const diferenciadores = [
+import FondoAnimado from './FondoAnimado'
+import Icono from './Icono'
+
+const RAZONES = [
   {
-    icono: '🎯',
-    titulo: '+20 años de experiencia',
-    descripcion: 'En infraestructura TI y ERP en República Dominicana y Latinoamérica.'
+    icono: 'diana', acento: '#6366f1',
+    titulo: 'Veinte años, no veinte diapositivas',
+    descripcion: 'Dos décadas de infraestructura TI y sistemas ERP en República Dominicana y Latinoamérica. Lo hemos roto y lo hemos arreglado antes.',
   },
   {
-    icono: '🤖',
-    titulo: 'Expertos en IA aplicada',
-    descripcion: 'No teoría — implementamos IA directamente en tus procesos empresariales reales.'
+    icono: 'robot', acento: '#a78bfa',
+    titulo: 'IA aplicada, no IA contada',
+    descripcion: 'Implementamos Inteligencia Artificial dentro de tus procesos reales. Si no ahorra horas de alguien, no lo llamamos IA.',
   },
   {
-    icono: '🌎',
-    titulo: 'Presencia regional comprobada',
-    descripcion: 'Operamos directamente en RD, Venezuela, Colombia, Guatemala y Costa Rica. Soporte remoto para el resto de la región.'
+    icono: 'globo', acento: '#34d399',
+    titulo: 'Estamos donde tú operas',
+    descripcion: 'Presencia directa en RD, Venezuela, Colombia, Guatemala y Costa Rica, con soporte remoto al resto de la región.',
   },
   {
-    icono: '🔄',
-    titulo: 'Soporte post-implementación',
-    descripcion: 'No desaparecemos al entregar el proyecto. Te acompañamos de forma continua.'
+    icono: 'ciclo', acento: '#fb7185',
+    titulo: 'No desaparecemos al entregar',
+    descripcion: 'El acompañamiento posterior está escrito en el acuerdo de servicio, no prometido en una reunión.',
   },
   {
-    icono: '🔗',
-    titulo: 'Compatible con tus sistemas actuales',
-    descripcion: 'No hay que empezar de cero. Nos integramos con lo que ya tienes funcionando.'
+    icono: 'enlace', acento: '#22d3ee',
+    titulo: 'Compatible con lo que ya tienes',
+    descripcion: 'Nos integramos con tus bases de datos y tus sistemas actuales. Nadie empieza de cero por gusto.',
   },
   {
-    icono: '🛠️',
-    titulo: 'Sin soluciones genéricas',
-    descripcion: 'Cada implementación parte de entender cómo funciona tu empresa. Tecnología exacta para tu caso.'
+    icono: 'llave', acento: '#fbbf24',
+    titulo: 'Nada genérico',
+    descripcion: 'Cada implementación arranca entendiendo cómo funciona tu empresa. Después, y solo después, se elige la herramienta.',
   },
 ]
 
 export default function PorQueZyntello() {
   return (
-    <section id="porque" style={{ background: '#0f172a', padding: '6rem 0', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-      <div className="container-fluid px-4 px-lg-5">
+    <section id="porque" className="zy-porque">
+      {/* Fondo: cintas de proceso — tareas que avanzan solas */}
+      <FondoAnimado escena="flujo" tinte="coral" />
+      <span className="zy-filo zy-filo-arriba" aria-hidden="true" />
+      <div className="zy-grano" aria-hidden="true" />
 
-        {/* Encabezado centrado */}
-        <div className="w-100"><div className="text-center mb-5">
-          <p className="text-uppercase fw-semibold mb-2" style={{ color: '#60a5fa', letterSpacing: '2px', fontSize: '0.85rem' }}>
-            Por qué elegirnos
-          </p>
-          <h2 className="fw-black mb-0" style={{ fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', color: '#f1f5f9' }}>
-            Trabajamos distinto.
+      <div className="container-fluid px-4 px-lg-5 position-relative">
+
+        <header className="zy-porque-cabecera zy-revelar">
+          <p className="zy-eyebrow zy-eyebrow-coral">Por qué Zyntello</p>
+          <h2 className="zy-titulo">
+            Trabajamos <span className="zy-coral">distinto</span>.
           </h2>
-        </div>
+          <p className="zy-subtitulo">
+            La diferencia no está en la lista de tecnologías — esa la tiene cualquiera.
+            Está en que alguien siga contestando el teléfono seis meses después de la
+            puesta en marcha.
+          </p>
+          <a href="#contacto" className="zy-btn zy-btn-coral zy-porque-cta">
+            Conversemos
+            <Icono nombre="flecha" size={18} className="zy-flecha" />
+          </a>
+        </header>
 
-        <div className="row align-items-start g-5">
+        <ol className="zy-porque-lista">
+          {RAZONES.map((r, i) => (
+            <li
+              key={r.titulo}
+              className="zy-porque-item zy-revelar"
+              style={{ '--zy-color-acento': r.acento, transitionDelay: `${i * 70}ms` }}
+            >
+              <span className="zy-porque-num">{String(i + 1).padStart(2, '0')}</span>
+              <span className="zy-porque-icono" style={{ color: r.acento }}>
+                <Icono nombre={r.icono} size={20} />
+              </span>
+              <div className="zy-porque-texto">
+                <h3 className="zy-porque-titulo">{r.titulo}</h3>
+                <p className="zy-porque-desc">{r.descripcion}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
 
-          {/* Texto izquierdo */}
-          <div className="col-lg-4 d-flex flex-column justify-content-center">
-            <p style={{ color: '#94a3b8', lineHeight: 1.9, fontSize: '1.05rem' }}>
-              No vendemos software enlatado ni soluciones genéricas. Cada implementación parte de entender cómo funciona
-              tu empresa — y construimos o adaptamos la tecnología exacta que necesitas.
-            </p>
-            <div className="mt-4">
-              <a href="#contacto" className="btn btn-outline-primary btn-lg px-5 rounded-3 fw-semibold">
-                Conversemos →
-              </a>
-            </div>
-          </div>
-
-          {/* Grid de diferenciadores */}
-          <div className="col-lg-8">
-            <div className="row g-3">
-              {diferenciadores.map((d, i) => (
-                <div key={i} className="col-sm-6">
-                  <div className="d-flex gap-3 p-4 rounded-4 h-100"
-                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                    <div style={{ fontSize: '1.8rem', lineHeight: 1, flexShrink: 0 }}>{d.icono}</div>
-                    <div>
-                      <div className="fw-bold mb-1" style={{ color: '#f1f5f9', fontSize: '0.95rem' }}>{d.titulo}</div>
-                      <div style={{ color: '#94a3b8', fontSize: '0.88rem', lineHeight: 1.55 }}>{d.descripcion}</div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-        </div>
-        </div>
       </div>
     </section>
   )

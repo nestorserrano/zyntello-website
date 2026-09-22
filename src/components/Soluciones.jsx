@@ -78,7 +78,7 @@ const APPS_FALLBACK = [
   { id: 'encuestas',    nombre: 'Encuestas',      subtitulo: 'Encuestas y Estadísticas',              descripcion: 'Crea encuestas personalizadas, recopila respuestas en tiempo real y obtén estadísticas automáticas para tomar decisiones.', precio: null,  precioAnual: null, color: '#0ea5e9', gradiente: 'linear-gradient(135deg, #0c4a6e 0%, #0284c7 60%, #38bdf8 100%)', ahorroAnual: '2 MESES GRATIS', url: 'https://app.zyntello.com/demo/encuestas',    caracteristicas: ['Constructor de encuestas drag & drop', 'Tipos: opción múltiple, escala, NPS', 'Enlace público y código embebido', 'Resultados en tiempo real con gráficas', 'Exportación a Excel y PDF'] },
   { id: 'contabilidad', nombre: 'Contabilidad',   subtitulo: 'Gestión Contable y Financiera',         descripcion: 'Lleva la contabilidad de tu empresa con plan de cuentas, asientos diarios, estados financieros y cumplimiento fiscal.', precio: null,  precioAnual: null, color: '#14b8a6', gradiente: 'linear-gradient(135deg, #134e4a 0%, #0f766e 60%, #2dd4bf 100%)', ahorroAnual: '2 MESES GRATIS', url: 'https://app.zyntello.com/demo/contabilidad',  caracteristicas: ['Plan de cuentas personalizable', 'Asientos contables y libro diario', 'Balance general y estado de resultados', 'Reportes fiscales por país (RD, CO, MX, VE)', 'Conciliación bancaria automatizada'] },
   { id: 'condominios',  nombre: 'Condominios',    subtitulo: 'Gestión de Condominios y Residencias',  descripcion: 'Administra residenciales, edificios y condominios con control de cuotas, propietarios, mantenimiento y comunicación.', precio: null,  precioAnual: null, color: '#f97316', gradiente: 'linear-gradient(135deg, #7c2d12 0%, #ea580c 60%, #fb923c 100%)', ahorroAnual: '2 MESES GRATIS', url: 'https://app.zyntello.com/demo/condominios',  caracteristicas: ['Registro de propietarios e inquilinos', 'Cobro y control de cuotas de mantenimiento', 'Reserva y gestión de áreas comunes', 'Órdenes de trabajo y mantenimiento', 'Comunicados y avisos a residentes'] },
-  { id: 'constructflow',nombre: 'ConstructFlow',  subtitulo: 'Gestión de Obras y Construcción',       descripcion: 'Planifica y ejecuta proyectos de construcción con control de presupuesto, avance de obra, materiales y subcontratistas.', precio: null,  precioAnual: null, color: '#d97706', gradiente: 'linear-gradient(135deg, #78350f 0%, #b45309 60%, #d97706 100%)', ahorroAnual: '2 MESES GRATIS', url: 'https://app.zyntello.com/demo/constructflow', caracteristicas: ['Gestión de proyectos y frentes de obra', 'Control presupuestario y costos reales', 'Inventario de materiales y equipos', 'Cronograma y avance por etapas', 'Informes de progreso para clientes'] },
+  { id: 'constructflow',nombre: 'ConstructFlow',  subtitulo: 'Gestión de Obras y Construcción',       descripcion: 'Planifica y ejecuta proyectos de construcción con control de presupuesto, avance de obra, materiales y subcontratistas.', precio: null,  precioAnual: null, color: '#d97706', gradiente: 'linear-gradient(135deg, #78350f 0%, #fbbf24 60%, #d97706 100%)', ahorroAnual: '2 MESES GRATIS', url: 'https://app.zyntello.com/demo/constructflow', caracteristicas: ['Gestión de proyectos y frentes de obra', 'Control presupuestario y costos reales', 'Inventario de materiales y equipos', 'Cronograma y avance por etapas', 'Informes de progreso para clientes'] },
   { id: 'events',       nombre: 'Zyntello Events',subtitulo: 'Registro de Eventos con QR y Ponentes', descripcion: 'Gestiona eventos con registro por QR, participantes por día, control de ponentes y dashboard en vivo para seguimiento en tiempo real.', precio: null,  precioAnual: null, color: '#ec4899', gradiente: 'linear-gradient(135deg, #831843 0%, #db2777 60%, #f472b6 100%)', ahorroAnual: '2 MESES GRATIS', url: 'https://app.zyntello.com/demo/events',  caracteristicas: ['Registro público por QR token', 'Check-in diario por participante', 'Dashboard live para ponentes', 'Gestión de agenda y días del evento', 'Reportes de inscritos en tiempo real'] },
   { id: 'restaurante',  nombre: 'Restaurante',    subtitulo: 'Sistema POS para Restaurantes',         descripcion: 'Sistema completo para restaurantes, cafeterías y bares. Mesas, comandas, cocina, delivery, inventario y cierre de caja.', precio: null,  precioAnual: null, color: '#e11d48', gradiente: 'linear-gradient(135deg, #881337 0%, #be123c 60%, #fb7185 100%)', ahorroAnual: '2 MESES GRATIS', url: 'https://app.zyntello.com/demo/restaurante',   caracteristicas: ['Gestión de mesas y comandas en tiempo real', 'Pantalla de cocina (KDS)', 'Control de inventario y recetas', 'Delivery y take-away integrado', 'Reportes de ventas y cierre de caja'] },
   { id: 'doctores',     nombre: 'Doctores',       subtitulo: 'Gestión de Consultorios y Clínicas',    descripcion: 'Agenda citas, gestiona expedientes clínicos, recetas, historial del paciente y factura consultas con seguridad y privacidad.', precio: null,  precioAnual: null, color: '#06b6d4', gradiente: 'linear-gradient(135deg, #164e63 0%, #0891b2 60%, #22d3ee 100%)', ahorroAnual: '2 MESES GRATIS', url: 'https://app.zyntello.com/demo/doctores',      caracteristicas: ['Agenda de citas y recordatorios automáticos', 'Expediente clínico electrónico', 'Recetas y órdenes de laboratorio', 'Control de historias clínicas', 'Facturación de consultas y seguros'] },
@@ -90,7 +90,7 @@ function hexToGradiente(hex) {
     const r = parseInt(hex.slice(1, 3), 16)
     const g = parseInt(hex.slice(3, 5), 16)
     const b = parseInt(hex.slice(5, 7), 16)
-    const dark  = `rgb(${Math.round(r * 0.28)},${Math.round(g * 0.28)},${Math.round(b * 0.28)})`
+    const dark  = `rgb(${Math.round(r * 0.42)},${Math.round(g * 0.42)},${Math.round(b * 0.42)})`
     const light = `rgb(${Math.min(255, Math.round(r * 1.55))},${Math.min(255, Math.round(g * 1.55))},${Math.min(255, Math.round(b * 1.55))})`
     return `linear-gradient(135deg, ${dark} 0%, ${hex} 60%, ${light} 100%)`
   } catch {
@@ -100,9 +100,9 @@ function hexToGradiente(hex) {
 
 /* ─── Badge por estado (desde admin) ─────────────────────────── */
 const ESTADO_BADGE = {
-  proximo:   { texto: 'Próximamente', bg: 'rgba(63,63,70,0.92)',   color: '#a1a1aa' },
-  nuevo:     { texto: 'Nuevo',        bg: 'rgba(20,83,45,0.92)',   color: '#86efac' },
-  destacado: { texto: 'Destacado',    bg: 'rgba(120,53,15,0.92)',  color: '#fcd34d' },
+  proximo:   { texto: 'Próximamente', bg: 'rgba(255,255,255,0.07)',  color: '#9c9caa' },
+  nuevo:     { texto: 'Nuevo',        bg: 'rgba(52,211,153,0.16)',   color: '#6ee7b7' },
+  destacado: { texto: 'Destacado',    bg: 'rgba(251,113,133,0.18)',  color: '#fda4af' },
 }
 
 /* ─── Combina datos del API con display estático ──────────────── */
@@ -185,46 +185,16 @@ const ERP_BUNDLE_SLUGS = new Set([
   'erp',
 ]);
 
-/* ─── Stars ─────────────────────────────────────────────────────── */
-function Estrellas({ rating }) {
-  return (
-    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '1px' }}>
-      {[1, 2, 3, 4, 5].map(s => (
-        <span key={s} style={{ color: s <= Math.round(rating) ? '#f59e0b' : '#334155', fontSize: '0.85rem' }}>★</span>
-      ))}
-      <span style={{ color: '#94a3b8', fontSize: '0.75rem', marginLeft: '5px' }}>{rating}</span>
-    </span>
-  )
-}
-
-/* ─── Previews ──────────────────────────────────────────────────── */
-function Previews({ app }) {
-  if (!app.previews || app.previews.length === 0) return null
-  return (
-    <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px', scrollbarWidth: 'none' }}>
-      {app.previews.map((p, i) => (
-        <div key={i} style={{
-          minWidth: '110px', height: '72px', borderRadius: '8px', flexShrink: 0,
-          background: `linear-gradient(135deg, ${app.color}18 0%, ${app.color}33 100%)`,
-          border: `1px solid ${app.color}30`,
-          display: 'flex', flexDirection: 'column',
-          alignItems: 'center', justifyContent: 'center', gap: '5px'
-        }}>
-          <span style={{ fontSize: '1.3rem' }}>{p.icon}</span>
-          <span style={{ fontSize: '0.62rem', color: '#64748b', fontWeight: 500 }}>{p.label}</span>
-        </div>
-      ))}
-    </div>
-  )
-}
-
 /* ─── Monedas ───────────────────────────────────────────────────── */
+/* ⚠️ Sin `bandera`: el emoji de bandera NO existe en Windows. El sistema lo
+   sustituye por el par de letras del país («US», «DO»), que junto al código de
+   la moneda se lee como una insignia rota. El código ISO ya dice el país. */
 const MONEDAS_INFO = {
-  USD: { nombre: 'Dólar',      simbolo: '$',    bandera: '🇺🇸' },
-  DOP: { nombre: 'Peso Dom.',  simbolo: 'RD$',  bandera: '🇩🇴' },
-  COP: { nombre: 'Peso Col.',  simbolo: '$',    bandera: '🇨🇴' },
-  MXN: { nombre: 'Peso Mex.', simbolo: '$',    bandera: '🇲🇽' },
-  VES: { nombre: 'Bolívar',   simbolo: 'Bs.',  bandera: '🇻🇪' },
+  USD: { nombre: 'Dólar',     simbolo: '$'   },
+  DOP: { nombre: 'Peso Dom.', simbolo: 'RD$' },
+  COP: { nombre: 'Peso Col.', simbolo: '$'   },
+  MXN: { nombre: 'Peso Mex.', simbolo: '$'   },
+  VES: { nombre: 'Bolívar',   simbolo: 'Bs.' },
 }
 
 const APP_CHECKOUT_URL = 'https://app.zyntello.com/checkout'
@@ -309,21 +279,21 @@ function ModalApp({ app, onClose, formatPrecio, simbolo }) {
                   { key: 'anual',   label: 'Anual',   monto: app.precioAnual, nota: app.ahorroAnual }
                 ].map(p => (
                   <div key={p.key} onClick={() => setPlan(p.key)} className="sol-plan-card"
-                    style={{ border: `2px solid ${plan === p.key ? app.color : 'rgba(255,255,255,0.09)'}`, background: plan === p.key ? `${app.color}15` : 'rgba(255,255,255,0.02)' }}>
+                    style={{ border: `2px solid ${plan === p.key ? app.color : 'rgba(255,255,255,0.1)'}`, background: plan === p.key ? `${app.color}15` : '#16161f' }}>
                     {p.nota && <span className="sol-plan-badge" style={{ background: app.color }}>{p.nota}</span>}
-                    <div style={{ color: '#e2e8f0', fontWeight: 700, marginBottom: '6px' }}>{p.label}</div>
+                    <div style={{ color: '#f5f5f7', fontWeight: 700, marginBottom: '6px' }}>{p.label}</div>
                     <div style={{ color: app.color, fontSize: '1.5rem', fontWeight: 800, lineHeight: 1 }}>
                       {simbolo} {formatPrecio(p.monto)}
-                      <span style={{ color: '#475569', fontSize: '0.72rem', fontWeight: 400 }}>/mes</span>
+                      <span style={{ color: '#8a8a99', fontSize: '0.72rem', fontWeight: 400 }}>/mes</span>
                     </div>
-                    {p.key === 'anual' && <div style={{ color: '#64748b', fontSize: '0.7rem', marginTop: '4px' }}>Facturado anualmente</div>}
+                    {p.key === 'anual' && <div style={{ color: '#9c9caa', fontSize: '0.7rem', marginTop: '4px' }}>Facturado anualmente</div>}
                   </div>
                 ))}
               </div>
               <h5 className="sol-modal-title">¿Qué incluye?</h5>
               <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 22px' }}>
                 {app.caracteristicas.map((c, i) => (
-                  <li key={i} style={{ color: '#94a3b8', fontSize: '0.88rem', padding: '7px 0', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <li key={i} style={{ color: '#9c9caa', fontSize: '0.88rem', padding: '7px 0', borderBottom: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
                     <span style={{ color: app.color, flexShrink: 0, marginTop: '1px' }}>✓</span>
                     {c}
                   </li>
@@ -346,28 +316,28 @@ function ModalApp({ app, onClose, formatPrecio, simbolo }) {
                 { key: 'telefono', label: 'Teléfono / WhatsApp',   type: 'tel',   placeholder: '+1 809 000 0000',      required: true }
               ].map(f => (
                 <div key={f.key} style={{ marginBottom: '14px' }}>
-                  <label style={{ color: '#64748b', fontSize: '0.8rem', display: 'block', marginBottom: '5px' }}>
+                  <label style={{ color: '#9c9caa', fontSize: '0.8rem', display: 'block', marginBottom: '5px' }}>
                     {f.label} {f.required && <span style={{ color: app.color }}>*</span>}
                   </label>
                   <input type={f.type} placeholder={f.placeholder} value={form[f.key]}
                     onChange={e => { setForm({ ...form, [f.key]: e.target.value }); setErrores({ ...errores, [f.key]: null }) }}
-                    style={{ width: '100%', padding: '10px 14px', boxSizing: 'border-box', background: errores[f.key] ? 'rgba(239,68,68,0.08)' : 'rgba(255,255,255,0.05)', border: `1px solid ${errores[f.key] ? '#ef4444' : 'rgba(255,255,255,0.1)'}`, borderRadius: '8px', color: '#f1f5f9', fontSize: '0.9rem', outline: 'none' }}
+                    style={{ width: '100%', padding: '10px 14px', boxSizing: 'border-box', background: errores[f.key] ? 'rgba(239,68,68,0.08)' : '#16161f', border: `1px solid ${errores[f.key] ? '#ef4444' : 'rgba(255,255,255,0.18)'}`, borderRadius: '8px', color: '#f5f5f7', fontSize: '0.9rem', outline: 'none' }}
                   />
                   {errores[f.key] && <span style={{ color: '#ef4444', fontSize: '0.72rem' }}>{errores[f.key]}</span>}
                 </div>
               ))}
-              <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '10px', padding: '12px 14px', marginBottom: '18px' }}>
+              <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', padding: '12px 14px', marginBottom: '18px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ color: '#64748b', fontSize: '0.85rem' }}>{app.nombre} · Plan {plan}</span>
+                  <span style={{ color: '#9c9caa', fontSize: '0.85rem' }}>{app.nombre} · Plan {plan}</span>
                   <span style={{ color: app.color, fontWeight: 800, fontSize: '1.05rem' }}>
-                    {simbolo} {formatPrecio(precio)}<span style={{ color: '#475569', fontSize: '0.72rem', fontWeight: 400 }}>/mes</span>
+                    {simbolo} {formatPrecio(precio)}<span style={{ color: '#8a8a99', fontSize: '0.72rem', fontWeight: 400 }}>/mes</span>
                   </span>
                 </div>
-                <div style={{ color: '#334155', fontSize: '0.72rem', marginTop: '4px' }}>Sin permanencia · Cancela cuando quieras</div>
+                <div style={{ color: '#8a8a99', fontSize: '0.72rem', marginTop: '4px' }}>Sin permanencia · Cancela cuando quieras</div>
               </div>
               <div style={{ display: 'flex', gap: '10px' }}>
                 <button type="button" onClick={() => setPaso(1)}
-                  style={{ flex: '0 0 auto', padding: '12px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', color: '#64748b', cursor: 'pointer', fontSize: '0.9rem' }}>
+                  style={{ flex: '0 0 auto', padding: '12px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: '10px', color: '#9c9caa', cursor: 'pointer', fontSize: '0.9rem' }}>
                   ← Volver
                 </button>
                 <button type="submit"
@@ -381,14 +351,14 @@ function ModalApp({ app, onClose, formatPrecio, simbolo }) {
           {paso === 3 && (
             <>
               <h5 className="sol-modal-title">Método de pago</h5>
-              <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '10px', padding: '12px 14px', marginBottom: '20px' }}>
+              <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', padding: '12px 14px', marginBottom: '20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ color: '#64748b', fontSize: '0.85rem' }}>{app.nombre} · Plan {plan}</span>
+                  <span style={{ color: '#9c9caa', fontSize: '0.85rem' }}>{app.nombre} · Plan {plan}</span>
                   <span style={{ color: app.color, fontWeight: 800, fontSize: '1.05rem' }}>
-                    {simbolo} {formatPrecio(precio)}<span style={{ color: '#475569', fontSize: '0.72rem', fontWeight: 400 }}>/mes</span>
+                    {simbolo} {formatPrecio(precio)}<span style={{ color: '#8a8a99', fontSize: '0.72rem', fontWeight: 400 }}>/mes</span>
                   </span>
                 </div>
-                <div style={{ color: '#334155', fontSize: '0.72rem', marginTop: '4px' }}>Sin permanencia · Cancela cuando quieras</div>
+                <div style={{ color: '#8a8a99', fontSize: '0.72rem', marginTop: '4px' }}>Sin permanencia · Cancela cuando quieras</div>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '22px' }}>
@@ -398,13 +368,13 @@ function ModalApp({ app, onClose, formatPrecio, simbolo }) {
                   { key: 'cripto',  icono: '₿',  label: 'Criptomonedas',                 sub: 'USDT (TRC-20 / ERC-20) · USDC · BTC' },
                 ].map(m => (
                   <div key={m.key} onClick={() => setMetodo(m.key)}
-                    style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '14px 16px', borderRadius: '10px', cursor: 'pointer', border: `2px solid ${metodo === m.key ? app.color : 'rgba(255,255,255,0.09)'}`, background: metodo === m.key ? `${app.color}15` : 'rgba(255,255,255,0.02)', transition: 'all 0.15s' }}>
+                    style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '14px 16px', borderRadius: '10px', cursor: 'pointer', border: `2px solid ${metodo === m.key ? app.color : 'rgba(255,255,255,0.1)'}`, background: metodo === m.key ? `${app.color}15` : '#16161f', transition: 'all 0.15s' }}>
                     <span style={{ fontSize: '1.5rem', lineHeight: 1 }}>{m.icono}</span>
                     <div style={{ flex: 1 }}>
-                      <div style={{ color: '#e2e8f0', fontWeight: 700, fontSize: '0.92rem' }}>{m.label}</div>
-                      <div style={{ color: '#475569', fontSize: '0.72rem', marginTop: '2px' }}>{m.sub}</div>
+                      <div style={{ color: '#f5f5f7', fontWeight: 700, fontSize: '0.92rem' }}>{m.label}</div>
+                      <div style={{ color: '#8a8a99', fontSize: '0.72rem', marginTop: '2px' }}>{m.sub}</div>
                     </div>
-                    <div style={{ width: '18px', height: '18px', borderRadius: '50%', border: `2px solid ${metodo === m.key ? app.color : 'rgba(255,255,255,0.2)'}`, background: metodo === m.key ? app.color : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <div style={{ width: '18px', height: '18px', borderRadius: '50%', border: `2px solid ${metodo === m.key ? app.color : 'rgba(255,255,255,0.18)'}`, background: metodo === m.key ? app.color : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                       {metodo === m.key && <span style={{ color: '#fff', fontSize: '0.6rem', fontWeight: 900 }}>✓</span>}
                     </div>
                   </div>
@@ -413,7 +383,7 @@ function ModalApp({ app, onClose, formatPrecio, simbolo }) {
 
               <div style={{ display: 'flex', gap: '10px' }}>
                 <button type="button" onClick={() => setPaso(2)}
-                  style={{ flex: '0 0 auto', padding: '12px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', color: '#64748b', cursor: 'pointer', fontSize: '0.9rem' }}>
+                  style={{ flex: '0 0 auto', padding: '12px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: '10px', color: '#9c9caa', cursor: 'pointer', fontSize: '0.9rem' }}>
                   ← Volver
                 </button>
                 <button type="button" onClick={irAlPago}
@@ -563,17 +533,16 @@ export default function Soluciones() {
 
           {/* Selector de moneda */}
           <div className="sol-moneda-selector">
-            <span className="sol-moneda-label">💱 Ver precios en:</span>
+            <span className="sol-moneda-label">Ver precios en</span>
             <div className="sol-moneda-pills">
               {Object.entries(MONEDAS_INFO).map(([code, m]) => (
                 <button key={code} onClick={() => setMoneda(code)} className={`sol-moneda-pill${moneda === code ? ' active' : ''}`}>
-                  <span>{m.bandera}</span>
                   <span className="sol-moneda-code">{code}</span>
                   <span className="sol-moneda-nombre">{m.nombre}</span>
                 </button>
               ))}
             </div>
-            {!rates && <span className="sol-moneda-loading">⏳ Cargando tasas…</span>}
+            {!rates && <span className="sol-moneda-loading">Cargando tasas…</span>}
           </div>
 
           {/* Banner ERP */}
@@ -584,14 +553,14 @@ export default function Soluciones() {
                 <span className="sol-bundle-name">Zyntello ERP</span>
                 <span className="sol-bundle-badge">ERP Completo</span>
               </div>
-              <p style={{ color: '#64748b', margin: 0, fontSize: '0.88rem' }}>
+              <p style={{ color: '#9c9caa', margin: 0, fontSize: '0.88rem' }}>
                 Inventario · Facturación · Cuentas por Cobrar · Cuentas por Pagar · Nómina · Control de Acceso · Bancos · Compras · Presupuesto · Activos Fijos · Caja Chica
               </p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexShrink: 0 }}>
               <div style={{ textAlign: 'right' }}>
-                <div style={{ color: '#f1f5f9', fontWeight: 800, fontSize: '1.4rem', lineHeight: 1 }}>
-                  {simbolo} {formatPrecio(erpApp?.precio)}<span style={{ color: '#64748b', fontSize: '0.72rem', fontWeight: 400 }}>/mes</span>
+                <div style={{ color: '#f5f5f7', fontWeight: 800, fontSize: '1.4rem', lineHeight: 1 }}>
+                  {simbolo} {formatPrecio(erpApp?.precio)}<span style={{ color: '#9c9caa', fontSize: '0.72rem', fontWeight: 400 }}>/mes</span>
                 </div>
               </div>
               <a href="https://app.zyntello.com/erp" onClick={e => e.stopPropagation()} className="sol-bundle-btn" style={{ textDecoration: 'none' }}>
@@ -604,121 +573,75 @@ export default function Soluciones() {
               que está fuera del bundle: un módulo puede ir dentro del ERP y venderse solo. */}
           <div className="sol-grid">
             {apps.filter(app => app.vendibleSuelto && !ERP_BUNDLE_SLUGS.has(app.id)).map(app => (
-              <div key={app.id} className="sol-card"
-                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = `0 20px 52px ${app.color}30`; e.currentTarget.style.borderColor = `${app.color}44` }}
-                onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)' }}
-              >
-                <div style={{ height: '96px', background: app.gradiente, position: 'relative', overflow: 'hidden', borderRadius: '14px 14px 0 0', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ position: 'absolute', right: '-22px', bottom: '-32px', width: '110px', height: '110px', background: 'rgba(255,255,255,0.06)', borderRadius: '50%', pointerEvents: 'none' }} />
-                  <div style={{ position: 'absolute', right: '44px', bottom: '-44px', width: '88px', height: '88px', background: 'rgba(255,255,255,0.04)', borderRadius: '50%', pointerEvents: 'none' }} />
-                  <div style={{ width: '48px', height: '48px', background: 'rgba(255,255,255,0.18)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', backdropFilter: 'blur(8px)', flexShrink: 0, zIndex: 1 }}>
-                    {app.icono}
-                  </div>
-                  <div style={{ flex: 1, minWidth: 0, zIndex: 1 }}>
-                    <h4 style={{ color: '#fff', margin: 0, fontWeight: 800, fontSize: '1rem', lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {app.nombre}
-                    </h4>
-                    <p style={{ color: 'rgba(255,255,255,0.72)', margin: '2px 0 6px', fontSize: '0.72rem', lineHeight: 1.3, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                      {app.subtitulo}
-                    </p>
-                    <span style={{ background: 'rgba(0,0,0,0.28)', backdropFilter: 'blur(4px)', color: 'rgba(255,255,255,0.88)', fontSize: '0.6rem', fontWeight: 700, padding: '2px 8px', borderRadius: '20px' }}>
-                      {app.categoria}
-                    </span>
-                    {app.requiere && (
-                      <span style={{ background: 'rgba(255,255,255,0.22)', backdropFilter: 'blur(4px)', color: '#fff', fontSize: '0.6rem', fontWeight: 700, padding: '2px 8px', borderRadius: '20px', marginLeft: '5px' }}>
-                        ⚡ Mejora {nombreModulo(app.requiere, apps)}
-                      </span>
-                    )}
-                  </div>
+              <article key={app.id} className="sol-card" style={{ '--sol-acento': app.color }}>
+
+                <header className="sol-card-cima">
+                  <span className="sol-card-icono" style={{ color: app.color }}>{app.icono}</span>
                   {app.etiqueta && (
                     <span className="sol-card-badge" style={app.etiquetaBadge ? { background: app.etiquetaBadge.bg, color: app.etiquetaBadge.color } : {}}>
                       {app.etiqueta}
                     </span>
                   )}
-                </div>
+                </header>
 
-                <div style={{ padding: '0 18px 18px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '12px' }}>
-                    <Estrellas rating={app.rating} />
-                    <span style={{ color: '#334155', fontSize: '0.7rem' }}>({app.reviews})</span>
-                  </div>
-                  <p style={{ color: '#94a3b8', fontSize: '0.82rem', lineHeight: 1.6, marginBottom: '10px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                    {app.descripcion}
+                <h3 className="sol-card-nombre">{app.nombre}</h3>
+                <p className="sol-card-sub">{app.subtitulo || app.descripcion}</p>
+
+                {/* El aviso «amplía X» se queda aunque la tarjeta se haya
+                    simplificado: sin él, el cliente contrata un módulo que no
+                    puede abrir, y el fallo aparece DESPUÉS de pagar. */}
+                {app.requiere && (
+                  <p className="sol-card-requiere">
+                    Amplía <strong>{nombreModulo(app.requiere, apps)}</strong> — necesita ese módulo contratado
                   </p>
-                  <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 10px' }}>
-                    {app.caracteristicas.slice(0, 3).map((c, ci) => (
-                      <li key={ci} style={{ color: '#64748b', fontSize: '0.76rem', padding: '4px 0', display: 'flex', alignItems: 'flex-start', gap: '6px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                        <span style={{ color: app.color, flexShrink: 0, fontSize: '0.7rem', marginTop: '2px' }}>✓</span>
-                        {c}
-                      </li>
-                    ))}
-                  </ul>
-                  {app.requiere && (
-                    <p style={{ color: '#fbbf24', fontSize: '0.7rem', margin: '0 0 8px', lineHeight: 1.4 }}>
-                      Requiere <strong>{nombreModulo(app.requiere, apps)}</strong> contratado — sus pantallas viven dentro de ese módulo.
-                    </p>
-                  )}
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: '14px', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-                    <div>
-                      {app.soloAnual ? (
-                        /* Sin plan mensual: se anuncia el anual. Mostrar "$0/mes" —lo que
-                           saldría de un precio null— se leería como gratis. */
-                        <>
-                          <div style={{ color: app.color, fontWeight: 800, fontSize: '1.15rem', lineHeight: 1 }}>
-                            {app.precioAnualTotal > 0 ? `${simbolo} ${formatPrecio(app.precioAnualTotal)}` : 'Consultar'}
-                            {app.precioAnualTotal > 0 && (
-                              <span style={{ color: '#475569', fontSize: '0.7rem', fontWeight: 400 }}>/año</span>
-                            )}
-                          </div>
-                          <div style={{ color: '#334155', fontSize: '0.68rem', marginTop: '2px' }}>Suscripción anual</div>
-                        </>
-                      ) : (
-                        <>
-                          <div style={{ color: app.color, fontWeight: 800, fontSize: '1.15rem', lineHeight: 1 }}>
-                            {simbolo} {formatPrecio(app.precio)}
-                            <span style={{ color: '#475569', fontSize: '0.7rem', fontWeight: 400 }}>/mes</span>
-                          </div>
-                          <div style={{ color: '#334155', fontSize: '0.68rem', marginTop: '2px' }}>desde {simbolo} {formatPrecio(app.precioAnual)}/mes anual</div>
-                        </>
-                      )}
-                    </div>
-                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                      {app.url && app.disponible !== false && (
-                        <a href={app.url} target="_blank" rel="noopener noreferrer"
-                          style={{ color: app.color, fontSize: '0.78rem', fontWeight: 600, textDecoration: 'none', opacity: 0.75 }}
-                          onMouseEnter={e => e.currentTarget.style.opacity = '1'}
-                          onMouseLeave={e => e.currentTarget.style.opacity = '0.75'}>
-                          Ver Demo →
-                        </a>
-                      )}
-                      {app.disponible !== false ? (
-                        <button onClick={() => setModalApp(app)} className="sol-btn-obtener"
-                          style={{ background: app.color }}
-                          onMouseEnter={e => e.currentTarget.style.opacity = '0.82'}
-                          onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
-                          Obtener
-                        </button>
-                      ) : (
-                        <span style={{ fontSize: '0.72rem', fontWeight: 600, color: '#52525b', padding: '6px 12px', background: '#27272a', borderRadius: '8px', cursor: 'default' }}>
-                          Próximamente
+                )}
+
+                <footer className="sol-card-pie">
+                  <div className="sol-card-precio">
+                    {app.soloAnual ? (
+                      /* Sin plan mensual se anuncia el anual. Mostrar «$0/mes» —lo
+                         que saldría de un precio null— se leería como gratis. */
+                      <>
+                        <span className="sol-card-monto">
+                          {app.precioAnualTotal > 0 ? `${simbolo} ${formatPrecio(app.precioAnualTotal)}` : 'Consultar'}
                         </span>
-                      )}
-                    </div>
+                        {app.precioAnualTotal > 0 && <span className="sol-card-periodo">/año</span>}
+                      </>
+                    ) : (
+                      <>
+                        <span className="sol-card-monto">{simbolo} {formatPrecio(app.precio)}</span>
+                        <span className="sol-card-periodo">/mes</span>
+                      </>
+                    )}
                   </div>
-                </div>
-              </div>
+
+                  {app.disponible !== false ? (
+                    <button onClick={() => setModalApp(app)} className="sol-btn-obtener">
+                      Obtener
+                    </button>
+                  ) : (
+                    <span className="sol-card-proximo">Próximamente</span>
+                  )}
+                </footer>
+
+                {app.url && app.disponible !== false && (
+                  <a href={app.url} target="_blank" rel="noopener noreferrer" className="sol-card-demo">
+                    Ver demo
+                  </a>
+                )}
+              </article>
             ))}
           </div>
 
           {/* Footer */}
           <div className="text-center mt-5">
-            <p style={{ color: '#334155', fontSize: '0.83rem', lineHeight: 1.8 }}>
+            <p style={{ color: '#8a8a99', fontSize: '0.83rem', lineHeight: 1.8 }}>
               Todas las aplicaciones incluyen actualizaciones continuas y soporte técnico.<br />
-              <span style={{ color: '#475569' }}>Sin contratos de permanencia · Cancela cuando quieras · Acceso inmediato tras el pago.</span>
+              <span style={{ color: '#8a8a99' }}>Sin contratos de permanencia · Cancela cuando quieras · Acceso inmediato tras el pago.</span>
             </p>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(167,139,250,0.08)', border: '1px solid rgba(167,139,250,0.2)', borderRadius: '10px', padding: '8px 18px', marginTop: '10px' }}>
-              <span style={{ color: '#a78bfa', fontSize: '1rem' }}>🎁</span>
-              <span style={{ color: '#a78bfa', fontSize: '0.83rem', fontWeight: 600 }}>Plan anual — 2 meses gratis en todos los paquetes</span>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.32)', borderRadius: '10px', padding: '8px 18px', marginTop: '10px' }}>
+              <span style={{ color: '#a5b4fc', fontSize: '1rem' }}>🎁</span>
+              <span style={{ color: '#a5b4fc', fontSize: '0.83rem', fontWeight: 600 }}>Plan anual — 2 meses gratis en todos los paquetes</span>
             </div>
           </div>
 

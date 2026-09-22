@@ -1,52 +1,334 @@
-/* ── Estilos globales Zyntello ─────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   Zyntello — Capa de componentes sobre Bootstrap · TEMA OSCURO
 
-html {
-  height: 100%;
-}
+   ⚠️ Se quitó el `scroll-snap-type: y mandatory` que tenía el body.
+   Obligaba a cada sección a ocupar una pantalla entera, y «Plataforma» mide
+   varias: la rueda saltaba a la sección siguiente sin haber llegado al final
+   de la anterior, así que las tarjetas de abajo no se veían nunca. No producía
+   ningún error — simplemente se perdía contenido.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+html, body { height: auto; }
 
 body {
-  height: 100%;
-  background: #0a0a14;
-  color: #f1f5f9;
-
-  /* ── Scroll Snap: cada sección ocupa una pantalla completa ── */
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
-
-  /* Compensa el navbar fijo de 70px al hacer snap */
-  scroll-padding-top: 70px;
+  background: var(--zy-fondo);
+  color: var(--zy-texto);
 }
 
-/* Cada sección se alinea al tope del viewport */
-main section,
-footer {
-  scroll-snap-align: start;
-  min-height: 100vh;
+main > section {
+  position: relative;
+  padding-block: clamp(48px, 5.4vw, 96px);
 }
 
-/* El hero ya tiene min-vh-100, no necesita duplicarlo */
-#inicio {
-  scroll-snap-align: start;
+/* ⚠️ Tope de ancho para el contenido.
+   El `container-fluid` de Bootstrap no tiene ninguno: en un monitor de 1920 o
+   2560 las columnas se estiran hasta el borde, el párrafo se queda en líneas
+   de veinte palabras y las tarjetas se separan tanto que dejan de leerse como
+   una rejilla. No falla nada — la página simplemente se vacía por el centro. */
+main > section > .container-fluid,
+footer .container-fluid,
+.zy-nav-caja {
+  max-width: 1400px;
+  margin-inline: auto;
 }
 
-/* Centrar contenido verticalmente en secciones con flex */
-main section {
-  display: flex;
+/* Cinta luminosa que separa secciones — en oscuro una línea gris no se ve */
+.zy-filo {
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--zy-borde-medio) 30%, var(--zy-borde-medio) 70%, transparent);
+}
+.zy-filo-arriba { top: 0; }
+.zy-filo-abajo  { bottom: 0; }
+
+/* ═══ Tipografía de sección ═══════════════════════════════════════════════ */
+.zy-eyebrow {
+  display: inline-flex;
   align-items: center;
+  gap: 9px;
+  color: var(--zy-indigo-claro);
+  background: rgba(99, 102, 241, .1);
+  border: 1px solid rgba(99, 102, 241, .28);
+  border-radius: 999px;
+  padding: 7px 16px;
+  font-family: var(--zy-display);
+  font-size: .76rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.zy-eyebrow-coral {
+  color: var(--zy-coral-claro);
+  background: rgba(251, 113, 133, .1);
+  border-color: rgba(251, 113, 133, .28);
 }
 
-/* ── Navbar ─────────────────────────────────────────────────────────────────── */
-.navbar-nav .nav-link:hover { color: #60a5fa !important; }
-
-/* ── Formularios ─────────────────────────────────────────────────────────────── */
-.form-control::placeholder,
-.form-select::placeholder { color: #64748b; }
-
-.form-control:focus,
-.form-select:focus {
-  background: rgba(255,255,255,0.07) !important;
-  border-color: #3b82f6 !important;
-  color: #f1f5f9 !important;
-  box-shadow: 0 0 0 0.2rem rgba(59,130,246,0.2) !important;
+.zy-titulo {
+  font-family: var(--zy-display);
+  font-size: clamp(1.9rem, 3.6vw, 3.3rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -.035em;
+  color: var(--zy-texto);
+  margin-block: clamp(14px, 1.6vw, 22px) clamp(12px, 1.3vw, 18px);
+  text-wrap: balance;
 }
+
+.zy-subtitulo {
+  color: var(--zy-texto-suave);
+  font-size: clamp(.98rem, 1.05vw, 1.06rem);
+  line-height: 1.75;
+  max-width: 62ch;
+  text-wrap: pretty;
+}
+
+.zy-degradado {
+  background: var(--zy-grad-texto);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: zy-brillo 8s linear infinite;
+}
+
+.zy-coral { color: var(--zy-coral); }
+
+/* Palabra con trazo hueco — el recurso de titular de la referencia.
+   ⚠️ El trazo va al 34 % de blanco, no al 22 %: por debajo de ahí la palabra
+   deja de leerse en un portátil con brillo bajo, y como es parte de la FRASE
+   —no un adorno— el titular se queda sin sentido sin que nada lo avise. */
+.zy-hueco {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, .34);
+}
+
+/* ═══ Tarjetas ════════════════════════════════════════════════════════════
+   El borde luminoso se dibuja con un degradado enmascarado, no con
+   `border-image`: así conserva el radio de la esquina. Sin la máscara el
+   degradado rellena la tarjeta entera y tapa el contenido.
+   ═════════════════════════════════════════════════════════════════════════ */
+.zy-tarjeta {
+  position: relative;
+  background: var(--zy-tarjeta);
+  border: 1px solid var(--zy-borde);
+  border-radius: var(--zy-radio-lg);
+  overflow: hidden;
+  transition:
+    transform    var(--zy-t-medio) var(--zy-curva),
+    background   var(--zy-t-medio) var(--zy-curva),
+    border-color var(--zy-t-medio) var(--zy-curva),
+    box-shadow   var(--zy-t-medio) var(--zy-curva);
+}
+
+.zy-tarjeta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(140deg,
+    var(--zy-color-acento, var(--zy-indigo)) 0%,
+    transparent 45%,
+    var(--zy-color-acento2, var(--zy-coral)) 100%);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0;
+  transition: opacity var(--zy-t-medio) var(--zy-curva);
+  pointer-events: none;
+}
+
+/* Resplandor que nace de la esquina superior */
+.zy-tarjeta::after {
+  content: '';
+  position: absolute;
+  top: -55%; left: 50%;
+  width: 150%; aspect-ratio: 1;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, var(--zy-color-acento, var(--zy-indigo)) 0%, transparent 62%);
+  opacity: 0;
+  transition: opacity var(--zy-t-medio) var(--zy-curva);
+  pointer-events: none;
+}
+
+.zy-tarjeta:hover {
+  transform: translateY(-6px);
+  background: var(--zy-tarjeta-alta);
+  border-color: transparent;
+  box-shadow: var(--zy-sombra-3);
+}
+.zy-tarjeta:hover::before { opacity: 1; }
+.zy-tarjeta:hover::after  { opacity: .09; }
+
+.zy-tarjeta > * { position: relative; z-index: 1; }
+
+/* ═══ Botones ═════════════════════════════════════════════════════════════ */
+.zy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;             /* ≥ 44px: objetivo táctil cómodo */
+  padding: 14px 30px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-family: var(--zy-display);
+  font-weight: 600;
+  font-size: .97rem;
+  letter-spacing: -.01em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    transform  var(--zy-t-rapido) var(--zy-curva),
+    box-shadow var(--zy-t-medio)  var(--zy-curva),
+    background var(--zy-t-medio)  var(--zy-curva),
+    border-color var(--zy-t-medio) var(--zy-curva),
+    color      var(--zy-t-medio)  var(--zy-curva);
+}
+.zy-btn:active { transform: translateY(1px) scale(.99); }
+
+.zy-btn-primario {
+  background: var(--zy-indigo-fuerte);
+  color: var(--zy-sobre-indigo);
+  box-shadow: 0 10px 34px rgba(79, 70, 229, .38);
+}
+.zy-btn-primario:hover {
+  background: var(--zy-indigo);
+  color: var(--zy-sobre-indigo);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 46px rgba(99, 102, 241, .5);
+}
+
+.zy-btn-coral {
+  background: var(--zy-coral);
+  color: var(--zy-sobre-coral);
+  box-shadow: 0 10px 34px rgba(251, 113, 133, .32);
+}
+.zy-btn-coral:hover {
+  background: var(--zy-coral-claro);
+  color: var(--zy-sobre-coral);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 46px rgba(251, 113, 133, .44);
+}
+
+.zy-btn-fantasma {
+  background: rgba(255, 255, 255, .04);
+  color: var(--zy-texto);
+  border-color: var(--zy-borde-medio);
+  backdrop-filter: blur(10px);
+}
+.zy-btn-fantasma:hover {
+  color: var(--zy-texto);
+  background: rgba(255, 255, 255, .09);
+  border-color: var(--zy-borde-fuerte);
+  transform: translateY(-2px);
+}
+
+/* La flecha acompaña al cursor: el movimiento dice «esto lleva a otro sitio» */
+.zy-flecha { transition: transform var(--zy-t-medio) var(--zy-curva); }
+.zy-btn:hover .zy-flecha,
+a:hover > .zy-flecha { transform: translateX(5px); }
+
+/* ═══ Enlace de texto ═════════════════════════════════════════════════════ */
+.zy-enlace {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--zy-indigo-claro);
+  font-family: var(--zy-display);
+  font-weight: 600;
+  font-size: .95rem;
+  transition: color var(--zy-t-medio);
+}
+.zy-enlace:hover { color: var(--zy-coral-claro); }
+
+/* ═══ Formularios ═════════════════════════════════════════════════════════ */
+.form-control, .form-select {
+  background: var(--zy-fondo-alto);
+  border: 1px solid var(--zy-borde-medio);
+  border-radius: var(--zy-radio-sm);
+  color: var(--zy-texto);
+  font-family: var(--zy-texto-fuente);
+  font-size: 1rem;
+  transition: border-color var(--zy-t-medio), box-shadow var(--zy-t-medio), background var(--zy-t-medio);
+}
+.form-control::placeholder { color: var(--zy-texto-tenue); opacity: 1; }
+.form-control:focus, .form-select:focus {
+  background: var(--zy-tarjeta);
+  border-color: var(--zy-indigo);
+  color: var(--zy-texto);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, .18);
+}
+.form-select option { background: var(--zy-tarjeta); color: var(--zy-texto); }
+
+/* ═══ Fondos y texturas ═══════════════════════════════════════════════════ */
+.zy-seccion-alta { background: var(--zy-fondo-alto); }
+
+.zy-malla {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, .035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, .035) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 85% 65% at 50% 35%, #000 10%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 35%, #000 10%, transparent 75%);
+}
+
+.zy-halo {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(110px);
+  pointer-events: none;
+}
+
+/* Grano: rompe el bandeado de los degradados, que en oscuro se ve a franjas */
+.zy-grano {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ═══ Marquesina ══════════════════════════════════════════════════════════ */
+.zy-marquesina {
+  display: flex;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.zy-marquesina-pista {
+  display: flex;
+  flex-shrink: 0;
+  gap: 12px;
+  padding-right: 12px;
+  animation: zy-desfile 42s linear infinite;
+}
+.zy-marquesina:hover .zy-marquesina-pista { animation-play-state: paused; }
+@keyframes zy-desfile {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
+}
+
+/* ═══ Enlace «saltar al contenido» ════════════════════════════════════════ */
+.zy-saltar {
+  position: fixed;
+  z-index: 2000;
+  top: 14px;
+  left: 50%;
+  transform: translate(-50%, -180%);
+  padding: 13px 24px;
+  border-radius: 999px;
+  background: var(--zy-indigo-fuerte);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: var(--zy-sombra-3);
+  transition: transform var(--zy-t-medio) var(--zy-curva);
+}
+.zy-saltar:focus { transform: translate(-50%, 0); color: #fff; }
