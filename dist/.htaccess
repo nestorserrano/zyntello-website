@@ -32,3 +32,68 @@
 
 # El sitio son archivos estaticos: una URL que no existe es un 404, no un 500.
 ErrorDocument 404 /404.html
+
+
+# ============================================================================
+# CACHE — anadido el 2026-09-21
+# ============================================================================
+#
+# EL PROBLEMA, MEDIDO
+#
+# zyntello.com servia su index.html con `Cache-Control: max-age=300` sin que
+# nadie lo hubiera configurado aqui. Lo hereda del .htaccess del padre, que
+# trae `ExpiresByType text/html "access plus 5 minutes"` y activa ademas el
+# cache de servidor de Bluehost con `X-Endurance-Cache-Level "2"`.
+#
+# ⚠️⚠️ A diferencia de mod_rewrite, las directivas de mod_expires SI SE HEREDAN
+# en los directorios hijos. Por eso la configuracion de WordPress de otro
+# dominio decidia cuanto tardaban en verse los cambios de este: hasta 5 minutos
+# en el navegador, y el cache de Bluehost podia servir una copia aun mas vieja
+# sin tocar el servidor. Nada de esto da error — la pagina sale, solo que vieja.
+#
+# LA REGLA, QUE ES LA DE SIEMPRE CON UN BUILD CON HASH EN EL NOMBRE
+#
+#   · El HTML NO se cachea nunca. Es el unico archivo que dice QUE assets hay
+#     que pedir; si el navegador se queda con uno viejo, pide los assets viejos
+#     y no hay forma de que se entere de que hay algo nuevo.
+#   · Los assets de /assets/ se cachean un ano y se marcan inmutables: Vite les
+#     pone el hash del contenido en el nombre, asi que un archivo con ese nombre
+#     no puede cambiar jamas.
+#   · El resto de estaticos (logos, favicon, fuentes) NO llevan hash, asi que
+#     van a un dia: si se cambia un logo, se ve al dia siguiente y no dentro de
+#     un ano.
+# ============================================================================
+
+# Deja de heredar las caducidades de WordPress.
+<IfModule mod_expires.c>
+  ExpiresActive Off
+</IfModule>
+
+<IfModule mod_setenvif.c>
+  # Marca las peticiones a los assets con hash en el nombre.
+  SetEnvIf Request_URI "^/assets/" ZY_INMUTABLE=1
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Apaga el cache de servidor de Bluehost SOLO en este arbol.
+  # No se toca el del padre: es de otros dominios de la cuenta.
+  Header set X-Endurance-Cache-Level "0"
+
+  # HTML: nunca se guarda. `always` para que valga tambien en el 404.
+  <FilesMatch "\.(html|htm)$">
+    Header always set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    Header always set Pragma "no-cache"
+    Header always unset Expires
+  </FilesMatch>
+
+  # Estaticos SIN hash (logos, favicon, fuentes): un dia.
+  <FilesMatch "\.(png|jpe?g|gif|svg|ico|webp|woff2?|ttf)$">
+    Header always set Cache-Control "public, max-age=86400"
+    Header always unset Expires
+  </FilesMatch>
+
+  # Assets CON hash: un ano e inmutables. Va al final para que gane sobre la
+  # regla anterior cuando la peticion cae dentro de /assets/.
+  Header always set Cache-Control "public, max-age=31536000, immutable" env=ZY_INMUTABLE
+  Header always unset Expires env=ZY_INMUTABLE
+</IfModule>

@@ -104,6 +104,14 @@ sort -u /tmp/zy_keep.txt -o /tmp/zy_keep.txt
 
 if [ ! -s /tmp/zy_keep.txt ]; then echo "ABORTADO: lista de conservacion vacia, no se borra nada"; exit 1; fi
 
+# Se conserva tambien la generacion ANTERIOR (los 4 archivos mas recientes:
+# el JS y el CSS de este despliegue y los del anterior). Motivo: un visitante
+# puede tener el index.html anterior todavia abierto y pedir su asset; si se
+# borra en el acto ve una pantalla en blanco en vez de la version vieja. Con
+# una generacion de margen, el peor caso vuelve a ser "ve lo de antes".
+ls -1t assets/ 2>/dev/null | head -4 >> /tmp/zy_keep.txt
+sort -u /tmp/zy_keep.txt -o /tmp/zy_keep.txt
+
 ls -1 assets/ | sort > /tmp/zy_all.txt
 comm -23 /tmp/zy_all.txt /tmp/zy_keep.txt > /tmp/zy_del.txt
 N=$(wc -l < /tmp/zy_del.txt)
