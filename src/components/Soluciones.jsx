@@ -213,8 +213,6 @@ function combinarModulo(apiData) {
     previews:       display.previews || [],
     categoria:      display.categoria,
     desarrollador:  'Zyntello',
-    stripeMensual:  apiData.stripe_mensual || null,
-    stripeAnual:    apiData.stripe_anual   || null,
   }
 }
 
@@ -232,6 +230,26 @@ const ERP_BUNDLE_SLUGS = new Set([
   'erp',
 ]);
 
+/* ─── Contratar: WhatsApp ────────────────────────────────────────────────────
+ *
+ * ⚠️ El pago en línea se retiró el 2026-09-21 por decisión del director
+ * técnico: se contrata llamando o escribiendo. El precio SIGUE publicándose —
+ * quitarlo obligaría a preguntar «¿cuánto cuesta?» antes de poder decidir, que
+ * es justo lo que ahuyenta a quien está comparando.
+ *
+ * El mensaje lleva el módulo y su precio ya escritos: quien recibe el WhatsApp
+ * sabe de qué se habla sin preguntarlo, y el visitante no tiene que explicarse.
+ * ─────────────────────────────────────────────────────────────────────────── */
+const WHATSAPP = '18296399877'
+
+function enlaceWhatsApp(app, simbolo, formatPrecio) {
+  const precio = app.soloAnual
+    ? (app.precioAnualTotal > 0 ? `${simbolo} ${formatPrecio(app.precioAnualTotal)}/año` : 'a consultar')
+    : `${simbolo} ${formatPrecio(app.precio)}/mes`
+  const texto = `¡Hola Zyntello! Quiero contratar *${app.nombre}* (${precio}). ¿Me ayudan?`
+  return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`
+}
+
 /* ─── Monedas ───────────────────────────────────────────────────── */
 /* ⚠️ Sin `bandera`: el emoji de bandera NO existe en Windows. El sistema lo
    sustituye por el par de letras del país («US», «DO»), que junto al código de
@@ -243,8 +261,6 @@ const MONEDAS_INFO = {
   MXN: { nombre: 'Peso Mex.', simbolo: '$'   },
   VES: { nombre: 'Bolívar',   simbolo: 'Bs.' },
 }
-
-const APP_CHECKOUT_URL = 'https://app.zyntello.com/checkout'
 
 /* ─── Módulos con landing pública ────────────────────────────────────────────
  *
@@ -274,208 +290,6 @@ export const LANDINGS_PUBLICAS = new Set([
   'prestamello', 'erp', 'reportes', 'bancos', 'carwash', 'inteligencia',
   'fiscal', 'flujocaja', 'abastecimiento', 'rutas',
 ])
-
-/* ─── Modal de Registro + Pago ──────────────────────────────────── */
-function ModalApp({ app, onClose, formatPrecio, simbolo }) {
-  const [plan, setPlan]     = useState('mensual')
-  const [paso, setPaso]     = useState(1)
-  const [form, setForm]     = useState({ nombre: '', empresa: '', email: '', telefono: '' })
-  const [metodo, setMetodo] = useState('stripe')
-  const [enviando, setEnviando] = useState(false)
-  const [errores, setErrores]   = useState({})
-
-  const precioUSD = plan === 'mensual' ? app.precio : app.precioAnual
-  const precio    = precioUSD
-
-  const validar = () => {
-    const e = {}
-    if (!form.nombre.trim()) e.nombre = 'Requerido'
-    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Email inválido'
-    if (!form.telefono.trim()) e.telefono = 'Requerido'
-    setErrores(e)
-    return Object.keys(e).length === 0
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (!validar()) return
-    setPaso(3)
-  }
-
-  const irAlPago = () => {
-    const stripeId = plan === 'mensual' ? app.stripeMensual : app.stripeAnual
-    const params = new URLSearchParams({
-      modulo:   app.id,
-      plan,
-      nombre:   form.nombre,
-      email:    form.email,
-      empresa:  form.empresa || '',
-      telefono: form.telefono,
-      metodo,
-    })
-    if (metodo === 'stripe' && stripeId) params.append('price_id', stripeId)
-    window.location.href = `${APP_CHECKOUT_URL}?${params.toString()}`
-  }
-
-  return (
-    <div className="sol-overlay" onClick={onClose}>
-      <div className="sol-modal" onClick={e => e.stopPropagation()}>
-        <div style={{ background: app.gradiente, borderRadius: '16px 16px 0 0', padding: '22px 24px', position: 'relative', flexShrink: 0 }}>
-          <button onClick={onClose} className="sol-modal-close">✕</button>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-            <div style={{ width: '60px', height: '60px', background: 'rgba(255,255,255,0.18)', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.8rem', backdropFilter: 'blur(6px)' }}>
-              <IconoModulo valor={app.icono} />
-            </div>
-            <div>
-              <h3 style={{ color: '#fff', margin: 0, fontWeight: 800, fontSize: '1.2rem' }}>{app.nombre}</h3>
-              <p style={{ color: 'rgba(255,255,255,0.75)', margin: '2px 0 4px', fontSize: '0.82rem' }}>{app.subtitulo}</p>
-              <Estrellas rating={app.rating} />
-            </div>
-          </div>
-          <div style={{ display: 'flex', gap: '6px', marginTop: '16px' }}>
-            {['Plan', 'Datos', 'Pago'].map((label, i) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <div style={{ width: '22px', height: '22px', borderRadius: '50%', fontSize: '0.7rem', fontWeight: 700, background: paso > i + 1 ? '#fff' : paso === i + 1 ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.25)', color: paso > i + 1 ? app.color : paso === i + 1 ? '#1e293b' : 'rgba(255,255,255,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  {paso > i + 1 ? '✓' : i + 1}
-                </div>
-                <span style={{ color: paso === i + 1 ? '#fff' : 'rgba(255,255,255,0.5)', fontSize: '0.75rem' }}>{label}</span>
-                {i < 2 && <span style={{ color: 'rgba(255,255,255,0.3)', margin: '0 2px' }}>›</span>}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div style={{ padding: '22px 24px', overflowY: 'auto', flex: 1 }}>
-          {paso === 1 && (
-            <>
-              <h5 className="sol-modal-title">Elige tu plan</h5>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '22px' }}>
-                {[
-                  { key: 'mensual', label: 'Mensual', monto: app.precio,      nota: null },
-                  { key: 'anual',   label: 'Anual',   monto: app.precioAnual, nota: app.ahorroAnual }
-                ].map(p => (
-                  <div key={p.key} onClick={() => setPlan(p.key)} className="sol-plan-card"
-                    style={{ border: `2px solid ${plan === p.key ? app.color : 'rgba(255,255,255,0.1)'}`, background: plan === p.key ? `${app.color}15` : '#16161f' }}>
-                    {p.nota && <span className="sol-plan-badge" style={{ background: app.color }}>{p.nota}</span>}
-                    <div style={{ color: '#f5f5f7', fontWeight: 700, marginBottom: '6px' }}>{p.label}</div>
-                    <div style={{ color: app.color, fontSize: '1.5rem', fontWeight: 800, lineHeight: 1 }}>
-                      {simbolo} {formatPrecio(p.monto)}
-                      <span style={{ color: '#8a8a99', fontSize: '0.72rem', fontWeight: 400 }}>/mes</span>
-                    </div>
-                    {p.key === 'anual' && <div style={{ color: '#9c9caa', fontSize: '0.7rem', marginTop: '4px' }}>Facturado anualmente</div>}
-                  </div>
-                ))}
-              </div>
-              <h5 className="sol-modal-title">¿Qué incluye?</h5>
-              <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 22px' }}>
-                {app.caracteristicas.map((c, i) => (
-                  <li key={i} style={{ color: '#9c9caa', fontSize: '0.88rem', padding: '7px 0', borderBottom: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                    <span style={{ color: app.color, flexShrink: 0, marginTop: '1px' }}>✓</span>
-                    {c}
-                  </li>
-                ))}
-              </ul>
-              <button onClick={() => setPaso(2)}
-                style={{ width: '100%', padding: '13px', background: app.color, border: 'none', borderRadius: '10px', color: '#fff', fontWeight: 700, fontSize: '1rem', cursor: 'pointer' }}>
-                Continuar → Mis datos
-              </button>
-            </>
-          )}
-
-          {paso === 2 && (
-            <form onSubmit={handleSubmit} noValidate>
-              <h5 className="sol-modal-title">Datos de registro</h5>
-              {[
-                { key: 'nombre',   label: 'Nombre completo',      type: 'text',  placeholder: 'Tu nombre completo',  required: true },
-                { key: 'empresa',  label: 'Empresa (opcional)',    type: 'text',  placeholder: 'Nombre de tu empresa', required: false },
-                { key: 'email',    label: 'Correo electrónico',    type: 'email', placeholder: 'correo@empresa.com',   required: true },
-                { key: 'telefono', label: 'Teléfono / WhatsApp',   type: 'tel',   placeholder: '+1 809 000 0000',      required: true }
-              ].map(f => (
-                <div key={f.key} style={{ marginBottom: '14px' }}>
-                  <label style={{ color: '#9c9caa', fontSize: '0.8rem', display: 'block', marginBottom: '5px' }}>
-                    {f.label} {f.required && <span style={{ color: app.color }}>*</span>}
-                  </label>
-                  <input type={f.type} placeholder={f.placeholder} value={form[f.key]}
-                    onChange={e => { setForm({ ...form, [f.key]: e.target.value }); setErrores({ ...errores, [f.key]: null }) }}
-                    style={{ width: '100%', padding: '10px 14px', boxSizing: 'border-box', background: errores[f.key] ? 'rgba(239,68,68,0.08)' : '#16161f', border: `1px solid ${errores[f.key] ? '#ef4444' : 'rgba(255,255,255,0.18)'}`, borderRadius: '8px', color: '#f5f5f7', fontSize: '0.9rem', outline: 'none' }}
-                  />
-                  {errores[f.key] && <span style={{ color: '#ef4444', fontSize: '0.72rem' }}>{errores[f.key]}</span>}
-                </div>
-              ))}
-              <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', padding: '12px 14px', marginBottom: '18px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ color: '#9c9caa', fontSize: '0.85rem' }}>{app.nombre} · Plan {plan}</span>
-                  <span style={{ color: app.color, fontWeight: 800, fontSize: '1.05rem' }}>
-                    {simbolo} {formatPrecio(precio)}<span style={{ color: '#8a8a99', fontSize: '0.72rem', fontWeight: 400 }}>/mes</span>
-                  </span>
-                </div>
-                <div style={{ color: '#8a8a99', fontSize: '0.72rem', marginTop: '4px' }}>Sin permanencia · Cancela cuando quieras</div>
-              </div>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <button type="button" onClick={() => setPaso(1)}
-                  style={{ flex: '0 0 auto', padding: '12px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: '10px', color: '#9c9caa', cursor: 'pointer', fontSize: '0.9rem' }}>
-                  ← Volver
-                </button>
-                <button type="submit"
-                  style={{ flex: 1, padding: '12px', background: app.color, border: 'none', borderRadius: '10px', color: '#fff', fontWeight: 700, cursor: 'pointer', fontSize: '0.95rem' }}>
-                  Elegir método de pago →
-                </button>
-              </div>
-            </form>
-          )}
-
-          {paso === 3 && (
-            <>
-              <h5 className="sol-modal-title">Método de pago</h5>
-              <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', padding: '12px 14px', marginBottom: '20px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ color: '#9c9caa', fontSize: '0.85rem' }}>{app.nombre} · Plan {plan}</span>
-                  <span style={{ color: app.color, fontWeight: 800, fontSize: '1.05rem' }}>
-                    {simbolo} {formatPrecio(precio)}<span style={{ color: '#8a8a99', fontSize: '0.72rem', fontWeight: 400 }}>/mes</span>
-                  </span>
-                </div>
-                <div style={{ color: '#8a8a99', fontSize: '0.72rem', marginTop: '4px' }}>Sin permanencia · Cancela cuando quieras</div>
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '22px' }}>
-                {[
-                  { key: 'stripe',  icono: '💳', label: 'Tarjeta de crédito / débito',  sub: 'Visa, Mastercard, Amex — powered by Stripe' },
-                  { key: 'paypal',  icono: '🅿️', label: 'PayPal',                        sub: 'Paga con tu cuenta PayPal o tarjeta' },
-                  { key: 'cripto',  icono: '₿',  label: 'Criptomonedas',                 sub: 'USDT (TRC-20 / ERC-20) · USDC · BTC' },
-                ].map(m => (
-                  <div key={m.key} onClick={() => setMetodo(m.key)}
-                    style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '14px 16px', borderRadius: '10px', cursor: 'pointer', border: `2px solid ${metodo === m.key ? app.color : 'rgba(255,255,255,0.1)'}`, background: metodo === m.key ? `${app.color}15` : '#16161f', transition: 'all 0.15s' }}>
-                    <span style={{ fontSize: '1.5rem', lineHeight: 1 }}>{m.icono}</span>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ color: '#f5f5f7', fontWeight: 700, fontSize: '0.92rem' }}>{m.label}</div>
-                      <div style={{ color: '#8a8a99', fontSize: '0.72rem', marginTop: '2px' }}>{m.sub}</div>
-                    </div>
-                    <div style={{ width: '18px', height: '18px', borderRadius: '50%', border: `2px solid ${metodo === m.key ? app.color : 'rgba(255,255,255,0.18)'}`, background: metodo === m.key ? app.color : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      {metodo === m.key && <span style={{ color: '#fff', fontSize: '0.6rem', fontWeight: 900 }}>✓</span>}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <button type="button" onClick={() => setPaso(2)}
-                  style={{ flex: '0 0 auto', padding: '12px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: '10px', color: '#9c9caa', cursor: 'pointer', fontSize: '0.9rem' }}>
-                  ← Volver
-                </button>
-                <button type="button" onClick={irAlPago}
-                  style={{ flex: 1, padding: '12px', background: app.color, border: 'none', borderRadius: '10px', color: '#fff', fontWeight: 700, cursor: 'pointer', fontSize: '0.95rem' }}>
-                  {metodo === 'stripe'  && '💳 Ir al pago con tarjeta →'}
-                  {metodo === 'paypal'  && '🅿️ Ir al pago con PayPal →'}
-                  {metodo === 'cripto'  && '₿ Ver instrucciones cripto →'}
-                </button>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-    </div>
-  )
-}
 
 /* ─── Iconos flotantes animados ─────────────────────────────────── */
 const FLOAT_POSITIONS = [
@@ -522,7 +336,6 @@ function FloatingIcons({ apps }) {
 
 /* ─── Componente principal ──────────────────────────────────────── */
 export default function Soluciones() {
-  const [modalApp, setModalApp] = useState(null)
   const [moneda, setMoneda]     = useState('USD')
   const [rates, setRates]       = useState(null)
   const [apps, setApps]         = useState(() => leerCacheModulos() || APPS_FALLBACK)
@@ -696,11 +509,15 @@ export default function Soluciones() {
                       Conoce más
                     </a>
                   ) : app.disponible !== false ? (
-                    /* Sin landing publica, mandarlo ahi seria mandarlo al
-                       inicio de sesion o a un 404: se ofrece contratar aqui. */
-                    <button onClick={() => setModalApp(app)} className="sol-btn-obtener">
-                      Obtener
-                    </button>
+                    /* Sin landing pública, mandarlo ahí sería mandarlo al
+                       inicio de sesión o a un 404: se ofrece contratar por
+                       WhatsApp, que es la única vía desde que se retiró el
+                       pago en línea. */
+                    <a href={enlaceWhatsApp(app, simbolo, formatPrecio)}
+                       target="_blank" rel="noopener noreferrer"
+                       className="sol-btn-obtener">
+                      Contratar
+                    </a>
                   ) : (
                     <span className="sol-card-proximo">Próximamente</span>
                   )}
@@ -725,7 +542,6 @@ export default function Soluciones() {
         </div>
       </section>
 
-      {modalApp && <ModalApp app={modalApp} onClose={() => setModalApp(null)} formatPrecio={formatPrecio} simbolo={simbolo} />}
     </>
   )
 }
