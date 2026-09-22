@@ -11,6 +11,25 @@ const leerCacheModulos = () => {
   try { const c = JSON.parse(localStorage.getItem(CACHE_KEY)); return Array.isArray(c) && c.length ? c : null } catch { return null }
 }
 
+/**
+ * Isotipo de Zyntello como icono de módulo.
+ *
+ * Se mide en `em`, no en píxeles: el mismo elemento se pinta en la píldora del
+ * encabezado (0,79 rem), en la tarjeta (1,5 rem) y en los iconos flotantes del
+ * fondo (hasta 1,5 rem). Con un tamaño fijo se vería enorme en la píldora y
+ * diminuto en la tarjeta, y no habría ningún error que lo delatara.
+ */
+function IsotipoZyntello() {
+  return (
+    <img
+      src="/logos/zyntello_isotipo_transparente.png"
+      alt=""
+      aria-hidden="true"
+      style={{ width: '1.1em', height: '1.1em', objectFit: 'contain', display: 'inline-block', verticalAlign: '-0.18em' }}
+    />
+  )
+}
+
 /* ─── Datos de display estáticos por slug ──────────────────────
    El admin controla precios, contenido y orden.
    Estos datos enriquecen la presentación visual de módulos conocidos.
@@ -25,7 +44,7 @@ const DISPLAY_ESTATICO = {
   encuestas:    { icono: '📊', rating: 4.8, reviews: 91,  etiqueta: 'Nuevo',      previews: [{ label: 'Constructor', icon: '🛠️' }, { label: 'Resultados', icon: '📊' }, { label: 'Reportes', icon: '📄' }], categoria: 'Analítica' },
   contabilidad: { icono: '📒', rating: 4.8, reviews: 74,  etiqueta: 'Nuevo',      previews: [{ label: 'Asientos', icon: '📒' }, { label: 'Balances', icon: '⚖️' }, { label: 'Fiscal', icon: '🏛️' }],    categoria: 'Finanzas' },
   condominios:  { icono: '🏢', rating: 4.9, reviews: 52,  etiqueta: 'Destacado',  previews: [{ label: 'Propietarios', icon: '🏘️' }, { label: 'Cuotas', icon: '💳' }, { label: 'Reportes', icon: '📊' }], categoria: 'Servicios' },
-  constructflow:{ icono: '🏗️', rating: 4.9, reviews: 47,  etiqueta: 'Disponible', previews: [{ label: 'Obras', icon: '🏗️' }, { label: 'Presupuesto', icon: '💰' }, { label: 'Avance', icon: '📊' }],    categoria: 'Construcción' },
+  constructflow:{ icono: <IsotipoZyntello />, rating: 4.9, reviews: 47,  etiqueta: 'Disponible', previews: [{ label: 'Obras', icon: '🏗️' }, { label: 'Presupuesto', icon: '💰' }, { label: 'Avance', icon: '📊' }],    categoria: 'Construcción' },
   events:       { icono: '🎟️', rating: 4.9, reviews: 39,  etiqueta: 'Lanzamiento', previews: [{ label: 'QR', icon: '📱' }, { label: 'Ponentes', icon: '🎤' }, { label: 'Dashboard', icon: '📊' }],      categoria: 'Eventos' },
   restaurante:  { icono: '🍽️', rating: 4.7, reviews: 31,  etiqueta: 'Nuevo',      previews: [{ label: 'Mesas', icon: '🪑' }, { label: 'Cocina', icon: '👨‍🍳' }, { label: 'Cierre', icon: '💵' }],         categoria: 'Hostelería' },
   doctores:     { icono: '🩺', rating: 4.8, reviews: 28,  etiqueta: 'Nuevo',      previews: [{ label: 'Agenda', icon: '📅' }, { label: 'Expedientes', icon: '📋' }, { label: 'Recetas', icon: '💊' }],    categoria: 'Salud' },
@@ -521,7 +540,6 @@ export default function Soluciones() {
 
           {/* Callout personalización */}
           <div className="sol-callout">
-            <span className="sol-callout-icon">🏗️</span>
             <div style={{ flex: 1, minWidth: '220px' }}>
               <div className="sol-callout-title">¿Necesitas más? Las personalizamos e instalamos en tu empresa</div>
               <p className="sol-callout-text">
