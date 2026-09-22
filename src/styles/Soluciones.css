@@ -146,31 +146,7 @@
   color: var(--zy-texto-suave);
   font-size: 1.06rem;
   line-height: 1.75;
-  margin-bottom: 26px;
-}
-
-.sol-hero-pills {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 7px;
-}
-.sol-hero-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: rgba(255, 255, 255, .04);
-  border: 1px solid var(--zy-borde);
-  border-radius: 999px;
-  padding: 6px 14px;
-  font-size: .79rem;
-  color: var(--zy-texto-suave);
-  transition: background var(--zy-t-medio), border-color var(--zy-t-medio), transform var(--zy-t-rapido);
-}
-.sol-hero-pill:hover {
-  background: rgba(255, 255, 255, .08);
-  border-color: var(--zy-borde-medio);
-  transform: translateY(-2px);
+  margin-bottom: 0;
 }
 
 /* ── Aviso de personalización ───────────────────────────────────────────── */

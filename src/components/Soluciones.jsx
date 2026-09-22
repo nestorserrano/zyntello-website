@@ -550,13 +550,6 @@ export default function Soluciones() {
               Microaplicaciones empresariales listas para usar. Sin instalaciones,<br className="d-none d-md-block" />
               acceso desde cualquier dispositivo y soporte incluido.
             </p>
-            <div className="sol-hero-pills">
-              {apps.map(a => (
-                <span key={a.id} className="sol-hero-pill">
-                  <IconoModulo valor={a.icono} /> {a.nombre}
-                </span>
-              ))}
-            </div>
           </div>
 
           {/* Callout personalización */}
