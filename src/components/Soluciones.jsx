@@ -6,27 +6,48 @@ const API_URL   = `${(import.meta.env.VITE_ADMIN_URL || 'https://admin.zyntello.
 
 // Cache "last-known-good" del catálogo del admin (precios SIEMPRE vienen del admin).
 // Si el API tiene un hipo transitorio se reutiliza el último catálogo recibido.
-const CACHE_KEY = 'zyntello_modulos_v1'
+// v2: la v1 pudo guardar un elemento React serializado (ver IconoModulo).
+// Subir la version es lo que hace que el navegador que ya la tiene la deseche;
+// sin eso, el visitante afectado sigue viendo la sección rota para siempre.
+const CACHE_KEY = 'zyntello_modulos_v2'
 const leerCacheModulos = () => {
   try { const c = JSON.parse(localStorage.getItem(CACHE_KEY)); return Array.isArray(c) && c.length ? c : null } catch { return null }
 }
 
 /**
- * Isotipo de Zyntello como icono de módulo.
+ * Icono de un módulo: emoji, o el isotipo de Zyntello.
  *
- * Se mide en `em`, no en píxeles: el mismo elemento se pinta en la píldora del
- * encabezado (0,79 rem), en la tarjeta (1,5 rem) y en los iconos flotantes del
- * fondo (hasta 1,5 rem). Con un tamaño fijo se vería enorme en la píldora y
- * diminuto en la tarjeta, y no habría ningún error que lo delatara.
+ * ⚠️⚠️ `icono` es una CADENA, nunca un elemento React — y esto no es una
+ * preferencia de estilo. El catálogo combinado se guarda en `localStorage` con
+ * `JSON.stringify` para sobrevivir a un hipo del API; un elemento React pasa
+ * por el `stringify` convertido en `{key, ref, props}`, y al releerlo en la
+ * visita siguiente React revienta con el error #31 («Objects are not valid as
+ * a React child») y la sección entera deja de pintarse.
+ *
+ * Lo traicionero es el retraso: la primera visita funciona —la caché aún está
+ * vacía— y el fallo aparece en la SEGUNDA. Pasó en producción el 2026-09-21.
+ *
+ * Todo lo que entre en el objeto del módulo tiene que sobrevivir a un
+ * `JSON.parse(JSON.stringify(x))`.
+ *
+ * El isotipo se mide en `em`, no en píxeles: el mismo icono se pinta en la
+ * píldora del encabezado (0,79 rem), en la tarjeta (1,5 rem) y en los iconos
+ * flotantes del fondo. Con un tamaño fijo se vería enorme en una y diminuto en
+ * otra, y nada lo delataría.
  */
-function IsotipoZyntello() {
+const ICONO_ZYNTELLO = 'zyntello:isotipo'
+
+function IconoModulo({ valor, className }) {
+  if (valor !== ICONO_ZYNTELLO) return <span className={className}>{valor}</span>
   return (
-    <img
-      src="/logos/zyntello_isotipo_transparente.png"
-      alt=""
-      aria-hidden="true"
-      style={{ width: '1.1em', height: '1.1em', objectFit: 'contain', display: 'inline-block', verticalAlign: '-0.18em' }}
-    />
+    <span className={className}>
+      <img
+        src="/logos/zyntello_isotipo_transparente.png"
+        alt=""
+        aria-hidden="true"
+        style={{ width: '1.1em', height: '1.1em', objectFit: 'contain', display: 'inline-block', verticalAlign: '-0.18em' }}
+      />
+    </span>
   )
 }
 
@@ -44,7 +65,7 @@ const DISPLAY_ESTATICO = {
   encuestas:    { icono: '📊', rating: 4.8, reviews: 91,  etiqueta: 'Nuevo',      previews: [{ label: 'Constructor', icon: '🛠️' }, { label: 'Resultados', icon: '📊' }, { label: 'Reportes', icon: '📄' }], categoria: 'Analítica' },
   contabilidad: { icono: '📒', rating: 4.8, reviews: 74,  etiqueta: 'Nuevo',      previews: [{ label: 'Asientos', icon: '📒' }, { label: 'Balances', icon: '⚖️' }, { label: 'Fiscal', icon: '🏛️' }],    categoria: 'Finanzas' },
   condominios:  { icono: '🏢', rating: 4.9, reviews: 52,  etiqueta: 'Destacado',  previews: [{ label: 'Propietarios', icon: '🏘️' }, { label: 'Cuotas', icon: '💳' }, { label: 'Reportes', icon: '📊' }], categoria: 'Servicios' },
-  constructflow:{ icono: <IsotipoZyntello />, rating: 4.9, reviews: 47,  etiqueta: 'Disponible', previews: [{ label: 'Obras', icon: '🏗️' }, { label: 'Presupuesto', icon: '💰' }, { label: 'Avance', icon: '📊' }],    categoria: 'Construcción' },
+  constructflow:{ icono: ICONO_ZYNTELLO, rating: 4.9, reviews: 47,  etiqueta: 'Disponible', previews: [{ label: 'Obras', icon: '🏗️' }, { label: 'Presupuesto', icon: '💰' }, { label: 'Avance', icon: '📊' }],    categoria: 'Construcción' },
   events:       { icono: '🎟️', rating: 4.9, reviews: 39,  etiqueta: 'Lanzamiento', previews: [{ label: 'QR', icon: '📱' }, { label: 'Ponentes', icon: '🎤' }, { label: 'Dashboard', icon: '📊' }],      categoria: 'Eventos' },
   restaurante:  { icono: '🍽️', rating: 4.7, reviews: 31,  etiqueta: 'Nuevo',      previews: [{ label: 'Mesas', icon: '🪑' }, { label: 'Cocina', icon: '👨‍🍳' }, { label: 'Cierre', icon: '💵' }],         categoria: 'Hostelería' },
   doctores:     { icono: '🩺', rating: 4.8, reviews: 28,  etiqueta: 'Nuevo',      previews: [{ label: 'Agenda', icon: '📅' }, { label: 'Expedientes', icon: '📋' }, { label: 'Recetas', icon: '💊' }],    categoria: 'Salud' },
@@ -267,7 +288,7 @@ function ModalApp({ app, onClose, formatPrecio, simbolo }) {
           <button onClick={onClose} className="sol-modal-close">✕</button>
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
             <div style={{ width: '60px', height: '60px', background: 'rgba(255,255,255,0.18)', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.8rem', backdropFilter: 'blur(6px)' }}>
-              {app.icono}
+              <IconoModulo valor={app.icono} />
             </div>
             <div>
               <h3 style={{ color: '#fff', margin: 0, fontWeight: 800, fontSize: '1.2rem' }}>{app.nombre}</h3>
@@ -454,7 +475,7 @@ function FloatingIcons({ apps }) {
               border: `1px solid ${app.color}28`,
               boxShadow: `0 0 28px ${app.color}20`,
             }}>
-              {app.icono}
+              <IconoModulo valor={app.icono} />
             </div>
           </div>
         )
@@ -532,7 +553,7 @@ export default function Soluciones() {
             <div className="sol-hero-pills">
               {apps.map(a => (
                 <span key={a.id} className="sol-hero-pill">
-                  <span style={{ color: a.color }}>{a.icono}</span> {a.nombre}
+                  <IconoModulo valor={a.icono} /> {a.nombre}
                 </span>
               ))}
             </div>
@@ -594,7 +615,7 @@ export default function Soluciones() {
               <article key={app.id} className="sol-card" style={{ '--sol-acento': app.color }}>
 
                 <header className="sol-card-cima">
-                  <span className="sol-card-icono" style={{ color: app.color }}>{app.icono}</span>
+                  <IconoModulo valor={app.icono} className="sol-card-icono" />
                   {app.etiqueta && (
                     <span className="sol-card-badge" style={app.etiquetaBadge ? { background: app.etiquetaBadge.bg, color: app.etiquetaBadge.color } : {}}>
                       {app.etiqueta}
