@@ -2,6 +2,7 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Servicios from './components/Servicios'
 import Soluciones from './components/Soluciones'
+import Funcionalidades from './components/Funcionalidades'
 import PorQueZyntello from './components/PorQueZyntello'
 import Portafolio from './components/Portafolio'
 import Nosotros from './components/Nosotros'
@@ -26,6 +27,7 @@ function App() {
         <Hero />
         <Servicios />
         <Soluciones />
+        <Funcionalidades />
         <PorQueZyntello />
         <Portafolio />
         <Nosotros />

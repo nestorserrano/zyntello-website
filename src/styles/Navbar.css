@@ -139,24 +139,31 @@
 .zy-nav-hamburguesa:hover { background: rgba(255, 255, 255, .1); }
 
 /* -- Punto de corte MEDIDO, no adivinado ------------------------------------
-   Medido en el navegador: marca 393 px + menu 850 px + 16 de hueco + 96 de
-   margenes = la barra horizontal necesita 1354 px de ventana. Con el corte en
-   1200 px, a 1280 el boton de Contacto se salia de la pantalla y no habia
-   forma de pulsarlo - y no se veia como un error, se veia como si no
+   ⚠️⚠️ Estos dos numeros dependen del CONTENIDO del menu, no del dispositivo.
+   Al anadir «Funcionalidades» (2026-09-21) se volvio a medir en el navegador
+   y los dos se habian quedado CORTOS -- por poco, que es lo peor: la barra se
+   salia solo en una franja estrecha de anchos, asi que en la pantalla de uno
+   se veia bien.
+
+   Medido con las 7 secciones:
+     · con lema:  marca 407 + menu 998 + 32 de huecos + 96 de margenes = 1533
+     · sin lema:  marca 155 + menu 998 + 32 + 96                       = 1281
+
+   Y el sintoma no parece un error: el boton de Contacto se sale de la
+   pantalla y no hay forma de pulsarlo -- no se ve roto, se ve como si no
    existiera.
 
    La solucion tiene dos partes:
-     1. Por debajo de 1500 px se oculta el lema de la marca (ahi sobra), con
-        lo que la barra baja a ~1180 px.
-     2. Por debajo de 1260 px se pliega en hamburguesa.
-   Si manana se anade una seccion al menu, hay que VOLVER A MEDIR: este numero
-   depende del contenido, no del dispositivo.
+     1. Por debajo de 1560 px se oculta el lema de la marca (ahi sobra), con
+        lo que la barra baja a 1281 px.
+     2. Por debajo de 1300 px se pliega en hamburguesa.
+   Si manana se anade otra seccion al menu, hay que VOLVER A MEDIR.
    ------------------------------------------------------------------------- */
-@media (max-width: 1499.98px) {
+@media (max-width: 1559.98px) {
   .zy-nav-marca-texto small { display: none; }
 }
 
-@media (max-width: 1259.98px) {
+@media (max-width: 1299.98px) {
   .zy-nav-hamburguesa { display: inline-flex; }
 
   .zy-nav-menu {

@@ -1,0 +1,5 @@
+# zyntello.com
+User-agent: *
+Allow: /
+
+Sitemap: https://zyntello.com/sitemap.xml

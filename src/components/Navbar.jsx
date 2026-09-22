@@ -6,6 +6,7 @@ const SECCIONES = [
   ['inicio',     'Inicio'],
   ['servicios',  'Servicios'],
   ['soluciones', 'Plataforma'],
+  ['funcionalidades', 'Funcionalidades'],
   ['porque',     'Por qué'],
   ['portafolio', 'Portafolio'],
   ['nosotros',   'Nosotros'],

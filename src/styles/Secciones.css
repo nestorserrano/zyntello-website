@@ -90,6 +90,137 @@
   .zy-porque-lista { grid-template-columns: repeat(2, 1fr); column-gap: 48px; }
 }
 
+/* ═══ Funcionalidades transversales ═══════════════════════════════════════
+   ⚠️ Las CUATRO van SIEMPRE en una línea en escritorio, con `repeat(4, 1fr)`
+   fijo y no con `auto-fit`. Con auto-fit, un ancho intermedio deja 3 arriba y
+   1 abajo con dos huecos — y la página «se ve bien», así que nadie lo reporta.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.zy-func { overflow: hidden; }
+
+.zy-func-cabecera {
+  max-width: 720px;
+  margin-bottom: clamp(30px, 3.6vw, 52px);
+}
+
+.zy-func-rejilla {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.zy-func-tarjeta {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(22px, 2.2vw, 28px);
+  border-radius: 18px;
+  background: var(--zy-tarjeta);
+  border: 1px solid var(--zy-borde);
+  color: inherit;
+  text-decoration: none;
+  overflow: hidden;
+  transition: transform .34s cubic-bezier(.22, 1, .36, 1), border-color .34s, background .34s;
+}
+.zy-func-tarjeta:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--zy-color-acento) 45%, transparent);
+  background: var(--zy-tarjeta-alta);
+}
+
+/* Filo superior en el color de la funcionalidad: lo que las distingue de un
+   vistazo cuando las cuatro están juntas. */
+.zy-func-tarjeta::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: var(--zy-color-acento);
+  opacity: .55;
+  transition: opacity .34s;
+}
+.zy-func-tarjeta:hover::before { opacity: 1; }
+
+.zy-func-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  color: var(--zy-color-acento);
+  background: color-mix(in srgb, var(--zy-color-acento) 13%, transparent);
+  border: 1px solid color-mix(in srgb, var(--zy-color-acento) 26%, transparent);
+  margin-bottom: 18px;
+}
+
+.zy-func-dato {
+  position: absolute;
+  top: clamp(22px, 2.2vw, 28px);
+  right: clamp(22px, 2.2vw, 28px);
+  font-family: var(--zy-display);
+  font-weight: 600;
+  font-size: .74rem;
+  letter-spacing: .04em;
+  color: var(--zy-color-acento);
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--zy-color-acento) 11%, transparent);
+  border: 1px solid color-mix(in srgb, var(--zy-color-acento) 24%, transparent);
+  white-space: nowrap;
+}
+
+.zy-func-nombre {
+  font-family: var(--zy-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: -.025em;
+  margin: 0 0 6px;
+}
+
+.zy-func-gancho {
+  font-family: var(--zy-display);
+  font-weight: 500;
+  font-size: .89rem;
+  color: var(--zy-color-acento);
+  margin: 0 0 12px;
+}
+
+.zy-func-desc {
+  color: var(--zy-texto-tenue);
+  font-size: .92rem;
+  line-height: 1.6;
+  margin: 0 0 20px;
+  flex: 1;
+}
+
+.zy-func-mas {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--zy-display);
+  font-weight: 600;
+  font-size: .88rem;
+  color: var(--zy-texto);
+  transition: color .3s, gap .3s;
+}
+.zy-func-tarjeta:hover .zy-func-mas {
+  color: var(--zy-color-acento);
+  gap: 11px;
+}
+
+.zy-func-pie {
+  margin: clamp(26px, 3vw, 38px) 0 0;
+  color: var(--zy-texto-tenue);
+  font-size: .9rem;
+}
+
+@media (min-width: 640px) {
+  .zy-func-rejilla { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1200px) {
+  .zy-func-rejilla { grid-template-columns: repeat(4, 1fr); }
+}
+
 /* ═══ Portafolio ══════════════════════════════════════════════════════════ */
 .zy-port { overflow: hidden; }
 
