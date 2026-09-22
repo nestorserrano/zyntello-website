@@ -125,3 +125,9 @@
   .zy-serv-destacada { padding: 28px 22px; }
   .zy-serv-destacada .zy-serv-titulo { font-size: 1.5rem; }
 }
+
+/* ⚠️ La tarjeta ENTERA es el enlace desde el 2026-09-21. Sin esto hereda el
+   color y el subrayado de `a`, y el bloque se ve como un enlace gigante. */
+.zy-serv-enlazada { color: inherit; text-decoration: none; display: flex; }
+.zy-serv-enlazada:hover { color: inherit; }
+.zy-serv-enlazada .zy-serv-enlace { margin-top: auto; }

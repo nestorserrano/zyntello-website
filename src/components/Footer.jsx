@@ -1,10 +1,24 @@
 import Icono from './Icono'
 
+/* ⚠️⚠️ Cada servicio a SU página. Hasta el 2026-09-21 los diez apuntaban a
+   `#servicios`, la MISMA ancla: daba igual cuál pulsaras, y eso no se ve como
+   un error — se ve como una web donde el pie «no hace nada».
+
+   ⚠️ Son catorce en la sección «Qué hacemos» y aquí caben diez sin que la
+   columna se alargue de más. Los cuatro que faltan —contable, marketing,
+   electoral y encuestas— se alcanzan desde sus tarjetas y desde el enlace de
+   abajo, para que ninguno quede sin camino. */
 const SERVICIOS = [
-  'Plataforma SaaS Zyntello', 'ERP y CRM', 'Automatización con IA',
-  'Aplicaciones a la medida', 'Soporte técnico TI', 'Nube y ciberseguridad',
-  'Personal TI especializado', 'Venta de equipos', 'Transformación digital',
-  'Capacitación en TI e IA',
+  ['plataforma-saas',            'Plataforma SaaS Zyntello'],
+  ['erp-y-crm',                  'ERP y CRM'],
+  ['automatizacion-con-ia',      'Automatización con IA'],
+  ['aplicaciones-a-la-medida',   'Aplicaciones a la medida'],
+  ['soporte-tecnico-ti',         'Soporte técnico TI'],
+  ['nube-y-ciberseguridad',      'Nube y ciberseguridad'],
+  ['personal-ti-especializado',  'Personal TI especializado'],
+  ['venta-de-equipos',           'Venta de equipos'],
+  ['transformacion-digital',     'Transformación digital'],
+  ['capacitacion-ti-e-ia',       'Capacitación en TI e IA'],
 ]
 
 const EMPRESA = [
@@ -73,7 +87,10 @@ export default function Footer() {
           <div className="col-6 col-lg-3">
             <h3 className="zy-pie-titulo">Servicios</h3>
             <ul className="zy-pie-lista">
-              {SERVICIOS.map(s => <li key={s}><a href="#servicios">{s}</a></li>)}
+              {SERVICIOS.map(([slug, texto]) => (
+                <li key={slug}><a href={`/servicios/${slug}/`}>{texto}</a></li>
+              ))}
+              <li><a href="/#servicios" className="zy-pie-todos">Ver los 14 servicios →</a></li>
             </ul>
           </div>
 

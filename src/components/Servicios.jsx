@@ -10,74 +10,87 @@ import '../styles/Servicios.css'
    ───────────────────────────────────────────────────────────────────────────── */
 const SERVICIOS = [
   {
+    slug: 'plataforma-saas',
     icono: 'cuadricula', acento: '#6366f1', acento2: '#fb7185', grupo: 'Plataforma',
     titulo: 'Plataforma SaaS Zyntello',
     descripcion: 'Nuestro ERP modular en la nube. Contratas solo los módulos que usas y los tienes funcionando el mismo día, sin instalar nada.',
     destacado: true,
     marcas: ['34 módulos', 'Multi-empresa', 'Multi-moneda', 'Fiscal por país'],
-    enlace: { texto: 'Ver los módulos y precios', href: '#soluciones' },
   },
   {
+    slug: 'automatizacion-con-ia',
     icono: 'robot', acento: '#a78bfa', grupo: 'Inteligencia Artificial',
     titulo: 'Automatización con IA',
     descripcion: 'Agentes y modelos que ejecutan las tareas repetitivas, generan los reportes y conectan entre sí los sistemas que ya tienes.',
   },
   {
+    slug: 'erp-y-crm',
     icono: 'servidor', acento: '#6366f1', grupo: 'Sistemas de gestión',
     titulo: 'ERP y CRM',
     descripcion: 'Desarrollo, personalización e implementación de Softland, Profit, ODOO y plataformas abiertas, adaptadas al flujo real de tu empresa.',
   },
   {
+    slug: 'aplicaciones-a-la-medida',
     icono: 'codigo', acento: '#22d3ee', grupo: 'Desarrollo',
     titulo: 'Aplicaciones a la medida',
     descripcion: 'Construidas sobre las bases de datos que ya usas. No hay que empezar de cero para resolver un problema concreto.',
   },
   {
+    slug: 'soporte-tecnico-ti',
     icono: 'salvavidas', acento: '#fb7185', grupo: 'Operación',
     titulo: 'Soporte técnico TI',
     descripcion: 'Infraestructura, redes, servidores y sistemas, con niveles de servicio acordados según cómo opera tu empresa.',
   },
   {
+    slug: 'nube-y-ciberseguridad',
     icono: 'escudo', acento: '#34d399', grupo: 'Operación',
     titulo: 'Nube y ciberseguridad',
     descripcion: 'Servicios en la nube, protección de la información y gestión de infraestructura: que esté disponible, y que solo entre quien debe.',
   },
   {
+    slug: 'personal-ti-especializado',
     icono: 'equipo', acento: '#fbbf24', grupo: 'Talento',
     titulo: 'Colocación de personal TI',
     descripcion: 'Desde técnicos de soporte hasta arquitectos de sistemas y especialistas en Inteligencia Artificial.',
   },
   {
+    slug: 'venta-de-equipos',
     icono: 'caja', acento: '#94a3b8', grupo: 'Equipos',
     titulo: 'Importación y venta de equipos',
     descripcion: 'Hardware, software y soluciones tecnológicas, con la asesoría técnica incluida en la compra.',
   },
   {
+    slug: 'transformacion-digital',
     icono: 'brujula', acento: '#818cf8', grupo: 'Consultoría',
     titulo: 'Transformación digital',
     descripcion: 'Diagnóstico de lo que tienes, hoja de ruta tecnológica, arquitectura de sistemas y acompañamiento en la implementación.',
   },
   {
+    slug: 'capacitacion-ti-e-ia',
     icono: 'birrete', acento: '#c084fc', grupo: 'Consultoría',
     titulo: 'Capacitación y formación',
     descripcion: 'En el ERP implantado y en herramientas de IA, para que el equipo use de verdad lo que la empresa compró.',
   },
   {
+    slug: 'consultoria-contable',
     icono: 'libro', acento: '#2dd4bf', grupo: 'Consultoría',
     titulo: 'Consultoría contable',
     descripcion: 'Asesoría contable y financiera integrada con tus sistemas: procesos, reportes fiscales y análisis para decidir con números reales.',
   },
   {
+    slug: 'marketing-digital',
     icono: 'megafono', acento: '#f472b6', grupo: 'Datos y mercado',
     titulo: 'Marketing digital',
     descripcion: 'Posicionamiento, campañas y analítica. Se mide el resultado, no las impresiones.',
   },
   {
+    slug: 'consultoria-electoral',
     icono: 'urna', acento: '#f87171', grupo: 'Datos y mercado',
     titulo: 'Consultoría electoral',
     descripcion: 'Estrategia de campaña basada en datos: percepción ciudadana, inteligencia de mercado y monitoreo de tendencias.',
   },
   {
+    slug: 'encuestas-y-estudios-de-mercado',
     icono: 'grafico', acento: '#38bdf8', grupo: 'Datos y mercado',
     titulo: 'Encuestas y estudios de mercado',
     descripcion: 'Investigación de opinión, censos, muestreos y procesamiento estadístico para el sector público y privado.',
@@ -107,9 +120,10 @@ export default function Servicios() {
 
         <div className="zy-serv-rejilla">
           {SERVICIOS.map((s, i) => (
-            <article
+            <a
               key={s.titulo}
-              className={`zy-tarjeta zy-serv-tarjeta zy-revelar ${s.destacado ? 'zy-serv-destacada' : ''}`}
+              href={`/servicios/${s.slug}/`}
+              className={`zy-tarjeta zy-serv-tarjeta zy-serv-enlazada zy-revelar ${s.destacado ? 'zy-serv-destacada' : ''}`}
               style={{
                 '--zy-color-acento': s.acento,
                 '--zy-color-acento2': s.acento2 || s.acento,
@@ -130,13 +144,14 @@ export default function Servicios() {
                 </div>
               )}
 
-              {s.enlace && (
-                <a href={s.enlace.href} className="zy-enlace zy-serv-enlace">
-                  {s.enlace.texto}
-                  <Icono nombre="flecha" size={16} className="zy-flecha" />
-                </a>
-              )}
-            </article>
+              {/* ⚠️ Un <a> dentro de otro <a> es HTML invalido y el navegador
+                  lo desanida solo, dejando la tarjeta a medias. Por eso esto
+                  es un <span>: el enlace es la tarjeta entera. */}
+              <span className="zy-enlace zy-serv-enlace">
+                Conoce más
+                <Icono nombre="flecha" size={16} className="zy-flecha" />
+              </span>
+            </a>
           ))}
         </div>
 
