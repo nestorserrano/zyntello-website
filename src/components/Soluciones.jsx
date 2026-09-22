@@ -203,6 +203,9 @@ function combinarModulo(apiData) {
       : apiData.slug === 'events'
         ? 'https://app.zyntello.com/demo/events'
         : (apiData.url || `https://app.zyntello.com/demo/${apiData.slug}`),
+    // ⚠️ No basta con que el admin declare una `url`: la declara para todos.
+    // Solo los de LANDINGS_PUBLICAS llevan a una pagina que se pueda abrir.
+    tieneLanding:   LANDINGS_PUBLICAS.has(apiData.slug),
     previews:       display.previews || [],
     categoria:      display.categoria,
     desarrollador:  'Zyntello',
@@ -238,6 +241,38 @@ const MONEDAS_INFO = {
 }
 
 const APP_CHECKOUT_URL = 'https://app.zyntello.com/checkout'
+
+/* ─── Módulos con landing pública ────────────────────────────────────────────
+ *
+ * ⚠️⚠️ El admin declara una `url` para LOS 34 módulos, pero solo 14 llevan a
+ * una landing que un visitante sin cuenta pueda abrir. Medido el 2026-09-21:
+ *
+ *     14  responden 200 con su landing
+ *      7  redirigen a /login  (condominios, events, restaurante, prestamello,
+ *                              reportes, carwash, rutas)
+ *      5  dan 404             (crm, inteligencia, fiscal, flujocaja,
+ *                              abastecimiento)
+ *
+ * Por eso esta lista existe: mandar «Conoce más» a la `url` del admin sin
+ * comprobarla llevaría a doce visitantes de cada veintiséis a una pantalla de
+ * inicio de sesión o a un 404 — y desde el navegador no hay forma de saberlo
+ * antes de la pulsación, porque la respuesta es de otro dominio.
+ *
+ * ⚠️ Esta lista SE QUEDA VIEJA sola. Cuando se publique una landing nueva hay
+ * que añadir su slug, y para eso está la guarda:
+ *
+ *     node scripts/verificar-landings.mjs
+ *
+ * que compara esta lista contra la realidad y falla si sobra o falta alguna.
+ *
+ * ✅ Lo definitivo es un campo `landing_publica` en el admin; mientras no
+ * exista, esta lista es la única fuente que no miente.
+ * ─────────────────────────────────────────────────────────────────────────── */
+export const LANDINGS_PUBLICAS = new Set([
+  'zyntello-psa', 'proyectos', 'tareas', 'facturacion', 'inventario',
+  'encuestas', 'contabilidad', 'constructflow', 'doctores', 'nomina',
+  'supermercado', 'ferreteria', 'dental', 'alquileres', 'erp',
+])
 
 /* ─── Modal de Registro + Pago ──────────────────────────────────── */
 function ModalApp({ app, onClose, formatPrecio, simbolo }) {
@@ -647,7 +682,21 @@ export default function Soluciones() {
                     )}
                   </div>
 
-                  {app.disponible !== false ? (
+                  {/* ⚠️ El orden importa: la landing va PRIMERO, aunque el modulo
+                      este en «Proximamente». Ocho modulos que aun no se pueden
+                      contratar tienen su landing publicada, y es justo ahi donde
+                      mas sirve conocerlos. Con la condicion al reves esas ocho
+                      tarjetas se quedaban sin ningun enlace. El rotulo
+                      «Proximamente» sigue estando en la insignia de arriba. */}
+                  {app.tieneLanding && app.url ? (
+                    /* Con landing: el visitante primero conoce y prueba el
+                       modulo; la contratacion vive dentro de esa pagina. */
+                    <a href={app.url} className="sol-btn-conocer">
+                      Conoce más
+                    </a>
+                  ) : app.disponible !== false ? (
+                    /* Sin landing publica, mandarlo ahi seria mandarlo al
+                       inicio de sesion o a un 404: se ofrece contratar aqui. */
                     <button onClick={() => setModalApp(app)} className="sol-btn-obtener">
                       Obtener
                     </button>
@@ -656,11 +705,6 @@ export default function Soluciones() {
                   )}
                 </footer>
 
-                {app.url && app.disponible !== false && (
-                  <a href={app.url} target="_blank" rel="noopener noreferrer" className="sol-card-demo">
-                    Ver demo
-                  </a>
-                )}
               </article>
             ))}
           </div>

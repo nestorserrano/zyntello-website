@@ -456,22 +456,30 @@
   white-space: nowrap;
 }
 
-/* ⚠️ El enlace a la demo es SIEMPRE visible, no aparece al pasar por encima.
-   En una pantalla táctil no existe el «hover»: un enlace que solo se revela
-   con el ratón sencillamente NO está en el móvil, y no hay ningún síntoma que
-   lo delate — la tarjeta se ve completa y correcta. */
-.sol-card-demo {
-  align-self: flex-start;
-  margin-top: 2px;
-  font-size: .78rem;
-  font-weight: 500;
-  color: var(--zy-texto-tenue);
-  border-bottom: 1px solid transparent;
-  transition: color var(--zy-t-medio), border-color var(--zy-t-medio);
+/* «Conoce más» — la accion principal cuando el modulo tiene landing publica.
+   Se pinta relleno del color del modulo, mas fuerte que el «Obtener» de las
+   tarjetas sin landing: es el camino que queremos que tome el visitante. */
+.sol-btn-conocer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 10px 20px;
+  border: 1px solid color-mix(in srgb, var(--sol-acento, #6366f1) 55%, transparent);
+  background: color-mix(in srgb, var(--sol-acento, #6366f1) 26%, transparent);
+  color: var(--zy-texto);
+  border-radius: 999px;
+  font-family: var(--zy-display);
+  font-weight: 600;
+  font-size: .85rem;
+  white-space: nowrap;
+  transition: background var(--zy-t-medio), transform var(--zy-t-rapido), box-shadow var(--zy-t-medio);
 }
-.sol-card-demo:hover {
-  color: var(--zy-indigo-claro);
-  border-bottom-color: rgba(165, 180, 252, .5);
+.sol-btn-conocer:hover {
+  color: var(--zy-texto);
+  background: color-mix(in srgb, var(--sol-acento, #6366f1) 46%, transparent);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 26px color-mix(in srgb, var(--sol-acento, #6366f1) 38%, transparent);
 }
 
 /* ── Modal de contratación ──────────────────────────────────────────────── */
