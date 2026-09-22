@@ -35,9 +35,10 @@ function leerListaDelCodigo() {
   return new Set([...m[1].matchAll(/'([^']+)'/g)].map(x => x[1]))
 }
 
-/* El sitio cambia la url de este módulo a mano; hay que comprobar la que de
-   verdad se publica, no la que declara el admin. */
-const URL_PROPIA = { 'zyntello-psa': 'https://zyntello.com/zyntello-psa.html' }
+/* ⚠️ Ya no hay excepciones: desde [#1168] todos los módulos usan la `url` que
+   declara el admin. Si vuelve a hacer falta un caso especial, va aquí — y
+   entonces hay que comprobar la url que DE VERDAD se publica, no la del admin. */
+const URL_PROPIA = {}
 
 async function estadoDe(slug, url) {
   try {

@@ -198,12 +198,15 @@ function combinarModulo(apiData) {
     // Módulo sin plan mensual: no se ofrece el precio /mes ni el ahorro anual, porque no
     // hay con qué comparar. `precio_mensual` llega null a propósito desde el API.
     soloAnual:      !!apiData.solo_anual,
-    url:            apiData.slug === 'zyntello-psa'
-      ? '/zyntello-psa.html'
-      // ⚠️ Sin inventar URLs. Si el admin no declara una, NO hay landing: antes
-      // el sitio se fabricaba `/demo/{slug}`, y esa ruta inventada es la que
-      // acababa en un 404 sin que nada lo avisara.
-      : (apiData.url || null),
+    // ⚠️ Sin inventar URLs ni casos especiales. Si el admin no declara una, NO
+    // hay landing: antes el sitio se fabricaba `/demo/{slug}`, y esa ruta
+    // inventada es la que acababa en un 404 sin que nada lo avisara.
+    //
+    // ⚠️ `zyntello-psa` tenía su propia excepción a `/zyntello-psa.html`, un
+    // HTML suelto del sitio anterior a las landings generadas. Era el ÚNICO de
+    // los 34 sin la barra estándar ni botón de demo, y nada lo delataba: la
+    // página se veía bien, solo que distinta de las otras 33.
+    url:            apiData.url || null,
     // ⚠️ No basta con que el admin declare una `url`: la declara para todos.
     // Solo los de LANDINGS_PUBLICAS llevan a una pagina que se pueda abrir.
     tieneLanding:   LANDINGS_PUBLICAS.has(apiData.slug),
