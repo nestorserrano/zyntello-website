@@ -11,9 +11,10 @@
  * que es justo para lo que está).
  */
 
-import { mkdirSync, writeFileSync } from 'node:fs'
+import { mkdirSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
+import { escribirSiCambia } from './lib/escribir.mjs'
 import { ARTICULOS } from './blog/datos.mjs'
 import { articulo, indice } from './lib/plantilla-articulo.mjs'
 
@@ -24,13 +25,13 @@ const DESTINO = join(AQUI, '..', 'public', 'blog')
 const ordenados = [...ARTICULOS].sort((a, b) => b.fecha.localeCompare(a.fecha))
 
 mkdirSync(DESTINO, { recursive: true })
-writeFileSync(join(DESTINO, 'index.html'), indice(ordenados), 'utf8')
+let tocadas = escribirSiCambia(join(DESTINO, 'index.html'), indice(ordenados)) ? 1 : 0
 console.log('  /blog/')
 
 for (const a of ordenados) {
   const carpeta = join(DESTINO, a.slug)
   mkdirSync(carpeta, { recursive: true })
-  writeFileSync(join(carpeta, 'index.html'), articulo(a), 'utf8')
+  const cambio = escribirSiCambia(join(carpeta, 'index.html'), articulo(a))
   console.log(`  /blog/${a.slug.padEnd(38)} ${a.secciones.length} secciones · ${a.minutos} min`)
 }
 

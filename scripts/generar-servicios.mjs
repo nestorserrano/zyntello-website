@@ -18,9 +18,10 @@
  * cada servicio aparezca enlazado desde otros tres y ninguno quede aislado.
  */
 
-import { mkdirSync, writeFileSync } from 'node:fs'
+import { mkdirSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
+import { escribirSiCambia } from './lib/escribir.mjs'
 import { SERVICIOS } from './servicios/datos.mjs'
 import { pagina } from './lib/plantilla.mjs'
 
@@ -28,20 +29,22 @@ const AQUI = dirname(fileURLToPath(import.meta.url))
 const DESTINO = join(AQUI, '..', 'public', 'servicios')
 
 let n = 0
+let tocadas = 0
 for (const [i, s] of SERVICIOS.entries()) {
   // Las tres siguientes en círculo: todos quedan enlazados desde otros tres.
   const otras = [1, 2, 3].map(d => SERVICIOS[(i + d) % SERVICIOS.length])
 
   const carpeta = join(DESTINO, s.slug)
   mkdirSync(carpeta, { recursive: true })
-  writeFileSync(join(carpeta, 'index.html'), pagina(s, otras, {
+  const cambio = escribirSiCambia(join(carpeta, 'index.html'), pagina(s, otras, {
     base: 'servicios',
     volver: 'Todos los servicios',
     distintivo: 'Servicio de Zyntello',
     tituloOtras: 'Otros servicios que solemos combinar con este',
     segundoBoton: { texto: 'Ver todos los servicios', href: 'https://zyntello.com/#servicios' },
-  }), 'utf8')
+  }))
   n++
-  console.log(`  ${s.slug.padEnd(30)} ${s.beneficios.length}b · ${s.detalles.length}d · ${s.faq.length}p`)
+  if (cambio) tocadas++
+  console.log(`  ${cambio ? '~' : ' '} ${s.slug.padEnd(30)} ${s.beneficios.length}b · ${s.detalles.length}d · ${s.faq.length}p`)
 }
-console.log(`\n${n} páginas en public/servicios/`)
+console.log(`\n${n} páginas en public/servicios/ · ${tocadas} reescritas`)

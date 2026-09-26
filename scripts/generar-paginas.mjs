@@ -17,9 +17,10 @@
  * y el síntoma sería una landing menos respondiendo 200 con otra cosa.
  */
 
-import { mkdirSync, writeFileSync } from 'node:fs'
+import { mkdirSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
+import { escribirSiCambia } from './lib/escribir.mjs'
 import { PAGINAS } from './paginas/datos.mjs'
 import { pagina } from './lib/plantilla.mjs'
 
@@ -33,20 +34,22 @@ const DESTINO = join(AQUI, '..', 'public')
    es una sexta: cinco elementos no tienen divisor y caen a UNA columna. Nada
    se rompe, la página se ve «bien», y por eso conviene mirarlo al añadir. */
 let n = 0
+let tocadas = 0
 for (const [i, p] of PAGINAS.entries()) {
   const otras = PAGINAS.filter((_, j) => j !== i)
 
   const carpeta = join(DESTINO, p.slug)
   mkdirSync(carpeta, { recursive: true })
-  writeFileSync(join(carpeta, 'index.html'), pagina(p, otras, {
+  const cambio = escribirSiCambia(join(carpeta, 'index.html'), pagina(p, otras, {
     base: '',
     anclaVolver: 'https://zyntello.com/',
     volver: 'Inicio',
     distintivo: 'Zyntello',
     tituloOtras: 'También te puede interesar',
     segundoBoton: { texto: 'Hablar con Zyntello', href: 'https://wa.me/18296399877' },
-  }), 'utf8')
+  }))
   n++
-  console.log(`  /${p.slug.padEnd(20)} ${p.beneficios.length}b · ${p.detalles.length}d · ${p.faq.length}p`)
+  if (cambio) tocadas++
+  console.log(`  ${cambio ? '~' : ' '} /${p.slug.padEnd(20)} ${p.beneficios.length}b · ${p.detalles.length}d · ${p.faq.length}p`)
 }
-console.log(`\n${n} páginas de primer nivel en public/`)
+console.log(`\n${n} páginas de primer nivel en public/ · ${tocadas} reescritas`)

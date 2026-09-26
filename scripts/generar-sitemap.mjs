@@ -28,9 +28,10 @@
  * añade una página y no regenera, el sitemap se queda corto en silencio.
  */
 
-import { readFileSync, writeFileSync, readdirSync, statSync, existsSync } from 'node:fs'
+import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join, relative } from 'node:path'
+import { escribirSiCambia } from './lib/escribir.mjs'
 
 const AQUI   = dirname(fileURLToPath(import.meta.url))
 const RAIZ   = join(AQUI, '..')
@@ -75,6 +76,24 @@ function paginasDelSitio(dir = PUBLIC, encontradas = []) {
   return encontradas
 }
 
+/* La fecha de modificación más reciente de una lista de archivos o carpetas,
+   mirando dentro de las carpetas. Devuelve `undefined` si no hay ninguno: sin
+   fecha es mejor que con una inventada. */
+function masReciente(rutas) {
+  let max = 0
+  const mirar = (r) => {
+    if (!existsSync(r)) return
+    const e = statSync(r)
+    if (e.isDirectory()) {
+      for (const h of readdirSync(r)) mirar(join(r, h))
+    } else if (e.mtimeMs > max) {
+      max = e.mtimeMs
+    }
+  }
+  rutas.forEach(mirar)
+  return max ? new Date(max).toISOString().slice(0, 10) : undefined
+}
+
 /* La prioridad no la inventa el script: la decide de qué tipo es la página.
    ⚠️ `priority` es una pista entre las páginas del PROPIO sitio, no una nota
    frente a otros dominios. Ponerlo todo a 1.0 equivale a no ponerlo. */
@@ -101,7 +120,18 @@ function construir() {
   const urls = []
 
   // 1 · La portada.
-  urls.push({ loc: `${SITIO}/`, prioridad: '1.0', frecuencia: 'weekly' })
+  //
+  // ⚠️ Su `lastmod` NO sale de `dist/index.html`: ese lo reescribe Vite en cada
+  // build, así que diría que la portada cambió cada vez que se compila el sitio.
+  // Sale de sus FUENTES —`index.html` de la raíz y los componentes de `src/`—,
+  // que solo cambian cuando alguien los edita de verdad. Se toma la más
+  // reciente porque cualquiera de las dos cambia lo que el visitante ve.
+  urls.push({
+    loc: `${SITIO}/`,
+    lastmod: masReciente([join(AQUI, '..', 'index.html'), join(AQUI, '..', 'src')]),
+    prioridad: '1.0',
+    frecuencia: 'weekly',
+  })
 
   // 2 · Todo lo que el sitio publica como página (servicios, funcionalidades,
   //     legales y las páginas nuevas, en cuanto existan).
@@ -149,6 +179,8 @@ if (verificar) {
   }
   console.log(`✓ sitemap.xml al día — ${total} URLs`)
 } else {
-  writeFileSync(SALIDA, xml, 'utf8')
-  console.log(`✓ public/sitemap.xml generado — ${total} URLs`)
+  const cambio = escribirSiCambia(SALIDA, xml)
+  console.log(cambio
+    ? `✓ public/sitemap.xml generado — ${total} URLs`
+    : `· public/sitemap.xml ya estaba al día — ${total} URLs`)
 }
