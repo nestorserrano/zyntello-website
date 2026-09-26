@@ -1,5 +1,27 @@
-# zyntello.com
+# ============================================================================
+# zyntello.com — sitio público
+# ============================================================================
+#
+# Aquí NO hay nada que ocultarle a un buscador: todo lo que se publica en este
+# dominio es comercial y se quiere indexado. Las 35 landings de módulo, los 14
+# servicios, las 4 funcionalidades, el blog y las páginas legales.
+#
+# ⚠️ NO se listan `Disallow: /admin/`, `/api/`, `/login/` ni `/app/`. Esas rutas
+# NO EXISTEN en este dominio: el panel vive en `admin.zyntello.com` y la
+# aplicación en `app.zyntello.com`, que son subdominios. Y **un robots.txt solo
+# manda sobre su propio dominio**: bloquear aquí `/admin/` no toca ni una URL de
+# admin.zyntello.com. Cada subdominio tiene su propio robots.txt, y ahí están
+# cerrados con `X-Robots-Tag: noindex` desde el 2026-09-25.
+#
+# Poner esos Disallow habría dado la sensación de que el panel está protegido
+# sin protegerlo — que es exactamente lo que pasó hasta ahora con el
+# `Disallow:` vacío de los subdominios.
+# ============================================================================
+
 User-agent: *
 Allow: /
 
+# ⚠️ El sitemap lo genera `node scripts/generar-sitemap.mjs` leyendo el disco y
+# la lista LANDINGS_PUBLICAS. No se edita a mano: la siguiente generación lo
+# sobrescribe entero.
 Sitemap: https://zyntello.com/sitemap.xml

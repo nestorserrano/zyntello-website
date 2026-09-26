@@ -42,10 +42,16 @@ export default function Hero() {
           <span className="zy-degradado">Es ponerlo a funcionar.</span>
         </h1>
 
+        {/* ⚠️ Esta bajada carga las palabras que la gente teclea en Google
+            —software ERP, CRM, gestión empresarial, digitalizar, automatizar—
+            porque el H1 de arriba es el eslogan de marca y no las lleva.
+            Decidido el 2026-09-25: el titular se queda como está; quien busca
+            «software ERP» entra igual, porque Google lee los dos. */}
         <p className="zy-hero-bajada zy-entrar" style={{ animationDelay: '200ms' }}>
-          Implantamos tu ERP y tu CRM, automatizamos los procesos con agentes de
-          Inteligencia Artificial y seguimos ahí cuando el proyecto termina.
-          Veinte años haciendo exactamente eso.
+          Software ERP y CRM para digitalizar y automatizar la gestión de tu
+          empresa. Lo implantamos, lo conectamos con agentes de Inteligencia
+          Artificial y seguimos ahí cuando el proyecto termina. Veinte años
+          haciendo exactamente eso.
         </p>
 
         <div className="zy-hero-botones zy-entrar" style={{ animationDelay: '280ms' }}>

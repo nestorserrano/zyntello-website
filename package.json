@@ -7,7 +7,12 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generar": "node scripts/generar-servicios.mjs && node scripts/generar-funcionalidades.mjs && node scripts/generar-paginas.mjs && node scripts/generar-blog.mjs && node scripts/generar-sitemap.mjs",
+    "sitemap": "node scripts/generar-sitemap.mjs",
+    "sitemap:verificar": "node scripts/generar-sitemap.mjs --verificar",
+    "indexnow": "node scripts/indexnow.mjs",
+    "verificar-landings": "node scripts/verificar-landings.mjs"
   },
   "dependencies": {
     "bootstrap": "^5.3.8",

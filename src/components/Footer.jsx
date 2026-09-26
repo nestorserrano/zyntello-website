@@ -21,12 +21,24 @@ const SERVICIOS = [
   ['capacitacion-ti-e-ia',       'Capacitación en TI e IA'],
 ]
 
+/* ⚠️⚠️ Las entradas con `/` son PÁGINAS, no anclas, y por eso están aquí: una
+   página a la que no apunta ningún enlace del sitio es huérfana. Google la
+   encuentra por el sitemap, pero le da poca importancia precisamente porque
+   nadie la enlaza — y el síntoma es que no posiciona, no que falle. El pie es
+   el sitio donde se enlaza todo desde todas partes.
+
+   ⚠️ Las que siguen siendo ancla (#porque, #portafolio, #soluciones) lo siguen
+   siendo a propósito: son secciones de la portada y convertirlas en enlace
+   recargaría la página en vez de desplazarse, que es peor de usar. */
 const EMPRESA = [
-  ['#nosotros',   'Quiénes somos'],
-  ['#porque',     'Por qué Zyntello'],
-  ['#portafolio', 'Portafolio'],
-  ['#soluciones', 'Plataforma y precios'],
-  ['#contacto',   'Contacto'],
+  ['/nosotros/',       'Quiénes somos'],
+  ['#porque',          'Por qué Zyntello'],
+  ['#portafolio',      'Portafolio'],
+  ['#soluciones',      'Módulos'],
+  ['/precios/',        'Precios'],
+  ['/automatizacion/', 'Automatización'],
+  ['/blog/',           'Blog'],
+  ['/contacto/',       'Contacto'],
 ]
 
 const LEGALES = [

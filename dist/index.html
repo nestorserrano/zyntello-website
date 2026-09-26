@@ -7,25 +7,140 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#08080c" />
     <meta name="color-scheme" content="dark" />
-    <meta name="description" content="Zyntello — ERP y CRM en la nube, automatización con Inteligencia Artificial, desarrollo a medida, soporte TI, ciberseguridad y consultoría en transformación digital. República Dominicana, Venezuela, Colombia, Guatemala y Costa Rica." />
+
+    <!-- ⚠️ La descripción se corta a ~160 caracteres en el resultado de Google.
+         La anterior tenía 230 y llegaba al buscador partida a media frase. -->
+    <title>Zyntello | Software ERP, CRM y Automatización con IA</title>
+    <meta name="description" content="Software ERP y CRM en la nube para digitalizar y automatizar los procesos de tu empresa. República Dominicana, Venezuela, Colombia, Guatemala y Costa Rica." />
+
+    <!-- ⚠️ Sin canonical, cualquier variante de la dirección —con y sin www, con
+         parámetros de campaña, con index.html al final— es una página distinta
+         para Google, y la fuerza se reparte entre todas. -->
+    <link rel="canonical" href="https://zyntello.com/" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
 
     <!-- Redes sociales -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Zyntello" />
     <meta property="og:locale" content="es_DO" />
-    <meta property="og:title" content="Zyntello | ERP, CRM e Inteligencia Artificial para tu empresa" />
-    <meta property="og:description" content="Datos que revelan. Tecnología que transforma. Resultados que perduran." />
+    <meta property="og:title" content="Zyntello | Software ERP, CRM y Automatización con IA" />
+    <meta property="og:description" content="Digitaliza, automatiza y optimiza los procesos de tu empresa con Zyntello." />
     <meta property="og:url" content="https://zyntello.com/" />
-    <meta property="og:image" content="https://zyntello.com/logos/zyntello_redes_sociales_2.png" />
+    <!-- ⚠️ 1200×628. La imagen que había aquí era cuadrada (1080×1080), así que
+         WhatsApp y LinkedIn la recortaban por el centro o la degradaban a
+         miniatura. La tarjeta grande exige el formato 1.91:1. -->
+    <meta property="og:image" content="https://zyntello.com/logos/zyntello_facebook_portada.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="628" />
+    <meta property="og:image:alt" content="Zyntello — software ERP, CRM y automatización empresarial" />
+
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Zyntello | Software ERP, CRM y Automatización con IA" />
+    <meta name="twitter:description" content="Digitaliza, automatiza y optimiza los procesos de tu empresa con Zyntello." />
+    <meta name="twitter:image" content="https://zyntello.com/logos/zyntello_facebook_portada.png" />
 
     <!-- Space Grotesk para titulares, DM Sans para el texto -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-    <title>Zyntello | ERP, CRM e Inteligencia Artificial para tu empresa</title>
-    <script type="module" crossorigin src="/assets/index-DXyQ7JMB.js"></script>
+    <!-- ══════════════════════════════════════════════════════════════════
+         DATOS ESTRUCTURADOS (JSON-LD)
+
+         Es lo que leen Google y los asistentes de IA para saber QUÉ es esto,
+         en vez de deducirlo del texto. Van los tres en un solo `@graph`
+         enlazados por `@id`: así Google entiende que la organización, el sitio
+         y el producto son la misma entidad y no tres cosas sueltas.
+
+         ⚠️ Aquí no se inventa ni un dato. No hay `offers` con precio porque
+         Zyntello se contrata por WhatsApp y no hay tarifa pública; un `offers`
+         sin precio válido no añade nada y sale como error en Search Console.
+         ══════════════════════════════════════════════════════════════════ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://zyntello.com/#organizacion",
+          "name": "Zyntello, S.R.L.",
+          "alternateName": "Zyntello",
+          "url": "https://zyntello.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://zyntello.com/logos/zyntello_isotipo_512x512.png",
+            "width": 512,
+            "height": 512
+          },
+          "image": "https://zyntello.com/logos/zyntello_facebook_portada.png",
+          "description": "Empresa de tecnología que desarrolla e implanta software ERP y CRM en la nube, automatiza procesos con agentes de Inteligencia Artificial y acompaña la transformación digital de las empresas.",
+          "email": "info@zyntello.com",
+          "telephone": "+1-829-639-9877",
+          "contactPoint": [
+            {
+              "@type": "ContactPoint",
+              "telephone": "+1-829-639-9877",
+              "email": "info@zyntello.com",
+              "contactType": "sales",
+              "availableLanguage": ["Spanish"],
+              "areaServed": ["DO", "VE", "CO", "GT", "CR"]
+            },
+            {
+              "@type": "ContactPoint",
+              "email": "soporte@zyntello.com",
+              "contactType": "customer support",
+              "availableLanguage": ["Spanish"],
+              "areaServed": ["DO", "VE", "CO", "GT", "CR"]
+            }
+          ],
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "DO"
+          },
+          "areaServed": [
+            { "@type": "Country", "name": "República Dominicana" },
+            { "@type": "Country", "name": "Venezuela" },
+            { "@type": "Country", "name": "Colombia" },
+            { "@type": "Country", "name": "Guatemala" },
+            { "@type": "Country", "name": "Costa Rica" }
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://zyntello.com/#sitio",
+          "url": "https://zyntello.com/",
+          "name": "Zyntello",
+          "inLanguage": "es",
+          "publisher": { "@id": "https://zyntello.com/#organizacion" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://zyntello.com/#plataforma",
+          "name": "Zyntello",
+          "url": "https://zyntello.com/",
+          "applicationCategory": "BusinessApplication",
+          "applicationSubCategory": "ERP",
+          "operatingSystem": "Web",
+          "description": "Plataforma de gestión empresarial que centraliza facturación, inventario, contabilidad, nómina, compras, CRM y bancos en un solo sistema, con automatización de procesos y agentes de Inteligencia Artificial.",
+          "inLanguage": "es",
+          "featureList": [
+            "Facturación fiscal (NCF en República Dominicana)",
+            "Inventario con lotes, seriales y multi-almacén",
+            "Contabilidad y estados financieros",
+            "Nómina con cálculo legal por país",
+            "Cuentas por cobrar y por pagar",
+            "Compras y abastecimiento",
+            "CRM y pipeline de ventas",
+            "Bancos y conciliación multimoneda",
+            "Flujos de aprobación configurables",
+            "Generador de reportes sin programar"
+          ],
+          "publisher": { "@id": "https://zyntello.com/#organizacion" }
+        }
+      ]
+    }
+    </script>
+    <script type="module" crossorigin src="/assets/index-C67KrLjC.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-FPY14-S2.css">
   </head>
   <body>

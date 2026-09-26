@@ -35,57 +35,19 @@ const rejilla = (items, max, render) =>
   `<div class="rejilla" style="--cols:${columnas(items.length, max)}">`
   + items.map(render).join('') + '</div>'
 
-export function pagina(f, otras, opciones) {
-  const { base, volver, distintivo, tituloOtras, segundoBoton } = opciones
-
-  /* ⚠️ El segundo botón del hero NO puede ser siempre «Probar el demo»:
-     ofrecer un demo de una consultoría electoral o de una venta de equipos
-     suena a que no se leyó lo que se está vendiendo. Cada familia —y cada
-     página, si hace falta— dice cuál es el suyo. */
-  const boton2 = f.segundoBoton || segundoBoton
-  const waTexto = encodeURIComponent(
-    `¡Hola Zyntello! Quiero saber más sobre ${f.nombre}. ¿Me ayudan?`)
-
-  return `<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(f.nombre)} — ${esc(f.subtitulo)} | Zyntello</title>
-<meta name="description" content="${esc(f.resumen)}">
-<link rel="canonical" href="${SITIO}/${base}/${f.slug}/">
-<meta name="robots" content="index, follow">
-<meta property="og:type" content="website">
-<meta property="og:title" content="${esc(f.nombre)} — ${esc(f.subtitulo)} | Zyntello">
-<meta property="og:description" content="${esc(f.resumen)}">
-<meta property="og:url" content="${SITIO}/${base}/${f.slug}/">
-<meta property="og:image" content="${SITIO}/logos/zyntello_isotipo_transparente.png">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="${SITIO}/logos/zyntello_isotipo_transparente.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-<script type="application/ld+json">
-${JSON.stringify({
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  name: `${f.nombre} — ${f.subtitulo}`,
-  description: f.resumen,
-  url: `${SITIO}/${base}/${f.slug}/`,
-  isPartOf: { '@type': 'WebSite', name: 'Zyntello', url: SITIO },
-  publisher: { '@type': 'Organization', name: 'Zyntello, S.R.L.', url: SITIO },
-  mainEntity: {
-    '@type': 'FAQPage',
-    mainEntity: f.faq.map(p => ({
-      '@type': 'Question', name: p.pregunta,
-      acceptedAnswer: { '@type': 'Answer', text: p.respuesta },
-    })),
-  },
-}, null, 2)}
-</script>
-<style>
+/**
+ * El CSS que comparten TODAS las paginas estaticas del sitio.
+ *
+ * Se saco del cuerpo de `pagina()` el 2026-09-25 para que la plantilla de
+ * articulos del blog lo use tal cual. La alternativa era copiar 134 lineas de
+ * CSS a un segundo archivo, y una copia de CSS no falla cuando diverge: las
+ * dos paginas siguen viendose bien, solo que ya no se parecen entre si.
+ *
+ * Recibe el color de acento porque es lo unico que cambia entre paginas.
+ */
+export const estilos = (color) => `
 :root{
-  --color:${f.color};
+  --color:${color};
   --fondo:#08080c; --alto:#0c0c12; --tarjeta:#101018; --elevado:#16161f;
   --borde:rgba(255,255,255,.08); --borde2:rgba(255,255,255,.14);
   --texto:#f5f5f7; --medio:#c4c4cf; --suave:#a1a1ae; --tenue:#8a8a99;
@@ -218,6 +180,74 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
   .acciones .btn,.hero-acciones .btn{width:100%}
 }
 @media(max-width:420px){ .barra-marca{display:none} }
+`
+
+export function pagina(f, otras, opciones) {
+  const { base, volver, distintivo, tituloOtras, segundoBoton } = opciones
+
+  /* ⚠️ `base` puede venir VACÍO desde el 2026-09-25: las páginas de primer
+     nivel (/precios/, /nosotros/, /contacto/…) no cuelgan de ninguna familia.
+     Con el `${SITIO}/${base}/${slug}/` de antes, un base vacío producía
+     `https://zyntello.com//precios/` — doble barra. Y una doble barra no
+     rompe nada: el servidor la sirve igual, pero para Google es OTRA URL, así
+     que el canonical apuntaría a una dirección distinta de la que enlaza el
+     sitio y las dos se repartirían la fuerza. */
+  const rutaDe = (slug) => base ? `${SITIO}/${base}/${slug}/` : `${SITIO}/${slug}/`
+
+  /* El enlace de «volver» de una familia va a su ancla de la portada; el de una
+     página suelta lo dice ella, porque `#` a secas no lleva a ninguna parte. */
+  const anclaVolver = opciones.anclaVolver || `${SITIO}/#${base}`
+
+  /* ⚠️ El segundo botón del hero NO puede ser siempre «Probar el demo»:
+     ofrecer un demo de una consultoría electoral o de una venta de equipos
+     suena a que no se leyó lo que se está vendiendo. Cada familia —y cada
+     página, si hace falta— dice cuál es el suyo. */
+  const boton2 = f.segundoBoton || segundoBoton
+  const waTexto = encodeURIComponent(
+    `¡Hola Zyntello! Quiero saber más sobre ${f.nombre}. ¿Me ayudan?`)
+
+  return `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(f.nombre)} — ${esc(f.subtitulo)} | Zyntello</title>
+<meta name="description" content="${esc(f.resumen)}">
+<link rel="canonical" href="${rutaDe(f.slug)}">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="${esc(f.nombre)} — ${esc(f.subtitulo)} | Zyntello">
+<meta property="og:description" content="${esc(f.resumen)}">
+<meta property="og:url" content="${rutaDe(f.slug)}">
+<meta property="og:image" content="${SITIO}/logos/zyntello_isotipo_transparente.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="${SITIO}/logos/zyntello_isotipo_transparente.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+${JSON.stringify({
+  '@context': 'https://schema.org',
+  /* ⚠️ `ContactPage`, `AboutPage`… le dicen a Google QUÉ clase de página es,
+     no solo que es una página. Es lo que hace que «Zyntello contacto» pueda
+     devolver la de contacto en vez de la portada. Por defecto, `WebPage`. */
+  '@type': f.tipoSchema || 'WebPage',
+  name: `${f.nombre} — ${f.subtitulo}`,
+  description: f.resumen,
+  url: rutaDe(f.slug),
+  isPartOf: { '@type': 'WebSite', name: 'Zyntello', url: SITIO },
+  publisher: { '@type': 'Organization', name: 'Zyntello, S.R.L.', url: SITIO },
+  mainEntity: {
+    '@type': 'FAQPage',
+    mainEntity: f.faq.map(p => ({
+      '@type': 'Question', name: p.pregunta,
+      acceptedAnswer: { '@type': 'Answer', text: p.respuesta },
+    })),
+  },
+}, null, 2)}
+</script>
+<style>
+${estilos(f.color).trim()}
 </style>
 </head>
 <body>
@@ -225,7 +255,7 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
 <nav class="barra">
   <div class="contenedor barra-caja">
     <div class="barra-izq">
-      <a class="barra-volver" href="${SITIO}/#${base}">
+      <a class="barra-volver" href="${anclaVolver}">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
         <span>${volver}</span>
       </a>
@@ -332,7 +362,7 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
     <p class="rotulo revelar">Y además</p>
     <h2 class="titulo-seccion revelar">${tituloOtras}</h2>
     ${rejilla(otras, 3, (o) =>
-      `<a class="otra revelar" href="${SITIO}/${base}/${o.slug}/" style="border-left:2px solid ${o.color}"><b>${esc(o.nombre)}</b><span>${esc(o.subtitulo)}</span></a>`)}
+      `<a class="otra revelar" href="${rutaDe(o.slug)}" style="border-left:2px solid ${o.color}"><b>${esc(o.nombre)}</b><span>${esc(o.subtitulo)}</span></a>`)}
   </div>
 </section>
 
@@ -351,9 +381,11 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
   <div class="contenedor pie-caja">
     <span>© ${new Date().getFullYear()} Zyntello, S.R.L. · República Dominicana</span>
     <span>
-      <a href="${SITIO}/#funcionalidades">Funcionalidades</a> ·
       <a href="${SITIO}/#soluciones">Módulos</a> ·
-      <a href="${SITIO}/#contacto">Contacto</a> ·
+      <a href="${SITIO}/precios/">Precios</a> ·
+      <a href="${SITIO}/blog/">Blog</a> ·
+      <a href="${SITIO}/nosotros/">Nosotros</a> ·
+      <a href="${SITIO}/contacto/">Contacto</a> ·
       <a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a>
     </span>
   </div>

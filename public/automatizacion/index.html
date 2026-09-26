@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Automatización de procesos — Por dónde empezar | Zyntello</title>
+<meta name="description" content="Qué se automatiza de verdad en una empresa —aprobaciones, conciliación, cobros, reportes— y por dónde empezar para que se note en semanas.">
+<link rel="canonical" href="https://zyntello.com/automatizacion/">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Automatización de procesos — Por dónde empezar | Zyntello">
+<meta property="og:description" content="Qué se automatiza de verdad en una empresa —aprobaciones, conciliación, cobros, reportes— y por dónde empezar para que se note en semanas.">
+<meta property="og:url" content="https://zyntello.com/automatizacion/">
+<meta property="og:image" content="https://zyntello.com/logos/zyntello_isotipo_transparente.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://zyntello.com/logos/zyntello_isotipo_transparente.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Automatización de procesos — Por dónde empezar",
+  "description": "Qué se automatiza de verdad en una empresa —aprobaciones, conciliación, cobros, reportes— y por dónde empezar para que se note en semanas.",
+  "url": "https://zyntello.com/automatizacion/",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Zyntello",
+    "url": "https://zyntello.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Zyntello, S.R.L.",
+    "url": "https://zyntello.com"
+  },
+  "mainEntity": {
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Hay que cambiar de sistema para automatizar?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No necesariamente. Parte de lo que se automatiza son enlaces entre lo que ya tienes. Ahora bien, si el dato de origen está en tres sitios y ninguno cuadra, lo primero no es automatizar: es decidir cuál manda."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Cuánto tarda en verse el resultado?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Un proceso concreto —una aprobación, un aviso de cobro, un reporte recurrente— se pone en marcha en semanas. Lo que lleva meses es automatizar una empresa entera, y por eso no se empieza así."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Esto sustituye personas?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "En nuestra experiencia, lo que sustituye son las horas que nadie quería hacer. La gente sigue ahí, decidiendo y atendiendo clientes, en vez de tecleando lo que ya está escrito en un PDF."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Qué pasa si la IA se equivoca?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Por eso lo que decide una IA queda registrado y lo que no está claro se marca para revisión humana en vez de ejecutarse. Un automatismo que no puede equivocarse a la vista es un automatismo en el que no se puede confiar."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Sirve para una empresa pequeña?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sí, y a veces más: en una empresa pequeña el proceso manual se lo come el dueño, que es justo la persona cuyo tiempo más cuesta. Se empieza por un módulo y se crece desde ahí."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Se puede automatizar la parte fiscal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sí. Los comprobantes fiscales, las retenciones y los reportes al organismo de cada país están dentro de la plataforma —NCF en República Dominicana, y el equivalente en Venezuela, Colombia, Guatemala y Costa Rica—."
+        }
+      }
+    ]
+  }
+}
+</script>
+<style>
+:root{
+  --color:#8b5cf6;
+  --fondo:#08080c; --alto:#0c0c12; --tarjeta:#101018; --elevado:#16161f;
+  --borde:rgba(255,255,255,.08); --borde2:rgba(255,255,255,.14);
+  --texto:#f5f5f7; --medio:#c4c4cf; --suave:#a1a1ae; --tenue:#8a8a99;
+  --display:'Space Grotesk',system-ui,sans-serif; --cuerpo:'DM Sans',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{background:var(--fondo);color:var(--texto);font-family:var(--cuerpo);line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.contenedor{width:100%;max-width:1180px;margin:0 auto;padding:0 24px}
+.contenedor-estrecho{max-width:780px}
+
+/* ── Barra ─────────────────────────────────────────────────────────────── */
+.barra{position:sticky;top:0;z-index:50;background:rgba(8,8,12,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--borde)}
+.barra-caja{display:flex;align-items:center;justify-content:space-between;gap:20px;height:72px}
+.barra-izq{display:flex;align-items:center;gap:14px;min-width:0}
+.barra-volver{display:inline-flex;align-items:center;gap:6px;color:var(--tenue);font-size:.82rem;white-space:nowrap;transition:color .28s}
+.barra-volver:hover{color:var(--texto)}
+.barra-sep{width:1px;height:22px;background:var(--borde2);flex-shrink:0}
+.barra-marca{display:flex;align-items:center;gap:9px;min-width:0}
+.barra-marca img{height:30px;width:auto;flex-shrink:0}
+.barra-marca strong{font-family:var(--display);font-weight:700;font-size:1.12rem;letter-spacing:-.03em;color:var(--color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.barra-menu{display:flex;align-items:center;gap:26px}
+.barra-menu a{color:var(--suave);font-size:.88rem;transition:color .28s}
+.barra-menu a:hover{color:var(--texto)}
+.barra-acciones{display:flex;align-items:center;gap:12px;flex-shrink:0}
+
+/* ── Botones ───────────────────────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:10px;font-family:var(--display);font-weight:600;font-size:.92rem;transition:transform .2s,box-shadow .28s,background .28s;white-space:nowrap}
+.btn-principal{background:var(--color);color:#08080c;box-shadow:0 8px 28px -12px var(--color)}
+.btn-principal:hover{transform:translateY(-2px);box-shadow:0 14px 36px -12px var(--color)}
+.btn-fantasma{border:1px solid var(--borde2);color:var(--texto)}
+.btn-fantasma:hover{border-color:var(--color);color:var(--color)}
+.btn-barra{padding:9px 18px;font-size:.86rem}
+
+/* ── Secciones ─────────────────────────────────────────────────────────── */
+.seccion{padding:88px 0;position:relative}
+.seccion-alta{background:var(--alto)}
+.rotulo{font-family:var(--display);font-weight:600;font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:var(--color);margin-bottom:14px}
+.titulo-seccion{font-family:var(--display);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.5rem);letter-spacing:-.03em;line-height:1.15;margin-bottom:18px}
+.entradilla{color:var(--suave);font-size:1.03rem;max-width:62ch;margin-bottom:44px}
+
+/* ── Hero ──────────────────────────────────────────────────────────────── */
+.hero{padding:96px 0 84px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:-40% 30% auto -10%;height:620px;background:radial-gradient(60% 60% at 30% 40%,color-mix(in srgb,var(--color) 22%,transparent),transparent 70%);filter:blur(30px);pointer-events:none}
+.hero-caja{position:relative;max-width:820px}
+.hero-marca{display:inline-flex;align-items:center;gap:9px;padding:7px 15px;border-radius:999px;border:1px solid color-mix(in srgb,var(--color) 34%,transparent);background:color-mix(in srgb,var(--color) 11%,transparent);color:var(--color);font-family:var(--display);font-weight:600;font-size:.79rem;letter-spacing:.04em;margin-bottom:26px}
+.hero h1{font-family:var(--display);font-weight:700;font-size:clamp(2.1rem,5.2vw,3.7rem);letter-spacing:-.04em;line-height:1.06;margin-bottom:22px}
+.hero p{color:var(--medio);font-size:clamp(1.02rem,1.5vw,1.16rem);max-width:64ch;margin-bottom:34px}
+.hero-acciones{display:flex;flex-wrap:wrap;gap:12px}
+
+/* ── Cifras ────────────────────────────────────────────────────────────── */
+.cifras{display:grid;gap:1px;background:var(--borde);border:1px solid var(--borde);border-radius:16px;overflow:hidden;margin-top:54px}
+.cifra{background:var(--tarjeta);padding:26px 24px}
+.cifra b{display:block;font-family:var(--display);font-weight:700;font-size:clamp(1.5rem,2.6vw,2rem);letter-spacing:-.03em;color:var(--color);line-height:1.1}
+.cifra span{display:block;color:var(--tenue);font-size:.85rem;margin-top:7px}
+
+/* ── Rejilla pareja ────────────────────────────────────────────────────── */
+.rejilla{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:18px}
+.tarjeta{background:var(--tarjeta);border:1px solid var(--borde);border-radius:16px;padding:26px 24px;transition:border-color .3s,transform .3s}
+.tarjeta:hover{border-color:color-mix(in srgb,var(--color) 40%,transparent);transform:translateY(-3px)}
+.tarjeta h3{font-family:var(--display);font-weight:600;font-size:1.03rem;letter-spacing:-.02em;margin-bottom:9px}
+.tarjeta p{color:var(--suave);font-size:.93rem}
+.detalle{padding:20px 22px 20px 26px;border-left:2px solid color-mix(in srgb,var(--color) 45%,transparent)}
+.detalle h3{font-family:var(--display);font-weight:600;font-size:.99rem;margin-bottom:8px}
+.detalle p{color:var(--suave);font-size:.91rem}
+
+/* ── Problema ──────────────────────────────────────────────────────────── */
+.problema-caja{background:var(--tarjeta);border:1px solid var(--borde);border-radius:20px;padding:38px}
+.problema-caja > p{color:var(--suave);margin-bottom:26px;max-width:72ch}
+.puntos{list-style:none;display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:12px 26px}
+.puntos li{display:flex;gap:11px;align-items:flex-start;color:var(--medio);font-size:.93rem}
+.puntos li::before{content:'';flex-shrink:0;width:6px;height:6px;border-radius:2px;background:var(--color);margin-top:9px;transform:rotate(45deg)}
+
+/* ── Pasos ─────────────────────────────────────────────────────────────── */
+.pasos{list-style:none;counter-reset:p;display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:22px}
+.pasos li{counter-increment:p;position:relative;padding-top:52px}
+.pasos li::before{content:counter(p,decimal-leading-zero);position:absolute;top:0;left:0;font-family:var(--display);font-weight:700;font-size:1.7rem;color:color-mix(in srgb,var(--color) 55%,transparent)}
+.pasos h3{font-family:var(--display);font-weight:600;font-size:1.02rem;margin-bottom:8px}
+.pasos p{color:var(--suave);font-size:.93rem}
+
+/* ── Preguntas ─────────────────────────────────────────────────────────── */
+details{border-bottom:1px solid var(--borde);padding:19px 0}
+details summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:18px;font-family:var(--display);font-weight:600;font-size:1rem}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';color:var(--color);font-size:1.3rem;font-weight:400;flex-shrink:0;transition:transform .25s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
+
+/* ── Otras funcionalidades ─────────────────────────────────────────────── */
+.otra{display:block;background:var(--tarjeta);border:1px solid var(--borde);border-radius:16px;padding:22px;transition:border-color .3s,transform .3s}
+.otra:hover{transform:translateY(-3px)}
+.otra b{display:block;font-family:var(--display);font-weight:600;font-size:1rem;margin-bottom:6px}
+.otra span{color:var(--tenue);font-size:.88rem}
+
+/* ── Cierre ────────────────────────────────────────────────────────────── */
+.cierre{text-align:center;padding:96px 0}
+.cierre h2{font-family:var(--display);font-weight:700;font-size:clamp(1.7rem,3.6vw,2.6rem);letter-spacing:-.03em;margin-bottom:16px}
+.cierre p{color:var(--suave);max-width:58ch;margin:0 auto 32px}
+.acciones{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+
+/* ── Pie ───────────────────────────────────────────────────────────────── */
+.pie{border-top:1px solid var(--borde);padding:34px 0;color:var(--tenue);font-size:.85rem}
+.pie-caja{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
+.pie a{color:var(--suave)}
+.pie a:hover{color:var(--texto)}
+
+/* ── Revelado al hacer scroll ──────────────────────────────────────────────
+   ⚠️ Solo se oculta si la clase 'js' está puesta, y la pone el propio script.
+   Sin esa guarda, un fallo de JS dejaría la página ENTERA invisible — con un
+   200 y sin ningún error a la vista. */
+.js .revelar{opacity:0;transform:translateY(16px)}
+.js .revelar.visible{opacity:1;transform:none;transition:opacity .6s ease,transform .6s cubic-bezier(.22,1,.36,1)}
+@media(prefers-reduced-motion:reduce){
+  .js .revelar{opacity:1!important;transform:none!important}
+  html{scroll-behavior:auto}
+}
+
+@media(max-width:1000px){ .barra-menu{display:none} }
+@media(max-width:860px){
+  .rejilla,.puntos,.pasos{--cols:1!important}
+  .cifras{grid-template-columns:1fr!important}
+  .seccion{padding:64px 0}
+  .problema-caja{padding:26px}
+}
+@media(max-width:640px){
+  .barra-volver span{display:none}
+  .barra-marca strong{font-size:1rem}
+  .acciones .btn,.hero-acciones .btn{width:100%}
+}
+@media(max-width:420px){ .barra-marca{display:none} }
+</style>
+</head>
+<body>
+
+<nav class="barra">
+  <div class="contenedor barra-caja">
+    <div class="barra-izq">
+      <a class="barra-volver" href="https://zyntello.com/">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+        <span>Inicio</span>
+      </a>
+      <span class="barra-sep" aria-hidden="true"></span>
+      <span class="barra-marca">
+        <img src="https://zyntello.com/logos/zyntello_isotipo_transparente.png" alt="" width="30" height="30">
+        <strong>Automatización de procesos</strong>
+      </span>
+    </div>
+
+    <nav class="barra-menu" aria-label="Secciones de la página">
+      <a href="#resuelve">Lo que resuelve</a>
+      <a href="#como">Cómo funciona</a>
+      <a href="#detalles">Detalles</a>
+      <a href="#preguntas">Preguntas</a>
+    </nav>
+
+    <div class="barra-acciones">
+      <a href="https://wa.me/18296399877?text=%C2%A1Hola%20Zyntello!%20Quiero%20saber%20m%C3%A1s%20sobre%20Automatizaci%C3%B3n%20de%20procesos.%20%C2%BFMe%20ayudan%3F" target="_blank" rel="noopener" class="btn btn-principal btn-barra">Hablar con Zyntello</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="contenedor">
+    <div class="hero-caja">
+      <span class="hero-marca">Zyntello</span>
+      <h1>La mitad del trabajo de oficina es mover datos de un sitio a otro</h1>
+      <p>Aprobar una compra por WhatsApp, teclear la factura del proveedor, cuadrar el banco línea por línea, armar el mismo reporte cada lunes. Nada de eso es el negocio: es el peaje por no tenerlo automatizado. Esto explica qué se puede quitar de en medio y en qué orden.</p>
+      <div class="hero-acciones">
+        <a href="https://wa.me/18296399877?text=%C2%A1Hola%20Zyntello!%20Quiero%20saber%20m%C3%A1s%20sobre%20Automatizaci%C3%B3n%20de%20procesos.%20%C2%BFMe%20ayudan%3F" target="_blank" rel="noopener" class="btn btn-principal">Hablar con Zyntello</a>
+        <a href="https://zyntello.com/servicios/automatizacion-con-ia/" class="btn btn-fantasma">Ver el servicio de automatización con IA</a>
+      </div>
+    </div>
+
+    <div class="cifras" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+      <div class="cifra"><b>34</b><span>módulos que comparten los mismos datos</span></div><div class="cifra"><b>20+</b><span>años automatizando procesos reales</span></div><div class="cifra"><b>5</b><span>países, cada uno con sus reglas</span></div>
+    </div>
+  </div>
+</header>
+
+<section class="seccion seccion-alta" id="resuelve">
+  <div class="contenedor">
+    <p class="rotulo revelar">Lo que resuelve</p>
+    <h2 class="titulo-seccion revelar">El trabajo manual no se ve en ninguna cuenta de resultados</h2>
+    <div class="problema-caja revelar">
+      <p>Nadie factura «tres horas cuadrando el banco». Por eso el coste del trabajo repetitivo es invisible: no aparece en ningún informe, no tiene un responsable y nunca es lo urgente. Se nota en otra parte —en los cierres que se retrasan, en el cobro que se olvidó, en la persona que no puede tomar vacaciones porque solo ella sabe hacer ese proceso—.</p>
+      <ul class="puntos" style="--cols:2">
+        <li>El mismo dato se teclea en tres sistemas distintos</li><li>Una aprobación se pide por WhatsApp y no queda registrada en ninguna parte</li><li>El cierre del mes depende de que una persona concreta esté disponible</li><li>Los cobros vencidos se descubren cuando el cliente ya no contesta</li><li>Cada reporte se arma a mano y nunca dos veces igual</li><li>Cuando alguien se va, su proceso se va con él</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="seccion">
+  <div class="contenedor">
+    <p class="rotulo revelar">Lo que incluye</p>
+    <h2 class="titulo-seccion revelar">Lo que trae, en concreto</h2>
+    <div class="rejilla" style="--cols:3"><article class="tarjeta revelar" style="transition-delay:0ms"><h3>Aprobaciones con rastro</h3><p>Quién aprobó, cuándo y sobre qué importe queda escrito. Se acabó el «yo te lo dije por mensaje»: si no está aprobado, el documento no avanza.</p></article><article class="tarjeta revelar" style="transition-delay:60ms"><h3>Documentos que se leen solos</h3><p>La factura del proveedor entra como datos, no como un PDF que alguien teclea. Lo que no cuadra se marca para revisar, en vez de colarse.</p></article><article class="tarjeta revelar" style="transition-delay:120ms"><h3>Conciliación asistida</h3><p>El sistema propone el cruce entre el movimiento del banco y el documento, y la persona confirma. Lo que cambia no es la exactitud: es el tiempo.</p></article><article class="tarjeta revelar" style="transition-delay:180ms"><h3>Avisos antes, no después</h3><p>El cobro que vence, el inventario que se va a acabar, el contrato que caduca. Avisar a tiempo vale más que el mejor informe de lo que ya pasó.</p></article><article class="tarjeta revelar" style="transition-delay:240ms"><h3>Reportes que se generan solos</h3><p>El mismo informe, el mismo día, con los datos del sistema y no de una hoja que alguien mantiene aparte. Y si nadie lo abre, también se sabe.</p></article><article class="tarjeta revelar" style="transition-delay:300ms"><h3>Agentes de IA donde hay criterio</h3><p>Clasificar un gasto, redactar la respuesta a un cliente, resumir qué pasó esta semana. Donde hace falta juicio y no una regla fija.</p></article></div>
+  </div>
+</section>
+
+<section class="seccion seccion-alta" id="como">
+  <div class="contenedor">
+    <p class="rotulo revelar">Cómo funciona</p>
+    <h2 class="titulo-seccion revelar">En tres pasos</h2>
+    <ol class="pasos revelar" style="--cols:3">
+      <li><h3>Se mira qué se hace hoy</h3><p>No lo que dice el manual: lo que de verdad hace la gente, con sus hojas de cálculo y sus mensajes. Ahí está el proceso real.</p></li><li><h3>Se elige uno y se hace entero</h3><p>Un proceso completo funcionando vale más que seis a medias. El primero es el que demuestra si esto sirve, así que se elige por dolor, no por facilidad.</p></li><li><h3>Se mide y se pasa al siguiente</h3><p>Cuánto tardaba antes y cuánto ahora. Si no se puede medir, no se sabe si funcionó, y el segundo proceso se decide a ciegas.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="seccion" id="detalles">
+  <div class="contenedor">
+    <p class="rotulo revelar">En el detalle</p>
+    <h2 class="titulo-seccion revelar">Lo que se nota al usarlo cada día</h2>
+    <div class="rejilla" style="--cols:3"><article class="tarjeta detalle revelar" style="transition-delay:0ms"><h3>Automatizar un proceso roto lo rompe más rápido</h3><p>Si la forma de aprobar compras hoy no está clara, automatizarla multiplica el desorden. Primero se define quién decide qué; después se automatiza. Ese orden no es opcional.</p></article><article class="tarjeta detalle revelar" style="transition-delay:60ms"><h3>La excepción es donde se cae todo</h3><p>El 80% de los casos es fácil. El valor está en qué hace el sistema con el 20% que no encaja: si lo bloquea en silencio, alguien acabará saltándoselo por fuera y volverás al punto de partida.</p></article><article class="tarjeta detalle revelar" style="transition-delay:120ms"><h3>Un aviso que llega siempre deja de leerse</h3><p>La alerta que salta todos los días se convierte en ruido en dos semanas. Se afina el umbral hasta que saltar signifique algo, o el aviso no sirve para nada.</p></article><article class="tarjeta detalle revelar" style="transition-delay:180ms"><h3>Sin registro, no hay auditoría</h3><p>Un proceso automático que no deja rastro de qué hizo y por qué es imposible de auditar y de corregir. Cada paso queda registrado, incluido el que decidió una IA.</p></article><article class="tarjeta detalle revelar" style="transition-delay:240ms"><h3>La persona sigue decidiendo lo que importa</h3><p>Aprobar un pago, perdonar una deuda, despedir a alguien. La automatización prepara la decisión y la ejecuta; no la toma.</p></article><article class="tarjeta detalle revelar" style="transition-delay:300ms"><h3>Se empieza por lo aburrido, no por lo vistoso</h3><p>El primer proceso a automatizar es el más repetitivo y el menos discutible. Lo llamativo —el agente que habla con el cliente— va después, cuando los datos de abajo ya son fiables.</p></article></div>
+  </div>
+</section>
+
+<section class="seccion seccion-alta">
+  <div class="contenedor">
+    <p class="rotulo revelar">Para quién</p>
+    <h2 class="titulo-seccion revelar">Te va a servir si…</h2>
+    <div class="rejilla" style="--cols:3"><article class="tarjeta revelar" style="transition-delay:0ms"><h3>La empresa que ya tiene sistema</h3><p>Tienes un ERP o varios programas, pero entre ellos hay personas moviendo datos a mano. Ahí es donde más rápido se nota.</p></article><article class="tarjeta revelar" style="transition-delay:60ms"><h3>La que crece más rápido que su equipo</h3><p>El volumen sube y la respuesta hasta ahora ha sido contratar. Automatizar primero decide cuánta plantilla hace falta de verdad.</p></article><article class="tarjeta revelar" style="transition-delay:120ms"><h3>La que depende de una persona</h3><p>Hay un proceso que solo sabe hacer alguien concreto. Eso no es un problema de productividad: es un riesgo.</p></article></div>
+  </div>
+</section>
+
+<section class="seccion" id="preguntas">
+  <div class="contenedor contenedor-estrecho">
+    <p class="rotulo revelar">Dudas habituales</p>
+    <h2 class="titulo-seccion revelar">Preguntas</h2>
+    <div class="revelar">
+      <details><summary>¿Hay que cambiar de sistema para automatizar?</summary><p>No necesariamente. Parte de lo que se automatiza son enlaces entre lo que ya tienes. Ahora bien, si el dato de origen está en tres sitios y ninguno cuadra, lo primero no es automatizar: es decidir cuál manda.</p></details><details><summary>¿Cuánto tarda en verse el resultado?</summary><p>Un proceso concreto —una aprobación, un aviso de cobro, un reporte recurrente— se pone en marcha en semanas. Lo que lleva meses es automatizar una empresa entera, y por eso no se empieza así.</p></details><details><summary>¿Esto sustituye personas?</summary><p>En nuestra experiencia, lo que sustituye son las horas que nadie quería hacer. La gente sigue ahí, decidiendo y atendiendo clientes, en vez de tecleando lo que ya está escrito en un PDF.</p></details><details><summary>¿Qué pasa si la IA se equivoca?</summary><p>Por eso lo que decide una IA queda registrado y lo que no está claro se marca para revisión humana en vez de ejecutarse. Un automatismo que no puede equivocarse a la vista es un automatismo en el que no se puede confiar.</p></details><details><summary>¿Sirve para una empresa pequeña?</summary><p>Sí, y a veces más: en una empresa pequeña el proceso manual se lo come el dueño, que es justo la persona cuyo tiempo más cuesta. Se empieza por un módulo y se crece desde ahí.</p></details><details><summary>¿Se puede automatizar la parte fiscal?</summary><p>Sí. Los comprobantes fiscales, las retenciones y los reportes al organismo de cada país están dentro de la plataforma —NCF en República Dominicana, y el equivalente en Venezuela, Colombia, Guatemala y Costa Rica—.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="seccion seccion-alta">
+  <div class="contenedor">
+    <p class="rotulo revelar">Y además</p>
+    <h2 class="titulo-seccion revelar">También te puede interesar</h2>
+    <div class="rejilla" style="--cols:3"><a class="otra revelar" href="https://zyntello.com/precios/" style="border-left:2px solid #22c55e"><b>Precios</b><span>Qué cuesta y qué incluye</span></a><a class="otra revelar" href="https://zyntello.com/nosotros/" style="border-left:2px solid #6366f1"><b>Nosotros</b><span>Quién está detrás de Zyntello</span></a><a class="otra revelar" href="https://zyntello.com/contacto/" style="border-left:2px solid #fb7185"><b>Contacto</b><span>Cómo hablar con nosotros</span></a></div>
+  </div>
+</section>
+
+<section class="cierre">
+  <div class="contenedor">
+    <h2>¿Lo vemos con tus datos?</h2>
+    <p>Te enseñamos Automatización de procesos funcionando sobre un caso parecido al tuyo, sin compromiso.</p>
+    <div class="acciones">
+      <a href="https://wa.me/18296399877?text=%C2%A1Hola%20Zyntello!%20Quiero%20saber%20m%C3%A1s%20sobre%20Automatizaci%C3%B3n%20de%20procesos.%20%C2%BFMe%20ayudan%3F" target="_blank" rel="noopener" class="btn btn-principal">Hablar con Zyntello</a>
+      <a href="tel:+18296399877" class="btn btn-fantasma">Llamar al +1 829 639 9877</a>
+    </div>
+  </div>
+</section>
+
+<footer class="pie">
+  <div class="contenedor pie-caja">
+    <span>© 2026 Zyntello, S.R.L. · República Dominicana</span>
+    <span>
+      <a href="https://zyntello.com/#soluciones">Módulos</a> ·
+      <a href="https://zyntello.com/precios/">Precios</a> ·
+      <a href="https://zyntello.com/blog/">Blog</a> ·
+      <a href="https://zyntello.com/nosotros/">Nosotros</a> ·
+      <a href="https://zyntello.com/contacto/">Contacto</a> ·
+      <a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+/* ⚠️ La clase 'js' la pone el propio script: si esto no llega a ejecutarse,
+   '.revelar' nunca se oculta y la página se ve entera. Al revés —ocultar por
+   CSS y mostrar por JS— un fallo dejaría la página en blanco con un 200. */
+document.documentElement.classList.add('js');
+var obs = new IntersectionObserver(function (es) {
+  es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+document.querySelectorAll('.revelar').forEach(function (el) { obs.observe(el); });
+</script>
+</body>
+</html>
