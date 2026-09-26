@@ -34,9 +34,10 @@
       "description": "Se pagan antes del disfrute y se descuentan después. Cuando ese segundo paso falta, la empresa paga el mismo día dos veces y no se entera.",
       "url": "https://zyntello.com/blog/el-pago-de-vacaciones-es-un-adelanto/",
       "inLanguage": "es",
-      "datePublished": "2026-09-25",
-      "dateModified": "2026-09-25",
+      "datePublished": "2026-09-26",
+      "dateModified": "2026-09-26",
       "image": "https://zyntello.com/logos/zyntello_facebook_portada.png",
+      "articleSection": "Nómina y obligaciones laborales",
       "author": {
         "@type": "Organization",
         "name": "Zyntello, S.R.L.",
@@ -214,9 +215,9 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
 @media(max-width:420px){ .barra-marca{display:none} }
 .art{padding:56px 0 24px}
 .art-meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;color:var(--tenue);font-size:.84rem;margin-bottom:18px}
-.art-meta span{display:inline-flex;align-items:center;gap:6px}
 .art h1{font-family:var(--display);font-weight:700;font-size:clamp(1.9rem,4.4vw,3rem);letter-spacing:-.035em;line-height:1.08;margin-bottom:18px}
 .art-entradilla{color:var(--medio);font-size:clamp(1.02rem,1.5vw,1.14rem);max-width:66ch}
+.pais{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--color) 34%,transparent);background:color-mix(in srgb,var(--color) 11%,transparent);color:var(--color);font-family:var(--display);font-weight:600;font-size:.74rem;letter-spacing:.03em}
 .cuerpo{padding:16px 0 72px}
 .cuerpo h2{font-family:var(--display);font-weight:700;font-size:clamp(1.3rem,2.4vw,1.72rem);letter-spacing:-.025em;line-height:1.2;margin:46px 0 16px}
 .cuerpo p{color:var(--medio);margin-bottom:17px;max-width:70ch}
@@ -224,13 +225,20 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
 .cuerpo li{display:flex;gap:11px;align-items:flex-start;color:var(--medio);margin-bottom:10px}
 .cuerpo li::before{content:'';flex-shrink:0;width:6px;height:6px;border-radius:2px;background:var(--color);margin-top:10px;transform:rotate(45deg)}
 .cuerpo strong{color:var(--texto);font-weight:600}
+.cuerpo a{color:var(--color);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
 .aviso{background:var(--tarjeta);border:1px solid var(--borde);border-left:3px solid var(--color);border-radius:0 14px 14px 0;padding:20px 24px;margin:26px 0;max-width:70ch}
 .aviso p{margin:0;color:var(--suave);font-size:.95rem}
-.entrada{display:block;background:var(--tarjeta);border:1px solid var(--borde);border-radius:16px;padding:26px;transition:border-color .3s,transform .3s}
+.entrada{display:block;background:var(--tarjeta);border:1px solid var(--borde);border-radius:16px;padding:24px;transition:border-color .3s,transform .3s}
 .entrada:hover{border-color:color-mix(in srgb,var(--color) 40%,transparent);transform:translateY(-3px)}
-.entrada time{display:block;color:var(--tenue);font-size:.8rem;margin-bottom:10px}
-.entrada h2{font-family:var(--display);font-weight:600;font-size:1.14rem;letter-spacing:-.02em;line-height:1.25;margin-bottom:9px}
-.entrada p{color:var(--suave);font-size:.93rem}
+.entrada time{display:block;color:var(--tenue);font-size:.79rem;margin-bottom:9px}
+.entrada h3{font-family:var(--display);font-weight:600;font-size:1.08rem;letter-spacing:-.02em;line-height:1.28;margin-bottom:8px}
+.entrada p{color:var(--suave);font-size:.91rem}
+.grupo{padding:58px 0;border-top:1px solid var(--borde)}
+.grupo-cab{display:flex;flex-wrap:wrap;gap:14px;align-items:baseline;justify-content:space-between;margin-bottom:10px}
+.grupo h2{font-family:var(--display);font-weight:700;font-size:clamp(1.35rem,2.6vw,1.85rem);letter-spacing:-.03em}
+.grupo-ir{color:var(--color);font-size:.88rem;font-family:var(--display);font-weight:600;white-space:nowrap}
+.grupo-ir:hover{text-decoration:underline}
+.grupo-txt{color:var(--suave);font-size:.97rem;max-width:68ch;margin-bottom:30px}
 </style>
 </head>
 <body>
@@ -242,13 +250,6 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
         <span>Blog</span>
       </a>
       <span class="barra-sep" aria-hidden="true"></span>
-      <!-- ⚠️ El isotipo TRANSPARENTE, como en el resto de páginas. El logo
-           "principal blanco" tiene fondo blanco sólido, así que sobre esta
-           barra oscura se ve como una caja blanca recortada. El nombre va en
-           texto, que además escala mejor que una imagen.
-           ⚠️ Sin acentos graves en este comentario: va dentro de un template
-           literal de JavaScript y uno solo cierra la cadena — el error que
-           sale entonces señala una palabra del comentario, no la causa. -->
       <a class="barra-marca" href="https://zyntello.com/">
         <img src="https://zyntello.com/logos/zyntello_isotipo_transparente.png" alt="" width="30" height="30">
         <strong>Zyntello</strong>
@@ -263,11 +264,12 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
   <header class="art">
     <div class="contenedor contenedor-estrecho">
       <div class="art-meta">
-        <span><time datetime="2026-09-25">25 de septiembre de 2026</time></span>
+        <span class="pais">República Dominicana</span>
+        <span><time datetime="2026-09-26">26 de septiembre de 2026</time></span>
         <span aria-hidden="true">·</span>
         <span>6 min de lectura</span>
         <span aria-hidden="true">·</span>
-        <span>Nómina · RD</span>
+        <span>Vacaciones</span>
       </div>
       <h1>El pago de vacaciones es un adelanto</h1>
       <p class="art-entradilla">Se pagan antes del disfrute y se descuentan después. Cuando ese segundo paso falta, la empresa paga el mismo día dos veces y no se entera.</p>
@@ -291,7 +293,7 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
 <p>No coinciden. Un trabajador puede tener días pendientes que todavía no están disponibles porque no ha cumplido la antigüedad que los libera. Usar un saldo donde tocaba el otro da una cifra plausible y equivocada — y plausible es la parte peligrosa, porque nadie la cuestiona.</p>
 <h2 id="la-provision">La provisión que casi nadie lleva</h2>
 <p>Hay un tercer efecto, contable esta vez. Los días de vacaciones que los trabajadores han acumulado y no han disfrutado son <strong>una deuda de la empresa</strong>: si mañana se fueran todos, habría que pagarlos.</p>
-<p>Cuando esa provisión no se lleva, el resultado del mes se ve mejor de lo que es, y el golpe llega de una vez el mes en que varias personas se van o liquidan. No es una cuestión de purismo contable: es la diferencia entre saber cuánto debes y descubrirlo.</p>
+<p>Cuando esa provisión no se lleva, el resultado del mes se ve mejor de lo que es, y el golpe llega de una vez el mes en que varias personas se van o liquidan. Es el mismo problema que con <a href="https://zyntello.com/blog/prestaciones-laborales-rd-cesantia-preaviso/">la cesantía y el preaviso</a>, solo que con cifras más pequeñas y por eso menos visible.</p>
 <h2 id="que-hacer">Qué comprobar en tu nómina</h2>
 <p>Si no estás seguro de si esto te está pasando, hay tres comprobaciones rápidas:</p>
 <ul><li><span>Coge a un trabajador que se fue de vacaciones hace unos meses. Mira la nómina del período en que estuvo fuera: ¿aparece el descuento de los días adelantados? Si no aparece, se pagó dos veces.</span></li><li><span>Compara los días disponibles con los pendientes de un trabajador antiguo. Si el sistema te da el mismo número para los dos, es que solo lleva uno.</span></li><li><span>Busca en el balance la provisión por vacaciones. Si no está, el pasivo real es mayor que el que figura.</span></li></ul>
@@ -300,6 +302,29 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
   </div>
 </article>
 
+<section class="seccion seccion-alta">
+  <div class="contenedor">
+    <p class="rotulo">Nómina y obligaciones laborales</p>
+    <h2 class="titulo-seccion">Del mismo tema</h2>
+    <div class="rejilla" style="--cols:3">
+      <a class="entrada" href="https://zyntello.com/blog/prestaciones-laborales-rd-cesantia-preaviso/" style="border-left:2px solid #f59e0b">
+        <time datetime="2026-09-26">26 de septiembre de 2026 · 7 min · República Dominicana</time>
+        <h3>Cesantía y preaviso: la deuda que crece cada mes y no está en el balance</h3>
+        <p>Las prestaciones no se generan al despedir: se generan cada mes que el trabajador sigue ahí. Sin provisión, una salida normal se convierte en un problema de caja.</p>
+      </a>
+      <a class="entrada" href="https://zyntello.com/blog/tss-republica-dominicana-que-se-descuenta/" style="border-left:2px solid #f59e0b">
+        <time datetime="2026-09-26">26 de septiembre de 2026 · 6 min · República Dominicana</time>
+        <h3>La TSS: qué se descuenta, qué aporta la empresa y dónde se equivoca todo el mundo</h3>
+        <p>El error de la TSS casi nunca es el porcentaje: es el salario sobre el que se aplica. Qué entra en la base cotizable y por qué el tope cambia el cálculo.</p>
+      </a>
+      <a class="entrada" href="https://zyntello.com/blog/nomina-colombia-seguridad-social/" style="border-left:2px solid #f59e0b">
+        <time datetime="2026-09-26">26 de septiembre de 2026 · 7 min · Colombia</time>
+        <h3>Nómina en Colombia: por qué el coste real es mucho más que el salario</h3>
+        <p>Seguridad social, parafiscales y prestaciones. Qué se paga encima del sueldo, qué provisionar y por qué el salario integral no siempre conviene.</p>
+      </a>
+    </div>
+  </div>
+</section>
 <section class="cierre">
   <div class="contenedor">
     <h2>La nómina, con el ciclo completo</h2>
@@ -317,6 +342,7 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
     <span>
       <a href="https://zyntello.com/blog/">Blog</a> ·
       <a href="https://zyntello.com/precios/">Precios</a> ·
+      <a href="https://zyntello.com/nosotros/">Nosotros</a> ·
       <a href="https://zyntello.com/contacto/">Contacto</a> ·
       <a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a>
     </span>

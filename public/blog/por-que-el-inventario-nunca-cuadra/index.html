@@ -34,9 +34,10 @@
       "description": "La diferencia entre el sistema y la estantería casi nunca es robo: son seis causas concretas, corregibles, y ninguna da un mensaje de error.",
       "url": "https://zyntello.com/blog/por-que-el-inventario-nunca-cuadra/",
       "inLanguage": "es",
-      "datePublished": "2026-09-25",
-      "dateModified": "2026-09-25",
+      "datePublished": "2026-09-26",
+      "dateModified": "2026-09-26",
       "image": "https://zyntello.com/logos/zyntello_facebook_portada.png",
+      "articleSection": "Inventario y abastecimiento",
       "author": {
         "@type": "Organization",
         "name": "Zyntello, S.R.L.",
@@ -214,9 +215,9 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
 @media(max-width:420px){ .barra-marca{display:none} }
 .art{padding:56px 0 24px}
 .art-meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;color:var(--tenue);font-size:.84rem;margin-bottom:18px}
-.art-meta span{display:inline-flex;align-items:center;gap:6px}
 .art h1{font-family:var(--display);font-weight:700;font-size:clamp(1.9rem,4.4vw,3rem);letter-spacing:-.035em;line-height:1.08;margin-bottom:18px}
 .art-entradilla{color:var(--medio);font-size:clamp(1.02rem,1.5vw,1.14rem);max-width:66ch}
+.pais{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--color) 34%,transparent);background:color-mix(in srgb,var(--color) 11%,transparent);color:var(--color);font-family:var(--display);font-weight:600;font-size:.74rem;letter-spacing:.03em}
 .cuerpo{padding:16px 0 72px}
 .cuerpo h2{font-family:var(--display);font-weight:700;font-size:clamp(1.3rem,2.4vw,1.72rem);letter-spacing:-.025em;line-height:1.2;margin:46px 0 16px}
 .cuerpo p{color:var(--medio);margin-bottom:17px;max-width:70ch}
@@ -224,13 +225,20 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
 .cuerpo li{display:flex;gap:11px;align-items:flex-start;color:var(--medio);margin-bottom:10px}
 .cuerpo li::before{content:'';flex-shrink:0;width:6px;height:6px;border-radius:2px;background:var(--color);margin-top:10px;transform:rotate(45deg)}
 .cuerpo strong{color:var(--texto);font-weight:600}
+.cuerpo a{color:var(--color);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
 .aviso{background:var(--tarjeta);border:1px solid var(--borde);border-left:3px solid var(--color);border-radius:0 14px 14px 0;padding:20px 24px;margin:26px 0;max-width:70ch}
 .aviso p{margin:0;color:var(--suave);font-size:.95rem}
-.entrada{display:block;background:var(--tarjeta);border:1px solid var(--borde);border-radius:16px;padding:26px;transition:border-color .3s,transform .3s}
+.entrada{display:block;background:var(--tarjeta);border:1px solid var(--borde);border-radius:16px;padding:24px;transition:border-color .3s,transform .3s}
 .entrada:hover{border-color:color-mix(in srgb,var(--color) 40%,transparent);transform:translateY(-3px)}
-.entrada time{display:block;color:var(--tenue);font-size:.8rem;margin-bottom:10px}
-.entrada h2{font-family:var(--display);font-weight:600;font-size:1.14rem;letter-spacing:-.02em;line-height:1.25;margin-bottom:9px}
-.entrada p{color:var(--suave);font-size:.93rem}
+.entrada time{display:block;color:var(--tenue);font-size:.79rem;margin-bottom:9px}
+.entrada h3{font-family:var(--display);font-weight:600;font-size:1.08rem;letter-spacing:-.02em;line-height:1.28;margin-bottom:8px}
+.entrada p{color:var(--suave);font-size:.91rem}
+.grupo{padding:58px 0;border-top:1px solid var(--borde)}
+.grupo-cab{display:flex;flex-wrap:wrap;gap:14px;align-items:baseline;justify-content:space-between;margin-bottom:10px}
+.grupo h2{font-family:var(--display);font-weight:700;font-size:clamp(1.35rem,2.6vw,1.85rem);letter-spacing:-.03em}
+.grupo-ir{color:var(--color);font-size:.88rem;font-family:var(--display);font-weight:600;white-space:nowrap}
+.grupo-ir:hover{text-decoration:underline}
+.grupo-txt{color:var(--suave);font-size:.97rem;max-width:68ch;margin-bottom:30px}
 </style>
 </head>
 <body>
@@ -242,13 +250,6 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
         <span>Blog</span>
       </a>
       <span class="barra-sep" aria-hidden="true"></span>
-      <!-- ⚠️ El isotipo TRANSPARENTE, como en el resto de páginas. El logo
-           "principal blanco" tiene fondo blanco sólido, así que sobre esta
-           barra oscura se ve como una caja blanca recortada. El nombre va en
-           texto, que además escala mejor que una imagen.
-           ⚠️ Sin acentos graves en este comentario: va dentro de un template
-           literal de JavaScript y uno solo cierra la cadena — el error que
-           sale entonces señala una palabra del comentario, no la causa. -->
       <a class="barra-marca" href="https://zyntello.com/">
         <img src="https://zyntello.com/logos/zyntello_isotipo_transparente.png" alt="" width="30" height="30">
         <strong>Zyntello</strong>
@@ -263,11 +264,12 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
   <header class="art">
     <div class="contenedor contenedor-estrecho">
       <div class="art-meta">
-        <span><time datetime="2026-09-25">25 de septiembre de 2026</time></span>
+        
+        <span><time datetime="2026-09-26">26 de septiembre de 2026</time></span>
         <span aria-hidden="true">·</span>
         <span>6 min de lectura</span>
         <span aria-hidden="true">·</span>
-        <span>Inventario</span>
+        <span>Control de inventario</span>
       </div>
       <h1>Por qué el inventario nunca cuadra</h1>
       <p class="art-entradilla">La diferencia entre el sistema y la estantería casi nunca es robo: son seis causas concretas, corregibles, y ninguna da un mensaje de error.</p>
@@ -280,19 +282,42 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
 <p>Cuando el conteo físico no coincide con el sistema, la primera sospecha suele ser que falta mercancía. A veces es verdad. Pero en la mayoría de los casos que hemos visto, <strong>la mercancía está: lo que falla es el registro</strong>.</p>
 <p>Y el registro falla por causas concretas y repetidas, no por mala suerte. Lo que sigue son las seis que aparecen una y otra vez.</p>
 <h2 id="las-causas">Las seis causas</h2>
-<ul><li><span><strong>La mercancía entró antes que el papel.</strong> Llegó el camión, se descargó y se puso en la estantería. La factura del proveedor se registró tres días después, o la semana siguiente. Entre medias, el sistema dice una cosa y el almacén otra — y las ventas de esos días salen de un stock que el sistema no sabe que existe.</span></li><li><span><strong>Se vendió sin descontar.</strong> Una venta que no genera movimiento de inventario. Pasa con las facturas hechas por fuera del sistema, con los cambios de última hora y con los módulos que no están conectados entre sí.</span></li><li><span><strong>La unidad de medida cambió por el camino.</strong> Se compra por cajas y se vende por unidades. Si la conversión no está bien puesta, el error se multiplica literalmente: una caja de 24 descontada como una unidad deja 23 fantasma.</span></li><li><span><strong>Las devoluciones no vuelven.</strong> El cliente devuelve, se le hace la nota de crédito, y la mercancía se queda en un rincón sin volver a entrar en el sistema. Contablemente está devuelta; físicamente está, pero el sistema no la ve.</span></li><li><span><strong>Las mermas no se registran.</strong> Lo que se rompe, lo que caduca, lo que se usa internamente. Si no se da de baja, el sistema lo sigue contando durante meses.</span></li><li><span><strong>Los traslados quedan a medias.</strong> Salió de un almacén y no llegó a registrarse la entrada en el otro. La mercancía está en la empresa, pero no está en ningún sitio para el sistema.</span></li></ul>
+<ul><li><span><strong>La mercancía entró antes que el papel.</strong> Llegó el camión, se descargó y se puso en la estantería. La factura del proveedor se registró tres días después. Entre medias, el sistema dice una cosa y el almacén otra — y las ventas de esos días salen de un stock que el sistema no sabe que existe.</span></li><li><span><strong>Se vendió sin descontar.</strong> Una venta que no genera movimiento de inventario. Pasa con las facturas hechas por fuera del sistema y con los módulos que no están conectados entre sí.</span></li><li><span><strong>La unidad de medida cambió por el camino.</strong> Se compra por cajas y se vende por unidades. Si la conversión no está bien puesta, el error se multiplica literalmente: una caja de 24 descontada como una unidad deja 23 fantasma.</span></li><li><span><strong>Las devoluciones no vuelven.</strong> El cliente devuelve, se le hace la nota de crédito, y la mercancía se queda en un rincón sin volver a entrar en el sistema.</span></li><li><span><strong>Las mermas no se registran.</strong> Lo que se rompe, lo que caduca, lo que se usa internamente. Si no se da de baja, el sistema lo sigue contando durante meses.</span></li><li><span><strong>Los traslados quedan a medias.</strong> Salió de un almacén y no llegó a registrarse la entrada en el otro. Está en la empresa, pero no está en ningún sitio para el sistema.</span></li></ul>
 <h2 id="el-costo">Y luego está el costo, que es el problema de verdad</h2>
 <p>Descuadrar en cantidades es molesto. Descuadrar en costo es lo que se lleva el margen por delante, y es mucho menos visible.</p>
-<p>Si el costo de un artículo está mal, <strong>cada venta de ese artículo reporta un margen equivocado</strong>. No hay error, no hay aviso: simplemente el informe de rentabilidad dice algo que no es. Se decide sobre él —qué promocionar, qué descatalogar, a quién comprarle— y se decide mal.</p>
+<p>Si el costo de un artículo está mal, <strong>cada venta de ese artículo reporta un margen equivocado</strong>. No hay error, no hay aviso: el informe de rentabilidad dice algo que no es. Se decide sobre él —qué promocionar, qué descatalogar, a quién comprarle— y se decide mal. Lo desarrollamos en <a href="https://zyntello.com/blog/costo-promedio-o-peps-cual-usar/">costo promedio o PEPS</a>.</p>
 <div class="aviso"><p>Un ajuste de inventario corrige la CANTIDAD, no el costo. Si entras 10 unidades que faltaban, entran al costo que el sistema ya tenía. Cuando el costo es el que está mal, ajustar cantidades no lo arregla y además lo tapa.</p></div>
 <h2 id="como-se-arregla">Cómo se arregla, en orden</h2>
 <p>El error habitual es empezar por el conteo. Contar un almacén cuyos procesos siguen rotos da un número exacto que vuelve a estar mal en dos semanas. El orden que funciona es:</p>
-<ul><li><span><strong>Primero, cerrar las entradas y salidas sin registro.</strong> Que no se pueda sacar mercancía sin un documento y que la recepción se registre al recibir, no al facturar.</span></li><li><span><strong>Segundo, arreglar las conversiones de unidad.</strong> Es un rato de trabajo y elimina una clase entera de errores.</span></li><li><span><strong>Tercero, contar.</strong> Ahora sí, y con el conteo se ajusta.</span></li><li><span><strong>Cuarto, conteos cíclicos.</strong> No un inventario general al año, que además obliga a parar. Unos pocos artículos cada semana, empezando por los de más rotación y más valor. Un descuadre se detecta en días y no en meses.</span></li></ul>
+<ul><li><span><strong>Primero, cerrar las entradas y salidas sin registro.</strong> Que no se pueda sacar mercancía sin un documento y que la recepción se registre al recibir, no al facturar.</span></li><li><span><strong>Segundo, arreglar las conversiones de unidad.</strong> Es un rato de trabajo y elimina una clase entera de errores.</span></li><li><span><strong>Tercero, contar.</strong> Ahora sí, y con el conteo se ajusta.</span></li><li><span><strong>Cuarto, conteos cíclicos.</strong> No un inventario general al año, que además obliga a parar. Unos pocos artículos cada semana, empezando por los de más rotación y más valor.</span></li></ul>
 <p>Lo que no funciona es lo contrario: contar primero y prometer que a partir de ahora se registrará todo. Eso ya se prometió el año pasado.</p>
     </div>
   </div>
 </article>
 
+<section class="seccion seccion-alta">
+  <div class="contenedor">
+    <p class="rotulo">Inventario y abastecimiento</p>
+    <h2 class="titulo-seccion">Del mismo tema</h2>
+    <div class="rejilla" style="--cols:3">
+      <a class="entrada" href="https://zyntello.com/blog/costo-promedio-o-peps-cual-usar/" style="border-left:2px solid #06b6d4">
+        <time datetime="2026-09-26">26 de septiembre de 2026 · 6 min</time>
+        <h3>Costo promedio o PEPS: cuál usar y por qué casi nadie puede cambiar después</h3>
+        <p>La decisión parece contable y es de negocio: cambia el margen que ves, el valor del inventario y lo que declaras. Y cambiarla más tarde reescribe la historia.</p>
+      </a>
+      <a class="entrada" href="https://zyntello.com/blog/punto-de-reorden-cuando-volver-a-pedir/" style="border-left:2px solid #06b6d4">
+        <time datetime="2026-09-26">26 de septiembre de 2026 · 5 min</time>
+        <h3>Cuándo volver a pedir: el cálculo que evita quedarse sin y comprar de más</h3>
+        <p>Comprar cuando se acaba llega tarde. El punto de reorden no es una cifra fija: depende de cuánto vendes, cuánto tarda el proveedor y cuánto varían los dos.</p>
+      </a>
+      <a class="entrada" href="https://zyntello.com/blog/lotes-y-vencimientos-cuando-hacen-falta/" style="border-left:2px solid #06b6d4">
+        <time datetime="2026-09-26">26 de septiembre de 2026 · 5 min</time>
+        <h3>Lotes y vencimientos: cuándo hacen falta de verdad y qué cuesta no tenerlos</h3>
+        <p>Llevar lotes da trabajo y no todo el mundo lo necesita. Pero cuando hace falta y no está, el coste no es operativo: es una retirada de producto que no se puede acotar.</p>
+      </a>
+    </div>
+  </div>
+</section>
 <section class="cierre">
   <div class="contenedor">
     <h2>Un inventario que sí cuadra</h2>
@@ -310,6 +335,7 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
     <span>
       <a href="https://zyntello.com/blog/">Blog</a> ·
       <a href="https://zyntello.com/precios/">Precios</a> ·
+      <a href="https://zyntello.com/nosotros/">Nosotros</a> ·
       <a href="https://zyntello.com/contacto/">Contacto</a> ·
       <a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a>
     </span>

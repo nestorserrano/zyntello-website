@@ -140,15 +140,28 @@ function construir() {
     urls.push({ loc: `${SITIO}${p.ruta}`, lastmod: p.lastmod, prioridad, frecuencia })
   }
 
-  // 3 · Las 35 landings de módulo. No están en este repo: las escribe el admin
-  //     directamente en el document root del sitio, así que aquí no hay archivo
-  //     que mirar y NO se les pone `lastmod`.
+  // 3 · Las 35 landings de módulo.
   //
-  //     ⚠️ Un `lastmod` inventado es peor que ninguno: Google compara la fecha
-  //     con lo que ve al rastrear y, cuando no cuadra, deja de hacer caso al
-  //     campo en TODO el sitemap. `lastmod` es opcional; mentir, no.
+  //     El HTML publicado no está en este repo —lo escribe el admin en el
+  //     document root del sitio— pero su FUENTE sí: el contenido de cada una
+  //     vive en `admin/database/seeders/landings/{slug}.php`, y el HTML lo
+  //     produce `ModuloController`. La página cambia cuando cambia cualquiera
+  //     de los dos, así que la fecha es la más reciente de ambos.
+  //
+  //     ⚠️⚠️ Es una fecha MEDIDA, no una inventada. Un `lastmod` puesto por
+  //     rellenar es peor que ninguno: Google lo compara con lo que ve al
+  //     rastrear y, cuando no cuadra, deja de hacer caso al campo en TODO el
+  //     sitemap. `lastmod` es opcional; mentir, no.
+  //
+  //     ⚠️ `admin/` es OTRO repositorio y está ignorado en este. Si no está
+  //     presente —una copia del sitio sin el admin al lado—, se omite la fecha
+  //     en vez de inventarla, y el sitemap sigue siendo válido.
+  const DATOS_LANDINGS = join(AQUI, '..', 'admin', 'database', 'seeders', 'landings')
+  const GENERADOR = join(AQUI, '..', 'admin', 'app', 'Http', 'Controllers', 'ModuloController.php')
+
   for (const slug of landingsDeModulo().sort()) {
-    urls.push({ loc: `${SITIO}/${slug}/`, prioridad: '0.9', frecuencia: 'monthly' })
+    const lastmod = masReciente([join(DATOS_LANDINGS, `${slug}.php`), GENERADOR])
+    urls.push({ loc: `${SITIO}/${slug}/`, lastmod, prioridad: '0.9', frecuencia: 'monthly' })
   }
 
   const cuerpo = urls.map((u) => [
