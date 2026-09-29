@@ -157,13 +157,39 @@ Catálogos compartidos a nivel tenant, sin `empresa_id`
 
    ✅ **DECIDIDO el 2026-09-20 e implementado en `[NIT-GLOBAL-1]`: son DOS catálogos.**
    `nits` sigue siendo del tenant, con su `company_id` obligatorio. El padrón oficial vive aparte,
-   en `nits_oficiales` (ver excepción 5).
+   en una tabla por país (ver excepción 5).
 
-5. **Padrón oficial de identificaciones** (`nits_oficiales`) — *declarado el 2026-09-20*
+   ✅ **RATIFICADO el 2026-09-29**: `nits` se queda **por TENANT, sin `empresa_id`**. Se planteó
+   partirlo por empresa y se descartó por el mismo motivo de arriba — el contribuyente es el
+   mismo para todas las empresas del suscriptor, y partirlo obligaría a registrarlo tantas veces
+   como empresas tenga, bastando una copia con el número mal escrito para emitir con un RNC
+   inválido desde esa empresa.
+
+5. **Padrón oficial de identificaciones** — **UNA TABLA POR PAÍS**
+   (`nits_rd`, `nits_ve`, `nits_co`, `nits_gt`, `nits_cr`)
+   — *declarado el 2026-09-20; partido por país el 2026-09-29 (`[NIT-PAIS-1]`)*
 
    **Sin `company_id` ni `empresa_id`.** Es lo que publica el organismo de cada país —DGII en RD,
    SENIAT en Venezuela, DIAN en Colombia, SAT en Guatemala, Hacienda en Costa Rica—. Lo mantiene
    **Zyntello**; para el suscriptor es **solo consulta**.
+
+   ⚠️⚠️ **Ya NO existe `nits_oficiales`.** Era una sola tabla con una columna `pais_id`; el
+   director técnico decidió el 2026-09-29 partirla en una tabla física por país. El mapa
+   país → tabla vive en **`config/padron_nits.php` y es la fuente única**: lo leen el modelo, el
+   importador, la pantalla de catálogos y `ResolverNit`. Escrito en cuatro sitios divergiría, y
+   el primero que se quedara atrás consultaría la tabla equivocada — devolviendo **el
+   contribuyente de otro país**, sin dar ningún error.
+
+   ⚠️⚠️ **`NitOficial` NO tiene tabla por defecto, a propósito.** No se consulta con
+   `NitOficial::where(...)`: se entra por **`NitOficial::delPais($pais)`**, que devuelve la
+   consulta ya apuntada — o **`null` si ese país no tiene padrón**. Y `null` y «cero resultados»
+   son respuestas DISTINTAS: una dice «de ese país no tenemos padrón» y la otra «ese
+   contribuyente no está en él». Confundirlas hace que el usuario dé por inexistente a un cliente
+   que sí existe y lo registre a mano con los datos que crea recordar.
+
+   ⚠️ **Añadir un país es su fila en la config Y su tabla en una migración.** Solo lo primero deja
+   el mapa apuntando a una tabla que no existe. `NitOficial::tablaDe()` lo comprueba y lo registra
+   en el log en vez de reventar con un «Table doesn't exist» que no menciona al país.
 
    **El flujo, y no hay otro** (`App\Services\Nits\ResolverNit`):
    1. Se busca en el catálogo del suscriptor (`nits`). Si está, se devuelve.
@@ -215,7 +241,7 @@ Catálogos compartidos a nivel tenant, sin `empresa_id`
 
    ✅ **El catálogo del suscriptor sigue existiendo aparte**: `pur_puertos`, de Compras, con sus dos
    columnas obligatorias. Del padrón **se COPIA** lo que haga falta —igual que `nits` copia de
-   `nits_oficiales`— y lo que el estándar no tiene (Punta Cana no está en el UN/LOCODE) se crea
+   el padrón por país— y lo que el estándar no tiene (Punta Cana no está en el UN/LOCODE) se crea
    ahí a mano y solo lo ve quien lo creó.
 
    ⚠️⚠️ **Por qué se copia y no se apunta**: una compra tiene que seguir diciendo por dónde entró la
