@@ -282,8 +282,12 @@ const MONEDAS_INFO = {
  * que la compara con la realidad y sale con código 1 si sobra o falta alguna.
  * Ejecutarla al publicar un módulo nuevo.
  * ─────────────────────────────────────────────────────────────────────────── */
+// ⚠️ `proyectos` salió el 2026-09-29: se fusionó en `constructflow`, que ya era
+// el mismo producto —sus rutas, su controlador y su tablero se llaman
+// `projects` por dentro— vendido dos veces al mismo precio. Dejarlo aquí
+// mantendría en el sitemap una página de un módulo que ya no existe.
 export const LANDINGS_PUBLICAS = new Set([
-  'zyntello-psa', 'crm', 'proyectos', 'tareas', 'facturacion', 'inventario',
+  'zyntello-psa', 'crm', 'tareas', 'facturacion', 'inventario',
   'encuestas', 'contabilidad', 'condominios', 'constructflow', 'events',
   'restaurante', 'doctores', 'nomina', 'cajachica', 'activos', 'supermercado',
   'compras', 'ferreteria', 'presupuesto', 'dental', 'cxc', 'alquileres', 'cxp',
