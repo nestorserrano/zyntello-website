@@ -293,6 +293,7 @@ export const LANDINGS_PUBLICAS = new Set([
   'compras', 'ferreteria', 'presupuesto', 'dental', 'cxc', 'alquileres', 'cxp',
   'prestamello', 'erp', 'reportes', 'bancos', 'carwash', 'inteligencia',
   'fiscal', 'flujocaja', 'abastecimiento', 'rutas', 'caja', 'fiscal-documentos',
+  'dashboards-financieros',
 ])
 
 /* ─── Iconos flotantes animados ─────────────────────────────────── */
