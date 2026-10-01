@@ -248,6 +248,35 @@ Catálogos compartidos a nivel tenant, sin `empresa_id`
    mercancía **aunque el estándar cambie**. Si apuntara al padrón y las Naciones Unidas corrigieran
    un nombre, los documentos viejos cambiarían de puerto retroactivamente.
 
+8. **Tarifas de los proveedores de IA** (`ia_precios_modelo`) — *declarado y decidido el
+   2026-10-01 por el director técnico; implementado en `[IATEN-F4-1]`*
+
+   **Sin `company_id` ni `empresa_id`.** Es el precio público que cobra cada proveedor —Anthropic,
+   OpenAI, Google, Mistral, Groq— por millón de tokens: idéntico para todo el mundo, igual que el
+   código de un país o el símbolo de una moneda. Lo mantiene **Zyntello**; para el suscriptor es
+   **solo consulta**, y lo único que ve es el importe ya calculado en su panel de consumo.
+
+   **La alternativa se evaluó y se descartó por escrito**: una copia por suscriptor son ~60 filas
+   cada uno, y cada cambio de tarifa habría que replicarlo en todos. ⚠️⚠️ El primero que se quede
+   sin actualizar le muestra a su cliente **un costo calculado con la tarifa vieja** — un número
+   plausible y equivocado, con el que ese cliente va a decidir si apaga una herramienta o sube su
+   tope de gasto. Es justo el defecto que esta tabla existe para evitar.
+
+   ⚠️⚠️ **Es una TABLA con vigencia, no una constante, y eso no es recortable.** Las tarifas
+   cambian. Con una constante, **todo el histórico se recalcularía con el precio de hoy**: el
+   cliente abriría el panel de marzo y vería un importe distinto del que leyó en marzo. Se busca
+   la fila **vigente a la fecha del consumo** (`PrecioModeloIa::vigenteEn()`), nunca la última, y
+   una tarifa nueva entra como **fila nueva** — jamás se edita una existente.
+
+   ⚠️ **`null` y «cuesta cero» son respuestas DISTINTAS.** Sin tarifa sembrada, `CostoIaService`
+   devuelve `null` y la pantalla declara cuántas preguntas no pudo estimar. Devolver `0.0`
+   pintaría **$0,00** y el cliente leería «esto no me cuesta nada», que es lo contrario de lo que
+   pasa. Groq sí está sembrado en cero, y ahí el cero **es verdad**: su capa gratuita no cobra.
+
+   ⚠️ **`ia_consumo` NO es una excepción**: lleva `company_id` y `empresa_id`, porque sí es dato
+   del suscriptor. Las que no se ofrecen como origen de reporte son `ia_credenciales` y su pivote
+   —contienen una credencial de pago— y esta misma, que no es dato de nadie.
+
 **Todo lo demás lleva las dos columnas**: clientes, proveedores, artículos, agentes, facturas,
 cobros, pagos, movimientos, planes de comisión, empleados, permisos, configuraciones, preferencias,
 consecutivos y cualquier dato operativo o de configuración.
