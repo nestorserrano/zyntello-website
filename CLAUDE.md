@@ -296,9 +296,22 @@ Catálogos compartidos a nivel tenant, sin `empresa_id`
    pintaría **$0,00** y el cliente leería «esto no me cuesta nada», que es lo contrario de lo que
    pasa. Groq sí está sembrado en cero, y ahí el cero **es verdad**: su capa gratuita no cobra.
 
-   ⚠️ **`ia_consumo` NO es una excepción**: lleva `company_id` y `empresa_id`, porque sí es dato
-   del suscriptor. Las que no se ofrecen como origen de reporte son `ia_credenciales` y su pivote
-   —contienen una credencial de pago— y esta misma, que no es dato de nadie.
+   ⚠️ **`ia_consumo` NO es una excepción de tabla**: lleva `company_id` y `empresa_id`, porque sí
+   es dato del suscriptor. Las que no se ofrecen como origen de reporte son `ia_credenciales` y su
+   pivote —contienen una credencial de pago— y esta misma, que no es dato de nadie.
+
+   ⚠️⚠️ **Matiz medido el 2026-10-03: su `empresa_id` SÍ admite NULL, y es deliberado.** Una
+   llamada puede venir de un proceso sin empresa —un cron, un comando—, e inventarle una metería
+   ese gasto en el panel de una empresa que no lo hizo. Y cerrarla cuesta más de lo que protege:
+   `CuotaIaService::registrar()` anota DESPUÉS de que la llamada ya se cobró, así que un NOT NULL
+   convierte ese `null` en un 1048 que **pierde el registro de un gasto ya hecho** — el dinero sale
+   y no queda anotado.
+
+   ⚠️ **Ese NULL no abre fuga, y se midió**: `ConsumoIa` no usa `HasEmpresa`, así que no hay scope
+   laxo que enseñe la fila desde todas las empresas; cada consulta filtra a mano, y el tope de
+   gasto suma por `company_id`, que es quien paga. El hueco del NULL en el UNIQUE lo cierra una
+   columna generada (`COALESCE(empresa_id, '_tenant_')`), o dos consumos sin empresa del mismo día
+   y modelo se contarían DOS VECES. Declarado en `AislamientoNoAdmiteNullTest::PUEDEN_SER_NULL`.
 
 **Todo lo demás lleva las dos columnas**: clientes, proveedores, artículos, agentes, facturas,
 cobros, pagos, movimientos, planes de comisión, empleados, permisos, configuraciones, preferencias,
