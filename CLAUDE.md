@@ -205,23 +205,46 @@ Catálogos compartidos a nivel tenant, sin `empresa_id`
    es **laxo con el NULL**: bastaría un `updateOrCreate` que olvidara el `company_id` para
    publicarle su dato a todos los demás suscriptores, **y sin ningún síntoma**.
 
-6. **Posiciones del Ministerio de Trabajo** (`nom_posiciones_mt`) — *declarado el 2026-09-20,
-   implementado en `[MT-GLOBAL-1]`*
+6. **Catálogos del Ministerio de Trabajo** (`nom_sirla_catalogos`) — *declarado el 2026-09-20
+   como `nom_posiciones_mt`; **reemplazado el 2026-10-02** en `[SIRLA-CAT-2]`*
 
-   `company_id` y `empresa_id` **admiten NULL**: esas filas son el catálogo oficial del país,
-   igual para todos los que operan en él, y lo mantiene Zyntello. El suscriptor **puede** añadir
-   una posición propia que su Ministerio aún no publica, y esa solo la ve él —`scopeParaTenant()`
-   devuelve «las suyas + las de plataforma»—.
+   **Sin `company_id` ni `empresa_id`.** Son las ocupaciones, niveles educativos, nacionalidades y
+   discapacidades que publica el ministerio de cada país, más las causas de suspensión del Art. 51
+   —esas salen de la LEY, no de un fichero—. Se acotan por **`pais_codigo`**. Lo mantiene
+   **Zyntello**; para el suscriptor es **solo consulta**.
 
-   ⚠️ Esta excepción nació de un desajuste: el modelo ya estaba escrito así, pero `[AISL-11]` puso
-   la columna NOT NULL y dejó la rama `whereNull('company_id')` **imposible de cumplir** — y el
-   seeder reventaba en cada `demo:reset` con un 1048 que un `catch` se tragaba.
+   ⚠️⚠️ **Y el «solo consulta» no es comodidad: es lo que evita la planilla rechazada.** Antes el
+   suscriptor podía añadir una ocupación propia, y eso era un defecto con forma de funcionalidad:
+   `cod_posicion_mt` es un `varchar(20)`, así que un código inventado **pasa todas las
+   comprobaciones internas** y llega al archivo del SIRLA. El portal **no valida al teclear:
+   rechaza el ARCHIVO COMPLETO al subirlo**, sin decir cuál de los trescientos trabajadores lo
+   causó. El cliente creería haber resuelto una falta del catálogo, y lo que habría hecho es
+   dejarse la planilla del mes sin presentar. Si falta una ocupación, se pide a Zyntello y entra
+   en el catálogo del país — para todo el que la necesite, no solo para quien la escribió.
 
-   ⚠️⚠️ **En las dos, el UNIQUE usa una columna GENERADA** (`COALESCE(company_id, '_plataforma_')`)
-   porque **en MySQL un UNIQUE no restringe los NULL**: sin ella, el catálogo global admitiría el
-   mismo código infinitas veces y el índice no diría nada. Y comprobar que un índice «existe» por
-   su NOMBRE no basta — hay que comparar **sus columnas**: `uk_posicion_mt` ya existía con las
-   columnas de antes, la migración lo dio por bueno y la protección no se puso.
+   ⚠️⚠️ **Esta excepción nació con DOS tablas, y esa era la verdadera trampa.** `nom_posiciones_mt`
+   y `nom_sirla_catalogos` guardaban **la misma lista del mismo fichero** (`CatalogoOcupacional.csv`)
+   por dos importadores distintos — y el 2026-10-02 se midió que **ninguna de las dos estaba
+   cargada en ninguna instalación**: 5 marcadores «TODO-MT» en una, 12 causas de suspensión en la
+   otra, cero ocupaciones. Con dos copias, el día que el Ministerio publicara una ocupación nueva
+   habría que cargarla dos veces, y la que se quedara atrás ofrecería un código que el portal
+   rechaza. Se retiró `nom_posiciones_mt`; queda **una**.
+
+   ⚠️ **Y la que se retiró guardaba una fila POR EMPRESA**: 2.835 ocupaciones multiplicadas por
+   cada empresa de cada suscriptor, todas idénticas. Un catálogo que publica el Estado no es dato
+   de nadie: es del país, como `monedas` o `paises`.
+
+   ⚠️ **Vienen sembrados desde el repo** (`database/catalogos/{ISO2}/`, ver su `LEEME.md`): hasta
+   `[SIRLA-CAT-1]` solo entraban corriendo un comando contra una carpeta del ordenador de quien
+   tuviera los CSV descargados, así que tener catálogo dependía de que alguien se acordara — y
+   durante meses nadie se acordó. Una pantalla vacía es indistinguible de un módulo sin terminar.
+
+   ⚠️⚠️ **La codificación se MIRA, no se supone.** Los ministerios publican en ISO-8859-1: la «Í»
+   de `ASESOR JURÍDICO` es el byte `0xCD`, que no es UTF-8 válido, así que MySQL **no lo guarda
+   mal — lo RECHAZA** con un `1366 Incorrect string value`, y como la carga va en transacción
+   **una sola fila tumba las 2.835**. Pero convertir a ciegas es el defecto contrario y **ese no
+   da ningún error**: rompe los acentos del fichero que ya venía bien, en la base, para siempre.
+   Lo decide `App\Support\Csv::aUtf8()`, en un solo sitio.
 
 7. **Puertos y aeropuertos del mundo** (`puertos`) — *declarado el 2026-09-20, implementado en
    `[PUERTO-1..4]`*
