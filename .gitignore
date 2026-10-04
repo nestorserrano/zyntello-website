@@ -11,6 +11,16 @@ node_modules
 dist-ssr
 *.local
 .env
+# ⚠️⚠️ Este repo es PÚBLICO: cualquier credencial que entre aquí queda expuesta en internet, y
+# borrarla después NO la quita del historial. `.env` a secas solo cubre ese nombre exacto, así
+# que un `.env.local` o un `.env.staging` con una clave dentro entraría sin que nada avisara.
+.env.*
+# ⚠️ `.env.production` SÍ se versiona, a propósito y sin riesgo: contiene UNA línea,
+# `VITE_ADMIN_URL`, que es la URL pública del panel —la misma que `Soluciones.jsx` ya trae como
+# valor por defecto— y Vite la necesita en el build. Si alguna vez hiciera falta meter un
+# secreto en el build del sitio, NO va aquí: lo que Vite compila acaba en el JS que se descarga.
+!.env.production
+!.env.example
 
 # Editor directories and files
 .vscode/*
