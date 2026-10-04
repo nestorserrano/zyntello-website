@@ -85,7 +85,6 @@ const DISPLAY_ESTATICO = {
   // no de esta lista — aquí solo vive lo visual.
   inteligencia:   { icono: '🧠', rating: 4.8, reviews: 18, etiqueta: 'Nuevo', previews: [{ label: 'Salud', icon: '❤️' }, { label: 'Recomendaciones', icon: '🎯' }, { label: 'NPS', icon: '📊' }],            categoria: 'Inteligencia' },
   fiscal:         { icono: '🧾', rating: 4.9, reviews: 26, etiqueta: 'Nuevo', previews: [{ label: 'Calendario', icon: '📅' }, { label: 'Alertas', icon: '🔔' }, { label: 'Cumplimiento', icon: '✅' }],       categoria: 'Finanzas' },
-  flujocaja:      { icono: '💧', rating: 4.8, reviews: 21, etiqueta: 'Nuevo', previews: [{ label: 'Proyección', icon: '📈' }, { label: 'Escenarios', icon: '🔀' }, { label: 'Liquidez', icon: '💧' }],        categoria: 'Finanzas' },
   abastecimiento: { icono: '📈', rating: 4.7, reviews: 19, etiqueta: 'Nuevo', previews: [{ label: 'Pronóstico', icon: '🔮' }, { label: 'EOQ', icon: '⚖️' }, { label: 'ABC', icon: '🔤' }],                     categoria: 'Logística' },
   rutas:          { icono: '🗺️', rating: 4.8, reviews: 24, etiqueta: 'Nuevo', previews: [{ label: 'Despachos', icon: '🚚' }, { label: 'Visitas', icon: '📍' }, { label: 'Mapa', icon: '🗺️' }],                categoria: 'Logística' },
 }
@@ -292,9 +291,13 @@ export const LANDINGS_PUBLICAS = new Set([
   'restaurante', 'doctores', 'nomina', 'cajachica', 'activos', 'supermercado',
   'compras', 'ferreteria', 'presupuesto', 'dental', 'cxc', 'alquileres', 'cxp',
   'prestamello', 'erp', 'reportes', 'bancos', 'carwash', 'inteligencia',
-  'fiscal', 'flujocaja', 'abastecimiento', 'rutas', 'caja', 'fiscal-documentos',
+  'fiscal', 'abastecimiento', 'rutas', 'caja', 'fiscal-documentos',
   'dashboards-financieros',
 ])
+// ⚠️ `flujocaja` salió el 2026-10-03: dos de sus tres pantallas cobraban 100 USD/año
+// por la misma proyección que el ERP ya da en CxP y en Bancos —mismo servicio—, y su
+// landing prometía proyección diaria, umbral configurable y aviso automático, que no
+// existen. Las pantallas siguen, dentro de Bancos; lo que se retiró es el cobro.
 
 /* ─── Iconos flotantes animados ─────────────────────────────────── */
 const FLOAT_POSITIONS = [
