@@ -23,7 +23,7 @@
 > - **Razonamiento visible / pensamientos** — el bloque de análisis que el usuario ve también va en español.
 > - **Análisis, auditorías, diagnósticos, reportes de discrepancias.**
 > - **Código**: nombres de métodos y variables de negocio, comentarios, docblocks, mensajes de excepción, mensajes de validación, flash messages, textos de vista.
-> - **Commits**: `[#NNN] descripción en español`.
+> - **Commits**: descripción en español, **sin número**. Ver la nota de abajo.
 > - **Documentación**: CLAUDE.md, blueprints, DISCREPANCIAS, memorias.
 > - **Tests**: nombres descriptivos y mensajes de aserción en español.
 >
@@ -31,6 +31,42 @@
 > (`public function`, `Schema::create`, `belongsTo`, nombres de columnas ya existentes, etc.).
 >
 > Si una herramienta o subagente devuelve algo en inglés, **se traduce antes de mostrarlo**.
+
+---
+
+## 🔢 LA NUMERACIÓN `[#NNN]` DE LOS COMMITS QUEDA DEPRECADA (2026-10-03)
+
+> **Decisión del director técnico.** Los commits se identifican por su **hash** —`e0d4afc33`—,
+> que es lo único que de verdad identifica uno. El prefijo `[#NNN]` **ya no se escribe**.
+
+### Por qué se retira
+
+No era un problema de coordinación entre sesiones, y por eso no se arreglaba hablando más:
+
+⚠️⚠️ **La serie se REINICIÓ.** Julio terminó en **1639** y septiembre empezó en **1023**, así que
+cuando la serie iba por 1392 había **247 números ya usados por delante**. Los siguientes 247
+commits habrían colisionado uno a uno **aunque nadie se equivocara**.
+
+⚠️ Y encima el checkout es compartido: con cuatro sesiones cogiendo «el siguiente» con `git log`
+a la vez, el 2026-10-03 se midieron **19 números duplicados en 60 commits**.
+
+### Lo que eso costaba de verdad
+
+**Buscar un commit por su número devolvía el de otro.** Pasó en esta misma sesión verificando el
+cierre: un `grep "\[#1372\]"` apuntó a un commit de IA y `[#1375]` a una bitácora ajena. Quien
+busque `[#1375]` dentro de un mes se llevará el trabajo equivocado y lo dará por bueno — un
+identificador que señala al sitio equivocado es peor que no tener ninguno.
+
+### Qué se hace ahora
+
+- El mensaje empieza directamente por la descripción, en español y diciendo **qué cambia para
+  quien usa el sistema**. Esa parte no cambia: es la que de verdad sirve.
+- Para referirse a un commit —en la bitácora, en un comentario, entre sesiones— se usa su **hash
+  corto**. Es único, no hay que reservarlo y no colisiona.
+- Las etiquetas de trabajo (`[CONT-DEMO-3]`, `[SIRLA-CAT-2]`, `[AISL-11]`) **se mantienen**: esas
+  no son correlativas, agrupan un trabajo y se eligen a mano. El problema era la serie numérica.
+- ⚠️ Los `[#NNN]` ya escritos **se dejan como están**: reescribir la historia por esto costaría
+  más de lo que vale, y los commits antiguos ya tienen su hash.
 
 ---
 
