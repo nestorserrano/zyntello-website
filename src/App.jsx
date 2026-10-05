@@ -12,6 +12,7 @@ import WhatsAppChat from './components/WhatsAppChat'
 import { useRevelar } from './hooks/useRevelar'
 import './styles/zyntello.css'
 import './styles/Secciones.css'
+import './styles/financial-ui.css'
 
 function App() {
   useRevelar()

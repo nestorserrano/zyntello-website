@@ -1,0 +1,28 @@
+:root {
+  --zy-fondo: #111923; --zy-fondo-alto: #151f2b; --zy-tarjeta: #19232f;
+  --zy-tarjeta-alta: #202d3b; --zy-elevado: #243140;
+  --zy-indigo: #6287ad; --zy-indigo-fuerte: #345775; --zy-indigo-claro: #adc5de;
+  --zy-coral: #d79485; --zy-coral-claro: #e6b4a8;
+  --zy-grad-marca: linear-gradient(#345775, #345775);
+  --zy-grad-texto: linear-gradient(#adc5de, #adc5de);
+  --zy-grad-panel: linear-gradient(160deg, rgb(98 135 173 / .04), transparent);
+  --zy-glow-indigo: 0 4px 16px rgb(0 0 0 / .12);
+  --zy-glow-coral: 0 4px 16px rgb(0 0 0 / .12);
+}
+html[data-appearance="light"] {
+  color-scheme: light;
+  --zy-fondo: #f4f5f7; --zy-fondo-alto: #f8f9fa; --zy-tarjeta: #fff;
+  --zy-tarjeta-alta: #fff; --zy-elevado: #eef1f4;
+  --zy-borde: #e2e8f0; --zy-borde-medio: #cbd5e1; --zy-borde-fuerte: #94a3b8;
+  --zy-texto: #202f40; --zy-texto-medio: #435367; --zy-texto-suave: #526174; --zy-texto-tenue: #627185;
+  --zy-indigo-claro: #345775; --zy-coral: #ad5a4a; --zy-coral-claro: #ad5a4a;
+  --zy-grad-texto: linear-gradient(#345775, #345775);
+  --zy-sombra-1: 0 1px 2px rgb(0 0 0 / .03);
+  --zy-sombra-2: 0 4px 6px -1px rgb(0 0 0 / .05);
+  --zy-sombra-3: 0 12px 32px rgb(32 47 64 / .06);
+}
+.financial-icon { display: inline-flex; align-items: center; justify-content: center; line-height: 1; }
+.zy-appearance { display: inline-flex; align-items: center; justify-content: center; min-width: 40px; min-height: 40px; border: 1px solid var(--zy-borde); border-radius: 8px; background: var(--zy-tarjeta); color: var(--zy-texto-suave); }
+.zy-appearance:hover { color: var(--zy-texto); background: var(--zy-elevado); }
+.zy-appearance:focus-visible { outline: 2px solid var(--zy-indigo-claro); outline-offset: 3px; }
+html[data-appearance="light"] .zy-nav { background: var(--zy-tarjeta); }

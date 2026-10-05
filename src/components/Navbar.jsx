@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Icono from './Icono'
+import Apariencia from './Apariencia'
 import '../styles/Navbar.css'
 
 const SECCIONES = [
@@ -84,6 +85,7 @@ export default function Navbar() {
           </ul>
 
           <div className="zy-nav-acciones">
+            <Apariencia />
             <a
               href="https://app.zyntello.com"
               className="zy-nav-acceso"
