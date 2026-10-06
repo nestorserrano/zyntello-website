@@ -60,9 +60,23 @@ $ok = Invoke-SSHCommand -Command "cd $REPO_DIR && git pull origin master" -Descr
 if (-not $ok) { Write-Host "`nError en pull. Abortando." -ForegroundColor Red; exit 1 }
 
 # PASO 2: copiar al directorio publico (replica .cpanel.yml), preservando .env y vendor
+#
+# ⚠⚠ El 2026-10-06 este paso FALLO entero y el deploy salio con codigo 1 — pero los archivos
+#    SI se habian copiado. El `cp -r` incluia `.git`, y los objetos de git del destino son de
+#    SOLO LECTURA por diseno (444): al existir ya, `cp` daba "Permission denied" archivo por
+#    archivo. Como la cadena va con `&&`, el fallo cortaba ANTES del `rm` — y como aqui se hace
+#    `exit 1`, **el PASO 3 no llegaba a correr: produccion se quedaba con el codigo nuevo y la
+#    cache vieja**. Eso no se ve: la pantalla responde 200 sirviendo vistas compiladas de antes.
+#
+# El arreglo es no copiar `.git` en vez de copiarlo y borrarlo despues. Se usa `rsync` (esta en
+# el servidor) SIN `--delete`, para no tocar nada que viva solo en el destino: `.env`, `storage`
+# y el `.git` propio del directorio publico — que es el que lee la verificacion por commit.
+#
+# ⚠ Y por eso YA NO se borra `$DEST_DIR/.git`: ese borrado es el patron que una vez se llevo
+#    produccion por delante al expandirse mal una variable.
 $ok = Invoke-SSHCommand `
-    -Command "/bin/mkdir -p $DEST_DIR && /bin/cp -r $REPO_DIR/. $DEST_DIR/ && /bin/rm -rf $DEST_DIR/.git $DEST_DIR/node_modules" `
-    -Description "[2/4] Copiar repo -> $DEST_DIR (preserva .env y vendor)..."
+    -Command "/bin/mkdir -p $DEST_DIR && /usr/bin/rsync -a --exclude='.git' --exclude='node_modules' --exclude='.env' $REPO_DIR/ $DEST_DIR/" `
+    -Description "[2/4] Copiar repo -> $DEST_DIR (preserva .env, storage y el .git del destino)..."
 if (-not $ok) { Write-Host "`nError al copiar. Abortando." -ForegroundColor Red; exit 1 }
 
 # PASO 3: cache Laravel + permisos
