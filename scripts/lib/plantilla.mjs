@@ -11,6 +11,8 @@
  * etiqueta de vuelta y su distintivo de cabecera.
  */
 
+import { REDES_SOCIALES } from '../../src/config/redesSociales.js'
+
 const SITIO = 'https://zyntello.com'
 const WHATSAPP = '18296399877'
 
@@ -34,6 +36,11 @@ const columnas = (n, max) => {
 const rejilla = (items, max, render) =>
   `<div class="rejilla" style="--cols:${columnas(items.length, max)}">`
   + items.map(render).join('') + '</div>'
+
+export const redesSociales = () => `
+<nav class="redes-sociales" aria-label="Redes sociales de Zyntello">
+  ${REDES_SOCIALES.map(({ nombre, href, icono }) => `<a class="red-social" href="${href}" target="_blank" rel="noopener noreferrer" aria-label="Seguir a Zyntello en ${nombre}" title="${nombre}"><i class="fa-brands ${icono}" aria-hidden="true"></i></a>`).join('\n  ')}
+</nav>`
 
 /**
  * El CSS que comparten TODAS las paginas estaticas del sitio.
@@ -155,6 +162,12 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
 .pie-caja{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
 .pie a{color:var(--suave)}
 .pie a:hover{color:var(--texto)}
+.pie-redes{display:flex;align-items:center;gap:10px}
+.pie-redes>span{font-family:var(--display);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.redes-sociales{display:flex;flex-wrap:wrap;gap:7px}
+.red-social{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--borde);border-radius:10px;background:var(--tarjeta);color:var(--tenue)!important;font-size:.92rem;transition:color .2s,border-color .2s,transform .2s,background .2s}
+.red-social:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--color) 42%,var(--borde));background:color-mix(in srgb,var(--color) 8%,var(--tarjeta));color:var(--color)!important}
+.red-social:focus-visible{outline:2px solid var(--color);outline-offset:3px}
 
 /* ── Revelado al hacer scroll ──────────────────────────────────────────────
    ⚠️ Solo se oculta si la clase 'js' está puesta, y la pone el propio script.
@@ -225,6 +238,7 @@ export function pagina(f, otras, opciones) {
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="${SITIO}/vendor/fontawesome/css/all.min.css">
 <script type="application/ld+json">
 ${JSON.stringify({
   '@context': 'https://schema.org',
@@ -236,7 +250,7 @@ ${JSON.stringify({
   description: f.resumen,
   url: rutaDe(f.slug),
   isPartOf: { '@type': 'WebSite', name: 'Zyntello', url: SITIO },
-  publisher: { '@type': 'Organization', name: 'Zyntello, S.R.L.', url: SITIO },
+  publisher: { '@type': 'Organization', name: 'Zyntello, S.R.L.', url: SITIO, sameAs: REDES_SOCIALES.map(({ href }) => href) },
   mainEntity: {
     '@type': 'FAQPage',
     mainEntity: f.faq.map(p => ({
@@ -388,6 +402,10 @@ ${estilos(f.color).trim()}
       <a href="${SITIO}/contacto/">Contacto</a> ·
       <a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a>
     </span>
+    <div class="pie-redes">
+      <span>Síguenos</span>
+      ${redesSociales()}
+    </div>
   </div>
 </footer>
 

@@ -13,7 +13,7 @@
  * va por donde vino.
  */
 
-import { estilos } from './plantilla.mjs'
+import { estilos, redesSociales } from './plantilla.mjs'
 import { CLUSTERS, PAISES } from '../blog/clusters.mjs'
 
 const SITIO = 'https://zyntello.com'
@@ -95,6 +95,7 @@ const cabecera = ({ titulo, descripcion, url, jsonLd, color = COLOR }) => `<!DOC
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="${SITIO}/vendor/fontawesome/css/all.min.css">
 <script type="application/ld+json">
 ${JSON.stringify(jsonLd, null, 2)}
 </script>
@@ -134,6 +135,10 @@ const pie = () => `
       <a href="${SITIO}/contacto/">Contacto</a> ·
       <a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a>
     </span>
+    <div class="pie-redes">
+      <span>Síguenos</span>
+      ${redesSociales()}
+    </div>
   </div>
 </footer>
 </body>

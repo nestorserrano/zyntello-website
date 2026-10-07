@@ -1,4 +1,5 @@
 import Icono from './Icono'
+import RedesSociales from './RedesSociales'
 
 /* ⚠️⚠️ Cada servicio a SU página. Hasta el 2026-09-21 los diez apuntaban a
    `#servicios`, la MISMA ancla: daba igual cuál pulsaras, y eso no se ve como
@@ -94,6 +95,8 @@ export default function Footer() {
               <a href="https://wa.me/18296399877"><Icono nombre="chat" size={15} /> +1 829 639 9877</a>
               <a href="mailto:soporte@zyntello.com"><Icono nombre="salvavidas" size={15} /> soporte@zyntello.com</a>
             </div>
+            <p className="zy-pie-redes-titulo">Síguenos</p>
+            <RedesSociales />
           </div>
 
           <div className="col-6 col-lg-3">
