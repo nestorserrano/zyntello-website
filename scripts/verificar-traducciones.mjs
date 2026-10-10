@@ -32,12 +32,16 @@
  */
 
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 import { dirname, join } from 'node:path'
 
 const AQUI = dirname(fileURLToPath(import.meta.url))
 const COMPONENTES = join(AQUI, '..', 'src', 'components')
 const SEEDER = join(AQUI, '..', 'admin', 'database', 'seeders', 'TextosSitioSeeder.php')
+
+/* ⚠️ `pathToFileURL` y no la ruta a secas: en Windows, `import('C:\\...')` falla
+   con ERR_UNSUPPORTED_ESM_URL_SCHEME porque Node lee «C:» como un protocolo. */
+const { claveChat } = await import(pathToFileURL(join(AQUI, '..', 'src', 'lib', 'claveChat.js')).href)
 
 if (!existsSync(SEEDER)) {
   console.log('· Traducciones: no se encuentra el catálogo del admin, se omite la comprobación.')
@@ -112,6 +116,47 @@ for (const s of slugsDeLista(leer('Footer.jsx'))) pide('Footer.jsx', `pie.serv.$
 
 /* Contacto: las catorce opciones del desplegable. */
 for (const s of slugsDeLista(leer('Contacto.jsx'))) pide('Contacto.jsx', `cont.op.${s}`)
+
+/* ⚠️⚠️ El chat: sus 148 claves NO se escriben en ninguna parte, se DERIVAN del
+   texto en español con `claveChat()` — la misma función que usa el componente,
+   importada, no copiada. Dos copias divergirían y esta guarda pasaría en verde
+   comparándose consigo misma.
+
+   Lo que esto detecta: alguien edita una frase del chat en español, su clave
+   cambia, y la traducción vieja queda huérfana. La frase volvería a verse en
+   español en los ocho idiomas sin ningún error. Aquí el build para y la nombra. */
+const chat = leer('WhatsAppChat.jsx')
+const arbol = chat.split('const NODOS = {')[1]?.split('\n}\n')[0]
+if (!arbol) throw new Error('No se encontró el árbol NODOS en WhatsAppChat.jsx')
+
+/* ⚠️⚠️ Se lee el ARRAY entero, no línea a línea, porque los dos formatos
+   conviven en el mismo archivo:
+
+       opciones: [          ←  una frase por línea
+         'A',
+         'B',
+       ],
+       opciones: ['A', 'B'],    ←  todas en una línea
+
+   Una primera versión de esto miraba línea a línea y se saltó los de una sola
+   línea — cuatro opciones de un nodo de ERP. La guarda pasó en VERDE y el
+   defecto se descubrió recorriendo el chat a mano, con las opciones en español
+   en mitad de una conversación en chino. Es el fallo que esta guarda existe
+   para evitar, cometido por la guarda misma. */
+for (const bloque of arbol.matchAll(/(?:mensajes|opciones):\s*\[([\s\S]*?)\]/g)) {
+  for (const s of bloque[1].matchAll(/'((?:[^'\\]|\\.)*)'/g)) {
+    const texto = s[1].replace(/\\'/g, "'")
+    if (texto.trim()) pide('WhatsAppChat.jsx', claveChat(texto))
+  }
+}
+
+/* Y las frases sueltas, fuera del árbol: los mensajes que el flujo emite
+   directamente y la opción «Otro». */
+for (const m of chat.matchAll(/agregarMensaje\('bot', '([^']+)'\)/g)) {
+  pide('WhatsAppChat.jsx', claveChat(m[1].replace(/\\'/g, "'")))
+}
+const otro = chat.match(/const OPCION_OTRO = '([^']+)'/)
+if (otro) pide('WhatsAppChat.jsx', claveChat(otro[1]))
 
 /* Por qué Zyntello: cada bloque pide su título y su texto. */
 for (const m of leer('PorQueZyntello.jsx').matchAll(/clave: '([^']+)'/g)) {

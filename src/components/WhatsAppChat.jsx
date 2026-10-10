@@ -1,4 +1,18 @@
 import { useState, useEffect, useRef } from 'react'
+import { useIdioma } from '../hooks/useIdioma'
+import { claveChat } from '../lib/claveChat'
+
+/* ⚠️⚠️ EN ESTE COMPONENTE SE TRADUCE LO QUE SE MUESTRA, NUNCA LO QUE IDENTIFICA
+   O LO QUE SE ENVÍA. Las dos cosas se romperían en silencio:
+
+   1. El texto de cada opción **es la clave del mapa `siguiente`**
+      (`nodo.siguiente[opcion]`). Traducirlo dejaría el chat mudo: el visitante
+      pulsa y no pasa nada, sin ningún error en consola.
+   2. El `historial` es lo que se manda a WhatsApp al final. Traducirlo haría
+      llegar la consulta en chino o en árabe a quien la atiende en español.
+
+   Por eso el español se queda donde está, mandando, y la traducción se busca
+   al pintar: `t(claveChat(texto), texto)`. */
 
 const NUMERO = '18296399877'
 
@@ -455,6 +469,7 @@ const NODOS_BINARIOS = new Set([
 ])
 
 export default function WhatsAppChat() {
+  const { idioma, t } = useIdioma()
   const [abierto, setAbierto] = useState(false)
   const [mensajes, setMensajes] = useState([])
   const [nodoActual, setNodoActual] = useState('inicio')
@@ -505,9 +520,14 @@ export default function WhatsAppChat() {
 
     if (nodoId === 'convertir') {
       await new Promise(r => setTimeout(r, 900))
-      const resumen = msgHistorial.length > 0
+      /* ⚠️⚠️ El resumen va SIEMPRE en español: lo lee quien atiende el WhatsApp.
+         Pero si el visitante recorrió el chat en otro idioma hay que decirlo —
+         contestar en español a quien eligió chino es perder la consulta, y sin
+         este aviso no hay manera de saberlo: el resumen llega idéntico. */
+      const avisoIdioma = idioma === 'es' ? '' : `\n\n[El visitante navegaba el sitio en: ${idioma}]`
+      const resumen = (msgHistorial.length > 0
         ? `Hola, vengo del sitio web de Zyntello. Estoy interesado en:\n\n${msgHistorial.map(m => `• ${m}`).join('\n')}\n\nMe gustaría más información.`
-        : 'Hola, vengo del sitio web de Zyntello y me gustaría información sobre sus servicios.'
+        : 'Hola, vengo del sitio web de Zyntello y me gustaría información sobre sus servicios.') + avisoIdioma
       window.open(`https://wa.me/${NUMERO_WA}?text=${encodeURIComponent(resumen)}`, '_blank')
       setTimeout(() => {
         setMensajes([])
@@ -604,7 +624,7 @@ export default function WhatsAppChat() {
                   style={{ width: 42, height: 42, background: '#128c7e', fontSize: '1.1rem', flexShrink: 0 }}>Z</div>
                 <div>
                   <div className="fw-bold text-white" style={{ fontSize: '0.95rem', lineHeight: 1.2 }}>Zyntello</div>
-                  <div style={{ fontSize: '0.72rem', color: '#a7f3d0' }}>● En línea · Responde rápido</div>
+                  <div style={{ fontSize: '0.72rem', color: '#a7f3d0' }}>● {t('chat.ui.en-linea', 'En línea · Responde rápido')}</div>
                 </div>
               </div>
               <button onClick={() => setAbierto(false)}
@@ -622,7 +642,11 @@ export default function WhatsAppChat() {
                       background: m.tipo === 'user' ? 'rgba(52,211,153,0.16)' : 'rgba(255,255,255,0.06)',
                       borderRadius: m.tipo === 'user' ? '16px 4px 16px 16px' : '4px 16px 16px 16px'
                     }}
-                    dangerouslySetInnerHTML={{ __html: bold(m.texto) }}
+                    /* ⚠️ Se traduce al PINTAR, no al guardar: el estado conserva el
+                       español, que es lo que viaja a WhatsApp. Y el texto libre que
+                       escribe el visitante no tiene clave sembrada, así que cae a sí
+                       mismo — no hace falta distinguirlo. */
+                    dangerouslySetInnerHTML={{ __html: bold(t(claveChat(m.texto), m.texto)) }}
                   />
                 </div>
               ))}
@@ -646,6 +670,9 @@ export default function WhatsAppChat() {
               {!esperando && opciones.length > 0 && (
                 <div className="d-flex flex-column gap-2 mt-1">
                   {opciones.map((op, i) => (
+                    /* ⚠️ `op` sigue siendo el texto ESPAÑOL: es la clave del mapa
+                       `siguiente` y lo que se guarda en el historial. Solo cambia
+                       lo que se pinta. */
                     <button key={i} onClick={() => seleccionarOpcion(op)}
                       className="text-start px-3 py-2 rounded-3 fw-medium"
                       style={{
@@ -654,7 +681,7 @@ export default function WhatsAppChat() {
                       }}
                       onMouseEnter={e => e.currentTarget.style.background = 'rgba(52,211,153,0.14)'}
                       onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}>
-                      {op}
+                      {t(claveChat(op), op)}
                     </button>
                   ))}
                 </div>
@@ -671,7 +698,9 @@ export default function WhatsAppChat() {
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && enviarLibre()}
-                placeholder={modoOtro ? 'Escribe tu respuesta aquí...' : 'Escribe tu mensaje...'}
+                placeholder={modoOtro
+                  ? t('chat.ui.placeholder-respuesta', 'Escribe tu respuesta aquí...')
+                  : t('chat.ui.placeholder-mensaje', 'Escribe tu mensaje...')}
                 className="form-control rounded-3"
                 style={{
                   background: 'var(--zy-fondo-alto)',
