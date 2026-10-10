@@ -64,7 +64,7 @@ const pide = (fichero, clave) => esperadas.push({ fichero, clave })
  * Por eso la segunda pasada reconoce cualquier literal que empiece por uno de
  * los prefijos de sección. Es amplio a propósito: un falso positivo se ve
  * enseguida —la guarda nombra la clave— y un falso negativo no se ve nunca. */
-const PREFIJOS = ['nav.', 'hero.', 'porque.', 'cookies.', 'idioma.', 'pie.', 'cont.', 'serv.', 'nos.', 'port.', 'func.']
+const PREFIJOS = ['nav.', 'hero.', 'porque.', 'cookies.', 'idioma.', 'pie.', 'cont.', 'serv.', 'nos.', 'port.', 'func.', 'a11y.']
 
 for (const n of readdirSync(COMPONENTES).filter(n => n.endsWith('.jsx'))) {
   const fuente = leer(n)

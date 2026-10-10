@@ -60,7 +60,7 @@ export default function Navbar() {
           <img src="/logos/zyntello_isotipo_transparente.png" alt="" width="58" height="58" />
           <span className="zy-nav-marca-texto">
             <strong>Zyntello</strong>
-            <small>Inteligencia Artificial · ERP · Tecnología Empresarial</small>
+            <small>{t('nav.lema', 'Inteligencia Artificial · ERP · Tecnología Empresarial')}</small>
           </span>
         </a>
 
@@ -69,7 +69,9 @@ export default function Navbar() {
           className="zy-nav-hamburguesa"
           aria-expanded={abierto}
           aria-controls="zy-menu"
-          aria-label={abierto ? 'Cerrar menú' : 'Abrir menú'}
+          /* ⚠️ No se ve: lo LEE un lector de pantalla. Dejarlo en español deja
+             a quien navega a ciegas con las instrucciones en otro idioma. */
+          aria-label={abierto ? t('a11y.menu.cerrar', 'Cerrar menú') : t('a11y.menu.abrir', 'Abrir menú')}
           onClick={() => setAbierto(a => !a)}
         >
           <Icono nombre={abierto ? 'cerrar' : 'menu'} size={24} />
@@ -108,7 +110,7 @@ export default function Navbar() {
               className="zy-btn zy-btn-primario zy-nav-cta"
               onClick={() => setAbierto(false)}
             >
-              Contacto
+              {t('nav.contacto', 'Contacto')}
               <Icono nombre="flecha" size={17} className="zy-flecha" />
             </a>
           </div>

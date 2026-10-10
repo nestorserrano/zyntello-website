@@ -3,20 +3,35 @@ import Icono from './Icono'
 import { useIdioma } from '../hooks/useIdioma'
 import '../styles/Hero.css'
 
+/* ⚠️ Solo el TEXTO lleva clave. El número se escribe igual en los ocho
+   idiomas, así que traducirlo sería una fila de claves que nadie cambiaría. */
 const CIFRAS = [
-  { numero: '20+',  label: 'años en TI y ERP' },
-  { numero: '100+', label: 'proyectos entregados' },
-  { numero: '34',   label: 'módulos en producción' },
-  { numero: '5',    label: 'países con presencia' },
+  { clave: 'hero.cifra.anos',      numero: '20+',  label: 'años en TI y ERP' },
+  { clave: 'hero.cifra.proyectos', numero: '100+', label: 'proyectos entregados' },
+  { clave: 'hero.cifra.modulos',   numero: '34',   label: 'módulos en producción' },
+  { clave: 'hero.cifra.paises',    numero: '5',    label: 'países con presencia' },
 ]
 
-/* El objeto social, en lenguaje de cliente */
+/* El objeto social, en lenguaje de cliente.
+   ⚠️ La `key` de React es la CLAVE y no el texto: el texto cambia con el
+   idioma, y la cinta se duplica para el bucle — con el texto por key, cambiar
+   de idioma remontaría las treinta y la animación daría un salto. */
 const CAPACIDADES = [
-  'ERP y CRM', 'Agentes de IA', 'Automatización de procesos', 'Desarrollo a medida',
-  'Soporte técnico TI', 'Cloud computing', 'Ciberseguridad', 'Infraestructura TI',
-  'Personal TI especializado', 'Hardware y licencias', 'Transformación digital',
-  'Arquitectura de sistemas', 'Capacitación en IA', 'Consultoría contable',
-  'Estudios de mercado',
+  ['hero.cinta.erp-crm',          'ERP y CRM'],
+  ['hero.cinta.agentes',          'Agentes de IA'],
+  ['hero.cinta.automatizacion',   'Automatización de procesos'],
+  ['hero.cinta.desarrollo',       'Desarrollo a medida'],
+  ['hero.cinta.soporte',          'Soporte técnico TI'],
+  ['hero.cinta.cloud',            'Cloud computing'],
+  ['hero.cinta.ciberseguridad',   'Ciberseguridad'],
+  ['hero.cinta.infraestructura',  'Infraestructura TI'],
+  ['hero.cinta.personal',         'Personal TI especializado'],
+  ['hero.cinta.hardware',         'Hardware y licencias'],
+  ['hero.cinta.transformacion',   'Transformación digital'],
+  ['hero.cinta.arquitectura',     'Arquitectura de sistemas'],
+  ['hero.cinta.capacitacion',     'Capacitación en IA'],
+  ['hero.cinta.contable',         'Consultoría contable'],
+  ['hero.cinta.mercado',          'Estudios de mercado'],
 ]
 
 export default function Hero() {
@@ -86,9 +101,9 @@ export default function Hero() {
 
         <div className="zy-hero-cifras zy-entrar" style={{ animationDelay: '420ms' }}>
           {CIFRAS.map(c => (
-            <div key={c.label} className="zy-hero-cifra">
+            <div key={c.clave} className="zy-hero-cifra">
               <span className="zy-hero-cifra-num">{c.numero}</span>
-              <span className="zy-hero-cifra-lbl">{c.label}</span>
+              <span className="zy-hero-cifra-lbl">{t(c.clave, c.label)}</span>
             </div>
           ))}
         </div>
@@ -98,15 +113,15 @@ export default function Hero() {
         <div className="zy-marquesina">
           {[0, 1].map(copia => (
             <div className="zy-marquesina-pista" key={copia} aria-hidden={copia === 1 ? 'true' : undefined}>
-              {CAPACIDADES.map(c => (
-                <span className="zy-hero-capacidad" key={c}>{c}</span>
+              {CAPACIDADES.map(([clave, texto]) => (
+                <span className="zy-hero-capacidad" key={clave}>{t(clave, texto)}</span>
               ))}
             </div>
           ))}
         </div>
       </div>
 
-      <a href="#servicios" className="zy-hero-bajar" aria-label="Ir a la sección de servicios">
+      <a href="#servicios" className="zy-hero-bajar" aria-label={t('a11y.bajar', 'Ir a la sección de servicios')}>
         <Icono nombre="abajo" size={19} />
       </a>
     </section>
