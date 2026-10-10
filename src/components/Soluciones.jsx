@@ -464,11 +464,11 @@ export default function Soluciones() {
             <div style={{ flex: 1 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
                 <span style={{ fontSize: '1.5rem' }}>🏢</span>
-                <span className="sol-bundle-name">Zyntello ERP</span>
+                <span className="sol-bundle-name">{t('mod.erp.nombre', 'Zyntello ERP')}</span>
                 <span className="sol-bundle-badge">{t('sol.erp.badge', 'ERP Completo')}</span>
               </div>
               <p style={{ color: '#9c9caa', margin: 0, fontSize: '0.88rem' }}>
-                Inventario · Facturación · Cuentas por Cobrar · Cuentas por Pagar · Nómina · Control de Acceso · Bancos · Compras · Presupuesto · Activos Fijos · Caja Chica
+                {t('sol.erp.lista', 'Inventario · Facturación · Cuentas por Cobrar · Cuentas por Pagar · Nómina · Control de Acceso · Bancos · Compras · Presupuesto · Activos Fijos · Caja Chica')}
               </p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexShrink: 0 }}>
@@ -498,15 +498,19 @@ export default function Soluciones() {
                   )}
                 </header>
 
-                <h3 className="sol-card-nombre">{app.nombre}</h3>
-                <p className="sol-card-sub">{app.subtitulo || app.descripcion}</p>
+                {/* ⚠️ El nombre y el subtítulo los publica el ADMIN, en la tabla
+                    `modulos`. Aquí se pide su traducción y, si no está, se cae a lo
+                    que mandó el API — así renombrar un módulo en el panel cambia el
+                    español solo, y lo único que queda viejo es su traducción. */}
+                <h3 className="sol-card-nombre">{t(`mod.${app.id}.nombre`, app.nombre)}</h3>
+                <p className="sol-card-sub">{t(`mod.${app.id}.subtitulo`, app.subtitulo || app.descripcion)}</p>
 
                 {/* El aviso «amplía X» se queda aunque la tarjeta se haya
                     simplificado: sin él, el cliente contrata un módulo que no
                     puede abrir, y el fallo aparece DESPUÉS de pagar. */}
                 {app.requiere && (
                   <p className="sol-card-requiere">
-                    {t('sol.requiere.1', 'Amplía')} <strong>{nombreModulo(app.requiere, apps)}</strong> {t('sol.requiere.2', '— necesita ese módulo contratado')}
+                    {t('sol.requiere.1', 'Amplía')} <strong>{t(`mod.${app.requiere}.nombre`, nombreModulo(app.requiere, apps))}</strong> {t('sol.requiere.2', '— necesita ese módulo contratado')}
                   </p>
                 )}
 

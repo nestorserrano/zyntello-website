@@ -68,7 +68,23 @@ const pide = (fichero, clave) => esperadas.push({ fichero, clave })
    claves de lista dejan de comprobarse y el aviso de huérfanas las delata —
    así fue como se descubrió que faltaba `sol.` el 2026-10-10. */
 const PREFIJOS = ['nav.', 'hero.', 'porque.', 'cookies.', 'idioma.', 'pie.', 'cont.',
-                  'serv.', 'nos.', 'port.', 'func.', 'a11y.', 'sol.', 'mod.']
+                  'serv.', 'nos.', 'port.', 'func.', 'a11y.', 'sol.']
+
+/* ⚠️⚠️ `mod.*` es un prefijo ABIERTO y no se cuenta en ninguna de las dos
+   direcciones. Sus claves se arman con el slug que manda el API del admin
+   (`mod.${app.id}.nombre`), así que el conjunto lo decide el panel, no este
+   repositorio:
+
+   · Un módulo NUEVO en el panel no tiene traducción todavía, y eso no es un
+     defecto: su tarjeta sale en español, que es el original, hasta que alguien
+     la traduzca desde la pantalla de idiomas.
+   · Un módulo RETIRADO del panel deja su traducción sin uso, y tampoco es un
+     defecto: si vuelve, la encuentra hecha.
+
+   Hacer fallar el build por cualquiera de los dos obligaría a desplegar este
+   repositorio cada vez que el panel toca un módulo, que es justo lo que el
+   catálogo en el admin existe para evitar. */
+const PREFIJOS_ABIERTOS = ['mod.']
 
 for (const n of readdirSync(COMPONENTES).filter(n => n.endsWith('.jsx'))) {
   const fuente = leer(n)
@@ -162,7 +178,9 @@ const unicas = new Set(esperadas.map(e => e.clave))
 
    No para el build: una clave de más no rompe nada, y pararlo obligaría a
    borrar del catálogo antes de quitar su uso. Pero se dice, y por su nombre. */
-const huerfanas = [...sembradas].filter(k => !unicas.has(k))
+const huerfanas = [...sembradas]
+  .filter(k => !unicas.has(k))
+  .filter(k => !PREFIJOS_ABIERTOS.some(p => k.startsWith(p)))
 if (huerfanas.length) {
   console.log(`· Traducciones: ⚠ ${huerfanas.length} sembrada${huerfanas.length === 1 ? '' : 's'} que ninguna vista pide —`)
   console.log(`  está${huerfanas.length === 1 ? '' : 'n'} traducida${huerfanas.length === 1 ? '' : 's'} y se ve${huerfanas.length === 1 ? '' : 'n'} en español: ${huerfanas.join(', ')}`)
