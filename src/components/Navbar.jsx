@@ -1,19 +1,26 @@
 import { useEffect, useState } from 'react'
 import Icono from './Icono'
 import Apariencia from './Apariencia'
+import SelectorIdioma from './SelectorIdioma'
+import { useIdioma } from '../hooks/useIdioma'
 import '../styles/Navbar.css'
 
+// ⚠️ Cada sección lleva su CLAVE de traducción y su texto en español. El español se queda en el
+//    código a propósito: es el respaldo si el panel no responde, así que el menú nunca sale con
+//    las claves crudas ni en blanco.
 const SECCIONES = [
-  ['inicio',     'Inicio'],
-  ['servicios',  'Servicios'],
-  ['soluciones', 'Plataforma'],
-  ['funcionalidades', 'Funcionalidades'],
-  ['porque',     'Por qué'],
-  ['portafolio', 'Portafolio'],
-  ['nosotros',   'Nosotros'],
+  ['inicio',          'nav.inicio',          'Inicio'],
+  ['servicios',       'nav.servicios',       'Servicios'],
+  ['soluciones',      'nav.plataforma',      'Plataforma'],
+  ['funcionalidades', 'nav.funcionalidades', 'Funcionalidades'],
+  ['porque',          'nav.porque',          'Por qué'],
+  ['portafolio',      'nav.portafolio',      'Portafolio'],
+  ['nosotros',        'nav.nosotros',        'Nosotros'],
 ]
 
 export default function Navbar() {
+  const { t } = useIdioma()
+
   const [abierto, setAbierto] = useState(false)
   const [compacto, setCompacto] = useState(false)
   const [activa, setActiva] = useState('inicio')
@@ -70,7 +77,7 @@ export default function Navbar() {
 
         <div id="zy-menu" className={`zy-nav-menu ${abierto ? 'zy-nav-menu-abierto' : ''}`}>
           <ul className="zy-nav-lista">
-            {SECCIONES.map(([id, etiqueta]) => (
+            {SECCIONES.map(([id, clave, etiqueta]) => (
               <li key={id}>
                 <a
                   href={`#${id}`}
@@ -78,20 +85,23 @@ export default function Navbar() {
                   aria-current={activa === id ? 'true' : undefined}
                   onClick={() => setAbierto(false)}
                 >
-                  {etiqueta}
+                  {t(clave, etiqueta)}
                 </a>
               </li>
             ))}
           </ul>
 
           <div className="zy-nav-acciones">
+            {/* ⚠️ El selector va ANTES del tema y VISIBLE: el sitio se adapta al idioma del
+                navegador, y quien lo tenga en uno que no habla necesita corregirlo sin buscarlo. */}
+            <SelectorIdioma />
             <Apariencia />
             <a
               href="https://app.zyntello.com"
               className="zy-nav-acceso"
               onClick={() => setAbierto(false)}
             >
-              Acceder
+              {t('nav.acceder', 'Acceder')}
             </a>
             <a
               href="#contacto"

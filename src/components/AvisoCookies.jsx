@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useIdioma } from '../hooks/useIdioma'
 
 /**
  * Aviso de cookies — INFORMATIVO, no de consentimiento. Y la diferencia es deliberada.
@@ -24,6 +25,7 @@ import { useEffect, useState } from 'react'
 const CLAVE = 'zyntello-aviso-cookies'
 
 export default function AvisoCookies() {
+  const { t } = useIdioma()
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -46,14 +48,15 @@ export default function AvisoCookies() {
 
   return (
     <div className="zy-cookies" role="region" aria-label="Aviso sobre cookies">
+      {/* ⚠️ Es un texto LEGAL: va traducido entero y de una pieza, no troceado en negritas.
+          Partirlo para resaltar obligaría a que el énfasis cayera en las mismas palabras en los
+          ocho idiomas, y no caen — en chino y en árabe el orden es otro. */}
       <div className="zy-cookies-texto">
-        <strong>Usamos solo lo imprescindible.</strong>{' '}
-        Cookies para mantener su sesión iniciada y recordar si prefiere el tema claro u oscuro.
-        {' '}<strong>Sin publicidad, sin perfilado y sin rastreadores de terceros.</strong>
+        {t('cookies.texto', 'Usamos solo lo imprescindible. Cookies para mantener su sesión iniciada y recordar si prefiere el tema claro u oscuro. Sin publicidad, sin perfilado y sin rastreadores de terceros.')}
       </div>
       <div className="zy-cookies-acciones">
-        <a href="/cookies/" className="zy-cookies-enlace">Ver qué guardamos</a>
-        <button type="button" onClick={cerrar} className="zy-cookies-boton">Entendido</button>
+        <a href="/cookies/" className="zy-cookies-enlace">{t('cookies.ver', 'Ver qué guardamos')}</a>
+        <button type="button" onClick={cerrar} className="zy-cookies-boton">{t('cookies.entendido', 'Entendido')}</button>
       </div>
     </div>
   )

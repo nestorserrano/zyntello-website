@@ -1,5 +1,6 @@
 import FondoAnimado from './FondoAnimado'
 import Icono from './Icono'
+import { useIdioma } from '../hooks/useIdioma'
 import '../styles/Hero.css'
 
 const CIFRAS = [
@@ -19,6 +20,8 @@ const CAPACIDADES = [
 ]
 
 export default function Hero() {
+  const { t, idioma } = useIdioma()
+
   return (
     <section id="inicio" className="zy-hero">
 
@@ -33,13 +36,27 @@ export default function Hero() {
 
         <p className="zy-hero-insignia zy-entrar" style={{ animationDelay: '40ms' }}>
           <span className="zy-hero-latido" aria-hidden="true" />
-          Plataforma propia en producción · RD · VE · CO · GT · CR
+          {t('hero.insignia', 'Plataforma propia en producción · RD · VE · CO · GT · CR')}
         </p>
 
         <h1 className="zy-hero-titulo zy-entrar" style={{ animationDelay: '120ms' }}>
-          Lo difícil nunca fue<br />
-          <span className="zy-hueco">el software.</span>{' '}
-          <span className="zy-degradado">Es ponerlo a funcionar.</span>
+          {/* ⚠️⚠️ El titular está partido para DAR FORMATO —el salto y el efecto hueco sobre
+              «el software»— y eso solo funciona con el orden de las palabras en español. En chino
+              o en árabe la frase se ordena distinta, así que trocearla dejaría el efecto sobre
+              palabras que no tocan y el salto en mitad de cualquier sitio.
+
+              Por eso el español conserva su marcado exacto —no se rediseña lo que funciona— y los
+              demás idiomas reciben la frase entera, sin el hueco. Perder un efecto tipográfico es
+              mucho menos grave que publicar un titular mal cortado en la portada. */}
+          {idioma === 'es' ? (
+            <>
+              Lo difícil nunca fue<br />
+              <span className="zy-hueco">el software.</span>{' '}
+            </>
+          ) : (
+            <>{t('hero.titulo.1')}{' '}</>
+          )}
+          <span className="zy-degradado">{t('hero.titulo.2', 'Es ponerlo a funcionar.')}</span>
         </h1>
 
         {/* ⚠️ Esta bajada carga las palabras que la gente teclea en Google
@@ -48,26 +65,23 @@ export default function Hero() {
             Decidido el 2026-09-25: el titular se queda como está; quien busca
             «software ERP» entra igual, porque Google lee los dos. */}
         <p className="zy-hero-bajada zy-entrar" style={{ animationDelay: '200ms' }}>
-          Software ERP y CRM para digitalizar y automatizar la gestión de tu
-          empresa. Lo implantamos, lo conectamos con agentes de Inteligencia
-          Artificial y seguimos ahí cuando el proyecto termina. Veinte años
-          haciendo exactamente eso.
+          {t('hero.bajada', 'Software ERP y CRM para digitalizar y automatizar la gestión de tu empresa. Lo implantamos, lo conectamos con agentes de Inteligencia Artificial y seguimos ahí cuando el proyecto termina. Veinte años haciendo exactamente eso.')}
         </p>
 
         <div className="zy-hero-botones zy-entrar" style={{ animationDelay: '280ms' }}>
           <a href="#soluciones" className="zy-btn zy-btn-primario">
-            Ver la plataforma
+            {t('hero.boton.plataforma', 'Ver la plataforma')}
             <Icono nombre="flecha" size={18} className="zy-flecha" />
           </a>
           <a href="#contacto" className="zy-btn zy-btn-fantasma">
             <Icono nombre="chat" size={18} />
-            Agendar una consulta
+            {t('hero.boton.contacto', 'Agendar una consulta')}
           </a>
         </div>
 
         <p className="zy-hero-nota zy-entrar" style={{ animationDelay: '340ms' }}>
           <Icono nombre="check" size={15} />
-          Sin instalaciones · Sin permanencia · Pruebas los módulos antes de contratar
+          {t('hero.nota', 'Sin instalaciones · Sin permanencia · Pruebas los módulos antes de contratar')}
         </p>
 
         <div className="zy-hero-cifras zy-entrar" style={{ animationDelay: '420ms' }}>

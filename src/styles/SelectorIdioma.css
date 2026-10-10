@@ -1,0 +1,74 @@
+/*
+ * Selector de idioma de la barra superior. Ver `[WEB-IDIOMA-1]`.
+ * ⚠️ Colores desde los tokens de `tokens.css`: una variable inventada no da error, solo se ve mal.
+ */
+
+.zy-idioma { position: relative; display: inline-flex; }
+
+.zy-idioma-boton {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .4rem .65rem;
+  border: 1px solid var(--zy-borde-medio);
+  border-radius: var(--zy-radio-sm);
+  background: transparent;
+  color: var(--zy-texto-medio);
+  font: inherit;
+  font-size: .82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color .18s ease, color .18s ease;
+}
+
+.zy-idioma-boton:hover { color: var(--zy-texto); border-color: var(--zy-borde-fuerte); }
+
+.zy-idioma-bandera { font-size: 1rem; line-height: 1; }
+.zy-idioma-codigo { letter-spacing: .04em; }
+
+.zy-idioma-lista {
+  position: absolute;
+  top: calc(100% + .45rem);
+  right: 0;
+  z-index: 80;              /* Sobre la barra, que ya va fija. */
+  min-width: 13rem;
+  margin: 0;
+  padding: .35rem;
+  list-style: none;
+  border: 1px solid var(--zy-borde-medio);
+  border-radius: var(--zy-radio);
+  background: var(--zy-elevado);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, .4);
+}
+
+/* ⚠️ En árabe la página va en RTL y el desplegable se abriría fuera de la pantalla por la
+   izquierda. `inset-inline-end` lo ancla al lado correcto en las dos direcciones. */
+[dir="rtl"] .zy-idioma-lista { right: auto; left: 0; }
+
+.zy-idioma-opcion {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  width: 100%;
+  padding: .5rem .65rem;
+  border: 0;
+  border-radius: var(--zy-radio-sm);
+  background: transparent;
+  color: var(--zy-texto-medio);
+  font: inherit;
+  font-size: .86rem;
+  text-align: start;
+  cursor: pointer;
+}
+
+.zy-idioma-opcion:hover { background: var(--zy-fondo-alto); color: var(--zy-texto); }
+
+.zy-idioma-activa { color: var(--zy-texto); font-weight: 600; }
+
+/* ⚠️ El foco visible se conserva: con teclado es la única forma de saber dónde se está, y este
+   control es justo el que usa quien no entiende el resto de la página. */
+.zy-idioma-boton:focus-visible,
+.zy-idioma-opcion:focus-visible {
+  outline: 2px solid var(--zy-indigo);
+  outline-offset: 2px;
+}

@@ -10,17 +10,21 @@ import Contacto from './components/Contacto'
 import Footer from './components/Footer'
 import WhatsAppChat from './components/WhatsAppChat'
 import AvisoCookies from './components/AvisoCookies'
+import { ProveedorIdioma } from './hooks/useIdioma'
 import { useRevelar } from './hooks/useRevelar'
 import './styles/zyntello.css'
 import './styles/Secciones.css'
 import './styles/financial-ui.css'
 import './styles/AvisoCookies.css'
+import './styles/SelectorIdioma.css'
 
 function App() {
   useRevelar()
 
   return (
-    <>
+    /* ⚠️ El proveedor envuelve TODO: el aviso de cookies y el pie también se traducen, y si
+       quedaran fuera `useIdioma()` lanzaría y tumbaría la página entera. */
+    <ProveedorIdioma>
       {/* Primer elemento enfocable de la página: sin esto, quien navega con
           teclado tiene que recorrer todo el menú en cada visita. */}
       <a href="#inicio" className="zy-saltar">Saltar al contenido</a>
@@ -39,7 +43,7 @@ function App() {
       <Footer />
       <WhatsAppChat />
       <AvisoCookies />
-    </>
+    </ProveedorIdioma>
   )
 }
 
