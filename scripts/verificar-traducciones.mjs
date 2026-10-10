@@ -64,7 +64,11 @@ const pide = (fichero, clave) => esperadas.push({ fichero, clave })
  * Por eso la segunda pasada reconoce cualquier literal que empiece por uno de
  * los prefijos de sección. Es amplio a propósito: un falso positivo se ve
  * enseguida —la guarda nombra la clave— y un falso negativo no se ve nunca. */
-const PREFIJOS = ['nav.', 'hero.', 'porque.', 'cookies.', 'idioma.', 'pie.', 'cont.', 'serv.', 'nos.', 'port.', 'func.', 'a11y.']
+/* ⚠️ Una sección nueva se añade AQUÍ además de al catálogo. Si se olvida, sus
+   claves de lista dejan de comprobarse y el aviso de huérfanas las delata —
+   así fue como se descubrió que faltaba `sol.` el 2026-10-10. */
+const PREFIJOS = ['nav.', 'hero.', 'porque.', 'cookies.', 'idioma.', 'pie.', 'cont.',
+                  'serv.', 'nos.', 'port.', 'func.', 'a11y.', 'sol.', 'mod.']
 
 for (const n of readdirSync(COMPONENTES).filter(n => n.endsWith('.jsx'))) {
   const fuente = leer(n)
@@ -147,5 +151,21 @@ if (faltan.length) {
   process.exit(1)
 }
 
-const unicas = new Set(esperadas.map(e => e.clave)).size
-console.log(`· Traducciones: ${unicas} claves pedidas, todas en el catálogo (${sembradas.size} sembradas).`)
+const unicas = new Set(esperadas.map(e => e.clave))
+
+/* ⚠️⚠️ La cuenta al revés, que es la que se olvida: claves SEMBRADAS que
+   ningún componente pide. Normalmente significa que alguien añadió la
+   traducción al catálogo y olvidó aplicarla en la vista — y entonces la frase
+   se sigue viendo en español aunque esté traducida, que es el mismo defecto
+   mudo por el otro lado. Pasó tres veces el 2026-10-10 con `sol.pie.1`,
+   `sol.pie.2` y `sol.regalo`.
+
+   No para el build: una clave de más no rompe nada, y pararlo obligaría a
+   borrar del catálogo antes de quitar su uso. Pero se dice, y por su nombre. */
+const huerfanas = [...sembradas].filter(k => !unicas.has(k))
+if (huerfanas.length) {
+  console.log(`· Traducciones: ⚠ ${huerfanas.length} sembrada${huerfanas.length === 1 ? '' : 's'} que ninguna vista pide —`)
+  console.log(`  está${huerfanas.length === 1 ? '' : 'n'} traducida${huerfanas.length === 1 ? '' : 's'} y se ve${huerfanas.length === 1 ? '' : 'n'} en español: ${huerfanas.join(', ')}`)
+}
+
+console.log(`· Traducciones: ${unicas.size} claves pedidas, todas en el catálogo (${sembradas.size} sembradas).`)

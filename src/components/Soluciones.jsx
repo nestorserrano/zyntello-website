@@ -1,5 +1,20 @@
 import { useState, useEffect, useRef } from 'react'
+import { useIdioma } from '../hooks/useIdioma'
 import '../styles/Soluciones.css'
+
+/* ⚠️ Las insignias de la tarjeta («Nuevo», «Destacado»…) se deciden fuera del
+   componente, en `combinarModulo`, que no puede llamar a `t()`. Así que lo que
+   viaja en el objeto es el texto en español y aquí se traduce por su clave.
+   Un texto que no esté en este mapa se pinta tal cual: una insignia nueva
+   saldrá en español, que es mejor que no salir. */
+const CLAVE_BADGE = {
+  'Nuevo':         'sol.badge.nuevo',
+  'Destacado':     'sol.badge.destacado',
+  'Popular':       'sol.badge.popular',
+  'Disponible':    'sol.badge.disponible',
+  'Lanzamiento':   'sol.badge.lanzamiento',
+  'Próximamente':  'sol.proximo',
+}
 
 const NUMERO_WA = '18296399877'
 const API_URL   = `${(import.meta.env.VITE_ADMIN_URL || 'https://admin.zyntello.com').replace(/\/$/, '')}/api/modulos`
@@ -149,6 +164,9 @@ function combinarModulo(apiData) {
   const display   = DISPLAY_ESTATICO[apiData.slug] || DISPLAY_DEFAULT
   const color     = apiData.color_primario || '#7c3aed'
   const gradiente = hexToGradiente(color)
+  // ⚠️ Dato MUERTO: se calcula y viaja en el objeto, pero ninguna vista lo
+  // pinta (como `categoria`, `previews`, `rating` y `reviews`). Se deja como
+  // estaba — traducirlo sería trabajo para algo que nadie ve.
   const ahorroPct = apiData.ahorro_pct > 0 ? `AHORRA ${apiData.ahorro_pct}%` : null
 
   // El estado del admin tiene prioridad sobre los datos estáticos
@@ -344,6 +362,7 @@ function FloatingIcons({ apps }) {
 
 /* ─── Componente principal ──────────────────────────────────────── */
 export default function Soluciones() {
+  const { idioma, t } = useIdioma()
   const [moneda, setMoneda]     = useState('USD')
   const [rates, setRates]       = useState(null)
   const [apps, setApps]         = useState(() => leerCacheModulos() || APPS_FALLBACK)
@@ -398,31 +417,37 @@ export default function Soluciones() {
 
           {/* Hero header */}
           <div className="sol-hero">
-            <p className="sol-hero-eyebrow">Plataforma SaaS · {apps.length} módulos</p>
+            <p className="sol-hero-eyebrow">
+              {t('sol.eyebrow.plataforma', 'Plataforma SaaS')} · {apps.length} {t('sol.eyebrow.modulos', 'módulos')}
+            </p>
             <h2 className="sol-hero-title">
-              Tu empresa,<br />
-              <span className="sol-hero-accent">digitalizada.</span>
+              {/* ⚠️ Mismo criterio que el resto del sitio: el español conserva
+                  su salto y su resaltado, los demás reciben la frase entera. */}
+              {idioma === 'es' ? (
+                <>Tu empresa,<br /><span className="sol-hero-accent">digitalizada.</span></>
+              ) : (
+                t('sol.titulo', 'Tu empresa, digitalizada.')
+              )}
             </h2>
             <p className="sol-hero-subtitle">
-              Microaplicaciones empresariales listas para usar. Sin instalaciones,<br className="d-none d-md-block" />
-              acceso desde cualquier dispositivo y soporte incluido.
+              {t('sol.subtitulo', 'Microaplicaciones empresariales listas para usar. Sin instalaciones, acceso desde cualquier dispositivo y soporte incluido.')}
             </p>
           </div>
 
           {/* Callout personalización */}
           <div className="sol-callout">
             <div style={{ flex: 1, minWidth: '220px' }}>
-              <div className="sol-callout-title">¿Necesitas más? Las personalizamos e instalamos en tu empresa</div>
+              <div className="sol-callout-title">{t('sol.callout.titulo', '¿Necesitas más? Las personalizamos e instalamos en tu empresa')}</div>
               <p className="sol-callout-text">
-                Todas estas soluciones pueden ser adaptadas a tus procesos, integradas con tus sistemas actuales e instaladas directamente en la infraestructura de tu empresa.
+                {t('sol.callout.texto', 'Todas estas soluciones pueden ser adaptadas a tus procesos, integradas con tus sistemas actuales e instaladas directamente en la infraestructura de tu empresa.')}
               </p>
             </div>
-            <a href="#contacto" className="sol-callout-btn">Hablar con un asesor →</a>
+            <a href="#contacto" className="sol-callout-btn">{t('sol.callout.boton', 'Hablar con un asesor')} →</a>
           </div>
 
           {/* Selector de moneda */}
           <div className="sol-moneda-selector">
-            <span className="sol-moneda-label">Ver precios en</span>
+            <span className="sol-moneda-label">{t('sol.moneda.label', 'Ver precios en')}</span>
             <div className="sol-moneda-pills">
               {Object.entries(MONEDAS_INFO).map(([code, m]) => (
                 <button key={code} onClick={() => setMoneda(code)} className={`sol-moneda-pill${moneda === code ? ' active' : ''}`}>
@@ -431,7 +456,7 @@ export default function Soluciones() {
                 </button>
               ))}
             </div>
-            {!rates && <span className="sol-moneda-loading">Cargando tasas…</span>}
+            {!rates && <span className="sol-moneda-loading">{t('sol.moneda.cargando', 'Cargando tasas…')}</span>}
           </div>
 
           {/* Banner ERP */}
@@ -440,7 +465,7 @@ export default function Soluciones() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
                 <span style={{ fontSize: '1.5rem' }}>🏢</span>
                 <span className="sol-bundle-name">Zyntello ERP</span>
-                <span className="sol-bundle-badge">ERP Completo</span>
+                <span className="sol-bundle-badge">{t('sol.erp.badge', 'ERP Completo')}</span>
               </div>
               <p style={{ color: '#9c9caa', margin: 0, fontSize: '0.88rem' }}>
                 Inventario · Facturación · Cuentas por Cobrar · Cuentas por Pagar · Nómina · Control de Acceso · Bancos · Compras · Presupuesto · Activos Fijos · Caja Chica
@@ -449,11 +474,11 @@ export default function Soluciones() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexShrink: 0 }}>
               <div style={{ textAlign: 'right' }}>
                 <div style={{ color: '#f5f5f7', fontWeight: 800, fontSize: '1.4rem', lineHeight: 1 }}>
-                  {simbolo} {formatPrecio(erpApp?.precio)}<span style={{ color: '#9c9caa', fontSize: '0.72rem', fontWeight: 400 }}>/mes</span>
+                  {simbolo} {formatPrecio(erpApp?.precio)}<span style={{ color: '#9c9caa', fontSize: '0.72rem', fontWeight: 400 }}>{t('sol.periodo.mes', '/mes')}</span>
                 </div>
               </div>
               <a href="https://app.zyntello.com/erp" onClick={e => e.stopPropagation()} className="sol-bundle-btn" style={{ textDecoration: 'none' }}>
-                Ver ERP →
+                {t('sol.erp.boton', 'Ver ERP')} →
               </a>
             </div>
           </div>
@@ -468,7 +493,7 @@ export default function Soluciones() {
                   <IconoModulo valor={app.icono} className="sol-card-icono" />
                   {app.etiqueta && (
                     <span className="sol-card-badge" style={app.etiquetaBadge ? { background: app.etiquetaBadge.bg, color: app.etiquetaBadge.color } : {}}>
-                      {app.etiqueta}
+                      {t(CLAVE_BADGE[app.etiqueta] || '', app.etiqueta)}
                     </span>
                   )}
                 </header>
@@ -481,7 +506,7 @@ export default function Soluciones() {
                     puede abrir, y el fallo aparece DESPUÉS de pagar. */}
                 {app.requiere && (
                   <p className="sol-card-requiere">
-                    Amplía <strong>{nombreModulo(app.requiere, apps)}</strong> — necesita ese módulo contratado
+                    {t('sol.requiere.1', 'Amplía')} <strong>{nombreModulo(app.requiere, apps)}</strong> {t('sol.requiere.2', '— necesita ese módulo contratado')}
                   </p>
                 )}
 
@@ -492,14 +517,14 @@ export default function Soluciones() {
                          que saldría de un precio null— se leería como gratis. */
                       <>
                         <span className="sol-card-monto">
-                          {app.precioAnualTotal > 0 ? `${simbolo} ${formatPrecio(app.precioAnualTotal)}` : 'Consultar'}
+                          {app.precioAnualTotal > 0 ? `${simbolo} ${formatPrecio(app.precioAnualTotal)}` : t('sol.consultar', 'Consultar')}
                         </span>
-                        {app.precioAnualTotal > 0 && <span className="sol-card-periodo">/año</span>}
+                        {app.precioAnualTotal > 0 && <span className="sol-card-periodo">{t('sol.periodo.ano', '/año')}</span>}
                       </>
                     ) : (
                       <>
                         <span className="sol-card-monto">{simbolo} {formatPrecio(app.precio)}</span>
-                        <span className="sol-card-periodo">/mes</span>
+                        <span className="sol-card-periodo">{t('sol.periodo.mes', '/mes')}</span>
                       </>
                     )}
                   </div>
@@ -514,7 +539,7 @@ export default function Soluciones() {
                     /* Con landing: el visitante primero conoce y prueba el
                        modulo; la contratacion vive dentro de esa pagina. */
                     <a href={app.url} className="sol-btn-conocer">
-                      Conoce más
+                      {t('serv.enlace', 'Conoce más')}
                     </a>
                   ) : app.disponible !== false ? (
                     /* Sin landing pública, mandarlo ahí sería mandarlo al
@@ -524,10 +549,10 @@ export default function Soluciones() {
                     <a href={enlaceWhatsApp(app, simbolo, formatPrecio)}
                        target="_blank" rel="noopener noreferrer"
                        className="sol-btn-obtener">
-                      Contratar
+                      {t('sol.contratar', 'Contratar')}
                     </a>
                   ) : (
-                    <span className="sol-card-proximo">Próximamente</span>
+                    <span className="sol-card-proximo">{t('sol.proximo', 'Próximamente')}</span>
                   )}
                 </footer>
 
@@ -538,12 +563,12 @@ export default function Soluciones() {
           {/* Footer */}
           <div className="text-center mt-5">
             <p style={{ color: '#8a8a99', fontSize: '0.83rem', lineHeight: 1.8 }}>
-              Todas las aplicaciones incluyen actualizaciones continuas y soporte técnico.<br />
-              <span style={{ color: '#8a8a99' }}>Sin contratos de permanencia · Cancela cuando quieras · Acceso inmediato tras el pago.</span>
+              {t('sol.pie.1', 'Todas las aplicaciones incluyen actualizaciones continuas y soporte técnico.')}<br />
+              <span style={{ color: '#8a8a99' }}>{t('sol.pie.2', 'Sin contratos de permanencia · Cancela cuando quieras · Acceso inmediato tras el pago.')}</span>
             </p>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.32)', borderRadius: '10px', padding: '8px 18px', marginTop: '10px' }}>
               <span style={{ color: '#a5b4fc', fontSize: '1rem' }}>🎁</span>
-              <span style={{ color: '#a5b4fc', fontSize: '0.83rem', fontWeight: 600 }}>Plan anual — 2 meses gratis en todos los paquetes</span>
+              <span style={{ color: '#a5b4fc', fontSize: '0.83rem', fontWeight: 600 }}>{t('sol.regalo', 'Plan anual — 2 meses gratis en todos los paquetes')}</span>
             </div>
           </div>
 
