@@ -1,5 +1,6 @@
 import FondoAnimado from './FondoAnimado'
 import Icono from './Icono'
+import { useIdioma } from '../hooks/useIdioma'
 
 /* ─── Lo que un ERP corriente no trae ─────────────────────────────────────
  *
@@ -60,6 +61,8 @@ const FUNCIONALIDADES = [
 ]
 
 export default function Funcionalidades() {
+  const { idioma, t } = useIdioma()
+
   return (
     <section id="funcionalidades" className="zy-func">
       {/* Fondo: malla — la estructura que sostiene todo lo demás */}
@@ -70,15 +73,18 @@ export default function Funcionalidades() {
       <div className="container-fluid px-4 px-lg-5 position-relative">
 
         <header className="zy-func-cabecera zy-revelar">
-          <p className="zy-eyebrow">Funcionalidades</p>
+          <p className="zy-eyebrow">{t('func.eyebrow', 'Funcionalidades')}</p>
           <h2 className="zy-titulo">
-            Lo que <span className="zy-indigo">ningún ERP</span> te da.
+            {/* ⚠️ Mismo criterio que el resto del sitio: el resaltado del
+                español se conserva, los demás idiomas reciben la frase entera. */}
+            {idioma === 'es' ? (
+              <>Lo que <span className="zy-indigo">ningún ERP</span> te da.</>
+            ) : (
+              t('func.titulo', 'Lo que ningún ERP te da.')
+            )}
           </h2>
           <p className="zy-subtitulo">
-            Cuatro cosas que no se contratan aparte y que casi nadie incluye: el
-            control de quién autoriza, los reportes que tú mismo construyes, el
-            significado de cada dato y la ayuda dentro de cada pantalla. Vienen
-            con la plataforma.
+            {t('func.subtitulo', 'Cuatro cosas que no se contratan aparte y que casi nadie incluye: el control de quién autoriza, los reportes que tú mismo construyes, el significado de cada dato y la ayuda dentro de cada pantalla. Vienen con la plataforma.')}
           </p>
         </header>
 
@@ -97,14 +103,14 @@ export default function Funcionalidades() {
                 <Icono nombre={f.icono} size={22} />
               </span>
 
-              <span className="zy-func-dato">{f.dato}</span>
+              <span className="zy-func-dato">{t(`func.${f.slug}.dato`, f.dato)}</span>
 
-              <h3 className="zy-func-nombre">{f.nombre}</h3>
-              <p className="zy-func-gancho">{f.gancho}</p>
-              <p className="zy-func-desc">{f.descripcion}</p>
+              <h3 className="zy-func-nombre">{t(`func.${f.slug}.nombre`, f.nombre)}</h3>
+              <p className="zy-func-gancho">{t(`func.${f.slug}.gancho`, f.gancho)}</p>
+              <p className="zy-func-desc">{t(`func.${f.slug}.desc`, f.descripcion)}</p>
 
               <span className="zy-func-mas">
-                Conoce más
+                {t('serv.enlace', 'Conoce más')}
                 <Icono nombre="flecha" size={16} className="zy-flecha" />
               </span>
             </a>
@@ -112,7 +118,7 @@ export default function Funcionalidades() {
         </div>
 
         <p className="zy-func-pie zy-revelar">
-          Incluidas en cualquier módulo que contrates. No son un extra.
+          {t('func.pie', 'Incluidas en cualquier módulo que contrates. No son un extra.')}
         </p>
 
       </div>

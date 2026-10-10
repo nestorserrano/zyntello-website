@@ -50,12 +50,28 @@ const sembradas = new Set(
 )
 
 const leer = n => readFileSync(join(COMPONENTES, n), 'utf8')
-const esperadas = []
+const esperadas = []   // claves exactas que el componente pide
+const sueltas = []     // literales con pinta de clave, de la pasada amplia
 const pide = (fichero, clave) => esperadas.push({ fichero, clave })
 
-// ── Las literales: `t('clave', …)` en cualquier componente ──────────────────
+/* ── Las literales ───────────────────────────────────────────────────────────
+ *
+ * Dos pasadas, y la segunda no sobra: `t('pie.redes')` se ve a simple vista,
+ * pero media docena de claves viven dentro de una lista —`clave: 'nos.pais.rd'`,
+ * `['pie.legal.sla', '…']`— y llegan a `t()` como variable. Buscando solo la
+ * llamada se escaparían justo las que nadie va a revisar a ojo.
+ *
+ * Por eso la segunda pasada reconoce cualquier literal que empiece por uno de
+ * los prefijos de sección. Es amplio a propósito: un falso positivo se ve
+ * enseguida —la guarda nombra la clave— y un falso negativo no se ve nunca. */
+const PREFIJOS = ['nav.', 'hero.', 'porque.', 'cookies.', 'idioma.', 'pie.', 'cont.', 'serv.', 'nos.', 'port.', 'func.']
+
 for (const n of readdirSync(COMPONENTES).filter(n => n.endsWith('.jsx'))) {
-  for (const m of leer(n).matchAll(/\bt\(\s*'([^']+)'/g)) pide(n, m[1])
+  const fuente = leer(n)
+  for (const m of fuente.matchAll(/\bt\(\s*'([^']+)'/g)) pide(n, m[1])
+  for (const m of fuente.matchAll(/'([a-z][a-z0-9.-]*\.[a-z0-9.-]+)'/g)) {
+    if (PREFIJOS.some(p => m[1].startsWith(p))) sueltas.push({ fichero: n, clave: m[1] })
+  }
 }
 
 // ── Las que se arman al vuelo, una a una ────────────────────────────────────
@@ -83,6 +99,20 @@ for (const m of leer('PorQueZyntello.jsx').matchAll(/clave: '([^']+)'/g)) {
   pide('PorQueZyntello.jsx', `${m[1]}.texto`)
 }
 
+/* Portafolio: cada proyecto pide su categoría, su título y su resultado. */
+for (const m of leer('Portafolio.jsx').matchAll(/clave: '([^']+)'/g)) {
+  for (const parte of ['categoria', 'titulo', 'resultado']) {
+    pide('Portafolio.jsx', `port.${m[1]}.${parte}`)
+  }
+}
+
+/* Funcionalidades: cada una pide su nombre, su gancho, su descripción y su cifra. */
+for (const m of leer('Funcionalidades.jsx').matchAll(/slug: '([^']+)'/g)) {
+  for (const parte of ['nombre', 'gancho', 'desc', 'dato']) {
+    pide('Funcionalidades.jsx', `func.${m[1]}.${parte}`)
+  }
+}
+
 /** Los slugs de un `const SERVICIOS = [ ['slug', '…'], … ]`. */
 function slugsDeLista(fuente) {
   const bloque = fuente.split('const SERVICIOS = [')[1]?.split('\n]')[0]
@@ -90,11 +120,24 @@ function slugsDeLista(fuente) {
   return [...bloque.matchAll(/\['([a-z0-9-]+)',/g)].map(m => m[1])
 }
 
+/* ⚠️ La pasada amplia también recoge los PREFIJOS que el componente guarda en
+   una variable para construir la clave de verdad: `clave: 'porque.1'` nunca se
+   pide tal cual, se pide `porque.1.titulo`. Se descartan comprobando si alguna
+   clave exacta ya empieza por ellos — si no se hiciera, la guarda acusaría a
+   seis claves que no existen ni tienen que existir, y una guarda que da
+   falsas alarmas se desactiva. */
+const exactas = new Set(esperadas.map(e => e.clave))
+for (const s of sueltas) {
+  const esPrefijo = [...exactas].some(k => k.startsWith(s.clave + '.'))
+  if (!esPrefijo) esperadas.push(s)
+}
+
 // ── El veredicto ────────────────────────────────────────────────────────────
 const faltan = esperadas.filter(e => !sembradas.has(e.clave))
 
 if (faltan.length) {
-  console.error(`\n✗ Faltan ${faltan.length} claves en el catálogo del admin.`)
+  const n = faltan.length
+  console.error(`\n✗ Falta${n === 1 ? '' : 'n'} ${n} clave${n === 1 ? '' : 's'} en el catálogo del admin.`)
   console.error('  Esas frases se verían en ESPAÑOL en los ocho idiomas, sin ningún aviso:\n')
   for (const { clave, fichero } of faltan) {
     console.error(`    ${clave.padEnd(38)} ${fichero}`)
