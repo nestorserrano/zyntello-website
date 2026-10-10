@@ -16,6 +16,31 @@ import { claveChat } from '../lib/claveChat'
 
 const NUMERO = '18296399877'
 
+/**
+ * El texto sin emojis, para el mensaje que viaja a WhatsApp.
+ *
+ * ⚠️⚠️ NO es una preferencia de estilo: WhatsApp entrega los emojis de esta URL
+ * convertidos en el carácter de reemplazo. Medido en el mensaje RECIBIDO el
+ * 2026-10-10 — los acentos y la viñeta llegan intactos, los emojis no. Quien
+ * atiende lee una viñeta seguida de un rombo con interrogante en cada línea, y
+ * eso no se lee como «un emoji que no cargó»: se lee como un sistema roto.
+ *
+ * Quitarlos no pierde nada. En el chat el emoji identifica la opción de un
+ * vistazo dentro de una lista de once; en el mensaje cada respuesta ya va en su
+ * propia línea con su viñeta, así que ahí no distingue nada — solo decoraba.
+ *
+ * ⚠️ Se quitan también los selectores de variante (U+FE0F) y las banderas, que
+ * son pares de indicadores regionales y NO entran en Extended_Pictographic. Sin
+ * esa segunda parte, la bandera de República Dominicana dejaría dos caracteres
+ * sueltos que WhatsApp vuelve a romper igual.
+ */
+function sinEmojis(texto) {
+  return String(texto)
+    .replace(/[\p{Extended_Pictographic}\p{Regional_Indicator}\uFE0F\u20E3]/gu, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim()
+}
+
 // ─── Árbol de conversación ────────────────────────────────────────────────────
 const NODOS = {
 
@@ -520,13 +545,14 @@ export default function WhatsAppChat() {
 
     if (nodoId === 'convertir') {
       await new Promise(r => setTimeout(r, 900))
-      /* ⚠️⚠️ El resumen va SIEMPRE en español: lo lee quien atiende el WhatsApp.
+      /* ⚠️⚠️ El resumen va SIEMPRE en español y SIN emojis: lo lee quien
+         atiende el WhatsApp, y WhatsApp entrega los emojis de esta URL rotos.
          Pero si el visitante recorrió el chat en otro idioma hay que decirlo —
          contestar en español a quien eligió chino es perder la consulta, y sin
          este aviso no hay manera de saberlo: el resumen llega idéntico. */
       const avisoIdioma = idioma === 'es' ? '' : `\n\n[El visitante navegaba el sitio en: ${idioma}]`
       const resumen = (msgHistorial.length > 0
-        ? `Hola, vengo del sitio web de Zyntello. Estoy interesado en:\n\n${msgHistorial.map(m => `• ${m}`).join('\n')}\n\nMe gustaría más información.`
+        ? `Hola, vengo del sitio web de Zyntello. Estoy interesado en:\n\n${msgHistorial.map(m => `• ${sinEmojis(m)}`).join('\n')}\n\nMe gustaría más información.`
         : 'Hola, vengo del sitio web de Zyntello y me gustaría información sobre sus servicios.') + avisoIdioma
       window.open(`https://wa.me/${NUMERO_WA}?text=${encodeURIComponent(resumen)}`, '_blank')
       setTimeout(() => {

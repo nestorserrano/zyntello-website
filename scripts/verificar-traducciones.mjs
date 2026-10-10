@@ -33,7 +33,7 @@
 
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { fileURLToPath, pathToFileURL } from 'node:url'
-import { dirname, join } from 'node:path'
+import { basename, dirname, join } from 'node:path'
 
 const AQUI = dirname(fileURLToPath(import.meta.url))
 const COMPONENTES = join(AQUI, '..', 'src', 'components')
@@ -54,6 +54,15 @@ const sembradas = new Set(
 )
 
 const leer = n => readFileSync(join(COMPONENTES, n), 'utf8')
+
+/** Todos los `.jsx` de `src/`, a cualquier profundidad. */
+function fuentesJsx(dir = join(AQUI, '..', 'src')) {
+  return readdirSync(dir, { withFileTypes: true }).flatMap(e => {
+    const ruta = join(dir, e.name)
+    if (e.isDirectory()) return fuentesJsx(ruta)
+    return e.name.endsWith('.jsx') ? [ruta] : []
+  })
+}
 const esperadas = []   // claves exactas que el componente pide
 const sueltas = []     // literales con pinta de clave, de la pasada amplia
 const pide = (fichero, clave) => esperadas.push({ fichero, clave })
@@ -90,11 +99,15 @@ const PREFIJOS = ['nav.', 'hero.', 'porque.', 'cookies.', 'idioma.', 'pie.', 'co
    catálogo en el admin existe para evitar. */
 const PREFIJOS_ABIERTOS = ['mod.']
 
-for (const n of readdirSync(COMPONENTES).filter(n => n.endsWith('.jsx'))) {
-  const fuente = leer(n)
-  for (const m of fuente.matchAll(/\bt\(\s*'([^']+)'/g)) pide(n, m[1])
+/* ⚠️ Se recorre TODO `src/`, no solo `components/`. El enlace «Saltar al
+   contenido» vive en `App.jsx` y con la versión anterior —que miraba solo los
+   componentes— su clave no se comprobaba. El límite de una guarda es dónde
+   mira, y ése no se ve hasta que algo se queda fuera. */
+for (const n of fuentesJsx()) {
+  const fuente = readFileSync(n, 'utf8')
+  for (const m of fuente.matchAll(/\bt\(\s*'([^']+)'/g)) pide(basename(n), m[1])
   for (const m of fuente.matchAll(/'([a-z][a-z0-9.-]*\.[a-z0-9.-]+)'/g)) {
-    if (PREFIJOS.some(p => m[1].startsWith(p))) sueltas.push({ fichero: n, clave: m[1] })
+    if (PREFIJOS.some(p => m[1].startsWith(p))) sueltas.push({ fichero: basename(n), clave: m[1] })
   }
 }
 
