@@ -45,6 +45,7 @@ const EMPRESA = [
 const LEGALES = [
   ['/terminos/',          'Términos y condiciones'],
   ['/privacidad/',        'Política de privacidad'],
+  ['/cookies/',           'Política de cookies'],
   ['/sla/',               'Acuerdo de nivel de servicio'],
   ['/eliminacion-datos/', 'Eliminación de datos'],
   ['/avisos-terceros/',   'Avisos de terceros'],

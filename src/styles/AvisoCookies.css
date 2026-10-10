@@ -1,0 +1,97 @@
+/*
+ * Aviso de cookies — informativo, no de consentimiento. El porqué está en `AvisoCookies.jsx`.
+ *
+ * ⚠️ Todos los colores salen de los tokens de `tokens.css`. Una variable inventada no da error:
+ *    el navegador ignora la declaración y el elemento se queda con el color heredado, así que
+ *    el aviso se vería mal solo en algunos temas y nadie sabría por qué.
+ */
+
+.zy-cookies {
+  position: fixed;
+  left: 50%;
+  bottom: clamp(0.75rem, 2vw, 1.5rem);
+  transform: translateX(-50%);
+  z-index: 60;                     /* Sobre el contenido; el chat de WhatsApp va aparte. */
+  width: min(62rem, calc(100vw - 1.5rem));
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+  flex-wrap: wrap;
+  padding: clamp(0.85rem, 2vw, 1.15rem) clamp(1rem, 2.5vw, 1.5rem);
+  border: 1px solid var(--zy-borde-medio);
+  border-radius: var(--zy-radio-lg);
+  background: var(--zy-elevado);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .35);
+  animation: zy-cookies-entra .35s ease-out;
+}
+
+/* ⚠️ Respeta a quien pidió menos movimiento: sin esto, la animación se impone a su ajuste
+   del sistema operativo, y para una persona con sensibilidad vestibular eso no es cosmético. */
+@media (prefers-reduced-motion: reduce) {
+  .zy-cookies { animation: none; }
+}
+
+@keyframes zy-cookies-entra {
+  from { opacity: 0; transform: translate(-50%, 1rem); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.zy-cookies-texto {
+  flex: 1 1 22rem;
+  color: var(--zy-texto-medio);
+  font-size: .89rem;
+  line-height: 1.6;
+}
+
+.zy-cookies-texto strong { color: var(--zy-texto); font-weight: 600; }
+
+.zy-cookies-acciones {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  flex-wrap: wrap;
+}
+
+.zy-cookies-enlace {
+  color: var(--zy-texto-suave);
+  font-size: .85rem;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
+.zy-cookies-enlace:hover { color: var(--zy-texto); }
+
+.zy-cookies-boton {
+  border: 1px solid var(--zy-borde-fuerte);
+  border-radius: var(--zy-radio-sm);
+  background: transparent;
+  color: var(--zy-texto);
+  font: inherit;
+  font-size: .85rem;
+  font-weight: 600;
+  padding: .5rem 1.1rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .18s ease, border-color .18s ease;
+}
+
+.zy-cookies-boton:hover {
+  background: var(--zy-fondo-alto);
+  border-color: var(--zy-texto-tenue);
+}
+
+/* ⚠️ El foco visible NO se quita: es como navega quien usa teclado o lector de pantalla, y el
+   botón de cerrar es la única salida del aviso. */
+.zy-cookies-boton:focus-visible,
+.zy-cookies-enlace:focus-visible {
+  outline: 2px solid var(--zy-indigo);
+  outline-offset: 2px;
+}
+
+/* En teléfono el aviso ocupa el ancho y las acciones se separan del texto. */
+@media (max-width: 640px) {
+  .zy-cookies { flex-direction: column; align-items: stretch; gap: .85rem; }
+  .zy-cookies-acciones { justify-content: space-between; }
+}
