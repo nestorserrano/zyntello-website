@@ -105,6 +105,31 @@ const PREFIJOS = ['nav.', 'hero.', 'porque.', 'cookies.', 'idioma.', 'pie.', 'co
    que hace el generador. Se cuentan como abiertos y basta. */
 const PREFIJOS_ABIERTOS = ['mod.', 'fun.']
 
+/**
+ * ¿Es una clave de conjunto abierto, que no se cuenta en ninguna dirección?
+ *
+ * ⚠️⚠️ `serv.*` necesita una regla más fina que un prefijo, y por eso no está
+ * en la lista de arriba: bajo ese mismo prefijo conviven DOS cosas.
+ *
+ *   · `serv.{slug}.titulo` y `serv.{slug}.desc` son las tarjetas de la PORTADA.
+ *     Son catorce, salen de una lista del componente y SÍ se comprueban una a
+ *     una — si falta alguna, esa tarjeta se queda en español.
+ *   · Todo lo demás —`serv.{slug}.heroBajada`, `.faq.3.respuesta`…— es la
+ *     PÁGINA de ese servicio, y su conjunto lo deciden los datos del generador.
+ *
+ * Meter `serv.` entero en la lista de abiertos habría sido más corto y habría
+ * apagado justo la comprobación que vale: las catorce tarjetas de la portada.
+ */
+/* ⚠️ La portada usa EXACTAMENTE tres segmentos —`serv.{slug}.titulo`—, así que
+   el patrón los ancla. Con un `\.(titulo|desc)$` a secas también encajaban
+   `serv.{slug}.beneficios.0.titulo` y `serv.{slug}.problema.titulo`, que son de
+   la página: la guarda los reclamaba como si la portada los pidiera. */
+const CLAVE_DE_TARJETA = /^serv\.[a-z0-9-]+\.(titulo|desc)$/
+
+const esAbierta = (clave) =>
+  PREFIJOS_ABIERTOS.some(p => clave.startsWith(p)) ||
+  (clave.startsWith('serv.') && !CLAVE_DE_TARJETA.test(clave))
+
 /* ⚠️ Se recorre TODO `src/`, no solo `components/`. El enlace «Saltar al
    contenido» vive en `App.jsx` y con la versión anterior —que miraba solo los
    componentes— su clave no se comprobaba. El límite de una guarda es dónde
@@ -254,7 +279,7 @@ const unicas = new Set(esperadas.map(e => e.clave))
    borrar del catálogo antes de quitar su uso. Pero se dice, y por su nombre. */
 const huerfanas = [...sembradas]
   .filter(k => !unicas.has(k))
-  .filter(k => !PREFIJOS_ABIERTOS.some(p => k.startsWith(p)))
+  .filter(k => !esAbierta(k))
 if (huerfanas.length) {
   console.log(`· Traducciones: ⚠ ${huerfanas.length} sembrada${huerfanas.length === 1 ? '' : 's'} que ninguna vista pide —`)
   console.log(`  está${huerfanas.length === 1 ? '' : 'n'} traducida${huerfanas.length === 1 ? '' : 's'} y se ve${huerfanas.length === 1 ? '' : 'n'} en español: ${huerfanas.join(', ')}`)

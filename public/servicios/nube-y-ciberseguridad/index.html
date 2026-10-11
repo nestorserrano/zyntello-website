@@ -1,11 +1,20 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Nube y ciberseguridad — Que esté disponible, y que solo entre quien debe | Zyntello</title>
 <meta name="description" content="Migración a la nube, gestión de infraestructura y protección de la información. Hemos bajado un 40 % el costo operativo pasando de servidor propio a AWS.">
 <link rel="canonical" href="https://zyntello.com/servicios/nube-y-ciberseguridad/">
+<link rel="alternate" hreflang="es" href="https://zyntello.com/servicios/nube-y-ciberseguridad/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/servicios/nube-y-ciberseguridad/">
+<link rel="alternate" hreflang="fr" href="https://zyntello.com/fr/servicios/nube-y-ciberseguridad/">
+<link rel="alternate" hreflang="it" href="https://zyntello.com/it/servicios/nube-y-ciberseguridad/">
+<link rel="alternate" hreflang="zh-Hans" href="https://zyntello.com/zh-Hans/servicios/nube-y-ciberseguridad/">
+<link rel="alternate" hreflang="zh-Hant" href="https://zyntello.com/zh-Hant/servicios/nube-y-ciberseguridad/">
+<link rel="alternate" hreflang="ar" href="https://zyntello.com/ar/servicios/nube-y-ciberseguridad/">
+<link rel="alternate" hreflang="ht" href="https://zyntello.com/ht/servicios/nube-y-ciberseguridad/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/servicios/nube-y-ciberseguridad/">
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Nube y ciberseguridad — Que esté disponible, y que solo entre quien debe | Zyntello">
@@ -237,6 +246,36 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
   .acciones .btn,.hero-acciones .btn{width:100%}
 }
 @media(max-width:420px){ .barra-marca{display:none} }
+
+/* El selector de idioma de la barra. Son ocho enlaces cortos, no un
+   desplegable: ver el comentario de la plantilla. */
+.barra-idiomas{ display:flex; align-items:center; gap:2px; }
+.barra-idiomas a,.barra-idiomas .idioma-activo{
+  padding:3px 6px; border-radius:5px; font-size:.68rem; font-weight:700;
+  letter-spacing:.03em; text-decoration:none; line-height:1.4;
+}
+.barra-idiomas a{ color:var(--tenue); }
+.barra-idiomas a:hover{ color:var(--texto); background:rgba(255,255,255,.07); }
+.barra-idiomas .idioma-activo{ color:var(--color); background:rgba(255,255,255,.06); }
+/* ⚠️ El foco visible se conserva: con teclado es lo único que indica dónde se
+   está, y este control es justo el que usa quien no entiende el resto. */
+.barra-idiomas a:focus-visible{ outline:2px solid var(--color); outline-offset:1px; }
+/* ⚠️ Por debajo de 980px el selector se esconde: ocho enlaces más el botón de
+   WhatsApp no caben en un móvil, y apretarlos deja los dos impulsables. El
+   lector de pantalla sí los sigue viendo gracias al hreflang del <head>. */
+@media(max-width:980px){ .barra-idiomas{display:none} }
+
+/* ── Árabe: la página entera se gira ──────────────────────────────────────
+   ⚠️⚠️ Sin esto el texto sale correcto y la pantalla ilegible: los márgenes,
+   las viñetas y las flechas siguen apuntando al lado de un idioma que se lee
+   al revés. Se corrigen solo los que tienen lado. */
+[dir="rtl"] .barra-volver svg{ transform:scaleX(-1); }
+[dir="rtl"] .puntos li{ padding-left:0; padding-right:1.35rem; }
+[dir="rtl"] .puntos li::before{ left:auto; right:0; }
+[dir="rtl"] .pasos li{ padding-left:0; padding-right:3.1rem; }
+[dir="rtl"] .pasos li::before{ left:auto; right:0; }
+[dir="rtl"] .otra{ border-left:0 !important; border-right:2px solid var(--color); }
+[dir="rtl"] details summary::after{ right:auto; left:0; }
 </style>
 </head>
 <body>
@@ -263,6 +302,9 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
     </nav>
 
     <div class="barra-acciones">
+      <nav class="barra-idiomas" aria-label="Esta página en otros idiomas">
+        <span class="idioma-activo" aria-current="true">ES</span><a href="https://zyntello.com/en/servicios/nube-y-ciberseguridad/" hreflang="en" lang="en" data-idioma="en" title="English">EN</a><a href="https://zyntello.com/fr/servicios/nube-y-ciberseguridad/" hreflang="fr" lang="fr" data-idioma="fr" title="Français">FR</a><a href="https://zyntello.com/it/servicios/nube-y-ciberseguridad/" hreflang="it" lang="it" data-idioma="it" title="Italiano">IT</a><a href="https://zyntello.com/zh-Hans/servicios/nube-y-ciberseguridad/" hreflang="zh-Hans" lang="zh-Hans" data-idioma="zh-Hans" title="简体中文">简</a><a href="https://zyntello.com/zh-Hant/servicios/nube-y-ciberseguridad/" hreflang="zh-Hant" lang="zh-Hant" data-idioma="zh-Hant" title="繁體中文">繁</a><a href="https://zyntello.com/ar/servicios/nube-y-ciberseguridad/" hreflang="ar" lang="ar" data-idioma="ar" title="العربية">AR</a><a href="https://zyntello.com/ht/servicios/nube-y-ciberseguridad/" hreflang="ht" lang="ht" data-idioma="ht" title="Kreyòl ayisyen">HT</a>
+      </nav>
       <a href="https://wa.me/18296399877?text=%C2%A1Hola%20Zyntello!%20Quiero%20saber%20m%C3%A1s%20sobre%20Nube%20y%20ciberseguridad.%20%C2%BFMe%20ayudan%3F" target="_blank" rel="noopener" class="btn btn-principal btn-barra">Hablar con Zyntello</a>
     </div>
   </div>
@@ -391,6 +433,19 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
    '.revelar' nunca se oculta y la página se ve entera. Al revés —ocultar por
    CSS y mostrar por JS— un fallo dejaría la página en blanco con un 200. */
 document.documentElement.classList.add('js');
+
+/* ⚠️⚠️ Al elegir un idioma aquí se GUARDA, con la misma clave que usa la
+   portada. Sin esto, cambiar de idioma en esta página no serviría de nada en
+   cuanto el visitante navegara: la portada volvería a recibirle en el idioma
+   de su navegador y la siguiente página estática, en español. El enlace sigue
+   funcionando aunque esto falle — guardar es lo accesorio, navegar es lo que
+   importa, y por eso va en try/catch. */
+Array.prototype.forEach.call(document.querySelectorAll('[data-idioma]'), function (a) {
+  a.addEventListener('click', function () {
+    try { localStorage.setItem('zyntello-sitio-idioma', a.getAttribute('data-idioma')); } catch (e) {}
+  });
+});
+
 var obs = new IntersectionObserver(function (es) {
   es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
 }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });

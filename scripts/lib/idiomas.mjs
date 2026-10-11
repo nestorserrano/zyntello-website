@@ -156,3 +156,21 @@ export const paginaTraducida = (item, prefijo, idioma) => ({
   ...traducir(item, `${prefijo}.${item.slug}`, idioma),
   nombreEs: item.nombre,
 })
+
+/**
+ * ¿Está esta página traducida a este idioma?
+ *
+ * ⚠️⚠️ Sin esta comprobación, un servicio todavía sin traducir se publicaría
+ * igualmente en las ocho URLs: siete páginas en español declarando
+ * `lang="zh-Hans"` o `lang="ar"`. Serían válidas, indexables y equivocadas, sin
+ * un solo error por pantalla — y Google indexaría español bajo una etiqueta de
+ * chino, que es peor que no tener esa página.
+ *
+ * Se mira el `nombre`, que es la primera clave que se siembra de cada página:
+ * si falta, no hay nada traducido ahí. El español siempre pasa, porque es el
+ * original y no necesita catálogo.
+ */
+export function estaTraducida(item, prefijo, idioma) {
+  if (idioma === 'es') return true
+  return Boolean(catalogo?.[idioma]?.[`${prefijo}.${item.slug}.nombre`])
+}
