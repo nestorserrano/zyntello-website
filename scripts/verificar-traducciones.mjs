@@ -80,7 +80,7 @@ const pide = (fichero, clave) => esperadas.push({ fichero, clave })
 /* ⚠️ Una sección nueva se añade AQUÍ además de al catálogo. Si se olvida, sus
    claves de lista dejan de comprobarse y el aviso de huérfanas las delata —
    así fue como se descubrió que faltaba `sol.` el 2026-10-10. */
-const PREFIJOS = ['nav.', 'hero.', 'porque.', 'cookies.', 'idioma.', 'pie.', 'cont.',
+const PREFIJOS = ['nav.', 'hero.', 'porque.', 'cookies.', 'idioma.', 'pie.', 'cont.', 'pag.',
                   'serv.', 'nos.', 'port.', 'func.', 'a11y.', 'sol.']
 
 /* ⚠️⚠️ `mod.*` es un prefijo ABIERTO y no se cuenta en ninguna de las dos
@@ -97,13 +97,29 @@ const PREFIJOS = ['nav.', 'hero.', 'porque.', 'cookies.', 'idioma.', 'pie.', 'co
    Hacer fallar el build por cualquiera de los dos obligaría a desplegar este
    repositorio cada vez que el panel toca un módulo, que es justo lo que el
    catálogo en el admin existe para evitar. */
-const PREFIJOS_ABIERTOS = ['mod.']
+/* `fun.*` y `serv.{slug}.*` se arman con el slug de cada página estática y la
+   RUTA del campo dentro de sus datos (`fun.aprobaciones.beneficios.2.titulo`).
+   El conjunto lo deciden los `datos.mjs` de cada familia, no una lista escrita,
+   así que
+   comprobarlo uno a uno exigiría recorrer esos datos aquí — que es justo lo
+   que hace el generador. Se cuentan como abiertos y basta. */
+const PREFIJOS_ABIERTOS = ['mod.', 'fun.']
 
 /* ⚠️ Se recorre TODO `src/`, no solo `components/`. El enlace «Saltar al
    contenido» vive en `App.jsx` y con la versión anterior —que miraba solo los
    componentes— su clave no se comprobaba. El límite de una guarda es dónde
    mira, y ése no se ve hasta que algo se queda fuera. */
-for (const n of fuentesJsx()) {
+/* ⚠️⚠️ Las páginas estáticas NO son componentes React: su texto lo pone la
+   plantilla y los generadores, que viven en `scripts/`. Mirando solo `src/`,
+   las 29 claves `pag.*` aparecían como «sembradas que nadie pide» — un aviso
+   falso, y un aviso falso acaba con que se deje de leer el verde. */
+const GENERADORES = [
+  join(AQUI, 'lib', 'plantilla.mjs'),
+  join(AQUI, 'generar-servicios.mjs'),
+  join(AQUI, 'generar-funcionalidades.mjs'),
+].filter(existsSync)
+
+for (const n of [...fuentesJsx(), ...GENERADORES]) {
   const fuente = readFileSync(n, 'utf8')
   for (const m of fuente.matchAll(/\bt\(\s*'([^']+)'/g)) pide(basename(n), m[1])
   for (const m of fuente.matchAll(/'([a-z][a-z0-9.-]*\.[a-z0-9.-]+)'/g)) {

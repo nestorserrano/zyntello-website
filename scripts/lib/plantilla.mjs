@@ -12,6 +12,7 @@
  */
 
 import { REDES_SOCIALES } from '../../src/config/redesSociales.js'
+import { IDIOMAS, traductorDe } from './idiomas.mjs'
 
 const SITIO = 'https://zyntello.com'
 const WHATSAPP = '18296399877'
@@ -37,9 +38,25 @@ const rejilla = (items, max, render) =>
   `<div class="rejilla" style="--cols:${columnas(items.length, max)}">`
   + items.map(render).join('') + '</div>'
 
-export const redesSociales = () => `
-<nav class="redes-sociales" aria-label="Redes sociales de Zyntello">
-  ${REDES_SOCIALES.map(({ nombre, href, icono }) => `<a class="red-social" href="${href}" target="_blank" rel="noopener noreferrer" aria-label="Seguir a Zyntello en ${nombre}" title="${nombre}"><i class="fa-brands ${icono}" aria-hidden="true"></i></a>`).join('\n  ')}
+/**
+ * El rótulo corto de un idioma en el selector.
+ *
+ * ⚠️⚠️ El chino NO puede cortarse por el guion. `zh-Hans` y `zh-Hant` darían
+ * los dos «ZH», así que el selector mostraría dos botones idénticos y nadie
+ * sabría cuál lleva a simplificado y cuál a tradicional — y el que se
+ * equivocara se iría, porque un sitio en la escritura que no es la tuya se lee
+ * como un sitio que no es para ti. Se muestran los caracteres que los
+ * distinguen de verdad.
+ */
+const rotuloIdioma = (codigo) =>
+  codigo === 'zh-Hans' ? '简' : codigo === 'zh-Hant' ? '繁' : codigo.toUpperCase()
+
+/* ⚠️ `t` llega por parámetro con un valor por defecto que devuelve el respaldo
+   tal cual: así el blog —que llama a `redesSociales()` sin argumentos— sigue
+   funcionando en español sin tener que cargar el catálogo. */
+export const redesSociales = (t = (c, r) => r) => `
+<nav class="redes-sociales" aria-label="${esc(t('a11y.redes', 'Redes sociales de Zyntello'))}">
+  ${REDES_SOCIALES.map(({ nombre, href, icono }) => `<a class="red-social" href="${href}" target="_blank" rel="noopener noreferrer" aria-label="${esc(t('pag.redes.seguir', 'Seguir a Zyntello en'))} ${nombre}" title="${nombre}"><i class="fa-brands ${icono}" aria-hidden="true"></i></a>`).join('\n  ')}
 </nav>`
 
 /**
@@ -193,10 +210,46 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
   .acciones .btn,.hero-acciones .btn{width:100%}
 }
 @media(max-width:420px){ .barra-marca{display:none} }
+
+/* El selector de idioma de la barra. Son ocho enlaces cortos, no un
+   desplegable: ver el comentario de la plantilla. */
+.barra-idiomas{ display:flex; align-items:center; gap:2px; }
+.barra-idiomas a,.barra-idiomas .idioma-activo{
+  padding:3px 6px; border-radius:5px; font-size:.68rem; font-weight:700;
+  letter-spacing:.03em; text-decoration:none; line-height:1.4;
+}
+.barra-idiomas a{ color:var(--tenue); }
+.barra-idiomas a:hover{ color:var(--texto); background:rgba(255,255,255,.07); }
+.barra-idiomas .idioma-activo{ color:var(--color); background:rgba(255,255,255,.06); }
+/* ⚠️ El foco visible se conserva: con teclado es lo único que indica dónde se
+   está, y este control es justo el que usa quien no entiende el resto. */
+.barra-idiomas a:focus-visible{ outline:2px solid var(--color); outline-offset:1px; }
+/* ⚠️ Por debajo de 980px el selector se esconde: ocho enlaces más el botón de
+   WhatsApp no caben en un móvil, y apretarlos deja los dos impulsables. El
+   lector de pantalla sí los sigue viendo gracias al hreflang del <head>. */
+@media(max-width:980px){ .barra-idiomas{display:none} }
+
+/* ── Árabe: la página entera se gira ──────────────────────────────────────
+   ⚠️⚠️ Sin esto el texto sale correcto y la pantalla ilegible: los márgenes,
+   las viñetas y las flechas siguen apuntando al lado de un idioma que se lee
+   al revés. Se corrigen solo los que tienen lado. */
+[dir="rtl"] .barra-volver svg{ transform:scaleX(-1); }
+[dir="rtl"] .puntos li{ padding-left:0; padding-right:1.35rem; }
+[dir="rtl"] .puntos li::before{ left:auto; right:0; }
+[dir="rtl"] .pasos li{ padding-left:0; padding-right:3.1rem; }
+[dir="rtl"] .pasos li::before{ left:auto; right:0; }
+[dir="rtl"] .otra{ border-left:0 !important; border-right:2px solid var(--color); }
+[dir="rtl"] details summary::after{ right:auto; left:0; }
 `
 
 export function pagina(f, otras, opciones) {
   const { base, volver, distintivo, tituloOtras, segundoBoton } = opciones
+
+  /* ⚠️ `idioma` por defecto 'es': las páginas que aún no son multiidioma —el
+     blog, las sueltas— llaman igual que antes y siguen saliendo en español. */
+  const idioma = opciones.idioma || 'es'
+  const meta = IDIOMAS.find(i => i.codigo === idioma) || IDIOMAS[0]
+  const t = opciones.t || traductorDe(idioma)
 
   /* ⚠️ `base` puede venir VACÍO desde el 2026-09-25: las páginas de primer
      nivel (/precios/, /nosotros/, /contacto/…) no cuelgan de ninguna familia.
@@ -205,28 +258,60 @@ export function pagina(f, otras, opciones) {
      rompe nada: el servidor la sirve igual, pero para Google es OTRA URL, así
      que el canonical apuntaría a una dirección distinta de la que enlaza el
      sitio y las dos se repartirían la fuerza. */
-  const rutaDe = (slug) => base ? `${SITIO}/${base}/${slug}/` : `${SITIO}/${slug}/`
+  /* ⚠️ El prefijo del idioma va DELANTE de la familia: `/en/servicios/{slug}/`.
+     Con él detrás —`/servicios/en/{slug}/`— un idioma parecería un servicio
+     más y Google lo trataría como tal. */
+  const rutaEn = (pre, slug) => base ? `${SITIO}/${pre}${base}/${slug}/` : `${SITIO}/${pre}${slug}/`
+  const rutaDe = (slug) => rutaEn(meta.prefijo, slug)
 
   /* El enlace de «volver» de una familia va a su ancla de la portada; el de una
      página suelta lo dice ella, porque `#` a secas no lleva a ninguna parte. */
   const anclaVolver = opciones.anclaVolver || `${SITIO}/#${base}`
+
+  /* ⚠️⚠️ El mensaje de WhatsApp va SIEMPRE en español, aunque la página esté en
+     chino: lo lee quien atiende el WhatsApp en Zyntello. Y por eso mismo
+     declara el idioma del visitante — sin ese dato, responder en español a
+     quien entró por la página en árabe es perder la consulta, y el mensaje
+     llega idéntico al de un hispanohablante. */
+  /* ── Por qué el <head> lleva hreflang y la barra lleva ocho enlaces ──────
+     ⚠️⚠️ El hreflang es lo que le dice a Google que las ocho páginas son la
+     MISMA en idiomas distintos. Sin él las trataría como contenido duplicado,
+     escogería una y descartaría las otras siete — lo contrario de para lo que
+     se generan. El x-default apunta al español, que recibe a quien no encaja
+     en ninguno de los ocho.
+
+     ⚠️ Y el selector de la barra son ENLACES, no un desplegable con
+     JavaScript: Google sigue enlaces y así descubre las otras versiones
+     aunque el hreflang fallara. Un select con JS no lo sigue, y las páginas
+     quedarían publicadas y sin rastrear.
+
+     ⚠️ Este comentario vive FUERA del template literal a propósito. Dentro,
+     un acento invertido en la prosa cierra la plantilla a media cadena, y el
+     error que da nombra la palabra siguiente — así que se busca el fallo donde
+     no está. */
+  const avisoIdioma = idioma === 'es' ? '' : `\n\n[Visitante en la página en: ${idioma}]`
 
   /* ⚠️ El segundo botón del hero NO puede ser siempre «Probar el demo»:
      ofrecer un demo de una consultoría electoral o de una venta de equipos
      suena a que no se leyó lo que se está vendiendo. Cada familia —y cada
      página, si hace falta— dice cuál es el suyo. */
   const boton2 = f.segundoBoton || segundoBoton
+  /* ⚠️ `f.nombre` es el del CATÁLOGO EN ESPAÑOL (`f.es.nombre`), no el
+     traducido: el nombre del servicio tiene que llegar a WhatsApp en el idioma
+     de quien lo atiende, igual que el resto del mensaje. */
   const waTexto = encodeURIComponent(
-    `¡Hola Zyntello! Quiero saber más sobre ${f.nombre}. ¿Me ayudan?`)
+    `¡Hola Zyntello! Quiero saber más sobre ${f.nombreEs || f.nombre}. ¿Me ayudan?` + avisoIdioma)
 
   return `<!DOCTYPE html>
-<html lang="es">
+<html lang="${meta.codigo}" dir="${meta.dir}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(f.nombre)} — ${esc(f.subtitulo)} | Zyntello</title>
 <meta name="description" content="${esc(f.resumen)}">
 <link rel="canonical" href="${rutaDe(f.slug)}">
+${IDIOMAS.map(i => `<link rel="alternate" hreflang="${i.codigo}" href="${rutaEn(i.prefijo, f.slug)}">`).join('\n')}
+<link rel="alternate" hreflang="x-default" href="${rutaEn('', f.slug)}">
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="website">
 <meta property="og:title" content="${esc(f.nombre)} — ${esc(f.subtitulo)} | Zyntello">
@@ -280,15 +365,21 @@ ${estilos(f.color).trim()}
       </span>
     </div>
 
-    <nav class="barra-menu" aria-label="Secciones de la página">
-      <a href="#resuelve">Lo que resuelve</a>
-      <a href="#como">Cómo funciona</a>
-      <a href="#detalles">Detalles</a>
-      <a href="#preguntas">Preguntas</a>
+    <nav class="barra-menu" aria-label="${esc(t('pag.menu.aria', 'Secciones de la página'))}">
+      <a href="#resuelve">${esc(t('pag.menu.resuelve', 'Lo que resuelve'))}</a>
+      <a href="#como">${esc(t('pag.menu.como', 'Cómo funciona'))}</a>
+      <a href="#detalles">${esc(t('pag.menu.detalles', 'Detalles'))}</a>
+      <a href="#preguntas">${esc(t('pag.menu.preguntas', 'Preguntas'))}</a>
     </nav>
 
     <div class="barra-acciones">
-      <a href="https://wa.me/${WHATSAPP}?text=${waTexto}" target="_blank" rel="noopener" class="btn btn-principal btn-barra">Hablar con Zyntello</a>
+      <nav class="barra-idiomas" aria-label="${esc(t('pag.idioma.otros', 'Esta página en otros idiomas'))}">
+        ${IDIOMAS.map(i => i.codigo === idioma
+          ? `<span class="idioma-activo" aria-current="true">${rotuloIdioma(i.codigo)}</span>`
+          : `<a href="${rutaEn(i.prefijo, f.slug)}" hreflang="${i.codigo}" lang="${i.codigo}" data-idioma="${i.codigo}" title="${esc(i.nombre)}">${rotuloIdioma(i.codigo)}</a>`
+        ).join('')}
+      </nav>
+      <a href="https://wa.me/${WHATSAPP}?text=${waTexto}" target="_blank" rel="noopener" class="btn btn-principal btn-barra">${esc(t('pag.boton.whatsapp', 'Hablar con Zyntello'))}</a>
     </div>
   </div>
 </nav>
@@ -300,7 +391,7 @@ ${estilos(f.color).trim()}
       <h1>${esc(f.heroTitulo)}</h1>
       <p>${esc(f.heroBajada)}</p>
       <div class="hero-acciones">
-        <a href="https://wa.me/${WHATSAPP}?text=${waTexto}" target="_blank" rel="noopener" class="btn btn-principal">Hablar con Zyntello</a>
+        <a href="https://wa.me/${WHATSAPP}?text=${waTexto}" target="_blank" rel="noopener" class="btn btn-principal">${esc(t('pag.boton.whatsapp', 'Hablar con Zyntello'))}</a>
         <a href="${boton2.href}" class="btn btn-fantasma">${esc(boton2.texto)}</a>
       </div>
     </div>
@@ -313,7 +404,7 @@ ${estilos(f.color).trim()}
 
 <section class="seccion seccion-alta" id="resuelve">
   <div class="contenedor">
-    <p class="rotulo revelar">Lo que resuelve</p>
+    <p class="rotulo revelar">${esc(t('pag.menu.resuelve', 'Lo que resuelve'))}</p>
     <h2 class="titulo-seccion revelar">${esc(f.problema.titulo)}</h2>
     <div class="problema-caja revelar">
       <p>${esc(f.problema.texto)}</p>
@@ -326,8 +417,8 @@ ${estilos(f.color).trim()}
 
 <section class="seccion">
   <div class="contenedor">
-    <p class="rotulo revelar">Lo que incluye</p>
-    <h2 class="titulo-seccion revelar">Lo que trae, en concreto</h2>
+    <p class="rotulo revelar">${esc(t('pag.rotulo.incluye', 'Lo que incluye'))}</p>
+    <h2 class="titulo-seccion revelar">${esc(t('pag.h2.incluye', 'Lo que trae, en concreto'))}</h2>
     ${rejilla(f.beneficios, 3, (b, i) =>
       `<article class="tarjeta revelar" style="transition-delay:${i * 60}ms"><h3>${esc(b.titulo)}</h3><p>${esc(b.descripcion)}</p></article>`)}
   </div>
@@ -335,8 +426,8 @@ ${estilos(f.color).trim()}
 
 <section class="seccion seccion-alta" id="como">
   <div class="contenedor">
-    <p class="rotulo revelar">Cómo funciona</p>
-    <h2 class="titulo-seccion revelar">En tres pasos</h2>
+    <p class="rotulo revelar">${esc(t('pag.menu.como', 'Cómo funciona'))}</p>
+    <h2 class="titulo-seccion revelar">${esc(t('pag.h2.pasos', 'En tres pasos'))}</h2>
     <ol class="pasos revelar" style="--cols:${columnas(f.pasos.length, 3)}">
       ${f.pasos.map(p => `<li><h3>${esc(p.titulo)}</h3><p>${esc(p.descripcion)}</p></li>`).join('')}
     </ol>
@@ -345,8 +436,8 @@ ${estilos(f.color).trim()}
 
 <section class="seccion" id="detalles">
   <div class="contenedor">
-    <p class="rotulo revelar">En el detalle</p>
-    <h2 class="titulo-seccion revelar">Lo que se nota al usarlo cada día</h2>
+    <p class="rotulo revelar">${esc(t('pag.rotulo.detalle', 'En el detalle'))}</p>
+    <h2 class="titulo-seccion revelar">${esc(t('pag.h2.detalle', 'Lo que se nota al usarlo cada día'))}</h2>
     ${rejilla(f.detalles, 3, (d, i) =>
       `<article class="tarjeta detalle revelar" style="transition-delay:${i * 60}ms"><h3>${esc(d.titulo)}</h3><p>${esc(d.descripcion)}</p></article>`)}
   </div>
@@ -354,8 +445,8 @@ ${estilos(f.color).trim()}
 
 <section class="seccion seccion-alta">
   <div class="contenedor">
-    <p class="rotulo revelar">Para quién</p>
-    <h2 class="titulo-seccion revelar">Te va a servir si…</h2>
+    <p class="rotulo revelar">${esc(t('pag.rotulo.publico', 'Para quién'))}</p>
+    <h2 class="titulo-seccion revelar">${esc(t('pag.h2.publico', 'Te va a servir si…'))}</h2>
     ${rejilla(f.publico, 3, (p, i) =>
       `<article class="tarjeta revelar" style="transition-delay:${i * 60}ms"><h3>${esc(p.titulo)}</h3><p>${esc(p.descripcion)}</p></article>`)}
   </div>
@@ -363,8 +454,8 @@ ${estilos(f.color).trim()}
 
 <section class="seccion" id="preguntas">
   <div class="contenedor contenedor-estrecho">
-    <p class="rotulo revelar">Dudas habituales</p>
-    <h2 class="titulo-seccion revelar">Preguntas</h2>
+    <p class="rotulo revelar">${esc(t('pag.rotulo.dudas', 'Dudas habituales'))}</p>
+    <h2 class="titulo-seccion revelar">${esc(t('pag.menu.preguntas', 'Preguntas'))}</h2>
     <div class="revelar">
       ${f.faq.map(p => `<details><summary>${esc(p.pregunta)}</summary><p>${esc(p.respuesta)}</p></details>`).join('')}
     </div>
@@ -373,7 +464,7 @@ ${estilos(f.color).trim()}
 
 <section class="seccion seccion-alta">
   <div class="contenedor">
-    <p class="rotulo revelar">Y además</p>
+    <p class="rotulo revelar">${esc(t('pag.rotulo.ademas', 'Y además'))}</p>
     <h2 class="titulo-seccion revelar">${tituloOtras}</h2>
     ${rejilla(otras, 3, (o) =>
       `<a class="otra revelar" href="${rutaDe(o.slug)}" style="border-left:2px solid ${o.color}"><b>${esc(o.nombre)}</b><span>${esc(o.subtitulo)}</span></a>`)}
@@ -382,29 +473,29 @@ ${estilos(f.color).trim()}
 
 <section class="cierre">
   <div class="contenedor">
-    <h2>¿Lo vemos con tus datos?</h2>
-    <p>Te enseñamos ${esc(f.nombre)} funcionando sobre un caso parecido al tuyo, sin compromiso.</p>
+    <h2>${esc(t('pag.cierre.titulo', '¿Lo vemos con tus datos?'))}</h2>
+    <p>${esc(t('pag.cierre.texto.1', 'Te enseñamos'))} ${esc(f.nombre)} ${esc(t('pag.cierre.texto.2', 'funcionando sobre un caso parecido al tuyo, sin compromiso.'))}</p>
     <div class="acciones">
-      <a href="https://wa.me/${WHATSAPP}?text=${waTexto}" target="_blank" rel="noopener" class="btn btn-principal">Hablar con Zyntello</a>
-      <a href="tel:+1${WHATSAPP.slice(1)}" class="btn btn-fantasma">Llamar al +1 829 639 9877</a>
+      <a href="https://wa.me/${WHATSAPP}?text=${waTexto}" target="_blank" rel="noopener" class="btn btn-principal">${esc(t('pag.boton.whatsapp', 'Hablar con Zyntello'))}</a>
+      <a href="tel:+1${WHATSAPP.slice(1)}" class="btn btn-fantasma">${esc(t('pag.boton.llamar', 'Llamar al'))} +1 829 639 9877</a>
     </div>
   </div>
 </section>
 
 <footer class="pie">
   <div class="contenedor pie-caja">
-    <span>© ${new Date().getFullYear()} Zyntello, S.R.L. · República Dominicana</span>
+    <span>© ${new Date().getFullYear()} Zyntello, S.R.L. · ${esc(t('nos.pais.rd', 'República Dominicana'))}</span>
     <span>
-      <a href="${SITIO}/#soluciones">Módulos</a> ·
-      <a href="${SITIO}/precios/">Precios</a> ·
-      <a href="${SITIO}/blog/">Blog</a> ·
-      <a href="${SITIO}/nosotros/">Nosotros</a> ·
-      <a href="${SITIO}/contacto/">Contacto</a> ·
+      <a href="${SITIO}/#soluciones">${esc(t('pie.emp.modulos', 'Módulos'))}</a> ·
+      <a href="${SITIO}/precios/">${esc(t('pie.emp.precios', 'Precios'))}</a> ·
+      <a href="${SITIO}/blog/">${esc(t('pie.emp.blog', 'Blog'))}</a> ·
+      <a href="${SITIO}/nosotros/">${esc(t('nav.nosotros', 'Nosotros'))}</a> ·
+      <a href="${SITIO}/contacto/">${esc(t('nav.contacto', 'Contacto'))}</a> ·
       <a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a>
     </span>
     <div class="pie-redes">
-      <span>Síguenos</span>
-      ${redesSociales()}
+      <span>${esc(t('pie.redes', 'Síguenos'))}</span>
+      ${redesSociales(t)}
     </div>
   </div>
 </footer>
@@ -414,6 +505,19 @@ ${estilos(f.color).trim()}
    '.revelar' nunca se oculta y la página se ve entera. Al revés —ocultar por
    CSS y mostrar por JS— un fallo dejaría la página en blanco con un 200. */
 document.documentElement.classList.add('js');
+
+/* ⚠️⚠️ Al elegir un idioma aquí se GUARDA, con la misma clave que usa la
+   portada. Sin esto, cambiar de idioma en esta página no serviría de nada en
+   cuanto el visitante navegara: la portada volvería a recibirle en el idioma
+   de su navegador y la siguiente página estática, en español. El enlace sigue
+   funcionando aunque esto falle — guardar es lo accesorio, navegar es lo que
+   importa, y por eso va en try/catch. */
+Array.prototype.forEach.call(document.querySelectorAll('[data-idioma]'), function (a) {
+  a.addEventListener('click', function () {
+    try { localStorage.setItem('zyntello-sitio-idioma', a.getAttribute('data-idioma')); } catch (e) {}
+  });
+});
+
 var obs = new IntersectionObserver(function (es) {
   es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
 }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
