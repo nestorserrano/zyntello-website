@@ -33,6 +33,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://zyntello.com/ar/servicios/aplicaciones-a-la-medida/</loc>
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://zyntello.com/ar/servicios/automatizacion-con-ia/</loc>
     <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
@@ -339,6 +345,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://zyntello.com/en/servicios/aplicaciones-a-la-medida/</loc>
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://zyntello.com/en/servicios/automatizacion-con-ia/</loc>
     <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
@@ -377,6 +389,12 @@
   <url>
     <loc>https://zyntello.com/fr/funcionalidades/sistema-de-ayuda/</loc>
     <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zyntello.com/fr/servicios/aplicaciones-a-la-medida/</loc>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -447,6 +465,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://zyntello.com/ht/servicios/aplicaciones-a-la-medida/</loc>
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://zyntello.com/ht/servicios/automatizacion-con-ia/</loc>
     <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
@@ -485,6 +509,12 @@
   <url>
     <loc>https://zyntello.com/it/funcionalidades/sistema-de-ayuda/</loc>
     <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zyntello.com/it/servicios/aplicaciones-a-la-medida/</loc>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -645,6 +675,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://zyntello.com/zh-Hans/servicios/aplicaciones-a-la-medida/</loc>
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://zyntello.com/zh-Hans/servicios/automatizacion-con-ia/</loc>
     <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
@@ -683,6 +719,12 @@
   <url>
     <loc>https://zyntello.com/zh-Hant/funcionalidades/sistema-de-ayuda/</loc>
     <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zyntello.com/zh-Hant/servicios/aplicaciones-a-la-medida/</loc>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
