@@ -122,6 +122,28 @@ function nombreModulo(slug, listaApps) {
   return slug.charAt(0).toUpperCase() + slug.slice(1)
 }
 
+/**
+ * Los nombres de los módulos que un módulo de mejora necesita, ya traducidos.
+ *
+ * ⚠️⚠️ `requiere` puede traer VARIOS slugs separados por comas: Caja (POS) vale
+ * sobre Facturación, Car Wash, Condominios, Prestamello, Restaurante o Events,
+ * y declara los seis. Tratarlo como un slug único no fallaba — buscaba un
+ * módulo con ese id larguísimo, no lo encontraba y caía al respaldo, que
+ * capitaliza la primera letra. El cliente leía «Amplía Facturacion,carwash,
+ * condominios,prestamello,restaurante,events», en la única frase que existe
+ * para evitar que contrate algo que no podrá abrir.
+ *
+ * ⚠️ Son ALTERNATIVAS, no requisitos simultáneos: basta con tener uno. Por eso
+ * se unen con «o» y el aviso cambia a «necesita uno de esos módulos».
+ */
+function nombresRequeridos(requiere, listaApps, t) {
+  const slugs = String(requiere).split(',').map(x => x.trim()).filter(Boolean)
+  const nombres = slugs.map(sl => t(`mod.${sl}.nombre`, nombreModulo(sl, listaApps)))
+  if (nombres.length <= 1) return nombres[0] || ''
+  /* «A, B o C»: la coma para todos menos el último, que lleva la conjunción. */
+  return nombres.slice(0, -1).join(', ') + ' ' + t('sol.requiere.o', 'o') + ' ' + nombres[nombres.length - 1]
+}
+
 /* Datos estáticos completos como fallback si el API falla */
 const APPS_FALLBACK = [
   { id: 'crm',          nombre: 'CRM',           subtitulo: 'Gestión de Clientes y Ventas',          descripcion: 'Administra tu pipeline de ventas, historial de clientes y oportunidades comerciales desde un solo lugar.', precio: null,  precioAnual: null, color: '#3b82f6', gradiente: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 60%, #60a5fa 100%)', ahorroAnual: '2 MESES GRATIS', url: 'https://app.zyntello.com/demo/crm',          caracteristicas: ['Pipeline de ventas visual Kanban', 'Historial completo de interacciones', 'Gestión de contactos y empresas', 'Reportes y métricas de ventas', 'Integración con WhatsApp y email'] },
@@ -510,7 +532,11 @@ export default function Soluciones() {
                     puede abrir, y el fallo aparece DESPUÉS de pagar. */}
                 {app.requiere && (
                   <p className="sol-card-requiere">
-                    {t('sol.requiere.1', 'Amplía')} <strong>{t(`mod.${app.requiere}.nombre`, nombreModulo(app.requiere, apps))}</strong> {t('sol.requiere.2', '— necesita ese módulo contratado')}
+                    {t('sol.requiere.1', 'Amplía')}{' '}
+                    <strong>{nombresRequeridos(app.requiere, apps, t)}</strong>{' '}
+                    {app.requiere.includes(',')
+                      ? t('sol.requiere.2.varios', '— necesita uno de esos módulos contratado')
+                      : t('sol.requiere.2', '— necesita ese módulo contratado')}
                   </p>
                 )}
 
