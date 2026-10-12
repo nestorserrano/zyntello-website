@@ -61,7 +61,7 @@ export default function PorQueZyntello() {
             {t('porque.subtitulo', 'La diferencia no está en la lista de tecnologías — esa la tiene cualquiera. Está en que alguien siga contestando el teléfono seis meses después de la puesta en marcha.')}
           </p>
           <a href="#contacto" className="zy-btn zy-btn-coral zy-porque-cta">
-            Conversemos
+            {t('porque.cta', 'Conversemos')}
             <Icono nombre="flecha" size={18} className="zy-flecha" />
           </a>
         </header>
