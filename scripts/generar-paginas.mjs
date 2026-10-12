@@ -23,6 +23,7 @@ import { dirname, join } from 'node:path'
 import { escribirSiCambia } from './lib/escribir.mjs'
 import { PAGINAS } from './paginas/datos.mjs'
 import { pagina } from './lib/plantilla.mjs'
+import { IDIOMAS } from './lib/idiomas.mjs'
 
 const AQUI = dirname(fileURLToPath(import.meta.url))
 const DESTINO = join(AQUI, '..', 'public')
@@ -42,6 +43,13 @@ for (const [i, p] of PAGINAS.entries()) {
   mkdirSync(carpeta, { recursive: true })
   const cambio = escribirSiCambia(join(carpeta, 'index.html'), pagina(p, otras, {
     base: '',
+    /* ⚠️⚠️ Estas cuatro existen SOLO en español, y hasta el 2026-10-12
+       declaraban igualmente los ocho `hreflang`: `/en/precios/`,
+       `/ar/contacto/`… siete URLs que responden 404, medidas en producción.
+       No se ve en pantalla —la etiqueta vive en el `<head>`—, pero Google las
+       visita, se las encuentra vacías y deja de fiarse del bloque de idiomas
+       también en las páginas que sí tienen sus ocho versiones. */
+    idiomas: IDIOMAS.filter(l => l.codigo === 'es'),
     anclaVolver: 'https://zyntello.com/',
     volver: 'Inicio',
     distintivo: 'Zyntello',

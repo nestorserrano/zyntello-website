@@ -34,6 +34,9 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { basename, dirname, join } from 'node:path'
+/* Solo la LISTA de idiomas. `cargarCatalogo()` es lo que pide el API, y no se
+   llama aquí: esta comprobación tiene que correr sin red. */
+import { IDIOMAS } from './lib/idiomas.mjs'
 
 const AQUI = dirname(fileURLToPath(import.meta.url))
 const COMPONENTES = join(AQUI, '..', 'src', 'components')
@@ -286,3 +289,67 @@ if (huerfanas.length) {
 }
 
 console.log(`· Traducciones: ${unicas.size} claves pedidas, todas en el catálogo (${sembradas.size} sembradas).`)
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Los enlaces entre páginas generadas apuntan a páginas que EXISTEN
+
+   ⚠️⚠️ Mientras no estén traducidos los catorce servicios, cada idioma publica
+   un subconjunto distinto. Una página en chino que enlace a un servicio todavía
+   sin traducir manda al visitante a `/zh-Hans/servicios/{slug}/`, que no se ha
+   generado: 404. Y no lo dice nada — el generador termina en verde, la página
+   se ve perfecta y el enlace tiene el mismo aspecto que los que sí funcionan.
+
+   Medido en producción el 2026-10-12: la página china de Automatización con IA
+   ofrecía dos servicios en español y los dos daban 404.
+
+   Se comprueba contra el disco, no por HTTP: así corre sin red y falla ANTES de
+   desplegar, no después. */
+const PUBLICO = join(AQUI, '..', 'public')
+
+function paginasGeneradas(dir = PUBLICO, halladas = []) {
+  for (const e of readdirSync(dir, { withFileTypes: true })) {
+    if (e.isDirectory()) paginasGeneradas(join(dir, e.name), halladas)
+    else if (e.name === 'index.html') halladas.push(join(dir, e.name))
+  }
+  return halladas
+}
+
+const rotos = []
+for (const archivo of paginasGeneradas()) {
+  const html = readFileSync(archivo, 'utf8')
+  for (const [, ruta] of html.matchAll(/href="https:\/\/zyntello\.com\/([^"#?]*)"/g)) {
+    const partes = ruta.split('/').filter(Boolean)
+    /* ⚠️⚠️ Solo las dos secciones que este repositorio GENERA como archivos.
+       Todo lo demás del sitio lo resuelve React en el navegador: `/cxc/`,
+       `/contabilidad/`, `/bancos/` no existen en el disco y responden 200
+       igualmente, porque el `.htaccess` las reescribe a la SPA. Comprobarlas
+       contra el disco acusaba a 226 enlaces que funcionan perfectamente —una
+       medición mal planteada no encuentra un defecto, lo INVENTA, y el rato
+       se va en perseguir algo que no está roto.
+
+       Las de `servicios/` y `funcionalidades/` son distintas, y está medido:
+       `/ar/servicios/marketing-digital/` responde 404 de verdad, porque esa
+       página no se generó. */
+    const esSeccionGenerada = (partes.length === 2 || partes.length === 3)
+      && ['servicios', 'funcionalidades'].includes(partes[partes.length - 2])
+    /* Y lo que cuelga de un prefijo de idioma: `/en/precios/`, `/ar/contacto/`.
+       Esas cuatro páginas existen solo en español y declaraban los ocho
+       `hreflang` igualmente — siete 404 que nadie ve, porque la etiqueta vive
+       en el `<head>` y la pantalla se muestra perfecta. */
+    const esDeIdioma = partes.length >= 2
+      && IDIOMAS.some(l => l.prefijo && l.prefijo.replace('/', '') === partes[0])
+    if (!esSeccionGenerada && !esDeIdioma) continue
+    if (!existsSync(join(PUBLICO, ...partes, 'index.html'))) {
+      rotos.push({ desde: archivo.slice(PUBLICO.length + 1), a: '/' + ruta })
+    }
+  }
+}
+
+if (rotos.length) {
+  console.error(`\n✗ ${rotos.length} enlace${rotos.length === 1 ? '' : 's'} a páginas que no existen.`)
+  console.error('  El visitante llega a un 404 desde una página que se ve perfecta:\n')
+  for (const { desde, a } of rotos.slice(0, 15)) console.error(`    ${desde}\n      → ${a}`)
+  if (rotos.length > 15) console.error(`    … y ${rotos.length - 15} más`)
+  console.error('')
+  process.exit(1)
+}

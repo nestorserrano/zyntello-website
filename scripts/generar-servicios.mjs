@@ -53,12 +53,22 @@ for (const idioma of IDIOMAS) {
 
     const s = paginaTraducida(original, 'serv', idioma.codigo)
 
-    /* Las tres siguientes en círculo: todos quedan enlazados desde otros tres.
-       ⚠️ Van traducidas también — en español dentro de una página en chino se
-       leen como enlaces rotos. Si alguna de las tres no está traducida, su
-       texto cae al español, que es mejor que dejar el hueco. */
-    const otras = [1, 2, 3]
-      .map(d => SERVICIOS[(i + d) % SERVICIOS.length])
+    /* Las tres siguientes EN ESTE IDIOMA, recorriendo el círculo y saltando las
+       que aún no están traducidas: así todas quedan enlazadas desde otras tres
+       sin que ninguna enlace a algo que no existe.
+
+       ⚠️⚠️ Antes se cogían las tres siguientes sin mirar, confiando en que el
+       texto de una sin traducir «cae al español, que es mejor que el hueco».
+       Pero el texto era la mitad del problema: el ENLACE apuntaba igualmente a
+       `/zh-Hans/servicios/{slug}/`, que para una página sin traducir no existe.
+       Medido en producción el 2026-10-12: la página china de Automatización
+       con IA ofrecía «Aplicaciones a la medida» y «Nube y ciberseguridad» —en
+       español— y las dos daban 404. El visitante chino que pulsaba llegaba a
+       una página de error desde una página que se veía perfecta. */
+    const otras = Array.from({ length: SERVICIOS.length - 1 },
+        (_, d) => SERVICIOS[(i + d + 1) % SERVICIOS.length])
+      .filter(o => estaTraducida(o, 'serv', idioma.codigo))
+      .slice(0, 3)
       .map(o => paginaTraducida(o, 'serv', idioma.codigo))
 
     const carpeta = join(PUBLICO, ...idioma.prefijo.split('/').filter(Boolean), 'servicios', original.slug)
@@ -67,6 +77,10 @@ for (const idioma of IDIOMAS) {
     const cambio = escribirSiCambia(join(carpeta, 'index.html'), pagina(s, otras, {
       base: 'servicios',
       idioma: idioma.codigo,
+      /* Los idiomas en los que ESTE servicio existe. Con los once pendientes,
+         ofrecer los ocho manda al visitante a un 404 y le declara a Google
+         siete versiones que no están. */
+      idiomas: IDIOMAS.filter(l => estaTraducida(original, 'serv', l.codigo)),
       t,
       volver: t('pag.serv.volver', 'Todos los servicios'),
       distintivo: t('pag.serv.distintivo', 'Servicio de Zyntello'),

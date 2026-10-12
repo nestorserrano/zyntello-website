@@ -28,7 +28,7 @@ import { dirname, join } from 'node:path'
 import { escribirSiCambia } from './lib/escribir.mjs'
 import { FUNCIONALIDADES } from './funcionalidades/datos.mjs'
 import { pagina } from './lib/plantilla.mjs'
-import { IDIOMAS, cargarCatalogo, paginaTraducida, traductorDe } from './lib/idiomas.mjs'
+import { IDIOMAS, cargarCatalogo, estaTraducida, paginaTraducida, traductorDe } from './lib/idiomas.mjs'
 
 const AQUI = dirname(fileURLToPath(import.meta.url))
 const PUBLICO = join(AQUI, '..', 'public')
@@ -44,10 +44,14 @@ for (const idioma of IDIOMAS) {
 
   for (const original of FUNCIONALIDADES) {
     const f = paginaTraducida(original, 'fun', idioma.codigo)
-    /* ⚠️ Las «otras» van traducidas también: son las tarjetas del final, y en
-       español dentro de una página en chino se leen como enlaces rotos. */
+    /* ⚠️⚠️ Solo las traducidas A ESTE IDIOMA. Hoy las cuatro lo están, así que
+       el filtro no quita nada — está puesto porque la quinta que se añada sin
+       traducir no daría ningún error: su tarjeta saldría en español dentro de
+       la página china y su enlace llevaría a `/zh-Hans/funcionalidades/{slug}/`,
+       que no se genera. Pasó exactamente eso en servicios. */
     const otras = FUNCIONALIDADES
       .filter(o => o.slug !== original.slug)
+      .filter(o => estaTraducida(o, 'fun', idioma.codigo))
       .map(o => paginaTraducida(o, 'fun', idioma.codigo))
 
     const carpeta = join(PUBLICO, ...idioma.prefijo.split('/').filter(Boolean), 'funcionalidades', original.slug)
@@ -56,6 +60,10 @@ for (const idioma of IDIOMAS) {
     const cambio = escribirSiCambia(join(carpeta, 'index.html'), pagina(f, otras, {
       base: 'funcionalidades',
       idioma: idioma.codigo,
+      /* Hoy las cuatro están en los ocho, así que esto no quita ninguno. Va
+         puesto por lo mismo que el filtro de «otras»: la quinta sin traducir
+         ofrecería ocho idiomas y siete darían 404, sin decir nada. */
+      idiomas: IDIOMAS.filter(l => estaTraducida(original, 'fun', l.codigo)),
       t,
       volver: t('pag.func.volver', 'Todas las funcionalidades'),
       distintivo: t('pag.func.distintivo', 'Incluido en la plataforma'),

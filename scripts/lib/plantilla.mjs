@@ -251,6 +251,21 @@ export function pagina(f, otras, opciones) {
   const meta = IDIOMAS.find(i => i.codigo === idioma) || IDIOMAS[0]
   const t = opciones.t || traductorDe(idioma)
 
+  /* ⚠️⚠️ Los idiomas en los que ESTA página existe, no los ocho del sitio.
+     Mientras falten servicios por traducir, cada página se publica en un
+     subconjunto distinto, y ofrecer los ocho en todas tiene dos consecuencias
+     que no avisan de nada:
+
+     · El selector pinta «العربية» en la página española de un servicio sin
+       traducir, y quien lo pulsa llega a un 404 desde una página impecable.
+     · El `hreflang` le DECLARA a Google ocho versiones. Google las visita, se
+       encuentra siete 404 y deja de fiarse del bloque entero — también para
+       las páginas que sí tienen sus ocho.
+
+     Quien no lo pase se queda con los ocho, que es lo correcto para el blog y
+     las páginas sueltas: esas existen solo en español y no pintan selector. */
+  const idiomasDePagina = opciones.idiomas || IDIOMAS
+
   /* ⚠️ `base` puede venir VACÍO desde el 2026-09-25: las páginas de primer
      nivel (/precios/, /nosotros/, /contacto/…) no cuelgan de ninguna familia.
      Con el `${SITIO}/${base}/${slug}/` de antes, un base vacío producía
@@ -310,7 +325,7 @@ export function pagina(f, otras, opciones) {
 <title>${esc(f.nombre)} — ${esc(f.subtitulo)} | Zyntello</title>
 <meta name="description" content="${esc(f.resumen)}">
 <link rel="canonical" href="${rutaDe(f.slug)}">
-${IDIOMAS.map(i => `<link rel="alternate" hreflang="${i.codigo}" href="${rutaEn(i.prefijo, f.slug)}">`).join('\n')}
+${idiomasDePagina.map(i => `<link rel="alternate" hreflang="${i.codigo}" href="${rutaEn(i.prefijo, f.slug)}">`).join('\n')}
 <link rel="alternate" hreflang="x-default" href="${rutaEn('', f.slug)}">
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="website">
@@ -373,12 +388,12 @@ ${estilos(f.color).trim()}
     </nav>
 
     <div class="barra-acciones">
-      <nav class="barra-idiomas" aria-label="${esc(t('pag.idioma.otros', 'Esta página en otros idiomas'))}">
-        ${IDIOMAS.map(i => i.codigo === idioma
+      ${idiomasDePagina.length < 2 ? '' : `<nav class="barra-idiomas" aria-label="${esc(t('pag.idioma.otros', 'Esta página en otros idiomas'))}">
+        ${idiomasDePagina.map(i => i.codigo === idioma
           ? `<span class="idioma-activo" aria-current="true">${rotuloIdioma(i.codigo)}</span>`
           : `<a href="${rutaEn(i.prefijo, f.slug)}" hreflang="${i.codigo}" lang="${i.codigo}" data-idioma="${i.codigo}" title="${esc(i.nombre)}">${rotuloIdioma(i.codigo)}</a>`
         ).join('')}
-      </nav>
+      </nav>`}
       <a href="https://wa.me/${WHATSAPP}?text=${waTexto}" target="_blank" rel="noopener" class="btn btn-principal btn-barra">${esc(t('pag.boton.whatsapp', 'Hablar con Zyntello'))}</a>
     </div>
   </div>
@@ -462,14 +477,14 @@ ${estilos(f.color).trim()}
   </div>
 </section>
 
-<section class="seccion seccion-alta">
+${otras.length === 0 ? '' : `<section class="seccion seccion-alta">
   <div class="contenedor">
     <p class="rotulo revelar">${esc(t('pag.rotulo.ademas', 'Y además'))}</p>
     <h2 class="titulo-seccion revelar">${tituloOtras}</h2>
     ${rejilla(otras, 3, (o) =>
       `<a class="otra revelar" href="${rutaDe(o.slug)}" style="border-left:2px solid ${o.color}"><b>${esc(o.nombre)}</b><span>${esc(o.subtitulo)}</span></a>`)}
   </div>
-</section>
+</section>`}
 
 <section class="cierre">
   <div class="contenedor">

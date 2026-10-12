@@ -468,6 +468,36 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
   .acciones .btn,.hero-acciones .btn{width:100%}
 }
 @media(max-width:420px){ .barra-marca{display:none} }
+
+/* El selector de idioma de la barra. Son ocho enlaces cortos, no un
+   desplegable: ver el comentario de la plantilla. */
+.barra-idiomas{ display:flex; align-items:center; gap:2px; }
+.barra-idiomas a,.barra-idiomas .idioma-activo{
+  padding:3px 6px; border-radius:5px; font-size:.68rem; font-weight:700;
+  letter-spacing:.03em; text-decoration:none; line-height:1.4;
+}
+.barra-idiomas a{ color:var(--tenue); }
+.barra-idiomas a:hover{ color:var(--texto); background:rgba(255,255,255,.07); }
+.barra-idiomas .idioma-activo{ color:var(--color); background:rgba(255,255,255,.06); }
+/* ⚠️ El foco visible se conserva: con teclado es lo único que indica dónde se
+   está, y este control es justo el que usa quien no entiende el resto. */
+.barra-idiomas a:focus-visible{ outline:2px solid var(--color); outline-offset:1px; }
+/* ⚠️ Por debajo de 980px el selector se esconde: ocho enlaces más el botón de
+   WhatsApp no caben en un móvil, y apretarlos deja los dos impulsables. El
+   lector de pantalla sí los sigue viendo gracias al hreflang del <head>. */
+@media(max-width:980px){ .barra-idiomas{display:none} }
+
+/* ── Árabe: la página entera se gira ──────────────────────────────────────
+   ⚠️⚠️ Sin esto el texto sale correcto y la pantalla ilegible: los márgenes,
+   las viñetas y las flechas siguen apuntando al lado de un idioma que se lee
+   al revés. Se corrigen solo los que tienen lado. */
+[dir="rtl"] .barra-volver svg{ transform:scaleX(-1); }
+[dir="rtl"] .puntos li{ padding-left:0; padding-right:1.35rem; }
+[dir="rtl"] .puntos li::before{ left:auto; right:0; }
+[dir="rtl"] .pasos li{ padding-left:0; padding-right:3.1rem; }
+[dir="rtl"] .pasos li::before{ left:auto; right:0; }
+[dir="rtl"] .otra{ border-left:0 !important; border-right:2px solid var(--color); }
+[dir="rtl"] details summary::after{ right:auto; left:0; }
 .art{padding:56px 0 24px}
 .art-meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;color:var(--tenue);font-size:.84rem;margin-bottom:18px}
 .art h1{font-family:var(--display);font-weight:700;font-size:clamp(1.9rem,4.4vw,3rem);letter-spacing:-.035em;line-height:1.08;margin-bottom:18px}
