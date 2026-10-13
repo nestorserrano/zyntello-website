@@ -319,9 +319,16 @@ export const GESTION = [
     cierre: {
       titulo: 'Ver el hueco antes de caer en él',
       texto: 'Zyntello proyecta el flujo con los vencimientos reales de cobros y pagos, ajustado por cómo paga de verdad cada cliente.',
-      ruta: '/flujocaja/',
+      /* ⚠️⚠️ Apuntaba a `/flujocaja/` hasta el 2026-10-13. Ese módulo se retiró del
+         catálogo el 2026-10-03 —cobraba aparte la misma proyección que el ERP ya da
+         en Bancos y en CxP— pero su landing SIGUIÓ publicada, y este artículo seguía
+         mandando lectores a ella. O sea: un lector llegaba desde el blog a una página
+         que ofrecía contratar un módulo que ya no existe, y que además prometía
+         proyección diaria y avisos que no estaban construidos.
+         Las tres pantallas no se fueron a ninguna parte: viven dentro de Bancos. */
+      ruta: '/bancos/',
     },
-    destino: { ruta: '/flujocaja/', texto: 'Ver Flujo de Caja' },
+    destino: { ruta: '/bancos/', texto: 'Ver Bancos' },
   },
 
   /* ═══════════════════ ERP ═════════════════════════════════════════════ */
