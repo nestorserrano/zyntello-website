@@ -319,13 +319,20 @@ for (const archivo of paginasGeneradas()) {
   const html = readFileSync(archivo, 'utf8')
   for (const [, ruta] of html.matchAll(/href="https:\/\/zyntello\.com\/([^"#?]*)"/g)) {
     const partes = ruta.split('/').filter(Boolean)
-    /* ⚠️⚠️ Solo las dos secciones que este repositorio GENERA como archivos.
-       Todo lo demás del sitio lo resuelve React en el navegador: `/cxc/`,
-       `/contabilidad/`, `/bancos/` no existen en el disco y responden 200
-       igualmente, porque el `.htaccess` las reescribe a la SPA. Comprobarlas
-       contra el disco acusaba a 226 enlaces que funcionan perfectamente —una
-       medición mal planteada no encuentra un defecto, lo INVENTA, y el rato
-       se va en perseguir algo que no está roto.
+    /* ⚠️⚠️ Solo las dos secciones que ESTE repositorio genera como archivos.
+       `/cxc/`, `/contabilidad/`, `/bancos/` y otras 32 responden 200 y no están
+       en este repo: son las **landings de módulo, que escribe el ADMIN**
+       (`ModuloController::generarLandingModulo()`) directamente en el directorio
+       del sitio. Comprobarlas contra `public/` acusaba a 226 enlaces que
+       funcionan perfectamente — una medición mal planteada no encuentra un
+       defecto, lo INVENTA, y el rato se va en perseguir algo que no está roto.
+
+       ⚠️ Corregido el 2026-10-13: antes aquí ponía que «las resuelve React en el
+       navegador porque el .htaccess las reescribe a la SPA». Es FALSO —el
+       `.htaccess` del sitio no tiene ni una regla de reescritura, solo un
+       `ErrorDocument 404`— y lo falso era peligroso: hacía creer que esas rutas
+       no pueden dar 404 nunca, cuando en realidad son archivos que el admin
+       puede dejar de generar. Pasó con `/flujocaja/`.
 
        Las de `servicios/` y `funcionalidades/` son distintas, y está medido:
        `/ar/servicios/marketing-digital/` responde 404 de verdad, porque esa
