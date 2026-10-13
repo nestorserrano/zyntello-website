@@ -63,6 +63,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://zyntello.com/ar/servicios/encuestas-y-estudios-de-mercado/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://zyntello.com/ar/servicios/erp-y-crm/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
@@ -429,6 +435,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://zyntello.com/en/servicios/encuestas-y-estudios-de-mercado/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://zyntello.com/en/servicios/erp-y-crm/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
@@ -526,6 +538,12 @@
   </url>
   <url>
     <loc>https://zyntello.com/fr/servicios/consultoria-electoral/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zyntello.com/fr/servicios/encuestas-y-estudios-de-mercado/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -657,6 +675,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://zyntello.com/ht/servicios/encuestas-y-estudios-de-mercado/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://zyntello.com/ht/servicios/erp-y-crm/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
@@ -759,6 +783,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://zyntello.com/it/servicios/encuestas-y-estudios-de-mercado/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://zyntello.com/it/servicios/erp-y-crm/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
@@ -856,7 +886,7 @@
   </url>
   <url>
     <loc>https://zyntello.com/servicios/encuestas-y-estudios-de-mercado/</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -975,6 +1005,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://zyntello.com/zh-Hans/servicios/encuestas-y-estudios-de-mercado/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://zyntello.com/zh-Hans/servicios/erp-y-crm/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
@@ -1072,6 +1108,12 @@
   </url>
   <url>
     <loc>https://zyntello.com/zh-Hant/servicios/consultoria-electoral/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zyntello.com/zh-Hant/servicios/encuestas-y-estudios-de-mercado/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
