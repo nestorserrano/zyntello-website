@@ -45,6 +45,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://zyntello.com/ar/servicios/capacitacion-ti-e-ia/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://zyntello.com/ar/servicios/erp-y-crm/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
@@ -387,6 +393,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://zyntello.com/en/servicios/capacitacion-ti-e-ia/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://zyntello.com/en/servicios/erp-y-crm/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
@@ -460,6 +472,12 @@
   </url>
   <url>
     <loc>https://zyntello.com/fr/servicios/automatizacion-con-ia/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zyntello.com/fr/servicios/capacitacion-ti-e-ia/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -567,6 +585,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://zyntello.com/ht/servicios/capacitacion-ti-e-ia/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://zyntello.com/ht/servicios/erp-y-crm/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
@@ -645,6 +669,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://zyntello.com/it/servicios/capacitacion-ti-e-ia/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://zyntello.com/it/servicios/erp-y-crm/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
@@ -718,7 +748,7 @@
   </url>
   <url>
     <loc>https://zyntello.com/servicios/capacitacion-ti-e-ia/</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -837,6 +867,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://zyntello.com/zh-Hans/servicios/capacitacion-ti-e-ia/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://zyntello.com/zh-Hans/servicios/erp-y-crm/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
@@ -910,6 +946,12 @@
   </url>
   <url>
     <loc>https://zyntello.com/zh-Hant/servicios/automatizacion-con-ia/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zyntello.com/zh-Hant/servicios/capacitacion-ti-e-ia/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
