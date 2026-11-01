@@ -267,10 +267,35 @@ function avisoPrevalencia (slug, codigo) {
  */
 const MARCA_INICIO = '<!--zyntello:legales-->'
 const MARCA_FIN = '<!--/zyntello:legales-->'
-const INSERTADO = /<!--zyntello:legales-->[\s\S]*?<!--\/zyntello:legales-->/g
+/**
+ * ⚠️ La limpieza se lleva también los saltos de línea que rodean lo insertado.
+ *
+ * Sin eso, el salto que separa el bloque de la etiqueta siguiente queda FUERA de la marca, así
+ * que la limpieza no lo borra y la pasada siguiente añade el suyo: el archivo gana **una línea
+ * en blanco por ejecución**. Medido: de 5 a 7 líneas tras dos pasadas de `npm run generar`.
+ *
+ * Es la versión leve del mismo defecto que las marcas existen para evitar, y la más fácil de
+ * pasar por alto — nadie revisa un diff de líneas vacías.
+ */
+const INSERTADO = /\n*<!--zyntello:legales-->[\s\S]*?<!--\/zyntello:legales-->\n*/g
 
 /** Envuelve lo insertado para poder quitarlo en la pasada siguiente. */
 const marcar = (html) => (html ? `${MARCA_INICIO}${html}${MARCA_FIN}` : '')
+
+/**
+ * Deja el HTML con saltos LF, que es como el repositorio guarda estos archivos.
+ *
+ * ⚠️⚠️ En Windows el checkout los pone en el disco con CRLF, pero lo que el generador inserta
+ * lleva `\n` —es una cadena de JavaScript—, así que el archivo escrito quedaba **mezclado**: 360
+ * saltos CRLF y 109 LF en el mismo fichero. Y un archivo mezclado no coincide con su versión
+ * guardada por ningún lado: un cambio de 74 líneas producía un diff de **7.000**, con el cambio
+ * real enterrado dentro. Nadie revisa un diff así; se acepta entero, y ahí es donde se cuelan
+ * las cosas.
+ *
+ * Se normaliza a LF y no al revés porque LF es lo que hay en el repositorio; de la conversión
+ * para Windows ya se encarga git al hacer checkout.
+ */
+const conSaltosDelRepo = (html) => html.replace(/\r\n/g, '\n')
 
 const ESTILO = `<style>
 .idiomas{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:center;padding:.75rem 0;font-size:.82rem}
@@ -297,7 +322,8 @@ for (const slug of LEGALES) {
   }
   // ⚠️ Lo primero: quitar lo que insertó la pasada anterior. Sin esto el archivo crece en cada
   // ejecución, porque la página española es la fuente y la salida a la vez.
-  const base = readFileSync(origen, 'utf8').replace(INSERTADO, '')
+  const crudo = readFileSync(origen, 'utf8')
+  const base = crudo.replace(INSERTADO, '')
 
   // Qué idiomas tienen traducción de ESTA página. El español siempre.
   const publicados = ['es', ...IDIOMAS
@@ -321,7 +347,7 @@ for (const slug of LEGALES) {
       `<link rel="canonical" href="https://zyntello.com/${prefijo}${slug}/">`)
 
     // hreflang + estilo del selector, justo antes de cerrar el <head>.
-    html = html.replace(/<\/head>/i, `${marcar(`${hreflang(slug, publicados)}\n${ESTILO}`)}\n</head>`)
+    html = html.replace(/<\/head>/i, `${marcar(`\n${hreflang(slug, publicados)}\n${ESTILO}\n`)}</head>`)
 
     // ⚠️ El orden importa: los enlaces del CONTENIDO se llevan al idioma que se está leyendo,
     // pero los del selector y los del aviso de prevalencia tienen que seguir apuntando al
@@ -330,13 +356,13 @@ for (const slug of LEGALES) {
 
     html = html.replace(/<\/header>/i, `${marcar(selector(slug, codigo, publicados))}</header>`)
     if (codigo !== 'es') {
-      html = html.replace(/<main[^>]*>/i, (m) => `${m}\n${marcar(avisoPrevalencia(slug, codigo))}`)
+      html = html.replace(/<main[^>]*>/i, (m) => `${m}${marcar(`\n${avisoPrevalencia(slug, codigo)}`)}`)
     }
 
     const carpeta = join(PUBLICO, prefijo, slug)
     if (!verificar) {
       mkdirSync(carpeta, { recursive: true })
-      if (escribirSiCambia(join(carpeta, 'index.html'), html)) escritas++
+      if (escribirSiCambia(join(carpeta, 'index.html'), conSaltosDelRepo(html))) escritas++
     }
 
     if (codigo !== 'es') {
