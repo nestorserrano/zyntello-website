@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conditions de service | Zyntello</title>
+<meta name="description" content="Conditions générales d'utilisation de la plateforme SaaS de Zyntello, S.R.L. — modules ERP, CRM, Paie, Facturation, PSA et verticales métier.">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<link rel="canonical" href="https://zyntello.com/fr/terminos/">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;padding:0 clamp(1.25rem,3vw,2.75rem)}
+
+  /* Encabezado */
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:88ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  /* Cuerpo */
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:clamp(2rem,3.5vw,4rem);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  /* Índice */
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  /* Secciones */
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:95ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:95ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note b{color:#fff}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:560px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  /* Control de cambios */
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
+  /* Pie */
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+
+
+
+<!--zyntello:legales-->
+<link rel="alternate" hreflang="es" href="https://zyntello.com/terminos/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/terminos/">
+<link rel="alternate" hreflang="fr" href="https://zyntello.com/fr/terminos/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/terminos/">
+<style>
+.idiomas{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:center;padding:.75rem 0;font-size:.82rem}
+.idiomas span{color:var(--tx3,#64748b);text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+.idiomas a{color:var(--tx3,#64748b);text-decoration:none;padding:.15rem .5rem;border-radius:99px;border:1px solid transparent}
+.idiomas a:hover{color:var(--ac,#60a5fa);border-color:var(--line2,rgba(255,255,255,.14))}
+.idiomas a[aria-current]{color:var(--ac,#60a5fa);border-color:var(--ac,#60a5fa)}
+.prevalece{margin:1rem 0;padding:.75rem 1rem;border-radius:.5rem;font-size:.86rem;
+  color:var(--tx2,#94a3b8);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.28)}
+.prevalece a{color:var(--ac,#60a5fa)}
+</style>
+<!--/zyntello:legales--></head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">Accueil</a>
+        <a href="/fr/sla/">SLA</a>
+        <a href="/fr/privacidad/">Politique de Confidentialité</a>
+        <a href="/fr/eliminacion-datos/">Suppression des données</a>
+        <a href="/fr/avisos-terceros/">Avis relatifs aux tiers</a>
+        <a href="https://zyntello.com/#contacto">Contact</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">Document juridique</span>
+      <h1>Conditions générales du service</h1>
+      <p class="lead">Les présentes Conditions régissent l'accès et l'utilisation de la plateforme de logiciel en tant que service (SaaS) de <strong>Zyntello, S.R.L.</strong>, disponible sur <code>app.zyntello.com</code>, y compris tous ses modules de gestion d'entreprise, ses applications mobiles et les canaux de communication associés (courrier électronique et WhatsApp).</p>
+      <div class="meta">
+        <span>Dernière mise à jour : <strong>18 septembre 2026</strong></span>
+        <span>En vigueur : <strong>dès sa publication</strong></span>
+        <span>Version : <strong><a class="verlink" href="#s25">1.7 — voir le journal des modifications</a></strong></span>
+        <span>Langue d'origine : <strong>espagnol</strong></span>
+      </div>
+    </div>
+  </div><!--zyntello:legales--><div class="idiomas" role="navigation" aria-label="Langue"><span>Langue:</span><a href="/terminos/" hreflang="es" lang="es">Español</a><a href="/en/terminos/" hreflang="en" lang="en">English</a><a href="/fr/terminos/" hreflang="fr" lang="fr" aria-current="true">Français</a></div><!--/zyntello:legales--></header>
+
+<main class="wrap"><!--zyntello:legales-->
+<div class="prevalece" role="note">Ceci est une traduction de courtoisie. La version qui fait foi est la version espagnole. <a href="/terminos/" hreflang="es" lang="es">Voir la version espagnole</a>.</div><!--/zyntello:legales-->
+<div class="grid">
+
+  <aside class="toc">
+    <h2>Sommaire</h2>
+    <ol>
+      <li><a href="#s1">Identification du prestataire</a></li>
+      <li><a href="#s2">Acceptation des Conditions</a></li>
+      <li><a href="#s3">Définitions</a></li>
+      <li><a href="#s4">Objet du service et modules</a></li>
+      <li><a href="#s5">Compte, entreprises et utilisateurs</a></li>
+      <li><a href="#s6">Isolement des données</a></li>
+      <li><a href="#s7">Formules, prix et paiements</a></li>
+      <li><a href="#s8">Résiliation et remboursements</a></li>
+      <li><a href="#s9">Suspension et cessation</a></li>
+      <li><a href="#s10">Propriété intellectuelle</a></li>
+      <li><a href="#s11">Usage acceptable</a></li>
+      <li><a href="#s12">Communications : courriel et WhatsApp</a></li>
+      <li><a href="#s13">Données personnelles et rôle des parties</a></li>
+      <li><a href="#s14">Données traitées par module</a></li>
+      <li><a href="#s15">Tiers et sous-traitants ultérieurs</a></li>
+      <li><a href="#s16">Intelligence artificielle</a></li>
+      <li><a href="#s17">Conformité fiscale et comptable</a></li>
+      <li><a href="#s18">Disponibilité, assistance et sauvegardes</a></li>
+      <li><a href="#s19">Limitation de responsabilité</a></li>
+      <li><a href="#s20">Indemnisation</a></li>
+      <li><a href="#s21">Modifications des présentes Conditions</a></li>
+      <li><a href="#s22">Droit applicable et juridiction</a></li>
+      <li><a href="#s23">Dispositions générales</a></li>
+      <li><a href="#s24">Contact</a></li>
+      <li><a href="#s25">Journal des modifications</a></li>
+    </ol>
+  </aside>
+
+  <article>
+
+    <section id="s1">
+      <h2 class="sec"><span class="n">1.</span> Identification du prestataire</h2>
+      <p>La plateforme <strong>Zyntello</strong> (ci-après la « Plateforme ») est exploitée par <strong>Zyntello, S.R.L.</strong> (ci-après « Zyntello », « nous » ou le « Prestataire »), société à responsabilité limitée constituée et domiciliée en <strong>République dominicaine</strong>, avec une activité commerciale et d'assistance en République dominicaine, au Venezuela, en Colombie, au Guatemala et au Costa Rica, et une capacité d'assistance à distance vers d'autres pays.</p>
+      <ul>
+        <li>Site web institutionnel : <a href="https://zyntello.com">https://zyntello.com</a></li>
+        <li>Application (Plateforme) : <a href="https://app.zyntello.com">https://app.zyntello.com</a></li>
+        <li>Adresse de contact et d'assistance : <a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+        <li>Téléphone et WhatsApp : <a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+      </ul>
+      <p>Pour les questions de confidentialité, l'exercice des droits sur les données personnelles ou les demandes de suppression de données, consultez notre <a href="/fr/privacidad/">Politique de Confidentialité</a>, qui fait partie intégrante des présentes Conditions.</p>
+    </section>
+
+    <section id="s2">
+      <h2 class="sec"><span class="n">2.</span> Acceptation des Conditions</h2>
+      <p>En vous inscrivant, en souscrivant un abonnement, en accédant à la Plateforme ou en l'utilisant par quelque moyen que ce soit (navigateur web, application mobile ou interfaces d'intégration), vous déclarez avoir lu, compris et accepté les présentes Conditions et la Politique de Confidentialité, et vous affirmez disposer de la capacité juridique et du pouvoir de représentation suffisants pour engager la personne morale au nom de laquelle vous agissez.</p>
+      <p><strong>Si vous n'acceptez pas les présentes Conditions, vous ne devez pas utiliser la Plateforme.</strong> L'utilisation continue du service vaut acceptation de la version en vigueur publiée sur cette page.</p>
+    </section>
+
+    <section id="s3">
+      <h2 class="sec"><span class="n">3.</span> Définitions</h2>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Terme</th><th>Signification</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Plateforme</strong></td><td>Le logiciel en tant que service disponible sur <code>app.zyntello.com</code>, ses modules, ses applications mobiles, ses portails publics et les services associés.</td></tr>
+            <tr><td><strong>Module</strong></td><td>Chaque fonctionnalité souscriptible individuellement ou en suite (voir section 4).</td></tr>
+            <tr><td><strong>Abonné</strong></td><td>La personne physique ou morale qui souscrit l'abonnement et est titulaire du compte (également appelée « tenant »).</td></tr>
+            <tr><td><strong>Entreprise</strong></td><td>Chaque entité juridique que l'Abonné gère au sein de son compte. Un compte peut contenir plusieurs Entreprises dont les données sont totalement séparées les unes des autres.</td></tr>
+            <tr><td><strong>Utilisateur</strong></td><td>Toute personne autorisée par l'Abonné à accéder au compte, qu'elle soit membre de l'équipe ou utilisateur interne aux autorisations limitées.</td></tr>
+            <tr><td><strong>Données de l'Abonné</strong></td><td>L'ensemble des informations que l'Abonné et ses Utilisateurs chargent, génèrent ou traitent sur la Plateforme : clients, fournisseurs, salariés, articles, documents fiscaux, écritures comptables, participants à des événements, résidents, débiteurs, véhicules et tout autre contenu.</td></tr>
+            <tr><td><strong>Données du Compte</strong></td><td>Informations d'inscription, de facturation et de contact de l'Abonné lui-même et de ses Utilisateurs, ainsi que les données techniques d'utilisation de la Plateforme.</td></tr>
+            <tr><td><strong>Personne concernée</strong></td><td>La personne physique à laquelle se rapportent les données personnelles traitées (par exemple un salarié, un client ou un résident de l'Abonné).</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="s4">
+      <h2 class="sec"><span class="n">4.</span> Objet du service et modules disponibles</h2>
+      <p>Zyntello fournit, par abonnement, l'accès à des modules logiciels de gestion d'entreprise hébergés dans le nuage. L'Abonné ne souscrit que les Modules dont il a besoin ; l'accès à chaque Module s'active individuellement et peut être modifié à tout moment conformément à la section 7.</p>
+
+      <h3>4.1. Modules disponibles</h3>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Module</th><th>Périmètre fonctionnel</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Zyntello ERP</strong> (suite)</td><td>Suite de gestion regroupant Comptes fournisseurs, Comptes clients, Banques et trésorerie, Comptabilité, Stocks, Facturation, Achats, Budget, Petite caisse, Immobilisations et Point de vente (Caisse).</td></tr>
+            <tr><td><strong>Comptabilité</strong></td><td>Plan comptable, centres de coûts, écritures de journal, grand livre, balance générale, états financiers, clôture de période et d'exercice, consolidation multi-entreprises, charges et produits constatés d'avance, ajustement pour inflation et rapports fiscaux.</td></tr>
+            <tr><td><strong>Comptes clients</strong></td><td>Créances, encaissements et reçus, acomptes clients, avoirs et notes de débit, balance âgée, suivi du recouvrement, contrôle du crédit, provision pour créances douteuses et passage en pertes.</td></tr>
+            <tr><td><strong>Comptes fournisseurs</strong></td><td>Dettes fournisseurs, paiements et pièces de décaissement, acomptes fournisseurs, retenues fiscales, campagnes de paiement, rapprochement des relevés fournisseurs et analyse des paiements.</td></tr>
+            <tr><td><strong>Banques et trésorerie</strong></td><td>Comptes bancaires, mouvements, virements multidevises, émission et contrôle de chèques, chéquiers et carnets, formats d'impression de chèques, importation de relevés, rapprochement bancaire et dépôts d'encaissements.</td></tr>
+            <tr><td><strong>Facturation</strong></td><td>Devis, commandes, factures, expéditions, retours, avoirs, listes de prix, remises, vendeurs et commissions, contrats récurrents, incoterms et documents fiscaux électroniques.</td></tr>
+            <tr><td><strong>Stocks</strong></td><td>Articles, unités de mesure, entrepôts et emplacements, mouvements et transferts, lots et numéros de série, valorisation (moyenne, PEPS, DEPS), comptage physique, assemblages, critères de réapprovisionnement et traçabilité.</td></tr>
+            <tr><td><strong>Achats</strong></td><td>Demandes d'achat, appels d'offres, bons de commande, réceptions, factures fournisseurs, contrats, rapprochement à trois voies, importations et calcul du coût de revient à l'import (landed cost).</td></tr>
+            <tr><td><strong>Budget</strong></td><td>Budgets par poste et par programme, engagements, exécution budgétaire, modifications et transferts entre postes, avec des modalités pour l'entreprise privée, l'organisation à but non lucratif et le secteur public.</td></tr>
+            <tr><td><strong>Petite caisse</strong></td><td>Fonds, pièces de dépense, remboursements et contrôles de caisse avec circuit d'approbation.</td></tr>
+            <tr><td><strong>Immobilisations</strong></td><td>Registre des immobilisations, catégories, amortissement comptable et fiscal, améliorations, réévaluation et dépréciation, composants, transferts, sorties et cessions, entretiens, polices d'assurance, immobilisations en cours et inventaire physique par code QR.</td></tr>
+            <tr><td><strong>Caisse (point de vente)</strong></td><td>Caisses, sessions de caisse, mouvements d'espèces, contrôles de caisse et dépôts en banque.</td></tr>
+            <tr><td><strong>Paie</strong></td><td>Salariés, services et postes, rubriques de paie et de retenue, périodes de paie, calcul des retenues et de l'impôt sur le revenu, cotisations de sécurité sociale, prêts et retenues, congés, soldes de tout compte, documents de ressources humaines et rapports sociaux.</td></tr>
+            <tr><td><strong>Zyntello PSA</strong></td><td>Automatisation des services professionnels : projets et tâches, feuilles de temps, pointages d'entrée et de sortie, absences, frais remboursables, états de paie et bulletins, avec application mobile.</td></tr>
+            <tr><td><strong>ConstructFlow</strong></td><td>Gestion de chantiers et de projets de construction : tableau d'avancement, budget de chantier, équipe affectée, documents et coûts par chantier.</td></tr>
+            <tr><td><strong>CRM</strong></td><td>Prospects et opportunités, entonnoir de vente, contacts, notes et tâches, sources d'origine, conversion en client, objectifs par vendeur et rapports commerciaux.</td></tr>
+            <tr><td><strong>Zyntello Events</strong></td><td>Événements et journées, inscription des participants, billets et leur encaissement, codes QR, contrôle d'accès, tableau de bord en direct et rapports de présence.</td></tr>
+            <tr><td><strong>Générateur de rapports</strong></td><td>Générateur visuel de rapports sur des sources de données autorisées, colonnes calculées, sous-totaux, exportation et envoi programmé.</td></tr>
+            <tr><td><strong>Gestion de copropriétés</strong></td><td>Lots et résidents, quotes-parts, charges de copropriété, fonds de réserve, parties communes et réservations, incidents, assemblées avec vote, communications et portail du résident.</td></tr>
+            <tr><td><strong>Prestamello</strong></td><td>Prêts et ventes à crédit : demandes, évaluation du risque, garanties, tableaux d'amortissement, recouvrement et tournées d'encaissement, reçus numériques, paiements en ligne et catalogue de biens finançables.</td></tr>
+            <tr><td><strong>Restaurant</strong></td><td>Exploitation d'un restaurant, d'un café, d'un bar ou d'une restauration rapide : plan de salle, prise de commande du serveur avec options, écran de cuisine, partage et encaissement des additions, recettes avec coût par plat, carte accessible par code QR pour le convive, livraison, réservations et clôture de service.</td></tr>
+            <tr><td><strong>Gestionnaire intelligent des stocks</strong> <span class="mini">(extension de Stocks)</span></td><td>Prévision de la demande, point de commande, quantité économique de commande et classification ABC sur les mouvements déjà enregistrés par Stocks. Nécessite la souscription du module Stocks.</td></tr>
+            <tr><td><strong>Planificateur de tournées</strong></td><td>Planification et exécution de tournées de <strong>livraison</strong> (remettre de la marchandise ou des factures) et de <strong>visite</strong> (parcourir le portefeuille commercial) : ordonnancement des arrêts sur une carte, affectation du véhicule et du conducteur, application de terrain pour le conducteur et, si l'Abonné l'active, suivi de la position pendant la tournée. Les états de livraison s'inscrivent dans Facturation et les visites dans le journal du client : le module ne tient pas de registre parallèle.</td></tr>
+            <tr><td><strong>Car Wash</strong></td><td>Exploitation du lavage et de l'atelier : passages et postes, prestations, véhicules et clients, boutique, commissions des laveurs, abonnements et fidélisation, entretien programmé et tableau de bord d'exploitation.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>4.2. Nature du service</h3>
+      <div class="note warn">
+        <p><b>La Plateforme est un outil de gestion, non un service de conseil.</b> Zyntello <strong>ne fournit aucun conseil comptable, fiscal, social, financier, en matière de crédit ni juridique</strong>. L'Abonné est seul responsable de l'exactitude, de la licéité et de l'actualité des données qu'il enregistre, du paramétrage qu'il applique (comptes comptables, taxes, retenues, justificatifs fiscaux, taux de change, paramètres de paie et de crédit) et du respect de ses obligations envers les autorités fiscales, sociales et réglementaires.</p>
+      </div>
+
+      <h3>4.3. Évolution du service</h3>
+      <p>Zyntello pourra modifier, améliorer, réorganiser ou interrompre des fonctionnalités afin de maintenir et de faire évoluer le service. Si un Module souscrit est définitivement interrompu, l'Abonné en sera informé au moins <strong>soixante (60) jours</strong> à l'avance et l'exportation des données associées dans des formats standards sera facilitée.</p>
+    </section>
+
+    <section id="s5">
+      <h2 class="sec"><span class="n">5.</span> Compte, entreprises et utilisateurs</h2>
+      <h3>5.1. Inscription et véracité</h3>
+      <p>L'Abonné garantit que les informations d'inscription et de facturation sont exactes, complètes et à jour, et s'oblige à les maintenir ainsi pendant toute la durée de l'abonnement.</p>
+
+      <h3>5.2. Identifiants et responsabilité</h3>
+      <p>Les identifiants d'accès sont personnels et incessibles. L'Abonné est responsable de toute activité réalisée depuis les comptes de ses Utilisateurs, de l'attribution correcte des rôles et des autorisations, et du retrait des accès du personnel qui n'est plus habilité. La Plateforme offre un contrôle d'accès par module, des rôles prédéfinis pour les membres de l'équipe, des autorisations granulaires pour les utilisateurs internes et une <strong>vérification en deux étapes</strong>, dont nous recommandons l'activation. La vérification en deux étapes admet deux méthodes : le <strong>code envoyé par courrier électronique</strong> et une <strong>application d'authentification</strong> du téléphone (Google Authenticator, Microsoft Authenticator, Authy, 1Password ou une autre compatible avec le standard TOTP). L'Abonné peut en outre <strong>exiger la vérification en deux étapes de tous ses Utilisateurs</strong> ; l'activation de cette exigence ouvre un délai de grâce permettant à chaque Utilisateur de la configurer avant qu'elle ne s'applique.</p>
+      <p>L'Abonné notifiera immédiatement à <a href="mailto:info@zyntello.com">info@zyntello.com</a> toute utilisation non autorisée ou tout soupçon de compromission d'identifiants.</p>
+
+      <h3>5.3. Licences d'utilisation incluses</h3>
+      <p>Chaque abonnement comprend deux catégories d'accès, avec des quotas distincts parce qu'elles répondent à des besoins distincts :</p>
+      <ul>
+        <li><strong>Utilisateurs de l'Abonné : 3 inclus.</strong> Ce sont les personnes de l'organisation elle-même. Ils accèdent à <strong>toutes les entreprises</strong> enregistrées dans le compte et leurs autorisations sont régies par le rôle qui leur est attribué (Administrateur, Transactions, Consultation ou Rapports), qui s'applique de la même façon à toutes. <strong>Le propriétaire du compte compte parmi les trois.</strong></li>
+        <li><strong>Utilisateurs internes : 5 inclus par compte.</strong> Ils sont conçus pour du personnel temporaire ou externe. Chacun est <strong>rattaché à une seule entreprise</strong> et ses autorisations, configurées module par module, ne portent que sur <strong>cette</strong> entreprise : il ne voit ni n'exploite les autres entreprises du compte.</li>
+      </ul>
+      <p>Un utilisateur désactivé continue d'occuper sa licence tant que le compte existe ; pour la libérer, il faut le retirer du compte. Les <strong>comptes techniques de Zyntello</strong> — ceux que l'équipe utilise pour fournir l'assistance — <strong>ne consomment pas de licences de l'Abonné</strong>.</p>
+      <p>L'Abonné peut <strong>augmenter l'un ou l'autre quota</strong> en en faisant la demande à <a href="mailto:info@zyntello.com">info@zyntello.com</a>. L'extension est facturée au tarif en vigueur au moment de la souscription et se reflète dans le compte sans interruption du service. Les quotas en vigueur de chaque compte peuvent être consultés à tout moment depuis <em>Configuration → Abonné</em>.</p>
+
+      <h3>5.4. Compte de démonstration</h3>
+      <div class="note">
+        <p><b>Le compte de démonstration est exclusivement destiné à l'évaluation.</b> Ses données sont <strong>supprimées automatiquement chaque jour</strong> par un traitement planifié. Il ne doit pas être utilisé pour des informations réelles, de production ou personnelles. Zyntello ne répond pas de la perte de données chargées dans le compte de démonstration.</p>
+      </div>
+    </section>
+
+    <section id="s6">
+      <h2 class="sec"><span class="n">6.</span> Isolement des données entre comptes et entreprises</h2>
+      <p>La Plateforme est multi-entreprises et multi-utilisateurs. Les données d'exploitation sont isolées automatiquement à deux niveaux :</p>
+      <ol>
+        <li><strong>Par Abonné</strong> : aucun compte ne peut accéder aux données d'un autre.</li>
+        <li><strong>Par Entreprise</strong> : au sein d'un même compte, chaque Entreprise conserve ses propres clients, fournisseurs, articles, salariés, documents et écritures comptables. Les données ne se mélangent pas entre Entreprises d'un même Abonné.</li>
+      </ol>
+      <p>Seuls les référentiels géographiques et monétaires (pays, régions, villes et devises) sont partagés au niveau du compte. Tout rapport consolidé entre Entreprises s'exécute sous l'autorisation et le contrôle de l'Abonné lui-même.</p>
+      <p>Le même isolement régit la <strong>sauvegarde téléchargeable</strong> de la section 18.4 : le fichier que l'Abonné génère ne contient que ses propres lignes et jamais de données d'un autre Abonné.</p>
+      <p>Il est expressément interdit de tenter de contourner ces contrôles d'isolement (voir section 11).</p>
+    </section>
+
+    <section id="s7">
+      <h2 class="sec"><span class="n">7.</span> Formules, prix et paiements</h2>
+      <h3>7.1. Prix</h3>
+      <p>Les prix par Module ou par suite sont publiés sur <a href="https://zyntello.com/#soluciones">zyntello.com</a> ou convenus par devis. Sauf mention expresse, les prix <strong>s'entendent hors taxes</strong> (ITBIS, TVA ou équivalents), qui seront ajoutées le cas échéant selon la juridiction de l'Abonné.</p>
+
+      <h3>7.2. Moyens de paiement</h3>
+      <p>Les paiements sont traités par <strong>Stripe</strong>, <strong>PayPal</strong> et <strong>Mercado Pago</strong>, selon disponibilité, et les virements bancaires ou autres moyens convenus par écrit sont également acceptés.</p>
+      <div class="note">
+        <p><b>Zyntello ne conserve ni numéros de carte complets ni identifiants bancaires.</b> Les données de paiement sont traitées directement par les prestataires de paiement, selon leurs propres conditions et certifications de sécurité (PCI-DSS). Zyntello ne conserve que les identifiants de transaction et d'abonnement nécessaires à la facturation et à l'assistance.</p>
+      </div>
+
+      <h3>7.3. Reconduction automatique</h3>
+      <p>Sauf convention contraire, l'abonnement est reconduit automatiquement par périodes mensuelles ou annuelles, selon la formule souscrite, par prélèvement sur le moyen de paiement enregistré au début de chaque période.</p>
+
+      <h3>7.4. Changements de prix</h3>
+      <p>Les changements de prix seront notifiés au moins <strong>trente (30) jours</strong> à l'avance et s'appliqueront à compter de la période de facturation suivante. Si l'Abonné n'est pas d'accord, il pourra résilier avant la reconduction sans pénalité.</p>
+
+      <h3>7.5. Ajout et retrait de modules</h3>
+      <p>L'Abonné pourra souscrire des Modules supplémentaires à tout moment, avec prorata de la période en cours le cas échéant. Le retrait d'un Module prend effet à la fin de la période déjà payée ; à compter de ce moment, l'accès à ce Module est suspendu, les données étant conservées conformément à la section 9.</p>
+
+      <h3>7.6. Défaut de paiement</h3>
+      <p>Si un prélèvement échoue, l'Abonné en sera informé et le paiement sera retenté. Si le défaut de paiement persiste plus de <strong>dix (10) jours</strong>, Zyntello pourra suspendre l'accès à la Plateforme conformément à la section 9, en conservant les données pendant la durée qui y est indiquée.</p>
+    </section>
+
+    <section id="s8">
+      <h2 class="sec"><span class="n">8.</span> Résiliation et remboursements</h2>
+      <p>L'Abonné peut résilier à tout moment depuis les réglages de son compte ou en écrivant à <a href="mailto:info@zyntello.com">info@zyntello.com</a>. La résiliation prend effet <strong>à la fin de la période déjà payée</strong> ; jusque-là, le service reste actif avec toutes ses fonctions.</p>
+      <p>Les paiements de périodes déjà entamées <strong>ne sont pas remboursables</strong>, sauf :</p>
+      <ul>
+        <li>erreur de facturation imputable à Zyntello (prélèvement en double, montant incorrect ou prélèvement postérieur à une résiliation valablement notifiée) ;</li>
+        <li>indisponibilité grave du service imputable à Zyntello supérieure à <strong>soixante-douze (72) heures continues</strong> au cours d'un même mois, auquel cas l'Abonné pourra opter entre un avoir proportionnel ou le remboursement de la période concernée ;</li>
+        <li>les autres cas imposés par la réglementation applicable en matière de protection des consommateurs.</li>
+      </ul>
+      <p>Les commissions de traitement retenues par Stripe, PayPal ou Mercado Pago et non restituées par le prestataire de paiement pourront être déduites du montant à rembourser, lorsque la loi applicable le permet.</p>
+    </section>
+
+    <section id="s9">
+      <h2 class="sec"><span class="n">9.</span> Suspension et cessation</h2>
+      <h3>9.1. Suspension</h3>
+      <p>Zyntello pourra suspendre l'accès, en totalité ou par Module, lorsque :</p>
+      <ul>
+        <li>il existe un impayé échu conformément à la section 7.6 ;</li>
+        <li>un usage contraire à la section 11 (usage acceptable) ou à la section 12 (communications) est détecté ;</li>
+        <li>cela est nécessaire pour des raisons de sécurité (compte compromis, attaque en cours, risque pour d'autres abonnés ou pour l'infrastructure) ;</li>
+        <li>une autorité compétente l'ordonne.</li>
+      </ul>
+      <p>Pendant la suspension pour défaut de paiement, les Données de l'Abonné sont conservées. Une fois le paiement régularisé, l'accès est rétabli.</p>
+
+      <h3>9.2. Résiliation</h3>
+      <p>L'une ou l'autre des parties peut mettre fin à la relation conformément aux présentes conditions. Après la cessation — par résiliation ou par suspension non régularisée pendant <strong>trente (30) jours</strong> — :</p>
+      <ul>
+        <li>l'Abonné dispose de <strong>trente (30) jours</strong> pour télécharger lui-même sa sauvegarde complète (section 18.4) ou pour demander l'exportation de ses données dans des formats standards (CSV, Excel ou PDF), sans frais supplémentaires déraisonnables ;</li>
+        <li>ce délai écoulé, Zyntello pourra <strong>supprimer définitivement</strong> les Données de l'Abonné, à l'exception des informations qui doivent être conservées par obligation légale, comptable ou fiscale, ou pour la défense de réclamations.</li>
+      </ul>
+      <p>Zyntello pourra mettre fin au service immédiatement en cas de manquements graves : fraude, activité illégale, usurpation d'identité, attaques contre la Plateforme ou utilisation répétée des canaux de messagerie pour des communications non consenties.</p>
+    </section>
+
+    <section id="s10">
+      <h2 class="sec"><span class="n">10.</span> Propriété intellectuelle</h2>
+      <p><strong>Le logiciel appartient à Zyntello.</strong> La Plateforme, son code source, son architecture, sa conception, ses interfaces, ses marques, ses noms commerciaux, ses logos et sa documentation sont la propriété de Zyntello, S.R.L. ou de ses concédants. L'abonnement confère une <strong>licence d'utilisation limitée, non exclusive, non transférable, non sous-licenciable et révocable</strong> pendant la durée du contrat ; il ne constitue ni une vente ni une cession de droits.</p>
+      <p><strong>Les données appartiennent à l'Abonné.</strong> L'Abonné conserve l'intégralité des droits sur les Données de l'Abonné et accorde à Zyntello une licence limitée pour les héberger, les traiter, les transmettre et les sauvegarder <strong>exclusivement</strong> aux fins de fournir le service et de respecter la loi.</p>
+      <p>Zyntello pourra utiliser des <strong>données agrégées et anonymisées</strong> — ne permettant d'identifier ni l'Abonné, ni ses Utilisateurs, ni des tiers — à des fins de statistiques internes, de diagnostic, de dimensionnement de capacité et d'amélioration du produit.</p>
+      <p>Les suggestions, commentaires ou idées d'amélioration que l'Abonné communique volontairement pourront être utilisés par Zyntello sans obligation de compensation ni de confidentialité.</p>
+      <p>Il est interdit :</p>
+      <ul>
+        <li>de copier, modifier, traduire, adapter, décompiler ou désosser le logiciel ;</li>
+        <li>de revendre, louer, sous-licencier ou céder l'accès à la Plateforme à des tiers non autorisés ;</li>
+        <li>de retirer ou de masquer des mentions de propriété intellectuelle ;</li>
+        <li>d'utiliser la Plateforme pour développer un produit ou un service concurrent.</li>
+      </ul>
+
+      <h3>10.1. Composants tiers et logiciels libres</h3>
+      <p>La Plateforme intègre des <strong>composants logiciels tiers</strong> — cadres applicatifs, bibliothèques, polices et icônes —, chacun couvert par <strong>sa propre licence</strong>. Zyntello respecte intégralement ces licences, et chacune d'elles <strong>prévaut sur les présentes Conditions</strong> pour tout ce qui concerne son propre composant : les interdictions du paragraphe précédent portent sur le logiciel propre de Zyntello, non sur les droits que la licence d'un tiers concède sur le sien.</p>
+      <p>La liste complète de ces composants, avec leur version, leur licence et leurs mentions de copyright, est publiée et tenue à jour sur <a href="/fr/avisos-terceros/"><strong>zyntello.com/avisos-terceros/</strong></a>.</p>
+      <p>Aucun de ces composants ne confère à l'Abonné le moindre droit sur le code propre de Zyntello ni ne fait de la Plateforme un logiciel libre. Une partie du code que la Plateforme envoie au navigateur de l'Utilisateur provient de ces composants et conserve leurs mentions de licence : l'Abonné et ses Utilisateurs s'obligent à ne pas les retirer ni les masquer.</p>
+    </section>
+
+    <section id="s11">
+      <h2 class="sec"><span class="n">11.</span> Usage acceptable</h2>
+      <p>L'Abonné et ses Utilisateurs s'obligent à NE PAS :</p>
+      <ul>
+        <li>d'utiliser la Plateforme pour des activités illégales, frauduleuses ou trompeuses, ni pour le blanchiment de capitaux ou le financement d'activités illicites ;</li>
+        <li>de charger du contenu portant atteinte aux droits de tiers, ni de logiciel malveillant de quelque nature que ce soit ;</li>
+        <li>de charger des données personnelles sans base légale ou sans consentement suffisant ;</li>
+        <li>de tenter d'accéder aux données d'autres abonnés ou d'autres Entreprises, ni de contourner les contrôles d'isolement décrits à la section 6, les contrôles d'accès, d'authentification ou d'autorisation ;</li>
+        <li>de réaliser des tests d'intrusion, des analyses de vulnérabilités, de l'extraction massive de données (<em>scraping</em>) ou des charges qui dégradent les performances du service, sans autorisation écrite préalable de Zyntello ;</li>
+        <li>d'utiliser les canaux de messagerie (courrier électronique ou WhatsApp) pour envoyer des communications non sollicitées, massives ou sans le consentement requis par la loi et par les politiques des fournisseurs de ces canaux (voir section 12) ;</li>
+        <li>d'émettre de faux documents fiscaux, d'altérer des écritures comptables à des fins de dissimulation, ou d'utiliser la Plateforme pour échapper à des obligations fiscales ;</li>
+        <li>d'utiliser la Plateforme pour des activités de recouvrement recourant à des menaces, au harcèlement ou à toute pratique interdite par la réglementation applicable ;</li>
+        <li>d'utiliser la Plateforme, ou d'en faciliter l'accès à un tiers, en violation des régimes de sanctions internationales ou de contrôle des exportations qui lui sont applicables (voir section 23).</li>
+      </ul>
+      <p>Zyntello pourra enquêter sur tout usage présumé abusif et, le cas échéant, suspendre le service conformément à la section 9 et collaborer avec les autorités compétentes.</p>
+    </section>
+
+    <section id="s12">
+      <h2 class="sec"><span class="n">12.</span> Communications : courrier électronique et WhatsApp</h2>
+      <p>La Plateforme permet à l'Abonné d'envoyer des communications à ses propres clients, fournisseurs, salariés, résidents, débiteurs ou participants, par courrier électronique et par <strong>WhatsApp</strong>. Ces communications sont de nature opérationnelle ou transactionnelle : envoi de factures et de devis, de reçus et de justificatifs, de relevés de compte, de rappels d'échéance et d'entretien, d'avis de passage ou d'état de service, de convocations et de notifications d'approbation.</p>
+
+      <h3>12.1. L'Abonné est l'expéditeur</h3>
+      <div class="note warn">
+        <p><b>Zyntello fournit l'outil ; l'Abonné est l'expéditeur et le responsable du message.</b> L'Abonné détermine le contenu, les destinataires, le moment et la finalité de chaque communication. Zyntello n'envoie pas de communications commerciales aux contacts de l'Abonné de sa propre initiative.</p>
+      </div>
+
+      <h3>12.2. Consentement préalable (opt-in)</h3>
+      <p>L'Abonné déclare et garantit que, avant d'envoyer tout message par l'intermédiaire de la Plateforme, il dispose du <strong>consentement préalable, éclairé et vérifiable</strong> du destinataire à être contacté par ce canal, ou d'une autre base légale valable, et qu'il en conserve la preuve. Cette exigence s'applique expressément aux messages envoyés par WhatsApp.</p>
+
+      <h3>12.3. Droit de désinscription (opt-out)</h3>
+      <p>L'Abonné doit traiter immédiatement toute demande de désinscription, de blocage ou d'opposition reçue d'un destinataire et cesser de lui envoyer des messages par ce canal. La Plateforme fournit des mécanismes pour enregistrer cette préférence contact par contact (par exemple l'exclusion des rappels automatiques de recouvrement ou d'entretien), et leur bon usage relève de la responsabilité de l'Abonné.</p>
+
+      <h3>12.4. Respect des politiques de WhatsApp et de Meta</h3>
+      <p>L'utilisation du canal WhatsApp est soumise, outre aux présentes Conditions, aux politiques et conditions de <strong>WhatsApp LLC</strong> et de <strong>Meta Platforms, Inc.</strong>, notamment les Conditions de service de WhatsApp Business, la Politique WhatsApp Business et la Politique commerciale de WhatsApp. L'Abonné s'oblige à :</p>
+      <ul>
+        <li>ne pas envoyer de messages non sollicités, massifs, répétitifs ni à des fins de <em>spam</em> ;</li>
+        <li>s'identifier clairement comme expéditeur et à ne pas usurper l'identité de tiers ;</li>
+        <li>ne pas promouvoir de biens ou de services interdits par les politiques de Meta et de WhatsApp ;</li>
+        <li>ne pas utiliser le canal pour des contenus illicites, trompeurs, offensants ou discriminatoires ;</li>
+        <li>respecter les formats, modèles, fenêtres de messagerie et limites de débit applicables ;</li>
+        <li>n'utiliser que des numéros de téléphone dont il est titulaire ou pour lesquels il dispose d'une autorisation.</li>
+      </ul>
+      <p>Le non-respect de ces politiques peut entraîner la restriction ou la fermeture du canal par WhatsApp ou par Meta, sans responsabilité pour Zyntello, et constitue un motif de suspension conformément à la section 9.</p>
+
+      <h3>12.5. Données transmises par le canal</h3>
+      <p>Lorsque l'Abonné utilise WhatsApp depuis la Plateforme, sont transmis le numéro de téléphone du destinataire et le contenu du message, qui peut comprendre le nom du contact, le numéro et l'état du document, des montants et des liens vers des documents ou des portails de consultation. Le traitement de ces informations par WhatsApp et Meta est régi par leurs propres politiques de confidentialité. Détails complémentaires dans notre <a href="/fr/privacidad/">Politique de Confidentialité</a>.</p>
+
+      <h3>12.6. Communications de Zyntello à l'Abonné</h3>
+      <p>Zyntello enverra à l'Abonné les communications <strong>transactionnelles</strong> nécessaires à la fourniture du service (vérification d'identité, codes d'accès, avis de facturation, alertes de sécurité, avis de maintenance et modifications contractuelles). Ces communications ne sont pas facultatives tant qu'une relation contractuelle est en cours. Les communications <strong>commerciales</strong> de Zyntello requièrent un consentement exprès et préalable et comportent toujours un mécanisme de désinscription en un clic.</p>
+    </section>
+
+    <section id="s13">
+      <h2 class="sec"><span class="n">13.</span> Données personnelles et rôle des parties</h2>
+      <h3>13.1. Zyntello en qualité de responsable du traitement</h3>
+      <p>S'agissant des <strong>Données du Compte</strong> — coordonnées, facturation, identifiants et journaux techniques d'utilisation de l'Abonné et de ses Utilisateurs —, Zyntello agit en qualité de <strong>responsable du traitement</strong>, conformément à la <a href="/fr/privacidad/">Politique de Confidentialité</a>.</p>
+
+      <h3>13.2. Zyntello en qualité de sous-traitant</h3>
+      <p>S'agissant des données personnelles que l'Abonné charge au sujet de <strong>ses</strong> clients, salariés, fournisseurs, résidents, débiteurs, participants ou de tout autre tiers, l'<strong>Abonné est le responsable du traitement</strong> et Zyntello agit en qualité de <strong>sous-traitant</strong>, ne les traitant que conformément aux instructions contractuelles de l'Abonné et aux prévisions des présentes Conditions.</p>
+      <p>À ce titre, Zyntello s'oblige à :</p>
+      <ul>
+        <li>ne traiter les données que pour fournir le service, et non à des fins propres autres que celles décrites à la section 10 ;</li>
+        <li>appliquer des mesures techniques et organisationnelles de sécurité raisonnables ;</li>
+        <li>imposer des obligations équivalentes de confidentialité et de sécurité à ses sous-traitants ultérieurs (section 15) ;</li>
+        <li>assister raisonnablement l'Abonné dans le traitement des demandes des personnes concernées et dans la notification des incidents de sécurité qui le touchent ;</li>
+        <li>supprimer ou restituer les données au terme de la relation, conformément à la section 9.2.</li>
+      </ul>
+
+      <h3>13.3. Garanties de l'Abonné</h3>
+      <p>L'Abonné garantit qu'il dispose d'une base légale, qu'il a informé au préalable et, le cas échéant, qu'il a le consentement des personnes concernées pour charger et traiter leurs données sur la Plateforme. Cette garantie est particulièrement importante pour les <strong>catégories sensibles ou à fort impact</strong> que certains Modules permettent d'enregistrer : pièces d'identité, données bancaires, rémunérations, photographies du visage, géolocalisation du personnel en tournée, informations de santé liées à des absences et historique de crédit.</p>
+      <p>À la demande de l'une ou l'autre des parties, un <strong>accord de sous-traitance</strong> spécifique complétant la présente section sera signé.</p>
+    </section>
+
+    <section id="s14">
+      <h2 class="sec"><span class="n">14.</span> Données traitées par module</h2>
+      <p>Par souci de transparence, sont détaillées les catégories de données personnelles que chaque Module permet de traiter. C'est l'Abonné qui décide des informations qu'il charge dans chaque cas.</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Module</th><th>Catégories de données qu'il peut contenir</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Facturation · Comptes clients · CRM</strong></td><td>Nom ou raison sociale, identifiant fiscal, adresse, téléphone, courriel, historique des achats, conditions de crédit et soldes, notes de suivi commercial.</td></tr>
+            <tr><td><strong>Achats · Comptes fournisseurs</strong></td><td>Données des fournisseurs et de leurs contacts, identifiant fiscal, comptes bancaires de paiement, retenues applicables, documents fiscaux reçus.</td></tr>
+            <tr><td><strong>Paie · PSA</strong></td><td>Données d'identification du salarié, pièce d'identité, date de naissance, sexe, adresse, poste et service, <strong>rémunération et retenues</strong>, comptes bancaires, sécurité sociale, personnes à charge, absences et leurs justificatifs, feuilles de temps, pointages d'entrée et de sortie, <strong>géolocalisation</strong> et <strong>photographie du visage</strong> lorsque l'Abonné active ces vérifications.</td></tr>
+            <tr><td><strong>ConstructFlow</strong></td><td>Personnel affecté au chantier, documents et photographies d'avancement.</td></tr>
+            <tr><td><strong>Zyntello Events</strong></td><td>Données des participants : nom, pièce d'identité, courriel, téléphone, organisation, photographie lorsqu'elle est prise, relevés d'accès et de présence.</td></tr>
+            <tr><td><strong>Copropriétés</strong></td><td>Données des résidents et des propriétaires, lot, quote-part, relevé de compte, réservations de parties communes, incidents signalés avec photographies, votes en assemblée.</td></tr>
+            <tr><td><strong>Prestamello</strong></td><td>Données du demandeur et de ses cautions, pièces d'identité, revenus et charges déclarés, patrimoine, références, <strong>consultations aux bureaux de crédit</strong>, garanties et leurs documents, historique des paiements, <strong>géolocalisation</strong> du personnel de recouvrement en tournée.</td></tr>
+            <tr><td><strong>Restaurant</strong></td><td>Nom et coordonnées du convive en cas de réservation ou de commande à emporter ; en <strong>livraison</strong>, l'<strong>adresse de livraison, son repère et le téléphone</strong> ; le livreur affecté ; et, pour le personnel, le serveur qui prend en charge chaque addition et les <strong>pourboires</strong> qui lui reviennent.</td></tr>
+            <tr><td><strong>Planificateur de tournées</strong></td><td>Adresses de livraison et de visite des clients et leurs <strong>coordonnées géographiques</strong> ; données du transporteur, du véhicule et du conducteur affecté ; et, lorsque l'Abonné active le suivi, la <strong>position du conducteur enregistrée de façon répétée pendant la tournée</strong>, avec l'heure d'arrivée et de départ de chaque arrêt et le résultat de chaque livraison ou visite.</td></tr>
+            <tr><td><strong>Car Wash</strong></td><td>Données du client et de ses véhicules : plaque, marque, modèle, couleur, compteur, photographies du véhicule, historique des interventions.</td></tr>
+            <tr><td><strong>Caisse · Banques · Comptabilité</strong></td><td>Données bancaires de l'Entreprise, bénéficiaires de chèques et de virements, mouvements et écritures faisant référence à des tiers.</td></tr>
+            <tr><td><strong>Stocks · Immobilisations</strong></td><td>Responsables affectés aux immobilisations, détenteurs, relevés de comptage et d'inventaire physique.</td></tr>
+            <tr><td><strong>Générateur de rapports</strong></td><td>Toute donnée des modules précédents sur laquelle l'Abonné construit des rapports, sous réserve des autorisations configurées.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <p><b>Portails publics.</b> Certains Modules génèrent des liens ou des codes QR consultables sans connexion (état d'un passage, relevé de compte d'un résident, billet d'un événement, fiche d'une immobilisation). Ces portails n'affichent qu'une information minimale, sont accessibles par un identifiant aléatoire et n'exposent ni coordonnées ni montants, sauf lorsque la conception du document l'exige. C'est l'Abonné qui décide d'activer ou non ces portails.</p>
+      </div>
+    </section>
+
+    <section id="s15">
+      <h2 class="sec"><span class="n">15.</span> Tiers et sous-traitants ultérieurs</h2>
+      <p>Pour fournir le service, Zyntello s'appuie sur des prestataires technologiques qui peuvent traiter des données pour le compte de Zyntello et de l'Abonné :</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Prestataire</th><th>Finalité</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Hébergeur</strong></td><td>Hébergement de l'application, de la base de données et des pièces jointes, et stockage des sauvegardes.</td></tr>
+            <tr><td><strong>Stripe · PayPal · Mercado Pago</strong></td><td>Traitement des paiements d'abonnement et, lorsque l'Abonné l'active, des encaissements en ligne auprès de ses propres clients.</td></tr>
+            <tr><td><strong>WhatsApp / Meta Platforms</strong></td><td>Envoi de messages WhatsApp à l'initiative de l'Abonné.</td></tr>
+            <tr><td><strong>Prestataire de courrier sortant</strong></td><td>Remise des courriels transactionnels et des documents envoyés par l'Abonné.</td></tr>
+            <tr><td><strong>Fournisseurs d'intelligence artificielle</strong></td><td>Extraction assistée de données de factures et de documents, lorsque l'Abonné active cette fonction (voir section 16).</td></tr>
+            <tr><td><strong>Administrations fiscales</strong></td><td>Validation et transmission des justificatifs fiscaux électroniques et consultation des contribuables, lorsque l'Abonné l'active.</td></tr>
+            <tr><td><strong>Fournisseur de cartographie</strong></td><td>Conversion d'adresses en coordonnées, calcul de distances et tracé d'itinéraires dans le Planificateur de tournées. L'Abonné choisit lequel utiliser parmi <strong>OpenStreetMap</strong> (option par défaut, sans contrat ni identifiants), <strong>Google Maps</strong>, <strong>HERE</strong> et <strong>Mapbox</strong> ; pour les trois derniers, ce sont les identifiants de l'Abonné lui-même qui sont utilisés. Leur sont transmises les adresses et les coordonnées des arrêts, et non le nom du client ni le contenu de la commande.</td></tr>
+            <tr><td><strong>Bureaux de crédit</strong></td><td>Consultation de l'historique de crédit dans le Module Prestamello, uniquement avec les identifiants et sous l'autorisation de l'Abonné lui-même.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Ces prestataires peuvent être situés en dehors du pays de l'Abonné, ce qui implique des transferts internationaux de données. Zyntello sélectionne des prestataires aux standards de sécurité reconnus et leur impose des obligations de confidentialité. Le détail à jour et les liens vers les politiques de chaque prestataire figurent dans la <a href="/fr/privacidad/">Politique de Confidentialité</a>.</p>
+      <p>Lorsque l'Abonné configure ses propres identifiants pour s'intégrer à un tiers (par exemple un bureau de crédit, une passerelle de paiement ou un fournisseur d'intelligence artificielle), ces identifiants sont stockés <strong>chiffrés</strong> et la relation avec ce tiers s'établit directement entre l'Abonné et le tiers, sous réserve des conditions de ce dernier.</p>
+    </section>
+
+    <section id="s16">
+      <h2 class="sec"><span class="n">16.</span> Intelligence artificielle</h2>
+      <p>Certains Modules proposent des fonctions assistées par intelligence artificielle, en particulier l'<strong>extraction de données de factures et de documents fournisseurs</strong> et des suggestions statistiques fondées sur l'historique.</p>
+      <ul>
+        <li><strong>La revue humaine est obligatoire.</strong> Aucun document n'est enregistré définitivement par la seule action du modèle : le résultat est présenté comme un brouillon et requiert la validation d'un Utilisateur avant de produire des effets comptables, fiscaux ou de stock.</li>
+        <li><strong>La fonction est optionnelle.</strong> Elle est désactivée par défaut et exige que l'Abonné l'active et configure ses propres identifiants auprès du fournisseur d'intelligence artificielle.</li>
+        <li><strong>Les données de l'Abonné ne servent pas à entraîner les modèles de Zyntello.</strong> Le traitement effectué par le fournisseur d'intelligence artificielle est régi par les conditions que l'Abonné a acceptées auprès de ce fournisseur.</li>
+        <li><strong>Zyntello ne garantit pas l'exactitude.</strong> Les résultats sont une aide à la saisie et ne remplacent pas le jugement professionnel. La responsabilité du contenu finalement enregistré incombe à l'Abonné.</li>
+      </ul>
+    </section>
+
+    <section id="s17">
+      <h2 class="sec"><span class="n">17.</span> Conformité fiscale et comptable</h2>
+      <p>La Plateforme prend en charge les exigences fiscales de plusieurs pays, parmi lesquelles les justificatifs fiscaux de la République dominicaine (NCF et justificatifs fiscaux électroniques), la facturation électronique du Venezuela et les schémas de documents fiscaux d'autres pays de la région, ainsi que les états d'achats et de ventes, les retenues et les déclarations d'information.</p>
+      <div class="note warn">
+        <p><b>Les catalogues, taux, formats et séquences fiscales sont fournis à titre de référence et doivent être vérifiés par l'Abonné</b> au regard de la réglementation en vigueur et des autorisations qui lui ont été accordées par l'administration fiscale compétente. Zyntello ne garantit pas qu'un format, un taux ou une mise en page reproduise la version officielle la plus récente, et ne répond pas des sanctions, amendes, majorations ou rejets résultant de paramétrages incorrects, de numérotations non autorisées, de données erronées ou de déclarations déposées par l'Abonné.</p>
+      </div>
+      <p>L'émission, la conservation et la déclaration correctes des documents fiscaux, ainsi que l'obtention et le contrôle des séquences autorisées, relèvent de la seule responsabilité de l'Abonné.</p>
+    </section>
+
+    <section id="s18">
+      <h2 class="sec"><span class="n">18.</span> Disponibilité, assistance et sauvegardes</h2>
+      <h3>18.1. Disponibilité</h3>
+      <p>Zyntello vise une disponibilité mensuelle cible de <strong>99,5 %</strong>, à l'exclusion des fenêtres de maintenance programmée — notifiées avec un préavis raisonnable lorsqu'elles entraînent une indisponibilité —, des cas de force majeure et des défaillances imputables aux prestataires d'infrastructure, aux opérateurs de télécommunications ou à la connectivité de l'Abonné lui-même. Sauf accord exprès et écrit, cet objectif est une cible opérationnelle et non un accord de niveau de service assorti de pénalités.</p>
+
+      <h3>18.2. Assistance</h3>
+      <p>Assistance par courrier électronique (<a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a> et <a href="mailto:info@zyntello.com">info@zyntello.com</a>) et par WhatsApp, aux heures ouvrables du lundi au vendredi de 8 h 00 à 18 h 00 (heure de la République dominicaine, AST), avec un délai de réponse cible d'<strong>un (1) jour ouvrable</strong>. Les incidents qui empêchent de travailler sont traités en priorité.</p>
+      <div class="note">
+        <p><b>Les délais par priorité figurent dans un document propre.</b> L'<a href="/fr/sla/">Accord de Niveau de Service</a> détaille les canaux d'assistance, la façon dont la priorité d'un incident est classée et le délai de première réponse correspondant à chacune — à partir de quatre heures ouvrables pour un incident critique —, ainsi que ce que l'assistance comprend et ce qui est facturé à part. L'objectif d'un jour ouvrable de la présente section est le délai général ; pour les incidents qui empêchent de travailler, l'Accord garantit des délais plus courts.</p>
+      </div>
+
+      <h3>18.3. Accès de l'assistance au compte</h3>
+      <p>Pour diagnostiquer ou corriger un incident, il peut être nécessaire qu'un agent d'assistance de Zyntello entre dans l'espace de travail de l'Abonné et voie ses données. <strong>L'Abonné accepte cet accès</strong> dans les limites détaillées ci-après, que la Politique de Confidentialité développe à sa section 12.</p>
+      <ul>
+        <li>L'agent n'utilise <strong>jamais</strong> l'identifiant ni le mot de passe d'une personne de l'Abonné : il se connecte avec un compte technique de Zyntello, et toute action est signée du nom de l'agent réel.</li>
+        <li>L'accès démarre en <strong>lecture seule</strong>. Modifier une donnée quelconque exige d'élever la session en déclarant un motif, et cette élévation expire d'elle-même.</li>
+        <li>Pour chaque accès sont enregistrés l'agent, la date et l'heure, le motif, l'adresse IP et — s'il y a eu écriture — le détail de ce qui a été modifié.</li>
+        <li>Lorsque l'incident ne permet pas d'obtenir une autorisation préalable, l'agent peut se connecter en déclarant le motif ; cet accès est marqué comme <strong>non autorisé</strong> et le propriétaire du compte reçoit une notification.</li>
+        <li>L'Abonné <strong>audite ces accès par lui-même</strong>, à tout moment et sans avoir à le demander, depuis <strong>Configuration → Accès de l'assistance</strong>.</li>
+        <li>Zyntello n'accède pas aux données de l'Abonné à des fins commerciales, statistiques ou d'entraînement de modèles.</li>
+      </ul>
+
+      <p><strong>Ouvrir un dossier d'assistance ne crée aucune obligation de paiement.</strong> L'Abonné signale ce dont il a besoin depuis le portail des dossiers ; si le traitement requiert un travail en dehors de l'assistance incluse, Zyntello l'<strong>évalue et attend l'autorisation préalable</strong> d'un utilisateur habilité à gérer la facturation avant de l'exécuter. Sans cette autorisation, le travail n'avance pas et aucune heure n'est comptabilisée. Le détail figure dans l'<a href="/fr/sla/">Accord de Niveau de Service</a>.</p>
+
+      <h3>18.4. Sauvegardes de la Plateforme</h3>
+      <div class="note">
+        <p><b>Zyntello effectue des sauvegardes périodiques de la base de données.</b> Ces sauvegardes constituent une mesure de reprise de la Plateforme face aux incidents d'infrastructure et <strong>ne remplacent pas la sauvegarde que l'Abonné doit télécharger</strong> de ses propres informations critiques (voir 18.4).</p>
+      </div>
+
+      <h3>18.5. Sauvegarde téléchargeable de l'Abonné</h3>
+      <p>La Plateforme comprend, sans coût supplémentaire et pour toutes les formules, une fonction de <strong>sauvegarde en libre-service</strong> dans <em>Configuration&nbsp;→&nbsp;Sauvegarde des données</em>. Elle génère une archive ZIP contenant l'export complet des données des Entreprises de l'Abonné — clients, fournisseurs, articles, documents, mouvements et écritures comptables —, un manifeste détaillant ce qui a été inclus et une notice de restauration.</p>
+      <div class="note ok">
+        <p><b>Portée du fichier.</b> Il contient <strong>exclusivement les données de l'Abonné qui le génère</strong>. Ce n'est pas un export de la base de données de Zyntello et il n'inclut pas d'informations d'autres Abonnés, en application de l'isolement de la section 6. Les données techniques communes à la Plateforme — sessions, jetons et notifications — en sont exclues, et le fichier lui-même indique ce qui a été omis et pourquoi.</p>
+      </div>
+      <p><strong>Périodicité recommandée et rappels.</strong> La Plateforme rappelle de télécharger la sauvegarde <strong>tous les vendredis</strong> et le <strong>dernier jour de chaque mois</strong>. Ce rappel est une invitation opérationnelle : il ne crée aucune obligation pour Zyntello et ne transfère à l'Abonné aucune responsabilité autre que celle que la présente section établit déjà.</p>
+      <p><strong>Garde de la copie téléchargée.</strong> Une fois téléchargé, le fichier quitte la Plateforme et relève du contrôle exclusif de l'Abonné, qui est responsable de le conserver en lieu sûr, de le protéger et de le supprimer le moment venu. Zyntello <strong>ne peut ni récupérer, ni tracer, ni supprimer</strong> des copies déjà téléchargées, et ne répond pas de leur perte, de leur divulgation ou de leur usage abusif en dehors de la Plateforme.</p>
+      <p><strong>Restauration.</strong> Le fichier est conçu pour être restauré sur une base de données vide. La restauration sur un compte en production ne s'exécute pas automatiquement : elle requiert une demande à l'assistance et se réalise de façon assistée, parce qu'écraser des données en cours est une opération irréversible.</p>
+      <p>Les <strong>cinq (5) sauvegardes les plus récentes</strong> par Abonné sont conservées sur le serveur ; les antérieures sont supprimées. La trace de leur génération et de leur téléchargement est conservée pendant toute la durée de l'abonnement.</p>
+    </section>
+
+    <section id="s19">
+      <h2 class="sec"><span class="n">19.</span> Limitation de responsabilité</h2>
+      <p>La Plateforme est fournie <strong>« telle quelle »</strong> et <strong>« selon disponibilité »</strong>.</p>
+      <p><strong>Absence de garanties implicites.</strong> Dans toute la mesure permise par la loi applicable, Zyntello n'accorde aucune garantie expresse ou implicite d'aucune sorte sur la Plateforme et, en particulier, ne garantit ni sa <strong>qualité marchande</strong>, ni son <strong>adéquation à un usage particulier</strong>, ni l'<strong>absence de contrefaçon de droits de tiers</strong>, ni que le service fonctionne sans interruption, sans erreur ou à l'abri de toute attaque. Cette exclusion <strong>n'affecte pas</strong> les engagements que Zyntello assume expressément — l'objectif de disponibilité, les délais de réponse de l'assistance et les sauvegardes —, qui sont ceux déclarés à la section 18 et dans l'<a href="/fr/sla/">Accord de Niveau de Service</a>, et ceux-là uniquement.</p>
+      <p>Dans toute la mesure permise par la loi applicable :</p>
+      <ul>
+        <li>Zyntello <strong>ne répond pas des dommages indirects</strong>, du manque à gagner, de la perte d'une opportunité commerciale, de l'atteinte à la réputation, de la perte de données reconstituables, ni des dommages consécutifs ou punitifs ;</li>
+        <li>la <strong>responsabilité totale cumulée</strong> de Zyntello pour toute réclamation liée au service est limitée au montant effectivement payé par l'Abonné à Zyntello au cours des <strong>douze (12) mois</strong> précédant le fait générateur ;</li>
+        <li>Zyntello <strong>ne répond pas</strong> des décisions comptables, fiscales, sociales, de crédit, commerciales ou de toute autre nature que l'Abonné adopte sur la base des informations gérées sur la Plateforme, ni des sanctions d'autorités résultant de données incorrectes, de paramétrages erronés ou de déclarations de l'Abonné ;</li>
+        <li>Zyntello <strong>ne répond pas</strong> du contenu, du moment ni de la licéité des communications que l'Abonné envoie par courrier électronique ou par WhatsApp, ni des restrictions que WhatsApp ou Meta appliquent au compte de l'Abonné ;</li>
+        <li>Zyntello <strong>ne répond pas</strong> des défaillances imputables à des tiers — prestataires de paiement, hébergeurs et opérateurs de télécommunications, administrations fiscales, bureaux de crédit, fournisseurs d'intelligence artificielle, WhatsApp ou Meta — au-delà d'une diligence raisonnable pour en obtenir la correction ;</li>
+        <li>Zyntello <strong>ne répond pas</strong> de l'usage que font les Utilisateurs autorisés par l'Abonné, ni de la perte de données résultant des actions de ces Utilisateurs.</li>
+      </ul>
+      <p>Rien dans les présentes Conditions ne limite ni n'exclut la responsabilité qui ne peut pas être limitée en vertu de la loi applicable, y compris les cas de dol ou de faute lourde.</p>
+    </section>
+
+    <section id="s20">
+      <h2 class="sec"><span class="n">20.</span> Indemnisation</h2>
+      <p>L'Abonné indemnisera et garantira Zyntello, ses associés, ses dirigeants et ses salariés contre toute réclamation, demande, sanction, amende, dommage ou frais — y compris des honoraires juridiques raisonnables — résultant de :</p>
+      <ul>
+        <li>les Données de l'Abonné, leur licéité, leur exactitude et l'existence d'une base légale pour leur traitement ;</li>
+        <li>l'utilisation de la Plateforme en violation des présentes Conditions ou de la loi applicable ;</li>
+        <li>les communications envoyées par courrier électronique ou par WhatsApp sans le consentement légalement requis ou en violation des politiques de WhatsApp ou de Meta ;</li>
+        <li>l'émission de documents fiscaux ou l'exécution des obligations fiscales, sociales ou de sécurité sociale de l'Abonné ;</li>
+        <li>les activités d'octroi de crédit et de recouvrement que l'Abonné réalise au moyen de la Plateforme ;</li>
+        <li>les réclamations de ses propres clients, salariés, fournisseurs, résidents, débiteurs ou participants.</li>
+      </ul>
+    </section>
+
+    <section id="s21">
+      <h2 class="sec"><span class="n">21.</span> Modifications des présentes Conditions</h2>
+      <p>Zyntello pourra modifier les présentes Conditions pour refléter des changements du service, de la réglementation applicable ou des politiques de ses prestataires. Les changements substantiels seront notifiés au moins <strong>trente (30) jours</strong> à l'avance, par courrier électronique à l'adresse enregistrée ou par un avis bien visible sur la Plateforme, en indiquant la date d'entrée en vigueur.</p>
+      <p>L'utilisation continue du service après la date d'entrée en vigueur vaut acceptation de la nouvelle version. Si l'Abonné n'accepte pas les modifications, il pourra résilier avant leur entrée en vigueur sans pénalité, avec effet à la fin de la période déjà payée. Les versions antérieures sont disponibles sur demande.</p>
+    </section>
+
+    <section id="s22">
+      <h2 class="sec"><span class="n">22.</span> Droit applicable et juridiction</h2>
+      <p>Les présentes Conditions sont régies par les lois de la <strong>République dominicaine</strong>. Tout litige résultant de leur interprétation, de leur exécution ou de leur cessation sera soumis aux <strong>tribunaux compétents de Saint-Domingue, Distrito Nacional, République dominicaine</strong>, les parties renonçant à toute autre juridiction qui pourrait leur être applicable.</p>
+      <p>Ce qui précède s'entend sans préjudice des règles impératives de protection des consommateurs et de protection des données personnelles du pays de résidence de l'Abonné, lorsqu'elles sont applicables et ne peuvent pas être écartées par convention.</p>
+
+      <h3>22.1. Nature professionnelle du service et variations par pays</h3>
+      <p>La Plateforme est proposée aux <strong>entreprises, professionnels et organisations dans l'exercice de leur activité</strong>, non aux consommateurs finaux. Zyntello fournit le service depuis la <strong>République dominicaine</strong> et le commercialise en outre au <strong>Venezuela, en Colombie, au Guatemala et au Costa Rica</strong>, tout en servant des clients à distance sur d'autres territoires.</p>
+      <p>Lorsque l'Abonné est protégé par des <strong>règles impératives de son propre pays</strong> — protection des consommateurs, protection des données personnelles ou contrat électronique —, ces règles prévalent sur les clauses des présentes Conditions qui les contrediraient, et <strong>sur celles-là seulement</strong> : le reste du document conserve sa pleine vigueur. En particulier, aucune clause des présentes Conditions ne prétend priver l'Abonné du droit de saisir les tribunaux de son domicile lorsque sa législation le lui reconnaît de manière non susceptible de renonciation, ni des délais de rétractation, de garantie ou de réclamation que cette législation lui accorde.</p>
+      <p>Si l'Abonné estime qu'une règle impérative de son pays affecte une clause des présentes Conditions, il peut le signaler à <a href="mailto:info@zyntello.com">info@zyntello.com</a> et Zyntello y répondra par écrit.</p>
+    </section>
+
+    <section id="s23">
+      <h2 class="sec"><span class="n">23.</span> Dispositions générales</h2>
+      <ul>
+        <li><strong>Cession.</strong> L'Abonné ne peut pas céder sa position contractuelle sans le consentement écrit de Zyntello. Zyntello pourra céder le contrat à une société affiliée ou dans le cadre d'une réorganisation, d'une fusion ou d'une cession d'actifs, en informant l'Abonné.</li>
+        <li><strong>Intégralité de l'accord.</strong> Les présentes Conditions, ainsi que la Politique de Confidentialité et tout devis, ordre de service ou accord de sous-traitance signé entre les parties, constituent l'intégralité de l'accord et remplacent toute communication antérieure portant sur le même objet.</li>
+        <li><strong>Divisibilité.</strong> Si une clause venait à être nulle ou inapplicable, elle serait interprétée dans le sens le plus proche de l'intention des parties et les autres clauses conserveraient leur pleine vigueur.</li>
+        <li><strong>Absence de renonciation.</strong> La tolérance ou le retard dans l'exercice d'un droit n'emporte pas renonciation à celui-ci.</li>
+        <li><strong>Notifications.</strong> Les communications à Zyntello seront adressées à <a href="mailto:info@zyntello.com">info@zyntello.com</a>. Les communications à l'Abonné seront adressées à l'adresse électronique enregistrée dans son compte ou publiées sur la Plateforme.</li>
+        <li><strong>Survie.</strong> Les sections 10, 13, 19, 20, 22 et 23 survivront à la cessation du contrat.</li>
+        <li><strong>Langue.</strong> La langue originale des présentes Conditions est l'espagnol. En cas de divergence avec une traduction, la version espagnole prévaudra.</li>
+        <li><strong>Contrôle des exportations et sanctions.</strong> L'Abonné déclare que ni lui, ni ceux qui le contrôlent, ni ses Utilisateurs ne figurent sur des listes de personnes ou d'entités sanctionnées, et s'oblige à ne pas utiliser la Plateforme — ni à en faciliter l'accès à un tiers — en violation des régimes de sanctions internationales ou de contrôle des exportations applicables. Zyntello fournit le service en s'appuyant sur des prestataires d'infrastructure soumis à la législation des <strong>États-Unis d'Amérique</strong>, de sorte qu'un changement de ces régimes peut la contraindre à suspendre le service sur un territoire donné ; si cela se produisait, Zyntello le notifierait avec le plus grand préavis possible et faciliterait l'exportation des données conformément à la section 9.</li>
+        <li><strong>Force majeure.</strong> Aucune partie ne répondra d'une inexécution résultant d'événements échappant à son contrôle raisonnable, y compris catastrophes naturelles, coupures générales d'électricité ou de télécommunications, actes d'autorité, troubles sociaux ou cyberattaques de grande ampleur.</li>
+      </ul>
+    </section>
+
+    <section id="s24">
+      <h2 class="sec"><span class="n">24.</span> Contact</h2>
+      <p>Pour toute question relative aux présentes Conditions :</p>
+      <ul>
+        <li><strong>Zyntello, S.R.L.</strong> — République dominicaine</li>
+        <li>Courrier électronique : <a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+        <li>Téléphone et WhatsApp : <a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+        <li>Site web : <a href="https://zyntello.com">https://zyntello.com</a></li>
+      </ul>
+      <p>Pour les demandes relatives aux données personnelles — accès, rectification, effacement, opposition ou portabilité —, consultez notre <a href="/fr/privacidad/">Politique de Confidentialité</a>. Pour <strong>demander la suppression de vos données</strong>, suivez les instructions de <a href="/fr/eliminacion-datos/"><strong>zyntello.com/eliminacion-datos/</strong></a>.</p>
+    </section>
+
+    <section id="s25">
+      <h2 class="sec"><span class="n">25.</span> Journal des modifications</h2>
+      <p>Registre complet et cumulatif de toutes les versions de ce document depuis sa première publication. Chaque entrée indique la version, la date d'entrée en vigueur et ce qui a changé. Les entrées antérieures <strong>ne sont ni modifiées ni supprimées</strong>.</p>
+      <div class="note">
+        <p><b>Comment lire les versions.</b> Un changement de <strong>version mineure</strong> (1.0 → 1.1) ajoute ou précise une information — un nouveau module, un prestataire, une catégorie de données — sans modifier les obligations que l'Abonné a acceptées. Un changement de <strong>version majeure</strong> (1.x → 2.0) modifie des obligations, des délais, des prix, la juridiction, des limites de responsabilité ou le traitement des données, et est notifié <strong>30 jours</strong> à l'avance conformément à la section 21.</p>
+      </div>
+      <div class="tbl chg">
+        <table>
+          <thead>
+            <tr><th>Version</th><th>Date</th><th>Modifications</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1.7 <span class="vig">En vigueur</span></td>
+              <td>18 septembre 2026</td>
+              <td><strong>Composants tiers, garanties, sanctions et droits par pays.</strong> Quatre ajouts que le document ne couvrait pas. <strong>(1)</strong> La section <strong>10.1</strong> déclare que la Plateforme intègre des composants logiciels tiers — cadres applicatifs, bibliothèques, polices et icônes —, que chacun est régi par <strong>sa propre licence</strong>, que cette licence prévaut sur les présentes Conditions pour ce qui concerne son composant, et que les interdictions de la section 10 portent sur le logiciel propre de Zyntello et non sur les droits que concède la licence d'un tiers. La liste complète, avec version, licence et mentions de copyright, est publiée sur <a href="/fr/avisos-terceros/">zyntello.com/avisos-terceros/</a> comme document autonome. <strong>(2)</strong> La section <strong>19</strong> rend expresse l'exclusion de garanties qui n'était jusqu'ici qu'implicite dans le « tel quel » : ni qualité marchande, ni adéquation à un usage particulier, ni absence de contrefaçon ne sont garanties, et il est précisé que cette exclusion <strong>n'affecte pas</strong> les engagements exprès de la section 18 et de l'<a href="/fr/sla/">Accord de Niveau de Service</a>. <strong>(3)</strong> La section <strong>23</strong> intègre la clause de <strong>contrôle des exportations et sanctions</strong> : l'Abonné déclare ne pas figurer sur des listes de personnes sanctionnées et s'oblige à ne pas utiliser la Plateforme en violation de ces régimes ; il est signalé que les prestataires d'infrastructure sont soumis à la législation des États-Unis et qu'un changement de ces régimes peut contraindre à suspendre le service sur un territoire, avec notification préalable et exportation des données conformément à la section 9. La section <strong>11</strong> reçoit le point correspondant. <strong>(4)</strong> La section <strong>22.1</strong> précise que le service est proposé aux entreprises et aux professionnels, non aux consommateurs finaux, nomme les pays où il est commercialisé, et reconnaît que les règles impératives du pays de l'Abonné prévalent sur les clauses qui les contrediraient — y compris le droit de saisir les tribunaux de son domicile lorsque sa loi le lui reconnaît de manière non susceptible de renonciation. Ne changent ni les prix, ni les obligations de paiement, ni les délais, ni les quotas de licences, ni les limites de responsabilité, ni la juridiction. Les ajouts (2) et (3) précisent la portée de ce qui était déjà accepté ; ils sont notifiés aux Abonnés par la publication de la présente version.</td>
+            </tr>
+            <tr>
+              <td>1.6</td>
+              <td>11 septembre 2026</td>
+              <td><strong>Trois modules qui manquaient et le fournisseur de cartographie.</strong> La section <strong>4</strong> ne listait ni <strong>Restaurant</strong>, ni le <strong>Gestionnaire intelligent des stocks</strong>, ni le <strong>Planificateur de tournées</strong>, qui sont pourtant déjà proposés : ils y sont intégrés avec leur périmètre. La section <strong>14</strong> déclare les données personnelles des deux modules qui traitent des données de personnes : dans <strong>Restaurant</strong>, celles du convive pour les réservations et les commandes, l'<strong>adresse et le téléphone de livraison</strong>, le livreur et les <strong>pourboires</strong> du serveur ; dans <strong>Planificateur de tournées</strong>, les adresses et <strong>coordonnées</strong> des arrêts et la <strong>position du conducteur pendant la tournée</strong> lorsque l'Abonné active le suivi. La section <strong>15</strong> intègre un <strong>sous-traitant ultérieur nouveau</strong>, le <strong>fournisseur de cartographie</strong> (OpenStreetMap par défaut, ou Google Maps, HERE ou Mapbox avec les identifiants de l'Abonné lui-même), auquel sont transmises les adresses et les coordonnées des arrêts et jamais le nom du client ni le contenu de la commande. La Politique de Confidentialité le développe à ses sections 3, 4, 5 et 8 (version 1.8). Ne changent ni les prix, ni les obligations de paiement, ni les délais, ni les limites de responsabilité, ni la juridiction.</td>
+            </tr>
+            <tr>
+              <td>1.5</td>
+              <td>7 septembre 2026</td>
+              <td><strong>Ouvrir un dossier d'assistance n'engage à rien.</strong> La section <strong>18.3</strong> précise que signaler un incident ne crée aucune obligation de paiement : si le traitement requiert un travail en dehors de l'assistance incluse, Zyntello l'évalue et attend l'<strong>autorisation préalable</strong> d'un utilisateur habilité à gérer la facturation avant de l'exécuter, et sans elle le travail n'avance pas et aucune heure n'est comptabilisée. C'est la contrepartie contractuelle du portail des dossiers que l'Accord de Niveau de Service documente à sa section 8.7 (version 1.2), et des données du service d'assistance que la Politique de Confidentialité documente à sa section 12.1 (version 1.5). Ne changent ni les prix, ni les obligations de paiement, ni les délais, ni les limites de responsabilité, ni la juridiction.</td>
+            </tr>
+            <tr>
+              <td>1.4</td>
+              <td>6 septembre 2026</td>
+              <td><strong>Accès de l'assistance au compte.</strong> La section <strong>18.3</strong> est ajoutée : l'Abonné y accepte que, pour diagnostiquer ou corriger un incident, un agent d'assistance de Zyntello puisse entrer dans son espace de travail et voir ses données, dans des limites déclarées : l'agent n'utilise <strong>jamais</strong> les identifiants d'une personne de l'Abonné mais un compte technique propre ; l'accès démarre en <strong>lecture seule</strong> et son élévation en écriture exige un motif déclaré et expire d'elle-même ; pour chaque accès sont enregistrés l'agent, la date, le motif, l'IP et le détail de ce qui a été modifié ; un accès sans autorisation préalable est marqué comme tel et notifie le propriétaire ; et l'Abonné audite tout cela par lui-même depuis <strong>Configuration → Accès de l'assistance</strong>. Les anciennes sous-sections 18.3 et 18.4 deviennent 18.4 et 18.5 sans changement de contenu. La Politique de Confidentialité le développe à sa section 12 (version 1.4). Ne changent ni les prix, ni les obligations de paiement, ni les délais, ni les limites de responsabilité, ni la juridiction.</td>
+            </tr>
+            <tr>
+              <td>1.3</td>
+              <td>5 septembre 2026</td>
+              <td><strong>Licences d'utilisation incluses dans chaque abonnement.</strong> La section <strong>5.3</strong> documente le quota d'accès qui fait déjà partie des formules : <strong>3 utilisateurs de l'Abonné</strong> — propriétaire compris — avec accès à toutes les entreprises du compte et autorisations selon leur rôle, et <strong>5 utilisateurs internes</strong> par compte, chacun rattaché à une seule entreprise et dont les autorisations ne portent que sur cette entreprise. Il est précisé qu'un utilisateur désactivé conserve sa licence jusqu'à son retrait du compte, que les comptes techniques de Zyntello ne consomment pas de licences de l'Abonné, et comment augmenter l'un ou l'autre quota. Le compte de démonstration devient la section <strong>5.4</strong>. L'<a href="/fr/sla/">Accord de Niveau de Service</a> est en outre publié comme document autonome — canaux d'assistance, classification des priorités et délai de première réponse pour chacune, ce que l'assistance comprend et ce qui est facturé à part — et la section <strong>18.2</strong> y renvoie désormais : l'objectif d'un jour ouvrable des présentes Conditions reste le délai général, et pour les incidents qui empêchent de travailler l'Accord garantit des délais plus courts. L'objectif de disponibilité de 99,5&nbsp;% de la section <strong>18.1</strong> ne change pas et continue d'être fixé ici. Ne changent ni les prix, ni les obligations de paiement, ni les limites de responsabilité, ni la juridiction.</td>
+            </tr>
+            <tr>
+              <td>1.2</td>
+              <td>4 septembre 2026</td>
+              <td><strong>Vérification en deux étapes par application d'authentification.</strong> La description de la section <strong>5</strong> est étendue : la vérification en deux étapes ne se fait plus seulement par courrier électronique — elle admet aussi une application d'authentification du téléphone (standard TOTP), avec des codes de récupération à usage unique pour celui qui perdrait son appareil. Il est en outre documenté que l'Abonné peut exiger la vérification en deux étapes de tous ses Utilisateurs, avec un délai de grâce avant son application. Ne changent ni les prix, ni les obligations de paiement, ni les limites de responsabilité, ni la juridiction.</td>
+            </tr>
+            <tr>
+              <td>1.1</td>
+              <td>31 août 2026</td>
+              <td><strong>Sauvegarde téléchargeable de l'Abonné.</strong> La fonction de sauvegarde en libre-service, incluse sans frais dans toutes les formules, est documentée : nouvelle section <strong>18.4</strong> (ce que contient le fichier, isolement vis-à-vis des autres Abonnés, périodicité recommandée des rappels, garde de la copie une fois téléchargée et conditions de restauration), précision en <strong>18.3</strong> indiquant que la sauvegarde de la Plateforme ne remplace pas celle de l'Abonné, mention de l'isolement appliqué au fichier à la section <strong>6</strong>, et mise à jour de la section <strong>9</strong> pour refléter qu'après la cessation l'Abonné peut télécharger sa sauvegarde par lui-même. Ne changent ni les prix, ni les obligations de paiement, ni les limites de responsabilité, ni la juridiction.</td>
+            </tr>
+            <tr>
+              <td>1.0</td>
+              <td>28 juillet 2026</td>
+              <td><strong>Première publication.</strong> Document initial en 25 sections : identification du prestataire, acceptation, définitions, objet du service avec les 21 modules disponibles, compte et utilisateurs, isolement des données, formules et paiements, résiliation et remboursements, suspension et cessation, propriété intellectuelle, usage acceptable, communications par courriel et WhatsApp, données personnelles et rôle des parties, données traitées par module, tiers et sous-traitants ultérieurs, intelligence artificielle, conformité fiscale, disponibilité et sauvegardes, limitation de responsabilité, indemnisation, modifications, droit applicable, dispositions générales, contact et journal des modifications.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Vous pouvez demander une copie du texte complet de toute version antérieure en écrivant à <a href="mailto:info@zyntello.com">info@zyntello.com</a>.</p>
+    </section>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>Technologie d'entreprise et intelligence artificielle</li>
+          <li>République dominicaine</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/fr/terminos/">Conditions de service</a></li>
+          <li><a href="/fr/privacidad/">Politique de Confidentialité</a></li>
+          <li><a href="/fr/cookies/">Politique relative aux cookies</a></li>
+          <li><a href="/fr/eliminacion-datos/">Suppression des données</a></li>
+          <li><a href="/fr/sla/">Accord de Niveau de Service</a></li>
+          <li><a href="/fr/avisos-terceros/">Avis relatifs aux logiciels tiers</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+          <li><a href="https://zyntello.com">zyntello.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy">© 2026 Zyntello, S.R.L. Tous droits réservés.</p>
+  </div>
+</footer>
+
+</body>
+</html>
