@@ -42,6 +42,11 @@ const TRADUCCIONES = join(AQUI, 'legales')
 const BLOQUE = /<(p|li|h1|h2|h3|h4|th|td|dt|dd|caption|summary|figcaption|blockquote)\b[^>]*>([\s\S]*?)<\/\1>/gi
 const OPACO = /<(style|script)\b[\s\S]*?<\/\1>|<!--[\s\S]*?-->/gi
 const TIENE_LETRAS = /[A-Za-zÁÉÍÓÚÑáéíóúñÜü]{2}/
+
+/* Los atributos que una persona LEE, enumerados uno a uno.
+   Grupo 1: el `content` de las metas con prosa.  Grupo 2: los atributos de accesibilidad. */
+const ATRIBUTOS_CON_PROSA =
+  /<meta\s[^>]*(?:name|property)="(?:description|og:title|og:description|twitter:title|twitter:description)"[^>]*\scontent="([^"]{4,})"|\b(?:alt|aria-label|title|placeholder)="([^"]{4,})"/gi
 /**
  * Lo que no es prosa: una URL, un correo, un bloque de código o el nombre de la empresa.
  *
@@ -162,6 +167,14 @@ for (const slug of LEGALES) {
   const textosEspanoles = new Set(
     [...base.matchAll(/>([^<>]+)</g)].map((m) => normalizar(m[1])).filter(Boolean))
 
+  /* Y los ATRIBUTOS que una persona lee, que no son `>texto<` y por eso no entraban aquí.
+
+     La lista es cerrada y enumerada a propósito. Mirar cualquier `content="…"` metería dentro
+     las URLs de `og:url` y los códigos de `og:locale`, y filtrarlos por su forma es justo lo
+     que ya falló dos veces esta semana. Se nombran las metas que llevan prosa y se acabó. */
+  const atributosEspanoles = new Set(
+    [...base.matchAll(ATRIBUTOS_CON_PROSA)].map((m) => normalizar(m[1] || m[2])).filter(Boolean))
+
   const bloques = [...base.matchAll(BLOQUE)]
     .map((m) => normalizar(m[2]))
     .filter((b) => b && TIENE_LETRAS.test(b) && !(SIN_PROSA.test(b) || esNombreTecnico(b)))
@@ -241,6 +254,21 @@ for (const slug of LEGALES) {
       if ((SIN_PROSA.test(t) || esNombreTecnico(t)) || UNIVERSAL.test(t)) continue
       if (t in COINCIDEN_A_PROPOSITO || NOMBRES_PROPIOS.has(t) || esNombreTecnico(t)) continue
       if (NOMBRES_DE_IDIOMA.has(t)) continue           // «Español» se queda en español a propósito
+      sueltos.add(t)
+    }
+
+    /* ⚠️⚠️ Los atributos van aparte, y no es un detalle: la meta descripción es lo que Google
+       publica y lo que se ve al compartir el enlace en WhatsApp. `/en/terminos/` se publicó con
+       la suya en español y **esta guarda la dio por buena**, porque solo miraba `>texto<`. Una
+       página cuyo contenido está entero en inglés y cuya tarjeta de enlace sale en español se
+       lee como una traducción automática mal hecha, y eso lo ve quien aún no ha entrado. */
+    for (const m of sinOpacos.matchAll(ATRIBUTOS_CON_PROSA)) {
+      const t = normalizar(m[1] || m[2])
+      if (!t || !TIENE_LETRAS.test(t)) continue
+      if (!atributosEspanoles.has(t)) continue
+      if ((SIN_PROSA.test(t) || esNombreTecnico(t)) || UNIVERSAL.test(t)) continue
+      if (t in COINCIDEN_A_PROPOSITO || NOMBRES_PROPIOS.has(t)) continue
+      if (NOMBRES_DE_IDIOMA.has(t)) continue
       sueltos.add(t)
     }
 
