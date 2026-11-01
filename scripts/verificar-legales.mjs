@@ -56,7 +56,7 @@ const UNIVERSAL = new RegExp('^('
   + '|[A-Za-z][\\w /.-]*:'            // «Firefox:», «Android / iOS:»
   + '|[\\d\\s+()·-]+'                  // teléfonos, cifras, separadores
   + '|[^\\s@]+@[^\\s@]+'               // correos
-  + '|[\\w.-]*zyntello\\.com[\\w./-]*' // dominios propios
+  + '|(https?://)?[\\w.-]*zyntello\\.com[\\w./-]*' // dominios propios, con o sin protocolo
   + '|©.*'                             // la línea de copyright
   + ')$', 'i')
 
@@ -72,6 +72,27 @@ const COINCIDEN_A_PROPOSITO = {
   'Ni de Meta, ni de LinkedIn, ni de TikTok.':
     'en francés la frase se construye igual que en español, palabra por palabra',
 }
+
+/**
+ * Nombres propios y términos técnicos que no se traducen en ningún idioma.
+ *
+ * ⚠️ Se enumeran en vez de reconocerlos por su forma. La regla «una o dos palabras capitalizadas
+ * es un nombre propio» habría dejado pasar «Seguridad», «Cookies» o «Contenido» sin traducir en
+ * los siete idiomas — y ésos sí hay que traducirlos. Una lista finita que hay que ampliar a mano
+ * molesta una vez; un patrón que acierta casi siempre falla en silencio para siempre.
+ */
+const NOMBRES_PROPIOS = new Set([
+  // Productos y módulos de Zyntello
+  'Zyntello Events', 'Prestamello', 'Car Wash', 'ConstructFlow', 'Marketing',
+  // Proveedores y servicios de terceros
+  'Stripe', 'PayPal', 'Mercado Pago', 'WhatsApp / Meta Platforms', 'Web3Forms',
+  'QuickChart', 'Anthropic', '(exchangerate-api)', 'OpenStreetMap', 'Google Maps',
+  'HERE', 'Mapbox', 'jsDelivr', 'Cloudflare', 'unpkg', 'Google Fonts', 'Bunny Fonts',
+  // Países cuyo nombre coincide en varios idiomas
+  'Colombia', 'Costa Rica', 'Venezuela', 'Guatemala', 'Panamá', 'Ecuador', 'Chile',
+  // Términos técnicos que se usan en su forma inglesa
+  'hashing', 'TOTP', 'TLS', 'SQL', 'ZIP', 'QR',
+])
 
 /**
  * Los nombres de los idiomas del selector se quedan en su propio idioma, a propósito.
@@ -206,7 +227,7 @@ for (const slug of LEGALES) {
       if (!t || !TIENE_LETRAS.test(t)) continue
       if (!textosEspanoles.has(t)) continue            // no está en el original: ya es otra cosa
       if (SIN_PROSA.test(t) || UNIVERSAL.test(t)) continue
-      if (t in COINCIDEN_A_PROPOSITO) continue
+      if (t in COINCIDEN_A_PROPOSITO || NOMBRES_PROPIOS.has(t)) continue
       if (NOMBRES_DE_IDIOMA.has(t)) continue           // «Español» se queda en español a propósito
       sueltos.add(t)
     }

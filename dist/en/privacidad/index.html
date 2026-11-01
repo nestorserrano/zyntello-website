@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy | Zyntello</title>
+<meta name="description" content="Privacy Policy of Zyntello, S.R.L. — what data we process, who we share it with, your rights and how to request the deletion of your data.">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<link rel="canonical" href="https://zyntello.com/en/privacidad/">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;padding:0 clamp(1.25rem,3vw,2.75rem)}
+
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:88ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:clamp(2rem,3.5vw,4rem);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:95ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:95ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note.ok{border-left-color:var(--ok);background:rgba(52,211,153,.05)}
+  .note b{color:#fff}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:600px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  /* Control de cambios */
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+
+
+
+<!--zyntello:legales-->
+<link rel="alternate" hreflang="es" href="https://zyntello.com/privacidad/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/privacidad/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/privacidad/">
+<style>
+.idiomas{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:center;padding:.75rem 0;font-size:.82rem}
+.idiomas span{color:var(--tx3,#64748b);text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+.idiomas a{color:var(--tx3,#64748b);text-decoration:none;padding:.15rem .5rem;border-radius:99px;border:1px solid transparent}
+.idiomas a:hover{color:var(--ac,#60a5fa);border-color:var(--line2,rgba(255,255,255,.14))}
+.idiomas a[aria-current]{color:var(--ac,#60a5fa);border-color:var(--ac,#60a5fa)}
+.prevalece{margin:1rem 0;padding:.75rem 1rem;border-radius:.5rem;font-size:.86rem;
+  color:var(--tx2,#94a3b8);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.28)}
+.prevalece a{color:var(--ac,#60a5fa)}
+</style>
+<!--/zyntello:legales--></head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">Home</a>
+        <a href="/terminos/">Terms of Service</a>
+        <a href="/sla/">SLA</a>
+        <a href="/eliminacion-datos/">Data deletion</a>
+        <a href="/avisos-terceros/">Third-party notices</a>
+        <a href="https://zyntello.com/#contacto">Contact</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">Legal document</span>
+      <h1>Privacy Policy</h1>
+      <p class="lead">This Policy explains what personal data <strong>Zyntello, S.R.L.</strong> processes through its <code>app.zyntello.com</code> platform and its website, for what purpose, who it shares it with, how long it keeps it and how you can exercise your rights, including the <a href="#s9">deletion request</a>.</p>
+      <div class="meta">
+        <span>Last updated: <strong>18 September 2026</strong></span>
+        <span>In force: <strong>from its publication</strong></span>
+        <span>Version: <strong><a class="verlink" href="#s20">1.9 — see change log</a></strong></span>
+        <span>Original language: <strong>Spanish</strong></span>
+      </div>
+    </div>
+  </div><!--zyntello:legales--><div class="idiomas" role="navigation" aria-label="Language"><span>Language:</span><a href="/privacidad/" hreflang="es" lang="es">Español</a><a href="/en/privacidad/" hreflang="en" lang="en" aria-current="true">English</a></div><!--/zyntello:legales--></header>
+
+<main class="wrap"><!--zyntello:legales-->
+<div class="prevalece" role="note">This is a courtesy translation. The binding version of this document is the Spanish one. <a href="/privacidad/" hreflang="es" lang="es">Read the Spanish version</a>.</div><!--/zyntello:legales-->
+<div class="grid">
+
+  <aside class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#s1">Data controller</a></li>
+      <li><a href="#s2">Our dual role</a></li>
+      <li><a href="#s3">What data we process</a></li>
+      <li><a href="#s4">Data by module</a></li>
+      <li><a href="#s5">Who we share it with</a></li>
+      <li><a href="#s6">WhatsApp and Meta</a></li>
+      <li><a href="#s7">International transfers</a></li>
+      <li><a href="#s8">Retention periods</a></li>
+      <li><a href="#s9">Your rights and data deletion</a></li>
+      <li><a href="#s10">Rules by country</a></li>
+      <li><a href="#s11">Security</a></li>
+      <li><a href="#s12">Access by Zyntello support staff</a></li>
+      <li><a href="#s13">Communications and marketing</a></li>
+      <li><a href="#s14">Cookies</a></li>
+      <li><a href="#s15">Incident notification</a></li>
+      <li><a href="#s16">Minors</a></li>
+      <li><a href="#s17">Automated decisions and AI</a></li>
+      <li><a href="#s18">Changes to this Policy</a></li>
+      <li><a href="#s19">Contact</a></li>
+      <li><a href="#s20">Change log</a></li>
+    </ol>
+  </aside>
+
+  <article>
+
+    <section id="s1">
+      <h2 class="sec"><span class="n">1.</span> Data controller</h2>
+      <p><strong>Zyntello, S.R.L.</strong>, a company incorporated and domiciled in the <strong>Dominican Republic</strong>, with commercial and support operations in the Dominican Republic, Venezuela, Colombia, Guatemala and Costa Rica.</p>
+      <ul>
+        <li>Privacy contact: <a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+        <li>Phone and WhatsApp: <a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+        <li>Website: <a href="https://zyntello.com">https://zyntello.com</a></li>
+        <li>Platform: <a href="https://app.zyntello.com">https://app.zyntello.com</a></li>
+      </ul>
+      <p>This Policy forms an integral part of our <a href="/terminos/">Terms of Service</a>.</p>
+    </section>
+
+    <section id="s2">
+      <h2 class="sec"><span class="n">2.</span> Our dual role: controller and processor</h2>
+      <p>Zyntello is a multi-company business software platform. That is why we act in two distinct roles, and it determines who you should exercise your rights with:</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Role</th><th>Over what data</th><th>Who decides its use</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Controller</strong></td>
+              <td>Subscriber account data: name, email, phone, credentials, billing details and technical usage records.</td>
+              <td>Zyntello. This Policy applies directly.</td>
+            </tr>
+            <tr>
+              <td><strong>Processor</strong></td>
+              <td>Data each Subscriber uploads about <strong>their own</strong> customers, employees, suppliers, residents, debtors or participants.</td>
+              <td>The Subscriber. Zyntello only hosts and processes it in order to provide them the service.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <p><b>If you are a customer, employee, resident, debtor or participant of a company that uses Zyntello</b>, that company is the controller of your data and you must exercise your rights with them. If you write to us directly, we will route your request to that company and help them handle it, but we cannot decide on their behalf about data that is not ours.</p>
+      </div>
+    </section>
+
+    <section id="s3">
+      <h2 class="sec"><span class="n">3.</span> What data we process and what for</h2>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Category</th><th>Data</th><th>Purpose</th><th>Legal basis</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Account and users</strong></td>
+              <td>Name, email address, irreversibly hashed password, role, permissions, company they belong to. If the User enables two-step verification: their authenticator app key (<strong>encrypted</strong>), their recovery codes (<strong>irreversibly hashed</strong>) and the record of failed attempts. None of this data is readable by Zyntello.</td>
+              <td>Creating and managing the account, authentication, two-step verification (by email or authenticator app), access recovery, access control.</td>
+              <td>Performance of the contract</td>
+            </tr>
+            <tr>
+              <td><strong>Billing</strong></td>
+              <td>Legal name, tax identification, address, country, subscription and payment history.</td>
+              <td>Charging the subscription, issuing receipts and meeting tax obligations.</td>
+              <td>Contract and legal obligation</td>
+            </tr>
+            <tr>
+              <td><strong>Payments</strong></td>
+              <td><strong>We do not store full card numbers.</strong> Processors share only references with us: transaction identifier, charge status and last digits.</td>
+              <td>Processing payments and managing the subscription.</td>
+              <td>Performance of the contract</td>
+            </tr>
+            <tr>
+              <td><strong>Subscriber operating data</strong></td>
+              <td>Everything the Subscriber records in their modules (see section 4).</td>
+              <td>Providing the contracted service. <strong>Processed as a processor.</strong></td>
+              <td>Subscriber instructions</td>
+            </tr>
+            <tr>
+              <td><strong>Technical records</strong></td>
+              <td>IP address, browser, device, date and time, actions performed (audit log).</td>
+              <td>Security, fraud prevention, traceability of actions, support and diagnostics.</td>
+              <td>Legitimate interest</td>
+            </tr>
+            <tr>
+              <td><strong>Cookies</strong></td>
+              <td>Session cookie, form protection token and, if the user chooses, a remembered-session cookie. <strong>No advertising or third-party tracking cookies.</strong></td>
+              <td>Keeping you signed in and protecting the application.</td>
+              <td>Strictly necessary</td>
+            </tr>
+            <tr>
+              <td><strong>Support and contact</strong></td>
+              <td>Name, email, phone and the content of the message sent from the website form or by WhatsApp.</td>
+              <td>Handling sales and support enquiries.</td>
+              <td>Consent and pre-contractual steps</td>
+            </tr>
+            <tr>
+              <td><strong>Marketing</strong></td>
+              <td>Email address and a record of the date, time and source of consent.</td>
+              <td>Sending news and commercial communications, only with prior consent.</td>
+              <td>Consent</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The legal bases are expressed using the terminology of the European Union's General Data Protection Regulation because it is the most precise; the equivalent concepts apply under the local laws listed in section 10.</p>
+    </section>
+
+    <section id="s4">
+      <h2 class="sec"><span class="n">4.</span> Data by module</h2>
+      <p>Each Subscriber decides what information they upload. These are the categories each module allows them to record, always processed by Zyntello in the capacity of <strong>processor</strong>:</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Module</th><th>Data categories</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Invoicing · Accounts Receivable · CRM · Cash Register</strong></td><td>Name or legal name, tax identification, address, phone, email, purchase and collection history, credit terms, balances and sales management notes.</td></tr>
+            <tr><td><strong>Purchasing · Accounts Payable</strong></td><td>Supplier data and their contacts, tax identification, bank accounts for payment, withholdings and tax documents received.</td></tr>
+            <tr><td><strong>Payroll · PSA</strong></td><td>Employee identification, identity document, date of birth, sex, address, job title, <strong>pay and deductions</strong>, bank accounts, social security, dependants, absences and supporting documents, timesheets, clock-in and clock-out records and, where the employer enables those checks, <strong>geographic location</strong> and <strong>a photograph of the face</strong>.</td></tr>
+            <tr><td><strong>Zyntello Events</strong></td><td>Name, identity document, email, phone, organisation, photograph where captured, and access and attendance records.</td></tr>
+            <tr><td><strong>Condominiums</strong></td><td>Resident and owner data, unit, ownership share, account statement, common-area bookings, incident reports with photographs and votes at general meetings.</td></tr>
+            <tr><td><strong>Prestamello</strong></td><td>Applicant and guarantor data, identity documents, declared income and outgoings, assets, references, <strong>credit bureau search results</strong>, collateral and its documents, payment history and the <strong>geographic location</strong> of collection staff on their rounds.</td></tr>
+            <tr><td><strong>Route Planner</strong></td><td>Customer delivery and visit addresses and their <strong>geographic coordinates</strong>; carrier, vehicle and assigned driver data; and, where the Subscriber enables tracking, the <strong>driver's location recorded repeatedly throughout the working day</strong> (every 30 seconds by default), together with the arrival and departure time at each stop and the outcome of each delivery or visit.</td></tr>
+            <tr><td><strong>Car Wash</strong></td><td>Customer and vehicle data: plate, make, model, colour, odometer, photographs of the vehicle and service history.</td></tr>
+            <tr><td><strong>ConstructFlow</strong></td><td>Staff assigned to a site, documents and progress photographs.</td></tr>
+            <tr><td><strong>Inventory · Fixed Assets</strong></td><td>Asset owners and custodians, stocktake and physical inventory records.</td></tr>
+            <tr><td><strong>Accounting · Banking</strong></td><td>Company bank accounts, payees of cheques and transfers, and journal entries referring to third parties.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note warn">
+        <p><b>Data of special impact.</b> The Payroll, PSA, Prestamello and Route Planner modules allow the processing of identity documents, pay, information related to health-related absences, photographs of the face, staff geographic location and credit history. It is the Subscriber's responsibility to inform the data subjects beforehand, to have a legal basis or consent, and to enable only the checks that are strictly necessary.</p>
+        <p><strong>Continuous tracking of a worker's location.</strong> Two things worth telling apart, even though both are location. In Payroll, PSA and Prestamello what is recorded is <strong>a single point at a specific moment</strong>: when clocking in or out, when attending a work order or when handling a collection. The Route Planner, by contrast, can record the driver's position <strong>repeatedly for as long as the route lasts</strong>, which makes it possible to reconstruct their day's journey. That is a more intrusive form of processing and is therefore <strong>switched off by default</strong>: it only works if the Subscriber turns it on and the driver starts the route from their device. Before enabling it, the Subscriber must tell the person affected what is recorded, for how long and what for, and must have a legal basis or their consent. Outside the working day or the route, no location is recorded.</p>
+      </div>
+      <p><strong>Public lookup portals.</strong> Some modules generate links or QR codes that can be consulted without signing in (the status of a job, a resident's account statement, an event ticket, an asset record). They are reached through a random identifier, show only the minimum information needed, and whether they are enabled is up to the Subscriber.</p>
+    </section>
+
+    <section id="s5">
+      <h2 class="sec"><span class="n">5.</span> Who we share data with</h2>
+      <div class="note ok">
+        <p><b>We do not sell, rent or transfer personal data to third parties for advertising purposes.</b></p>
+      </div>
+      <p>We share data only with the following recipients and for the purposes stated:</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Recipient</th><th>What they receive</th><th>What for</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Hosting provider</strong> (United States)</td><td>The data hosted on the Platform and its backups.</td><td>Infrastructure, storage and backup.</td></tr>
+            <tr><td><strong>Stripe</strong></td><td>Payment transaction data.</td><td>Processing subscriptions and online payments. <a href="https://stripe.com/privacy" rel="noopener">Policy</a></td></tr>
+            <tr><td><strong>PayPal</strong></td><td>Payment transaction data.</td><td>Processing subscriptions and online payments. <a href="https://www.paypal.com/privacy" rel="noopener">Policy</a></td></tr>
+            <tr><td><strong>Mercado Pago</strong></td><td>Payment transaction data.</td><td>Processing online payments. <a href="https://www.mercadopago.com/privacidad" rel="noopener">Policy</a></td></tr>
+            <tr><td><strong>WhatsApp / Meta Platforms</strong></td><td>The recipient's phone number and the content of the message, <strong>only if the Subscriber enables the integration</strong>.</td><td>Sending messages initiated by the Subscriber. <a href="https://www.whatsapp.com/legal/privacy-policy" rel="noopener">Policy</a></td></tr>
+            <tr><td><strong>Outbound email provider</strong></td><td>The recipient's address and the content of the message.</td><td>Delivery of transactional emails and documents.</td></tr>
+            <tr><td><strong>Artificial intelligence providers</strong></td><td>The image or text of the document to be read, when the Subscriber enables that feature with their own credentials.</td><td>Assisted extraction of invoice data (see section 16).</td></tr>
+            <tr><td><strong>Tax authorities</strong></td><td>The tax document data required by law.</td><td>Validation and transmission of electronic tax documents.</td></tr>
+            <tr><td><strong>Credit bureaus</strong></td><td>The applicant's identification, using the Subscriber's own credentials and under their own authorisation.</td><td>Credit history searches in the Prestamello module.</td></tr>
+            <tr><td><strong>Map provider</strong> (OpenStreetMap, Google Maps, HERE or Mapbox, as the Subscriber chooses)</td><td>The addresses and coordinates of a route's stops. Neither the customer's name nor the contents of the order are sent to them.</td><td>Turning an address into coordinates, calculating distances and plotting the journey, when the Subscriber uses the Route Planner.</td></tr>
+            <tr><td><strong>Web3Forms</strong></td><td>Name, email and message from the website form.</td><td>Delivering sales enquiries to our mailbox.</td></tr>
+            <tr><td><strong>Content delivery networks and web fonts</strong> (jsDelivr, Cloudflare&nbsp;cdnjs, unpkg, Google&nbsp;Fonts and Bunny&nbsp;Fonts)</td><td>The device's <strong>IP address</strong>, the browser and the screen the resource is requested from. They <strong>do not receive</strong> account data, screen contents or session identifiers.</td><td>Delivering to the browser the libraries, fonts and icons that make up the interface. They load on <strong>every</strong> screen of the Platform. The detail of each component is in the <a href="/avisos-terceros/">Third-party software notices</a>.</td></tr>
+            <tr><td><strong>QuickChart</strong></td><td>An event's <strong>public registration link</strong>. No personal or account data is sent to them.</td><td>Generating the QR code image for an event when the Platform cannot compose it by itself. Only in the Events module.</td></tr>
+            <tr><td><strong>Exchange rate service</strong> (exchangerate-api)</td><td>The IP address of the visitor to the <strong>public website</strong> <code>zyntello.com</code>. It plays no part in the Platform.</td><td>Showing converted prices on the solutions page.</td></tr>
+            <tr><td><strong>Competent authorities</strong></td><td>Strictly what a valid legal order requires.</td><td>Compliance with legal obligations.</td></tr>
+            <tr><td><strong>Professional advisers</strong></td><td>Strictly what is necessary.</td><td>Accounting, auditing and legal defence.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>All providers act under their own confidentiality and security commitments. The credentials the Subscriber configures to integrate with third parties are stored <strong>encrypted</strong> in our database.</p>
+      <div class="note">
+        <p><b>The last three recipients receive nothing that we send them.</b> When a screen needs a font or a library served from a third party's server, it is <strong>the user's own browser</strong> that requests it directly, and that request carries their IP address, as with any visit to a website. It is inherent to loading an external resource: it is not a transfer of data that Zyntello decides to make with account information, and that is why these providers see no customer, no invoice, no employee and nobody's session.</p>
+        <p>They are declared because they receive a piece of personal data —the IP address— and because the subscriber has a right to know, not because there is any flow of business data towards them.</p>
+      </div>
+    </section>
+
+    <section id="s6">
+      <h2 class="sec"><span class="n">6.</span> WhatsApp and Meta</h2>
+      <p>The Platform lets the Subscriber communicate with their own contacts through <strong>WhatsApp</strong>, in two ways: via a conversation link the Subscriber opens manually, or via the WhatsApp Business API when the Subscriber configures their credentials.</p>
+      <h3>6.1. What is transmitted</h3>
+      <p>When a message is sent, the <strong>recipient's phone number</strong> and the <strong>content of the message</strong> are transmitted, which may include the contact's name, a document's number and status, amounts, and links to documents or lookup portals.</p>
+      <h3>6.2. Who is responsible</h3>
+      <p>The <strong>Subscriber is the sender</strong> and the one responsible for the message: they determine its content, its recipients and its purpose, and must have the recipient's prior consent to contact them through that channel. Zyntello does not send commercial communications to its Subscribers' contacts on its own initiative.</p>
+      <h3>6.3. Purpose of the messages</h3>
+      <p>Messages sent from the Platform are <strong>operational or transactional</strong> in nature: invoices and quotes, receipts and vouchers, account statements, payment and maintenance reminders, queue or service-status notices, meeting calls and approval notifications.</p>
+      <h3>6.4. Right to opt out</h3>
+      <p>If you receive messages from a company that uses Zyntello and do not wish to keep receiving them, you can reply asking to opt out, block the number, or tell that company directly, and they must act on it immediately. The Platform provides mechanisms to record that preference per contact. If you need help identifying the sender, you can write to us at <a href="mailto:info@zyntello.com">info@zyntello.com</a> and we will point you in the right direction.</p>
+      <h3>6.5. Applicable policies</h3>
+      <p>The processing of information by WhatsApp LLC and Meta Platforms, Inc. is governed by their own policies, including the <a href="https://www.whatsapp.com/legal/privacy-policy" rel="noopener">WhatsApp Privacy Policy</a> and the <a href="https://www.whatsapp.com/legal/business-policy" rel="noopener">WhatsApp Business Policy</a>. Zyntello does not control the processing carried out by those companies.</p>
+    </section>
+
+    <section id="s7">
+      <h2 class="sec"><span class="n">7.</span> International transfers</h2>
+      <p>Our servers are hosted in the <strong>United States</strong>. By using the Platform, data is transferred to and stored in that country. The payment processors, the outbound email provider, WhatsApp and Meta, and the artificial intelligence providers may also process data outside the Subscriber's home country.</p>
+      <p>The same applies, to a lesser extent, to the <strong>content delivery networks and web font providers</strong> in section 5: their servers are spread around the world and the browser connects to the nearest one, so the user's IP address may be processed outside their country. It is the only data they receive.</p>
+      <p>For data subjects covered by the European Union's General Data Protection Regulation, these transfers rely on standard contractual clauses or on whatever transfer mechanisms each provider has in place. You can ask us about the applicable mechanism by writing to <a href="mailto:info@zyntello.com">info@zyntello.com</a>.</p>
+    </section>
+
+    <section id="s8">
+      <h2 class="sec"><span class="n">8.</span> Retention periods</h2>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Data</th><th>Retention period</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Subscriber account and operating data</td><td>For as long as the subscription is active, plus <strong>30 days</strong> after termination to allow export. They are then deleted.</td></tr>
+            <tr><td>Billing data and tax documents</td><td><strong>10 years</strong>, or whatever period the applicable tax rules impose if different.</td></tr>
+            <tr><td>Position history of a route (Route Planner)</td><td><strong>90 days</strong> from the closing of the route. After that only the route summary is kept —stops, arrival and departure times, distance and the outcome of each delivery or visit—, which is what compliance reports need, and <strong>the point-by-point trail is deleted</strong>, which is the data that would allow a person's journey to be reconstructed. If the Subscriber does not enable tracking, no position history is generated at all.</td></tr>
+            <tr><td>Technical records and audit log</td><td><strong>12 months</strong>, unless they are needed longer to investigate a security incident.</td></tr>
+            <tr><td>Demonstration account</td><td>It is <strong>deleted automatically every day</strong> by a scheduled process.</td></tr>
+            <tr><td>Backups</td><td>A <strong>30-day</strong> rotation cycle. Deleted data disappears from the backups once the cycle completes.</td></tr>
+            <tr><td>Self-service backups downloaded by the Subscriber</td><td>The <strong>5 most recent</strong> are kept on the server; earlier ones are deleted. The <strong>record</strong> of their generation and download is kept for the duration of the subscription. Copies already downloaded remain under the Subscriber's sole control (see 9.4).</td></tr>
+            <tr><td>Record of marketing consent and opt-out</td><td>For the duration of the relationship, plus <strong>5 years</strong> as evidence of the consent or the opt-out.</td></tr>
+            <tr><td>Rights requests and our response</td><td><strong>3 years</strong> from being handled, as evidence of compliance.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="s9">
+      <h2 class="sec"><span class="n">9.</span> Your rights and data deletion</h2>
+      <h3>9.1. Rights you can exercise</h3>
+      <p>You may request at any time:</p>
+      <ul>
+        <li><strong>Access</strong>: to know what data of yours we process and for what purpose.</li>
+        <li><strong>Rectification</strong>: to correct inaccurate or incomplete data.</li>
+        <li><strong>Erasure</strong> or cancellation: to delete your data when it is no longer needed.</li>
+        <li><strong>Objection</strong>: to object to processing based on legitimate interest.</li>
+        <li><strong>Portability</strong> and <strong>restriction</strong> of processing, where the applicable law provides for them. If you are the Subscriber, you can exercise portability <strong>yourself and at any time</strong> from <em>Settings&nbsp;→&nbsp;Data backup</em> (see 9.4).</li>
+        <li><strong>To withdraw a consent</strong> given previously, without retroactive effect.</li>
+      </ul>
+
+      <h3>9.2. How to exercise them</h3>
+      <p>Write to <a href="mailto:info@zyntello.com">info@zyntello.com</a> from the registered email address or proving your identity, clearly stating which right you are exercising. We will reply within a maximum of <strong>15 working days</strong> (or <strong>one month</strong> if the European Union's General Data Protection Regulation applies to you).</p>
+
+      <h3>9.3. Request for data deletion</h3>
+      <div class="note ok">
+        <p><b>Detailed instructions on their own page:</b> <a href="/eliminacion-datos/"><strong>zyntello.com/eliminacion-datos/</strong></a> — it covers the step-by-step procedure, the deadlines, what is deleted, what must be kept by legal obligation and how to stop receiving messages.</p>
+      </div>
+      <div class="note">
+        <p><b>To request the deletion of your personal data</b>, send an email to <a href="mailto:info@zyntello.com">info@zyntello.com</a> with the subject <em>“Data deletion request”</em>, stating:</p>
+        <ul>
+          <li>your full name;</li>
+          <li>the email address or phone number you registered with or were contacted on;</li>
+          <li>where applicable, the name of the company that contacted you or registered you on the Platform.</li>
+        </ul>
+        <p>We will acknowledge receipt and process the request within a maximum of <strong>30 days</strong>. We will inform you of the outcome in writing, including what data was deleted and what we must keep by legal obligation.</p>
+      </div>
+      <p><strong>If your data was uploaded by a Subscriber company</strong> —because you are their customer, employee, resident, debtor or participant— that company is the data controller. In that case we will route your request to them, let you know, and help them handle it, but the final decision on deletion rests with that company.</p>
+      <p><strong>Limits.</strong> Erasure does not apply to information we must keep by legal, accounting or tax obligation (for example, tax documents already issued), nor to what is needed to defend legal claims. In those cases the data is blocked and its processing restricted until the legal retention period expires.</p>
+      <p>If you believe your rights were not properly handled, you may lodge a complaint with the data protection authority or the competent court in your country.</p>
+
+      <h3>9.4. Self-service backup and portability</h3>
+      <p>The Subscriber can generate and download, whenever they want and without asking, a complete copy of their companies' data from <em>Settings&nbsp;→&nbsp;Data backup</em>. The file is a ZIP containing the dump in SQL format, a manifest detailing what was included, and restore instructions.</p>
+      <div class="note ok">
+        <p><b>Guaranteed isolation.</b> The file contains <strong>only the rows of the Subscriber generating it</strong>. It is not a dump of Zyntello's database and under no circumstances does it include information from other Subscribers. Also excluded is the technical data common to the whole Platform —sessions, recovery tokens and notifications—, which belongs to no Subscriber in particular. The file itself states which tables were omitted and why.</p>
+      </div>
+      <p><strong>Responsibility for the downloaded copy.</strong> Once downloaded, the file is under the Subscriber's sole control, and they become responsible for safekeeping it, for encrypting it if they judge it necessary, and for deleting it. Zyntello cannot recover, trace or erase copies that have already left the Platform. If the file contains personal data of third parties —customers, employees, residents—, the Subscriber remains the controller of its processing under section 2.</p>
+      <p>Generated backups are kept on the server only so they can be downloaded: the <strong>5 most recent</strong> per Subscriber are kept and earlier ones are deleted. The record that a backup was generated and downloaded is kept, so that the exercise of portability can be evidenced.</p>
+    </section>
+
+    <section id="s10">
+      <h2 class="sec"><span class="n">10.</span> Rules by country</h2>
+      <ul>
+        <li><strong>Dominican Republic</strong> — Law No. 172-13 on the Protection of Personal Data: rights of access, rectification, cancellation and objection; claims before the competent courts.</li>
+        <li><strong>European Union and European Economic Area</strong> — Regulation (EU) 2016/679 (GDPR), where applicable: the legal bases in section 3, the extended rights in section 9, breach notification to the supervisory authority within 72 hours, and the right to complain to the local supervisory authority.</li>
+        <li><strong>Colombia</strong> — Law 1581 of 2012 and its implementing decrees (the habeas data regime): enquiries and complaints under the procedures of the Superintendence of Industry and Commerce.</li>
+        <li><strong>Costa Rica</strong> — Law 8968 on the Protection of the Individual with regard to the Processing of their Personal Data (PRODHAB).</li>
+        <li><strong>Venezuela</strong> — the constitutional right of habeas data (article 28 of the Constitution) and applicable rules.</li>
+        <li><strong>Guatemala</strong> — in the absence of a general data protection law, the constitutional guarantees apply, together with this Policy as an enforceable contractual commitment.</li>
+        <li><strong>Mexico</strong>, where applicable — the Federal Law on the Protection of Personal Data Held by Private Parties: rights of access, rectification, cancellation and objection, through the contact in section 1.</li>
+      </ul>
+      <p>In the event of conflict, the mandatory rule of the data subject's country prevails.</p>
+    </section>
+
+    <section id="s11">
+      <h2 class="sec"><span class="n">11.</span> Security</h2>
+      <p>We apply technical and organisational measures proportionate to the risk, among them:</p>
+      <ul>
+        <li>passwords stored with robust <em>hashing</em> algorithms, never in plain text;</li>
+        <li>encryption of traffic in transit using TLS;</li>
+        <li><strong>strict data isolation</strong> between subscribers and between companies of the same subscriber, applied automatically on every query;</li>
+        <li><strong>access control with two distinct scopes</strong>: the Subscriber's own users reach every company in the account with the permissions of their role, whereas <strong>internal users</strong> —intended for temporary or external staff— are assigned to <strong>a single company</strong>, and their permissions, configured module by module, reach <strong>only that company's data</strong>;</li>
+        <li><strong>two-step verification</strong> that the user can enable, by email or through a phone authenticator app (TOTP standard), with single-use recovery codes, temporary lockout after several failed attempts, and an email notice of any change to it;</li>
+        <li>database encryption of third-party integration credentials;</li>
+        <li>an audit log of actions on documents and settings;</li>
+        <li>periodic backups with integrity verification and a copy off the main server;</li>
+        <li>the Subscriber's <strong>self-service backup</strong> applies the same isolation: it is built by filtering their rows alone, excludes the technical data common to the Platform, and states in its manifest what was left out;</li>
+        <li>the session ends when the browser is closed, and in any case expires on the server after seven days;</li>
+        <li>a <strong>connected devices</strong> screen from which the user can remotely close sessions open on other machines.</li>
+      </ul>
+      <p>No system is completely foolproof. Should a breach affecting your data occur, we will notify it in accordance with section 14.</p>
+    </section>
+
+    <section id="s12">
+      <h2 class="sec"><span class="n">12.</span> Access by Zyntello support staff</h2>
+      <p>To handle an incident it may be necessary for a Zyntello support agent to enter the Subscriber's workspace and see their data. This section explains the limits under which that happens and how the Subscriber can check it for themselves.</p>
+      <ul>
+        <li><strong>On what basis.</strong> It is an operation necessary to perform the service contract: without it we could not diagnose or fix a fault affecting the Subscriber's data. Zyntello acts here as <strong>processor</strong>, following the instructions of the Subscriber, who is the controller (see section 2).</li>
+        <li><strong>Under what identity.</strong> The agent <strong>never</strong> uses the username or password of a person at the Subscriber. They sign in with a separate <strong>technical account</strong>, and every action is signed with the name of the <strong>actual agent</strong>, not that of the technical account nor that of a customer's user.</li>
+        <li><strong>With what scope.</strong> The support session starts <strong>read-only</strong>. To change any data the agent must elevate it by stating a specific reason, and that elevation <strong>expires on its own</strong> after 30 minutes.</li>
+        <li><strong>What is recorded.</strong> For each access we store the agent, the date and time of entry and exit, the stated reason, the IP address, whether the access was authorised by the Subscriber or was an emergency, and —if the session was elevated— the detail of every piece of data changed.</li>
+        <li><strong>Emergency access.</strong> When prior authorisation cannot be obtained and the incident demands it, the agent may enter by stating the reason. That access is flagged as <strong>unauthorised</strong> and the account owner is notified.</li>
+        <li><strong>How the Subscriber audits it.</strong> The account owner can consult the full history at any time under <strong>Settings → Support access</strong>, without having to ask us for it.</li>
+        <li><strong>What we do NOT do.</strong> We do not access a Subscriber's data for commercial, statistical or model-training purposes, and we do not extract copies of their information beyond what is needed to resolve the incident.</li>
+        <li><strong>Credential handling.</strong> The technical account cannot be used by typing credentials: it only opens from the support tool itself, which requires the agent to have verified their identity in two steps.</li>
+      </ul>
+      <h3>12.1. The help desk and its attachments</h3>
+      <p>When the Subscriber opens a support case, the subject, the description, the whole subsequent conversation and the <strong>files they attach</strong> are stored.</p>
+      <ul>
+        <li><strong>The attachment is what demands most care.</strong> To explain a problem it is common to attach a screenshot of the system itself, and <strong>personal data of the Subscriber's customers or employees</strong> can appear there: names, identification numbers, amounts or balances. Zyntello processes that information as a <strong>processor</strong>, solely to resolve the case.</li>
+        <li><strong>They are kept in private storage</strong>, not reachable by a public address: to download a file you must be signed in and belong to the Subscriber who owns the case.</li>
+        <li><strong>Share only what is needed.</strong> If a screenshot contains data that is not needed for the diagnosis, we recommend masking it before attaching. The Subscriber decides what they send.</li>
+        <li><strong>Internal notes.</strong> The support team may add working notes to the case that the Subscriber does not see —preliminary diagnoses, internal coordination—. They form part of the case file and are kept with it.</li>
+        <li><strong>Retention.</strong> Cases and their files are kept for the duration of the contractual relationship and for the general period in section 8; they are then deleted along with the rest of the Subscriber's data.</li>
+        <li><strong>Email sent to support enters the system.</strong> A message addressed to <strong>soporte@zyntello.com</strong> is added automatically to the case: its <strong>text and any attached files are stored</strong> in the file, with the same handling and the same protections described above. We point this out because an email is written with less caution than a form, and it usually drags along the previous thread and attachments that were sent for something else. <strong>The quoted previous message is trimmed</strong> so as not to duplicate information, and a file exceeding the permitted size is not stored: its name is noted in the case so the agent can request it another way.</li>
+        <li><strong>The artificial intelligence assistant.</strong> The platform includes an assistant that answers questions about how to use it. When you ask it something, <strong>only two things</strong> are sent to an artificial intelligence provider (<strong>Anthropic</strong>, acting as a <strong>sub-processor</strong>): <strong>the text of your question</strong> and <strong>Zyntello documentation</strong> about the module you are asking from. <ul> <li><strong>NO data about your business or your customers is sent.</strong> No names, no amounts, no balances, no records from your database. The text that is sent is built exclusively from our manuals: the component that assembles it <strong>does not query the database</strong>, and that is verified by an automated test that fails if it ever did.</li>
+          <li><strong>The only thing of yours that travels is what you write in the question.</strong> That is why we ask you not to include third parties' personal data in it: to explain how an invoice is issued you do not need the customer's name.</li>
+          <li><strong>Answers are stored</strong> so the provider is not queried again for the same question. That store contains <strong>only</strong> usage questions and answers based on our documentation.</li>
+          <li><strong>The assistant performs no actions</strong> and does not change your information: it only explains.</li>
+        </ul></li>
+        <li><strong>Emails that cannot be identified.</strong> If a message arrives at the support mailbox and <strong>it cannot be determined which Subscriber it comes from</strong> —because the sender does not match any registered user—, <strong>it is not added to any case</strong>: it stays in a separate review inbox, apart from any Subscriber's data, precisely so as not to add information of unverified origin to a customer's account. An email can forge its sender, and that is why the message saying so is not enough.</li>
+      </ul>
+
+    </section>
+
+    <section id="s13">
+      <h2 class="sec"><span class="n">13.</span> Communications and marketing</h2>
+      <ul>
+        <li><strong>Transactional communications</strong> (identity verification, access codes, billing notices, security alerts, maintenance notices and contractual changes) are sent as part of the service and require no additional consent while a contractual relationship is in force.</li>
+        <li><strong>Zyntello's commercial communications</strong> (news, newsletters, offers) are sent only with <strong>prior consent</strong>, collected through an unticked box. We keep a record of when and how it was given.</li>
+        <li><strong>Opting out</strong>: every commercial email includes a one-click unsubscribe link. You can also request it by writing to <a href="mailto:info@zyntello.com">info@zyntello.com</a>. The opt-out is processed within a maximum of <strong>72 hours</strong> and does not affect the service's transactional communications.</li>
+        <li><strong>Communications sent by Subscribers</strong>: if a company that uses Zyntello sends you messages by email or WhatsApp, that company is responsible for having your consent and for acting on your opt-out (see section 6).</li>
+      </ul>
+    </section>
+
+    <section id="s14">
+      <h2 class="sec"><span class="n">14.</span> Cookies</h2>
+      <p>The Platform uses only cookies that are <strong>strictly necessary</strong> for it to work:</p>
+      <ul>
+        <li><strong>Session cookie</strong>: keeps the user authenticated while browsing.</li>
+        <li><strong>Form protection token</strong>: prevents fraudulent requests being submitted from third-party sites.</li>
+        <li><strong>Remembered-session cookie</strong>: only if the user ticks that option when signing in.</li>
+        <li><strong>Last location preference</strong>: allows work to resume where it was left when the session is picked up again.</li>
+      </ul>
+      <div class="note ok">
+        <p><b>We do not use advertising, profiling or third-party tracking cookies</b>, nor do we embed social media or ad platform pixels in the Platform. For that reason no cookie consent banner is required for its use.</p>
+      </div>
+      <p>You can delete or block cookies from your browser settings, bearing in mind that doing so will prevent you from signing in to the Platform.</p>
+
+      <h3>14.1. Resources served from third parties</h3>
+      <p>A different matter from cookies, and one worth not confusing with them: some of the fonts, icons and interface libraries are served from the third-party servers listed in section 5. <strong>None of them installs cookies</strong> or returns any user identifier to us, but the connection exists, and the user's IP address travels in it.</p>
+      <p>We say so because the absence of advertising cookies is not the same as the absence of third-party connections, and a policy that spoke only about cookies would leave out what actually happens when a screen opens.</p>
+    </section>
+
+    <section id="s15">
+      <h2 class="sec"><span class="n">15.</span> Security incident notification</h2>
+      <p>If a security breach affecting personal data occurs, we will assess the risk and notify:</p>
+      <ul>
+        <li>the <strong>affected Subscribers</strong>, without undue delay, with the information available on the scope, the categories of data compromised and the measures taken;</li>
+        <li>the <strong>competent authorities</strong> where the law requires it —within <strong>72 hours</strong> of becoming aware, in the case of the GDPR—;</li>
+        <li>the <strong>data subjects</strong>, where the breach entails a high risk to their rights and freedoms and the applicable law requires it.</li>
+      </ul>
+      <p>Where we act as processor, the notification is addressed to the controlling Subscriber, who is responsible for informing the data subjects and the authority.</p>
+    </section>
+
+    <section id="s16">
+      <h2 class="sec"><span class="n">16.</span> Minors</h2>
+      <p>The Platform is intended exclusively for companies and professionals, and is not aimed at anyone under 18. We do not knowingly collect data about minors as users of the service. If a Subscriber records data about minors in the course of their activity, it is their responsibility to have the authorisation of the parents or guardians under the applicable law.</p>
+    </section>
+
+    <section id="s17">
+      <h2 class="sec"><span class="n">17.</span> Automated decisions and artificial intelligence</h2>
+      <p>Some modules offer artificial intelligence assisted features, mainly the <strong>extraction of data from invoices and documents</strong> and statistical suggestions based on historical information.</p>
+      <ul>
+        <li><strong>We make no automated decisions with legal effects</strong> about people. Any assessment with consequences —for example, approving a loan in the Prestamello module— requires the intervention and the decision of a human user.</li>
+        <li><strong>Human review is mandatory</strong>: the model's output is presented as a draft and produces no accounting, tax or inventory effects until a user validates it.</li>
+        <li>The feature is <strong>optional</strong>, is off by default, and requires the Subscriber to enable it with their own credentials from the artificial intelligence provider.</li>
+        <li><strong>We do not use Subscribers' data to train models of our own.</strong> Processing by the artificial intelligence provider is governed by the terms the Subscriber has accepted with that provider.</li>
+      </ul>
+    </section>
+
+    <section id="s18">
+      <h2 class="sec"><span class="n">18.</span> Changes to this Policy</h2>
+      <p>We will publish any change on this same page, updating the last-updated date. If the change is substantial, we will notify it by email or through a prominent notice in the Platform at least <strong>30 days</strong> before it takes effect. Previous versions are available on request.</p>
+    </section>
+
+    <section id="s19">
+      <h2 class="sec"><span class="n">19.</span> Contact</h2>
+      <p>For any query or request relating to privacy and data protection:</p>
+      <ul>
+        <li><strong>Zyntello, S.R.L.</strong> — Dominican Republic</li>
+        <li>Email: <a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+        <li>Phone and WhatsApp: <a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+        <li>Website: <a href="https://zyntello.com">https://zyntello.com</a></li>
+      </ul>
+      <p>See also our <a href="/terminos/">Terms of Service</a> and the <a href="/eliminacion-datos/">data deletion instructions</a>.</p>
+    </section>
+
+    <section id="s20">
+      <h2 class="sec"><span class="n">20.</span> Change log</h2>
+      <p>A complete, cumulative record of every version of this Policy since it was first published. Each entry states the version, the date it took effect and what changed. Earlier entries <strong>are neither amended nor deleted</strong>.</p>
+      <div class="note">
+        <p><b>How to read the versions.</b> A <strong>minor version</strong> change (1.0 → 1.1) adds or clarifies information —a new module, a recipient, a category of data— without altering the purposes or the legal bases of the processing. A <strong>major version</strong> change (1.x → 2.0) alters purposes, legal bases, recipients, retention periods or your rights, and is notified <strong>30 days</strong> in advance under section 17.</p>
+      </div>
+      <div class="tbl chg">
+        <table>
+          <thead>
+            <tr><th>Version</th><th>Date</th><th>Changes</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1.9 <span class="vig">In force</span></td>
+              <td>18 September 2026</td>
+              <td><strong>The third parties that receive the IP address when a screen loads.</strong> Section <strong>5</strong> did not declare three recipients that do exist, and they are now included: <strong>(1)</strong> the <strong>content delivery networks and web font providers</strong> —jsDelivr, Cloudflare cdnjs, unpkg, Google Fonts and Bunny Fonts—, from which the interface's libraries, fonts and icons are served; they load on <strong>every</strong> screen of the Platform and receive the IP address, the browser and the screen requested, never account data or session identifiers. <strong>(2)</strong> <strong>QuickChart</strong>, which generates the QR code image for an event and receives only the public registration link, in the Events module alone. <strong>(3)</strong> the <strong>exchange rate service</strong> queried by the public website, which receives the visitor's IP and plays no part in the Platform. An explanation is added after the table of why these three are not a transfer of business data: it is <strong>the user's own browser</strong> that requests the resource, and that request carries their IP as in any visit to a website. Section <strong>7</strong> extends international transfers to these providers, whose servers are spread around the world. Section <strong>14.1</strong> clarifies that <strong>none of them installs cookies</strong>, and that the absence of advertising cookies is not the same as the absence of third-party connections. The technical detail of each component is in the <a href="/avisos-terceros/">Third-party software notices</a>, published with version 1.7 of the <a href="/terminos/">Terms</a>. Purposes, retention periods, data subject rights and the legal bases of processing are unchanged.</td>
+            </tr>
+            <tr>
+              <td>1.8</td>
+              <td>11 September 2026</td>
+              <td><strong>The Route Planner and tracking a driver's location.</strong> The <strong>Route Planner</strong> module enters section <strong>4</strong>, with the data it processes: addresses and <strong>coordinates</strong> of the stops, carrier, vehicle and assigned driver, and the driver's location during the route. An explanation that was missing, and that is no mere nuance, is added to section <strong>3</strong>: <strong>recording a point when clocking in</strong> —which Payroll, PSA and Prestamello already did— <strong>is not the same as recording the position repeatedly throughout the working day</strong>, because the second makes it possible to reconstruct a person's journey. It is stated that this tracking <strong>starts switched off</strong> and that no location is recorded outside the route. Section <strong>5</strong> declares a <strong>new recipient</strong>: the <strong>map provider</strong> (OpenStreetMap, Google Maps, HERE or Mapbox, at the Subscriber's choice), to which the addresses and coordinates of the stops are sent —not the customer's name or the contents of the order—. And section <strong>8</strong> sets a retention period of its own for the <strong>point-by-point trail</strong>: <strong>90 days</strong> after the route closes, after which only the summary the reports need is kept and the detailed journey is deleted.</td>
+            </tr>
+            <tr>
+              <td>1.7</td>
+              <td>9 September 2026</td>
+              <td><strong>The artificial intelligence assistant.</strong> Section <strong>12.1</strong> is expanded to declare a new feature and the <strong>sub-processor</strong> involved: when the assistant is used, only <strong>the text of the question</strong> and <strong>Zyntello documentation</strong> for the relevant module are sent to <strong>Anthropic</strong>. It is expressly stated that <strong>NO business or personal data of the Subscriber is sent</strong> —no names, no amounts, no balances, no database records— because the component that assembles that text <strong>does not query the database</strong>, and that this is verified by an automated test that fails if it ever did. It warns that the only thing of the Subscriber's that travels is what they write in the question themselves, states that answers are stored so queries are not repeated and that this store contains only usage questions and answers based on our documentation, and that <strong>the assistant performs no actions</strong>. Purposes, legal bases, retention periods and data subject rights are <strong>unchanged</strong>.</td>
+            </tr>
+            <tr>
+              <td>1.6</td>
+              <td>9 September 2026</td>
+              <td><strong>Email sent to support enters the system.</strong> Section <strong>12.1</strong> is expanded with an entry route the previous version did not cover: a message addressed to <strong>soporte@zyntello.com</strong> is added automatically to the case, and its <strong>text and attachments are stored</strong> in the file with the same handling and the same protections already described. It is pointed out because an email is written with less caution than a form and usually drags along the previous thread and attachments sent for something else; it is stated that <strong>the quoted previous message is trimmed</strong> and that a file exceeding the permitted size is not stored, its name being noted instead. It also states what happens with emails <strong>whose sender cannot be identified</strong>: they are not added to any case, but stay in a review inbox <strong>separate from any Subscriber's data</strong>, because an email can forge its sender and the message saying so is not enough. Purposes, legal bases, recipients, retention periods and data subject rights are <strong>unchanged</strong>.</td>
+            </tr>
+            <tr>
+              <td>1.5</td>
+              <td>7 September 2026</td>
+              <td><strong>The help desk and its attachments.</strong> Section <strong>12.1</strong> is added, documenting a category of data the previous version did not cover: the content of support cases and, above all, the <strong>files the Subscriber attaches</strong>. It makes clear that a screenshot may contain personal data of the Subscriber's customers or employees and that Zyntello processes it as a <strong>processor</strong>, solely to resolve the case; that attachments are kept in private storage and require being signed in and belonging to the Subscriber who owns the case in order to be downloaded; that the support team may add internal notes that form part of the file; and the retention period. It also recommends masking from the screenshot anything not needed for the diagnosis. Purposes, legal bases, recipients and data subject rights are unchanged.</td>
+            </tr>
+            <tr>
+              <td>1.4</td>
+              <td>6 September 2026</td>
+              <td><strong>Access by Zyntello support staff.</strong> Section <strong>12</strong> is added, documenting an operation the previous version did not describe: when an incident requires it, a Zyntello support agent may enter the Subscriber's workspace and see their data. It specifies on what basis this is done, that the agent <strong>never</strong> uses the credentials of a person at the Subscriber but a technical account of their own, that the session starts <strong>read-only</strong> and that elevating it to write requires stating a reason and expires on its own, what is recorded for each access, how emergency access is flagged, and where the Subscriber audits it themselves (<strong>Settings → Support access</strong>). Sections 12 to 19 of the previous version are renumbered 13 to 20; their content is unchanged. Purposes, legal bases, retention periods and data subject rights are unchanged.</td>
+            </tr>
+            <tr>
+              <td>1.3</td>
+              <td>5 September 2026</td>
+              <td><strong>Scope of access for each class of user.</strong> Section <strong>11</strong> now specifies that access control has two distinct scopes: the Subscriber's own users reach every company in the account with the permissions of their role, whereas <strong>internal users</strong> —intended for temporary or external staff— are assigned to a single company and their permissions reach only that company's data. The previous wording spoke of “granular roles and permissions by module” without distinguishing how far each one goes. The categories of data processed, the retention periods, the recipients and the data subject rights are unchanged.</td>
+            </tr>
+            <tr>
+              <td>1.2</td>
+              <td>4 September 2026</td>
+              <td><strong>Two-step verification with an authenticator app, and session policy.</strong> Added to the table in section <strong>4</strong> is the data stored when the User enables two-step verification by app: the app key (encrypted), the recovery codes (irreversibly hashed) and the record of failed attempts; none of it is readable by Zyntello. The measures in section <strong>11</strong> are updated with the new method, the temporary lockout after failed attempts and the email notice of any change to the verification. The description of the session policy is <strong>corrected</strong>, as it said “automatic close on inactivity”: since 3 September 2026 the session ends when the browser is closed, expiring on the server after seven days, and there is a connected devices screen to close them remotely.</td>
+            </tr>
+            <tr>
+              <td>1.1</td>
+              <td>31 August 2026</td>
+              <td><strong>Self-service backup and portability.</strong> This documents the feature that lets the Subscriber generate and download a complete copy of their companies' data by themselves: new section <strong>9.4</strong> (what the file contains, guaranteed isolation from other Subscribers, technical data left out, and responsibility for the copy once downloaded), a mention in <strong>9.1</strong> as a way of exercising portability without a prior request, its own retention period in the table in section <strong>8</strong>, and a clarification in section <strong>11</strong> that the backup applies the same isolation between Subscribers. The purposes, the legal bases and the recipients of the processing are unchanged.</td>
+            </tr>
+            <tr>
+              <td>1.0</td>
+              <td>28 July 2026</td>
+              <td><strong>First publication.</strong> Initial document with 19 sections: data controller, dual controller/processor role, data processed and its legal basis, data by module, recipients and sub-processors, WhatsApp and Meta, international transfers, retention periods, rights and the data deletion procedure, rules by country, security, communications and marketing, cookies, incident notification, minors, automated decisions and artificial intelligence, changes to the Policy, contact and change log.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>You may request a copy of the full text of any earlier version by writing to <a href="mailto:info@zyntello.com">info@zyntello.com</a>.</p>
+    </section>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>Business technology and artificial intelligence</li>
+          <li>Dominican Republic</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/terminos/">Terms of Service</a></li>
+          <li><a href="/en/privacidad/">Privacy Policy</a></li>
+          <li><a href="/en/cookies/">Cookie Policy</a></li>
+          <li><a href="/eliminacion-datos/">Data deletion</a></li>
+          <li><a href="/sla/">Service Level Agreement</a></li>
+          <li><a href="/avisos-terceros/">Third-party software notices</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+          <li><a href="https://zyntello.com">zyntello.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy">© 2026 Zyntello, S.R.L. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>

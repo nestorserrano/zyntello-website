@@ -417,6 +417,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://zyntello.com/en/privacidad/</loc>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://zyntello.com/en/servicios/aplicaciones-a-la-medida/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
