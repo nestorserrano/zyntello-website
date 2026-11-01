@@ -5,14 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/verificar-traducciones.mjs && vite build",
+    "build": "node scripts/verificar-traducciones.mjs && node scripts/verificar-legales.mjs && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generar": "node scripts/generar-servicios.mjs && node scripts/generar-funcionalidades.mjs && node scripts/generar-paginas.mjs && node scripts/generar-blog.mjs && node scripts/generar-sitemap.mjs",
+    "generar": "node scripts/generar-servicios.mjs && node scripts/generar-funcionalidades.mjs && node scripts/generar-paginas.mjs && node scripts/generar-blog.mjs && node scripts/generar-legales.mjs && node scripts/generar-sitemap.mjs",
     "sitemap": "node scripts/generar-sitemap.mjs",
     "sitemap:verificar": "node scripts/generar-sitemap.mjs --verificar",
     "indexnow": "node scripts/indexnow.mjs",
-    "verificar-landings": "node scripts/verificar-landings.mjs"
+    "verificar-landings": "node scripts/verificar-landings.mjs",
+    "legales": "node scripts/generar-legales.mjs",
+    "legales:verificar": "node scripts/verificar-legales.mjs"
   },
   "dependencies": {
     "bootstrap": "^5.3.8",

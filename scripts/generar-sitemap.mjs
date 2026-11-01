@@ -29,6 +29,7 @@
  */
 
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs'
+import { LEGALES as PAGINAS_LEGALES } from './lib/legales.mjs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join, relative } from 'node:path'
 import { escribirSiCambia } from './lib/escribir.mjs'
@@ -106,15 +107,25 @@ function prioridadDe(ruta) {
   // propia regla y se publicaba con la prioridad de un artículo.
   if (ruta === '/blog/')                       return { prioridad: '0.7', frecuencia: 'weekly'  }
   if (ruta.startsWith('/blog/'))               return { prioridad: '0.6', frecuencia: 'monthly' }
-  if (LEGALES.has(ruta))                       return { prioridad: '0.3', frecuencia: 'yearly'  }
+  if (esLegal(ruta))                           return { prioridad: '0.3', frecuencia: 'yearly'  }
   return { prioridad: '0.7', frecuencia: 'monthly' }
 }
 
 /* Las legales se indexan —un comprador de software mira los términos y el SLA
-   antes de firmar— pero no compiten por ninguna búsqueda. */
-const LEGALES = new Set([
-  '/privacidad/', '/terminos/', '/sla/', '/eliminacion-datos/', '/avisos-terceros/',
-])
+   antes de firmar— pero no compiten por ninguna búsqueda.
+
+   ⚠️ La lista sale de `lib/legales.mjs`, que es la misma que usan el generador
+   y el verificador. Estaba escrita aquí a mano y ya había divergido: le faltaba
+   `/cookies/`, que llevaba meses publicándose con la prioridad de una página de
+   venta. Un segundo sitio donde mantener la lista es un sitio donde olvidarse.
+
+   ⚠️ Y se contemplan los prefijos de idioma: `/en/privacidad/` es la misma
+   página legal, no una landing nueva. */
+const SLUGS_LEGALES = new Set(PAGINAS_LEGALES)
+const esLegal = (ruta) => {
+  const partes = ruta.split('/').filter(Boolean)
+  return SLUGS_LEGALES.has(partes[partes.length - 1] ?? '')
+}
 
 function construir() {
   const urls = []

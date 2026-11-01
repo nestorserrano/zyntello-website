@@ -124,7 +124,7 @@
   </url>
   <url>
     <loc>https://zyntello.com/avisos-terceros/</loc>
-    <lastmod>2026-09-28</lastmod>
+    <lastmod>2026-11-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -232,7 +232,7 @@
   </url>
   <url>
     <loc>https://zyntello.com/blog/flujo-de-caja-proyectado-no-es-el-saldo/</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -370,13 +370,19 @@
   </url>
   <url>
     <loc>https://zyntello.com/cookies/</loc>
-    <lastmod>2026-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://zyntello.com/eliminacion-datos/</loc>
-    <lastmod>2026-09-28</lastmod>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://zyntello.com/en/cookies/</loc>
+    <lastmod>2026-11-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -850,7 +856,7 @@
   </url>
   <url>
     <loc>https://zyntello.com/privacidad/</loc>
-    <lastmod>2026-10-10</lastmod>
+    <lastmod>2026-11-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -940,13 +946,13 @@
   </url>
   <url>
     <loc>https://zyntello.com/sla/</loc>
-    <lastmod>2026-10-10</lastmod>
+    <lastmod>2026-11-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://zyntello.com/terminos/</loc>
-    <lastmod>2026-10-10</lastmod>
+    <lastmod>2026-11-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
