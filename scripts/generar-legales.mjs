@@ -62,6 +62,20 @@ const OPACO = /<(style|script)\b[\s\S]*?<\/\1>|<!--[\s\S]*?-->/gi
  * Con el bloque entero, quien traduce mueve el `<strong>` adonde corresponde en su idioma.
  */
 const BLOQUE = /<(p|li|h1|h2|h3|h4|th|td|dt|dd|caption|summary|figcaption|blockquote)\b([^>]*)>([\s\S]*?)<\/\1>/gi
+
+/**
+ * Los recuadros de aviso (`<div class="note">`) también llevan prosa.
+ *
+ * ⚠️⚠️ No son decoración: en el SLA, «No hace falta pedírnoslo. El propietario de la cuenta
+ * consulta el historial completo…» —que es lo que le dice al cliente cómo auditarnos— vive
+ * suelto dentro de uno de ellos, sin un `<p>` que lo envuelva. Sin esta pasada, el párrafo se
+ * publicaba en español dentro de una página por lo demás traducida, y la cuenta de bloques
+ * marcaba 100 % porque ni siquiera lo contaba.
+ *
+ * ⚠️ Solo los de clase `note`, y con el cierre más cercano: un `div` genérico anida otros y una
+ * expresión regular no sabe emparejarlos — se llevaría media página por delante.
+ */
+const AVISO = /<div class="(note[^"]*)">((?:(?!<\/?div)[\s\S])*?)<\/div>/gi
 const TIENE_LETRAS = /[A-Za-zÁÉÍÓÚÑáéíóúñÜü]{2}/
 
 /** El aviso de prevalencia, en cada idioma. Sin él, la traducción no se publica. */
@@ -151,6 +165,23 @@ function traducirHtml (html, dicc) {
       if (t) traducidas++
     }
     return t ? `<${etiqueta}${attrs}>${t}</${etiqueta}>` : m
+  })
+
+  /* Los recuadros de aviso que llevan el texto SUELTO, sin un bloque dentro.
+     ⚠️ Si el recuadro contiene un `<p>`, ese párrafo ya se tradujo arriba: tratar además el
+     `div` entero crearía una segunda clave con el mismo texto, y entonces la misma frase
+     tendría dos traducciones que pueden divergir — la que alguien corrija no será la que se
+     publique, y nada lo dirá. */
+  salida = salida.replace(AVISO, (m, clase, interno) => {
+    const clave = normalizar(interno)
+    if (!clave || !TIENE_LETRAS.test(clave)) return m
+    if (/<(p|li|h[1-4]|table|ul|ol)\b/i.test(interno)) return m
+    const t = porTexto.get(clave)
+    if (!SIN_PROSA.test(clave)) {
+      total++
+      if (t) traducidas++
+    }
+    return t ? `<div class="${clase}">${t}</div>` : m
   })
 
   // Los atributos que una persona LEE. `href`, `class` y compañía no se tocan.

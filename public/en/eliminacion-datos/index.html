@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>User data deletion | Zyntello</title>
+<meta name="description" content="Instructions for requesting the deletion of your personal data from the Zyntello platform: what to send, where to, how long it takes to process and what information is kept by legal obligation.">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<link rel="canonical" href="https://zyntello.com/en/eliminacion-datos/">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;padding:0 clamp(1.25rem,3vw,2.75rem)}
+
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:88ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:clamp(2rem,3.5vw,4rem);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:95ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:95ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note.ok{border-left-color:var(--ok);background:rgba(52,211,153,.05)}
+  .note b{color:#fff}
+
+  /* Bloque destacado de solicitud */
+  .box{border:1px solid rgba(96,165,250,.35);background:rgba(96,165,250,.06);border-radius:14px;
+    padding:1.4rem 1.5rem;margin:1.3rem 0}
+  .box h3{margin-top:0;color:#fff;font-size:1.05rem}
+  .box .mail{display:inline-block;margin:.35rem 0 .8rem;font-size:1.2rem;font-weight:700;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;text-decoration:none;
+    border-bottom:2px solid var(--ac)}
+  .box .mail:hover{color:var(--ac)}
+  .box .asunto{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--tx);
+    background:rgba(255,255,255,.07);padding:.2rem .5rem;border-radius:5px;font-size:.92em}
+
+  /* Pasos */
+  .pasos{list-style:none;counter-reset:p;margin:1.1rem 0 1rem;gap:.9rem}
+  .pasos li{counter-increment:p;position:relative;padding-left:2.6rem}
+  .pasos li::before{content:counter(p);position:absolute;left:0;top:.1rem;width:1.75rem;height:1.75rem;
+    display:flex;align-items:center;justify-content:center;border-radius:50%;
+    background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.4);
+    color:var(--ac);font-size:.82rem;font-weight:700;font-variant-numeric:tabular-nums}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:520px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+
+
+
+<!--zyntello:legales-->
+<link rel="alternate" hreflang="es" href="https://zyntello.com/eliminacion-datos/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/eliminacion-datos/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/eliminacion-datos/">
+<style>
+.idiomas{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:center;padding:.75rem 0;font-size:.82rem}
+.idiomas span{color:var(--tx3,#64748b);text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+.idiomas a{color:var(--tx3,#64748b);text-decoration:none;padding:.15rem .5rem;border-radius:99px;border:1px solid transparent}
+.idiomas a:hover{color:var(--ac,#60a5fa);border-color:var(--line2,rgba(255,255,255,.14))}
+.idiomas a[aria-current]{color:var(--ac,#60a5fa);border-color:var(--ac,#60a5fa)}
+.prevalece{margin:1rem 0;padding:.75rem 1rem;border-radius:.5rem;font-size:.86rem;
+  color:var(--tx2,#94a3b8);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.28)}
+.prevalece a{color:var(--ac,#60a5fa)}
+</style>
+<!--/zyntello:legales--></head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">Home</a>
+        <a href="/terminos/">Terms of Service</a>
+        <a href="/en/privacidad/">Privacy Policy</a>
+        <a href="/en/sla/">SLA</a>
+        <a href="/avisos-terceros/">Third-party notices</a>
+        <a href="https://zyntello.com/#contacto">Contact</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">Legal document</span>
+      <h1>User data deletion</h1>
+      <p class="lead">This page explains <strong>how to request the deletion of your personal data</strong> from the <strong>Zyntello</strong> platform: what you must send, where to, how long it takes to process, what is deleted and what information we must keep by legal obligation.</p>
+      <div class="meta">
+        <span>Last updated: <strong>31 August 2026</strong></span>
+        <span>In force: <strong>from its publication</strong></span>
+        <span>Version: <strong><a class="verlink" href="#s8">1.1 — see change log</a></strong></span>
+        <span>Original language: <strong>Spanish</strong></span>
+      </div>
+    </div>
+  </div><!--zyntello:legales--><div class="idiomas" role="navigation" aria-label="Language"><span>Language:</span><a href="/eliminacion-datos/" hreflang="es" lang="es">Español</a><a href="/en/eliminacion-datos/" hreflang="en" lang="en" aria-current="true">English</a></div><!--/zyntello:legales--></header>
+
+<main class="wrap"><!--zyntello:legales-->
+<div class="prevalece" role="note">This is a courtesy translation. The binding version of this document is the Spanish one. <a href="/eliminacion-datos/" hreflang="es" lang="es">Read the Spanish version</a>.</div><!--/zyntello:legales-->
+<div class="grid">
+
+  <aside class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#s1">How to request deletion</a></li>
+      <li><a href="#s2">Before you ask: two situations</a></li>
+      <li><a href="#s3">What happens after your request</a></li>
+      <li><a href="#s4">What is deleted</a></li>
+      <li><a href="#s5">What is kept and why</a></li>
+      <li><a href="#s6">Stopping messages</a></li>
+      <li><a href="#s7">Other rights and complaints</a></li>
+      <li><a href="#s8">Change log</a></li>
+    </ol>
+  </aside>
+
+  <article>
+
+    <section id="s1">
+      <h2 class="sec"><span class="n">1.</span> How to request the deletion of your data</h2>
+
+      <div class="box">
+        <h3>Send your request by email</h3>
+        <a class="mail" href="mailto:info@zyntello.com?subject=Solicitud%20de%20eliminaci%C3%B3n%20de%20datos">info@zyntello.com</a>
+        <p style="margin-bottom:.9rem">With the subject <span class="asunto">Data deletion request</span></p>
+        <p style="margin-bottom:.4rem"><strong>Include in the message:</strong></p>
+        <ul style="margin-bottom:0">
+          <li>your <strong>full name</strong>;</li>
+          <li>the <strong>email address</strong> or the <strong>phone number</strong> you registered with or were contacted on;</li>
+          <li>where applicable, the <strong>name of the company</strong> that contacted you or recorded your data on the Platform;</li>
+          <li>if you wish, whether you want <strong>everything</strong> deleted or just one specific item.</li>
+        </ul>
+      </div>
+
+      <p>You can also send us the request by WhatsApp on <a href="https://wa.me/18296399877">+1 829 639 9877</a>. In that case we will ask you to confirm it by email so there is a written record of your identity and your request.</p>
+
+      <div class="note">
+        <p><b>You do not need to have an account.</b> You can request deletion even if you never registered with Zyntello: it is enough that some company using our platform uploaded your data or sent you a communication from it.</p>
+      </div>
+
+      <p>To protect your information, we may ask you for reasonable <strong>identity verification</strong> —for example, that you write from the registered email address or confirm a detail held in the file—. We will not ask you for your password, card details, or documents that are not needed to identify you.</p>
+    </section>
+
+    <section id="s2">
+      <h2 class="sec"><span class="n">2.</span> Before you ask: identify your situation</h2>
+      <p>Zyntello is a platform other companies use to run their operations. Whose the data is determines who the right is exercised with, so there are two distinct situations:</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Your situation</th><th>Who decides about your data</th><th>What we do</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>You are a Zyntello user</strong><br><span style="font-size:.92em">You have or had an account, or you are a member of an account's team.</span></td>
+              <td><strong>Zyntello</strong> is the controller.</td>
+              <td>We handle and carry out your request directly.</td>
+            </tr>
+            <tr>
+              <td><strong>Your data was uploaded by a company</strong><br><span style="font-size:.92em">You are a customer, employee, supplier, resident, debtor or participant of a company that uses Zyntello.</span></td>
+              <td><strong>That company</strong> is the controller. Zyntello only hosts and processes the data on their behalf.</td>
+              <td>We route your request to that company, tell you so in writing and help them handle it. The final decision is theirs.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note warn">
+        <p><b>If you do not know which situation you are in, write to us anyway.</b> With the email address or phone number you give us we can determine who is responsible for your data and tell you. No request is discarded for being addressed to the wrong party.</p>
+      </div>
+    </section>
+
+    <section id="s3">
+      <h2 class="sec"><span class="n">3.</span> What happens after your request</h2>
+      <ol class="pasos">
+        <li><strong>Acknowledgement of receipt.</strong> We reply confirming that we received the request, normally within <strong>2 working days</strong>.</li>
+        <li><strong>Verification.</strong> We check your identity and locate your data. If we need any additional detail to identify you, we ask for it then.</li>
+        <li><strong>Identifying the controller.</strong> If your data was uploaded by a Subscriber company, we contact them and tell you who the request was routed to.</li>
+        <li><strong>Execution.</strong> We delete or block the data as appropriate.</li>
+        <li><strong>Final written reply.</strong> We tell you what was deleted, what was kept and why. <strong>Maximum period: 30 days</strong> from receipt of the verified request.</li>
+      </ol>
+      <div class="note ok">
+        <p><b>The service is free.</b> We do not charge for handling a deletion request, nor do we require any reason for making one.</p>
+      </div>
+      <p>Deleted data also disappears from our <strong>backups</strong> once the rotation cycle completes, which is <strong>30 days</strong>. During that time it is blocked and is not used for any purpose.</p>
+      <div class="note">
+        <p><b>Copies downloaded by the Subscriber company.</b> The Platform lets each Subscriber company download a backup file with their own data. Once downloaded, that file is in the company's hands and <strong>beyond Zyntello's reach</strong>: we cannot locate or delete it. If your data was uploaded by a Subscriber company, deleting those copies is up to that company, and we will pass your request on to them as described above.</p>
+      </div>
+    </section>
+
+    <section id="s4">
+      <h2 class="sec"><span class="n">4.</span> What is deleted</h2>
+      <p>Depending on your situation and the scope you request, deletion may cover:</p>
+      <ul>
+        <li>your <strong>account and sign-in data</strong>: name, email, phone, password, roles and permissions;</li>
+        <li>your <strong>contact details</strong> in the customer, supplier or business contact records;</li>
+        <li><strong>photographs</strong> of you or of your property that had been uploaded;</li>
+        <li><strong>geographic location records</strong> associated with your activity;</li>
+        <li><strong>notes, comments and management annotations</strong> that mention you;</li>
+        <li>your <strong>phone number</strong> from the messaging lists, together with the record of your opt-out request;</li>
+        <li>your <strong>communication preferences</strong> and marketing consents.</li>
+      </ul>
+    </section>
+
+    <section id="s5">
+      <h2 class="sec"><span class="n">5.</span> What is kept and why</h2>
+      <p>There is information we <strong>cannot delete</strong> because the law requires it to be kept or because it is needed to evidence facts. In those cases the data is <strong>blocked</strong>: its processing is restricted to the legal purpose that justifies keeping it and it is used for nothing else.</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>What is kept</th><th>Reason</th><th>Period</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Tax documents and issued invoices in which you appear</td><td>Tax and accounting obligation</td><td>10 years, or the period set by the applicable law</td></tr>
+            <tr><td>Records of credit and payment transactions</td><td>Legal obligation and evidence of the relationship</td><td>The applicable statutory limitation period</td></tr>
+            <tr><td>Employment and social security records</td><td>The employer's labour obligation</td><td>The period set by employment law</td></tr>
+            <tr><td>Evidence of your request and of our reply</td><td>Proof of compliance before an authority</td><td>3 years</td></tr>
+            <tr><td>The record of your communications opt-out</td><td>Needed in order <strong>not to contact you again</strong></td><td>For as long as the exclusion list exists</td></tr>
+            <tr><td>Data needed to defend an ongoing claim</td><td>Legitimate interest in litigation</td><td>Until it is finally resolved</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <p><b>About the opt-out record.</b> It may seem contradictory to keep your phone number or email after you ask for deletion, but it is the only way to guarantee you do not receive messages again: if we erased the item entirely, a later upload could include it once more. It is kept solely for the purpose of excluding it.</p>
+      </div>
+    </section>
+
+    <section id="s6">
+      <h2 class="sec"><span class="n">6.</span> I only want to stop receiving messages</h2>
+      <p>If your aim is not to delete your data but to <strong>stop receiving communications</strong>, the process is simpler and faster:</p>
+      <ul>
+        <li><strong>WhatsApp</strong>: reply to the message asking to opt out, or block the number. If the messages come from a company that uses Zyntello, that company must stop sending them immediately. If they do not, write to us and we will take it up with them.</li>
+        <li><strong>Email</strong>: use the unsubscribe link at the foot of every commercial email.</li>
+        <li><strong>In any case</strong>: write to us at <a href="mailto:info@zyntello.com?subject=Baja%20de%20comunicaciones">info@zyntello.com</a> with the subject <span class="asunto">Communications opt-out</span>. We process it within a maximum of <strong>72 hours</strong>.</li>
+      </ul>
+      <div class="note warn">
+        <p><b>Messages sent by Subscriber companies do not originate from Zyntello.</b> Each company is responsible for having your consent and for acting on your opt-out. We provide the tool and the mechanisms to record that preference, and we help when a request is not acted on.</p>
+      </div>
+      <p>Opting out of commercial communications does not stop strictly <strong>transactional</strong> messages while a relationship with that company is in force (for example, the invoice for a service you contracted).</p>
+    </section>
+
+    <section id="s7">
+      <h2 class="sec"><span class="n">7.</span> Other rights and complaints</h2>
+      <p>Besides deletion, you may request <strong>access</strong> to your data, its <strong>rectification</strong>, to <strong>object</strong> to processing, and —where the law provides for it— <strong>portability</strong> and <strong>restriction</strong> of processing, as well as <strong>withdrawing a consent</strong> you gave. The procedure and the deadlines are the same as described here.</p>
+      <p>The detail of your rights, the rules applicable in each country and the categories of data we process are in the <a href="/en/privacidad/">Privacy Policy</a> (sections 9 and 10).</p>
+      <p>If you believe your request was not properly handled, you may lodge a complaint with the data protection authority or the competent court in your country.</p>
+      <h3>Contact</h3>
+      <ul>
+        <li><strong>Zyntello, S.R.L.</strong> — Dominican Republic</li>
+        <li>Email: <a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+        <li>Phone and WhatsApp: <a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+      </ul>
+    </section>
+
+    <section id="s8">
+      <h2 class="sec"><span class="n">8.</span> Change log</h2>
+      <p>A complete, cumulative record of every version of this document since it was first published. Each entry states the version, the date it took effect and what changed. Earlier entries <strong>are neither amended nor deleted</strong>.</p>
+      <div class="tbl chg">
+        <table>
+          <thead>
+            <tr><th>Version</th><th>Date</th><th>Changes</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1.1 <span class="vig">In force</span></td>
+              <td>31 August 2026</td>
+              <td><strong>Backups downloaded by the Subscriber company.</strong> A limit of deletion is made explicit: the Platform lets each Subscriber company download a file with their own data, and once downloaded that file is beyond Zyntello's reach. It states that deleting those copies is up to the Subscriber company and that your request is passed on to them. The procedure, the deadlines and the data that is deleted or kept are unchanged.</td>
+            </tr>
+            <tr>
+              <td>1.0</td>
+              <td>28 July 2026</td>
+              <td><strong>First publication.</strong> Data deletion instructions as a standalone document: how to request it, the two situations depending on who the controller is, the five steps of the procedure with a maximum period of 30 days, what is deleted, what is kept and why, communications opt-out, other rights and the change log.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>You may request a copy of the full text of any earlier version by writing to <a href="mailto:info@zyntello.com">info@zyntello.com</a>.</p>
+    </section>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>Business technology and artificial intelligence</li>
+          <li>Dominican Republic</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/terminos/">Terms of Service</a></li>
+          <li><a href="/en/privacidad/">Privacy Policy</a></li>
+          <li><a href="/en/eliminacion-datos/">Data deletion</a></li>
+          <li><a href="/en/sla/">Service Level Agreement</a></li>
+          <li><a href="/avisos-terceros/">Third-party software notices</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+          <li><a href="https://zyntello.com">zyntello.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy">© 2026 Zyntello, S.R.L. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>

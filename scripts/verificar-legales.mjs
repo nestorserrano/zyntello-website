@@ -54,7 +54,9 @@ const normalizar = (s) => s.replace(/\s+/g, ' ').trim()
 const UNIVERSAL = new RegExp('^('
   + 'Zyntello|WhatsApp|Chrome|Firefox|Safari|Edge|Android|iOS|Excel|SLA|XSRF-TOKEN'
   + '|[A-Za-z][\\w /.-]*:'            // «Firefox:», «Android / iOS:»
-  + '|[\\d\\s+()·-]+'                  // teléfonos, cifras, separadores
+  + '|[·•\\s]*(Zyntello|WhatsApp|Stripe|PayPal)[·•\\s]*' // marcas con su separador delante
+  + '|[A-Z]{2,5}-\\d{3,}'              // códigos de caso: SOP-000123
+  + '|[\\d\\s+()·.,%-]+(&nbsp;%)?'      // teléfonos, cifras, porcentajes, separadores
   + '|[^\\s@]+@[^\\s@]+'               // correos
   + '|(https?://)?[\\w.-]*zyntello\\.com[\\w./-]*' // dominios propios, con o sin protocolo
   + '|©.*'                             // la línea de copyright
