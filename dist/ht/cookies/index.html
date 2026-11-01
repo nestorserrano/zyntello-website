@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="ht">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Règleman sou Cookies | Zyntello</title>
+<meta name="description" content="Règleman sou Cookies Zyntello, S.R.L. — kisa nou konsève nan navigatè w, pou kisa chak bagay sèvi, konbyen tan li dire e kijan pou efase l. San cookies piblisite ni swivi.">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<link rel="canonical" href="https://zyntello.com/ht/cookies/">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;padding:0 clamp(1.25rem,3vw,2.75rem)}
+
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:88ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:clamp(2rem,3.5vw,4rem);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:95ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:95ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note.ok{border-left-color:var(--ok);background:rgba(52,211,153,.05)}
+  .note b{color:#fff}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:600px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  /* Control de cambios */
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+
+
+
+
+
+<!--zyntello:legales--><link rel="alternate" hreflang="es" href="https://zyntello.com/cookies/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/cookies/">
+<link rel="alternate" hreflang="fr" href="https://zyntello.com/fr/cookies/">
+<link rel="alternate" hreflang="it" href="https://zyntello.com/it/cookies/">
+<link rel="alternate" hreflang="zh-Hans" href="https://zyntello.com/zh-Hans/cookies/">
+<link rel="alternate" hreflang="zh-Hant" href="https://zyntello.com/zh-Hant/cookies/">
+<link rel="alternate" hreflang="ar" href="https://zyntello.com/ar/cookies/">
+<link rel="alternate" hreflang="ht" href="https://zyntello.com/ht/cookies/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/cookies/">
+<style>
+.idiomas{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:center;padding:.75rem 0;font-size:.82rem}
+.idiomas span{color:var(--tx3,#64748b);text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+.idiomas a{color:var(--tx3,#64748b);text-decoration:none;padding:.15rem .5rem;border-radius:99px;border:1px solid transparent}
+.idiomas a:hover{color:var(--ac,#60a5fa);border-color:var(--line2,rgba(255,255,255,.14))}
+.idiomas a[aria-current]{color:var(--ac,#60a5fa);border-color:var(--ac,#60a5fa)}
+.prevalece{margin:1rem 0;padding:.75rem 1rem;border-radius:.5rem;font-size:.86rem;
+  color:var(--tx2,#94a3b8);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.28)}
+.prevalece a{color:var(--ac,#60a5fa)}
+</style><!--/zyntello:legales-->
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">Akèy</a>
+        <a href="/terminos/">Kondisyon Sèvis la</a>
+        <a href="/privacidad/">Konfidansyalite</a>
+        <a href="/sla/">SLA</a>
+        <a href="/eliminacion-datos/">Efase done</a>
+        <a href="https://zyntello.com/#contacto">Kontak</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">Dokiman legal</span>
+      <h1>Règleman sou Cookies</h1>
+      <p class="lead">Règleman sa a eksplike <strong>kisa nou konsève nan navigatè w</strong> lè w ap sèvi ak <code>zyntello.com</code> oswa platfòm <code>app.zyntello.com</code>, pou kisa chak bagay sèvi, konbyen tan li dire e kijan pou efase l. Se vèsyon detaye <a href="/privacidad/#s14">seksyon 14 Règleman Konfidansyalite a</a>.</p>
+      <div class="meta">
+        <span>Dènye mizajou: <strong>10 oktòb 2026</strong></span>
+        <span>An vigè: <strong>depi li pibliye</strong></span>
+        <span>Vèsyon: <strong>1.0</strong></span>
+        <span>Lang orijinal: <strong>panyòl</strong></span>
+      </div>
+    </div>
+  </div>
+<!--zyntello:legales--><div class="idiomas" role="navigation" aria-label="Lang"><span>Lang:</span><a href="/cookies/" hreflang="es" lang="es">Español</a><a href="/en/cookies/" hreflang="en" lang="en">English</a><a href="/fr/cookies/" hreflang="fr" lang="fr">Français</a><a href="/it/cookies/" hreflang="it" lang="it">Italiano</a><a href="/zh-Hans/cookies/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a><a href="/zh-Hant/cookies/" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a><a href="/ar/cookies/" hreflang="ar" lang="ar">العربية</a><a href="/ht/cookies/" hreflang="ht" lang="ht" aria-current="true">Kreyòl ayisyen</a></div><!--/zyntello:legales--></header>
+
+<main class="wrap">
+<!--zyntello:legales--><div class="prevalece" role="note">Sa a se yon tradiksyon pou fasilite lekti. Se vèsyon an panyòl la ki gen fòs legal. <a href="/cookies/" hreflang="es" lang="es">Gade vèsyon an panyòl la</a>.</div><!--/zyntello:legales-->
+<div class="grid">
+
+  <aside class="toc">
+    <h2>Kontni</h2>
+    <ol>
+      <li><a href="#s1">Esansyèl la, nan twa fraz</a></li>
+      <li><a href="#s2">Kisa yon cookie ye</a></li>
+      <li><a href="#s3">Sa nou itilize yo, youn pa youn</a></li>
+      <li><a href="#s4">Sa nou PA itilize</a></li>
+      <li><a href="#s5">Poukisa nou pa mande w konsantman</a></li>
+      <li><a href="#s6">Kijan pou efase oswa bloke yo</a></li>
+      <li><a href="#s7">Resous ki soti nan twazyèm pati</a></li>
+      <li><a href="#s8">Chanjman nan Règleman sa a</a></li>
+      <li><a href="#s9">Kontak</a></li>
+    </ol>
+  </aside>
+
+  <article>
+
+    <section id="s1">
+      <h2 class="sec"><span class="n">1.</span> Esansyèl la, nan twa fraz</h2>
+      <p><strong>Nou itilize senk bagay e okenn ladan yo pa sèvi pou swiv ou.</strong> Twa se cookies ki nesesè pou w ka konekte epi travay san sistèm nan dekonekte w; de lòt yo se preferans pwòp navigatè w konsève pou paj la rete jan w te kite l.</p>
+      <p><strong>Pa gen piblisite, ni pwofilaj, ni analiz twazyèm pati.</strong> Nou pa gen Google Analytics, ni piksèl Meta, ni Hotjar, ni okenn zouti ki mezire konpòtman w. Nou pa vann ni bay okenn moun done navigasyon.</p>
+      <p><strong>Ou ka efase yo lè w vle</strong>, nan navigatè w, epi n ap kontinye fonksyone — eksepte sa ki pou sesyon an, san yo koneksyon an enposib, menm jan ou pa ka antre nan yon kay san kle.</p>
+    </section>
+
+    <section id="s2">
+      <h2 class="sec"><span class="n">2.</span> Kisa yon cookie ye, san mo konplike</h2>
+      <p>Yon cookie se yon ti fichye tèks trè piti yon sit entènèt konsève nan navigatè w epi menm sit sa a ka reli apre. Li sèvi pou paj la <em>sonje yon bagay</em> ant yon ekran ak lòt la, paske san li chak paj ta premye a: ou ta konekte epi, lè w klike sou nenpòt lyen, ou ta deyò ankò.</p>
+      <p>Akote cookies yo gen <strong>depo lokal</strong> (<code>localStorage</code>), ki sanble men ak yon diferans ki enpòtan: <strong>li pa janm vwayaje nan sèvè nou yo</strong>. Li rete nan aparèy ou. Nou mete l isit paske, menm si teknikman se pa yon cookie, se enfòmasyon nou konsève nan navigatè w epi ou gen dwa konnen sa.</p>
+    </section>
+
+    <section id="s3">
+      <h2 class="sec"><span class="n">3.</span> Sa nou itilize yo, youn pa youn</h2>
+      <p>Tablo sa a se envantè konplè a. Si w jwenn nan navigatè w yon bagay ki pou nou e ki pa la, n ap remèsye w si w di nou sa nan <a href="mailto:info@zyntello.com">info@zyntello.com</a>: sa ta vle di Règleman sa a rete dèyè e nou vle korije l.</p>
+
+      <div class="tbl">
+      <table>
+        <thead>
+          <tr>
+            <th>Non</th>
+            <th>Kote</th>
+            <th>Pou kisa li sèvi</th>
+            <th>Konbyen tan li dire</th>
+            <th>Kalite</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>zyntello-session</code></td>
+            <td>app.zyntello.com</td>
+            <td>Kenbe w idantifye pandan w ap travay. Se sa ki fè ke, lè w pase yon ekran ak lòt, sistèm nan kontinye konnen kiyès ou ye ak ki antrepriz ou gen aktif. <strong>San li ou pa ka itilize platfòm nan.</strong> Li konsève tou <strong>lang ou chwazi a</strong> si w poko konekte — gade <a href="#s3b">nòt sou lang lan</a>.</td>
+            <td>7 jou</td>
+            <td><strong>Nesesè</strong></td>
+          </tr>
+          <tr>
+            <td><code>XSRF-TOKEN</code></td>
+            <td>app.zyntello.com</td>
+            <td>Pwoteje w kont yon atak presi: ke yon lòt paj ki ouvè nan navigatè w voye fòmilè nan non w san ou pa konnen. Chak fòmilè gen yon kòd sèl sit nou an konnen. <strong>Se sekirite, se pa swivi.</strong></td>
+            <td>Sesyon</td>
+            <td><strong>Nesesè</strong></td>
+          </tr>
+          <tr>
+            <td><code>zyntello_ultima_url</code></td>
+            <td>app.zyntello.com</td>
+            <td>Sonje ki ekran ou te ye pou mennen w la lè w retounen, olye pou kite w toujou nan akèy la. Li chifre: kontni l pa lizib menm si yon moun kopye l.</td>
+            <td>1 jou</td>
+            <td>Preferans</td>
+          </tr>
+          <tr>
+            <td><code>zyntello-website-appearance</code></td>
+            <td>zyntello.com</td>
+            <td>Sonje si w te chwazi tèm klè a oswa fonse a, pou w pa bezwen chwazi l ankò chak vizit. Se depo lokal: <strong>li pa janm sòti nan aparèy ou.</strong></td>
+            <td>Jiskaske w efase l</td>
+            <td>Preferans</td>
+          </tr>
+          <tr>
+            <td><code>zyntello-idioma</code></td>
+            <td>app.zyntello.com</td>
+            <td>Sonje lang ou te chwazi <strong>anvan w konekte</strong>, pou ekran koneksyon an parèt nan lang ou pwochen fwa a. San sa li te pèdi lè w dekonekte, e moun ki pa li panyòl te oblije chèche selektè a chak vizit — nan yon lang li pa konprann. Se depo lokal: li pa sòti nan aparèy ou.</td>
+            <td>Jiskaske w efase l</td>
+            <td>Preferans</td>
+          </tr>
+          <tr>
+            <td><code>zyntello-aviso-cookies</code></td>
+            <td>zyntello.com</td>
+            <td>Sonje ke ou deja li avi anba paj la, pou nou pa montre w li chak vizit. Li konsève sèlman mak ke w te fèmen l. Se depo lokal tou.</td>
+            <td>Jiskaske w efase l</td>
+            <td>Preferans</td>
+          </tr>
+          <tr>
+            <td>Kachèt katalòg la</td>
+            <td>zyntello.com</td>
+            <td>Konsève lis modil yo ak pri yo ki deja telechaje, pou paj la chaje vit epi kontinye montre katalòg la menm si koneksyon an echwe. Li pa gen okenn done pa w. Se depo lokal tou.</td>
+            <td>Jiskaske w efase l</td>
+            <td>Teknik</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="note" id="s3b">
+        <p><strong>Sou lang lan.</strong> Platfòm nan pale plizyè lang e chwa w konsève, men <strong>pa toujou nan menm kote a</strong>, e diferans lan enpòtan:</p>
+        <p>· <strong>Si w poko konekte</strong> —ekran antre a parèt san kont— chwa w konsève nan de kote anmenmtan: nan cookie sesyon an, pou vizit sa a, epi nan <code>zyntello-idioma</code> depo lokal la, ki <strong>siviv dekoneksyon an</strong>. Dezyèm lan nesesè paske dekonekte efase tout sesyon an: san li, moun ki pa li panyòl te jwenn ekran koneksyon an an panyòl chak fwa li tounen, e li te oblije chèche selektè a nan yon lang li pa konprann.</p>
+        <p>· <strong>Si w deja gen yon kont</strong>, lang lan konsève <em>nan kont ou</em> e non nan navigatè a. Sa vle di li swiv ou sou nenpòt aparèy, e efase cookies yo pa retire l.</p>
+        <p>⚠️ <strong>Lang navigatè w la PA deside pou ou.</strong> Nou li l sèlman pou preseleksyone yon opsyon premye fwa a, anyen plis: navigatè a pwopoze, ou deside. Yon Dominiken Ozetazini souvan gen navigatè l an anglè epi li pale panyòl, e sipoze lekontrè ta mete sistèm nan nan yon lang li pa t mande.</p>
+      </div>
+
+      <div class="note">
+        <p><strong>Sou dire sesyon an.</strong> 7 jou yo se maksimòm nan; sesyon an fèmen anvan si w sòti, si w dekonekte nan yon lòt aparèy oswa si administratè antrepriz ou a revoke l. Ou ka wè epi fèmen sesyon aktif ou yo nan <em>Pwofil mwen → Aparèy</em> andedan platfòm nan.</p>
+      </div>
+    </section>
+
+    <section id="s4">
+      <h2 class="sec"><span class="n">4.</span> Sa nou PA itilize</h2>
+      <p>Nou di sa ki genyen, men li bon pou di tou sa ki pa genyen, paske se sa pifò moun sipoze genyen:</p>
+      <ul>
+        <li><strong>Pa gen cookies piblisite.</strong> Nou pa montre reklam e nou pa bay okenn moun manje pou pa yo.</li>
+        <li><strong>Pa gen analiz twazyèm pati.</strong> Ni Google Analytics, ni Hotjar, ni Clarity, ni anyen konsa.</li>
+        <li><strong>Pa gen piksèl rezo sosyal.</strong> Ni Meta, ni LinkedIn, ni TikTok.</li>
+        <li><strong>Nou pa fè pwofilaj.</strong> Nou pa konstwi yon pwofil enterè w ni konpòtman w.</li>
+        <li><strong>Nou pa vann ni bay done navigasyon.</strong> Bay pèsonn, pou okenn montan.</li>
+        <li><strong>Nou pa swiv ant sit yo.</strong> Sa w fè deyò Zyntello nou pa wè l e nou pa vle wè l.</li>
+      </ul>
+      <div class="note warn">
+        <p><strong>E sa ka verifye, se pa yon pwomès.</strong> Louvri zouti devlopman navigatè w la (F12), ale nan onglè <em>Rezo</em> epi rechaje nenpòt paj pa nou. Ou p ap wè koneksyon ak domèn piblisite ni analiz. Nou envite w tcheke l: yon afimasyon lektè a ka verifye vo plis pase youn li oblije kwè.</p>
+      </div>
+    </section>
+
+    <section id="s5">
+      <h2 class="sec"><span class="n">5.</span> Poukisa nou pa mande w konsantman ak yon banyè</h2>
+      <p>Petèt w ap sezi pou w pa jwenn fenèt «aksepte cookies» ki parèt prèske tout kote. Se pa yon neglijans: <strong>se konsekans pa itilize cookies ki oblije mande l la.</strong></p>
+      <p>Règleman ewopeyen sou konfidansyalite elektwonik la —ak règ ekivalan nan peyi kote n ap opere yo— egzije konsantman alavans pou cookies <strong>piblisite, pwofilaj ak analiz twazyèm pati</strong>. Li pa egzije l pou sa ki <strong>estriktèman nesesè</strong> ni pou sa ki konsève <strong>yon preferans ou menm te mande</strong>, tankou tèm klè oswa fonse.</p>
+      <p>Tout sa ki nan tablo seksyon 3 la antre nan de kategori sa yo. Mande w «aksepte» yon bagay san li sistèm nan pa ka fonksyone ta yon fo chwa, e abitye moun klike «aksepte» san li se egzakteman sa ki vide konsantman an de sans li.</p>
+      <div class="note">
+        <p><strong>Si yon jou sa chanje, n ap di w sa anvan.</strong> Jou Zyntello mete analiz oswa nenpòt zouti ki mande pèmisyon w, konsantman alavans ki koresponn lan ap parèt —ak opsyon reyèl pou refize l— e Règleman sa a ap mete ajou anvan zouti sa a aktive, pa apre.</p>
+      </div>
+    </section>
+
+    <section id="s6">
+      <h2 class="sec"><span class="n">6.</span> Kijan pou efase oswa bloke yo</h2>
+      <p>Se ou ki deside sa ki konsève nan navigatè w. Ou ka efase l oswa anpeche l nenpòt lè nan konfigirasyon an:</p>
+      <ul>
+        <li><strong>Chrome ak Edge:</strong> Paramèt → Konfidansyalite ak sekirite → Cookies ak lòt done sit.</li>
+        <li><strong>Firefox:</strong> Paramèt → Konfidansyalite &amp; Sekirite → Cookies ak done sit.</li>
+        <li><strong>Safari:</strong> Preferans → Konfidansyalite → Jere done sit entènèt.</li>
+        <li><strong>Android / iOS:</strong> Paramèt navigatè a → Konfidansyalite → Efase done navigasyon.</li>
+      </ul>
+      <div class="note warn">
+        <p><strong>Kisa k ap pase si w efase yo.</strong> Preferans yo pèdi epi paj la tounen nan aparans default li, san lòt konsekans. Men si w bloke cookies <code>app.zyntello.com</code>, <strong>ou p ap ka konekte</strong>: sistèm nan p ap gen mwayen sonje ke w te deja idantifye w. Se pa yon limit pa nou men se kijan otantifikasyon fonksyone sou entènèt la.</p>
+      </div>
+    </section>
+
+    <section id="s7">
+      <h2 class="sec"><span class="n">7.</span> Resous ki soti nan twazyèm pati</h2>
+      <p>Bagay diferan ak cookies, e ki pa dwe konfonn ak yo: yon pati nan tipografi, ikòn ak bibliyotèk entèfas la sèvi depi sèvè twazyèm pati, ki nan lis nan <a href="/privacidad/#s5">seksyon 5 Règleman Konfidansyalite a</a>.</p>
+      <p><strong>Okenn ladan yo pa enstale cookies ni voye ban nou okenn idantifyan pa w</strong>, men koneksyon an egziste epi adrès IP ou vwayaje ladan l, tankou nan nenpòt demann sou entènèt. Nou di sa paske absans cookies piblisite pa vle di absans koneksyon ak twazyèm pati, e yon règleman ki pale sèlman de cookies ta kite deyò sa ki reyèlman pase lè yon ekran louvri.</p>
+    </section>
+
+    <section id="s8">
+      <h2 class="sec"><span class="n">8.</span> Chanjman nan Règleman sa a</h2>
+      <p>Si nou chanje sa nou konsève nan navigatè w, n ap mete ajou paj sa a ak dat «dènye mizajou» nan antèt la. Si chanjman an mete yon cookie ki mande konsantman w, n ap mande w li <strong>anvan</strong> nou aktive l.</p>
+    </section>
+
+    <section id="s9">
+      <h2 class="sec"><span class="n">9.</span> Kontak</h2>
+      <p>Pou nenpòt kesyon sou Règleman sa a, sou kisa nou konsève nan navigatè w oswa pou egzèse dwa w sou done pèsonèl ou:</p>
+      <ul>
+        <li><strong>Imèl:</strong> <a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+        <li><strong>Sipò:</strong> <a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a></li>
+        <li><strong>WhatsApp:</strong> <a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+        <li><strong>Efase done:</strong> <a href="/eliminacion-datos/">zyntello.com/eliminacion-datos</a></li>
+      </ul>
+    </section>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>Teknoloji antrepriz ak entèlijans atifisyèl</li>
+          <li>Repiblik Dominikèn</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/terminos/">Kondisyon Sèvis la</a></li>
+          <li><a href="/privacidad/">Règleman Konfidansyalite</a></li>
+          <li><a href="/ht/cookies/">Règleman sou Cookies</a></li>
+          <li><a href="/eliminacion-datos/">Efase done</a></li>
+          <li><a href="/sla/">Akò sou Nivo Sèvis</a></li>
+          <li><a href="/avisos-terceros/">Avi sou lojisyèl twazyèm pati</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Kontak</h4>
+        <ul>
+          <li><a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+          <li><a href="https://zyntello.com">zyntello.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy">© 2026 Zyntello, S.R.L. Tout dwa rezève.</p>
+  </div>
+</footer>
+
+</body>
+</html>

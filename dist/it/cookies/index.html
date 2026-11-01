@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Informativa sui cookie | Zyntello</title>
+<meta name="description" content="Informativa sui cookie di Zyntello, S.R.L. — che cosa salviamo nel suo browser, a che cosa serve ogni elemento, quanto dura e come cancellarlo. Senza cookie pubblicitari né di tracciamento.">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<link rel="canonical" href="https://zyntello.com/it/cookies/">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;padding:0 clamp(1.25rem,3vw,2.75rem)}
+
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:88ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:clamp(2rem,3.5vw,4rem);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:95ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:95ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note.ok{border-left-color:var(--ok);background:rgba(52,211,153,.05)}
+  .note b{color:#fff}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:600px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  /* Control de cambios */
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+
+
+
+
+
+<!--zyntello:legales--><link rel="alternate" hreflang="es" href="https://zyntello.com/cookies/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/cookies/">
+<link rel="alternate" hreflang="fr" href="https://zyntello.com/fr/cookies/">
+<link rel="alternate" hreflang="it" href="https://zyntello.com/it/cookies/">
+<link rel="alternate" hreflang="zh-Hans" href="https://zyntello.com/zh-Hans/cookies/">
+<link rel="alternate" hreflang="zh-Hant" href="https://zyntello.com/zh-Hant/cookies/">
+<link rel="alternate" hreflang="ar" href="https://zyntello.com/ar/cookies/">
+<link rel="alternate" hreflang="ht" href="https://zyntello.com/ht/cookies/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/cookies/">
+<style>
+.idiomas{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:center;padding:.75rem 0;font-size:.82rem}
+.idiomas span{color:var(--tx3,#64748b);text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+.idiomas a{color:var(--tx3,#64748b);text-decoration:none;padding:.15rem .5rem;border-radius:99px;border:1px solid transparent}
+.idiomas a:hover{color:var(--ac,#60a5fa);border-color:var(--line2,rgba(255,255,255,.14))}
+.idiomas a[aria-current]{color:var(--ac,#60a5fa);border-color:var(--ac,#60a5fa)}
+.prevalece{margin:1rem 0;padding:.75rem 1rem;border-radius:.5rem;font-size:.86rem;
+  color:var(--tx2,#94a3b8);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.28)}
+.prevalece a{color:var(--ac,#60a5fa)}
+</style><!--/zyntello:legales-->
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">Home</a>
+        <a href="/terminos/">Condizioni del Servizio</a>
+        <a href="/privacidad/">Privacy</a>
+        <a href="/sla/">SLA</a>
+        <a href="/eliminacion-datos/">Cancellazione dei dati</a>
+        <a href="https://zyntello.com/#contacto">Contatti</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">Documento legale</span>
+      <h1>Informativa sui cookie</h1>
+      <p class="lead">Questa Informativa spiega <strong>che cosa salviamo nel suo browser</strong> quando usa <code>zyntello.com</code> o la piattaforma <code>app.zyntello.com</code>, a che cosa serve ogni elemento, quanto dura e come cancellarlo. È la versione dettagliata della <a href="/privacidad/#s14">sezione 14 dell'Informativa sulla Privacy</a>.</p>
+      <div class="meta">
+        <span>Ultimo aggiornamento: <strong>10 ottobre 2026</strong></span>
+        <span>In vigore: <strong>dalla sua pubblicazione</strong></span>
+        <span>Versione: <strong>1.0</strong></span>
+        <span>Lingua originale: <strong>spagnolo</strong></span>
+      </div>
+    </div>
+  </div>
+<!--zyntello:legales--><div class="idiomas" role="navigation" aria-label="Lingua"><span>Lingua:</span><a href="/cookies/" hreflang="es" lang="es">Español</a><a href="/en/cookies/" hreflang="en" lang="en">English</a><a href="/fr/cookies/" hreflang="fr" lang="fr">Français</a><a href="/it/cookies/" hreflang="it" lang="it" aria-current="true">Italiano</a><a href="/zh-Hans/cookies/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a><a href="/zh-Hant/cookies/" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a><a href="/ar/cookies/" hreflang="ar" lang="ar">العربية</a><a href="/ht/cookies/" hreflang="ht" lang="ht">Kreyòl ayisyen</a></div><!--/zyntello:legales--></header>
+
+<main class="wrap">
+<!--zyntello:legales--><div class="prevalece" role="note">Questa è una traduzione di cortesia. La versione vincolante è quella spagnola. <a href="/cookies/" hreflang="es" lang="es">Vedi la versione spagnola</a>.</div><!--/zyntello:legales-->
+<div class="grid">
+
+  <aside class="toc">
+    <h2>Indice</h2>
+    <ol>
+      <li><a href="#s1">L'essenziale, in tre frasi</a></li>
+      <li><a href="#s2">Che cos'è un cookie</a></li>
+      <li><a href="#s3">Quelli che usiamo, uno per uno</a></li>
+      <li><a href="#s4">Quello che NON usiamo</a></li>
+      <li><a href="#s5">Perché non le chiediamo il consenso</a></li>
+      <li><a href="#s6">Come cancellarli o bloccarli</a></li>
+      <li><a href="#s7">Risorse servite da terzi</a></li>
+      <li><a href="#s8">Modifiche a questa Informativa</a></li>
+      <li><a href="#s9">Contatti</a></li>
+    </ol>
+  </aside>
+
+  <article>
+
+    <section id="s1">
+      <h2 class="sec"><span class="n">1.</span> L'essenziale, in tre frasi</h2>
+      <p><strong>Usiamo cinque cose e nessuna serve a tracciarla.</strong> Tre sono cookie necessari perché lei possa accedere e lavorare senza che il sistema la disconnetta; le altre due sono preferenze che il suo stesso browser conserva perché la pagina resti come l'ha lasciata.</p>
+      <p><strong>Non c'è pubblicità, né profilazione, né analitica di terzi.</strong> Non abbiamo Google Analytics, né pixel di Meta, né Hotjar, né alcuno strumento che misuri il suo comportamento. Non vendiamo né cediamo dati di navigazione a nessuno.</p>
+      <p><strong>Può cancellarli quando vuole</strong>, dal suo browser, e continuiamo a funzionare — tranne quelli di sessione, senza i quali l'accesso è impossibile, così come non si entra in casa senza chiave.</p>
+    </section>
+
+    <section id="s2">
+      <h2 class="sec"><span class="n">2.</span> Che cos'è un cookie, detto senza tecnicismi</h2>
+      <p>Un cookie è un file di testo molto piccolo che un sito web salva nel suo browser e che lo stesso sito può rileggere in seguito. Serve perché la pagina <em>ricordi qualcosa</em> da una schermata all'altra: senza, ogni pagina sarebbe la prima — lei accederebbe e, al primo link, sarebbe di nuovo fuori.</p>
+      <p>Accanto ai cookie esiste l'<strong>archiviazione locale</strong> (<code>localStorage</code>), simile ma con una differenza che conta: <strong>non viaggia mai verso i nostri server</strong>. Resta sul suo dispositivo. La includiamo qui perché, pur non essendo tecnicamente un cookie, è informazione che salviamo nel suo browser e lei ha diritto di saperlo.</p>
+    </section>
+
+    <section id="s3">
+      <h2 class="sec"><span class="n">3.</span> Quelli che usiamo, uno per uno</h2>
+      <p>Questa tabella è l'inventario completo. Se trova nel suo browser qualcosa di nostro che qui non c'è, le saremmo grati se ce lo segnalasse a <a href="mailto:info@zyntello.com">info@zyntello.com</a>: vorrebbe dire che questa Informativa è rimasta indietro e vogliamo correggerla.</p>
+
+      <div class="tbl">
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Dove</th>
+            <th>A che cosa serve</th>
+            <th>Quanto dura</th>
+            <th>Tipo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>zyntello-session</code></td>
+            <td>app.zyntello.com</td>
+            <td>Mantenerla identificata mentre lavora. È ciò che fa sì che, passando da una schermata all'altra, il sistema sappia ancora chi è lei e quale azienda ha attiva. <strong>Senza, la piattaforma non si può usare.</strong> Conserva anche <strong>la lingua che ha scelto</strong> se non ha ancora effettuato l'accesso — vedi la <a href="#s3b">nota sulla lingua</a>.</td>
+            <td>7 giorni</td>
+            <td><strong>Necessario</strong></td>
+          </tr>
+          <tr>
+            <td><code>XSRF-TOKEN</code></td>
+            <td>app.zyntello.com</td>
+            <td>Proteggerla da un attacco preciso: che un'altra pagina aperta nel suo browser invii moduli a suo nome a sua insaputa. Ogni modulo porta un codice che solo il nostro sito conosce. <strong>È sicurezza, non tracciamento.</strong></td>
+            <td>Sessione</td>
+            <td><strong>Necessario</strong></td>
+          </tr>
+          <tr>
+            <td><code>zyntello_ultima_url</code></td>
+            <td>app.zyntello.com</td>
+            <td>Ricordare in quale schermata era per riportarla lì al rientro, invece di lasciarla sempre sulla home. È cifrato: il suo contenuto non è leggibile nemmeno se qualcuno lo copia.</td>
+            <td>1 giorno</td>
+            <td>Preferenza</td>
+          </tr>
+          <tr>
+            <td><code>zyntello-website-appearance</code></td>
+            <td>zyntello.com</td>
+            <td>Ricordare se ha scelto il tema chiaro o scuro, per non doverlo riscegliere a ogni visita. È archiviazione locale: <strong>non esce mai dal suo dispositivo.</strong></td>
+            <td>Finché non lo cancella</td>
+            <td>Preferenza</td>
+          </tr>
+          <tr>
+            <td><code>zyntello-idioma</code></td>
+            <td>app.zyntello.com</td>
+            <td>Ricordare la lingua scelta <strong>prima dell'accesso</strong>, perché la schermata di login torni nella sua lingua la volta successiva. Senza, andava persa al logout, e chi non legge lo spagnolo doveva cercare il selettore a ogni visita — in una lingua che non capisce. È archiviazione locale: non esce dal suo dispositivo.</td>
+            <td>Finché non lo cancella</td>
+            <td>Preferenza</td>
+          </tr>
+          <tr>
+            <td><code>zyntello-aviso-cookies</code></td>
+            <td>zyntello.com</td>
+            <td>Ricordare che lei ha già letto l'avviso in fondo alla pagina, per non mostrarglielo a ogni visita. Conserva solo il segno che l'ha chiuso. Anche questa è archiviazione locale.</td>
+            <td>Finché non lo cancella</td>
+            <td>Preferenza</td>
+          </tr>
+          <tr>
+            <td>Cache del catalogo</td>
+            <td>zyntello.com</td>
+            <td>Conservare l'elenco dei moduli e dei prezzi già scaricati, perché la pagina carichi in fretta e continui a mostrare il catalogo anche se la connessione non funziona. Non contiene alcun suo dato. Anche questa è archiviazione locale.</td>
+            <td>Finché non lo cancella</td>
+            <td>Tecnico</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="note" id="s3b">
+        <p><strong>Sulla lingua.</strong> La piattaforma parla più lingue e la sua scelta viene salvata, ma <strong>non sempre nello stesso posto</strong>, e la differenza conta:</p>
+        <p>· <strong>Se non ha ancora effettuato l'accesso</strong> —la schermata di login si vede senza account— la sua scelta è salvata in due posti insieme: nel cookie di sessione, per quella visita, e in <code>zyntello-idioma</code> dell'archiviazione locale, che <strong>sopravvive al logout</strong>. Il secondo serve perché uscire cancella l'intera sessione: senza, chi non legge lo spagnolo ritrovava la schermata di accesso in spagnolo a ogni ritorno, e doveva cercare il selettore in una lingua che non capisce.</p>
+        <p>· <strong>Se ha già un account</strong>, la lingua è salvata <em>nel suo account</em> e non nel browser. Questo significa che la segue su qualsiasi dispositivo, e che cancellare i cookie non gliela toglie.</p>
+        <p>⚠️ <strong>La lingua del suo browser NON decide al posto suo.</strong> La leggiamo solo per preselezionare un'opzione la prima volta, nient'altro: il browser propone, lei decide. Un dominicano negli Stati Uniti ha spesso il browser in inglese e parla spagnolo, e dare per scontato il contrario significherebbe mettergli il sistema in una lingua che non ha chiesto.</p>
+      </div>
+
+      <div class="note">
+        <p><strong>Sulla durata della sessione.</strong> I 7 giorni sono il massimo; la sessione si chiude prima se lei esce, se effettua il logout da un altro dispositivo o se l'amministratore della sua azienda la revoca. Può vedere e chiudere le sue sessioni attive da <em>Il mio profilo → Dispositivi</em> dentro la piattaforma.</p>
+      </div>
+    </section>
+
+    <section id="s4">
+      <h2 class="sec"><span class="n">4.</span> Quello che NON usiamo</h2>
+      <p>Diciamo che cosa c'è, ma conviene dire anche che cosa non c'è, perché è quello che la maggioranza dà per scontato:</p>
+      <ul>
+        <li><strong>Non ci sono cookie pubblicitari.</strong> Non mostriamo annunci e non alimentiamo quelli di nessuno.</li>
+        <li><strong>Non c'è analitica di terzi.</strong> Né Google Analytics, né Hotjar, né Clarity, né simili.</li>
+        <li><strong>Non ci sono pixel dei social.</strong> Né di Meta, né di LinkedIn, né di TikTok.</li>
+        <li><strong>Non facciamo profilazione.</strong> Non costruiamo un profilo dei suoi interessi né del suo comportamento.</li>
+        <li><strong>Non vendiamo né cediamo dati di navigazione.</strong> A nessuno, per nessuna cifra.</li>
+        <li><strong>Non tracciamo tra siti diversi.</strong> Quello che fa fuori da Zyntello non lo vediamo né vogliamo vederlo.</li>
+      </ul>
+      <div class="note warn">
+        <p><strong>E questo è verificabile, non una promessa.</strong> Apra gli strumenti per sviluppatori del suo browser (F12), vada alla scheda <em>Rete</em> e ricarichi una qualsiasi nostra pagina. Non vedrà connessioni verso domini pubblicitari o di analitica. La invitiamo a controllare: un'affermazione che il lettore può verificare vale più di una che deve credere.</p>
+      </div>
+    </section>
+
+    <section id="s5">
+      <h2 class="sec"><span class="n">5.</span> Perché non le chiediamo il consenso con un banner</h2>
+      <p>Forse le colpirà non trovare la finestra «accetta i cookie» che compare quasi ovunque. Non è una dimenticanza: <strong>è la conseguenza del non usare i cookie che obbligano a chiederlo.</strong></p>
+      <p>La normativa europea sulla privacy elettronica —e le norme equivalenti dei paesi in cui operiamo— esige il consenso preventivo per i cookie di <strong>pubblicità, profilazione e analitica di terzi</strong>. Non lo esige per quelli <strong>strettamente necessari</strong> né per quelli che conservano <strong>una preferenza che lei stesso ha chiesto</strong>, come il tema chiaro o scuro.</p>
+      <p>Tutto ciò che è nella tabella della sezione 3 rientra in queste due categorie. Chiederle di «accettare» qualcosa senza cui il sistema non può funzionare sarebbe una scelta finta, e abituare le persone a cliccare «accetta» senza leggere è proprio ciò che svuota di senso il consenso.</p>
+      <div class="note">
+        <p><strong>Se un giorno questo cambierà, glielo diremo prima.</strong> Il giorno in cui Zyntello adotterà analitica o qualsiasi strumento che richieda il suo permesso, comparirà il relativo consenso preventivo —con la possibilità reale di rifiutarlo— e questa Informativa sarà aggiornata prima che quello strumento si attivi, non dopo.</p>
+      </div>
+    </section>
+
+    <section id="s6">
+      <h2 class="sec"><span class="n">6.</span> Come cancellarli o bloccarli</h2>
+      <p>È lei a decidere che cosa viene salvato nel suo browser. Può cancellarlo o impedirlo in qualsiasi momento dalle impostazioni:</p>
+      <ul>
+        <li><strong>Chrome ed Edge:</strong> Impostazioni → Privacy e sicurezza → Cookie e altri dati dei siti.</li>
+        <li><strong>Firefox:</strong> Impostazioni → Privacy &amp; Sicurezza → Cookie e dati dei siti.</li>
+        <li><strong>Safari:</strong> Preferenze → Privacy → Gestisci dati dei siti web.</li>
+        <li><strong>Android / iOS:</strong> Impostazioni del browser → Privacy → Cancella dati di navigazione.</li>
+      </ul>
+      <div class="note warn">
+        <p><strong>Che cosa succede se li cancella.</strong> Le preferenze si perdono e la pagina torna al suo aspetto predefinito, senza altre conseguenze. Ma se blocca i cookie di <code>app.zyntello.com</code>, <strong>non potrà accedere</strong>: il sistema non avrà modo di ricordare che lei si è già identificata. Non è un limite nostro ma di come funziona l'autenticazione sul web.</p>
+      </div>
+    </section>
+
+    <section id="s7">
+      <h2 class="sec"><span class="n">7.</span> Risorse servite da terzi</h2>
+      <p>Cosa diversa dai cookie, da non confondere con essi: una parte dei caratteri, delle icone e delle librerie dell'interfaccia è servita da server di terzi, elencati nella <a href="/privacidad/#s5">sezione 5 dell'Informativa sulla Privacy</a>.</p>
+      <p><strong>Nessuno di essi installa cookie né ci restituisce alcun suo identificativo</strong>, ma la connessione esiste e in essa viaggia il suo indirizzo IP, come in qualsiasi richiesta su internet. Lo diciamo perché l'assenza di cookie pubblicitari non equivale all'assenza di connessioni a terzi, e un'informativa che parlasse solo di cookie lascerebbe fuori quello che succede davvero all'apertura di una schermata.</p>
+    </section>
+
+    <section id="s8">
+      <h2 class="sec"><span class="n">8.</span> Modifiche a questa Informativa</h2>
+      <p>Se cambiamo quello che salviamo nel suo browser, aggiorneremo questa pagina e la data di «ultimo aggiornamento» dell'intestazione. Se la modifica introduce un cookie che richiede il suo consenso, glielo chiederemo <strong>prima</strong> di attivarlo.</p>
+    </section>
+
+    <section id="s9">
+      <h2 class="sec"><span class="n">9.</span> Contatti</h2>
+      <p>Per qualsiasi dubbio su questa Informativa, su che cosa salviamo nel suo browser o per esercitare i suoi diritti sui suoi dati personali:</p>
+      <ul>
+        <li><strong>E-mail:</strong> <a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+        <li><strong>Assistenza:</strong> <a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a></li>
+        <li><strong>WhatsApp:</strong> <a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+        <li><strong>Cancellazione dei dati:</strong> <a href="/eliminacion-datos/">zyntello.com/eliminacion-datos</a></li>
+      </ul>
+    </section>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>Tecnologia d'impresa e intelligenza artificiale</li>
+          <li>Repubblica Dominicana</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Note legali</h4>
+        <ul>
+          <li><a href="/terminos/">Condizioni del Servizio</a></li>
+          <li><a href="/privacidad/">Informativa sulla Privacy</a></li>
+          <li><a href="/it/cookies/">Informativa sui cookie</a></li>
+          <li><a href="/eliminacion-datos/">Cancellazione dei dati</a></li>
+          <li><a href="/sla/">Accordo sul Livello di Servizio</a></li>
+          <li><a href="/avisos-terceros/">Avvisi sul software di terzi</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contatti</h4>
+        <ul>
+          <li><a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+          <li><a href="https://zyntello.com">zyntello.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy">© 2026 Zyntello, S.R.L. Tutti i diritti riservati.</p>
+  </div>
+</footer>
+
+</body>
+</html>

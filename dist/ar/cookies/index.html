@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>سياسة ملفات تعريف الارتباط | Zyntello</title>
+<meta name="description" content="سياسة ملفات تعريف الارتباط لدى Zyntello, S.R.L. — ما نحفظه في متصفحك، وفيمَ يُستخدم كل عنصر، وكم يدوم، وكيف تحذفه. بلا ملفات إعلانية ولا تتبّع.">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<link rel="canonical" href="https://zyntello.com/ar/cookies/">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;padding:0 clamp(1.25rem,3vw,2.75rem)}
+
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:88ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:clamp(2rem,3.5vw,4rem);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:95ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:95ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note.ok{border-left-color:var(--ok);background:rgba(52,211,153,.05)}
+  .note b{color:#fff}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:600px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  /* Control de cambios */
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+
+
+
+
+
+<!--zyntello:legales--><link rel="alternate" hreflang="es" href="https://zyntello.com/cookies/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/cookies/">
+<link rel="alternate" hreflang="fr" href="https://zyntello.com/fr/cookies/">
+<link rel="alternate" hreflang="it" href="https://zyntello.com/it/cookies/">
+<link rel="alternate" hreflang="zh-Hans" href="https://zyntello.com/zh-Hans/cookies/">
+<link rel="alternate" hreflang="zh-Hant" href="https://zyntello.com/zh-Hant/cookies/">
+<link rel="alternate" hreflang="ar" href="https://zyntello.com/ar/cookies/">
+<link rel="alternate" hreflang="ht" href="https://zyntello.com/ht/cookies/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/cookies/">
+<style>
+.idiomas{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:center;padding:.75rem 0;font-size:.82rem}
+.idiomas span{color:var(--tx3,#64748b);text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+.idiomas a{color:var(--tx3,#64748b);text-decoration:none;padding:.15rem .5rem;border-radius:99px;border:1px solid transparent}
+.idiomas a:hover{color:var(--ac,#60a5fa);border-color:var(--line2,rgba(255,255,255,.14))}
+.idiomas a[aria-current]{color:var(--ac,#60a5fa);border-color:var(--ac,#60a5fa)}
+.prevalece{margin:1rem 0;padding:.75rem 1rem;border-radius:.5rem;font-size:.86rem;
+  color:var(--tx2,#94a3b8);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.28)}
+.prevalece a{color:var(--ac,#60a5fa)}
+</style><!--/zyntello:legales-->
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">الرئيسية</a>
+        <a href="/terminos/">شروط الخدمة</a>
+        <a href="/privacidad/">الخصوصية</a>
+        <a href="/sla/">SLA</a>
+        <a href="/eliminacion-datos/">حذف البيانات</a>
+        <a href="https://zyntello.com/#contacto">التواصل</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">مستند قانوني</span>
+      <h1>سياسة ملفات تعريف الارتباط</h1>
+      <p class="lead">توضّح هذه السياسة <strong>ما الذي نحفظه في متصفحك</strong> عند استخدام <code>zyntello.com</code> أو منصة <code>app.zyntello.com</code>، وفيمَ يُستخدم كل عنصر، وكم يدوم، وكيف تحذفه. وهي النسخة المفصّلة من <a href="/privacidad/#s14">القسم 14 من سياسة الخصوصية</a>.</p>
+      <div class="meta">
+        <span>آخر تحديث: <strong>10 أكتوبر 2026</strong></span>
+        <span>سريان المفعول: <strong>من تاريخ نشرها</strong></span>
+        <span>الإصدار: <strong>1.0</strong></span>
+        <span>اللغة الأصلية: <strong>الإسبانية</strong></span>
+      </div>
+    </div>
+  </div>
+<!--zyntello:legales--><div class="idiomas" role="navigation" aria-label="اللغة"><span>اللغة:</span><a href="/cookies/" hreflang="es" lang="es">Español</a><a href="/en/cookies/" hreflang="en" lang="en">English</a><a href="/fr/cookies/" hreflang="fr" lang="fr">Français</a><a href="/it/cookies/" hreflang="it" lang="it">Italiano</a><a href="/zh-Hans/cookies/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a><a href="/zh-Hant/cookies/" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a><a href="/ar/cookies/" hreflang="ar" lang="ar" aria-current="true">العربية</a><a href="/ht/cookies/" hreflang="ht" lang="ht">Kreyòl ayisyen</a></div><!--/zyntello:legales--></header>
+
+<main class="wrap">
+<!--zyntello:legales--><div class="prevalece" role="note">هذه ترجمة للتيسير فقط. النسخة المُلزِمة لهذا المستند هي النسخة الإسبانية. <a href="/cookies/" hreflang="es" lang="es">عرض النسخة الإسبانية</a>.</div><!--/zyntello:legales-->
+<div class="grid">
+
+  <aside class="toc">
+    <h2>المحتويات</h2>
+    <ol>
+      <li><a href="#s1">الخلاصة في ثلاث جمل</a></li>
+      <li><a href="#s2">ما هو ملف تعريف الارتباط</a></li>
+      <li><a href="#s3">ما نستخدمه، واحدًا واحدًا</a></li>
+      <li><a href="#s4">ما لا نستخدمه</a></li>
+      <li><a href="#s5">لماذا لا نطلب موافقتك</a></li>
+      <li><a href="#s6">كيف تحذفها أو تحجبها</a></li>
+      <li><a href="#s7">موارد تُقدَّم من أطراف ثالثة</a></li>
+      <li><a href="#s8">تعديلات هذه السياسة</a></li>
+      <li><a href="#s9">التواصل</a></li>
+    </ol>
+  </aside>
+
+  <article>
+
+    <section id="s1">
+      <h2 class="sec"><span class="n">1.</span> الخلاصة في ثلاث جمل</h2>
+      <p><strong>نستخدم خمسة عناصر ولا شيء منها لتتبّعك.</strong> ثلاثة منها ملفات تعريف ارتباط لازمة كي تستطيع تسجيل الدخول والعمل دون أن يُخرجك النظام؛ والاثنان الآخران تفضيلات يحفظها متصفحك نفسه لتبقى الصفحة كما تركتها.</p>
+      <p><strong>لا إعلانات، ولا تصنيف سلوكي، ولا تحليلات من أطراف ثالثة.</strong> ليس لدينا Google Analytics ولا بكسل Meta ولا Hotjar ولا أي أداة تقيس سلوكك. ولا نبيع بيانات التصفح ولا نشاركها مع أحد.</p>
+      <p><strong>يمكنك حذفها متى شئت</strong> من متصفحك، وسنظل نعمل — باستثناء ملفات الجلسة، التي بدونها يتعذّر تسجيل الدخول، تمامًا كما لا يمكن دخول بيت بلا مفتاح.</p>
+    </section>
+
+    <section id="s2">
+      <h2 class="sec"><span class="n">2.</span> ما هو ملف تعريف الارتباط، بلغة بسيطة</h2>
+      <p>ملف تعريف الارتباط ملف نصي صغير جدًا يحفظه موقع إلكتروني في متصفحك ويستطيع الموقع نفسه قراءته لاحقًا. وهو يتيح للصفحة أن <em>تتذكر شيئًا</em> بين شاشة وأخرى، إذ بدونه ستكون كل صفحة هي الأولى: تسجّل الدخول ثم تخرج مجددًا بمجرد النقر على أي رابط.</p>
+      <p>إلى جانب ملفات تعريف الارتباط هناك <strong>التخزين المحلي</strong> (<code>localStorage</code>)، وهو مشابه لكن بفارق مهم: <strong>لا ينتقل أبدًا إلى خوادمنا</strong>، بل يبقى على جهازك. أدرجناه هنا لأنه، وإن لم يكن تقنيًا ملف تعريف ارتباط، فهو معلومات نحفظها في متصفحك ومن حقك أن تعرف بها.</p>
+    </section>
+
+    <section id="s3">
+      <h2 class="sec"><span class="n">3.</span> ما نستخدمه، واحدًا واحدًا</h2>
+      <p>هذا الجدول هو الجرد الكامل. إذا وجدت في متصفحك شيئًا يخصّنا وغير مذكور هنا، فنشكرك على إبلاغنا عبر <a href="mailto:info@zyntello.com">info@zyntello.com</a>: سيعني ذلك أن هذه السياسة تأخّرت عن الواقع، ونريد تصحيحها.</p>
+
+      <div class="tbl">
+      <table>
+        <thead>
+          <tr>
+            <th>الاسم</th>
+            <th>أين</th>
+            <th>فيمَ يُستخدم</th>
+            <th>مدة البقاء</th>
+            <th>النوع</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>zyntello-session</code></td>
+            <td>app.zyntello.com</td>
+            <td>إبقاؤك معرَّفًا أثناء العمل. وهو ما يجعل النظام يظل عارفًا من أنت وأي شركة لديك نشطة عند الانتقال من شاشة إلى أخرى. <strong>وبدونه لا يمكن استخدام المنصة.</strong> كما يحفظ <strong>اللغة التي اخترتها</strong> إن لم تكن قد سجّلت الدخول بعد — انظر <a href="#s3b">الملاحظة حول اللغة</a>.</td>
+            <td>7 أيام</td>
+            <td><strong>ضروري</strong></td>
+          </tr>
+          <tr>
+            <td><code>XSRF-TOKEN</code></td>
+            <td>app.zyntello.com</td>
+            <td>حمايتك من هجوم محدد: أن ترسل صفحة أخرى مفتوحة في متصفحك نماذج باسمك دون علمك. كل نموذج يحمل رمزًا لا يعرفه سوى موقعنا. <strong>هذا أمان، وليس تتبّعًا.</strong></td>
+            <td>الجلسة</td>
+            <td><strong>ضروري</strong></td>
+          </tr>
+          <tr>
+            <td><code>zyntello_ultima_url</code></td>
+            <td>app.zyntello.com</td>
+            <td>تذكّر الشاشة التي كنت فيها لإعادتك إليها عند عودتك، بدلًا من تركك دائمًا في الصفحة الرئيسية. وهو مشفّر: محتواه غير قابل للقراءة حتى لو نسخه أحد.</td>
+            <td>يوم واحد</td>
+            <td>تفضيل</td>
+          </tr>
+          <tr>
+            <td><code>zyntello-website-appearance</code></td>
+            <td>zyntello.com</td>
+            <td>تذكّر ما إذا كنت قد اخترت المظهر الفاتح أو الداكن، كي لا تضطر إلى اختياره في كل زيارة. وهو تخزين محلي: <strong>لا يغادر جهازك أبدًا.</strong></td>
+            <td>حتى تحذفه</td>
+            <td>تفضيل</td>
+          </tr>
+          <tr>
+            <td><code>zyntello-idioma</code></td>
+            <td>app.zyntello.com</td>
+            <td>تذكّر اللغة التي اخترتها <strong>قبل تسجيل الدخول</strong>، كي تعود شاشة الدخول بلغتك في المرة القادمة. وبدون ذلك كانت تضيع عند تسجيل الخروج، وكان على من لا يقرأ الإسبانية البحث عن المُبدِّل في كل زيارة — بلغة لا يفهمها. وهو تخزين محلي: لا يغادر جهازك.</td>
+            <td>حتى تحذفه</td>
+            <td>تفضيل</td>
+          </tr>
+          <tr>
+            <td><code>zyntello-aviso-cookies</code></td>
+            <td>zyntello.com</td>
+            <td>تذكّر أنك قرأت التنبيه في أسفل الصفحة، كي لا يُعرض عليك في كل زيارة. ولا يحفظ سوى علامة إغلاقك له. وهو أيضًا تخزين محلي.</td>
+            <td>حتى تحذفه</td>
+            <td>تفضيل</td>
+          </tr>
+          <tr>
+            <td>ذاكرة الكتالوج المؤقتة</td>
+            <td>zyntello.com</td>
+            <td>حفظ قائمة الوحدات وأسعارها التي جرى تنزيلها، كي تُحمَّل الصفحة بسرعة وتستمر في عرض الكتالوج حتى لو انقطع الاتصال. ولا يحتوي على أي بيانات تخصّك. وهو أيضًا تخزين محلي.</td>
+            <td>حتى تحذفه</td>
+            <td>تقني</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="note" id="s3b">
+        <p><strong>بخصوص اللغة.</strong> تتحدث المنصة بعدة لغات ويُحفظ اختيارك، لكن <strong>ليس دائمًا في المكان نفسه</strong>، والفرق مهم:</p>
+        <p>· <strong>إن لم تكن قد سجّلت الدخول بعد</strong> —فشاشة الدخول تُرى بلا حساب— يُحفظ اختيارك في مكانين معًا: في ملف الجلسة لتلك الزيارة، وفي <code>zyntello-idioma</code> ضمن التخزين المحلي، الذي <strong>يبقى بعد تسجيل الخروج</strong>. والثاني لازم لأن تسجيل الخروج يمسح الجلسة كلها: بدونه كان من لا يقرأ الإسبانية يجد شاشة الدخول بالإسبانية في كل عودة، ويضطر إلى البحث عن المُبدِّل بلغة لا يفهمها.</p>
+        <p>· <strong>إن كان لديك حساب بالفعل</strong>، فاللغة تُحفظ <em>في حسابك</em> لا في المتصفح. أي أنها ترافقك على أي جهاز، وحذف ملفات تعريف الارتباط لا يزيلها.</p>
+        <p>⚠️ <strong>لغة متصفحك لا تقرّر نيابةً عنك.</strong> نقرؤها فقط لاختيار خيار مبدئي في المرة الأولى، لا أكثر: المتصفح يقترح وأنت تقرّر. فالدومينيكي في الولايات المتحدة غالبًا ما يكون متصفحه بالإنجليزية ويتحدث الإسبانية، وافتراض العكس يعني وضع النظام بلغة لم يطلبها.</p>
+      </div>
+
+      <div class="note">
+        <p><strong>بخصوص مدة الجلسة.</strong> السبعة أيام هي الحد الأقصى؛ وتُغلق الجلسة قبل ذلك إذا خرجت، أو سجّلت الخروج من جهاز آخر، أو ألغاها مسؤول شركتك. ويمكنك عرض جلساتك النشطة وإغلاقها من <em>ملفي الشخصي ← الأجهزة</em> داخل المنصة.</p>
+      </div>
+    </section>
+
+    <section id="s4">
+      <h2 class="sec"><span class="n">4.</span> ما لا نستخدمه</h2>
+      <p>نقول ما هو موجود، ويجدر أن نقول أيضًا ما هو غير موجود، لأنه ما يفترض أغلب الناس وجوده:</p>
+      <ul>
+        <li><strong>لا توجد ملفات تعريف ارتباط إعلانية.</strong> لا نعرض إعلانات ولا نغذّي إعلانات أحد.</li>
+        <li><strong>لا توجد تحليلات من أطراف ثالثة.</strong> لا Google Analytics ولا Hotjar ولا Clarity ولا ما شابه.</li>
+        <li><strong>لا توجد بكسلات تتبّع لشبكات التواصل.</strong> لا من Meta ولا من LinkedIn ولا من TikTok.</li>
+        <li><strong>لا نقوم بالتصنيف السلوكي.</strong> لا نبني ملفًا لاهتماماتك ولا لسلوكك.</li>
+        <li><strong>لا نبيع بيانات التصفح ولا نشاركها.</strong> مع أحد، ومقابل أي مبلغ.</li>
+        <li><strong>لا نتتبّعك عبر المواقع.</strong> ما تفعله خارج Zyntello لا نراه ولا نريد رؤيته.</li>
+      </ul>
+      <div class="note warn">
+        <p><strong>وهذا قابل للتحقق، وليس وعدًا.</strong> افتح أدوات المطوّر في متصفحك (F12)، وانتقل إلى تبويب <em>الشبكة</em> ثم أعد تحميل أي صفحة من صفحاتنا. لن ترى اتصالات بنطاقات إعلانية أو تحليلية. ندعوك إلى التحقق: فالقول الذي يستطيع القارئ التثبّت منه أثمن من قول عليه أن يصدّقه.</p>
+      </div>
+    </section>
+
+    <section id="s5">
+      <h2 class="sec"><span class="n">5.</span> لماذا لا نطلب موافقتك عبر شريط تنبيه</h2>
+      <p>قد يلفت نظرك ألّا تجد نافذة «قبول ملفات تعريف الارتباط» التي تظهر في كل مكان تقريبًا. وليس هذا سهوًا: <strong>بل هو نتيجة عدم استخدام الملفات التي توجب طلب الموافقة.</strong></p>
+      <p>تشترط اللائحة الأوروبية للخصوصية الإلكترونية —وما يعادلها في البلدان التي نعمل فيها— موافقة مسبقة على ملفات <strong>الإعلانات والتصنيف السلوكي وتحليلات الأطراف الثالثة</strong>. ولا تشترطها على الملفات <strong>الضرورية حصرًا</strong> ولا على تلك التي تحفظ <strong>تفضيلًا طلبته أنت بنفسك</strong>، كالمظهر الفاتح أو الداكن.</p>
+      <p>كل ما في جدول القسم 3 يندرج ضمن هاتين الفئتين. ومطالبتك بـ«القبول» لشيء لا يعمل النظام بدونه خيار زائف، وتعويد الناس على النقر على «أوافق» دون قراءة هو تحديدًا ما يفرغ الموافقة من معناها.</p>
+      <div class="note">
+        <p><strong>وإن تغيّر هذا يومًا، سنخبرك قبله.</strong> يوم تضيف Zyntello تحليلات أو أي أداة تتطلب إذنك، ستظهر الموافقة المسبقة المناسبة —مع إمكانية حقيقية للرفض— وستُحدَّث هذه السياسة قبل تفعيل تلك الأداة لا بعده.</p>
+      </div>
+    </section>
+
+    <section id="s6">
+      <h2 class="sec"><span class="n">6.</span> كيف تحذفها أو تحجبها</h2>
+      <p>أنت صاحب القرار فيما يُحفظ في متصفحك. ويمكنك حذفه أو منعه في أي وقت من الإعدادات:</p>
+      <ul>
+        <li><strong>Chrome و Edge:</strong> الإعدادات ← الخصوصية والأمان ← ملفات تعريف الارتباط وبيانات المواقع الأخرى.</li>
+        <li><strong>Firefox:</strong> الإعدادات ← الخصوصية &amp; الأمان ← ملفات تعريف الارتباط وبيانات المواقع.</li>
+        <li><strong>Safari:</strong> التفضيلات ← الخصوصية ← إدارة بيانات مواقع الويب.</li>
+        <li><strong>Android / iOS:</strong> إعدادات المتصفح ← الخصوصية ← مسح بيانات التصفح.</li>
+      </ul>
+      <div class="note warn">
+        <p><strong>ماذا يحدث إن حذفتها.</strong> تضيع التفضيلات وتعود الصفحة إلى مظهرها الافتراضي، دون أي أثر آخر. لكن إن حجبت ملفات <code>app.zyntello.com</code>، <strong>فلن تستطيع تسجيل الدخول</strong>: إذ لن يكون لدى النظام وسيلة ليتذكر أنك عرّفت بنفسك. وليس هذا قيدًا منّا بل هو طبيعة عمل المصادقة على الويب.</p>
+      </div>
+    </section>
+
+    <section id="s7">
+      <h2 class="sec"><span class="n">7.</span> موارد تُقدَّم من أطراف ثالثة</h2>
+      <p>أمر مختلف عن ملفات تعريف الارتباط، ولا ينبغي الخلط بينهما: جزء من الخطوط والأيقونات ومكتبات الواجهة يُقدَّم من خوادم أطراف ثالثة، وهي مُدرَجة في <a href="/privacidad/#s5">القسم 5 من سياسة الخصوصية</a>.</p>
+      <p><strong>ولا يثبّت أي منها ملفات تعريف ارتباط ولا يعيد إلينا أي معرّف يخصّك</strong>، لكن الاتصال قائم وينتقل فيه عنوان IP الخاص بك، كما في أي طلب على الإنترنت. نقول ذلك لأن غياب ملفات الإعلانات لا يعني غياب الاتصالات بأطراف ثالثة، ولأن سياسة تتحدث عن الملفات وحدها ستترك خارجها ما يحدث فعلًا عند فتح أي شاشة.</p>
+    </section>
+
+    <section id="s8">
+      <h2 class="sec"><span class="n">8.</span> تعديلات هذه السياسة</h2>
+      <p>إذا غيّرنا ما نحفظه في متصفحك، فسنحدّث هذه الصفحة وتاريخ «آخر تحديث» في الترويسة. وإذا أدخل التغيير ملفًا يتطلب موافقتك، فسنطلبها <strong>قبل</strong> تفعيله.</p>
+    </section>
+
+    <section id="s9">
+      <h2 class="sec"><span class="n">9.</span> التواصل</h2>
+      <p>لأي استفسار عن هذه السياسة، أو عمّا نحفظه في متصفحك، أو لممارسة حقوقك على بياناتك الشخصية:</p>
+      <ul>
+        <li><strong>البريد الإلكتروني:</strong> <a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+        <li><strong>الدعم:</strong> <a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a></li>
+        <li><strong>واتساب:</strong> <a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+        <li><strong>حذف البيانات:</strong> <a href="/eliminacion-datos/">zyntello.com/eliminacion-datos</a></li>
+      </ul>
+    </section>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>تقنيات الأعمال والذكاء الاصطناعي</li>
+          <li>الجمهورية الدومينيكية</li>
+        </ul>
+      </div>
+      <div>
+        <h4>الشؤون القانونية</h4>
+        <ul>
+          <li><a href="/terminos/">شروط الخدمة</a></li>
+          <li><a href="/privacidad/">سياسة الخصوصية</a></li>
+          <li><a href="/ar/cookies/">سياسة ملفات تعريف الارتباط</a></li>
+          <li><a href="/eliminacion-datos/">حذف البيانات</a></li>
+          <li><a href="/sla/">اتفاقية مستوى الخدمة</a></li>
+          <li><a href="/avisos-terceros/">إشعارات برمجيات الأطراف الثالثة</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>التواصل</h4>
+        <ul>
+          <li><a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+          <li><a href="https://zyntello.com">zyntello.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy">© 2026 Zyntello, S.R.L. جميع الحقوق محفوظة.</p>
+  </div>
+</footer>
+
+</body>
+</html>

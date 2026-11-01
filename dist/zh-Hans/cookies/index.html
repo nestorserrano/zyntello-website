@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cookie 政策 | Zyntello</title>
+<meta name="description" content="Zyntello, S.R.L. 的 Cookie 政策——我们在您浏览器中保存了什么、每项的用途、保存多久以及如何删除。没有广告或追踪 Cookie。">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<link rel="canonical" href="https://zyntello.com/zh-Hans/cookies/">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;padding:0 clamp(1.25rem,3vw,2.75rem)}
+
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:88ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:clamp(2rem,3.5vw,4rem);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:95ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:95ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note.ok{border-left-color:var(--ok);background:rgba(52,211,153,.05)}
+  .note b{color:#fff}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:600px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  /* Control de cambios */
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+
+
+
+
+
+<!--zyntello:legales--><link rel="alternate" hreflang="es" href="https://zyntello.com/cookies/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/cookies/">
+<link rel="alternate" hreflang="fr" href="https://zyntello.com/fr/cookies/">
+<link rel="alternate" hreflang="it" href="https://zyntello.com/it/cookies/">
+<link rel="alternate" hreflang="zh-Hans" href="https://zyntello.com/zh-Hans/cookies/">
+<link rel="alternate" hreflang="zh-Hant" href="https://zyntello.com/zh-Hant/cookies/">
+<link rel="alternate" hreflang="ar" href="https://zyntello.com/ar/cookies/">
+<link rel="alternate" hreflang="ht" href="https://zyntello.com/ht/cookies/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/cookies/">
+<style>
+.idiomas{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:center;padding:.75rem 0;font-size:.82rem}
+.idiomas span{color:var(--tx3,#64748b);text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+.idiomas a{color:var(--tx3,#64748b);text-decoration:none;padding:.15rem .5rem;border-radius:99px;border:1px solid transparent}
+.idiomas a:hover{color:var(--ac,#60a5fa);border-color:var(--line2,rgba(255,255,255,.14))}
+.idiomas a[aria-current]{color:var(--ac,#60a5fa);border-color:var(--ac,#60a5fa)}
+.prevalece{margin:1rem 0;padding:.75rem 1rem;border-radius:.5rem;font-size:.86rem;
+  color:var(--tx2,#94a3b8);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.28)}
+.prevalece a{color:var(--ac,#60a5fa)}
+</style><!--/zyntello:legales-->
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">首页</a>
+        <a href="/terminos/">服务条款</a>
+        <a href="/privacidad/">隐私</a>
+        <a href="/sla/">SLA</a>
+        <a href="/eliminacion-datos/">数据删除</a>
+        <a href="https://zyntello.com/#contacto">联系方式</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">法律文件</span>
+      <h1>Cookie 政策</h1>
+      <p class="lead">本政策说明您使用 <code>zyntello.com</code> 或 <code>app.zyntello.com</code> 平台时，<strong>我们在您的浏览器中保存了什么</strong>、每一项的用途、保存多久以及如何删除。这是<a href="/privacidad/#s14">隐私政策第 14 节</a>的详细版本。</p>
+      <div class="meta">
+        <span>最后更新： <strong>2026年10月10日</strong></span>
+        <span>生效： <strong>自发布之日起</strong></span>
+        <span>版本： <strong>1.0</strong></span>
+        <span>原始语言： <strong>西班牙语</strong></span>
+      </div>
+    </div>
+  </div>
+<!--zyntello:legales--><div class="idiomas" role="navigation" aria-label="语言"><span>语言:</span><a href="/cookies/" hreflang="es" lang="es">Español</a><a href="/en/cookies/" hreflang="en" lang="en">English</a><a href="/fr/cookies/" hreflang="fr" lang="fr">Français</a><a href="/it/cookies/" hreflang="it" lang="it">Italiano</a><a href="/zh-Hans/cookies/" hreflang="zh-Hans" lang="zh-Hans" aria-current="true">简体中文</a><a href="/zh-Hant/cookies/" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a><a href="/ar/cookies/" hreflang="ar" lang="ar">العربية</a><a href="/ht/cookies/" hreflang="ht" lang="ht">Kreyòl ayisyen</a></div><!--/zyntello:legales--></header>
+
+<main class="wrap">
+<!--zyntello:legales--><div class="prevalece" role="note">本文为便于理解提供的译文。具有法律约束力的版本为西班牙语版本。 <a href="/cookies/" hreflang="es" lang="es">查看西班牙语版本</a>.</div><!--/zyntello:legales-->
+<div class="grid">
+
+  <aside class="toc">
+    <h2>目录</h2>
+    <ol>
+      <li><a href="#s1">三句话讲清要点</a></li>
+      <li><a href="#s2">什么是 Cookie</a></li>
+      <li><a href="#s3">我们使用的，逐项列出</a></li>
+      <li><a href="#s4">我们不使用的</a></li>
+      <li><a href="#s5">为什么不向您征求同意</a></li>
+      <li><a href="#s6">如何删除或阻止它们</a></li>
+      <li><a href="#s7">由第三方提供的资源</a></li>
+      <li><a href="#s8">本政策的变更</a></li>
+      <li><a href="#s9">联系方式</a></li>
+    </ol>
+  </aside>
+
+  <article>
+
+    <section id="s1">
+      <h2 class="sec"><span class="n">1.</span> 三句话讲清要点</h2>
+      <p><strong>我们用了五样东西，没有一样用于追踪您。</strong>其中三个是 Cookie，让您能够登录并持续工作而不被系统踢出；另外两个是您自己的浏览器保存的偏好设置，让页面保持您离开时的样子。</p>
+      <p><strong>没有广告，没有用户画像，没有第三方分析。</strong>我们没有 Google Analytics，没有 Meta 像素，没有 Hotjar，也没有任何衡量您行为的工具。我们不向任何人出售或转让浏览数据。</p>
+      <p><strong>您随时可以在浏览器中删除它们</strong>，我们照常运行——会话 Cookie 除外，没有它就无法登录，正如没有钥匙就进不了家门。</p>
+    </section>
+
+    <section id="s2">
+      <h2 class="sec"><span class="n">2.</span> 什么是 Cookie，不讲术语</h2>
+      <p>Cookie 是网站保存在您浏览器中的一个很小的文本文件，之后同一网站可以再次读取它。它让页面在一个界面与下一个界面之间<em>记住一些东西</em>；没有它，每个页面都会是第一个页面：您登录后，一点任何链接就又被登出了。</p>
+      <p>与 Cookie 并列的还有<strong>本地存储</strong>（<code>localStorage</code>），二者相似，但有一个重要差别：<strong>它从不传到我们的服务器</strong>，只留在您的设备上。我们在此一并说明，因为它虽然技术上不是 Cookie，却同样是我们保存在您浏览器中的信息，您有权知道。</p>
+    </section>
+
+    <section id="s3">
+      <h2 class="sec"><span class="n">3.</span> 我们使用的，逐项列出</h2>
+      <p>此表是完整清单。如果您在浏览器中发现属于我们、但未列于此的内容，烦请告知 <a href="mailto:info@zyntello.com">info@zyntello.com</a>：那将意味着本政策落后于实际，我们希望更正。</p>
+
+      <div class="tbl">
+      <table>
+        <thead>
+          <tr>
+            <th>名称</th>
+            <th>位置</th>
+            <th>用途</th>
+            <th>保存时长</th>
+            <th>类型</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>zyntello-session</code></td>
+            <td>app.zyntello.com</td>
+            <td>在您工作期间保持身份识别。正是它让系统在您切换界面时仍知道您是谁、当前启用的是哪家公司。<strong>没有它就无法使用本平台。</strong>若您尚未登录，它还会保存<strong>您选择的语言</strong>——参见<a href="#s3b">关于语言的说明</a>。</td>
+            <td>7 天</td>
+            <td><strong>必需</strong></td>
+          </tr>
+          <tr>
+            <td><code>XSRF-TOKEN</code></td>
+            <td>app.zyntello.com</td>
+            <td>保护您免受一种特定攻击：您浏览器中打开的另一个页面在您不知情时以您的名义提交表单。每个表单都带有只有我们网站知道的代码。<strong>这是安全措施，不是追踪。</strong></td>
+            <td>会话期间</td>
+            <td><strong>必需</strong></td>
+          </tr>
+          <tr>
+            <td><code>zyntello_ultima_url</code></td>
+            <td>app.zyntello.com</td>
+            <td>记住您当时所在的界面，以便您再次登录时回到那里，而不是总把您留在首页。它已加密：即使被复制，内容也无法读取。</td>
+            <td>1 天</td>
+            <td>偏好设置</td>
+          </tr>
+          <tr>
+            <td><code>zyntello-website-appearance</code></td>
+            <td>zyntello.com</td>
+            <td>记住您选择的是浅色还是深色主题，免得每次访问都要重选。这属于本地存储：<strong>从不离开您的设备。</strong></td>
+            <td>直到您删除为止</td>
+            <td>偏好设置</td>
+          </tr>
+          <tr>
+            <td><code>zyntello-idioma</code></td>
+            <td>app.zyntello.com</td>
+            <td>记住您<strong>登录前</strong>选择的语言，让登录界面下次仍以您的语言显示。没有它，退出登录时语言就会丢失，不懂西班牙语的人每次访问都得去找语言选择器——而界面正是他看不懂的语言。这属于本地存储：不会离开您的设备。</td>
+            <td>直到您删除为止</td>
+            <td>偏好设置</td>
+          </tr>
+          <tr>
+            <td><code>zyntello-aviso-cookies</code></td>
+            <td>zyntello.com</td>
+            <td>记住您已读过页面底部的提示，免得每次访问都再显示一次。它只保存您关闭过该提示的标记。同样属于本地存储。</td>
+            <td>直到您删除为止</td>
+            <td>偏好设置</td>
+          </tr>
+          <tr>
+            <td>产品目录缓存</td>
+            <td>zyntello.com</td>
+            <td>保存已下载的模块清单及价格，让页面加载更快，并在网络中断时仍能显示目录。其中不含您的任何数据。同样属于本地存储。</td>
+            <td>直到您删除为止</td>
+            <td>技术性</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="note" id="s3b">
+        <p><strong>关于语言。</strong>本平台支持多种语言，您的选择会被保存，但<strong>并非总保存在同一处</strong>，这个差别很重要：</p>
+        <p>· <strong>若您尚未登录</strong>——登录界面无需账户即可查看——您的选择会同时保存在两处：会话 Cookie 中（仅限本次访问），以及本地存储的 <code>zyntello-idioma</code> 中，后者<strong>在退出登录后依然保留</strong>。之所以需要后者，是因为退出会清空整个会话：没有它，不懂西班牙语的人每次回来都会看到西班牙语的登录界面，还得用一种看不懂的语言去找语言选择器。</p>
+        <p>· <strong>若您已有账户</strong>，语言保存<em>在您的账户里</em>，而不在浏览器中。这意味着它会跟随您到任何设备，清除 Cookie 也不会把它清掉。</p>
+        <p>⚠️ <strong>您浏览器的语言不替您做决定。</strong>我们只在第一次读取它来预选一个选项，仅此而已：浏览器建议，您来决定。身在美国的多米尼加人往往浏览器是英文而本人讲西班牙语，想当然地反推只会把系统设成他没要求的语言。</p>
+      </div>
+
+      <div class="note">
+        <p><strong>关于会话时长。</strong>7 天是上限；若您主动退出、在其他设备上登出，或贵公司管理员予以撤销，会话会提前结束。您可以在平台内的<em>我的资料 → 设备</em>中查看并关闭您的活动会话。</p>
+      </div>
+    </section>
+
+    <section id="s4">
+      <h2 class="sec"><span class="n">4.</span> 我们不使用的</h2>
+      <p>我们说明了有什么，但也值得说明没有什么，因为那恰恰是多数人默认一定有的：</p>
+      <ul>
+        <li><strong>没有广告 Cookie。</strong>我们不展示广告，也不为任何人的广告提供数据。</li>
+        <li><strong>没有第三方分析。</strong>没有 Google Analytics，没有 Hotjar，没有 Clarity，也没有同类工具。</li>
+        <li><strong>没有社交媒体像素。</strong>没有 Meta 的，没有 LinkedIn 的，也没有 TikTok 的。</li>
+        <li><strong>我们不做用户画像。</strong>我们不构建您的兴趣或行为档案。</li>
+        <li><strong>我们不出售也不转让浏览数据。</strong>不给任何人，也不论价钱。</li>
+        <li><strong>我们不做跨站追踪。</strong>您在 Zyntello 之外做什么，我们看不到，也不想看。</li>
+      </ul>
+      <div class="note warn">
+        <p><strong>而且这是可以核实的，不是一句承诺。</strong>打开浏览器的开发者工具（F12），切到<em>网络</em>标签，刷新我们的任意页面。您不会看到任何指向广告或分析域名的连接。欢迎您亲自验证：读者能够核实的陈述，胜过只能相信的陈述。</p>
+      </div>
+    </section>
+
+    <section id="s5">
+      <h2 class="sec"><span class="n">5.</span> 为什么我们不用横幅征求同意</h2>
+      <p>您也许会注意到，这里没有几乎随处可见的「接受 Cookie」弹窗。这不是疏忽：<strong>而是因为我们没有使用那些必须征求同意的 Cookie。</strong></p>
+      <p>欧盟电子隐私法规——以及我们经营所在国家的同类规定——要求对<strong>广告、用户画像和第三方分析</strong>类 Cookie 事先取得同意，但对<strong>严格必需</strong>的，以及保存<strong>您本人所要求的偏好</strong>（如浅色或深色主题）的，并不作此要求。</p>
+      <p>第 3 节表格中的全部内容都属于这两类。要您「接受」一个没有它系统就无法运行的东西，是个假选择；而让人习惯不看就点「接受」，恰恰是让同意失去意义的做法。</p>
+      <div class="note">
+        <p><strong>如果哪天有变化，我们会事先告知。</strong>Zyntello 引入分析工具或任何需要您授权的工具之日，会出现相应的事先同意机制——并带有真正可以拒绝的选项——而本政策会在该工具启用之前更新，而非之后。</p>
+      </div>
+    </section>
+
+    <section id="s6">
+      <h2 class="sec"><span class="n">6.</span> 如何删除或阻止它们</h2>
+      <p>您的浏览器里保存什么，由您说了算。您随时可以在设置中删除或阻止：</p>
+      <ul>
+        <li><strong>Chrome 和 Edge：</strong>设置 → 隐私和安全 → Cookie 及其他网站数据。</li>
+        <li><strong>Firefox：</strong>设置 → 隐私 &amp; 安全 → Cookie 和网站数据。</li>
+        <li><strong>Safari：</strong>偏好设置 → 隐私 → 管理网站数据。</li>
+        <li><strong>Android / iOS：</strong>浏览器设置 → 隐私 → 清除浏览数据。</li>
+      </ul>
+      <div class="note warn">
+        <p><strong>删除后会怎样。</strong>偏好设置会丢失，页面恢复默认外观，此外没有别的影响。但如果您阻止 <code>app.zyntello.com</code> 的 Cookie，<strong>您将无法登录</strong>：系统将无从记住您已完成身份验证。这不是我们的限制，而是网页身份验证的工作方式使然。</p>
+      </div>
+    </section>
+
+    <section id="s7">
+      <h2 class="sec"><span class="n">7.</span> 由第三方提供的资源</h2>
+      <p>这是与 Cookie 不同、不宜混为一谈的另一件事：界面中的部分字体、图标和程序库由第三方服务器提供，已列于<a href="/privacidad/#s5">隐私政策第 5 节</a>。</p>
+      <p><strong>它们都不会安装 Cookie，也不会把您的任何标识返回给我们</strong>，但连接确实存在，您的 IP 地址会随之传输，正如互联网上的任何请求一样。我们之所以说明，是因为没有广告 Cookie 并不等于没有与第三方的连接；一份只谈 Cookie 的政策，会把打开页面时真正发生的事漏在外面。</p>
+    </section>
+
+    <section id="s8">
+      <h2 class="sec"><span class="n">8.</span> 本政策的变更</h2>
+      <p>如果我们改变在您浏览器中保存的内容，会更新本页面及页首的「最后更新」日期。若变更引入了需要您同意的 Cookie，我们会在启用<strong>之前</strong>征求您的同意。</p>
+    </section>
+
+    <section id="s9">
+      <h2 class="sec"><span class="n">9.</span> 联系方式</h2>
+      <p>对本政策、对我们在您浏览器中保存的内容有任何疑问，或需行使您对个人数据的权利：</p>
+      <ul>
+        <li><strong>邮箱：</strong><a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+        <li><strong>支持：</strong><a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a></li>
+        <li><strong>WhatsApp：</strong><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+        <li><strong>数据删除：</strong><a href="/eliminacion-datos/">zyntello.com/eliminacion-datos</a></li>
+      </ul>
+    </section>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>企业技术与人工智能</li>
+          <li>多米尼加共和国</li>
+        </ul>
+      </div>
+      <div>
+        <h4>法律</h4>
+        <ul>
+          <li><a href="/terminos/">服务条款</a></li>
+          <li><a href="/privacidad/">隐私政策</a></li>
+          <li><a href="/zh-Hans/cookies/">Cookie 政策</a></li>
+          <li><a href="/eliminacion-datos/">数据删除</a></li>
+          <li><a href="/sla/">服务级别协议</a></li>
+          <li><a href="/avisos-terceros/">第三方软件声明</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>联系方式</h4>
+        <ul>
+          <li><a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+          <li><a href="https://zyntello.com">zyntello.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy">© 2026 Zyntello, S.R.L. 保留所有权利。</p>
+  </div>
+</footer>
+
+</body>
+</html>

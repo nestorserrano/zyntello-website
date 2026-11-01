@@ -9,6 +9,12 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://zyntello.com/ar/cookies/</loc>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://zyntello.com/ar/funcionalidades/aprobaciones/</loc>
     <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
@@ -124,7 +130,7 @@
   </url>
   <url>
     <loc>https://zyntello.com/avisos-terceros/</loc>
-    <lastmod>2026-09-28</lastmod>
+    <lastmod>2026-11-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -232,7 +238,7 @@
   </url>
   <url>
     <loc>https://zyntello.com/blog/flujo-de-caja-proyectado-no-es-el-saldo/</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -370,13 +376,19 @@
   </url>
   <url>
     <loc>https://zyntello.com/cookies/</loc>
-    <lastmod>2026-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://zyntello.com/eliminacion-datos/</loc>
-    <lastmod>2026-09-28</lastmod>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://zyntello.com/en/cookies/</loc>
+    <lastmod>2026-11-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -487,6 +499,12 @@
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zyntello.com/fr/cookies/</loc>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://zyntello.com/fr/funcionalidades/aprobaciones/</loc>
@@ -621,6 +639,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://zyntello.com/ht/cookies/</loc>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://zyntello.com/ht/funcionalidades/aprobaciones/</loc>
     <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
@@ -727,6 +751,12 @@
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zyntello.com/it/cookies/</loc>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://zyntello.com/it/funcionalidades/aprobaciones/</loc>
@@ -850,7 +880,7 @@
   </url>
   <url>
     <loc>https://zyntello.com/privacidad/</loc>
-    <lastmod>2026-10-10</lastmod>
+    <lastmod>2026-11-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -940,13 +970,19 @@
   </url>
   <url>
     <loc>https://zyntello.com/sla/</loc>
-    <lastmod>2026-10-10</lastmod>
+    <lastmod>2026-11-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://zyntello.com/terminos/</loc>
-    <lastmod>2026-10-10</lastmod>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://zyntello.com/zh-Hans/cookies/</loc>
+    <lastmod>2026-11-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -1057,6 +1093,12 @@
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zyntello.com/zh-Hant/cookies/</loc>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://zyntello.com/zh-Hant/funcionalidades/aprobaciones/</loc>
