@@ -42,6 +42,11 @@ export const COMPONENTES = [
   // Trozos que aparecen sueltos en la tabla, separados de su nombre por una etiqueta
   'Laravel', 'Laravel Echo', 'pusher-js', 'React', 'React DOM',
   'nette/*', 'nette/utils', 'nette/schema', '(maatwebsite)', '(Livewire)',
+  // Modulos de Zyntello y proveedores citados en los Terminos
+  'Zyntello ERP', 'Zyntello PSA', 'Zyntello Events', 'CRM', 'Prestamello', 'Car Wash',
+  'ConstructFlow', 'Stripe', 'PayPal', 'Mercado Pago', 'Stripe · PayPal · Mercado Pago',
+  'WhatsApp / Meta Platforms', 'WhatsApp LLC', 'Meta Platforms, Inc.',
+  'OpenStreetMap', 'Google Maps', 'HERE', 'Mapbox',
 ]
 
 /**

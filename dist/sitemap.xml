@@ -387,6 +387,12 @@
     <priority>0.3</priority>
   </url>
   <url>
+    <loc>https://zyntello.com/en/avisos-terceros/</loc>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://zyntello.com/en/cookies/</loc>
     <lastmod>2026-11-01</lastmod>
     <changefreq>yearly</changefreq>
