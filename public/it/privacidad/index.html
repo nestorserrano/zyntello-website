@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Informativa sulla privacy | Zyntello</title>
+<meta name="description" content="Informativa sulla privacy di Zyntello, S.R.L. — quali dati trattiamo, con chi li condividiamo, i suoi diritti e come richiedere la cancellazione dei suoi dati.">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<link rel="canonical" href="https://zyntello.com/it/privacidad/">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;padding:0 clamp(1.25rem,3vw,2.75rem)}
+
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:88ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:clamp(2rem,3.5vw,4rem);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:95ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:95ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note.ok{border-left-color:var(--ok);background:rgba(52,211,153,.05)}
+  .note b{color:#fff}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:600px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  /* Control de cambios */
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+
+
+
+<!--zyntello:legales-->
+<link rel="alternate" hreflang="es" href="https://zyntello.com/privacidad/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/privacidad/">
+<link rel="alternate" hreflang="fr" href="https://zyntello.com/fr/privacidad/">
+<link rel="alternate" hreflang="it" href="https://zyntello.com/it/privacidad/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/privacidad/">
+<style>
+.idiomas{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:center;padding:.75rem 0;font-size:.82rem}
+.idiomas span{color:var(--tx3,#64748b);text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+.idiomas a{color:var(--tx3,#64748b);text-decoration:none;padding:.15rem .5rem;border-radius:99px;border:1px solid transparent}
+.idiomas a:hover{color:var(--ac,#60a5fa);border-color:var(--line2,rgba(255,255,255,.14))}
+.idiomas a[aria-current]{color:var(--ac,#60a5fa);border-color:var(--ac,#60a5fa)}
+.prevalece{margin:1rem 0;padding:.75rem 1rem;border-radius:.5rem;font-size:.86rem;
+  color:var(--tx2,#94a3b8);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.28)}
+.prevalece a{color:var(--ac,#60a5fa)}
+</style>
+<!--/zyntello:legales--></head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">Home</a>
+        <a href="/it/terminos/">Condizioni del Servizio</a>
+        <a href="/it/sla/">SLA</a>
+        <a href="/it/eliminacion-datos/">Cancellazione dei dati</a>
+        <a href="/it/avisos-terceros/">Avvisi di terze parti</a>
+        <a href="https://zyntello.com/#contacto">Contatti</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">Documento legale</span>
+      <h1>Informativa sulla privacy</h1>
+      <p class="lead">La presente Informativa spiega quali dati personali tratta <strong>Zyntello, S.R.L.</strong> attraverso la sua piattaforma <code>app.zyntello.com</code> e il suo sito web, per quali finalità, con chi li condivide, per quanto tempo li conserva e come lei può esercitare i suoi diritti, inclusa la <a href="#s9">richiesta di cancellazione dei dati</a>.</p>
+      <div class="meta">
+        <span>Ultimo aggiornamento: <strong>18 settembre 2026</strong></span>
+        <span>In vigore: <strong>dalla sua pubblicazione</strong></span>
+        <span>Versione: <strong><a class="verlink" href="#s20">1.9 — vedi registro delle modifiche</a></strong></span>
+        <span>Lingua originale: <strong>spagnolo</strong></span>
+      </div>
+    </div>
+  </div><!--zyntello:legales--><div class="idiomas" role="navigation" aria-label="Lingua"><span>Lingua:</span><a href="/privacidad/" hreflang="es" lang="es">Español</a><a href="/en/privacidad/" hreflang="en" lang="en">English</a><a href="/fr/privacidad/" hreflang="fr" lang="fr">Français</a><a href="/it/privacidad/" hreflang="it" lang="it" aria-current="true">Italiano</a></div><!--/zyntello:legales--></header>
+
+<main class="wrap"><!--zyntello:legales-->
+<div class="prevalece" role="note">Questa è una traduzione di cortesia. La versione vincolante è quella spagnola. <a href="/privacidad/" hreflang="es" lang="es">Vedi la versione spagnola</a>.</div><!--/zyntello:legales-->
+<div class="grid">
+
+  <aside class="toc">
+    <h2>Indice</h2>
+    <ol>
+      <li><a href="#s1">Titolare del trattamento</a></li>
+      <li><a href="#s2">Il nostro doppio ruolo</a></li>
+      <li><a href="#s3">Quali dati trattiamo</a></li>
+      <li><a href="#s4">Dati per modulo</a></li>
+      <li><a href="#s5">Con chi li condividiamo</a></li>
+      <li><a href="#s6">WhatsApp e Meta</a></li>
+      <li><a href="#s7">Trasferimenti internazionali</a></li>
+      <li><a href="#s8">Tempi di conservazione</a></li>
+      <li><a href="#s9">I suoi diritti e la cancellazione dei dati</a></li>
+      <li><a href="#s10">Normativa per paese</a></li>
+      <li><a href="#s11">Sicurezza</a></li>
+      <li><a href="#s12">Accesso del personale di assistenza di Zyntello</a></li>
+      <li><a href="#s13">Comunicazioni e marketing</a></li>
+      <li><a href="#s14">Cookie</a></li>
+      <li><a href="#s15">Notifica degli incidenti</a></li>
+      <li><a href="#s16">Minori</a></li>
+      <li><a href="#s17">Decisioni automatizzate e IA</a></li>
+      <li><a href="#s18">Modifiche alla presente Informativa</a></li>
+      <li><a href="#s19">Contatti</a></li>
+      <li><a href="#s20">Registro delle modifiche</a></li>
+    </ol>
+  </aside>
+
+  <article>
+
+    <section id="s1">
+      <h2 class="sec"><span class="n">1.</span> Titolare del trattamento</h2>
+      <p><strong>Zyntello, S.R.L.</strong>, società costituita e domiciliata nella <strong>Repubblica Dominicana</strong>, con attività commerciale e di assistenza in Repubblica Dominicana, Venezuela, Colombia, Guatemala e Costa Rica.</p>
+      <ul>
+        <li>Contatto privacy: <a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+        <li>Telefono e WhatsApp: <a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+        <li>Sito web: <a href="https://zyntello.com">https://zyntello.com</a></li>
+        <li>Piattaforma: <a href="https://app.zyntello.com">https://app.zyntello.com</a></li>
+      </ul>
+      <p>La presente Informativa è parte integrante dei nostri <a href="/it/terminos/">Termini di Servizio</a>.</p>
+    </section>
+
+    <section id="s2">
+      <h2 class="sec"><span class="n">2.</span> Il nostro doppio ruolo: titolare e responsabile</h2>
+      <p>Zyntello è una piattaforma software gestionale multiazienda. Per questo operiamo in due ruoli distinti, e da ciò dipende nei confronti di chi lei deve esercitare i suoi diritti:</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Ruolo</th><th>Su quali dati</th><th>Chi decide l'uso</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Titolare del trattamento</strong></td>
+              <td>Dati dell'account dell'Abbonato: nome, e-mail, telefono, credenziali, dati di fatturazione e registri tecnici di utilizzo.</td>
+              <td>Zyntello. La presente Informativa si applica direttamente.</td>
+            </tr>
+            <tr>
+              <td><strong>Responsabile del trattamento</strong></td>
+              <td>Dati che ciascun Abbonato carica sui <strong>propri</strong> clienti, dipendenti, fornitori, residenti, debitori o partecipanti.</td>
+              <td>L'Abbonato. Zyntello si limita a ospitarli e a trattarli per fornirgli il servizio.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <p><b>Se lei è cliente, dipendente, residente, debitore o partecipante di un'azienda che usa Zyntello</b>, è quell'azienda il titolare dei suoi dati ed è nei suoi confronti che deve esercitare i suoi diritti. Se ci scrive direttamente, trasmetteremo la sua richiesta a quell'azienda e collaboreremo affinché venga evasa, ma non possiamo decidere al suo posto su dati che non ci appartengono.</p>
+      </div>
+    </section>
+
+    <section id="s3">
+      <h2 class="sec"><span class="n">3.</span> Quali dati trattiamo e per quali finalità</h2>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Categoria</th><th>Dati</th><th>Finalità</th><th>Base giuridica</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Account e utenti</strong></td>
+              <td>Nome, indirizzo e-mail, password cifrata in modo irreversibile, ruolo, permessi, azienda di appartenenza. Se l'Utente attiva la verifica in due passaggi: la chiave della sua app di autenticazione (<strong>cifrata</strong>), i suoi codici di recupero (<strong>cifrati in modo irreversibile</strong>) e il registro dei tentativi non riusciti. Nessuno di questi dati è leggibile da Zyntello.</td>
+              <td>Creare e gestire l'account, autenticazione, verifica in due passaggi (via e-mail o tramite app di autenticazione), recupero dell'accesso, controllo degli accessi.</td>
+              <td>Esecuzione del contratto</td>
+            </tr>
+            <tr>
+              <td><strong>Fatturazione</strong></td>
+              <td>Ragione sociale, codice fiscale, indirizzo, paese, storico degli abbonamenti e dei pagamenti.</td>
+              <td>Incassare l'abbonamento, emettere documenti e adempiere agli obblighi fiscali.</td>
+              <td>Contratto e obbligo di legge</td>
+            </tr>
+            <tr>
+              <td><strong>Pagamenti</strong></td>
+              <td><strong>Non conserviamo numeri di carta completi.</strong> I prestatori di servizi di pagamento ci comunicano solo riferimenti: identificativo della transazione, esito dell'addebito e ultime cifre.</td>
+              <td>Elaborare i pagamenti e gestire l'abbonamento.</td>
+              <td>Esecuzione del contratto</td>
+            </tr>
+            <tr>
+              <td><strong>Dati operativi dell'Abbonato</strong></td>
+              <td>Tutto ciò che l'Abbonato registra nei suoi moduli (vedi sezione 4).</td>
+              <td>Fornire il servizio sottoscritto. <strong>Trattati in qualità di responsabile.</strong></td>
+              <td>Istruzioni dell'Abbonato</td>
+            </tr>
+            <tr>
+              <td><strong>Registri tecnici</strong></td>
+              <td>Indirizzo IP, browser, dispositivo, data e ora, azioni compiute (registro di audit).</td>
+              <td>Sicurezza, prevenzione delle frodi, tracciabilità delle azioni, assistenza e diagnosi.</td>
+              <td>Legittimo interesse</td>
+            </tr>
+            <tr>
+              <td><strong>Cookie</strong></td>
+              <td>Cookie di sessione, token di protezione dei moduli e, se l'utente lo sceglie, cookie di sessione memorizzata. <strong>Nessun cookie pubblicitario né di tracciamento di terze parti.</strong></td>
+              <td>Mantenere la sessione aperta e proteggere l'applicazione.</td>
+              <td>Strettamente necessari</td>
+            </tr>
+            <tr>
+              <td><strong>Assistenza e contatti</strong></td>
+              <td>Nome, e-mail, telefono e contenuto del messaggio inviato dal modulo del sito web o via WhatsApp.</td>
+              <td>Rispondere a richieste commerciali e di assistenza.</td>
+              <td>Consenso e misure precontrattuali</td>
+            </tr>
+            <tr>
+              <td><strong>Marketing</strong></td>
+              <td>Indirizzo e-mail e registrazione della data, dell'ora e dell'origine del consenso.</td>
+              <td>Invio di novità e comunicazioni commerciali, solo con consenso preventivo.</td>
+              <td>Consenso</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Le basi giuridiche sono espresse con la terminologia del Regolamento generale sulla protezione dei dati dell'Unione europea perché è la più precisa; i concetti equivalenti si applicano ai sensi delle leggi locali indicate nella sezione 10.</p>
+    </section>
+
+    <section id="s4">
+      <h2 class="sec"><span class="n">4.</span> Dati per modulo</h2>
+      <p>Ciascun Abbonato decide quali informazioni caricare. Queste sono le categorie che ogni modulo consente di registrare, trattate da Zyntello sempre in qualità di <strong>responsabile del trattamento</strong>:</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Modulo</th><th>Categorie di dati</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Fatturazione · Crediti verso clienti · CRM · Cassa</strong></td><td>Nome o ragione sociale, codice fiscale, indirizzo, telefono, e-mail, storico degli acquisti e degli incassi, condizioni di credito, saldi e note di gestione commerciale.</td></tr>
+            <tr><td><strong>Acquisti · Debiti verso fornitori</strong></td><td>Dati dei fornitori e dei loro contatti, codice fiscale, conti bancari per il pagamento, ritenute e documenti fiscali ricevuti.</td></tr>
+            <tr><td><strong>Paghe · PSA</strong></td><td>Identificazione del dipendente, documento d'identità, data di nascita, sesso, indirizzo, mansione, <strong>retribuzione e trattenute</strong>, conti bancari, previdenza sociale, familiari a carico, assenze e relativi giustificativi, fogli ore, timbrature di entrata e di uscita e, quando il datore di lavoro attiva queste verifiche, <strong>posizione geografica</strong> e <strong>fotografia del volto</strong>.</td></tr>
+            <tr><td><strong>Zyntello Events</strong></td><td>Nome, documento d'identità, e-mail, telefono, organizzazione, fotografia quando viene acquisita, e registri di accesso e di presenza.</td></tr>
+            <tr><td><strong>Condomini</strong></td><td>Dati di residenti e proprietari, unità, millesimi, estratto conto, prenotazioni di spazi comuni, segnalazioni con fotografie e voti in assemblea.</td></tr>
+            <tr><td><strong>Prestamello</strong></td><td>Dati del richiedente e dei suoi garanti, documenti d'identità, entrate e uscite dichiarate, patrimonio, referenze, <strong>esito delle consultazioni alle centrali rischi</strong>, garanzie e relativi documenti, storico dei pagamenti e <strong>posizione geografica</strong> del personale di riscossione in giro.</td></tr>
+            <tr><td><strong>Pianificatore di giri</strong></td><td>Indirizzi di consegna e di visita dei clienti e le loro <strong>coordinate geografiche</strong>; dati del vettore, del veicolo e dell'autista assegnato; e, quando l'Abbonato attiva il tracciamento, la <strong>posizione dell'autista registrata in modo ripetuto durante la giornata</strong> (per impostazione predefinita ogni 30 secondi), insieme all'ora di arrivo e di partenza da ogni fermata e all'esito di ogni consegna o visita.</td></tr>
+            <tr><td><strong>Car Wash</strong></td><td>Dati del cliente e dei suoi veicoli: targa, marca, modello, colore, contachilometri, fotografie del veicolo e storico degli interventi.</td></tr>
+            <tr><td><strong>ConstructFlow</strong></td><td>Personale assegnato al cantiere, documenti e fotografie di avanzamento.</td></tr>
+            <tr><td><strong>Magazzino · Cespiti</strong></td><td>Responsabili e custodi dei cespiti, registri di conta e inventario fisico.</td></tr>
+            <tr><td><strong>Contabilità · Banche</strong></td><td>Conti bancari dell'azienda, beneficiari di assegni e bonifici, e scritture con riferimento a terzi.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note warn">
+        <p><b>Dati di particolare impatto.</b> I moduli Paghe, PSA, Prestamello e Pianificatore di giri consentono di trattare documenti d'identità, retribuzioni, informazioni collegate ad assenze per motivi di salute, fotografie del volto, posizione geografica del personale e storico creditizio. È responsabilità dell'Abbonato informare preventivamente gli interessati, disporre di una base giuridica o del consenso e attivare soltanto le verifiche strettamente necessarie.</p>
+        <p><strong>Tracciamento continuo della posizione di un lavoratore.</strong> Conviene distinguere due cose che non sono uguali anche se entrambe riguardano la posizione. In Paghe, PSA e Prestamello si registra <strong>un punto in un momento preciso</strong>: alla timbratura di entrata o di uscita, nell'evasione di un ordine o nella gestione di un incasso. Il Pianificatore di giri, invece, può registrare la posizione dell'autista <strong>in modo ripetuto per tutta la durata del giro</strong>, il che consente di ricostruire il suo percorso della giornata. È un trattamento più invasivo e per questo <strong>nasce disattivato</strong>: funziona solo se l'Abbonato lo attiva e l'autista avvia il giro dal proprio dispositivo. Prima di attivarlo, l'Abbonato deve informare la persona interessata di che cosa viene registrato, per quanto tempo e a quale scopo, e disporre di una base giuridica o del suo consenso. Fuori dalla giornata di lavoro o dal giro non viene registrata alcuna posizione.</p>
+      </div>
+      <p><strong>Portali di consultazione pubblica.</strong> Alcuni moduli generano link o codici QR consultabili senza accesso (stato di un passaggio, estratto conto di un residente, biglietto di un evento, scheda di un cespite). Vi si accede tramite un identificativo casuale, mostrano soltanto le informazioni minime necessarie e la loro attivazione dipende dall'Abbonato.</p>
+    </section>
+
+    <section id="s5">
+      <h2 class="sec"><span class="n">5.</span> Con chi condividiamo i dati</h2>
+      <div class="note ok">
+        <p><b>Non vendiamo, non affittiamo né cediamo dati personali a terzi per finalità pubblicitarie.</b></p>
+      </div>
+      <p>Condividiamo dati soltanto con i seguenti destinatari e per le finalità indicate:</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Destinatario</th><th>Che cosa riceve</th><th>Per quale finalità</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Fornitore di hosting</strong> (Stati Uniti)</td><td>I dati ospitati sulla Piattaforma e i relativi backup.</td><td>Infrastruttura, archiviazione e backup.</td></tr>
+            <tr><td><strong>Stripe</strong></td><td>Dati della transazione di pagamento.</td><td>Elaborare abbonamenti e incassi online. <a href="https://stripe.com/privacy" rel="noopener">Informativa</a></td></tr>
+            <tr><td><strong>PayPal</strong></td><td>Dati della transazione di pagamento.</td><td>Elaborare abbonamenti e incassi online. <a href="https://www.paypal.com/privacy" rel="noopener">Informativa</a></td></tr>
+            <tr><td><strong>Mercado Pago</strong></td><td>Dati della transazione di pagamento.</td><td>Elaborare incassi online. <a href="https://www.mercadopago.com/privacidad" rel="noopener">Informativa</a></td></tr>
+            <tr><td><strong>WhatsApp / Meta Platforms</strong></td><td>Numero di telefono del destinatario e contenuto del messaggio, <strong>solo se l'Abbonato attiva l'integrazione</strong>.</td><td>Invio di messaggi su iniziativa dell'Abbonato. <a href="https://www.whatsapp.com/legal/privacy-policy" rel="noopener">Informativa</a></td></tr>
+            <tr><td><strong>Fornitore di posta in uscita</strong></td><td>Indirizzo del destinatario e contenuto del messaggio.</td><td>Recapito di e-mail transazionali e documenti.</td></tr>
+            <tr><td><strong>Fornitori di intelligenza artificiale</strong></td><td>Immagine o testo del documento da interpretare, quando l'Abbonato attiva quella funzione con le proprie credenziali.</td><td>Estrazione assistita di dati dalle fatture (vedi sezione 16).</td></tr>
+            <tr><td><strong>Amministrazioni fiscali</strong></td><td>I dati del documento fiscale richiesti dalla normativa.</td><td>Validazione e trasmissione dei documenti fiscali elettronici.</td></tr>
+            <tr><td><strong>Centrali rischi</strong></td><td>Identificazione del richiedente, con le credenziali e sotto l'autorizzazione dell'Abbonato stesso.</td><td>Consultazione dello storico creditizio nel modulo Prestamello.</td></tr>
+            <tr><td><strong>Fornitore di cartografia</strong> (OpenStreetMap, Google Maps, HERE o Mapbox, a scelta dell'Abbonato)</td><td>Indirizzi e coordinate delle fermate di un giro. Non vengono trasmessi né il nome del cliente né il contenuto dell'ordine.</td><td>Convertire un indirizzo in coordinate, calcolare distanze e tracciare il percorso, quando l'Abbonato usa il Pianificatore di giri.</td></tr>
+            <tr><td><strong>Web3Forms</strong></td><td>Nome, e-mail e messaggio del modulo del sito web.</td><td>Recapito delle richieste commerciali alla nostra casella di posta.</td></tr>
+            <tr><td><strong>Reti di distribuzione dei contenuti e caratteri web</strong> (jsDelivr, Cloudflare&nbsp;cdnjs, unpkg, Google&nbsp;Fonts e Bunny&nbsp;Fonts)</td><td>L'<strong>indirizzo IP</strong> del dispositivo, il browser e la schermata da cui la risorsa viene richiesta. <strong>Non ricevono</strong> dati dell'account, né contenuto delle schermate, né identificativi di sessione.</td><td>Fornire al browser le librerie, i caratteri e le icone che compongono l'interfaccia. Vengono caricati su <strong>tutte</strong> le schermate della Piattaforma. Il dettaglio di ciascun componente è negli <a href="/it/avisos-terceros/">Avvisi sul software di terze parti</a>.</td></tr>
+            <tr><td><strong>QuickChart</strong></td><td>Il <strong>link pubblico di iscrizione</strong> a un evento. Non gli viene trasmesso alcun dato di persone né dell'account.</td><td>Generare l'immagine del codice QR di un evento quando la Piattaforma non può comporla da sola. Solo nel modulo Events.</td></tr>
+            <tr><td><strong>Servizio di tassi di cambio</strong> (exchangerate-api)</td><td>L'indirizzo IP del visitatore del <strong>sito web pubblico</strong> <code>zyntello.com</code>. Non interviene nella Piattaforma.</td><td>Mostrare prezzi convertiti nella pagina delle soluzioni.</td></tr>
+            <tr><td><strong>Autorità competenti</strong></td><td>Quanto strettamente richiesto da un ordine legale valido.</td><td>Adempimento di obblighi di legge.</td></tr>
+            <tr><td><strong>Consulenti professionali</strong></td><td>Quanto strettamente necessario.</td><td>Contabilità, revisione e difesa legale.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Tutti i fornitori operano secondo i propri impegni di riservatezza e sicurezza. Le credenziali che l'Abbonato configura per integrarsi con terzi sono conservate <strong>cifrate</strong> nel nostro database.</p>
+      <div class="note">
+        <p><b>Gli ultimi tre destinatari non ricevono nulla che siamo noi a inviare loro.</b> Quando una schermata ha bisogno di un carattere o di una libreria servita dal server di un terzo, è <strong>il browser dell'utente stesso</strong> a richiederla direttamente, e in quella richiesta viaggia il suo indirizzo IP, come in qualsiasi visita a un sito web. È insito nel caricamento di una risorsa esterna: non è una comunicazione di dati che Zyntello decida di fare con le informazioni dell'account, ed è per questo che tali fornitori non vedono né un cliente, né una fattura, né un dipendente, né la sessione di nessuno.</p>
+        <p>Vengono dichiarati perché ricevono un dato personale — l'indirizzo IP — e perché l'abbonato ha diritto di saperlo, non perché esista un flusso di dati aziendali verso di loro.</p>
+      </div>
+    </section>
+
+    <section id="s6">
+      <h2 class="sec"><span class="n">6.</span> WhatsApp e Meta</h2>
+      <p>La Piattaforma consente all'Abbonato di comunicare con i propri contatti tramite <strong>WhatsApp</strong>, in due modalità: mediante un link di conversazione che l'Abbonato apre manualmente, oppure mediante l'API di WhatsApp Business quando l'Abbonato configura le proprie credenziali.</p>
+      <h3>6.1. Che cosa viene trasmesso</h3>
+      <p>All'invio di un messaggio vengono trasmessi il <strong>numero di telefono del destinatario</strong> e il <strong>contenuto del messaggio</strong>, che può comprendere il nome del contatto, il numero e lo stato di un documento, importi e link a documenti o portali di consultazione.</p>
+      <h3>6.2. Chi è responsabile</h3>
+      <p>L'<strong>Abbonato è il mittente</strong> e il responsabile del messaggio: ne determina il contenuto, i destinatari e la finalità, e deve disporre del consenso preventivo del destinatario per contattarlo su quel canale. Zyntello non invia comunicazioni commerciali ai contatti dei suoi Abbonati di propria iniziativa.</p>
+      <h3>6.3. Finalità dei messaggi</h3>
+      <p>I messaggi inviati dalla Piattaforma sono di natura <strong>operativa o transazionale</strong>: fatture e preventivi, ricevute e documenti, estratti conto, solleciti di pagamento e promemoria di manutenzione, avvisi di appuntamento o di stato di un servizio, convocazioni e notifiche di approvazione.</p>
+      <h3>6.4. Diritto di disiscrizione</h3>
+      <p>Se lei riceve messaggi da un'azienda che utilizza Zyntello e non desidera più riceverli, può rispondere chiedendo la disiscrizione, bloccare il numero o segnalarlo direttamente a quell'azienda, che deve darvi seguito immediatamente. La Piattaforma fornisce meccanismi per registrare quella preferenza contatto per contatto. Se le serve aiuto per individuare il mittente, può scriverci a <a href="mailto:info@zyntello.com">info@zyntello.com</a> e la indirizzeremo.</p>
+      <h3>6.5. Informative applicabili</h3>
+      <p>Il trattamento delle informazioni da parte di WhatsApp LLC e Meta Platforms, Inc. è regolato dalle loro informative, tra cui l'<a href="https://www.whatsapp.com/legal/privacy-policy" rel="noopener">Informativa sulla privacy di WhatsApp</a> e l'<a href="https://www.whatsapp.com/legal/business-policy" rel="noopener">Informativa di WhatsApp Business</a>. Zyntello non controlla il trattamento effettuato da tali società.</p>
+    </section>
+
+    <section id="s7">
+      <h2 class="sec"><span class="n">7.</span> Trasferimenti internazionali</h2>
+      <p>I nostri server sono ospitati negli <strong>Stati Uniti</strong>. Utilizzando la Piattaforma, i dati vengono trasferiti e conservati in quel paese. Anche i prestatori di servizi di pagamento, il fornitore di posta in uscita, WhatsApp e Meta e i fornitori di intelligenza artificiale possono trattare dati fuori dal paese d'origine dell'Abbonato.</p>
+      <p>Lo stesso vale, in misura minore, per le <strong>reti di distribuzione dei contenuti e i fornitori di caratteri web</strong> della sezione 5: i loro server sono distribuiti in tutto il mondo e il browser si collega al più vicino, per cui l'indirizzo IP dell'utente può essere trattato fuori dal suo paese. È l'unico dato che ricevono.</p>
+      <p>Per gli interessati soggetti al Regolamento generale sulla protezione dei dati dell'Unione europea, questi trasferimenti si fondano sulle clausole contrattuali tipo o sui meccanismi di trasferimento che ciascun fornitore ha in essere. Può chiederci informazioni sul meccanismo applicabile scrivendo a <a href="mailto:info@zyntello.com">info@zyntello.com</a>.</p>
+    </section>
+
+    <section id="s8">
+      <h2 class="sec"><span class="n">8.</span> Tempi di conservazione</h2>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Dati</th><th>Tempo di conservazione</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Account e dati operativi dell'Abbonato</td><td>Finché l'abbonamento è attivo, più <strong>30 giorni</strong> dopo la cessazione per consentirne l'esportazione. Poi vengono cancellati.</td></tr>
+            <tr><td>Dati di fatturazione e documenti fiscali</td><td><strong>10 anni</strong>, o il termine imposto dalla normativa fiscale applicabile se diverso.</td></tr>
+            <tr><td>Storico delle posizioni di un giro (Pianificatore di giri)</td><td><strong>90 giorni</strong> dalla chiusura del giro. Dopodiché si conserva soltanto il riepilogo del giro — fermate, orari di arrivo e di partenza, distanza ed esito di ogni consegna o visita —, che è quanto serve ai report di conformità, e <strong>si cancella la traccia punto per punto</strong>, che è il dato che permetterebbe di ricostruire il percorso di una persona. Se l'Abbonato non attiva il tracciamento, non viene generato alcuno storico delle posizioni.</td></tr>
+            <tr><td>Registri tecnici e registro di audit</td><td><strong>12 mesi</strong>, salvo che siano necessari più a lungo per indagare su un incidente di sicurezza.</td></tr>
+            <tr><td>Account dimostrativo</td><td>Viene <strong>cancellato automaticamente ogni giorno</strong> da un processo pianificato.</td></tr>
+            <tr><td>Backup</td><td>Ciclo di rotazione di <strong>30 giorni</strong>. I dati cancellati scompaiono dai backup al completarsi del ciclo.</td></tr>
+            <tr><td>Backup in autonomia scaricati dall'Abbonato</td><td>Sul server si conservano i <strong>5 più recenti</strong>; i precedenti vengono eliminati. La <strong>traccia</strong> della loro generazione e del loro download si conserva per tutta la durata dell'abbonamento. Le copie già scaricate restano sotto il controllo esclusivo dell'Abbonato (vedi 9.4).</td></tr>
+            <tr><td>Registrazione del consenso e della disiscrizione dal marketing</td><td>Per tutta la durata del rapporto, più <strong>5 anni</strong> a prova del consenso o della disiscrizione.</td></tr>
+            <tr><td>Richieste di esercizio dei diritti e relativa risposta</td><td><strong>3 anni</strong> dalla loro evasione, a prova di conformità.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="s9">
+      <h2 class="sec"><span class="n">9.</span> I suoi diritti e la cancellazione dei dati</h2>
+      <h3>9.1. Diritti che può esercitare</h3>
+      <p>Lei può richiedere in qualsiasi momento:</p>
+      <ul>
+        <li>l'<strong>accesso</strong>: sapere quali suoi dati trattiamo e per quale finalità;</li>
+        <li>la <strong>rettifica</strong>: correggere dati inesatti o incompleti;</li>
+        <li>la <strong>cancellazione</strong>: eliminare i suoi dati quando non sono più necessari;</li>
+        <li>l'<strong>opposizione</strong>: opporsi a un trattamento fondato sul legittimo interesse;</li>
+        <li>la <strong>portabilità</strong> e la <strong>limitazione</strong> del trattamento, dove la legge applicabile le preveda. Se lei è l'Abbonato, può esercitare la portabilità <strong>da solo e in qualsiasi momento</strong> da <em>Configurazione&nbsp;→&nbsp;Backup dei dati</em> (vedi 9.4);</li>
+        <li><strong>revocare un consenso</strong> prestato in precedenza, senza effetto retroattivo.</li>
+      </ul>
+
+      <h3>9.2. Come esercitarli</h3>
+      <p>Scriva a <a href="mailto:info@zyntello.com">info@zyntello.com</a> dall'indirizzo registrato o comprovando la sua identità, indicando con chiarezza il diritto che esercita. Risponderemo entro un termine massimo di <strong>15 giorni lavorativi</strong> (o di <strong>un mese</strong> se le si applica il Regolamento generale sulla protezione dei dati dell'Unione europea).</p>
+
+      <h3>9.3. Richiesta di cancellazione dei dati</h3>
+      <div class="note ok">
+        <p><b>Istruzioni dettagliate in una pagina dedicata:</b> <a href="/it/eliminacion-datos/"><strong>zyntello.com/eliminacion-datos/</strong></a> — comprendono la procedura passo passo, i termini, che cosa viene cancellato, che cosa si conserva per obbligo di legge e come smettere di ricevere messaggi.</p>
+      </div>
+      <div class="note">
+        <p><b>Per richiedere la cancellazione dei suoi dati personali</b>, invii un'e-mail a <a href="mailto:info@zyntello.com">info@zyntello.com</a> con oggetto <em>«Richiesta di cancellazione dei dati»</em>, specificando:</p>
+        <ul>
+          <li>il suo nome e cognome;</li>
+          <li>l'indirizzo e-mail o il numero di telefono con cui si è registrato o è stato contattato;</li>
+          <li>se del caso, il nome dell'azienda che l'ha contattata o che l'ha registrata sulla Piattaforma.</li>
+        </ul>
+        <p>Confermeremo la ricezione ed evaderemo la richiesta entro un termine massimo di <strong>30 giorni</strong>. Le comunicheremo per iscritto l'esito, precisando quali dati sono stati cancellati e quali dobbiamo conservare per obbligo di legge.</p>
+      </div>
+      <p><strong>Se i suoi dati sono stati caricati da un'azienda Abbonata</strong> — perché lei è suo cliente, dipendente, residente, debitore o partecipante — è quell'azienda il titolare del trattamento. In tal caso trasmetteremo a lei la sua richiesta, gliene daremo conferma e collaboreremo affinché venga evasa, ma la decisione finale sulla cancellazione spetta a quell'azienda.</p>
+      <p><strong>Limiti.</strong> La cancellazione non si applica alle informazioni che dobbiamo conservare per obbligo legale, contabile o fiscale (per esempio i documenti fiscali emessi), né a quelle necessarie alla difesa di contenziosi. In questi casi i dati vengono bloccati e il loro trattamento è limitato fino alla scadenza del termine legale di conservazione.</p>
+      <p>Se ritiene che i suoi diritti non siano stati rispettati adeguatamente, può presentare un reclamo all'autorità di protezione dei dati o al tribunale competente del suo paese.</p>
+
+      <h3>9.4. Backup e portabilità in autonomia</h3>
+      <p>L'Abbonato può generare e scaricare, quando vuole e senza doverlo chiedere, una copia completa dei dati delle sue aziende da <em>Configurazione&nbsp;→&nbsp;Backup dei dati</em>. Il file è un archivio ZIP che contiene l'esportazione in formato SQL, un manifesto con il dettaglio di che cosa è stato incluso e istruzioni di ripristino.</p>
+      <div class="note ok">
+        <p><b>Isolamento garantito.</b> Il file contiene <strong>soltanto le righe dell'Abbonato che lo genera</strong>. Non è un'esportazione del database di Zyntello e in nessun caso include informazioni di altri Abbonati. Ne restano fuori, inoltre, i dati tecnici comuni a tutta la Piattaforma — sessioni, token di recupero e notifiche —, che non appartengono ad alcun Abbonato in particolare. Il file stesso dichiara quali tabelle sono state omesse e perché.</p>
+      </div>
+      <p><strong>Responsabilità sulla copia scaricata.</strong> Una volta scaricato, il file resta sotto il controllo esclusivo dell'Abbonato, che diventa responsabile della sua custodia, della sua cifratura se lo ritiene necessario e della sua cancellazione. Zyntello non può recuperare, tracciare né cancellare copie che hanno già lasciato la Piattaforma. Se il file contiene dati personali di terzi — clienti, dipendenti, residenti —, l'Abbonato resta il titolare del loro trattamento conformemente alla sezione 2.</p>
+      <p>I backup generati si conservano sul server soltanto per il download: si mantengono i <strong>5 più recenti</strong> per Abbonato e i precedenti vengono eliminati. La traccia del fatto che un backup è stato generato e scaricato viene invece conservata, per poter dimostrare l'esercizio della portabilità.</p>
+    </section>
+
+    <section id="s10">
+      <h2 class="sec"><span class="n">10.</span> Normativa per paese</h2>
+      <ul>
+        <li><strong>Repubblica Dominicana</strong> — Legge n. 172-13 sulla protezione dei dati di carattere personale: diritti di accesso, rettifica, cancellazione e opposizione; reclami davanti ai tribunali competenti.</li>
+        <li><strong>Unione europea e Spazio economico europeo</strong> — Regolamento (UE) 2016/679 (GDPR), ove applicabile: basi giuridiche della sezione 3, diritti ampliati della sezione 9, notifica delle violazioni all'autorità di controllo entro 72 ore e diritto di reclamo all'autorità di controllo locale.</li>
+        <li><strong>Colombia</strong> — Legge 1581 del 2012 e relativi decreti attuativi (regime di habeas data): istanze e reclami secondo le procedure della Superintendencia de Industria y Comercio.</li>
+        <li><strong>Costa Rica</strong> — Legge 8968 sulla protezione della persona rispetto al trattamento dei suoi dati personali (PRODHAB).</li>
+        <li><strong>Venezuela</strong> — diritto costituzionale di habeas data (articolo 28 della Costituzione) e normativa applicabile.</li>
+        <li><strong>Guatemala</strong> — in mancanza di una legge generale sulla protezione dei dati, si applicano le garanzie costituzionali e la presente Informativa quale impegno contrattuale azionabile.</li>
+        <li><strong>Messico</strong>, ove applicabile — Legge federale sulla protezione dei dati personali in possesso dei privati: diritti di accesso, rettifica, cancellazione e opposizione presso il contatto della sezione 1.</li>
+      </ul>
+      <p>In caso di conflitto prevale la norma imperativa del paese dell'interessato.</p>
+    </section>
+
+    <section id="s11">
+      <h2 class="sec"><span class="n">11.</span> Sicurezza</h2>
+      <p>Applichiamo misure tecniche e organizzative proporzionate al rischio, tra cui:</p>
+      <ul>
+        <li>password conservate con algoritmi di <em>hashing</em> robusti, mai in chiaro;</li>
+        <li>cifratura del traffico in transito tramite TLS;</li>
+        <li><strong>isolamento rigoroso dei dati</strong> tra abbonati e tra aziende di uno stesso abbonato, applicato automaticamente a ogni interrogazione;</li>
+        <li><strong>controllo degli accessi con due ambiti distinti</strong>: gli utenti dell'Abbonato stesso accedono a tutte le aziende dell'account con i permessi del loro ruolo, mentre gli <strong>utenti interni</strong> — pensati per personale temporaneo o esterno — sono assegnati a <strong>una sola azienda</strong> e i loro permessi, configurati modulo per modulo, riguardano <strong>soltanto i dati di quell'azienda</strong>;</li>
+        <li><strong>verifica in due passaggi</strong> attivabile dall'utente, via e-mail o tramite un'app di autenticazione del telefono (standard TOTP), con codici di recupero monouso, blocco temporaneo dopo vari tentativi non riusciti e avviso via e-mail di qualsiasi modifica alla verifica;</li>
+        <li>cifratura nel database delle credenziali delle integrazioni di terze parti;</li>
+        <li>registro di audit delle azioni su documenti e configurazioni;</li>
+        <li>backup periodici con verifica di integrità e copia fuori dal server principale;</li>
+        <li>il <strong>backup in autonomia</strong> dell'Abbonato applica lo stesso isolamento: si costruisce filtrando esclusivamente le sue righe, esclude i dati tecnici comuni alla Piattaforma e dichiara nel suo manifesto che cosa è rimasto fuori;</li>
+        <li>la sessione si chiude alla chiusura del browser e, in ogni caso, scade sul server dopo sette giorni;</li>
+        <li>schermata dei <strong>dispositivi collegati</strong> dalla quale l'utente può chiudere a distanza le sessioni aperte su altri apparecchi.</li>
+      </ul>
+      <p>Nessun sistema è del tutto infallibile. Se si verificasse una violazione che riguarda i suoi dati, la notificheremo conformemente alla sezione 14.</p>
+    </section>
+
+    <section id="s12">
+      <h2 class="sec"><span class="n">12.</span> Accesso del personale di assistenza di Zyntello</h2>
+      <p>Per gestire una segnalazione può essere necessario che un operatore dell'assistenza di Zyntello entri nell'area di lavoro dell'Abbonato e veda i suoi dati. Questa sezione spiega entro quali limiti ciò avviene e come l'Abbonato stesso può verificarlo.</p>
+      <ul>
+        <li><strong>Su quale base.</strong> È un'operazione necessaria all'esecuzione del contratto di servizio: senza di essa non potremmo diagnosticare né correggere un guasto che riguardi i dati dell'Abbonato. Qui Zyntello agisce in qualità di <strong>responsabile del trattamento</strong>, su istruzioni dell'Abbonato, che è il titolare (vedi sezione 2).</li>
+        <li><strong>Con quale identità.</strong> L'operatore non usa <strong>mai</strong> il nome utente né la password di una persona dell'Abbonato. Accede con un <strong>account tecnico</strong> distinto, e ogni azione è firmata con il nome dell'<strong>operatore reale</strong>, non con quello dell'account tecnico né di un utente del cliente.</li>
+        <li><strong>Con quale ambito.</strong> La sessione di assistenza nasce in <strong>sola lettura</strong>. Per modificare qualsiasi dato l'operatore deve elevarla dichiarando un motivo specifico, ed è un'elevazione che <strong>scade da sola</strong> dopo 30 minuti.</li>
+        <li><strong>Che cosa viene registrato.</strong> Di ogni accesso vengono conservati l'operatore, la data e l'ora di entrata e di uscita, il motivo dichiarato, l'indirizzo IP, se l'accesso era autorizzato dall'Abbonato o d'emergenza e — se la sessione è stata elevata — il dettaglio di ogni dato modificato.</li>
+        <li><strong>Accesso d'emergenza.</strong> Quando non è possibile ottenere un'autorizzazione preventiva e la segnalazione lo richiede, l'operatore può accedere dichiarando il motivo. Quell'accesso viene contrassegnato come <strong>non autorizzato</strong> e il titolare dell'account riceve una notifica.</li>
+        <li><strong>Come lo verifica l'Abbonato.</strong> Il titolare dell'account consulta in qualsiasi momento lo storico completo in <strong>Configurazione → Accessi dell'assistenza</strong>, senza doverlo chiedere a noi.</li>
+        <li><strong>Che cosa NON facciamo.</strong> Non accediamo ai dati di un Abbonato per finalità commerciali, statistiche o di addestramento di modelli, e non estraiamo copie delle sue informazioni oltre quanto necessario a risolvere la segnalazione.</li>
+        <li><strong>Gestione delle credenziali.</strong> L'account tecnico non può essere usato digitando credenziali: si apre soltanto dallo strumento di assistenza stesso, che richiede che l'operatore abbia verificato la propria identità in due passaggi.</li>
+      </ul>
+      <h3>12.1. Il servizio di assistenza e i suoi allegati</h3>
+      <p>Quando l'Abbonato apre un ticket di assistenza vengono conservati l'oggetto, la descrizione, l'intera conversazione successiva e i <strong>file che allega</strong>.</p>
+      <ul>
+        <li><strong>È l'allegato a richiedere più attenzione.</strong> Per spiegare un problema è consueto allegare una schermata del sistema stesso, e lì possono comparire <strong>dati personali dei clienti o dei dipendenti dell'Abbonato</strong>: nomi, documenti, importi o saldi. Zyntello tratta quelle informazioni in qualità di <strong>responsabile</strong>, unicamente per risolvere il ticket.</li>
+        <li><strong>Vengono conservati in un archivio privato</strong>, non accessibile da un indirizzo pubblico: per scaricare un file bisogna aver effettuato l'accesso e appartenere all'Abbonato titolare del ticket.</li>
+        <li><strong>Condivida solo il necessario.</strong> Se una schermata contiene dati che non servono alla diagnosi, consigliamo di oscurarli prima di allegarla. È l'Abbonato a decidere che cosa inviare.</li>
+        <li><strong>Note interne.</strong> Il team di assistenza può aggiungere al ticket annotazioni di lavoro che l'Abbonato non vede — diagnosi preliminari, coordinamento interno. Fanno parte del fascicolo del ticket e si conservano con esso.</li>
+        <li><strong>Conservazione.</strong> I ticket e i loro file si conservano per tutta la durata del rapporto contrattuale e per il termine generale della sezione 8; poi vengono cancellati insieme al resto dei dati dell'Abbonato.</li>
+        <li><strong>La posta inviata all'assistenza entra nel sistema.</strong> Un messaggio indirizzato a <strong>soporte@zyntello.com</strong> viene incorporato automaticamente nel ticket: il suo <strong>testo e i file che vi sono allegati vengono conservati</strong> nel fascicolo, con lo stesso trattamento e le stesse protezioni descritti sopra. Lo segnaliamo perché un'e-mail si scrive con meno cautela di un modulo e spesso trascina con sé lo scambio precedente e allegati inviati per altro. <strong>La citazione del messaggio precedente viene troncata</strong> per non duplicare informazioni, e il file che eccede la dimensione ammessa non viene conservato: il suo nome viene annotato nel ticket perché l'operatore possa richiederlo per altra via.</li>
+        <li><strong>L'assistente con intelligenza artificiale.</strong> La piattaforma include un assistente che risponde ai dubbi d'uso. Quando lei gli pone una domanda, a un fornitore di intelligenza artificiale (<strong>Anthropic</strong>, che agisce come <strong>sub-responsabile</strong>) vengono inviate <strong>soltanto due cose</strong>: <strong>il testo della sua domanda</strong> e <strong>documentazione di Zyntello</strong> relativa al modulo da cui la pone. <ul> <li><strong>NON vengono inviati dati della sua attività né dei suoi clienti.</strong> Né nomi, né importi, né saldi, né record del suo database. Il testo che viene trasmesso si costruisce esclusivamente con i nostri manuali: il componente che lo compone <strong>non interroga il database</strong>, e ciò è verificato da un test automatico che fallisce se un giorno lo interrogasse.</li>
+          <li><strong>L'unica cosa sua che viaggia è ciò che lei scrive nella domanda.</strong> Per questo le chiediamo di non includervi dati personali di terzi: per spiegare come si emette una fattura non serve il nome del cliente.</li>
+          <li><strong>Le risposte vengono conservate</strong> per non interrogare di nuovo il fornitore davanti alla stessa domanda. Quell'archivio contiene <strong>soltanto</strong> domande d'uso e risposte basate sulla nostra documentazione.</li>
+          <li><strong>L'assistente non esegue azioni</strong> e non modifica le sue informazioni: si limita a spiegare.</li>
+        </ul></li>
+        <li><strong>Le e-mail che non si possono identificare.</strong> Se un messaggio arriva alla casella dell'assistenza e <strong>non si può stabilire da quale Abbonato provenga</strong> — perché il mittente non corrisponde ad alcun utente registrato —, <strong>non viene aggiunto ad alcun ticket</strong>: resta in una casella di revisione a parte, separata dai dati di qualsiasi Abbonato, proprio per non inserire nell'account di un cliente informazioni la cui origine non è verificata. Un'e-mail può falsificare il proprio mittente, e perciò non basta che lo dica il messaggio.</li>
+      </ul>
+
+    </section>
+
+    <section id="s13">
+      <h2 class="sec"><span class="n">13.</span> Comunicazioni e marketing</h2>
+      <ul>
+        <li>Le <strong>comunicazioni transazionali</strong> (verifica dell'identità, codici di accesso, avvisi di fatturazione, allerte di sicurezza, avvisi di manutenzione e modifiche contrattuali) vengono inviate nell'ambito del servizio e non richiedono un consenso aggiuntivo finché esiste un rapporto contrattuale in corso.</li>
+        <li>Le <strong>comunicazioni commerciali di Zyntello</strong> (novità, newsletter, offerte) vengono inviate soltanto con <strong>consenso preventivo</strong>, raccolto tramite una casella non preselezionata. Conserviamo traccia di quando e come è stato prestato.</li>
+        <li><strong>Disiscrizione</strong>: ogni e-mail commerciale contiene un link di disiscrizione con un solo clic. Può anche richiederla scrivendo a <a href="mailto:info@zyntello.com">info@zyntello.com</a>. La disiscrizione viene evasa entro un massimo di <strong>72 ore</strong> e non incide sulle comunicazioni transazionali del servizio.</li>
+        <li><strong>Comunicazioni inviate dagli Abbonati</strong>: se un'azienda che usa Zyntello le invia messaggi via e-mail o WhatsApp, è quell'azienda a essere responsabile di disporre del suo consenso e di gestire la sua disiscrizione (vedi sezione 6).</li>
+      </ul>
+    </section>
+
+    <section id="s14">
+      <h2 class="sec"><span class="n">14.</span> Cookie</h2>
+      <p>La Piattaforma utilizza esclusivamente cookie <strong>strettamente necessari</strong> al suo funzionamento:</p>
+      <ul>
+        <li><strong>Cookie di sessione</strong>: mantiene l'utente autenticato mentre naviga.</li>
+        <li><strong>Token di protezione dei moduli</strong>: impedisce l'invio di richieste fraudolente da siti di terze parti.</li>
+        <li><strong>Cookie di sessione memorizzata</strong>: solo se l'utente seleziona quell'opzione al momento dell'accesso.</li>
+        <li><strong>Preferenza di ultima posizione</strong>: consente di riprendere il lavoro dal punto in cui lo si era lasciato alla ripresa della sessione.</li>
+      </ul>
+      <div class="note ok">
+        <p><b>Non utilizziamo cookie pubblicitari, di profilazione né di tracciamento di terze parti</b>, e non integriamo pixel di social network o di piattaforme pubblicitarie nella Piattaforma. Per questo motivo non è necessario un banner di consenso ai cookie per utilizzarla.</p>
+      </div>
+      <p>Può eliminare o bloccare i cookie dalle impostazioni del suo browser, tenendo presente che farlo impedirà di accedere alla Piattaforma.</p>
+
+      <h3>14.1. Risorse servite da terze parti</h3>
+      <p>Cosa diversa dai cookie, e che conviene non confondere con essi: una parte dei caratteri, delle icone e delle librerie dell'interfaccia è servita dai server di terze parti elencati nella sezione 5. <strong>Nessuno di essi installa cookie</strong> né ci restituisce alcun identificativo dell'utente, ma la connessione esiste, e in essa viaggia il suo indirizzo IP.</p>
+      <p>Lo diciamo perché l'assenza di cookie pubblicitari non equivale all'assenza di connessioni verso terzi, e un'informativa che parlasse solo di cookie lascerebbe fuori ciò che accade davvero all'apertura di una schermata.</p>
+    </section>
+
+    <section id="s15">
+      <h2 class="sec"><span class="n">15.</span> Notifica degli incidenti di sicurezza</h2>
+      <p>Se si verifica una violazione di sicurezza che riguarda dati personali, valuteremo il rischio e notificheremo:</p>
+      <ul>
+        <li>gli <strong>Abbonati interessati</strong>, senza ingiustificato ritardo, con le informazioni disponibili sulla portata, sulle categorie di dati compromessi e sulle misure adottate;</li>
+        <li>le <strong>autorità competenti</strong> quando la legge lo richiede — entro <strong>72 ore</strong> dalla presa di conoscenza, nel caso del GDPR;</li>
+        <li>gli <strong>interessati</strong>, quando la violazione comporti un rischio elevato per i loro diritti e le loro libertà e la legge applicabile lo richieda.</li>
+      </ul>
+      <p>Quando agiamo in qualità di responsabile, la notifica è indirizzata all'Abbonato titolare, cui spetta informare gli interessati e l'autorità.</p>
+    </section>
+
+    <section id="s16">
+      <h2 class="sec"><span class="n">16.</span> Minori</h2>
+      <p>La Piattaforma è rivolta esclusivamente a imprese e professionisti e non è destinata a minori di 18 anni. Non raccogliamo consapevolmente dati di minori come utenti del servizio. Se un Abbonato registra dati di minori nell'esercizio della propria attività, è sua responsabilità disporre dell'autorizzazione dei genitori o dei tutori conformemente alla legge applicabile.</p>
+    </section>
+
+    <section id="s17">
+      <h2 class="sec"><span class="n">17.</span> Decisioni automatizzate e intelligenza artificiale</h2>
+      <p>Alcuni moduli offrono funzioni assistite da intelligenza artificiale, principalmente l'<strong>estrazione di dati da fatture e documenti</strong> e suggerimenti statistici basati sullo storico.</p>
+      <ul>
+        <li><strong>Non prendiamo decisioni automatizzate con effetti giuridici</strong> sulle persone. Ogni valutazione con conseguenze — per esempio l'approvazione di un credito nel modulo Prestamello — richiede l'intervento e la decisione di un utente umano.</li>
+        <li>La <strong>revisione umana è obbligatoria</strong>: il risultato del modello viene presentato come bozza e non produce effetti contabili, fiscali o di magazzino finché un utente non lo convalida.</li>
+        <li>La funzione è <strong>opzionale</strong>, è disattivata per impostazione predefinita e richiede che l'Abbonato la abiliti con le proprie credenziali presso il fornitore di intelligenza artificiale.</li>
+        <li><strong>Non utilizziamo i dati degli Abbonati per addestrare modelli propri.</strong> Il trattamento da parte del fornitore di intelligenza artificiale è regolato dai termini che l'Abbonato ha accettato con quel fornitore.</li>
+      </ul>
+    </section>
+
+    <section id="s18">
+      <h2 class="sec"><span class="n">18.</span> Modifiche alla presente Informativa</h2>
+      <p>Pubblicheremo qualsiasi modifica su questa stessa pagina, aggiornando la data di ultimo aggiornamento. Se la modifica è sostanziale, la notificheremo per posta elettronica o mediante un avviso in evidenza sulla Piattaforma con almeno <strong>30 giorni</strong> di anticipo rispetto alla sua entrata in vigore. Le versioni precedenti sono disponibili su richiesta.</p>
+    </section>
+
+    <section id="s19">
+      <h2 class="sec"><span class="n">19.</span> Contatti</h2>
+      <p>Per qualsiasi domanda o richiesta relativa alla privacy e alla protezione dei dati:</p>
+      <ul>
+        <li><strong>Zyntello, S.R.L.</strong> — Repubblica Dominicana</li>
+        <li>Posta elettronica: <a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+        <li>Telefono e WhatsApp: <a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+        <li>Sito web: <a href="https://zyntello.com">https://zyntello.com</a></li>
+      </ul>
+      <p>Consulti anche i nostri <a href="/it/terminos/">Termini di Servizio</a> e le <a href="/it/eliminacion-datos/">istruzioni per la cancellazione dei dati</a>.</p>
+    </section>
+
+    <section id="s20">
+      <h2 class="sec"><span class="n">20.</span> Registro delle modifiche</h2>
+      <p>Registro completo e cumulativo di tutte le versioni della presente Informativa dalla sua prima pubblicazione. Ogni voce indica la versione, la data di entrata in vigore e che cosa è cambiato. Le voci precedenti <strong>non vengono modificate né eliminate</strong>.</p>
+      <div class="note">
+        <p><b>Come leggere le versioni.</b> Un cambio di <strong>versione minore</strong> (1.0 → 1.1) aggiunge o precisa informazioni — un modulo nuovo, un destinatario, una categoria di dati — senza alterare le finalità né le basi giuridiche del trattamento. Un cambio di <strong>versione maggiore</strong> (1.x → 2.0) modifica finalità, basi giuridiche, destinatari, tempi di conservazione o i suoi diritti, e viene notificato con <strong>30 giorni</strong> di anticipo conformemente alla sezione 17.</p>
+      </div>
+      <div class="tbl chg">
+        <table>
+          <thead>
+            <tr><th>Versione</th><th>Data</th><th>Modifiche</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1.9 <span class="vig">In vigore</span></td>
+              <td>18 settembre 2026</td>
+              <td><strong>I terzi che ricevono l'indirizzo IP al caricamento di una schermata.</strong> La sezione <strong>5</strong> non dichiarava tre destinatari che invece esistono, e vengono inseriti: <strong>(1)</strong> le <strong>reti di distribuzione dei contenuti e i fornitori di caratteri web</strong> — jsDelivr, Cloudflare cdnjs, unpkg, Google Fonts e Bunny Fonts —, dai quali vengono servite le librerie, i caratteri e le icone dell'interfaccia; si caricano su <strong>tutte</strong> le schermate della Piattaforma e ricevono l'indirizzo IP, il browser e la schermata richiesta, mai dati dell'account né identificativi di sessione. <strong>(2)</strong> <strong>QuickChart</strong>, che genera l'immagine del codice QR di un evento e riceve soltanto il link pubblico di iscrizione, solo nel modulo Events. <strong>(3)</strong> il <strong>servizio di tassi di cambio</strong> interrogato dal sito web pubblico, che riceve l'IP del visitatore e non interviene nella Piattaforma. Dopo la tabella viene aggiunta la spiegazione del perché questi tre non costituiscano una comunicazione di dati aziendali: è <strong>il browser dell'utente stesso</strong> a richiedere la risorsa, e in quella richiesta viaggia il suo IP come in qualsiasi visita a un sito web. La sezione <strong>7</strong> estende i trasferimenti internazionali a questi fornitori, i cui server sono distribuiti nel mondo. La sezione <strong>14.1</strong> chiarisce che <strong>nessuno installa cookie</strong> e che l'assenza di cookie pubblicitari non equivale all'assenza di connessioni verso terzi. Il dettaglio tecnico di ciascun componente è negli <a href="/it/avisos-terceros/">Avvisi sul software di terze parti</a>, pubblicati con la versione 1.7 dei <a href="/it/terminos/">Termini</a>. Non cambiano le finalità, i tempi di conservazione, i diritti dell'interessato né le basi giuridiche del trattamento.</td>
+            </tr>
+            <tr>
+              <td>1.8</td>
+              <td>11 settembre 2026</td>
+              <td><strong>Il Pianificatore di giri e il tracciamento della posizione di un autista.</strong> Entra il modulo <strong>Pianificatore di giri</strong> nella sezione <strong>4</strong>, con i dati che tratta: indirizzi e <strong>coordinate</strong> delle fermate, vettore, veicolo e autista assegnato, e posizione dell'autista durante il giro. Alla sezione <strong>3</strong> viene aggiunta una spiegazione che mancava e che non è una sfumatura: <strong>registrare un punto alla timbratura di entrata</strong> — ciò che già facevano Paghe, PSA e Prestamello — <strong>non è lo stesso che registrare la posizione ripetutamente per tutta la giornata</strong>, perché la seconda consente di ricostruire il percorso di una persona. Si dichiara che quel tracciamento <strong>nasce disattivato</strong> e che fuori dal giro non viene registrata alcuna posizione. Nella sezione <strong>5</strong> si dichiara un <strong>destinatario nuovo</strong>: il <strong>fornitore di cartografia</strong> (OpenStreetMap, Google Maps, HERE o Mapbox, a scelta dell'Abbonato), al quale vengono trasmessi indirizzi e coordinate delle fermate — non il nome del cliente né il contenuto dell'ordine. E nella sezione <strong>8</strong> si fissa un tempo di conservazione proprio per la <strong>traccia punto per punto</strong>: <strong>90 giorni</strong> dopo la chiusura del giro, trascorsi i quali si conserva solo il riepilogo di cui hanno bisogno i report e si cancella il percorso dettagliato.</td>
+            </tr>
+            <tr>
+              <td>1.7</td>
+              <td>9 settembre 2026</td>
+              <td><strong>L'assistente con intelligenza artificiale.</strong> La sezione <strong>12.1</strong> viene ampliata per dichiarare una funzione nuova e il <strong>sub-responsabile</strong> che interviene: usando l'assistente vengono inviati ad <strong>Anthropic</strong> soltanto <strong>il testo della domanda</strong> e <strong>documentazione di Zyntello</strong> del modulo corrispondente. Si dichiara espressamente che <strong>NON vengono inviati dati aziendali né personali dell'Abbonato</strong> — né nomi, né importi, né saldi, né record del database — perché il componente che compone quel testo <strong>non interroga il database</strong>, e che ciò è verificato da un test automatico che fallisce se un giorno lo interrogasse. Si avverte che l'unica cosa dell'Abbonato che viaggia è ciò che egli stesso scrive nella domanda, si dichiara che le risposte vengono conservate per non ripetere le interrogazioni e che quell'archivio contiene solo domande d'uso e risposte basate sulla nostra documentazione, e che <strong>l'assistente non esegue azioni</strong>. <strong>Non cambiano</strong> le finalità, le basi giuridiche, i tempi di conservazione né i diritti dell'interessato.</td>
+            </tr>
+            <tr>
+              <td>1.6</td>
+              <td>9 settembre 2026</td>
+              <td><strong>La posta inviata all'assistenza entra nel sistema.</strong> La sezione <strong>12.1</strong> viene ampliata con una via di ingresso che la versione precedente non copriva: un messaggio indirizzato a <strong>soporte@zyntello.com</strong> viene incorporato automaticamente nel ticket, e il suo <strong>testo e i suoi allegati vengono conservati</strong> nel fascicolo con lo stesso trattamento e le stesse protezioni già descritti. Lo si segnala perché un'e-mail si scrive con meno cautela di un modulo e spesso trascina con sé lo scambio precedente e allegati inviati per altro; si dichiara che <strong>la citazione del messaggio precedente viene troncata</strong> e che il file che eccede la dimensione ammessa non viene conservato, annotandone il nome. Si dichiara inoltre che cosa accade alle e-mail <strong>il cui mittente non si può identificare</strong>: non vengono aggiunte ad alcun ticket ma restano in una casella di revisione <strong>separata dai dati di qualsiasi Abbonato</strong>, perché un'e-mail può falsificare il proprio mittente e non basta che lo dica il messaggio. <strong>Non cambiano</strong> le finalità, le basi giuridiche, i destinatari, i tempi di conservazione né i diritti dell'interessato.</td>
+            </tr>
+            <tr>
+              <td>1.5</td>
+              <td>7 settembre 2026</td>
+              <td><strong>Il servizio di assistenza e i suoi allegati.</strong> Viene aggiunta la sezione <strong>12.1</strong>, che documenta una categoria di dati che la versione precedente non copriva: il contenuto dei ticket di assistenza e, soprattutto, i <strong>file che l'Abbonato allega</strong>. Si precisa che una schermata può contenere dati personali dei clienti o dei dipendenti dell'Abbonato e che Zyntello li tratta in qualità di <strong>responsabile</strong>, unicamente per risolvere il ticket; che gli allegati si conservano in un archivio privato e richiedono l'accesso effettuato e l'appartenenza all'Abbonato titolare del ticket per essere scaricati; che il team di assistenza può aggiungere note interne che fanno parte del fascicolo; e il tempo di conservazione. Si raccomanda inoltre di oscurare dalla schermata ciò che non serve alla diagnosi. Non cambiano le finalità, le basi giuridiche, i destinatari né i diritti dell'interessato.</td>
+            </tr>
+            <tr>
+              <td>1.4</td>
+              <td>6 settembre 2026</td>
+              <td><strong>Accesso del personale di assistenza di Zyntello.</strong> Viene aggiunta la sezione <strong>12</strong>, che documenta un'operazione che la versione precedente non descriveva: quando una segnalazione lo richiede, un operatore dell'assistenza di Zyntello può entrare nell'area di lavoro dell'Abbonato e vedere i suoi dati. Si precisa su quale base ciò avviene, che l'operatore non usa <strong>mai</strong> le credenziali di una persona dell'Abbonato ma un account tecnico proprio, che la sessione nasce in <strong>sola lettura</strong> e che elevarla in scrittura richiede di dichiarare un motivo e scade da sola, che cosa viene registrato di ogni accesso, come viene contrassegnato l'accesso d'emergenza e dove lo verifica l'Abbonato stesso (<strong>Configurazione → Accessi dell'assistenza</strong>). Le sezioni da 12 a 19 della versione precedente vengono rinumerate da 13 a 20; il loro contenuto non cambia. Non cambiano le finalità, le basi giuridiche, i tempi di conservazione né i diritti dell'interessato.</td>
+            </tr>
+            <tr>
+              <td>1.3</td>
+              <td>5 settembre 2026</td>
+              <td><strong>Ambito di accesso di ciascuna categoria di utente.</strong> Nella sezione <strong>11</strong> si precisa che il controllo degli accessi ha due ambiti distinti: gli utenti dell'Abbonato stesso accedono a tutte le aziende dell'account con i permessi del loro ruolo, mentre gli <strong>utenti interni</strong> — destinati a personale temporaneo o esterno — sono assegnati a una sola azienda e i loro permessi riguardano soltanto i dati di quell'azienda. La formulazione precedente parlava di «ruoli e permessi granulari per modulo» senza distinguere fin dove arriva ciascuno. Non cambiano le categorie di dati trattati, i tempi di conservazione, i destinatari né i diritti dell'interessato.</td>
+            </tr>
+            <tr>
+              <td>1.2</td>
+              <td>4 settembre 2026</td>
+              <td><strong>Verifica in due passaggi con app di autenticazione e politica di sessione.</strong> Alla tabella della sezione <strong>4</strong> vengono aggiunti i dati che si conservano quando l'Utente attiva la verifica in due passaggi tramite app: la chiave dell'app (cifrata), i codici di recupero (cifrati in modo irreversibile) e il registro dei tentativi non riusciti; nessuno è leggibile da Zyntello. Le misure della sezione <strong>11</strong> vengono aggiornate con il nuovo metodo, il blocco temporaneo per tentativi non riusciti e l'avviso via e-mail di qualsiasi modifica alla verifica. Viene <strong>corretta</strong> la descrizione della politica di sessione, che diceva «chiusura automatica per inattività»: dal 3 settembre 2026 la sessione si chiude alla chiusura del browser, con scadenza sul server dopo sette giorni, ed esiste una schermata dei dispositivi collegati per chiuderle a distanza.</td>
+            </tr>
+            <tr>
+              <td>1.1</td>
+              <td>31 agosto 2026</td>
+              <td><strong>Backup e portabilità in autonomia.</strong> Viene documentata la funzione che consente all'Abbonato di generare e scaricare da solo una copia completa dei dati delle sue aziende: nuova sezione <strong>9.4</strong> (che cosa contiene il file, isolamento garantito rispetto ad altri Abbonati, dati tecnici che restano fuori e responsabilità sulla copia una volta scaricata), menzione in <strong>9.1</strong> come modo di esercitare la portabilità senza richiesta preventiva, tempo di conservazione proprio nella tabella della sezione <strong>8</strong> e precisazione nella sezione <strong>11</strong> che il backup applica lo stesso isolamento tra Abbonati. Non cambiano le finalità, le basi giuridiche né i destinatari del trattamento.</td>
+            </tr>
+            <tr>
+              <td>1.0</td>
+              <td>28 luglio 2026</td>
+              <td><strong>Prima pubblicazione.</strong> Documento iniziale in 19 sezioni: titolare del trattamento, doppio ruolo titolare/responsabile, dati trattati e relativa base giuridica, dati per modulo, destinatari e sub-responsabili, WhatsApp e Meta, trasferimenti internazionali, tempi di conservazione, diritti e procedura di cancellazione dei dati, normativa per paese, sicurezza, comunicazioni e marketing, cookie, notifica degli incidenti, minori, decisioni automatizzate e intelligenza artificiale, modifiche all'Informativa, contatti e registro delle modifiche.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Può richiedere una copia del testo integrale di qualsiasi versione precedente scrivendo a <a href="mailto:info@zyntello.com">info@zyntello.com</a>.</p>
+    </section>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>Tecnologia d'impresa e intelligenza artificiale</li>
+          <li>Repubblica Dominicana</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/it/terminos/">Condizioni del Servizio</a></li>
+          <li><a href="/it/privacidad/">Informativa sulla privacy</a></li>
+          <li><a href="/it/cookies/">Informativa sui cookie</a></li>
+          <li><a href="/it/eliminacion-datos/">Cancellazione dei dati</a></li>
+          <li><a href="/it/sla/">Accordo sul Livello di Servizio</a></li>
+          <li><a href="/it/avisos-terceros/">Avvisi sul software di terze parti</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contatti</h4>
+        <ul>
+          <li><a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+          <li><a href="https://zyntello.com">zyntello.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy">© 2026 Zyntello, S.R.L. Tutti i diritti riservati.</p>
+  </div>
+</footer>
+
+</body>
+</html>
