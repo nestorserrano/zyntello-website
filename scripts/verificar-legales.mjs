@@ -44,8 +44,34 @@ const TIENE_LETRAS = /[A-Za-zÁÉÍÓÚÑáéíóúñÜü]{2}/
 const SIN_PROSA = /^(<code>[^<]*<\/code>|<a [^>]*>[^<]*<\/a>|[\w.@+-]+|Zyntello,? ?S\.R\.L\.)$/
 const normalizar = (s) => s.replace(/\s+/g, ' ').trim()
 
-/** Lo que solo puede ser español: sus acentos o sus palabras funcionales. */
-const ESPANOL = /[áéíóúñ¿¡]|\b(de|del|la|los|las|para|con|que|una|desde|sobre|según)\b/i
+/**
+ * Lo que se escribe igual en todos los idiomas, así que coincidir con el español no significa
+ * nada: marcas, nombres de producto, correos, teléfonos, dominios y cifras.
+ *
+ * ⚠️ Una guarda que acusa a «Firefox:» o a «WhatsApp» es ruido permanente, y una guarda con
+ * ruido permanente deja de mirarse — que es la forma de que deje de proteger.
+ */
+const UNIVERSAL = new RegExp('^('
+  + 'Zyntello|WhatsApp|Chrome|Firefox|Safari|Edge|Android|iOS|Excel|SLA|XSRF-TOKEN'
+  + '|[A-Za-z][\\w /.-]*:'            // «Firefox:», «Android / iOS:»
+  + '|[\\d\\s+()·-]+'                  // teléfonos, cifras, separadores
+  + '|[^\\s@]+@[^\\s@]+'               // correos
+  + '|[\\w.-]*zyntello\\.com[\\w./-]*' // dominios propios
+  + '|©.*'                             // la línea de copyright
+  + ')$', 'i')
+
+/**
+ * Textos que SÍ coinciden con el español en algún idioma, y es correcto que coincidan.
+ *
+ * ⚠️⚠️ Cada uno lleva su motivo, y el motivo es la mitad del valor: sin él, la próxima sesión no
+ * puede distinguir una coincidencia legítima de una traducción que alguien olvidó y silenció
+ * añadiéndola aquí. Si un texto está en esta lista sin explicar por qué, sobra.
+ */
+const COINCIDEN_A_PROPOSITO = {
+  'Legal': 'se escribe igual en español, inglés, francés e italiano',
+  'Ni de Meta, ni de LinkedIn, ni de TikTok.':
+    'en francés la frase se construye igual que en español, palabra por palabra',
+}
 
 /**
  * Los nombres de los idiomas del selector se quedan en su propio idioma, a propósito.
@@ -99,6 +125,10 @@ for (const slug of LEGALES) {
   comprobarDuplicados(origen, `/${slug}/`)
 
   const base = readFileSync(origen, 'utf8').replace(OPACO, ' ')
+  /* Todo el texto visible de la versión española, para comparar contra él. */
+  const textosEspanoles = new Set(
+    [...base.matchAll(/>([^<>]+)</g)].map((m) => normalizar(m[1])).filter(Boolean))
+
   const bloques = [...base.matchAll(BLOQUE)]
     .map((m) => normalizar(m[2]))
     .filter((b) => b && TIENE_LETRAS.test(b) && !SIN_PROSA.test(b))
@@ -160,25 +190,30 @@ for (const slug of LEGALES) {
        convive sin problema con un menú, una cabecera y un pie en español: esos textos no viven
        dentro de un bloque de prosa, así que ninguna cuenta de bloques los ve. El resultado es
        una página con el contenido traducido y toda su navegación en español, que es justo lo que
-       delata un sitio a medio traducir — y lo que un porcentaje al 100 % te deja creer que no
-       pasa.
+       un porcentaje al 100 % te deja creer que no pasa.
 
-       Se busca por acentos y palabras funcionales españolas, que no aparecen en los otros siete
-       idiomas. En el español de la traducción al francés o al italiano hay palabras parecidas
-       («la», «con»), por eso se exige además un acento o un signo de apertura. */
-    if (!['fr', 'it'].includes(codigo)) {
-      const sinOpacos = html.replace(OPACO, ' ')
-      const sueltos = new Set()
+       ⚠️ Se compara con la página ESPAÑOLA, texto a texto, en vez de adivinar el idioma. El
+       primer intento buscaba acentos y palabras funcionales españolas, y acusó 24 textos de la
+       versión en criollo: «Kondisyon Sèvis la» lleva «la», que en criollo es el artículo
+       pospuesto. Una guarda con falsos positivos en un idioma entero no la mira nadie.
 
-      for (const m of sinOpacos.matchAll(/>([^<>]+)</g)) {
-        const t = normalizar(m[1])
-        if (t && !NOMBRES_DE_IDIOMA.has(t) && ESPANOL.test(t)) sueltos.add(t)
-      }
+       Comparar es determinista: si un texto sale IGUAL que en español, no se tradujo. */
+    const sinOpacos = html.replace(OPACO, ' ')
+    const sueltos = new Set()
 
-      if (sueltos.size) {
-        fallos.push(`/${prefijo}${slug}/ tiene ${sueltos.size} texto(s) todavía en español. `
-          + `El primero: «${[...sueltos][0].slice(0, 60)}…»`)
-      }
+    for (const m of sinOpacos.matchAll(/>([^<>]+)</g)) {
+      const t = normalizar(m[1])
+      if (!t || !TIENE_LETRAS.test(t)) continue
+      if (!textosEspanoles.has(t)) continue            // no está en el original: ya es otra cosa
+      if (SIN_PROSA.test(t) || UNIVERSAL.test(t)) continue
+      if (t in COINCIDEN_A_PROPOSITO) continue
+      if (NOMBRES_DE_IDIOMA.has(t)) continue           // «Español» se queda en español a propósito
+      sueltos.add(t)
+    }
+
+    if (sueltos.size) {
+      fallos.push(`/${prefijo}${slug}/ tiene ${sueltos.size} texto(s) idénticos al español. `
+        + `El primero: «${[...sueltos][0].slice(0, 60)}…»`)
     }
 
     // Cada hreflang declarado tiene que resolver a una página que existe.
@@ -198,6 +233,13 @@ if (existsSync(TRADUCCIONES)) {
     if (!LEGALES.includes(slug)) {
       avisos.push(`scripts/legales/${f}: «${slug}» no es una página legal conocida`)
     }
+  }
+}
+
+/* ⚠️ Una excepción sin motivo no es una excepción: es un olvido silenciado. */
+for (const [texto, motivo] of Object.entries(COINCIDEN_A_PROPOSITO)) {
+  if (!motivo || motivo.length < 40) {
+    fallos.push(`La excepción «${texto}» no explica por qué coincide con el español.`)
   }
 }
 
