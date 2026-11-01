@@ -9,6 +9,37 @@
 
 ### Bitácora reciente (estado actual — 2026-09-08)
 
+> **EL MARCO LEGAL COMPLETO, EN FRANCÉS (2026-11-01)**: las **seis** páginas legales
+> —términos, privacidad, cookies, eliminación de datos, SLA y avisos de terceros— quedan
+> publicadas en francés, que se suma al inglés. Un cliente francófono lee en su idioma todo lo
+> que tiene que aceptar antes de contratar, no partes sueltas: ése fue el criterio, completar un
+> idioma antes de empezar otro.
+>
+> ⚠️⚠️ **Y por el camino salió un defecto que llevaba días publicado: la meta descripción de
+> `/en/terminos/` seguía en español.** Es lo que publica Google y lo que se lee al compartir el
+> enlace en WhatsApp, así que la página más larga del marco legal salía entera en inglés con su
+> tarjeta en español — y eso lo ve justamente quien **todavía no ha entrado**.
+>
+> **El verificador del build no lo veía porque solo comparaba `>texto<`, y un atributo no es
+> `>texto<`.** La guarda existía, corría en cada build y daba verde. Ahora compara también la
+> meta descripción, `og:title`, `og:description`, los `twitter:*` y los `alt`, `aria-label`,
+> `title` y `placeholder`.
+>
+> ⚠️ **La lista de atributos va ENUMERADA, no reconocida por su forma.** Mirar cualquier
+> `content="…"` metería dentro las URLs de `og:url` y los códigos de `og:locale`. Es la tercera
+> vez en dos días que reconocer algo por su forma se traga lo que no debía — antes fueron 67
+> bloques de prosa de la Política de Cookies y las opciones «UTF-8» y «Latin-1» de un combo.
+>
+> **Dos herramientas que conviene no confundir**, porque dan números verdaderos que se
+> contradicen: `wip.py --estado` cuenta solo los BLOQUES de prosa (`<p>`, `<li>`, `<td>`…) y dice
+> «faltan 0» mientras el `<title>`, las migas, el índice lateral y las cabeceras de tabla siguen
+> en español. Lo que de verdad hace falta es el juego de claves del **diccionario inglés**, que es
+> el único completo: unas 35 claves por página que no son bloques. Por eso cada página nueva se
+> cierra comprobando «faltan frente al inglés: 0», no «faltan 0 bloques».
+>
+> **Quedan**: italiano, criollo haitiano, árabe y los dos chinos — cinco páginas en cada uno
+> (cookies ya está en los ocho idiomas).
+
 > **EL 500 DE `zyntello.com` LO CAUSABA OTRO DOMINIO DE LA CUENTA (2026-09-18) — `[#1149]`**:
 > cualquier URL inexistente del sitio respondía **500 en vez de 404**. No había nada roto en el
 > sitio: `/home4/ukrmeumy/public_html/.htaccess` es **de WordPress, y lo puso otro de los dominios
