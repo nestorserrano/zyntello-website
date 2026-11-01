@@ -41,6 +41,7 @@ import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { escribirSiCambia } from './lib/escribir.mjs'
 import { IDIOMAS } from './lib/idiomas.mjs'
+import { esNombreTecnico } from './lib/no-se-traduce.mjs'
 import { LEGALES } from './lib/legales.mjs'
 
 const AQUI = dirname(fileURLToPath(import.meta.url))
@@ -141,6 +142,15 @@ const normalizar = (s) => s.replace(/\s+/g, ' ').trim()
  * en su navegador algo que no existe. Se descuentan del porcentaje para que el 100 % signifique
  * «traducido del todo» y no quede un resto perpetuo que nadie puede cerrar.
  */
+/**
+ * Lo que no es prosa: una URL, un correo, un bloque de código o el nombre de la empresa.
+ *
+ * ⚠️⚠️ Los NOMBRES de componentes y licencias se declaran en `lib/no-se-traduce.mjs`, no se
+ * reconocen aquí por su forma. Se intentó y el patrón se tragó 67 bloques de la Política de
+ * Cookies, párrafos enteros incluidos: no hay manera de distinguir «Laravel Framework» de
+ * «Caché del catálogo» mirando la forma, y el daño no se ve — esos bloques dejan de contarse y
+ * la cobertura marca 100 % con texto sin traducir dentro.
+ */
 const SIN_PROSA = /^(<code>[^<]*<\/code>|<a [^>]*>[^<]*<\/a>|[\w.@+-]+|Zyntello,? ?S\.R\.L\.)$/
 
 /** Aplica el diccionario a los bloques de prosa, dejando intactas las zonas opacas. */
@@ -160,7 +170,7 @@ function traducirHtml (html, dicc) {
     const clave = normalizar(interno)
     if (!clave || !TIENE_LETRAS.test(clave)) return m
     const t = porTexto.get(clave)
-    if (!SIN_PROSA.test(clave)) {
+    if (!(SIN_PROSA.test(clave) || esNombreTecnico(clave))) {
       total++
       if (t) traducidas++
     }
@@ -177,7 +187,7 @@ function traducirHtml (html, dicc) {
     if (!clave || !TIENE_LETRAS.test(clave)) return m
     if (/<(p|li|h[1-4]|table|ul|ol)\b/i.test(interno)) return m
     const t = porTexto.get(clave)
-    if (!SIN_PROSA.test(clave)) {
+    if (!(SIN_PROSA.test(clave) || esNombreTecnico(clave))) {
       total++
       if (t) traducidas++
     }

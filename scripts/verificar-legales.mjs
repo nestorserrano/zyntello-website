@@ -31,6 +31,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { IDIOMAS } from './lib/idiomas.mjs'
+import { esNombreTecnico } from './lib/no-se-traduce.mjs'
 import { LEGALES } from './lib/legales.mjs'
 
 const AQUI = dirname(fileURLToPath(import.meta.url))
@@ -41,6 +42,15 @@ const TRADUCCIONES = join(AQUI, 'legales')
 const BLOQUE = /<(p|li|h1|h2|h3|h4|th|td|dt|dd|caption|summary|figcaption|blockquote)\b[^>]*>([\s\S]*?)<\/\1>/gi
 const OPACO = /<(style|script)\b[\s\S]*?<\/\1>|<!--[\s\S]*?-->/gi
 const TIENE_LETRAS = /[A-Za-zÁÉÍÓÚÑáéíóúñÜü]{2}/
+/**
+ * Lo que no es prosa: una URL, un correo, un bloque de código o el nombre de la empresa.
+ *
+ * ⚠️⚠️ Los NOMBRES de componentes y licencias se declaran en `lib/no-se-traduce.mjs`, no se
+ * reconocen aquí por su forma. Se intentó y el patrón se tragó 67 bloques de la Política de
+ * Cookies, párrafos enteros incluidos: no hay manera de distinguir «Laravel Framework» de
+ * «Caché del catálogo» mirando la forma, y el daño no se ve — esos bloques dejan de contarse y
+ * la cobertura marca 100 % con texto sin traducir dentro.
+ */
 const SIN_PROSA = /^(<code>[^<]*<\/code>|<a [^>]*>[^<]*<\/a>|[\w.@+-]+|Zyntello,? ?S\.R\.L\.)$/
 const normalizar = (s) => s.replace(/\s+/g, ' ').trim()
 
@@ -154,7 +164,7 @@ for (const slug of LEGALES) {
 
   const bloques = [...base.matchAll(BLOQUE)]
     .map((m) => normalizar(m[2]))
-    .filter((b) => b && TIENE_LETRAS.test(b) && !SIN_PROSA.test(b))
+    .filter((b) => b && TIENE_LETRAS.test(b) && !(SIN_PROSA.test(b) || esNombreTecnico(b)))
 
   for (const { codigo, prefijo, dir } of IDIOMAS) {
     if (codigo === 'es') continue
@@ -228,8 +238,8 @@ for (const slug of LEGALES) {
       const t = normalizar(m[1])
       if (!t || !TIENE_LETRAS.test(t)) continue
       if (!textosEspanoles.has(t)) continue            // no está en el original: ya es otra cosa
-      if (SIN_PROSA.test(t) || UNIVERSAL.test(t)) continue
-      if (t in COINCIDEN_A_PROPOSITO || NOMBRES_PROPIOS.has(t)) continue
+      if ((SIN_PROSA.test(t) || esNombreTecnico(t)) || UNIVERSAL.test(t)) continue
+      if (t in COINCIDEN_A_PROPOSITO || NOMBRES_PROPIOS.has(t) || esNombreTecnico(t)) continue
       if (NOMBRES_DE_IDIOMA.has(t)) continue           // «Español» se queda en español a propósito
       sueltos.add(t)
     }
