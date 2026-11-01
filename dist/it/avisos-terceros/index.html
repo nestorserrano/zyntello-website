@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avvisi sul software di terze parti | Zyntello</title>
+<meta name="description" content="Componenti software di terze parti incorporati nella piattaforma SaaS di Zyntello, S.R.L., con la loro licenza e i loro avvisi di attribuzione.">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<link rel="canonical" href="https://zyntello.com/it/avisos-terceros/">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;padding:0 clamp(1.25rem,3vw,2.75rem)}
+
+  /* Encabezado */
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:88ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  /* Cuerpo */
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:clamp(2rem,3.5vw,4rem);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  /* Índice */
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  /* Secciones */
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:95ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:95ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note b{color:#fff}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:560px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  /* Control de cambios */
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
+  /* Pie */
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+
+
+
+<!--zyntello:legales-->
+<link rel="alternate" hreflang="es" href="https://zyntello.com/avisos-terceros/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/avisos-terceros/">
+<link rel="alternate" hreflang="fr" href="https://zyntello.com/fr/avisos-terceros/">
+<link rel="alternate" hreflang="it" href="https://zyntello.com/it/avisos-terceros/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/avisos-terceros/">
+<style>
+.idiomas{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:center;padding:.75rem 0;font-size:.82rem}
+.idiomas span{color:var(--tx3,#64748b);text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+.idiomas a{color:var(--tx3,#64748b);text-decoration:none;padding:.15rem .5rem;border-radius:99px;border:1px solid transparent}
+.idiomas a:hover{color:var(--ac,#60a5fa);border-color:var(--line2,rgba(255,255,255,.14))}
+.idiomas a[aria-current]{color:var(--ac,#60a5fa);border-color:var(--ac,#60a5fa)}
+.prevalece{margin:1rem 0;padding:.75rem 1rem;border-radius:.5rem;font-size:.86rem;
+  color:var(--tx2,#94a3b8);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.28)}
+.prevalece a{color:var(--ac,#60a5fa)}
+</style>
+<!--/zyntello:legales--></head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">Home</a>
+        <a href="/terminos/">Condizioni del Servizio</a>
+        <a href="/privacidad/">Informativa sulla privacy</a>
+        <a href="/it/sla/">SLA</a>
+        <a href="https://zyntello.com/#contacto">Contatti</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">Documento legale</span>
+      <h1>Avvisi sul software di terze parti</h1>
+      <p class="lead">La piattaforma di <strong>Zyntello, S.R.L.</strong> è costruita su componenti software di terze parti. Questo documento li identifica, dichiara la licenza di ciascuno e riproduce gli avvisi di attribuzione che tali licenze richiedono. Viene pubblicato in attuazione della <a href="/terminos/#s10">sezione 10.1 dei Termini di Servizio</a>.</p>
+      <div class="meta">
+        <span>Ultimo aggiornamento: <strong>18 settembre 2026</strong></span>
+        <span>In vigore: <strong>dalla sua pubblicazione</strong></span>
+        <span>Versione: <strong><a class="verlink" href="#s9">1.0 — vedi registro delle modifiche</a></strong></span>
+        <span>Lingua originale: <strong>spagnolo</strong></span>
+      </div>
+    </div>
+  </div><!--zyntello:legales--><div class="idiomas" role="navigation" aria-label="Lingua"><span>Lingua:</span><a href="/avisos-terceros/" hreflang="es" lang="es">Español</a><a href="/en/avisos-terceros/" hreflang="en" lang="en">English</a><a href="/fr/avisos-terceros/" hreflang="fr" lang="fr">Français</a><a href="/it/avisos-terceros/" hreflang="it" lang="it" aria-current="true">Italiano</a></div><!--/zyntello:legales--></header>
+
+<main class="wrap"><!--zyntello:legales-->
+<div class="prevalece" role="note">Questa è una traduzione di cortesia. La versione vincolante è quella spagnola. <a href="/avisos-terceros/" hreflang="es" lang="es">Vedi la versione spagnola</a>.</div><!--/zyntello:legales-->
+<div class="grid">
+
+  <aside class="toc">
+    <h2>Indice</h2>
+    <ol>
+      <li><a href="#s1">A che cosa serve questo documento</a></li>
+      <li><a href="#s2">Come leggere la tabella delle licenze</a></li>
+      <li><a href="#s3">Componenti del server (PHP)</a></li>
+      <li><a href="#s4">Componenti del browser (JavaScript e CSS)</a></li>
+      <li><a href="#s5">Caratteri e icone</a></li>
+      <li><a href="#s6">Componenti con licenza commerciale</a></li>
+      <li><a href="#s7">Riepilogo per tipo di licenza</a></li>
+      <li><a href="#s8">Come richiedere il testo di una licenza</a></li>
+      <li><a href="#s9">Registro delle modifiche</a></li>
+    </ol>
+  </aside>
+
+  <article>
+
+    <section id="s1">
+      <h2 class="sec"><span class="n">1.</span> A che cosa serve questo documento</h2>
+      <p>Nessuna piattaforma gestionale viene scritta interamente da zero. Quella di Zyntello si appoggia su <strong>componenti di software libero e open source</strong> sviluppati da terzi — il framework su cui gira l'applicazione, le librerie che generano i PDF e i file Excel, quelle che leggono i codici a barre, quelle che disegnano i grafici, i caratteri e le icone dell'interfaccia.</p>
+      <p>Ciascuno di questi componenti è distribuito sotto <strong>la propria licenza</strong>, e quasi tutte queste licenze esigono la stessa cosa: che sia conservato l'avviso di copyright del loro autore e che chi riceve il software sappia da dove proviene. Questo documento è il modo in cui Zyntello adempie a quell'obbligo e, al tempo stesso, la risposta a una domanda legittima di qualsiasi abbonato: <em>su che cosa è costruito il sistema a cui affido la mia contabilità?</em></p>
+      <div class="note">
+        <p><b>Che cosa questo documento non è.</b> Il fatto che la Piattaforma incorpori componenti open source <strong>non la rende software libero</strong> né conferisce alcun diritto sul codice proprio di Zyntello. La licenza di ciascun componente copre quel componente e nient'altro. Il regime della Piattaforma nel suo complesso è quello della <a href="/terminos/#s10">sezione 10 dei Termini di Servizio</a>: licenza d'uso limitata finché l'abbonamento è in corso di validità.</p>
+      </div>
+      <p>Al contrario, nemmeno i Termini di Zyntello possono restringere ciò che la licenza di un terzo concede. Quando l'una e l'altra dicono cose diverse su un componente, <strong>prevale la licenza del componente</strong>.</p>
+    </section>
+
+    <section id="s2">
+      <h2 class="sec"><span class="n">2.</span> Come leggere la tabella delle licenze</h2>
+      <p>Le licenze che compaiono in questo documento si raggruppano in tre famiglie, e la differenza tra loro conta:</p>
+      <ul>
+        <li><strong>Permissive</strong> (MIT, BSD, ISC, Apache&nbsp;2.0). Consentono di usare, modificare e ridistribuire il componente, anche all'interno di un prodotto commerciale, con una sola condizione reale: <strong>conservare l'avviso di copyright e il testo della licenza</strong>. Apache&nbsp;2.0 aggiunge una concessione espressa di brevetti e l'obbligo di segnalare i file modificati.</li>
+        <li><strong>Copyleft debole</strong> (LGPL). Consentono di usare la libreria all'interno di un prodotto proprietario senza che quel prodotto debba essere pubblicato. Ciò che deve restare libero sono le <strong>modifiche alla libreria stessa</strong>. Zyntello utilizza queste librerie <strong>senza modificarle</strong>.</li>
+        <li><strong>Attribuzione dell'opera</strong> (CC&nbsp;BY&nbsp;4.0, SIL&nbsp;OFL). Si applicano a icone e caratteri, non al codice. Esigono di <strong>citare l'autore</strong> là dove l'opera viene usata. È per questo che questo documento esiste nella forma in cui si presenta.</li>
+      </ul>
+      <div class="note warn">
+        <p><b>Nessun componente della Piattaforma è sotto copyleft forte (GPL o AGPL) in termini che obblighino a pubblicare il codice di Zyntello.</b> Due componenti sono distribuiti con licenza doppia che <em>offre</em> la GPL come alternativa (i pacchetti <code>nette/*</code>, BSD-3-Clause oppure GPL a scelta di chi li usa): Zyntello li impiega <strong>sotto la BSD-3-Clause</strong>.</p>
+      </div>
+      <p>Le versioni indicate sono quelle in vigore alla data del presente documento. Vengono aggiornate quando cambiano, conformemente alla sezione 8.</p>
+    </section>
+
+    <section id="s3">
+      <h2 class="sec"><span class="n">3.</span> Componenti del server (PHP)</h2>
+      <p>Sono quelli che vengono eseguiti sul server di <code>app.zyntello.com</code> e non arrivano mai al dispositivo dell'Utente. L'applicazione dipende da <strong>111 pacchetti</strong> in produzione; la tabella elenca quelli di primo livello e, a parte, quelli di secondo livello la cui licenza merita una menzione propria.</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Componente</th><th>Versione</th><th>Licenza</th><th>A che cosa serve</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Laravel Framework</strong></td><td>12.58.0</td><td>MIT</td><td>Framework su cui gira l'intera applicazione</td></tr>
+            <tr><td><strong>Livewire</strong></td><td>4.2.4</td><td>MIT</td><td>Schermate interattive senza ricaricare la pagina</td></tr>
+            <tr><td><strong>Laravel Cashier</strong></td><td>16.5.1</td><td>MIT</td><td>Abbonamenti e incassi ricorrenti</td></tr>
+            <tr><td><strong>Laravel Tinker</strong></td><td>2.11.1</td><td>MIT</td><td>Console di manutenzione</td></tr>
+            <tr><td><strong>laravel-dompdf</strong></td><td>3.1.2</td><td>MIT</td><td>Generazione di fatture, preventivi e report in PDF</td></tr>
+            <tr><td><strong>Laravel Excel</strong> (maatwebsite)</td><td>3.1.68</td><td>MIT</td><td>Importazione ed esportazione di fogli di calcolo</td></tr>
+            <tr><td><strong>League CSV</strong></td><td>9.28.0</td><td>MIT</td><td>Lettura e scrittura di file CSV</td></tr>
+            <tr><td><strong>BaconQrCode</strong></td><td>3.1.1</td><td>BSD-2-Clause</td><td>Codici QR di cespiti, cartellini, eventi e verifica in due passaggi</td></tr>
+            <tr><td><strong>Pusher PHP Server</strong></td><td>7.2.7</td><td>MIT</td><td>Notifiche in tempo reale all'interno della Piattaforma</td></tr>
+            <tr><td><strong>Sentry para Laravel</strong></td><td>4.25.0</td><td>MIT</td><td>Registrazione degli errori dell'applicazione</td></tr>
+            <tr><td><strong>Spatie Activitylog</strong></td><td>4.12.3</td><td>MIT</td><td>Registro di audit delle modifiche</td></tr>
+            <tr><td><strong>Flux</strong> (Livewire)</td><td>2.13.2</td><td><strong>Commerciale</strong></td><td>Componenti di interfaccia — vedi sezione 6</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>3.1. Componenti di secondo livello con licenza copyleft debole</h3>
+      <p>Arrivano come dipendenze dei precedenti. Zyntello li utilizza <strong>così come vengono pubblicati, senza modificarli</strong>, che è la condizione alla quale la LGPL ne consente l'impiego all'interno di un prodotto proprietario.</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Componente</th><th>Versione</th><th>Licenza</th><th>Arriva tramite</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>dompdf</strong></td><td>3.1.5</td><td>LGPL-2.1</td><td>laravel-dompdf</td></tr>
+            <tr><td><strong>php-font-lib</strong></td><td>1.0.2</td><td>LGPL-2.1 o successiva</td><td>dompdf</td></tr>
+            <tr><td><strong>php-svg-lib</strong></td><td>1.0.2</td><td>LGPL-3.0 o successiva</td><td>dompdf</td></tr>
+            <tr><td><strong>HTML Purifier</strong></td><td>4.19.0</td><td>LGPL-2.1 o successiva</td><td>Sanificazione del contenuto formattato</td></tr>
+            <tr><td><strong>nette/utils</strong>, <strong>nette/schema</strong></td><td>4.1.3 · 1.3.5</td><td>BSD-3-Clause <em>(usata)</em> oppure GPL</td><td>Laravel</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="s4">
+      <h2 class="sec"><span class="n">4.</span> Componenti del browser (JavaScript e CSS)</h2>
+      <p>Questi vengono invece inviati al dispositivo dell'Utente e girano nel suo browser. Conservano gli avvisi di licenza che i loro autori vi hanno incluso: <strong>rimuoverli o nasconderli è vietato</strong> dalla <a href="/terminos/#s10">sezione 10.1 dei Termini</a>.</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Componente</th><th>Versione</th><th>Licenza</th><th>A che cosa serve</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Alpine.js</strong></td><td>3.15</td><td>MIT</td><td>Interattività delle schermate</td></tr>
+            <tr><td><strong>Bootstrap</strong></td><td>5.3.8</td><td>MIT</td><td>Griglia e stili dell'interfaccia</td></tr>
+            <tr><td><strong>Tailwind CSS</strong></td><td>3.4.19</td><td>MIT</td><td>Stili dell'interfaccia</td></tr>
+            <tr><td><strong>Tom Select</strong></td><td>2.6.1 · 2.3.1</td><td>Apache-2.0</td><td>Menu a tendina con ricerca</td></tr>
+            <tr><td><strong>SweetAlert2</strong></td><td>11</td><td>MIT</td><td>Finestre di conferma e avvisi</td></tr>
+            <tr><td><strong>Chart.js</strong></td><td>4.4.0</td><td>MIT</td><td>Grafici dei cruscotti e dei report</td></tr>
+            <tr><td><strong>SortableJS</strong></td><td>1.15</td><td>MIT</td><td>Riordinare elenchi trascinando</td></tr>
+            <tr><td><strong>ZXing Browser</strong></td><td>0.1.5</td><td>MIT</td><td>Lettura di codici a barre con la fotocamera</td></tr>
+            <tr><td><strong>Cropper.js</strong></td><td>1.6.2</td><td>MIT</td><td>Ritaglio di logo e immagini</td></tr>
+            <tr><td><strong>Quill</strong></td><td>1.3.7</td><td>BSD-3-Clause</td><td>Editor di testo formattato</td></tr>
+            <tr><td><strong>vis-network</strong></td><td>9.1.6</td><td>Apache-2.0 / MIT</td><td>Diagrammi di relazioni</td></tr>
+            <tr><td><strong>Laravel Echo</strong> · <strong>pusher-js</strong></td><td>2.3.4 · 8.5.0</td><td>MIT</td><td>Notifiche in tempo reale</td></tr>
+            <tr><td><strong>Axios</strong></td><td>1.14.0</td><td>MIT</td><td>Richieste al server</td></tr>
+            <tr><td><strong>QZ Tray</strong></td><td>2.2.4</td><td>LGPL-2.1 / commerciale</td><td>Stampa diretta al punto vendita — vedi sezione 6</td></tr>
+            <tr><td><strong>React</strong> · <strong>React DOM</strong></td><td>19.2.4</td><td>MIT</td><td>Sito pubblico <code>zyntello.com</code></td></tr>
+            <tr><td><strong>Vite</strong></td><td>7.3 · 8.0</td><td>MIT</td><td>Compilazione delle risorse (non viene inviata al browser)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <p><b>Alcuni di questi componenti sono serviti da reti di distribuzione di terze parti</b> — jsDelivr e cdnjs, principalmente. Ciò significa che il browser dell'Utente li scarica da quei server e non da quelli di Zyntello, e che quei server ricevono, come qualsiasi server web, l'indirizzo IP e il browser di chi li richiede. Nessuno riceve dati dell'account né del contenuto delle schermate.</p>
+      </div>
+    </section>
+
+    <section id="s5">
+      <h2 class="sec"><span class="n">5.</span> Caratteri e icone</h2>
+      <p>Non sono codice, ma sono comunque opera di terzi, e le loro licenze sono quelle che esigono l'attribuzione nel modo più esplicito.</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Risorsa</th><th>Versione</th><th>Licenza</th><th>Che cosa esige</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Font Awesome Free</strong></td>
+              <td>6.4.0</td>
+              <td>CC BY 4.0 <em>(icone)</em><br>SIL OFL 1.1 <em>(caratteri)</em><br>MIT <em>(codice)</em></td>
+              <td>Attribuzione espressa all'autore</td>
+            </tr>
+            <tr>
+              <td><strong>Caratteri web</strong> serviti da Google Fonts e Bunny Fonts</td>
+              <td>—</td>
+              <td>SIL Open Font License 1.1</td>
+              <td>Conservare l'avviso del carattere; non venderlo separatamente</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <p><b>Attribuzione di Font Awesome.</b> Le icone dell'interfaccia di Zyntello provengono da <strong>Font Awesome Free</strong> (<a href="https://fontawesome.com" rel="noopener">fontawesome.com</a>), opera di Fonticons, Inc., utilizzata sotto licenza <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">Creative Commons Attribution 4.0 International</a>. Zyntello non rivendica alcuna paternità su di esse.</p>
+      </div>
+    </section>
+
+    <section id="s6">
+      <h2 class="sec"><span class="n">6.</span> Componenti con licenza commerciale</h2>
+      <p>Due componenti della Piattaforma <strong>non sono software libero</strong>. Vengono dichiarati qui per trasparenza, anche se la loro licenza non obbliga a pubblicarli:</p>
+      <ul>
+        <li><strong>Flux</strong>, la libreria di componenti di interfaccia di Livewire, è distribuita sotto <strong>licenza commerciale a pagamento</strong>. Zyntello la utilizza in forza della licenza che ha acquistato. Il suo codice non viene né ridistribuito né pubblicato.</li>
+        <li><strong>QZ Tray</strong>, il ponte che consente di stampare direttamente su stampanti da punto vendita e di aprire il cassetto portavalori, è offerto con <strong>licenza doppia</strong> (LGPL-2.1 o licenza commerciale). È un programma che si installa sul dispositivo dell'Abbonato: il suo reperimento, la sua installazione e, se del caso, la sua licenza commerciale spettano all'Abbonato stesso, che lo installa per propria decisione e secondo i termini del fornitore.</li>
+      </ul>
+      <p>Nessuno dei due riceve né trasmette dati dell'account a Zyntello per vie diverse da quelle già descritte nell'<a href="/privacidad/">Informativa sulla privacy</a>.</p>
+    </section>
+
+    <section id="s7">
+      <h2 class="sec"><span class="n">7.</span> Riepilogo per tipo di licenza</h2>
+      <p>Conteggio dei pacchetti che l'applicazione installa in produzione, misurato sul file di blocco delle dipendenze alla data del presente documento:</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Licenza</th><th>Pacchetti</th><th>Famiglia</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>MIT</td><td>95</td><td>Permissiva</td></tr>
+            <tr><td>BSD-3-Clause</td><td>5</td><td>Permissiva</td></tr>
+            <tr><td>BSD-2-Clause</td><td>2</td><td>Permissiva</td></tr>
+            <tr><td>BSD-3-Clause oppure GPL <em>(doppia; si usa la BSD)</em></td><td>2</td><td>Permissiva</td></tr>
+            <tr><td>Apache-2.0</td><td>1</td><td>Permissiva</td></tr>
+            <tr><td>ISC</td><td>1</td><td>Permissiva</td></tr>
+            <tr><td>LGPL-2.1 e LGPL-2.1 o successiva</td><td>3</td><td>Copyleft debole</td></tr>
+            <tr><td>LGPL-3.0 o successiva</td><td>1</td><td>Copyleft debole</td></tr>
+            <tr><td>Commerciale (Flux)</td><td>1</td><td>Proprietaria</td></tr>
+            <tr><td><strong>Totale in produzione</strong></td><td><strong>111</strong></td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>A questi si aggiungono <strong>50 pacchetti di sviluppo</strong> — strumenti di test e di debug, tutti MIT o BSD-3-Clause — che non vengono distribuiti nell'ambiente di produzione e non fanno parte del servizio.</p>
+    </section>
+
+    <section id="s8">
+      <h2 class="sec"><span class="n">8.</span> Come richiedere il testo di una licenza</h2>
+      <p>Il testo integrale della licenza di uno qualsiasi dei componenti elencati è disponibile su richiesta, senza alcuna condizione e senza costi. Basta scrivere a <a href="mailto:info@zyntello.com">info@zyntello.com</a> indicando il componente.</p>
+      <p>Il presente documento viene rivisto quando cambiano le dipendenze della Piattaforma e, in ogni caso, <strong>almeno una volta l'anno</strong>. Un componente nuovo, una versione che cambi licenza o il ritiro di un componente esistente danno luogo a una nuova versione di questo documento, con la sua voce nel registro delle modifiche.</p>
+      <p>Se lei è autore di uno dei componenti elencati e ritiene che l'attribuzione sia errata o insufficiente, scriva a <a href="mailto:info@zyntello.com">info@zyntello.com</a> e verrà corretta.</p>
+    </section>
+
+    <section id="s9">
+      <h2 class="sec"><span class="n">9.</span> Registro delle modifiche</h2>
+      <p>Registro completo e cumulativo di tutte le versioni di questo documento dalla sua prima pubblicazione. Le voci precedenti <strong>non vengono modificate né eliminate</strong>.</p>
+      <div class="tbl chg">
+        <table>
+          <thead>
+            <tr><th>Versione</th><th>Data</th><th>Modifiche</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1.0 <span class="vig">In vigore</span></td>
+              <td>18 settembre 2026</td>
+              <td><strong>Prima pubblicazione.</strong> Documento iniziale in nove sezioni: a che cosa serve, come leggere le licenze, componenti del server in PHP (111 pacchetti in produzione, con il dettaglio di quelli di primo livello e dei cinque di secondo livello con copyleft debole), componenti che girano nel browser, caratteri e icone con l'attribuzione espressa di Font Awesome Free, i due componenti con licenza commerciale (Flux e QZ Tray), il conteggio per tipo di licenza, la procedura per richiedere il testo integrale di qualsiasi licenza e il presente registro delle modifiche. Viene pubblicato insieme alla versione <strong>1.7</strong> dei <a href="/terminos/">Termini di Servizio</a>, la cui sezione 10.1 lo dichiara.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>Tecnologia d'impresa e intelligenza artificiale</li>
+          <li>Repubblica Dominicana</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Note legali</h4>
+        <ul>
+          <li><a href="/terminos/">Condizioni del Servizio</a></li>
+          <li><a href="/privacidad/">Informativa sulla Privacy</a></li>
+          <li><a href="/it/eliminacion-datos/">Cancellazione dei dati</a></li>
+          <li><a href="/it/sla/">Accordo sul Livello di Servizio</a></li>
+          <li><a href="/it/avisos-terceros/">Avvisi sul software di terzi</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contatti</h4>
+        <ul>
+          <li><a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+          <li><a href="https://zyntello.com">zyntello.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy">© 2026 Zyntello, S.R.L. Tutti i diritti riservati.</p>
+  </div>
+</footer>
+
+</body>
+</html>

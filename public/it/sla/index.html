@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accordo sul Livello di Servizio (SLA) | Zyntello</title>
+<meta name="description" content="Accordo sul Livello di Servizio di Zyntello, S.R.L. — canali di assistenza, orari, priorità, tempi di prima risposta, licenze incluse e ambito del servizio.">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<link rel="canonical" href="https://zyntello.com/it/sla/">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;padding:0 clamp(1.25rem,3vw,2.75rem)}
+
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:88ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:clamp(2rem,3.5vw,4rem);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:95ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:95ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note.ok{border-left-color:var(--ok);background:rgba(52,211,153,.05)}
+  .note b{color:#fff}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:600px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+
+
+
+<!--zyntello:legales-->
+<link rel="alternate" hreflang="es" href="https://zyntello.com/sla/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/sla/">
+<link rel="alternate" hreflang="fr" href="https://zyntello.com/fr/sla/">
+<link rel="alternate" hreflang="it" href="https://zyntello.com/it/sla/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/sla/">
+<style>
+.idiomas{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:center;padding:.75rem 0;font-size:.82rem}
+.idiomas span{color:var(--tx3,#64748b);text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+.idiomas a{color:var(--tx3,#64748b);text-decoration:none;padding:.15rem .5rem;border-radius:99px;border:1px solid transparent}
+.idiomas a:hover{color:var(--ac,#60a5fa);border-color:var(--line2,rgba(255,255,255,.14))}
+.idiomas a[aria-current]{color:var(--ac,#60a5fa);border-color:var(--ac,#60a5fa)}
+.prevalece{margin:1rem 0;padding:.75rem 1rem;border-radius:.5rem;font-size:.86rem;
+  color:var(--tx2,#94a3b8);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.28)}
+.prevalece a{color:var(--ac,#60a5fa)}
+</style>
+<!--/zyntello:legales--></head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">Home</a>
+        <a href="/terminos/">Condizioni del Servizio</a>
+        <a href="/privacidad/">Privacy</a>
+        <a href="/it/eliminacion-datos/">Cancellazione dei dati</a>
+        <a href="/it/avisos-terceros/">Avvisi di terze parti</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">Documento legale</span>
+      <h1>Accordo sul Livello di Servizio</h1>
+      <p class="lead">Il presente Accordo (di seguito lo <strong>SLA</strong>) descrive l'assistenza che <strong>Zyntello, S.R.L.</strong> fornisce agli Abbonati della sua piattaforma <code>app.zyntello.com</code>: attraverso quali canali, con quale orario, con quali priorità, in quanto tempo rispondiamo, che cosa è incluso e che cosa viene fatturato a parte. Integra i <a href="/terminos/">Termini e Condizioni</a> e non li sostituisce.</p>
+      <div class="meta">
+        <span>Ultimo aggiornamento: <strong>9 settembre 2026</strong></span>
+        <span>In vigore: <strong>dalla sua pubblicazione</strong></span>
+        <span>Versione: <strong><a class="verlink" href="#s13">1.4 — vedi registro delle modifiche</a></strong></span>
+      </div>
+    </div>
+  </div><!--zyntello:legales--><div class="idiomas" role="navigation" aria-label="Lingua"><span>Lingua:</span><a href="/sla/" hreflang="es" lang="es">Español</a><a href="/en/sla/" hreflang="en" lang="en">English</a><a href="/fr/sla/" hreflang="fr" lang="fr">Français</a><a href="/it/sla/" hreflang="it" lang="it" aria-current="true">Italiano</a></div><!--/zyntello:legales--></header>
+
+<main><!--zyntello:legales-->
+<div class="prevalece" role="note">Questa è una traduzione di cortesia. La versione vincolante è quella spagnola. <a href="/sla/" hreflang="es" lang="es">Vedi la versione spagnola</a>.</div><!--/zyntello:legales-->
+  <div class="wrap">
+    <div class="grid">
+
+      <aside class="toc">
+        <h2>Indice</h2>
+        <ol>
+          <li><a href="#s1">Identificazione e oggetto</a></li>
+          <li><a href="#s2">Definizioni</a></li>
+          <li><a href="#s3">Canali di assistenza</a></li>
+          <li><a href="#s4">Orario di assistenza</a></li>
+          <li><a href="#s5">Classificazione delle priorità</a></li>
+          <li><a href="#s6">Tempi di prima risposta</a></li>
+          <li><a href="#s7">Che cosa comprende l'assistenza</a></li>
+          <li><a href="#s8">Accesso dell'assistenza all'account</a></li>
+      <li><a href="#s9">Che cosa non è compreso e che cosa si fattura</a></li>
+          <li><a href="#s10">Licenze d'uso incluse</a></li>
+          <li><a href="#s11">Disponibilità del servizio</a></li>
+          <li><a href="#s12">Esclusioni e limiti</a></li>
+          <li><a href="#s13">Registro delle modifiche</a></li>
+        </ol>
+      </aside>
+
+      <article>
+
+<section id="s1">
+  <h2 class="sec"><span class="n">1.</span> Identificazione e oggetto</h2>
+  <p><strong>Zyntello, S.R.L.</strong>, società costituita nella Repubblica Dominicana, fornisce il servizio di assistenza descritto in questo documento a ogni Abbonato con un abbonamento in corso di validità alla piattaforma <code>app.zyntello.com</code>.</p>
+  <p>Contatto dell'assistenza: <a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a> · WhatsApp <a href="https://wa.me/18296399877">+1 829 639 9877</a> · Amministrazione: <a href="mailto:info@zyntello.com">info@zyntello.com</a>.</p>
+  <div class="note"><b>Il presente SLA si applica finché l'abbonamento è in regola.</b> Un account sospeso per mancato pagamento conserva i suoi dati secondo i Termini, ma resta fuori dai tempi di risposta qui garantiti.</div>
+</section>
+
+<section id="s2">
+  <h2 class="sec"><span class="n">2.</span> Definizioni</h2>
+  <ul>
+    <li><strong>Segnalazione:</strong> qualsiasi richiesta di assistenza che l'Abbonato riporta.</li>
+    <li><strong>Prima risposta:</strong> il momento in cui una persona di Zyntello risponde alla segnalazione con una diagnosi, una domanda precisa o una soluzione. <strong>Non</strong> è la conferma di ricezione automatica.</li>
+    <li><strong>Ora lavorativa:</strong> ora trascorsa entro l'orario di assistenza della sezione 4. Una segnalazione inviata un venerdì alle 17:00 con impegno di 4 ore lavorative riceve risposta al più tardi il lunedì alle 11:00.</li>
+    <li><strong>Tempo di risoluzione:</strong> quello necessario a chiudere la segnalazione. Dipende dalla sua natura e <strong>non è garantito</strong> da questo SLA; ciò che viene garantito è la prima risposta.</li>
+  </ul>
+  <div class="note warn"><b>Perché non garantiamo il tempo di risoluzione.</b> Un dubbio d'uso si risolve nella risposta stessa; un difetto che richiede di correggere codice, collaudarlo e distribuirlo, no. Promettere un termine unico per le due cose significherebbe non rispettarlo nella metà dei casi.</div>
+</section>
+
+<section id="s3">
+  <h2 class="sec"><span class="n">3.</span> Canali di assistenza</h2>
+  <p>L'assistenza si richiede attraverso uno di questi canali:</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Canale</th><th>Come</th><th>A che cosa si presta meglio</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Posta elettronica</strong></td>
+          <td><a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a></td>
+          <td>Canale principale. Lascia traccia scritta dell'intero ticket e consente di allegare schermate e file. La sua e-mail <strong>entra automaticamente nel ticket</strong>: se risponde a un nostro messaggio, la risposta si aggiunge allo stesso ticket; se scrive per la prima volta, ne viene aperto uno nuovo.</td>
+        </tr>
+        <tr>
+          <td><strong>WhatsApp</strong></td>
+          <td><a href="https://wa.me/18296399877">+1 829 639 9877</a></td>
+          <td>Domande brevi e segnalazioni urgenti. Ogni ticket che richieda un seguito viene trasferito sulla posta elettronica.</td>
+        </tr>
+        <tr>
+          <td><strong>Modulo web</strong></td>
+          <td><a href="https://zyntello.com/#contacto">zyntello.com</a></td>
+          <td>Quando non si ha ancora accesso né alla piattaforma né all'indirizzo e-mail registrato.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note"><b>Che cosa accelera la risposta.</b> Indicare l'azienda e il modulo in cui si verifica, che cosa ci si aspettava e che cosa è successo, e allegare una schermata. Con questi tre elementi la maggior parte delle segnalazioni si risolve alla prima risposta, senza scambi successivi.</div>
+</section>
+
+<section id="s4">
+  <h2 class="sec"><span class="n">4.</span> Orario di assistenza</h2>
+  <p><strong>Dal lunedì al venerdì, dalle 8:00 alle 18:00</strong>, ora della Repubblica Dominicana (GMT-4), esclusi i giorni festivi nazionali dominicani.</p>
+  <p>Fuori da quell'orario le segnalazioni possono essere inviate da qualsiasi canale: vengono registrate e il tempo di risposta inizia a decorrere all'apertura del giorno lavorativo successivo.</p>
+</section>
+
+<section id="s5">
+  <h2 class="sec"><span class="n">5.</span> Classificazione delle priorità</h2>
+  <p>La priorità è assegnata da Zyntello in base all'<strong>impatto reale</strong> sull'attività dell'Abbonato, non all'urgenza con cui la segnalazione viene inviata. Se l'Abbonato non concorda con la classificazione, può chiederne il riesame indicando l'impatto concreto.</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Priorità</th><th>Che cosa significa</th><th>Esempi</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Critica</strong></td>
+          <td>La piattaforma non è disponibile, oppure un modulo sottoscritto è inutilizzabile per tutta l'azienda e non esiste alternativa.</td>
+          <td>Impossibile accedere · Impossibile fatturare · Un intero modulo restituisce errore</td>
+        </tr>
+        <tr>
+          <td><strong>Alta</strong></td>
+          <td>Una funzione importante non riesce o restituisce dati errati, ma esiste un modo per continuare a lavorare.</td>
+          <td>Un report mostra cifre che non quadrano · Un documento non si può annullare</td>
+        </tr>
+        <tr>
+          <td><strong>Normale</strong></td>
+          <td>Una funzione secondaria non riesce, oppure si tratta di un dubbio d'uso o di configurazione.</td>
+          <td>Come configurare una numerazione · Un filtro non si applica come previsto</td>
+        </tr>
+        <tr>
+          <td><strong>Bassa</strong></td>
+          <td>Suggerimenti, migliorie e domande che non incidono sull'attività.</td>
+          <td>Richiesta di una nuova colonna in un elenco · Domanda su una funzione futura</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s6">
+  <h2 class="sec"><span class="n">6.</span> Tempi di prima risposta</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Priorità</th><th>Prima risposta</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Critica</strong></td><td>4 ore lavorative</td></tr>
+        <tr><td><strong>Alta</strong></td><td>8 ore lavorative</td></tr>
+        <tr><td><strong>Normale</strong></td><td>1 giorno lavorativo</td></tr>
+        <tr><td><strong>Bassa</strong></td><td>3 giorni lavorativi</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Il termine decorre dall'arrivo della segnalazione attraverso uno dei canali della sezione 3, entro l'orario della sezione 4.</p>
+  <div class="note"><b>La posta viene controllata ogni 15 minuti.</b> I messaggi che arrivano a <a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a> vengono incorporati nel ticket da un processo automatico che gira <strong>ogni quindici minuti</strong>, per cui tra l'invio dell'Abbonato e la sua registrazione nel sistema possono trascorrere fino a 15 minuti. Quel tempo <strong>non viene scalato</strong> dai termini di questa sezione: il cronometro parte da quando l'Abbonato invia la sua e-mail, non da quando il nostro sistema la elabora. Lo dichiariamo qui perché è un ritardo nostro e non può essere computato a sfavore dell'Abbonato.</div>
+  <div class="note warn"><b>Se non rispettiamo il termine.</b> L'Abbonato può far salire di livello il ticket scrivendo a <a href="mailto:info@zyntello.com">info@zyntello.com</a> con l'oggetto originale. Un mancato rispetto ripetuto e documentato dei tempi di questa sezione dà facoltà all'Abbonato di disdire l'abbonamento senza penali, con effetto alla fine del periodo già pagato.</div>
+</section>
+
+<section id="s7">
+  <h2 class="sec"><span class="n">7.</span> Che cosa comprende l'assistenza</h2>
+  <p>Senza costi aggiuntivi, nell'ambito dell'abbonamento in corso:</p>
+  <ul>
+    <li><strong>Correzione dei difetti della piattaforma.</strong> Se qualcosa non funziona come documentato, correggerlo è un nostro obbligo e non viene mai fatturato.</li>
+    <li><strong>Dubbi d'uso</strong> dei moduli sottoscritti.</li>
+    <li><strong>Configurazione</strong> dei moduli sottoscritti: numerazioni, conti contabili, imposte, permessi e parametri.</li>
+    <li><strong>Problemi di accesso</strong>: recupero della password, verifica in due passaggi e utenti bloccati.</li>
+    <li><strong>Indicazioni</strong> su come sfruttare una funzione esistente.</li>
+  </ul>
+  <div class="note ok"><b>Segnalare un difetto non costa mai nulla.</b> Se il problema è stato causato dalla piattaforma, correggerlo rientra sempre nell'assistenza inclusa, qualunque sia il tempo necessario.</div>
+
+  <h3>7.1. L'assistente di aiuto con intelligenza artificiale</h3>
+  <p>All'interno della piattaforma c'è un <strong>assistente che risponde alle domande d'uso</strong> a partire dalla documentazione di Zyntello. È pensato per risolvere sul momento i dubbi più frequenti, senza attendere la risposta di un operatore.</p>
+  <ul>
+    <li><strong>Risponde solo sulla base della nostra documentazione.</strong> Quando la documentazione non copre la domanda, <strong>lo dice e propone di aprire un ticket</strong> invece di improvvisare una risposta. Preferiamo non rispondere piuttosto che rispondere male: un'istruzione inventata su un sistema gestionale può farle perdere dati.</li>
+    <li><strong>Non esegue azioni.</strong> Spiega come fare le cose; non le fa al posto suo e non modifica le sue informazioni.</li>
+    <li><strong>Ha una quota d'uso</strong> inclusa nell'abbonamento, con un limite per utente e per giorno affinché una sola persona non esaurisca quella degli altri.</li>
+  </ul>
+  <div class="note ok"><b>Esaurire la quota dell'assistente NON la lascia senza assistenza.</b> Se si esaurisce, la chat con l'intelligenza artificiale si ferma, ma <strong>la posta elettronica e i ticket restano inclusi esattamente allo stesso modo</strong>: segnalare un problema del sistema non dipende mai da una quota.</div>
+  <div class="note"><b>Sui livelli d'uso.</b> L'abbonamento include un volume di domande all'assistente; se la sua attività ne richiede di più, esistono pacchetti ampliati e un livello d'uso esteso con politica di uso corretto, che <strong>dichiara il proprio tetto per iscritto</strong>. Non commercializziamo alcun livello come «illimitato». Un assistente dedicato sui dati dell'Abbonato o integrato con sistemi di terzi resta <strong>fuori dal presente Accordo</strong> e si sottoscrive a parte.</div>
+  <div class="note ok"><b>Una risposta che non le è servita non le consuma quota.</b> Se l'assistente non ha saputo rispondere, quella domanda non viene scalata: non avrebbe senso addebitarle una risposta che non ha ottenuto.</div>
+</section>
+
+<section id="s8">
+  <h2 class="sec"><span class="n">8.</span> Accesso dell'assistenza all'account</h2>
+  <p>Alcune segnalazioni non si possono diagnosticare dall'esterno: una scrittura che non quadra, un documento che non viene emesso, un permesso che non ha effetto. Per risolverle, un operatore dell'assistenza può aver bisogno di <strong>entrare nell'area di lavoro dell'Abbonato e vedere i suoi dati</strong>. Questa sezione dichiara entro quali limiti ciò avviene e — soprattutto — come l'Abbonato lo verifica da solo.</p>
+
+  <h3>8.1. Come accede l'operatore</h3>
+  <ul>
+    <li><strong>Mai con le credenziali di una persona dell'Abbonato.</strong> Non chiediamo né usiamo il nome utente o la password di nessuno del suo team. L'operatore accede con un <strong>account tecnico di Zyntello</strong>, distinto dai suoi.</li>
+    <li><strong>Ogni azione è firmata con il nome dell'operatore reale</strong>, non con quello dell'account tecnico né di un utente dell'Abbonato. Nel registro si vede chi ha fatto che cosa.</li>
+    <li>L'account tecnico <strong>non consuma alcuna delle licenze incluse</strong> nel suo piano (vedi sezione 9) e non compare né nel suo elenco utenti né nei menu a tendina del sistema.</li>
+    <li>L'operatore deve aver verificato la propria identità in due passaggi per poter aprire l'accesso.</li>
+  </ul>
+
+  <h3>8.2. Sola lettura per impostazione predefinita</h3>
+  <p>L'accesso <strong>nasce in sola lettura</strong>: l'operatore vede, ma il sistema gli impedisce di salvare qualsiasi modifica. Per modificare qualcosa deve <strong>elevare la sessione dichiarando un motivo</strong>, ed è un'elevazione che <strong>scade da sola</strong> — non resta aperta a tempo indeterminato nemmeno se l'operatore dimentica di chiuderla.</p>
+
+  <h3>8.3. Che cosa viene registrato</h3>
+  <p>Di ogni accesso vengono conservati l'operatore, la data e l'ora di entrata e di uscita, il motivo dichiarato, l'indirizzo IP e se l'accesso era autorizzato o d'emergenza. Se la sessione è stata elevata in scrittura, viene registrato anche <strong>il dettaglio di ogni dato modificato</strong>.</p>
+
+  <h3>8.4. Accesso d'emergenza</h3>
+  <p>Quando la segnalazione non consente di attendere un'autorizzazione preventiva — per esempio un blocco che impedisce all'Abbonato di lavorare — l'operatore può accedere dichiarando il motivo. Quell'accesso viene <strong>contrassegnato come non autorizzato</strong> e il titolare dell'account <strong>riceve una notifica</strong>. Non è un permesso silenzioso: è un accesso che si dichiara e che si vede.</p>
+
+  <h3>8.5. Come lo verifica lei</h3>
+  <div class="note ok"><b>Non è necessario chiedercelo.</b> Il titolare dell'account consulta lo storico completo degli accessi dell'assistenza in qualsiasi momento, da <strong>Configurazione → Accessi dell'assistenza</strong>: chi è entrato, quando, perché, con quale livello e se l'accesso era autorizzato.</div>
+
+  <h3>8.6. Che cosa non facciamo</h3>
+  <ul>
+    <li>Non accediamo ai suoi dati per finalità commerciali, statistiche o di addestramento di modelli di intelligenza artificiale.</li>
+    <li>Non estraiamo copie delle sue informazioni oltre quanto necessario a risolvere la segnalazione.</li>
+    <li>Non usiamo l'accesso dell'assistenza per operazioni aziendali per conto dell'Abbonato: se occorre inserire o correggere dati in modo massivo, si tratta di un lavoro fatturabile che viene preventivato a parte (vedi sezione 10).</li>
+  </ul>
+      <h3>8.7. Il portale dei ticket</h3>
+      <p><strong>Qualsiasi utente</strong> dell'Abbonato può aprire un ticket da <strong>Assistenza</strong> nel proprio sistema, senza permessi particolari: chi incontra il problema è chi può descriverlo meglio. Ogni ticket riceve un numero (<code>SOP-000123</code>) con cui lo si segue su uno qualsiasi dei tre canali.</p>
+      <ul>
+        <li>L'Abbonato vede <strong>l'intero scambio</strong> del suo ticket e può rispondere e allegare file in qualsiasi momento.</li>
+        <li>Mentre attendiamo una sua risposta, il ticket viene contrassegnato come tale e <strong>quel tempo non viene conteggiato</strong> nei termini della sezione 6: significherebbe addebitare a Zyntello un ritardo che non le spetta.</li>
+        <li>Un ticket viene contrassegnato come fatturabile solo se l'Abbonato lo <strong>autorizza prima</strong> che il lavoro inizi (sezione 10). Segnalare un difetto della piattaforma non costa mai nulla.</li>
+      </ul>
+
+</section>
+
+<section id="s9">
+  <h2 class="sec"><span class="n">9.</span> Che cosa non è compreso e che cosa si fattura</h2>
+  <p>I lavori seguenti <strong>vengono preventivati e fatturati a parte</strong>, e <strong>nessuno viene eseguito senza l'approvazione preventiva e scritta</strong> dell'Abbonato:</p>
+  <ul>
+    <li><strong>Importazione o caricamento massivo</strong> di dati da un altro sistema.</li>
+    <li><strong>Formazione</strong> del personale dell'Abbonato.</li>
+    <li><strong>Report su misura</strong> diversi da quelli che la piattaforma già offre.</li>
+    <li><strong>Sviluppi o adattamenti</strong> specifici per l'Abbonato.</li>
+    <li><strong>Ripristino di backup</strong> per cause estranee alla piattaforma.</li>
+    <li><strong>Correzione di dati</strong> quando l'errore non è stato causato dalla piattaforma.</li>
+  </ul>
+  <div class="note warn"><b>Nulla di fatturabile procede senza autorizzazione.</b> Prima di eseguire uno qualsiasi di questi lavori viene inviato un preventivo con il suo ambito e il suo importo. Può approvarlo solo chi ha il permesso di gestire la fatturazione dell'account. Senza quell'approvazione il lavoro non viene svolto e non si accumulano ore.</div>
+</section>
+
+<section id="s10">
+  <h2 class="sec"><span class="n">10.</span> Licenze d'uso incluse</h2>
+  <p>Ogni abbonamento comprende due categorie di accesso, descritte in dettaglio alla <a href="/terminos/#s5">sezione 5.3 dei Termini</a>:</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Categoria</th><th>Inclusi</th><th>Ambito</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Utenti dell'Abbonato</strong></td>
+          <td>3 per account<br>(titolare compreso)</td>
+          <td>Accedono a <strong>tutte</strong> le aziende dell'account, con i permessi del loro ruolo: Amministratore, Transazioni, Consultazione o Report.</td>
+        </tr>
+        <tr>
+          <td><strong>Utenti interni</strong></td>
+          <td>5 per account</td>
+          <td>Ciascuno è assegnato a <strong>una sola azienda</strong>; i suoi permessi, configurabili modulo per modulo, riguardano soltanto quell'azienda.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Entrambe le quote si possono ampliare scrivendo a <a href="mailto:info@zyntello.com">info@zyntello.com</a>; l'ampliamento viene fatturato secondo la tariffa in vigore. Un utente disattivato continua a occupare la sua licenza finché non viene rimosso dall'account. Gli account tecnici che Zyntello usa per fornire assistenza <strong>non consumano licenze dell'Abbonato</strong>.</p>
+</section>
+
+<section id="s11">
+  <h2 class="sec"><span class="n">11.</span> Disponibilità del servizio</h2>
+  <p>Zyntello si adopera per la massima disponibilità possibile della piattaforma e applica backup periodici con verifica di integrità, conformemente alla <a href="/terminos/#s18">sezione 18 dei Termini</a>.</p>
+  <div class="note warn"><b>L'obiettivo di disponibilità è fissato dai Termini, non da questo documento.</b> I <a href="/terminos/#s18">Termini di Servizio</a> dichiarano un obiettivo mensile del <strong>99,5&nbsp;%</strong> e precisano che, salvo accordo espresso e scritto, si tratta di un <strong>obiettivo operativo e non di un impegno con penali</strong>: la piattaforma è ospitata su infrastrutture di terzi la cui disponibilità non controlliamo. Il presente SLA non altera quell'obiettivo né vi aggiunge penali. Ciò che invece garantisce sono i <strong>tempi di prima risposta</strong> della sezione 6 e la comunicazione tempestiva di qualsiasi interruzione rilevante.</div>
+  <p>Le <strong>finestre di manutenzione programmata</strong> vengono comunicate con almeno 24 ore di anticipo per posta elettronica e si cerca di collocarle fuori dall'orario di assistenza.</p>
+</section>
+
+<section id="s12">
+  <h2 class="sec"><span class="n">12.</span> Esclusioni e limiti</h2>
+  <p>Il presente SLA non copre:</p>
+  <ul>
+    <li>I guasti della connessione a internet, delle apparecchiature o della rete dell'Abbonato.</li>
+    <li>Le interruzioni causate da servizi di terzi estranei a Zyntello: gateway di pagamento, fornitori di posta, amministrazioni fiscali o servizi di messaggistica.</li>
+    <li>L'uso della piattaforma in modo contrario ai Termini.</li>
+    <li>Le conseguenze di dati caricati in modo errato dall'Abbonato o dai suoi utenti.</li>
+    <li>I moduli non sottoscritti.</li>
+    <li>L'account dimostrativo, i cui dati vengono cancellati ogni giorno.</li>
+    <li>I casi di forza maggiore previsti dai Termini.</li>
+  </ul>
+  <div class="note"><b>Decisioni fiscali e contabili.</b> Zyntello fornisce lo strumento; la responsabilità sulle dichiarazioni, sulle scritture e sulla scelta dei conti è dell'Abbonato e del suo commercialista, conformemente alla <a href="/terminos/#s17">sezione 17 dei Termini</a>.</div>
+</section>
+
+<section id="s13">
+  <h2 class="sec"><span class="n">13.</span> Registro delle modifiche</h2>
+  <p>Registro completo e cumulativo di tutte le versioni di questo documento dalla sua prima pubblicazione. Le versioni precedenti sono disponibili su richiesta scrivendo a <a href="mailto:info@zyntello.com">info@zyntello.com</a>.</p>
+  <div class="note"><b>Come leggere le versioni.</b> Un cambio di <strong>versione minore</strong> (1.0 &rarr; 1.1) precisa o amplia quanto già descritto senza alterare gli impegni. Un cambio di <strong>versione maggiore</strong> (1.x &rarr; 2.0) modifica tempi, ambito o condizioni, e viene comunicato con <strong>30 giorni di anticipo</strong>.</div>
+  <div class="tbl chg">
+    <table>
+      <thead>
+        <tr><th>Versione</th><th>Data</th><th>Modifiche</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1.4 <span class="vig">In vigore</span></td>
+          <td>9 settembre 2026</td>
+          <td><strong>L'assistente di aiuto con intelligenza artificiale.</strong> Viene aggiunta la sezione <strong>7.1</strong>, che dichiara una funzione nuova inclusa nell'abbonamento: un assistente che risponde ai dubbi d'uso <strong>a partire dalla documentazione di Zyntello</strong> e che, quando la documentazione non copre la domanda, <strong>lo dice e propone di aprire un ticket</strong> invece di improvvisare — preferiamo non rispondere piuttosto che rispondere male, perché un'istruzione inventata su un sistema gestionale può far perdere dati. Si dichiara che <strong>non esegue azioni</strong>, che ha una <strong>quota d'uso</strong> con limite per utente e per giorno e, soprattutto, che <strong>esaurirla NON lascia l'Abbonato senza assistenza</strong>: la posta elettronica e i ticket restano inclusi allo stesso modo, perché segnalare un problema del sistema non può dipendere da una quota. Si dichiara inoltre che <strong>nessun livello viene commercializzato come «illimitato»</strong> — il livello alto dichiara il proprio tetto per iscritto — e che <strong>una risposta che non è servita non consuma quota</strong>. <strong>Non cambiano</strong> i canali, l'orario, le priorità, i tempi di prima risposta garantiti, le licenze incluse né l'obiettivo di disponibilità.</td>
+        </tr>
+        <tr>
+          <td>1.3</td>
+          <td>9 settembre 2026</td>
+          <td><strong>La posta entra da sola nel ticket.</strong> La sezione <strong>3</strong> dichiara che un messaggio inviato a <strong>soporte@zyntello.com</strong> viene incorporato <strong>automaticamente</strong> nel ticket — la risposta a una nostra e-mail si aggiunge allo stesso ticket; una e-mail nuova ne apre uno —, e la sezione <strong>6</strong> precisa che quel processo gira <strong>ogni quindici minuti</strong>, per cui tra l'invio dell'Abbonato e la sua registrazione possono trascorrere fino a 15 minuti. Si dichiara inoltre, ed è ciò che conta, che <strong>quel tempo non viene scalato</strong> dai termini di prima risposta: il cronometro parte da quando l'Abbonato invia, non da quando il nostro sistema elabora — significherebbe addebitare all'Abbonato un ritardo nostro. <strong>Non cambiano</strong> i canali, l'orario, la classificazione delle priorità, i tempi di prima risposta garantiti, le licenze incluse né l'obiettivo di disponibilità.</td>
+        </tr>
+        <tr>
+          <td>1.2</td>
+          <td>7 settembre 2026</td>
+          <td><strong>Il portale dei ticket.</strong> Viene aggiunta la sezione <strong>8.7</strong>: <strong>qualsiasi utente</strong> dell'Abbonato apre un ticket dal proprio sistema, senza permessi particolari; ogni ticket riceve un numero con cui lo si segue sui tre canali; l'Abbonato vede l'intero scambio e può rispondere e allegare file. Si dichiara inoltre che il tempo in cui un ticket resta <strong>in attesa di risposta dell'Abbonato non viene conteggiato</strong> nei termini di prima risposta della sezione 6 — significherebbe addebitare a Zyntello un ritardo che non le spetta — e si rinvia alla sezione 10 per l'autorizzazione preventiva di quanto è fatturabile. <strong>Non cambiano</strong> i canali, l'orario, le priorità, i tempi garantiti né le licenze incluse.</td>
+        </tr>
+        <tr>
+          <td>1.1</td>
+          <td>6 settembre 2026</td>
+          <td><strong>Accesso dell'assistenza all'account.</strong> Viene aggiunta la sezione <strong>8</strong>, che dichiara un'operazione che la versione precedente non copriva: per diagnosticare certe segnalazioni, un operatore dell'assistenza può aver bisogno di entrare nell'area di lavoro dell'Abbonato e vedere i suoi dati. Se ne dichiarano i limiti — l'operatore non usa <strong>mai</strong> le credenziali di una persona dell'Abbonato ma un account tecnico che non consuma licenze e non compare nei suoi elenchi; l'accesso nasce in <strong>sola lettura</strong> ed elevarlo richiede di dichiarare un motivo e scade da solo; vengono registrati l'operatore, la data, il motivo, l'IP e il dettaglio di quanto modificato; un accesso senza autorizzazione preventiva viene contrassegnato come tale e notificato al titolare — e, soprattutto, che l'Abbonato lo <strong>verifica da solo</strong> da <strong>Configurazione → Accessi dell'assistenza</strong>, senza doverlo chiedere. Si dichiara inoltre che cosa NON facciamo: né finalità commerciali, statistiche o di addestramento di modelli, né operazioni aziendali per conto dell'Abbonato — quello è lavoro fatturabile della sezione 10. Le precedenti sezioni da 8 a 12 vengono rinumerate da 9 a 13; il loro contenuto non cambia. <strong>Non cambiano</strong> i canali, l'orario, la classificazione delle priorità, i tempi di prima risposta garantiti, le licenze incluse né l'obiettivo di disponibilità.</td>
+        </tr>
+        <tr>
+          <td>1.0</td>
+          <td>5 settembre 2026</td>
+          <td><strong>Prima pubblicazione.</strong> Documento iniziale in 12 sezioni: identificazione e oggetto, definizioni, canali di assistenza, orario, classificazione delle priorità su quattro livelli, tempi di prima risposta garantiti, ambito dell'assistenza inclusa, lavori fatturabili con approvazione preventiva obbligatoria, licenze d'uso incluse (3 utenti dell'Abbonato e 5 utenti interni), disponibilità del servizio — il cui obiettivo del 99,5&nbsp;% è fissato dai <a href="/terminos/#s18">Termini</a>, non da questo documento —, esclusioni e registro delle modifiche.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+      </article>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>Repubblica Dominicana</li>
+          <li><a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Documenti legali</h4>
+        <ul>
+          <li><a href="/terminos/">Termini e Condizioni</a></li>
+          <li><a href="/privacidad/">Informativa sulla Privacy</a></li>
+          <li><a href="/it/cookies/">Informativa sui cookie</a></li>
+          <li><a href="/it/eliminacion-datos/">Cancellazione dei dati</a></li>
+          <li><a href="/it/sla/">Accordo sul Livello di Servizio</a></li>
+          <li><a href="/it/avisos-terceros/">Avvisi sul software di terzi</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy">&copy; 2026 Zyntello, S.R.L. Tutti i diritti riservati.</div>
+  </div>
+</footer>
+
+</body>
+</html>
