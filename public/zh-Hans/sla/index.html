@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>服务级别协议（SLA）| Zyntello</title>
+<meta name="description" content="Zyntello, S.R.L. 服务级别协议 —— 支持渠道、服务时间、优先级、首次响应时限、已含许可与服务范围。">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<link rel="canonical" href="https://zyntello.com/zh-Hans/sla/">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;padding:0 clamp(1.25rem,3vw,2.75rem)}
+
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:88ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:clamp(2rem,3.5vw,4rem);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:95ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:95ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note.ok{border-left-color:var(--ok);background:rgba(52,211,153,.05)}
+  .note b{color:#fff}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:600px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+
+
+
+<!--zyntello:legales-->
+<link rel="alternate" hreflang="es" href="https://zyntello.com/sla/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/sla/">
+<link rel="alternate" hreflang="fr" href="https://zyntello.com/fr/sla/">
+<link rel="alternate" hreflang="it" href="https://zyntello.com/it/sla/">
+<link rel="alternate" hreflang="zh-Hans" href="https://zyntello.com/zh-Hans/sla/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/sla/">
+<style>
+.idiomas{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:center;padding:.75rem 0;font-size:.82rem}
+.idiomas span{color:var(--tx3,#64748b);text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+.idiomas a{color:var(--tx3,#64748b);text-decoration:none;padding:.15rem .5rem;border-radius:99px;border:1px solid transparent}
+.idiomas a:hover{color:var(--ac,#60a5fa);border-color:var(--line2,rgba(255,255,255,.14))}
+.idiomas a[aria-current]{color:var(--ac,#60a5fa);border-color:var(--ac,#60a5fa)}
+.prevalece{margin:1rem 0;padding:.75rem 1rem;border-radius:.5rem;font-size:.86rem;
+  color:var(--tx2,#94a3b8);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.28)}
+.prevalece a{color:var(--ac,#60a5fa)}
+</style>
+<!--/zyntello:legales--></head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">首页</a>
+        <a href="/zh-Hans/terminos/">服务条款</a>
+        <a href="/zh-Hans/privacidad/">隐私</a>
+        <a href="/zh-Hans/eliminacion-datos/">数据删除</a>
+        <a href="/zh-Hans/avisos-terceros/">第三方声明</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">法律文件</span>
+      <h1>服务级别协议</h1>
+      <p class="lead">本协议（以下简称 <strong>SLA</strong>）说明 <strong>Zyntello, S.R.L.</strong> 向其平台 <code>app.zyntello.com</code> 的订阅方提供的支持服务：通过哪些渠道受理、服务时间、优先级划分、响应时限、哪些内容已包含以及哪些另行计费。本协议是<a href="/zh-Hans/terminos/">服务条款</a>的补充，不构成替代。</p>
+      <div class="meta">
+        <span>最后更新： <strong>2026 年 9 月 9 日</strong></span>
+        <span>生效： <strong>自发布之日起</strong></span>
+        <span>版本： <strong><a class="verlink" href="#s13">1.4 — 参见变更记录</a></strong></span>
+      </div>
+    </div>
+  </div><!--zyntello:legales--><div class="idiomas" role="navigation" aria-label="语言"><span>语言:</span><a href="/sla/" hreflang="es" lang="es">Español</a><a href="/en/sla/" hreflang="en" lang="en">English</a><a href="/fr/sla/" hreflang="fr" lang="fr">Français</a><a href="/it/sla/" hreflang="it" lang="it">Italiano</a><a href="/zh-Hans/sla/" hreflang="zh-Hans" lang="zh-Hans" aria-current="true">简体中文</a></div><!--/zyntello:legales--></header>
+
+<main><!--zyntello:legales-->
+<div class="prevalece" role="note">本文为便于理解提供的译文。具有法律约束力的版本为西班牙语版本。 <a href="/sla/" hreflang="es" lang="es">查看西班牙语版本</a>.</div><!--/zyntello:legales-->
+  <div class="wrap">
+    <div class="grid">
+
+      <aside class="toc">
+        <h2>目录</h2>
+        <ol>
+          <li><a href="#s1">主体与目的</a></li>
+          <li><a href="#s2">定义</a></li>
+          <li><a href="#s3">支持渠道</a></li>
+          <li><a href="#s4">服务时间</a></li>
+          <li><a href="#s5">优先级划分</a></li>
+          <li><a href="#s6">首次响应时限</a></li>
+          <li><a href="#s7">支持服务包含哪些内容</a></li>
+          <li><a href="#s8">支持人员访问账户</a></li>
+      <li><a href="#s9">不包含的内容与另行计费项</a></li>
+          <li><a href="#s10">已含使用许可</a></li>
+          <li><a href="#s11">服务可用性</a></li>
+          <li><a href="#s12">除外情形与限制</a></li>
+          <li><a href="#s13">变更记录</a></li>
+        </ol>
+      </aside>
+
+      <article>
+
+<section id="s1">
+  <h2 class="sec"><span class="n">1.</span> 主体与目的</h2>
+  <p><strong>Zyntello, S.R.L.</strong> 是在多米尼加共和国设立的公司，向持有 <code>app.zyntello.com</code> 平台有效订阅的每一位订阅方提供本文件所述的支持服务。</p>
+  <p>支持联系方式：<a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a> · WhatsApp <a href="https://wa.me/18296399877">+1 829 639 9877</a> · 行政事务：<a href="mailto:info@zyntello.com">info@zyntello.com</a>。</p>
+  <div class="note"><b>本 SLA 在订阅款项结清期间适用。</b>因欠费而被暂停的账户，其数据按服务条款保留，但不再享有本文件承诺的响应时限。</div>
+</section>
+
+<section id="s2">
+  <h2 class="sec"><span class="n">2.</span> 定义</h2>
+  <ul>
+    <li><strong>工单：</strong>订阅方提出的任何支持请求。</li>
+    <li><strong>首次响应：</strong>Zyntello 的工作人员以诊断结论、具体询问或解决方案回复工单的时刻。<strong>不是</strong>自动回执。</li>
+    <li><strong>工作小时：</strong>在第 4 节所述服务时间内经过的小时数。周五 17:00 提交、承诺 4 个工作小时的工单，最迟在周一 11:00 前得到回复。</li>
+    <li><strong>解决时长：</strong>把工单彻底关闭所需的时间。取决于问题性质，本 SLA <strong>不作承诺</strong>；所承诺的是首次响应。</li>
+  </ul>
+  <div class="note warn"><b>为什么我们不承诺解决时长。</b>一个使用疑问在回复中即可解决；一个需要改代码、测试再上线的缺陷则不行。为这两类情况承诺同一个时限，等于一半的情况下必然违约。</div>
+</section>
+
+<section id="s3">
+  <h2 class="sec"><span class="n">3.</span> 支持渠道</h2>
+  <p>可通过以下任一渠道申请支持：</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>渠道</th><th>方式</th><th>最适合的用途</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>电子邮件</strong></td>
+          <td><a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a></td>
+          <td>主渠道。为整个工单留下书面记录，并可附上截图和文件。您的邮件会<strong>自动进入工单</strong>：回复我们的消息时，回复会并入同一工单；首次来信则会新建一个工单。</td>
+        </tr>
+        <tr>
+          <td><strong>WhatsApp</strong></td>
+          <td><a href="https://wa.me/18296399877">+1 829 639 9877</a></td>
+          <td>简短咨询与紧急告知。凡需跟进的工单都会转到电子邮件。</td>
+        </tr>
+        <tr>
+          <td><strong>网页表单</strong></td>
+          <td><a href="https://zyntello.com/#contacto">zyntello.com</a></td>
+          <td>当您尚无法访问平台、也无法使用已登记邮箱时。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note"><b>怎样能更快得到答复。</b>说明问题发生在哪家公司、哪个模块，预期结果是什么、实际发生了什么，并附上一张截图。有了这三项，多数工单在首次回复中即可解决，无需来回往返。</div>
+</section>
+
+<section id="s4">
+  <h2 class="sec"><span class="n">4.</span> 服务时间</h2>
+  <p><strong>周一至周五 8:00 至 18:00</strong>，多米尼加共和国时间（GMT-4），多米尼加法定节假日除外。</p>
+  <p>在该时段之外仍可通过任一渠道提交工单：工单会被记录，响应时限自下一个工作日开始计算。</p>
+</section>
+
+<section id="s5">
+  <h2 class="sec"><span class="n">5.</span> 优先级划分</h2>
+  <p>优先级由 Zyntello 根据对订阅方业务的<strong>实际影响</strong>确定，而非根据提交时的紧迫措辞。订阅方如不认同该划分，可说明具体影响并申请复核。</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>优先级</th><th>含义</th><th>示例</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>紧急</strong></td>
+          <td>平台不可用，或某个已订阅模块对整个公司都无法使用且无替代方案。</td>
+          <td>无法登录 · 无法开票 · 整个模块报错</td>
+        </tr>
+        <tr>
+          <td><strong>高</strong></td>
+          <td>某项重要功能失效或返回错误数据，但仍有办法继续作业。</td>
+          <td>报表数字对不上 · 某单据无法作废</td>
+        </tr>
+        <tr>
+          <td><strong>普通</strong></td>
+          <td>次要功能失效，或属于使用、配置方面的疑问。</td>
+          <td>如何配置单据编号 · 筛选条件未按预期生效</td>
+        </tr>
+        <tr>
+          <td><strong>低</strong></td>
+          <td>不影响业务运转的建议、改进意见与咨询。</td>
+          <td>申请在列表中新增一列 · 咨询某项未来功能</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s6">
+  <h2 class="sec"><span class="n">6.</span> 首次响应时限</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>优先级</th><th>首次响应</th></tr></thead>
+      <tbody>
+        <tr><td><strong>紧急</strong></td><td>4 个工作小时</td></tr>
+        <tr><td><strong>高</strong></td><td>8 个工作小时</td></tr>
+        <tr><td><strong>普通</strong></td><td>1 个工作日</td></tr>
+        <tr><td><strong>低</strong></td><td>3 个工作日</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>时限自工单经第 3 节所列渠道之一送达起算，并在第 4 节的服务时间内计算。</p>
+  <div class="note"><b>邮箱每 15 分钟检查一次。</b>发送至 <a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a> 的邮件由一个<strong>每十五分钟</strong>运行一次的自动流程并入工单，因此从订阅方发出到系统登记之间最多可能相隔 15 分钟。这段时间<strong>不从本节时限中扣除</strong>：计时自订阅方发出邮件之时开始，而非自我们系统处理之时开始。之所以在此声明，是因为这是我们这边的延误，不能算到订阅方头上。</div>
+  <div class="note warn"><b>如果我们没有按时响应。</b>订阅方可写信至 <a href="mailto:info@zyntello.com">info@zyntello.com</a>（沿用原主题）升级该工单。若多次且有据可查地未达本节时限，订阅方有权无违约金退订，自已付费周期结束之日起生效。</div>
+</section>
+
+<section id="s7">
+  <h2 class="sec"><span class="n">7.</span> 支持服务包含哪些内容</h2>
+  <p>在有效订阅范围内，不另行收费：</p>
+  <ul>
+    <li><strong>修复平台缺陷。</strong>若某项功能与文档描述不符，修复是我们的义务，绝不计费。</li>
+    <li>已订阅模块的<strong>使用疑问</strong>。</li>
+    <li>已订阅模块的<strong>配置</strong>：单据编号、会计科目、税率、权限与参数。</li>
+    <li><strong>登录相关问题</strong>：找回密码、两步验证与账号锁定。</li>
+    <li>关于如何用好现有功能的<strong>指导</strong>。</li>
+  </ul>
+  <div class="note ok"><b>报告缺陷永远不收费。</b>只要问题由平台造成，修复始终属于已含支持的范围，无论耗时多久。</div>
+
+  <h3>7.1. 人工智能帮助助手</h3>
+  <p>平台内置一个<strong>基于 Zyntello 文档回答使用问题的助手</strong>。它的用途是当场解决最常见的疑问，无需等待人工客服回复。</p>
+  <ul>
+    <li><strong>它只依据我们的文档作答。</strong>当文档未涵盖某个问题时，它会<strong>如实说明并建议开立工单</strong>，而不是临场编造答案。我们宁可不答，也不愿答错：对一套管理系统凭空杜撰的操作指引，可能让您丢失数据。</li>
+    <li><strong>它不执行任何操作。</strong>它只说明怎么做，不替您操作，也不修改您的信息。</li>
+    <li><strong>它设有使用额度</strong>，已包含在订阅内，并按用户、按日设限，以免一个人用光其他人的额度。</li>
+  </ul>
+  <div class="note ok"><b>助手额度用尽并不会让您失去支持。</b>额度用完后人工智能对话会停止，但<strong>邮件和工单仍然完全照旧包含在内</strong>：报告系统问题从不取决于任何额度。</div>
+  <div class="note"><b>关于使用档位。</b>订阅内含一定量的助手问答；若您的业务需要更多，可选扩容包，以及带合理使用政策的大用量档位，该档位<strong>以书面形式写明其上限</strong>。我们不以「无限量」对外销售任何档位。基于订阅方数据的专属助手，或与第三方系统集成的助手，<strong>不在本协议范围内</strong>，需另行订购。</div>
+  <div class="note ok"><b>没能帮到您的回答不扣减额度。</b>如果助手答不上来，该次提问不计入额度：为一个您并未得到的答案收费毫无道理。</div>
+</section>
+
+<section id="s8">
+  <h2 class="sec"><span class="n">8.</span> 支持人员访问账户</h2>
+  <p>有些问题无法从外部诊断：对不上的凭证、开不出的单据、不生效的权限。为了解决它们，支持人员可能需要<strong>进入订阅方的工作区并查看其数据</strong>。本节说明这种访问受哪些限制，更重要的是，订阅方如何自行核查。</p>
+
+  <h3>8.1. 支持人员如何登录</h3>
+  <ul>
+    <li><strong>绝不使用订阅方任何人的凭据。</strong>我们既不索要也不使用您团队中任何人的账号或密码。支持人员使用 <strong>Zyntello 的技术账号</strong>登录，与您的账号完全分离。</li>
+    <li><strong>每一项操作都以真实支持人员的姓名署名</strong>，而非技术账号或订阅方用户的名义。日志中可以看到谁做了什么。</li>
+    <li>技术账号<strong>不占用您套餐内的任何许可</strong>（见第 9 节），也不会出现在您的用户列表或系统下拉框中。</li>
+    <li>支持人员必须完成两步身份验证，才能开启该访问。</li>
+  </ul>
+
+  <h3>8.2. 默认只读</h3>
+  <p>访问<strong>初始为只读</strong>：支持人员能看，但系统禁止其保存任何更改。要修改内容，必须<strong>声明理由后提升会话权限</strong>，而该提升<strong>会自动失效</strong>——即便支持人员忘记关闭，也不会无限期保持开启。</p>
+
+  <h3>8.3. 记录哪些内容</h3>
+  <p>每次访问都会保存支持人员、进入与退出的日期时间、所声明的理由、IP 地址，以及该访问是已获授权还是紧急访问。若会话被提升为可写，还会记录<strong>每一项被修改数据的明细</strong>。</p>
+
+  <h3>8.4. 紧急访问</h3>
+  <p>当情况紧急到无法等待事先授权时——例如订阅方被卡住完全无法作业——支持人员可在声明理由后登录。该访问会被<strong>标记为未授权</strong>，账户所有者也会<strong>收到通知</strong>。这不是一项悄无声息的权限：它必须声明，而且看得见。</p>
+
+  <h3>8.5. 您如何自行核查</h3>
+  <div class="note ok"><b>无需向我们申请。</b>账户所有者可随时在<strong>配置 → 支持访问记录</strong>中查看完整的支持访问历史：谁进入、何时、为何、以何种权限级别，以及该访问是否已获授权。</div>
+
+  <h3>8.6. 我们不做什么</h3>
+  <ul>
+    <li>我们不会出于商业、统计或训练人工智能模型的目的访问您的数据。</li>
+    <li>除解决该问题所必需外，我们不会提取您信息的任何副本。</li>
+    <li>我们不会利用支持访问权限代订阅方处理业务：若需批量录入或批量更正数据，属于可计费工作，另行报价（见第 10 节）。</li>
+  </ul>
+      <h3>8.7. 工单门户</h3>
+      <p>订阅方的<strong>任何用户</strong>都可以在自己系统的<strong>支持</strong>中开立工单，无需特殊权限：碰到问题的人最清楚该怎么描述。每个工单都有一个编号（<code>SOP-000123</code>），凭它可在三个渠道中的任意一个跟进。</p>
+      <ul>
+        <li>订阅方可以看到自己工单的<strong>全部往来记录</strong>，并随时回复和上传附件。</li>
+        <li>在等待您回复期间，工单会被相应标记，<strong>该时段不计入</strong>第 6 节的时限：否则就是把不属于 Zyntello 的延误算在它头上。</li>
+        <li>只有在工作开始<strong>之前</strong>获得订阅方<strong>授权</strong>，工单才会被标记为可计费（第 10 节）。报告平台缺陷永远不收费。</li>
+      </ul>
+
+</section>
+
+<section id="s9">
+  <h2 class="sec"><span class="n">9.</span> 不包含的内容与另行计费项</h2>
+  <p>以下工作<strong>另行报价并单独计费</strong>，且<strong>未经订阅方事先书面批准一律不予执行</strong>：</p>
+  <ul>
+    <li>从其他系统<strong>导入或批量上传</strong>数据。</li>
+    <li>对订阅方人员的<strong>培训</strong>。</li>
+    <li>平台现有报表之外的<strong>定制报表</strong>。</li>
+    <li>为订阅方专门进行的<strong>开发或定制改造</strong>。</li>
+    <li>因平台之外的原因进行的<strong>备份恢复</strong>。</li>
+    <li>错误非由平台造成时的<strong>数据更正</strong>。</li>
+  </ul>
+  <div class="note warn"><b>任何计费工作未经授权都不会推进。</b>执行上述任一工作之前，我们都会发出载明范围与金额的报价。只有具备账户账务管理权限的人才能批准。未获批准，工作既不开展，也不累计工时。</div>
+</section>
+
+<section id="s10">
+  <h2 class="sec"><span class="n">10.</span> 已含使用许可</h2>
+  <p>每份订阅包含两类访问权限，详见<a href="/zh-Hans/terminos/#s5">服务条款第 5.3 节</a>：</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>类别</th><th>包含数量</th><th>范围</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>订阅方用户</strong></td>
+          <td>每账户 3 名<br>（含账户所有者）</td>
+          <td>可访问账户下的<strong>所有</strong>公司，权限依其角色而定：管理员、业务操作、查询或报表。</td>
+        </tr>
+        <tr>
+          <td><strong>内部用户</strong></td>
+          <td>每账户 5 名</td>
+          <td>每人仅归属<strong>一家公司</strong>；其权限按模块逐一配置，且只及于该公司。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>两类名额均可写信至 <a href="mailto:info@zyntello.com">info@zyntello.com</a> 申请扩充；扩充按现行价目计费。已停用的用户在被移出账户之前仍占用其许可。Zyntello 用于提供支持的技术账号<strong>不占用订阅方的许可</strong>。</p>
+</section>
+
+<section id="s11">
+  <h2 class="sec"><span class="n">11.</span> 服务可用性</h2>
+  <p>Zyntello 力求平台尽可能高的可用性，并按<a href="/zh-Hans/terminos/#s18">服务条款第 18 节</a>执行带完整性校验的定期备份。</p>
+  <div class="note warn"><b>可用性目标由服务条款设定，而非本文件。</b><a href="/zh-Hans/terminos/#s18">服务条款</a>声明每月 <strong>99.5&nbsp;%</strong> 的目标，并说明除非另有明确书面约定，这是一项<strong>运营目标，而非附带罚则的承诺</strong>：平台托管在第三方基础设施上，其可用性不由我们掌控。本 SLA 既不改变该目标，也不为其附加罚则。本协议真正承诺的是第 6 节的<strong>首次响应时限</strong>，以及对任何重大中断的及时告知。</div>
+  <p><strong>计划内维护窗口</strong>至少提前 24 小时通过电子邮件告知，并尽量安排在服务时间之外。</p>
+</section>
+
+<section id="s12">
+  <h2 class="sec"><span class="n">12.</span> 除外情形与限制</h2>
+  <p>本 SLA 不涵盖：</p>
+  <ul>
+    <li>订阅方的互联网连接、设备或网络故障。</li>
+    <li>由 Zyntello 之外的第三方服务造成的中断：支付网关、邮件服务商、税务机关或消息服务。</li>
+    <li>违反服务条款使用平台的行为。</li>
+    <li>订阅方或其用户错误上传数据所造成的后果。</li>
+    <li>未订阅的模块。</li>
+    <li>演示账户，其数据每日清除。</li>
+    <li>服务条款所列的不可抗力情形。</li>
+  </ul>
+  <div class="note"><b>税务与会计决策。</b>Zyntello 提供工具；申报、记账凭证与科目选择的责任在订阅方及其会计，详见<a href="/zh-Hans/terminos/#s17">服务条款第 17 节</a>。</div>
+</section>
+
+<section id="s13">
+  <h2 class="sec"><span class="n">13.</span> 变更记录</h2>
+  <p>自首次发布以来本文件所有版本的完整累积记录。历史版本可写信至 <a href="mailto:info@zyntello.com">info@zyntello.com</a> 索取。</p>
+  <div class="note"><b>如何理解版本号。</b><strong>小版本</strong>变更（1.0 &rarr; 1.1）是对既有内容的澄清或补充，不改变各项承诺。<strong>大版本</strong>变更（1.x &rarr; 2.0）会修改时限、范围或条件，并提前 <strong>30 天</strong>告知。</div>
+  <div class="tbl chg">
+    <table>
+      <thead>
+        <tr><th>版本</th><th>日期</th><th>变更内容</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1.4 <span class="vig">现行</span></td>
+          <td>2026 年 9 月 9 日</td>
+          <td><strong>人工智能帮助助手。</strong>新增第 <strong>7.1</strong> 节，声明订阅内包含的一项新功能：一个<strong>依据 Zyntello 文档</strong>回答使用疑问的助手；当文档未涵盖该问题时，它会<strong>如实说明并建议开立工单</strong>，而不是临场发挥——我们宁可不答，也不愿答错，因为对一套管理系统凭空杜撰的操作指引可能导致数据丢失。文中声明它<strong>不执行任何操作</strong>，设有按用户、按日限额的<strong>使用额度</strong>，更重要的是<strong>额度用尽并不会让订阅方失去支持</strong>：邮件和工单照常包含在内，因为报告系统问题不能取决于某个额度。此外还声明<strong>任何档位都不以「无限量」对外销售</strong>——高档位以书面形式写明其上限——并且<strong>没能解决问题的回答不扣减额度</strong>。渠道、服务时间、优先级、承诺的首次响应时限、已含许可与可用性目标<strong>均未改变</strong>。</td>
+        </tr>
+        <tr>
+          <td>1.3</td>
+          <td>2026 年 9 月 9 日</td>
+          <td><strong>邮件自动进入工单。</strong>第 <strong>3</strong> 节声明，发送至 <strong>soporte@zyntello.com</strong> 的邮件会<strong>自动</strong>并入工单——回复我们的邮件会并入同一工单，新邮件则新建一个；第 <strong>6</strong> 节说明该流程<strong>每十五分钟</strong>执行一次，因此从订阅方发出到系统登记之间最多可能相隔 15 分钟。更重要的是，文中声明<strong>这段时间不从首次响应时限中扣除</strong>：计时自订阅方发出之时开始，而非自我们系统处理之时开始——否则就是把我们的延误算到订阅方头上。渠道、服务时间、优先级划分、承诺的首次响应时限、已含许可与可用性目标<strong>均未改变</strong>。</td>
+        </tr>
+        <tr>
+          <td>1.2</td>
+          <td>2026 年 9 月 7 日</td>
+          <td><strong>工单门户。</strong>新增第 <strong>8.7</strong> 节：订阅方的<strong>任何用户</strong>都可以从自己的系统开立工单，无需特殊权限；每个工单都有编号，可在三个渠道跟进；订阅方可查看全部往来记录，并可回复和上传附件。此外声明，工单<strong>等待订阅方回复</strong>的时间<strong>不计入</strong>第 6 节的首次响应时限——否则就是把不属于 Zyntello 的延误算在它头上——并援引第 10 节关于可计费工作须事先授权的规定。渠道、服务时间、优先级、承诺时限与已含许可<strong>均未改变</strong>。</td>
+        </tr>
+        <tr>
+          <td>1.1</td>
+          <td>2026 年 9 月 6 日</td>
+          <td><strong>支持人员访问账户。</strong>新增第 <strong>8</strong> 节，声明此前版本未涵盖的一项操作：为诊断某些问题，支持人员可能需要进入订阅方的工作区并查看其数据。文中声明了相应限制——支持人员<strong>绝不</strong>使用订阅方任何人的凭据，而是使用不占用许可、也不出现在其名单中的技术账号；访问初始为<strong>只读</strong>，提升权限须声明理由且会自动失效；会记录支持人员、日期、理由、IP 以及被修改内容的明细；未经事先授权的访问会被标记并通知账户所有者——更重要的是，订阅方可<strong>自行核查</strong>，无需申请，路径为<strong>配置 → 支持访问记录</strong>。此外还声明了我们不做什么：不用于商业、统计或模型训练目的，也不代订阅方处理业务——那属于第 10 节的可计费工作。原第 8 至 12 节顺延为第 9 至 13 节，内容不变。渠道、服务时间、优先级划分、承诺的首次响应时限、已含许可与可用性目标<strong>均未改变</strong>。</td>
+        </tr>
+        <tr>
+          <td>1.0</td>
+          <td>2026 年 9 月 5 日</td>
+          <td><strong>首次发布。</strong>初始文件共 12 节：主体与目的、定义、支持渠道、服务时间、四级优先级划分、承诺的首次响应时限、已含支持的范围、须事先批准的可计费工作、已含使用许可（3 名订阅方用户与 5 名内部用户）、服务可用性——其 99.5&nbsp;% 的目标由<a href="/zh-Hans/terminos/#s18">服务条款</a>设定，而非本文件——、除外情形以及变更记录。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+      </article>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>多米尼加共和国</li>
+          <li><a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>法律文件</h4>
+        <ul>
+          <li><a href="/zh-Hans/terminos/">服务条款</a></li>
+          <li><a href="/zh-Hans/privacidad/">隐私政策</a></li>
+          <li><a href="/zh-Hans/cookies/">Cookie 政策</a></li>
+          <li><a href="/zh-Hans/eliminacion-datos/">数据删除</a></li>
+          <li><a href="/zh-Hans/sla/">服务级别协议</a></li>
+          <li><a href="/zh-Hans/avisos-terceros/">第三方软件声明</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy">&copy; 2026 Zyntello, S.R.L. 保留所有权利。</div>
+  </div>
+</footer>
+
+</body>
+</html>

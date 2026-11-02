@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>用户数据删除 | Zyntello</title>
+<meta name="description" content="在 Zyntello 平台申请删除个人数据的操作说明：提交什么、发送至何处、处理需要多久，以及哪些信息依法保留。">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<link rel="canonical" href="https://zyntello.com/zh-Hans/eliminacion-datos/">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;padding:0 clamp(1.25rem,3vw,2.75rem)}
+
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:88ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:clamp(2rem,3.5vw,4rem);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:95ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:95ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note.ok{border-left-color:var(--ok);background:rgba(52,211,153,.05)}
+  .note b{color:#fff}
+
+  /* Bloque destacado de solicitud */
+  .box{border:1px solid rgba(96,165,250,.35);background:rgba(96,165,250,.06);border-radius:14px;
+    padding:1.4rem 1.5rem;margin:1.3rem 0}
+  .box h3{margin-top:0;color:#fff;font-size:1.05rem}
+  .box .mail{display:inline-block;margin:.35rem 0 .8rem;font-size:1.2rem;font-weight:700;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;text-decoration:none;
+    border-bottom:2px solid var(--ac)}
+  .box .mail:hover{color:var(--ac)}
+  .box .asunto{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--tx);
+    background:rgba(255,255,255,.07);padding:.2rem .5rem;border-radius:5px;font-size:.92em}
+
+  /* Pasos */
+  .pasos{list-style:none;counter-reset:p;margin:1.1rem 0 1rem;gap:.9rem}
+  .pasos li{counter-increment:p;position:relative;padding-left:2.6rem}
+  .pasos li::before{content:counter(p);position:absolute;left:0;top:.1rem;width:1.75rem;height:1.75rem;
+    display:flex;align-items:center;justify-content:center;border-radius:50%;
+    background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.4);
+    color:var(--ac);font-size:.82rem;font-weight:700;font-variant-numeric:tabular-nums}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:520px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+
+
+
+<!--zyntello:legales-->
+<link rel="alternate" hreflang="es" href="https://zyntello.com/eliminacion-datos/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/eliminacion-datos/">
+<link rel="alternate" hreflang="fr" href="https://zyntello.com/fr/eliminacion-datos/">
+<link rel="alternate" hreflang="it" href="https://zyntello.com/it/eliminacion-datos/">
+<link rel="alternate" hreflang="zh-Hans" href="https://zyntello.com/zh-Hans/eliminacion-datos/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/eliminacion-datos/">
+<style>
+.idiomas{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:center;padding:.75rem 0;font-size:.82rem}
+.idiomas span{color:var(--tx3,#64748b);text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+.idiomas a{color:var(--tx3,#64748b);text-decoration:none;padding:.15rem .5rem;border-radius:99px;border:1px solid transparent}
+.idiomas a:hover{color:var(--ac,#60a5fa);border-color:var(--line2,rgba(255,255,255,.14))}
+.idiomas a[aria-current]{color:var(--ac,#60a5fa);border-color:var(--ac,#60a5fa)}
+.prevalece{margin:1rem 0;padding:.75rem 1rem;border-radius:.5rem;font-size:.86rem;
+  color:var(--tx2,#94a3b8);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.28)}
+.prevalece a{color:var(--ac,#60a5fa)}
+</style>
+<!--/zyntello:legales--></head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">首页</a>
+        <a href="/zh-Hans/terminos/">服务条款</a>
+        <a href="/zh-Hans/privacidad/">隐私政策</a>
+        <a href="/zh-Hans/sla/">SLA</a>
+        <a href="/zh-Hans/avisos-terceros/">第三方声明</a>
+        <a href="https://zyntello.com/#contacto">联系方式</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">法律文件</span>
+      <h1>用户数据删除</h1>
+      <p class="lead">本页说明<strong>如何申请删除您在 <strong>Zyntello</strong> 平台上的个人数据</strong>：需要提交什么、发送至何处、处理需要多久、哪些内容会被删除，以及哪些信息我们必须依法保留。</p>
+      <div class="meta">
+        <span>最后更新： <strong>2026 年 8 月 31 日</strong></span>
+        <span>生效： <strong>自发布之日起</strong></span>
+        <span>版本： <strong><a class="verlink" href="#s8">1.1 — 参见变更记录</a></strong></span>
+        <span>原始语言： <strong>西班牙语</strong></span>
+      </div>
+    </div>
+  </div><!--zyntello:legales--><div class="idiomas" role="navigation" aria-label="语言"><span>语言:</span><a href="/eliminacion-datos/" hreflang="es" lang="es">Español</a><a href="/en/eliminacion-datos/" hreflang="en" lang="en">English</a><a href="/fr/eliminacion-datos/" hreflang="fr" lang="fr">Français</a><a href="/it/eliminacion-datos/" hreflang="it" lang="it">Italiano</a><a href="/zh-Hans/eliminacion-datos/" hreflang="zh-Hans" lang="zh-Hans" aria-current="true">简体中文</a></div><!--/zyntello:legales--></header>
+
+<main class="wrap"><!--zyntello:legales-->
+<div class="prevalece" role="note">本文为便于理解提供的译文。具有法律约束力的版本为西班牙语版本。 <a href="/eliminacion-datos/" hreflang="es" lang="es">查看西班牙语版本</a>.</div><!--/zyntello:legales-->
+<div class="grid">
+
+  <aside class="toc">
+    <h2>目录</h2>
+    <ol>
+      <li><a href="#s1">如何申请删除</a></li>
+      <li><a href="#s2">申请之前：两种情形</a></li>
+      <li><a href="#s3">提交申请后会发生什么</a></li>
+      <li><a href="#s4">哪些内容会被删除</a></li>
+      <li><a href="#s5">哪些内容会保留及其原因</a></li>
+      <li><a href="#s6">停止接收消息</a></li>
+      <li><a href="#s7">其他权利与投诉</a></li>
+      <li><a href="#s8">变更记录</a></li>
+    </ol>
+  </aside>
+
+  <article>
+
+    <section id="s1">
+      <h2 class="sec"><span class="n">1.</span> 如何申请删除您的数据</h2>
+
+      <div class="box">
+        <h3>请通过电子邮件提交申请</h3>
+        <a class="mail" href="mailto:info@zyntello.com?subject=Solicitud%20de%20eliminaci%C3%B3n%20de%20datos">info@zyntello.com</a>
+        <p style="margin-bottom:.9rem">主题为 <span class="asunto">数据删除申请</span></p>
+        <p style="margin-bottom:.4rem"><strong>请在邮件中写明：</strong></p>
+        <ul style="margin-bottom:0">
+          <li>您的<strong>全名</strong>；</li>
+          <li>您注册时使用或被联系时使用的<strong>电子邮箱</strong>或<strong>电话号码</strong>；</li>
+          <li>如适用，联系过您或在平台上登记过您数据的<strong>公司名称</strong>；</li>
+          <li>如您愿意，说明希望删除<strong>全部</strong>数据还是某一项具体数据。</li>
+        </ul>
+      </div>
+
+      <p>您也可以通过 WhatsApp 向 <a href="https://wa.me/18296399877">+1 829 639 9877</a> 提交申请。此时我们会请您通过电子邮件再确认一次，以便留下您身份与请求的书面记录。</p>
+
+      <div class="note">
+        <p><b>您无需拥有账户。</b>即使您从未在 Zyntello 注册，也可以申请删除：只要某家使用我们平台的公司上传过您的数据，或从平台向您发送过信息即可。</p>
+      </div>
+
+      <p>为保护您的信息，我们可能要求您进行合理的<strong>身份验证</strong>——例如从已登记的邮箱发送邮件，或确认档案中的某项信息。我们不会索要您的密码、银行卡信息，或任何与身份核实无关的证件。</p>
+    </section>
+
+    <section id="s2">
+      <h2 class="sec"><span class="n">2.</span> 申请之前：确认您属于哪种情形</h2>
+      <p>Zyntello 是供其他企业管理自身业务的平台。数据归属不同，行使权利的对象也不同，因此存在两种情形：</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>您的情形</th><th>谁对您的数据作决定</th><th>我们会做什么</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>您是 Zyntello 的用户</strong><br><span style="font-size:.92em">您拥有或曾拥有账户，或是某个账户团队的成员。</span></td>
+              <td><strong>Zyntello</strong> 是数据控制者。</td>
+              <td>我们直接受理并执行您的申请。</td>
+            </tr>
+            <tr>
+              <td><strong>您的数据由某家公司上传</strong><br><span style="font-size:.92em">您是某家使用 Zyntello 的公司的客户、员工、供应商、住户、债务人或活动参与者。</span></td>
+              <td><strong>该公司</strong>是数据控制者。Zyntello 仅代其托管和处理数据。</td>
+              <td>我们会把您的申请转交该公司，以书面方式告知您，并配合推动处理。最终决定权在该公司。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note warn">
+        <p><b>若不确定自己属于哪种情形，仍请写信给我们。</b>凭您提供的邮箱或电话，我们可以判断谁是您数据的控制者并告知您。不会有任何申请因为「找错了对象」而被驳回。</p>
+      </div>
+    </section>
+
+    <section id="s3">
+      <h2 class="sec"><span class="n">3.</span> 提交申请后会发生什么</h2>
+      <ol class="pasos">
+        <li><strong>回执确认。</strong>我们会回复确认已收到申请，通常在<strong>2 个工作日</strong>内。</li>
+        <li><strong>核实。</strong>我们核对您的身份并定位您的数据。如需补充信息以确认身份，会在此时向您索取。</li>
+        <li><strong>确定控制者。</strong>如果您的数据由某订阅公司上传，我们会联系该公司，并告知您申请已转交给谁。</li>
+        <li><strong>执行。</strong>我们删除或封存相应数据。</li>
+        <li><strong>书面最终答复。</strong>我们会告知您哪些内容已删除、哪些予以保留及其原因。<strong>最长期限：30 天</strong>，自收到经核实的申请之日起算。</li>
+      </ol>
+      <div class="note ok">
+        <p><b>本服务免费。</b>受理删除申请不收取费用，也不要求您说明任何理由。</p>
+      </div>
+      <p>已删除的数据在<strong>30 天</strong>的轮替周期结束后，也会从我们的<strong>备份</strong>中消失。在此期间数据处于封存状态，不用于任何用途。</p>
+      <div class="note">
+        <p><b>订阅公司已下载的副本。</b>平台允许每家订阅公司下载包含其自有数据的备份文件。文件一经下载即由该公司持有，<strong>超出 Zyntello 的掌控范围</strong>：我们既无法定位也无法删除。如果您的数据由订阅公司上传，这些副本的删除由该公司负责，我们会按上文所述把您的申请转交给它。</p>
+      </div>
+    </section>
+
+    <section id="s4">
+      <h2 class="sec"><span class="n">4.</span> 哪些内容会被删除</h2>
+      <p>根据您的情形和您所申请的范围，删除可能涵盖：</p>
+      <ul>
+        <li>您的<strong>账户与登录数据</strong>：姓名、邮箱、电话、密码、角色与权限；</li>
+        <li>您在客户、供应商或商务联系人档案中的<strong>联系方式</strong>；</li>
+        <li>已上传的您本人或您财物的<strong>照片</strong>；</li>
+        <li>与您活动相关的<strong>地理位置记录</strong>；</li>
+        <li>提及您的<strong>备注、评论与管理记录</strong>；</li>
+        <li>消息发送名单中的您的<strong>电话号码</strong>，以及您退订申请的记录；</li>
+        <li>您的<strong>通讯偏好</strong>与营销同意记录。</li>
+      </ul>
+    </section>
+
+    <section id="s5">
+      <h2 class="sec"><span class="n">5.</span> 哪些内容会保留及其原因</h2>
+      <p>有些信息我们<strong>无法删除</strong>，因为法律要求保留，或者因为需要用它来证明相关事实。在这些情况下，数据会被<strong>封存</strong>：其处理被限制在支撑保留义务的法定目的范围内，不再用于其他任何用途。</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>保留的内容</th><th>原因</th><th>期限</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>载有您信息的已开具税务凭证与发票</td><td>税务与会计义务</td><td>10 年，或适用法律规定的期限</td></tr>
+            <tr><td>信贷与付款业务记录</td><td>法定义务及关系的证明</td><td>适用的法定时效期间</td></tr>
+            <tr><td>劳动与社会保险记录</td><td>雇主的劳动法义务</td><td>劳动法规定的期限</td></tr>
+            <tr><td>您的申请与我们答复的证据</td><td>向主管机关证明合规</td><td>3 年</td></tr>
+            <tr><td>您退订通讯的记录</td><td>用于确保<strong>不再联系您</strong></td><td>在排除名单存续期间</td></tr>
+            <tr><td>为进行中的争议抗辩所必需的数据</td><td>诉讼中的合法利益</td><td>至终局裁决为止</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <p><b>关于退订记录。</b>在您申请删除后仍保留电话或邮箱，看似自相矛盾，但这是保证您不再收到消息的唯一办法：若把该数据彻底抹去，日后的一次导入就可能把您重新加进名单。保留它的唯一目的就是把您排除在外。</p>
+      </div>
+    </section>
+
+    <section id="s6">
+      <h2 class="sec"><span class="n">6.</span> 我只想停止接收消息</h2>
+      <p>如果您的目的不是删除数据，而是<strong>停止接收通讯</strong>，流程更简单也更快：</p>
+      <ul>
+        <li><strong>WhatsApp</strong>：直接回复该消息要求退订，或拉黑该号码。如果消息来自某家使用 Zyntello 的公司，该公司必须立即停止向您发送。若未照办，请写信给我们，由我们与其交涉。</li>
+        <li><strong>电子邮件</strong>：使用每封商业邮件底部的退订链接。</li>
+        <li><strong>无论哪种情况</strong>：请写信至 <a href="mailto:info@zyntello.com?subject=Baja%20de%20comunicaciones">info@zyntello.com</a>，主题为 <span class="asunto">退订通讯</span>。我们最迟在<strong>72 小时</strong>内处理。</li>
+      </ul>
+      <div class="note warn">
+        <p><b>订阅公司发出的消息并非来自 Zyntello。</b>取得您的同意、处理您的退订，是各公司自身的责任。我们提供工具和记录该偏好的机制，并在某项请求未被处理时介入协助。</p>
+      </div>
+      <p>退订商业通讯不会中断严格意义上的<strong>交易类</strong>消息，只要您与该公司之间的关系仍然有效（例如您已订购服务的账单）。</p>
+    </section>
+
+    <section id="s7">
+      <h2 class="sec"><span class="n">7.</span> 其他权利与投诉</h2>
+      <p>除删除外，您还可以申请<strong>查阅</strong>您的数据、<strong>更正</strong>数据、<strong>反对</strong>某项处理，并在法律有规定时申请数据<strong>可携带</strong>与处理<strong>限制</strong>，以及<strong>撤回已给予的同意</strong>。流程与期限与本页所述相同。</p>
+      <p>您权利的详情、各国适用法规以及我们处理的数据类别，载于<a href="/zh-Hans/privacidad/">隐私政策</a>（第 9、10 节）。</p>
+      <p>如果您认为自己的申请未获妥善处理，可向贵国的数据保护机关或有管辖权的法院提出投诉。</p>
+      <h3>联系方式</h3>
+      <ul>
+        <li><strong>Zyntello, S.R.L.</strong> — 多米尼加共和国</li>
+        <li>邮箱：<a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+        <li>电话与 WhatsApp：<a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+      </ul>
+    </section>
+
+    <section id="s8">
+      <h2 class="sec"><span class="n">8.</span> 变更记录</h2>
+      <p>自首次发布以来本文件所有版本的完整累积记录。每条记录注明版本、生效日期及变更内容。既往记录<strong>不作修改，也不予删除</strong>。</p>
+      <div class="tbl chg">
+        <table>
+          <thead>
+            <tr><th>版本</th><th>日期</th><th>变更内容</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1.1 <span class="vig">现行</span></td>
+              <td>2026 年 8 月 31 日</td>
+              <td><strong>订阅公司下载的备份。</strong>明确了删除的一项界限：平台允许每家订阅公司下载包含其自有数据的文件，文件一经下载即超出 Zyntello 的掌控范围。文中说明这些副本的删除由订阅公司负责，您的申请会转交给它。流程、期限以及删除或保留的数据范围均未改变。</td>
+            </tr>
+            <tr>
+              <td>1.0</td>
+              <td>2026 年 7 月 28 日</td>
+              <td><strong>首次发布。</strong>将数据删除说明独立成文：如何申请、按控制者区分的两种情形、最长 30 天的五步流程、删除范围、保留范围及其原因、退订通讯、其他权利以及变更记录。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>您可写信至 <a href="mailto:info@zyntello.com">info@zyntello.com</a> 索取任一历史版本的完整文本。</p>
+    </section>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>企业技术与人工智能</li>
+          <li>多米尼加共和国</li>
+        </ul>
+      </div>
+      <div>
+        <h4>法律</h4>
+        <ul>
+          <li><a href="/zh-Hans/terminos/">服务条款</a></li>
+          <li><a href="/zh-Hans/privacidad/">隐私政策</a></li>
+          <li><a href="/zh-Hans/eliminacion-datos/">数据删除</a></li>
+          <li><a href="/zh-Hans/sla/">服务级别协议</a></li>
+          <li><a href="/zh-Hans/avisos-terceros/">第三方软件声明</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>联系方式</h4>
+        <ul>
+          <li><a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+          <li><a href="https://zyntello.com">zyntello.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy">© 2026 Zyntello, S.R.L. 保留所有权利。</p>
+  </div>
+</footer>
+
+</body>
+</html>
