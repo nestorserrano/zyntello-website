@@ -9,6 +9,54 @@
 
 ### Bitácora reciente (estado actual — 2026-09-08)
 
+> **EL MARCO LEGAL EN LOS OCHO IDIOMAS — CERRADO (2026-11-01)**: las **seis** páginas legales
+> —términos, privacidad, cookies, eliminación de datos, SLA y avisos de terceros— existen ahora
+> en los **ocho idiomas** que el selector ofrece: español, inglés, francés, italiano, chino
+> simplificado, chino tradicional, árabe y criollo haitiano. **48 páginas, todas completas, todas
+> con su aviso de prevalencia**, verificadas una a una contra producción por su `<title>`.
+>
+> ⚠️⚠️ **El criollo no es un adorno en este mercado.** La República Dominicana comparte isla con
+> Haití, y una parte de la plantilla que un suscriptor dominicano registra en Nómina lee en
+> criollo. Hasta hoy esa persona tenía Cookies y nada más: para saber qué se hace con su documento
+> de identidad, su salario o la foto de su rostro tenía que leerlo en un idioma que no es el suyo.
+>
+> ⚠️⚠️ **El chino tradicional NO se saca del simplificado convirtiendo caracteres.** Se hizo en
+> dos pasos a propósito: OpenCC convierte el carácter y la variante de Taiwán (为→為, 里面→裡面),
+> que es mecánico; el **vocabulario se ENUMERA a mano**, 31 términos revisados uno por uno
+> (數據→資料, 軟件→軟體, 用戶→使用者, 賬戶→帳戶, 知識產權→智慧財產權), 1.129 sustituciones.
+>
+> **No se usó `s2twp`, la configuración de OpenCC que ya trae glosario, porque se midió lo que
+> hace**: aplica vocabulario de INFORMÁTICA a palabras que aquí son JURÍDICAS, sin dar error.
+> «聲明» (aviso legal) → «宣告» (declaración de una *variable*); «文件» (documento) → «檔案»
+> (archivo de disco); «發佈» (publicar un texto) → «釋出» (*release* de software); «類型» (tipo de
+> licencia) → «型別» (tipo de *dato*). Las cuatro dejan un documento legal que se lee como un
+> manual de programación. Es **la misma trampa de siempre: reconocer «lo técnico» por su FORMA**.
+>
+> **Y cinco palabras se dejaron DELIBERADAMENTE fuera del mapa** porque tienen dos sentidos en
+> estos mismos textos y ninguna regla automática los separa: `程序` (programa y *procedimiento
+> administrativo*), `項目` (proyecto y *partida contable*), `文件` (documento y archivo), `訪問`
+> (acceder y *visitante*) y `保存` (guardar y *conservar por obligación legal*). Cambiarlas a
+> ciegas convertiría una de cada dos apariciones en un error que nadie vería. El motivo está
+> escrito en el conversor, no solo en el commit.
+>
+> ⚠️ **Medido, no supuesto**: de 1.310 frases, 145 salen idénticas en los dos chinos y **ninguna
+> pasa de 12 caracteres** — son rótulos como «SLA» o «Cookie». Cero prosa sin convertir.
+>
+> ⚠️⚠️ **En árabe, el teléfono necesita la marca U+200E delante.** Sin ella, el algoritmo bidi del
+> navegador mueve el «+» de `+1 829 639 9877` al otro extremo dentro de un párrafo árabe: el
+> número sigue siendo el mismo pero **deja de parecerlo**, y es el teléfono de soporte que ese
+> lector tendría que marcar. Faltaba en el único sitio donde venía de una traducción anterior
+> (`cookies.ar`), y se corrigió aparte.
+>
+> **El selector de idioma y los `hreflang` se regeneran en TODAS las páginas** al añadir un idioma,
+> y eso importa: ofrecer un idioma que no existe manda al visitante a un 404 y se lee como un sitio
+> roto. Comprobado en producción: el selector ofrece siete enlaces y los siete resuelven.
+>
+> **El aviso de prevalencia no cambia en ninguno de los ocho**: el idioma original es el español y,
+> ante cualquier discrepancia, manda la versión española. Una traducción legal informa; no
+> sustituye al texto que obliga.
+
+
 > **EL MARCO LEGAL COMPLETO, EN FRANCÉS (2026-11-01)**: las **seis** páginas legales
 > —términos, privacidad, cookies, eliminación de datos, SLA y avisos de terceros— quedan
 > publicadas en francés, que se suma al inglés. Un cliente francófono lee en su idioma todo lo
