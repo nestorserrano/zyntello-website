@@ -106,7 +106,13 @@ const PREFIJOS = ['nav.', 'hero.', 'porque.', 'cookies.', 'idioma.', 'pie.', 'co
    así que
    comprobarlo uno a uno exigiría recorrer esos datos aquí — que es justo lo
    que hace el generador. Se cuentan como abiertos y basta. */
-const PREFIJOS_ABIERTOS = ['mod.', 'fun.']
+/* ⚠️ `pri.*` es el mismo caso que `fun.*`: las claves de las cuatro páginas de
+   primer nivel —`pri.precios.beneficios.2.titulo`— las arma `generar-paginas.mjs`
+   recorriendo `paginas/datos.mjs`, no una lista escrita en ningún sitio. Sin
+   esta entrada, las 276 aparecían como «sembradas que ninguna vista pide»:
+   traducidas y publicadas, pero denunciadas. Un aviso falso de 276 líneas no
+   se lee, y el de verdad se pierde dentro. */
+const PREFIJOS_ABIERTOS = ['mod.', 'fun.', 'pri.']
 
 /**
  * ¿Es una clave de conjunto abierto, que no se cuenta en ninguna dirección?
@@ -145,6 +151,7 @@ const GENERADORES = [
   join(AQUI, 'lib', 'plantilla.mjs'),
   join(AQUI, 'generar-servicios.mjs'),
   join(AQUI, 'generar-funcionalidades.mjs'),
+  join(AQUI, 'generar-paginas.mjs'),
 ].filter(existsSync)
 
 for (const n of [...fuentesJsx(), ...GENERADORES]) {
