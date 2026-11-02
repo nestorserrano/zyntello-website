@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>إشعارات برمجيات الأطراف الثالثة | Zyntello</title>
+<meta name="description" content="مكوّنات برمجيات الأطراف الثالثة التي تتضمّنها منصّة Zyntello, S.R.L. السحابية، مع رخصة كل منها وإشعارات نسبتها.">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<link rel="canonical" href="https://zyntello.com/ar/avisos-terceros/">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;padding:0 clamp(1.25rem,3vw,2.75rem)}
+
+  /* Encabezado */
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:88ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  /* Cuerpo */
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:clamp(2rem,3.5vw,4rem);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  /* Índice */
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  /* Secciones */
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:95ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:95ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note b{color:#fff}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:560px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  /* Control de cambios */
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
+  /* Pie */
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+
+
+
+<!--zyntello:legales-->
+<link rel="alternate" hreflang="es" href="https://zyntello.com/avisos-terceros/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/avisos-terceros/">
+<link rel="alternate" hreflang="fr" href="https://zyntello.com/fr/avisos-terceros/">
+<link rel="alternate" hreflang="it" href="https://zyntello.com/it/avisos-terceros/">
+<link rel="alternate" hreflang="zh-Hans" href="https://zyntello.com/zh-Hans/avisos-terceros/">
+<link rel="alternate" hreflang="zh-Hant" href="https://zyntello.com/zh-Hant/avisos-terceros/">
+<link rel="alternate" hreflang="ar" href="https://zyntello.com/ar/avisos-terceros/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/avisos-terceros/">
+<style>
+.idiomas{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:center;padding:.75rem 0;font-size:.82rem}
+.idiomas span{color:var(--tx3,#64748b);text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+.idiomas a{color:var(--tx3,#64748b);text-decoration:none;padding:.15rem .5rem;border-radius:99px;border:1px solid transparent}
+.idiomas a:hover{color:var(--ac,#60a5fa);border-color:var(--line2,rgba(255,255,255,.14))}
+.idiomas a[aria-current]{color:var(--ac,#60a5fa);border-color:var(--ac,#60a5fa)}
+.prevalece{margin:1rem 0;padding:.75rem 1rem;border-radius:.5rem;font-size:.86rem;
+  color:var(--tx2,#94a3b8);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.28)}
+.prevalece a{color:var(--ac,#60a5fa)}
+</style>
+<!--/zyntello:legales--></head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">الرئيسية</a>
+        <a href="/ar/terminos/">شروط الخدمة</a>
+        <a href="/ar/privacidad/">سياسة الخصوصية</a>
+        <a href="/ar/sla/">اتفاقية مستوى الخدمة</a>
+        <a href="https://zyntello.com/#contacto">التواصل</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">مستند قانوني</span>
+      <h1>إشعارات برمجيات الأطراف الثالثة</h1>
+      <p class="lead">بُنيت منصة <strong>Zyntello, S.R.L.</strong> على مكوّنات برمجية من أطراف ثالثة. تحدّد هذه الوثيقة تلك المكوّنات، وتُعلن رخصة كل منها، وتُورد إشعارات النسبة التي تشترطها تلك الرخص. وتُنشر امتثالاً <a href="/ar/terminos/#s10">للبند 10.1 من شروط الخدمة</a>.</p>
+      <div class="meta">
+        <span>آخر تحديث: <strong>18 سبتمبر 2026</strong></span>
+        <span>سريان المفعول: <strong>من تاريخ نشرها</strong></span>
+        <span>الإصدار: <strong><a class="verlink" href="#s9">1.0 — انظر سجلّ التغييرات</a></strong></span>
+        <span>اللغة الأصلية: <strong>الإسبانية</strong></span>
+      </div>
+    </div>
+  </div><!--zyntello:legales--><div class="idiomas" role="navigation" aria-label="اللغة"><span>اللغة:</span><a href="/avisos-terceros/" hreflang="es" lang="es">Español</a><a href="/en/avisos-terceros/" hreflang="en" lang="en">English</a><a href="/fr/avisos-terceros/" hreflang="fr" lang="fr">Français</a><a href="/it/avisos-terceros/" hreflang="it" lang="it">Italiano</a><a href="/zh-Hans/avisos-terceros/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a><a href="/zh-Hant/avisos-terceros/" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a><a href="/ar/avisos-terceros/" hreflang="ar" lang="ar" aria-current="true">العربية</a></div><!--/zyntello:legales--></header>
+
+<main class="wrap"><!--zyntello:legales-->
+<div class="prevalece" role="note">هذه ترجمة للتيسير فقط. النسخة المُلزِمة لهذا المستند هي النسخة الإسبانية. <a href="/avisos-terceros/" hreflang="es" lang="es">عرض النسخة الإسبانية</a>.</div><!--/zyntello:legales-->
+<div class="grid">
+
+  <aside class="toc">
+    <h2>المحتويات</h2>
+    <ol>
+      <li><a href="#s1">الغرض من هذه الوثيقة</a></li>
+      <li><a href="#s2">كيف تُقرأ جداول الرخص</a></li>
+      <li><a href="#s3">مكوّنات الخادم (PHP)</a></li>
+      <li><a href="#s4">مكوّنات المتصفّح (JavaScript وCSS)</a></li>
+      <li><a href="#s5">الخطوط والأيقونات</a></li>
+      <li><a href="#s6">المكوّنات ذات الرخصة التجارية</a></li>
+      <li><a href="#s7">ملخّص حسب نوع الرخصة</a></li>
+      <li><a href="#s8">كيفية طلب نصّ رخصة</a></li>
+      <li><a href="#s9">سجلّ التغييرات</a></li>
+    </ol>
+  </aside>
+
+  <article>
+
+    <section id="s1">
+      <h2 class="sec"><span class="n">1.</span> الغرض من هذه الوثيقة</h2>
+      <p>لا تُكتب أي منصّة لإدارة الأعمال من الصفر بالكامل. وتعتمد منصّة Zyntello على <strong>مكوّنات برمجية حرّة ومفتوحة المصدر</strong> طوّرتها أطراف ثالثة: إطار العمل الذي يعمل عليه التطبيق، والمكتبات التي تُنشئ ملفات PDF وExcel، وتلك التي تقرأ الرموز الشريطية، وتلك التي ترسم الرسوم البيانية، وخطوط الواجهة وأيقوناتها.</p>
+      <p>يُوزَّع كل مكوّن من هذه المكوّنات بموجب <strong>رخصته الخاصة</strong>، وتشترط هذه الرخص جميعها تقريباً الشيء نفسه: الإبقاء على إشعار حقوق المؤلف الخاص بصاحبه، وأن يعرف من يتلقّى البرمجية مصدرَها. وهذه الوثيقة هي الطريقة التي تفي بها Zyntello بذلك الالتزام، وهي في الوقت نفسه إجابة عن سؤال مشروع يطرحه أي مشترك: <em>على أي أساس بُني النظام الذي أعهد إليه بمحاسبتي؟</em></p>
+      <div class="note">
+        <p><b>ما ليست عليه هذه الوثيقة.</b> إن تضمين المنصّة مكوّنات مفتوحة المصدر <strong>لا يجعلها برمجية حرّة</strong> ولا يمنح أي حقّ على الشيفرة الخاصة بـ Zyntello. فرخصة كل مكوّن تغطّي ذلك المكوّن لا غير. أما النظام القانوني للمنصّة ككلّ فهو المنصوص عليه في <a href="/ar/terminos/#s10">البند 10 من شروط الخدمة</a>: رخصة استخدام محدودة ما دام الاشتراك سارياً.</p>
+      </div>
+      <p>وعلى العكس، لا تستطيع شروط Zyntello أن تنتقص مما تمنحه رخصة طرف ثالث. وعند اختلاف الاثنتين بشأن مكوّن ما، <strong>تكون الغلبة لرخصة المكوّن</strong>.</p>
+    </section>
+
+    <section id="s2">
+      <h2 class="sec"><span class="n">2.</span> كيف تُقرأ جداول الرخص</h2>
+      <p>تنقسم الرخص الواردة في هذه الوثيقة إلى ثلاث عائلات، والفرق بينها مهمّ:</p>
+      <ul>
+        <li><strong>المتساهلة</strong> ‏(MIT وBSD وISC وApache&nbsp;2.0). تتيح استخدام المكوّن وتعديله وإعادة توزيعه، بما في ذلك ضمن منتج تجاري، بشرط فعلي واحد: <strong>الإبقاء على إشعار حقوق المؤلف ونصّ الرخصة</strong>. وتضيف Apache&nbsp;2.0 منحاً صريحاً لبراءات الاختراع والتزاماً ببيان الملفات المعدّلة.</li>
+        <li><strong>الحقوق المتروكة الضعيفة</strong> ‏(LGPL). تتيح استخدام المكتبة داخل منتج مملوك دون إلزام بنشر ذلك المنتج. والذي يجب أن يبقى حرّاً هو <strong>التعديلات التي تُجرى على المكتبة نفسها</strong>. وتستخدم Zyntello هذه المكتبات <strong>من دون تعديلها</strong>.</li>
+        <li><strong>نسبة المصنَّف</strong> ‏(CC&nbsp;BY&nbsp;4.0 وSIL&nbsp;OFL). تنطبق على الأيقونات والخطوط لا على الشيفرة. وتشترط <strong>ذكر اسم المؤلف</strong> حيثما استُخدم المصنَّف. ولهذا وُجدت هذه الوثيقة بالشكل الذي هي عليه.</li>
+      </ul>
+      <div class="note warn">
+        <p><b>لا يخضع أي مكوّن في المنصّة لحقوق متروكة قويّة (GPL أو AGPL) بشروط تُلزم بنشر شيفرة Zyntello.</b> ويُوزَّع مكوّنان برخصة مزدوجة <em>تتيح</em> GPL كبديل (حزم <code>nette/*</code>، إمّا BSD-3-Clause وإمّا GPL باختيار المستخدِم): وتستعملهما Zyntello <strong>بموجب BSD-3-Clause</strong>.</p>
+      </div>
+      <p>الإصدارات المذكورة هي السارية بتاريخ هذه الوثيقة، وتُحدَّث عند تغيّرها وفقاً للبند 8.</p>
+    </section>
+
+    <section id="s3">
+      <h2 class="sec"><span class="n">3.</span> مكوّنات الخادم (PHP)</h2>
+      <p>هذه المكوّنات تعمل على خادم <code>app.zyntello.com</code> ولا تصل أبداً إلى جهاز المستخدم. ويعتمد التطبيق على <strong>111 حزمة</strong> في بيئة الإنتاج؛ ويُدرج الجدول حزم المستوى الأول، ثم على حدة حزمَ المستوى الثاني التي تستحق رخصتها ذكراً خاصاً.</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>المكوّن</th><th>الإصدار</th><th>الرخصة</th><th>الغرض من الاستخدام</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Laravel Framework</strong></td><td>12.58.0</td><td>MIT</td><td>إطار العمل الذي يعمل عليه التطبيق بأكمله</td></tr>
+            <tr><td><strong>Livewire</strong></td><td>4.2.4</td><td>MIT</td><td>شاشات تفاعلية دون إعادة تحميل الصفحة</td></tr>
+            <tr><td><strong>Laravel Cashier</strong></td><td>16.5.1</td><td>MIT</td><td>الاشتراكات والتحصيلات الدورية</td></tr>
+            <tr><td><strong>Laravel Tinker</strong></td><td>2.11.1</td><td>MIT</td><td>وحدة تحكّم الصيانة</td></tr>
+            <tr><td><strong>laravel-dompdf</strong></td><td>3.1.2</td><td>MIT</td><td>إنشاء الفواتير وعروض الأسعار والتقارير بصيغة PDF</td></tr>
+            <tr><td><strong>Laravel Excel</strong> (maatwebsite)</td><td>3.1.68</td><td>MIT</td><td>استيراد جداول البيانات وتصديرها</td></tr>
+            <tr><td><strong>League CSV</strong></td><td>9.28.0</td><td>MIT</td><td>قراءة ملفات CSV وكتابتها</td></tr>
+            <tr><td><strong>BaconQrCode</strong></td><td>3.1.1</td><td>BSD-2-Clause</td><td>رموز QR للأصول واللوحات التعريفية والفعاليات والتحقّق بخطوتين</td></tr>
+            <tr><td><strong>Pusher PHP Server</strong></td><td>7.2.7</td><td>MIT</td><td>الإشعارات الفورية داخل المنصّة</td></tr>
+            <tr><td><strong>Sentry para Laravel</strong></td><td>4.25.0</td><td>MIT</td><td>تسجيل أخطاء التطبيق</td></tr>
+            <tr><td><strong>Spatie Activitylog</strong></td><td>4.12.3</td><td>MIT</td><td>سجلّ تدقيق التغييرات</td></tr>
+            <tr><td><strong>Flux</strong> (Livewire)</td><td>2.13.2</td><td><strong>تجارية</strong></td><td>مكوّنات واجهة — انظر البند 6</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>3.1. مكوّنات المستوى الثاني ذات رخصة الحقوق المتروكة الضعيفة</h3>
+      <p>تأتي هذه المكوّنات باعتبارها اعتماديات للمكوّنات السابقة. وتستخدمها Zyntello <strong>كما نُشرت، من دون تعديل</strong>، وهو الشرط الذي تجيز بموجبه رخصة LGPL استعمالها داخل منتج مملوك.</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>المكوّن</th><th>الإصدار</th><th>الرخصة</th><th>يأتي عبر</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>dompdf</strong></td><td>3.1.5</td><td>LGPL-2.1</td><td>laravel-dompdf</td></tr>
+            <tr><td><strong>php-font-lib</strong></td><td>1.0.2</td><td>LGPL-2.1 أو أحدث</td><td>dompdf</td></tr>
+            <tr><td><strong>php-svg-lib</strong></td><td>1.0.2</td><td>LGPL-3.0 أو أحدث</td><td>dompdf</td></tr>
+            <tr><td><strong>HTML Purifier</strong></td><td>4.19.0</td><td>LGPL-2.1 أو أحدث</td><td>تنقية المحتوى المنسَّق</td></tr>
+            <tr><td><strong>nette/utils</strong>, <strong>nette/schema</strong></td><td>4.1.3 · 1.3.5</td><td>BSD-3-Clause <em>(المستخدَمة)</em> أو GPL</td><td>Laravel</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="s4">
+      <h2 class="sec"><span class="n">4.</span> مكوّنات المتصفّح (JavaScript وCSS)</h2>
+      <p>هذه المكوّنات تُرسَل فعلاً إلى جهاز المستخدم وتعمل في متصفّحه. وهي تحتفظ بإشعارات الرخص التي أدرجها مؤلفوها: و<strong>إزالتها أو إخفاؤها محظور</strong> بموجب <a href="/ar/terminos/#s10">البند 10.1 من الشروط</a>.</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>المكوّن</th><th>الإصدار</th><th>الرخصة</th><th>الغرض من الاستخدام</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Alpine.js</strong></td><td>3.15</td><td>MIT</td><td>تفاعلية الشاشات</td></tr>
+            <tr><td><strong>Bootstrap</strong></td><td>5.3.8</td><td>MIT</td><td>شبكة الواجهة وأنماطها</td></tr>
+            <tr><td><strong>Tailwind CSS</strong></td><td>3.4.19</td><td>MIT</td><td>أنماط الواجهة</td></tr>
+            <tr><td><strong>Tom Select</strong></td><td>2.6.1 · 2.3.1</td><td>Apache-2.0</td><td>قوائم منسدلة مزوّدة ببحث</td></tr>
+            <tr><td><strong>SweetAlert2</strong></td><td>11</td><td>MIT</td><td>مربّعات التأكيد والتنبيهات</td></tr>
+            <tr><td><strong>Chart.js</strong></td><td>4.4.0</td><td>MIT</td><td>الرسوم البيانية في اللوحات والتقارير</td></tr>
+            <tr><td><strong>SortableJS</strong></td><td>1.15</td><td>MIT</td><td>إعادة ترتيب القوائم بالسحب</td></tr>
+            <tr><td><strong>ZXing Browser</strong></td><td>0.1.5</td><td>MIT</td><td>قراءة الرموز الشريطية بالكاميرا</td></tr>
+            <tr><td><strong>Cropper.js</strong></td><td>1.6.2</td><td>MIT</td><td>اقتصاص الشعارات والصور</td></tr>
+            <tr><td><strong>Quill</strong></td><td>1.3.7</td><td>BSD-3-Clause</td><td>محرّر نصوص منسَّقة</td></tr>
+            <tr><td><strong>vis-network</strong></td><td>9.1.6</td><td>Apache-2.0 / MIT</td><td>مخطّطات العلاقات</td></tr>
+            <tr><td><strong>Laravel Echo</strong> · <strong>pusher-js</strong></td><td>2.3.4 · 8.5.0</td><td>MIT</td><td>الإشعارات الفورية</td></tr>
+            <tr><td><strong>Axios</strong></td><td>1.14.0</td><td>MIT</td><td>الطلبات المُرسَلة إلى الخادم</td></tr>
+            <tr><td><strong>QZ Tray</strong></td><td>2.2.4</td><td>LGPL-2.1 / تجارية</td><td>الطباعة المباشرة في نقطة البيع — انظر البند 6</td></tr>
+            <tr><td><strong>React</strong> · <strong>React DOM</strong></td><td>19.2.4</td><td>MIT</td><td>الموقع العام <code>zyntello.com</code></td></tr>
+            <tr><td><strong>Vite</strong></td><td>7.3 · 8.0</td><td>MIT</td><td>تجميع الموارد (لا يُرسَل إلى المتصفّح)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <p><b>تُقدَّم بعض هذه المكوّنات من شبكات توزيع تابعة لأطراف ثالثة</b> — jsDelivr وcdnjs بصفة أساسية. ويعني ذلك أن متصفّح المستخدم يُنزّلها من تلك الخوادم لا من خوادم Zyntello، وأن تلك الخوادم تتلقّى، شأنها شأن أي خادم ويب، عنوان IP ومتصفّح الجهة الطالبة. ولا يتلقّى أيٌّ منها بيانات الحساب ولا محتوى الشاشات.</p>
+      </div>
+    </section>
+
+    <section id="s5">
+      <h2 class="sec"><span class="n">5.</span> الخطوط والأيقونات</h2>
+      <p>ليست شيفرة، لكنها أيضاً مصنَّفات لأطراف ثالثة، ورخصها هي الأكثر صراحةً في اشتراط النسبة.</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>المورد</th><th>الإصدار</th><th>الرخصة</th><th>ما تشترطه</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Font Awesome Free</strong></td>
+              <td>6.4.0</td>
+              <td>CC BY 4.0 <em>(الأيقونات)</em><br>SIL OFL 1.1 <em>(الخطوط)</em><br>MIT <em>(الشيفرة)</em></td>
+              <td>نسبة صريحة إلى المؤلف</td>
+            </tr>
+            <tr>
+              <td><strong>خطوط الويب</strong> المقدَّمة من Google Fonts وBunny Fonts</td>
+              <td>—</td>
+              <td>SIL Open Font License 1.1</td>
+              <td>الإبقاء على إشعار الخط؛ وعدم بيعه على حدة</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <p><b>نسبة Font Awesome.</b> أيقونات واجهة Zyntello مصدرها <strong>Font Awesome Free</strong> ‏(<a href="https://fontawesome.com" rel="noopener">fontawesome.com</a>)، وهي من عمل Fonticons, Inc.، وتُستخدم بموجب رخصة <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">Creative Commons Attribution 4.0 International</a>. ولا تدّعي Zyntello أي تأليف لها.</p>
+      </div>
+    </section>
+
+    <section id="s6">
+      <h2 class="sec"><span class="n">6.</span> المكوّنات ذات الرخصة التجارية</h2>
+      <p>هناك مكوّنان في المنصّة <strong>ليسا برمجية حرّة</strong>. ويُعلَنان هنا توخّياً للشفافية، وإن كانت رخصتهما لا تُلزم بنشرهما:</p>
+      <ul>
+        <li><strong>Flux</strong>، مكتبة مكوّنات الواجهة الخاصة بـ Livewire، تُوزَّع بموجب <strong>رخصة تجارية مدفوعة</strong>. وتستخدمها Zyntello في حدود الرخصة التي اقتنتها. ولا يُعاد توزيع شيفرتها ولا تُنشر.</li>
+        <li><strong>QZ Tray</strong>، الجسر الذي يتيح الطباعة المباشرة على طابعات نقاط البيع وفتح درج النقد، يُقدَّم بـ<strong>رخصة مزدوجة</strong> ‏(LGPL-2.1 أو رخصة تجارية). وهو برنامج يُثبَّت على جهاز المشترك: فالحصول عليه وتثبيته، وترخيصه تجارياً عند الاقتضاء، أمور تقع على عاتق المشترك نفسه، الذي يثبّته بقراره وبموجب شروط مورّده.</li>
+      </ul>
+      <p>ولا يتلقّى أيٌّ منهما بيانات الحساب ولا يرسلها إلى Zyntello بطرق غير تلك الموصوفة في <a href="/ar/privacidad/">سياسة الخصوصية</a>.</p>
+    </section>
+
+    <section id="s7">
+      <h2 class="sec"><span class="n">7.</span> ملخّص حسب نوع الرخصة</h2>
+      <p>إحصاء للحزم التي يثبّتها التطبيق في بيئة الإنتاج، محسوباً من ملف تثبيت الاعتماديات بتاريخ هذه الوثيقة:</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>الرخصة</th><th>الحزم</th><th>العائلة</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>MIT</td><td>95</td><td>متساهلة</td></tr>
+            <tr><td>BSD-3-Clause</td><td>5</td><td>متساهلة</td></tr>
+            <tr><td>BSD-2-Clause</td><td>2</td><td>متساهلة</td></tr>
+            <tr><td>BSD-3-Clause أو GPL <em>(مزدوجة؛ المستخدَمة هي BSD)</em></td><td>2</td><td>متساهلة</td></tr>
+            <tr><td>Apache-2.0</td><td>1</td><td>متساهلة</td></tr>
+            <tr><td>ISC</td><td>1</td><td>متساهلة</td></tr>
+            <tr><td>LGPL-2.1 وLGPL-2.1 أو أحدث</td><td>3</td><td>حقوق متروكة ضعيفة</td></tr>
+            <tr><td>LGPL-3.0 أو أحدث</td><td>1</td><td>حقوق متروكة ضعيفة</td></tr>
+            <tr><td>تجارية (Flux)</td><td>1</td><td>مملوكة</td></tr>
+            <tr><td><strong>الإجمالي في بيئة الإنتاج</strong></td><td><strong>111</strong></td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>ويُضاف إليها <strong>50 حزمة تطوير</strong> — أدوات اختبار وتصحيح، جميعها MIT أو BSD-3-Clause — لا تُنشر في بيئة الإنتاج ولا تشكّل جزءاً من الخدمة.</p>
+    </section>
+
+    <section id="s8">
+      <h2 class="sec"><span class="n">8.</span> كيفية طلب نصّ رخصة</h2>
+      <p>النصّ الكامل لرخصة أي من المكوّنات المدرجة متاح عند الطلب، دون أي شرط ودون مقابل. ويكفي مراسلة <a href="mailto:info@zyntello.com">info@zyntello.com</a> مع ذكر اسم المكوّن.</p>
+      <p>تُراجَع هذه الوثيقة كلما تغيّرت اعتماديات المنصّة، وعلى أي حال <strong>مرّة واحدة سنوياً على الأقل</strong>. وأي مكوّن جديد، أو إصدار تتغيّر رخصته، أو سحب مكوّن قائم، يستوجب إصداراً جديداً من هذه الوثيقة، مع قيده في سجلّ التغييرات.</p>
+      <p>إذا كنت مؤلف أحد المكوّنات المدرجة ورأيت أن النسبة غير صحيحة أو غير كافية، فراسِل <a href="mailto:info@zyntello.com">info@zyntello.com</a> وسيجري تصحيحها.</p>
+    </section>
+
+    <section id="s9">
+      <h2 class="sec"><span class="n">9.</span> سجلّ التغييرات</h2>
+      <p>سجلّ كامل وتراكمي لجميع إصدارات هذه الوثيقة منذ نشرها الأول. والقيود السابقة <strong>لا تُعدَّل ولا تُحذَف</strong>.</p>
+      <div class="tbl chg">
+        <table>
+          <thead>
+            <tr><th>الإصدار</th><th>التاريخ</th><th>التغييرات</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1.0 <span class="vig">سارٍ</span></td>
+              <td>18 سبتمبر 2026</td>
+              <td><strong>النشر الأول.</strong> وثيقة أولية من تسعة بنود: الغرض منها، وكيف تُقرأ الرخص، ومكوّنات الخادم بلغة PHP ‏(111 حزمة في بيئة الإنتاج، مع تفصيل حزم المستوى الأول والخمس حزم من المستوى الثاني ذات الحقوق المتروكة الضعيفة)، والمكوّنات التي تعمل في المتصفّح، والخطوط والأيقونات مع النسبة الصريحة إلى Font Awesome Free، والمكوّنين ذوَي الرخصة التجارية ‏(Flux وQZ Tray)، والإحصاء حسب نوع الرخصة، وإجراء طلب النصّ الكامل لأي رخصة، وسجلّ التغييرات هذا. وتُنشر مع الإصدار <strong>1.7</strong> من <a href="/ar/terminos/">شروط الخدمة</a>، الذي يُعلنها في بنده 10.1.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>تقنيات الأعمال والذكاء الاصطناعي</li>
+          <li>الجمهورية الدومينيكية</li>
+        </ul>
+      </div>
+      <div>
+        <h4>الشؤون القانونية</h4>
+        <ul>
+          <li><a href="/ar/terminos/">شروط الخدمة</a></li>
+          <li><a href="/ar/privacidad/">سياسة الخصوصية</a></li>
+          <li><a href="/ar/eliminacion-datos/">حذف البيانات</a></li>
+          <li><a href="/ar/sla/">اتفاقية مستوى الخدمة</a></li>
+          <li><a href="/ar/avisos-terceros/">إشعارات برمجيات الأطراف الثالثة</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>التواصل</h4>
+        <ul>
+          <li><a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+          <li><a href="https://zyntello.com">zyntello.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy">© 2026 Zyntello, S.R.L. جميع الحقوق محفوظة.</p>
+  </div>
+</footer>
+
+</body>
+</html>

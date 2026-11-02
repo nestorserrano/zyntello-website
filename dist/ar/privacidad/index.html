@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>سياسة الخصوصية | Zyntello</title>
+<meta name="description" content="سياسة الخصوصية لدى Zyntello, S.R.L. — ما البيانات التي نعالجها، ومع من نشاركها، وحقوقك، وكيفية طلب حذف بياناتك.">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<link rel="canonical" href="https://zyntello.com/ar/privacidad/">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;padding:0 clamp(1.25rem,3vw,2.75rem)}
+
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:88ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:clamp(2rem,3.5vw,4rem);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:95ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:95ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note.ok{border-left-color:var(--ok);background:rgba(52,211,153,.05)}
+  .note b{color:#fff}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:600px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  /* Control de cambios */
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+
+
+
+<!--zyntello:legales-->
+<link rel="alternate" hreflang="es" href="https://zyntello.com/privacidad/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/privacidad/">
+<link rel="alternate" hreflang="fr" href="https://zyntello.com/fr/privacidad/">
+<link rel="alternate" hreflang="it" href="https://zyntello.com/it/privacidad/">
+<link rel="alternate" hreflang="zh-Hans" href="https://zyntello.com/zh-Hans/privacidad/">
+<link rel="alternate" hreflang="zh-Hant" href="https://zyntello.com/zh-Hant/privacidad/">
+<link rel="alternate" hreflang="ar" href="https://zyntello.com/ar/privacidad/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/privacidad/">
+<style>
+.idiomas{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:center;padding:.75rem 0;font-size:.82rem}
+.idiomas span{color:var(--tx3,#64748b);text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+.idiomas a{color:var(--tx3,#64748b);text-decoration:none;padding:.15rem .5rem;border-radius:99px;border:1px solid transparent}
+.idiomas a:hover{color:var(--ac,#60a5fa);border-color:var(--line2,rgba(255,255,255,.14))}
+.idiomas a[aria-current]{color:var(--ac,#60a5fa);border-color:var(--ac,#60a5fa)}
+.prevalece{margin:1rem 0;padding:.75rem 1rem;border-radius:.5rem;font-size:.86rem;
+  color:var(--tx2,#94a3b8);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.28)}
+.prevalece a{color:var(--ac,#60a5fa)}
+</style>
+<!--/zyntello:legales--></head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">الرئيسية</a>
+        <a href="/ar/terminos/">شروط الخدمة</a>
+        <a href="/ar/sla/">اتفاقية مستوى الخدمة</a>
+        <a href="/ar/eliminacion-datos/">حذف البيانات</a>
+        <a href="/ar/avisos-terceros/">إشعارات الأطراف الثالثة</a>
+        <a href="https://zyntello.com/#contacto">التواصل</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">مستند قانوني</span>
+      <h1>سياسة الخصوصية</h1>
+      <p class="lead">تشرح هذه السياسة ما البيانات الشخصية التي تعالجها <strong>Zyntello, S.R.L.</strong> عبر منصّتها <code>app.zyntello.com</code> وموقعها الإلكتروني، ولأي غرض، ومع من تشاركها، وكم مدّة الاحتفاظ بها، وكيف يمكنك ممارسة حقوقك، بما في ذلك <a href="#s9">طلب حذف البيانات</a>.</p>
+      <div class="meta">
+        <span>آخر تحديث: <strong>18 سبتمبر 2026</strong></span>
+        <span>سريان المفعول: <strong>من تاريخ نشرها</strong></span>
+        <span>الإصدار: <strong><a class="verlink" href="#s20">1.9 — انظر سجلّ التغييرات</a></strong></span>
+        <span>اللغة الأصلية: <strong>الإسبانية</strong></span>
+      </div>
+    </div>
+  </div><!--zyntello:legales--><div class="idiomas" role="navigation" aria-label="اللغة"><span>اللغة:</span><a href="/privacidad/" hreflang="es" lang="es">Español</a><a href="/en/privacidad/" hreflang="en" lang="en">English</a><a href="/fr/privacidad/" hreflang="fr" lang="fr">Français</a><a href="/it/privacidad/" hreflang="it" lang="it">Italiano</a><a href="/zh-Hans/privacidad/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a><a href="/zh-Hant/privacidad/" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a><a href="/ar/privacidad/" hreflang="ar" lang="ar" aria-current="true">العربية</a></div><!--/zyntello:legales--></header>
+
+<main class="wrap"><!--zyntello:legales-->
+<div class="prevalece" role="note">هذه ترجمة للتيسير فقط. النسخة المُلزِمة لهذا المستند هي النسخة الإسبانية. <a href="/privacidad/" hreflang="es" lang="es">عرض النسخة الإسبانية</a>.</div><!--/zyntello:legales-->
+<div class="grid">
+
+  <aside class="toc">
+    <h2>المحتويات</h2>
+    <ol>
+      <li><a href="#s1">المتحكّم بالبيانات</a></li>
+      <li><a href="#s2">دورنا المزدوج</a></li>
+      <li><a href="#s3">ما البيانات التي نعالجها</a></li>
+      <li><a href="#s4">البيانات بحسب الوحدة</a></li>
+      <li><a href="#s5">مع من نشاركها</a></li>
+      <li><a href="#s6">واتساب وMeta</a></li>
+      <li><a href="#s7">النقل الدولي للبيانات</a></li>
+      <li><a href="#s8">مدد الاحتفاظ</a></li>
+      <li><a href="#s9">حقوقك وحذف البيانات</a></li>
+      <li><a href="#s10">التشريعات بحسب البلد</a></li>
+      <li><a href="#s11">الأمن</a></li>
+      <li><a href="#s12">دخول فريق دعم Zyntello</a></li>
+      <li><a href="#s13">الرسائل والتسويق</a></li>
+      <li><a href="#s14">ملفات تعريف الارتباط</a></li>
+      <li><a href="#s15">الإبلاغ عن الحوادث</a></li>
+      <li><a href="#s16">القاصرون</a></li>
+      <li><a href="#s17">القرارات الآلية والذكاء الاصطناعي</a></li>
+      <li><a href="#s18">التعديلات على هذه السياسة</a></li>
+      <li><a href="#s19">التواصل</a></li>
+      <li><a href="#s20">سجلّ التغييرات</a></li>
+    </ol>
+  </aside>
+
+  <article>
+
+    <section id="s1">
+      <h2 class="sec"><span class="n">1.</span> المتحكّم بالبيانات</h2>
+      <p><strong>Zyntello, S.R.L.</strong>، شركة مؤسَّسة ومقرّها <strong>الجمهورية الدومينيكية</strong>، ولها نشاط تجاري ودعم في الجمهورية الدومينيكية وفنزويلا وكولومبيا وغواتيمالا وكوستاريكا.</p>
+      <ul>
+        <li>جهة التواصل بشأن الخصوصية: <a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+        <li>الهاتف وواتساب: <a href="https://wa.me/18296399877">‎+1 829 639 9877</a></li>
+        <li>الموقع الإلكتروني: <a href="https://zyntello.com">https://zyntello.com</a></li>
+        <li>المنصّة: <a href="https://app.zyntello.com">https://app.zyntello.com</a></li>
+      </ul>
+      <p>تشكّل هذه السياسة جزءاً لا يتجزّأ من <a href="/ar/terminos/">شروط الخدمة</a> لدينا.</p>
+    </section>
+
+    <section id="s2">
+      <h2 class="sec"><span class="n">2.</span> دورنا المزدوج: متحكّم ومعالِج</h2>
+      <p>Zyntello منصّة برمجية للأعمال تدعم تعدّد الشركات. ولذلك نؤدّي دورين مختلفين، وعلى ذلك يتوقّف تحديد الجهة التي تمارس أمامها حقوقك:</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>الدور</th><th>بشأن أي بيانات</th><th>من يقرّر الاستخدام</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>المتحكّم</strong></td>
+              <td>بيانات حساب المشترك: الاسم والبريد والهاتف وبيانات الاعتماد وبيانات الفوترة والسجلات التقنية للاستخدام.</td>
+              <td>Zyntello. وتنطبق هذه السياسة مباشرةً.</td>
+            </tr>
+            <tr>
+              <td><strong>المعالِج</strong> (المُكلَّف بالمعالجة)</td>
+              <td>البيانات التي يرفعها كل مشترك عن <strong>عملائه</strong> وموظفيه ومورّديه وسكّانه ومدينيه أو المشاركين لديه.</td>
+              <td>المشترك. وتقتصر Zyntello على استضافتها ومعالجتها لتقديم الخدمة له.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <p><b>إذا كنت عميلاً أو موظفاً أو ساكناً أو مديناً أو مشاركاً لدى شركة تستخدم Zyntello</b>، فتلك الشركة هي المتحكّم ببياناتك وعليك ممارسة حقوقك أمامها. وإن راسلتنا مباشرةً، أحَلنا طلبك إلى تلك الشركة وتعاونّا على معالجته، لكننا لا نستطيع أن نقرّر نيابةً عنها بشأن بيانات ليست لنا.</p>
+      </div>
+    </section>
+
+    <section id="s3">
+      <h2 class="sec"><span class="n">3.</span> ما البيانات التي نعالجها ولأي غرض</h2>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>الفئة</th><th>البيانات</th><th>الغرض</th><th>الأساس القانوني</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>الحساب والمستخدمون</strong></td>
+              <td>الاسم، والبريد الإلكتروني، وكلمة المرور مشفَّرة تشفيراً غير قابل للعكس، والدور، والصلاحيات، والشركة التي ينتمي إليها. وإذا فعّل المستخدم التحقّق بخطوتين: مفتاح تطبيق المصادقة لديه (<strong>مشفَّراً</strong>)، ورموز الاسترجاع الخاصة به (<strong>مشفَّرة تشفيراً غير قابل للعكس</strong>)، وسجلّ المحاولات الفاشلة. ولا تستطيع Zyntello قراءة أيٍّ من هذه البيانات.</td>
+              <td>إنشاء الحساب وإدارته، والمصادقة، والتحقّق بخطوتين (بالبريد أو بتطبيق مصادقة)، واسترجاع الوصول، والتحكّم في الوصول.</td>
+              <td>تنفيذ العقد</td>
+            </tr>
+            <tr>
+              <td><strong>الفوترة</strong></td>
+              <td>الاسم التجاري، والرقم الضريبي، والعنوان، والبلد، وسجلّ الاشتراكات والمدفوعات.</td>
+              <td>تحصيل الاشتراك، وإصدار المستندات، والوفاء بالالتزامات الضريبية.</td>
+              <td>العقد والالتزام القانوني</td>
+            </tr>
+            <tr>
+              <td><strong>المدفوعات</strong></td>
+              <td><strong>لا نخزّن أرقام البطاقات كاملةً.</strong> فمعالِجو المدفوعات يزوّدوننا بمراجع فقط: معرّف العملية، وحالة الخصم، والأرقام الأخيرة.</td>
+              <td>معالجة المدفوعات وإدارة الاشتراك.</td>
+              <td>تنفيذ العقد</td>
+            </tr>
+            <tr>
+              <td><strong>بيانات أعمال المشترك</strong></td>
+              <td>كل ما يسجّله المشترك في وحداته (انظر البند 4).</td>
+              <td>تقديم الخدمة المتعاقد عليها. <strong>تُعالَج بصفة المعالِج.</strong></td>
+              <td>تعليمات المشترك</td>
+            </tr>
+            <tr>
+              <td><strong>السجلات التقنية</strong></td>
+              <td>عنوان IP، والمتصفّح، والجهاز، والتاريخ والساعة، والإجراءات المنفَّذة (سجلّ التدقيق).</td>
+              <td>الأمن، ومنع الاحتيال، وتتبّع الإجراءات، والدعم والتشخيص.</td>
+              <td>المصلحة المشروعة</td>
+            </tr>
+            <tr>
+              <td><strong>ملفات تعريف الارتباط</strong></td>
+              <td>ملف ارتباط الجلسة، ورمز حماية النماذج، وملف ارتباط «تذكُّر الجلسة» إن اختاره المستخدم. <strong>دون ملفات ارتباط إعلانية ولا تتبّعية تابعة لأطراف ثالثة.</strong></td>
+              <td>إبقاء الجلسة مفتوحة وحماية التطبيق.</td>
+              <td>ضرورية بصورة قطعية</td>
+            </tr>
+            <tr>
+              <td><strong>الدعم والتواصل</strong></td>
+              <td>الاسم والبريد والهاتف ومحتوى الرسالة المُرسَلة من نموذج الموقع أو عبر واتساب.</td>
+              <td>الردّ على الاستفسارات التجارية واستفسارات الدعم.</td>
+              <td>الموافقة والتدابير السابقة للتعاقد</td>
+            </tr>
+            <tr>
+              <td><strong>التسويق</strong></td>
+              <td>البريد الإلكتروني وتسجيل تاريخ الموافقة وساعتها ومصدرها.</td>
+              <td>إرسال المستجدات والرسائل التجارية، بموافقة مسبقة فقط.</td>
+              <td>الموافقة</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>تُصاغ الأسس القانونية بمصطلحات اللائحة العامة لحماية البيانات في الاتحاد الأوروبي لكونها الأدقّ؛ وتنطبق المفاهيم المكافئة بموجب القوانين المحلية المبيّنة في البند 10.</p>
+    </section>
+
+    <section id="s4">
+      <h2 class="sec"><span class="n">4.</span> البيانات بحسب الوحدة</h2>
+      <p>يقرّر كل مشترك ما المعلومات التي يرفعها. وهذه هي الفئات التي تتيح كل وحدة تسجيلها، وتعالجها Zyntello دائماً بصفة <strong>المعالِج</strong>:</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>الوحدة</th><th>فئات البيانات</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>الفوترة · الذمم المدينة · إدارة العلاقات · الصندوق</strong></td><td>الاسم أو الاسم التجاري، والرقم الضريبي، والعنوان، والهاتف، والبريد، وسجلّ المشتريات والتحصيلات، وشروط الائتمان، والأرصدة، وملاحظات المتابعة التجارية.</td></tr>
+            <tr><td><strong>المشتريات · الذمم الدائنة</strong></td><td>بيانات المورّدين وجهات الاتصال لديهم، والرقم الضريبي، والحسابات المصرفية للسداد، والاستقطاعات، والمستندات الضريبية الواردة.</td></tr>
+            <tr><td><strong>الرواتب · PSA</strong></td><td>بيانات تعريف الموظف، ووثيقة الهوية، وتاريخ الميلاد، والجنس، والعنوان، والوظيفة، و<strong>الأجر والاستقطاعات</strong>، والحسابات المصرفية، والضمان الاجتماعي، والمعالون، والغيابات ومستنداتها، وكشوف الوقت، وسجلات الحضور والانصراف، وعند تفعيل صاحب العمل لتلك الوسائل: <strong>الموقع الجغرافي</strong> و<strong>صورة الوجه</strong>.</td></tr>
+            <tr><td><strong>Zyntello Events</strong></td><td>الاسم، ووثيقة الهوية، والبريد، والهاتف، والجهة، والصورة عند التقاطها، وسجلات الدخول والحضور.</td></tr>
+            <tr><td><strong>إدارة المجمّعات السكنية</strong></td><td>بيانات السكّان والملّاك، والوحدة، وحصة المشاركة، وكشف الحساب، وحجوزات المرافق المشتركة، والبلاغات مع صورها، والأصوات في الجمعية العمومية.</td></tr>
+            <tr><td><strong>Prestamello</strong></td><td>بيانات مقدّم الطلب وكفلائه، ووثائق الهوية، والدخل والمصروفات المُصرَّح بها، والذمة المالية، والمعرّفين، و<strong>نتائج الاستعلام لدى مكاتب الائتمان</strong>، والضمانات ومستنداتها، وسجلّ السداد، و<strong>الموقع الجغرافي</strong> لموظفي التحصيل الميدانيين.</td></tr>
+            <tr><td><strong>مخطّط المسارات</strong></td><td>عناوين التسليم وزيارة العملاء و<strong>إحداثياتها الجغرافية</strong>؛ وبيانات الناقل والمركبة والسائق المُسنَد؛ وعند تفعيل المشترك للتتبّع، <strong>موقع السائق المسجَّل بصورة متكرّرة طوال يوم العمل</strong> (كل 30 ثانية افتراضياً)، مع ساعة الوصول والمغادرة لكل محطة ونتيجة كل تسليم أو زيارة.</td></tr>
+            <tr><td><strong>غسيل السيارات</strong></td><td>بيانات العميل ومركباته: رقم اللوحة، والماركة، والطراز، واللون، وعدّاد المسافة، وصور المركبة، وسجلّ الخدمات.</td></tr>
+            <tr><td><strong>ConstructFlow</strong></td><td>العاملون المُسنَدون إلى الموقع، والمستندات وصور سير العمل.</td></tr>
+            <tr><td><strong>المخزون · الأصول الثابتة</strong></td><td>المسؤولون عن الأصول وحائزوها، وسجلات الجرد والعدّ الفعلي.</td></tr>
+            <tr><td><strong>المحاسبة · البنوك</strong></td><td>الحسابات المصرفية للشركة، والمستفيدون من الشيكات والتحويلات، والقيود المرتبطة بأطراف ثالثة.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note warn">
+        <p><b>بيانات ذات أثر خاص.</b> تتيح وحدات الرواتب وPSA وPrestamello ومخطّط المسارات معالجة وثائق الهوية والأجور والمعلومات المرتبطة بالغياب الصحي وصور الوجه والموقع الجغرافي للعاملين وسجلّ الائتمان. وتقع على المشترك مسؤولية إبلاغ أصحاب البيانات مسبقاً، وتوافر أساس قانوني أو موافقة، وتفعيل الوسائل الضرورية قطعياً دون سواها.</p>
+        <p><strong>التتبّع المستمر لموقع العامل.</strong> يجدر التمييز بين أمرين ليسا سواءً وإن كان كلاهما موقعاً. ففي الرواتب وPSA وPrestamello تُسجَّل <strong>نقطة واحدة في لحظة محدّدة</strong>: عند تسجيل الحضور أو الانصراف، أو عند تنفيذ أمر عمل، أو عند إجراء تحصيل. أما مخطّط المسارات فيمكنه تسجيل موقع السائق <strong>بصورة متكرّرة طوال المسار</strong>، وهو ما يتيح إعادة تكوين مسيرته اليومية. وهذه معالجة أشدّ تطفّلاً، ولذلك <strong>تبدأ معطّلة</strong>: فلا تعمل إلا إذا فعّلها المشترك وبدأ السائق المسار من جهازه. وقبل تفعيلها، على المشترك إبلاغ الشخص المعني بما يُسجَّل، ولأي مدّة، ولأي غرض، وأن يكون لديه أساس قانوني أو موافقته. ولا يُسجَّل أي موقع خارج يوم العمل أو خارج المسار.</p>
+      </div>
+      <p><strong>صفحات الاستعلام العامة.</strong> تُنشئ بعض الوحدات روابط أو رموز QR للاستعلام دون تسجيل دخول (حالة دور، أو كشف حساب ساكن، أو تذكرة فعالية، أو بطاقة أصل). ويجري الوصول إليها عبر معرّف عشوائي، وتعرض الحدّ الأدنى اللازم من المعلومات فقط، ويتوقّف تفعيلها على المشترك.</p>
+    </section>
+
+    <section id="s5">
+      <h2 class="sec"><span class="n">5.</span> مع من نشارك البيانات</h2>
+      <div class="note ok">
+        <p><b>نحن لا نبيع البيانات الشخصية ولا نؤجّرها ولا نتنازل عنها لأطراف ثالثة لأغراض إعلانية.</b></p>
+      </div>
+      <p>نشارك البيانات مع الجهات التالية فقط وللأغراض المبيّنة:</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>الجهة المتلقّية</th><th>ما الذي تتلقّاه</th><th>لأي غرض</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>مزوّد الاستضافة</strong> (الولايات المتحدة)</td><td>البيانات المستضافة في المنصّة ونسخها الاحتياطية.</td><td>البنية التحتية والتخزين والنسخ الاحتياطي.</td></tr>
+            <tr><td><strong>Stripe</strong></td><td>بيانات عملية الدفع.</td><td>معالجة الاشتراكات والتحصيلات عبر الإنترنت. <a href="https://stripe.com/privacy" rel="noopener">السياسة</a></td></tr>
+            <tr><td><strong>PayPal</strong></td><td>بيانات عملية الدفع.</td><td>معالجة الاشتراكات والتحصيلات عبر الإنترنت. <a href="https://www.paypal.com/privacy" rel="noopener">السياسة</a></td></tr>
+            <tr><td><strong>Mercado Pago</strong></td><td>بيانات عملية الدفع.</td><td>معالجة التحصيلات عبر الإنترنت. <a href="https://www.mercadopago.com/privacidad" rel="noopener">السياسة</a></td></tr>
+            <tr><td><strong>WhatsApp / Meta Platforms</strong></td><td>رقم هاتف المُرسَل إليه ومحتوى الرسالة، <strong>فقط إذا فعّل المشترك التكامل</strong>.</td><td>إرسال الرسائل التي يبادر بها المشترك. <a href="https://www.whatsapp.com/legal/privacy-policy" rel="noopener">السياسة</a></td></tr>
+            <tr><td><strong>مزوّد البريد الصادر</strong></td><td>عنوان المُرسَل إليه ومحتوى الرسالة.</td><td>تسليم رسائل المعاملات والمستندات.</td></tr>
+            <tr><td><strong>مزوّدو الذكاء الاصطناعي</strong></td><td>صورة المستند المراد تفسيره أو نصّه، عند تفعيل المشترك تلك الوظيفة ببيانات اعتماده الخاصة.</td><td>الاستخراج المُعان لبيانات الفواتير (انظر البند 16).</td></tr>
+            <tr><td><strong>الإدارات الضريبية</strong></td><td>بيانات المستند الضريبي التي تقتضيها التشريعات.</td><td>التحقّق من المستندات الضريبية الإلكترونية وإرسالها.</td></tr>
+            <tr><td><strong>مكاتب الائتمان</strong></td><td>بيانات هوية مقدّم الطلب، ببيانات اعتماد المشترك نفسه وبتفويض منه.</td><td>الاستعلام عن السجلّ الائتماني في وحدة Prestamello.</td></tr>
+            <tr><td><strong>مزوّد الخرائط</strong> ‏(OpenStreetMap أو Google Maps أو HERE أو Mapbox، بحسب اختيار المشترك)</td><td>عناوين محطات المسار وإحداثياتها. ولا يُرسَل إليها اسم العميل ولا محتوى الطلب.</td><td>تحويل العنوان إلى إحداثيات، وحساب المسافات، ورسم المسار، عند استخدام المشترك لمخطّط المسارات.</td></tr>
+            <tr><td><strong>Web3Forms</strong></td><td>الاسم والبريد والرسالة من نموذج الموقع الإلكتروني.</td><td>إيصال الاستفسارات التجارية إلى بريدنا.</td></tr>
+            <tr><td><strong>شبكات توزيع المحتوى وخطوط الويب</strong> ‏(jsDelivr وCloudflare&nbsp;cdnjs وunpkg وGoogle&nbsp;Fonts وBunny&nbsp;Fonts)</td><td><strong>عنوان IP</strong> للجهاز، والمتصفّح، والشاشة التي طُلب منها المورد. و<strong>لا تتلقّى</strong> بيانات الحساب ولا محتوى الشاشات ولا معرّفات الجلسات.</td><td>تسليم المتصفّح المكتباتِ والخطوطَ والأيقوناتِ التي تتكوّن منها الواجهة. وتُحمَّل في <strong>جميع</strong> شاشات المنصّة. وتفاصيل كل مكوّن واردة في <a href="/ar/avisos-terceros/">إشعارات برمجيات الأطراف الثالثة</a>.</td></tr>
+            <tr><td><strong>QuickChart</strong></td><td><strong>رابط التسجيل العام</strong> لفعالية ما. ولا تُرسَل إليه أي بيانات عن أشخاص أو عن الحساب.</td><td>إنشاء صورة رمز QR لفعالية حين يتعذّر على المنصّة تكوينه بنفسها. وفي وحدة Events فقط.</td></tr>
+            <tr><td><strong>خدمة أسعار الصرف</strong> ‏(exchangerate-api)</td><td>عنوان IP لزائر <strong>الموقع العام</strong> <code>zyntello.com</code>. ولا دخل لها بالمنصّة.</td><td>عرض الأسعار محوَّلةً في صفحة الحلول.</td></tr>
+            <tr><td><strong>الجهات المختصّة</strong></td><td>ما يقتضيه أمر قانوني صحيح على وجه التحديد.</td><td>الوفاء بالالتزامات القانونية.</td></tr>
+            <tr><td><strong>المستشارون المهنيون</strong></td><td>ما يلزم على وجه التحديد.</td><td>المحاسبة والتدقيق والدفاع القانوني.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>يعمل جميع المزوّدين بموجب تعهّداتهم الخاصة بالسرّية والأمن. وتُخزَّن بيانات الاعتماد التي يُعدّها المشترك للتكامل مع أطراف ثالثة <strong>مشفَّرةً</strong> في قاعدة بياناتنا.</p>
+      <div class="note">
+        <p><b>الجهات الثلاث الأخيرة لا تتلقّى شيئاً نرسله نحن إليها.</b> فحين تحتاج شاشة إلى خطّ أو مكتبة يقدّمها خادم طرف ثالث، يكون <strong>متصفّح المستخدم نفسه</strong> هو من يطلبها مباشرةً، ويحمل ذلك الطلب عنوان IP الخاص به، كما في أي زيارة لأي موقع. وهذا أمر ملازم لتحميل أي مورد خارجي: فهو ليس تنازلاً عن بيانات تقرّره Zyntello بشأن معلومات الحساب، ولذلك لا يرى هؤلاء المزوّدون أي عميل ولا أي فاتورة ولا أي موظف ولا جلسة أي شخص.</p>
+        <p>ويُعلَن عنها لأنها تتلقّى بياناً شخصياً — عنوان IP — ولأن للمشترك حقّ العلم بذلك، لا لأن ثمّة تدفّقاً لبيانات الأعمال نحوها.</p>
+      </div>
+    </section>
+
+    <section id="s6">
+      <h2 class="sec"><span class="n">6.</span> واتساب وMeta</h2>
+      <p>تتيح المنصّة للمشترك التواصل مع جهات اتصاله عبر <strong>واتساب</strong> بطريقتين: برابط محادثة يفتحه المشترك يدوياً، أو عبر واجهة WhatsApp Business البرمجية حين يُعدّ المشترك بيانات اعتماده.</p>
+      <h3>6.1. ما الذي يُرسَل</h3>
+      <p>عند إرسال رسالة يُنقَل <strong>رقم هاتف المُرسَل إليه</strong> و<strong>محتوى الرسالة</strong>، وقد يتضمّن اسم جهة الاتصال، ورقم المستند وحالته، والمبالغ، وروابط إلى مستندات أو صفحات استعلام.</p>
+      <h3>6.2. من المسؤول</h3>
+      <p><strong>المشترك هو المُرسِل</strong> والمسؤول عن الرسالة: فهو من يحدّد المحتوى والمُرسَل إليهم والغرض، وعليه أن يكون قد حصل على موافقة مسبقة من المُرسَل إليه للتواصل معه عبر تلك القناة. ولا ترسل Zyntello رسائل تجارية إلى جهات اتصال مشتركيها من تلقاء نفسها.</p>
+      <h3>6.3. الغرض من الرسائل</h3>
+      <p>الرسائل المُرسَلة من المنصّة ذات طابع <strong>تشغيلي أو معاملاتي</strong>: فواتير وعروض أسعار، وإيصالات ومستندات، وكشوف حسابات، وتذكيرات بالتحصيل والصيانة، وإشعارات بالدور أو بحالة خدمة، ودعوات وإشعارات اعتماد.</p>
+      <h3>6.4. حقّ إلغاء الاشتراك</h3>
+      <p>إذا كنت تتلقّى رسائل من شركة تستخدم Zyntello ولا ترغب في الاستمرار في تلقّيها، فيمكنك الردّ طالباً إلغاء الاشتراك، أو حجب الرقم، أو إبلاغ تلك الشركة مباشرةً، وعليها الاستجابة فوراً. وتوفّر المنصّة آليات لتسجيل ذلك التفضيل لكل جهة اتصال. وإن احتجت إلى مساعدة في تحديد المُرسِل، فراسِلنا على <a href="mailto:info@zyntello.com">info@zyntello.com</a> ونرشدك.</p>
+      <h3>6.5. السياسات الواجبة التطبيق</h3>
+      <p>تخضع معالجة المعلومات من جانب WhatsApp LLC وMeta Platforms, Inc. لسياساتهما الخاصة، ومنها <a href="https://www.whatsapp.com/legal/privacy-policy" rel="noopener">سياسة خصوصية واتساب</a> و<a href="https://www.whatsapp.com/legal/business-policy" rel="noopener">سياسة WhatsApp Business</a>. ولا تتحكّم Zyntello في المعالجة التي تجريها هاتان الشركتان.</p>
+    </section>
+
+    <section id="s7">
+      <h2 class="sec"><span class="n">7.</span> النقل الدولي للبيانات</h2>
+      <p>تقع خوادمنا في <strong>الولايات المتحدة</strong>. وعند استخدام المنصّة تُنقَل البيانات وتُخزَّن في ذلك البلد. كما قد يعالج معالِجو المدفوعات، ومزوّد البريد الصادر، وواتساب وMeta، ومزوّدو الذكاء الاصطناعي، بياناتٍ خارج بلد المشترك.</p>
+      <p>ويسري الأمر نفسه، بدرجة أقلّ، على <strong>شبكات توزيع المحتوى ومزوّدي خطوط الويب</strong> المذكورين في البند 5: فخوادمهم موزّعة في أنحاء العالم ويتّصل المتصفّح بأقربها، ومن ثمّ قد يُعالَج عنوان IP للمستخدم خارج بلده. وهو البيان الوحيد الذي تتلقّاه.</p>
+      <p>أما أصحاب البيانات الخاضعون للائحة العامة لحماية البيانات في الاتحاد الأوروبي، فتستند عمليات النقل هذه بشأنهم إلى الشروط التعاقدية النموذجية أو إلى آليات النقل السارية لدى كل مزوّد. ويمكنك طلب معلومات عن الآلية الواجبة التطبيق بمراسلة <a href="mailto:info@zyntello.com">info@zyntello.com</a>.</p>
+    </section>
+
+    <section id="s8">
+      <h2 class="sec"><span class="n">8.</span> مدد الاحتفاظ</h2>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>البيانات</th><th>مدّة الاحتفاظ</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>حساب المشترك وبيانات أعماله</td><td>ما دام الاشتراك سارياً، إضافةً إلى <strong>30 يوماً</strong> بعد انتهائه لإتاحة التصدير. ثم تُحذف.</td></tr>
+            <tr><td>بيانات الفوترة والمستندات الضريبية</td><td><strong>10 سنوات</strong>، أو المدّة التي تفرضها التشريعات الضريبية الواجبة التطبيق إن اختلفت.</td></tr>
+            <tr><td>سجلّ مواقع المسار (مخطّط المسارات)</td><td><strong>90 يوماً</strong> من إغلاق المسار. وبعدها يُحتفظ بملخّص المسار فقط — المحطات، وساعات الوصول والمغادرة، والمسافة، ونتيجة كل تسليم أو زيارة — وهو ما تحتاجه تقارير الالتزام، ويُمحى <strong>الأثر نقطةً نقطة</strong>، وهو البيان الذي يتيح إعادة تكوين مسيرة شخص ما. وإن لم يفعّل المشترك التتبّع، فلا يُنشأ أي سجلّ مواقع.</td></tr>
+            <tr><td>السجلات التقنية وسجلّ التدقيق</td><td><strong>12 شهراً</strong>، ما لم تلزم مدّة أطول للتحقيق في حادث أمني.</td></tr>
+            <tr><td>الحساب التجريبي</td><td><strong>يُحذف تلقائياً كل يوم</strong> عبر عملية مجدولة.</td></tr>
+            <tr><td>النسخ الاحتياطية</td><td>دورة تدوير مدّتها <strong>30 يوماً</strong>. وتختفي البيانات المحذوفة من النسخ الاحتياطية عند اكتمال الدورة.</td></tr>
+            <tr><td>النسخ الاحتياطية الذاتية التي ينزّلها المشترك</td><td>يُحتفظ على الخادم بـ<strong>أحدث 5 نسخ</strong>؛ وتُحذف ما قبلها. ويُحتفظ بـ<strong>قيد</strong> إنشائها وتنزيلها طوال مدّة الاشتراك. أما النسخ المنزَّلة فتبقى تحت سيطرة المشترك وحده (انظر 9.4).</td></tr>
+            <tr><td>قيد الموافقة التسويقية وإلغائها</td><td>طوال مدّة العلاقة، إضافةً إلى <strong>5 سنوات</strong> كدليل على الموافقة أو على إلغائها.</td></tr>
+            <tr><td>طلبات ممارسة الحقوق والردود عليها</td><td><strong>3 سنوات</strong> من معالجتها، كدليل على الامتثال.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="s9">
+      <h2 class="sec"><span class="n">9.</span> حقوقك وحذف البيانات</h2>
+      <h3>9.1. الحقوق التي يمكنك ممارستها</h3>
+      <p>يمكنك أن تطلب في أي وقت:</p>
+      <ul>
+        <li><strong>الاطّلاع</strong>: معرفة أي بيانات تخصّك نعالجها ولأي غرض.</li>
+        <li><strong>التصحيح</strong>: تصويب البيانات غير الدقيقة أو الناقصة.</li>
+        <li><strong>المحو</strong> أو الإلغاء: حذف بياناتك متى لم تعد لازمة.</li>
+        <li><strong>الاعتراض</strong>: الاعتراض على معالجة قائمة على المصلحة المشروعة.</li>
+        <li><strong>نقل البيانات</strong> و<strong>تقييد</strong> المعالجة، حيثما نصّ عليهما القانون الواجب التطبيق. وإن كنت أنت المشترك، فيمكنك ممارسة حقّ النقل <strong>بنفسك وفي أي وقت</strong> من <em>الإعدادات&nbsp;←&nbsp;النسخ الاحتياطي للبيانات</em> (انظر 9.4).</li>
+        <li><strong>سحب موافقة</strong> سبق منحها، دون أثر رجعي.</li>
+      </ul>
+
+      <h3>9.2. كيفية ممارستها</h3>
+      <p>راسِل <a href="mailto:info@zyntello.com">info@zyntello.com</a> من البريد المسجَّل أو مع إثبات هويتك، مبيّناً بوضوح الحقّ الذي تمارسه. وسنردّ خلال مهلة أقصاها <strong>15 يوم عمل</strong> (أو <strong>شهر واحد</strong> إذا كنت خاضعاً للائحة العامة لحماية البيانات في الاتحاد الأوروبي).</p>
+
+      <h3>9.3. طلب حذف البيانات</h3>
+      <div class="note ok">
+        <p><b>تعليمات مفصّلة في صفحتها الخاصة:</b> <a href="/ar/eliminacion-datos/"><strong>zyntello.com/eliminacion-datos/</strong></a> — وتتضمّن الإجراء خطوةً خطوة، والمهل، وما الذي يُحذف، وما الذي يُحتفظ به بحكم القانون، وكيفية التوقّف عن استقبال الرسائل.</p>
+      </div>
+      <div class="note">
+        <p><b>لطلب حذف بياناتك الشخصية</b>، أرسِل رسالة إلى <a href="mailto:info@zyntello.com">info@zyntello.com</a> بالموضوع <em>«طلب حذف بيانات»</em>، مبيّناً:</p>
+        <ul>
+          <li>اسمك الكامل؛</li>
+          <li>البريد الإلكتروني أو رقم الهاتف الذي سجّلت به أو الذي جرى التواصل معك عبره؛</li>
+          <li>عند الاقتضاء، اسم الشركة التي تواصلت معك أو سجّلتك في المنصّة.</li>
+        </ul>
+        <p>سنؤكّد الاستلام ونعالج الطلب خلال مهلة أقصاها <strong>30 يوماً</strong>. وسنُعلمك بالنتيجة كتابةً، بما في ذلك البيانات التي حُذفت وتلك التي يلزمنا الاحتفاظ بها بحكم القانون.</p>
+      </div>
+      <p><strong>إذا كانت بياناتك قد رفعتها شركة مشتركة</strong> — لأنك عميلها أو موظفها أو ساكن لديها أو مدين لها أو مشارك معها — فتلك الشركة هي المتحكّم بالمعالجة. وفي هذه الحالة نحيل طلبك إليها، ونُعلمك بذلك، ونتعاون على معالجته، غير أن القرار النهائي بشأن الحذف يعود إلى تلك الشركة.</p>
+      <p><strong>الحدود.</strong> لا ينطبق المحو على المعلومات التي يلزمنا الاحتفاظ بها بحكم التزام قانوني أو محاسبي أو ضريبي (كالمستندات الضريبية الصادرة)، ولا على ما يلزم للدفاع في المطالبات. وفي هذه الحالات تُحجب البيانات وتُقيَّد معالجتها حتى انقضاء مدّة الاحتفاظ القانونية.</p>
+      <p>إذا رأيت أن حقوقك لم تُعالَج على النحو الواجب، فيمكنك تقديم شكوى إلى هيئة حماية البيانات أو المحكمة المختصّة في بلدك.</p>
+
+      <h3>9.4. النسخ الاحتياطي ونقل البيانات ذاتياً</h3>
+      <p>يستطيع المشترك، متى شاء ودون تقديم طلب، إنشاء نسخة كاملة من بيانات شركاته وتنزيلها من <em>الإعدادات&nbsp;←&nbsp;النسخ الاحتياطي للبيانات</em>. والملف أرشيف ZIP يضمّ التفريغ بصيغة SQL، وبياناً تفصيلياً بما شمله، ودليل استعادة.</p>
+      <div class="note ok">
+        <p><b>عزل مضمون.</b> يحتوي الملف <strong>على سجلات المشترك الذي أنشأه فقط</strong>. وهو ليس تفريغاً لقاعدة بيانات Zyntello ولا يتضمّن بأي حال معلومات مشتركين آخرين. ويخرج منه كذلك البيانات التقنية المشتركة بين أنحاء المنصّة — الجلسات ورموز الاسترجاع والإشعارات — التي لا تخصّ أي مشترك بعينه. والملف نفسه يُصرّح بالجداول التي أُغفلت وسبب إغفالها.</p>
+      </div>
+      <p><strong>المسؤولية عن النسخة المنزَّلة.</strong> بمجرد تنزيله يصبح الملف تحت سيطرة المشترك وحده، فيغدو مسؤولاً عن حفظه، وعن تشفيره إن رأى ذلك لازماً، وعن حذفه. ولا تستطيع Zyntello استرجاع النسخ التي خرجت من المنصّة ولا تتبّعها ولا محوها. وإذا تضمّن الملف بيانات شخصية لأطراف ثالثة — عملاء أو موظفين أو سكّان — يظلّ المشترك هو المتحكّم بمعالجتها وفقاً للبند 2.</p>
+      <p>تُحفظ النسخ الاحتياطية المُنشأة على الخادم لغرض التنزيل فقط: إذ يُحتفظ بـ<strong>أحدث 5 نسخ</strong> لكل مشترك وتُحذف ما قبلها. أما قيد إنشاء النسخة وتنزيلها فيُحتفظ به، لإتاحة إثبات ممارسة حقّ نقل البيانات.</p>
+    </section>
+
+    <section id="s10">
+      <h2 class="sec"><span class="n">10.</span> التشريعات بحسب البلد</h2>
+      <ul>
+        <li><strong>الجمهورية الدومينيكية</strong> — القانون رقم 172-13 بشأن حماية البيانات ذات الطابع الشخصي: حقوق الاطّلاع والتصحيح والإلغاء والاعتراض؛ والشكاوى أمام المحاكم المختصّة.</li>
+        <li><strong>الاتحاد الأوروبي والمنطقة الاقتصادية الأوروبية</strong> — اللائحة (الاتحاد الأوروبي) 2016/679 ‏(GDPR)، حيثما انطبقت: الأسس القانونية في البند 3، والحقوق الموسَّعة في البند 9، وإبلاغ هيئة الرقابة بالاختراقات خلال 72 ساعة، وحقّ التظلّم أمام هيئة الرقابة المحلية.</li>
+        <li><strong>كولومبيا</strong> — القانون 1581 لسنة 2012 ومراسيمه التنفيذية (نظام حق الاطّلاع على البيانات): الاستفسارات والشكاوى وفق إجراءات هيئة الصناعة والتجارة.</li>
+        <li><strong>كوستاريكا</strong> — القانون 8968 بشأن حماية الشخص إزاء معالجة بياناته الشخصية ‏(PRODHAB).</li>
+        <li><strong>فنزويلا</strong> — الحقّ الدستوري في الاطّلاع على البيانات (المادة 28 من الدستور) والتشريعات الواجبة التطبيق.</li>
+        <li><strong>غواتيمالا</strong> — في غياب قانون عام لحماية البيانات، تنطبق الضمانات الدستورية وهذه السياسة بوصفها تعهّداً تعاقدياً واجب النفاذ.</li>
+        <li><strong>المكسيك</strong>، حيثما انطبق — القانون الاتحادي لحماية البيانات الشخصية بحوزة الأفراد: حقوق الاطّلاع والتصحيح والإلغاء والاعتراض أمام جهة التواصل المبيّنة في البند 1.</li>
+      </ul>
+      <p>وعند التعارض، تكون الغلبة للقاعدة الآمرة في بلد صاحب البيانات.</p>
+    </section>
+
+    <section id="s11">
+      <h2 class="sec"><span class="n">11.</span> الأمن</h2>
+      <p>نطبّق تدابير تقنية وتنظيمية متناسبة مع المخاطر، ومنها:</p>
+      <ul>
+        <li>كلمات مرور مخزَّنة بخوارزميات <em>تجزئة</em> قوية، لا بنصّ صريح أبداً؛</li>
+        <li>تشفير حركة البيانات أثناء النقل عبر TLS؛</li>
+        <li><strong>عزل صارم للبيانات</strong> بين المشتركين وبين شركات المشترك الواحد، يُطبَّق تلقائياً في كل استعلام؛</li>
+        <li><strong>تحكّم في الوصول بنطاقين مختلفين</strong>: فمستخدمو المشترك أنفسهم يصلون إلى جميع شركات الحساب بصلاحيات أدوارهم، بينما يُسنَد <strong>المستخدمون الداخليون</strong> — المخصَّصون للعاملين المؤقتين أو الخارجيين — إلى <strong>شركة واحدة فقط</strong>، وصلاحياتهم المُعَدّة وحدةً وحدة تقتصر على <strong>بيانات تلك الشركة وحدها</strong>؛</li>
+        <li><strong>تحقّق بخطوتين</strong> يفعّله المستخدم، بالبريد الإلكتروني أو عبر تطبيق مصادقة على الهاتف (معيار TOTP)، مع رموز استرجاع تُستخدم مرة واحدة، وحظر مؤقّت بعد عدّة محاولات فاشلة، وإشعار بالبريد بأي تغيير فيه؛</li>
+        <li>تشفير بيانات اعتماد عمليات التكامل مع أطراف ثالثة داخل قاعدة البيانات؛</li>
+        <li>سجلّ تدقيق للإجراءات المتّخذة على المستندات والإعدادات؛</li>
+        <li>نسخ احتياطية دورية مع التحقّق من سلامتها ونسخة خارج الخادم الرئيسي؛</li>
+        <li>يطبّق <strong>النسخ الاحتياطي الذاتي</strong> للمشترك العزل نفسه: إذ يُبنى بتصفية سجلاته هو دون سواها، ويستبعد البيانات التقنية المشتركة في المنصّة، ويُصرّح في بيانه التفصيلي بما استُبعد؛</li>
+        <li>تُغلق الجلسة بإغلاق المتصفّح، وتنتهي على أي حال في الخادم بعد سبعة أيام؛</li>
+        <li>شاشة <strong>الأجهزة المتّصلة</strong> التي يمكن للمستخدم منها إنهاء الجلسات المفتوحة على أجهزة أخرى عن بُعد.</li>
+      </ul>
+      <p>ما من نظام معصوم تماماً. وإن وقع اختراق يمسّ بياناتك، أبلغنا به وفقاً للبند 14.</p>
+    </section>
+
+    <section id="s12">
+      <h2 class="sec"><span class="n">12.</span> دخول فريق دعم Zyntello</h2>
+      <p>قد يلزم لمعالجة بلاغ ما أن يدخل أحد موظفي دعم Zyntello إلى مساحة عمل المشترك ويطّلع على بياناته. ويشرح هذا البند الحدود التي يجري ذلك ضمنها وكيف يتحقّق المشترك منه بنفسه.</p>
+      <ul>
+        <li><strong>على أي أساس.</strong> هي عملية لازمة لتنفيذ عقد الخدمة: فبدونها لا يمكننا تشخيص عطل يمسّ بيانات المشترك ولا إصلاحه. وتعمل Zyntello هنا بصفة <strong>المعالِج</strong>، وفق تعليمات المشترك الذي هو المتحكّم (انظر البند 2).</li>
+        <li><strong>بأي هوية.</strong> <strong>لا يستخدم</strong> الموظف أبداً اسم المستخدم أو كلمة المرور الخاصة بأحد العاملين لدى المشترك. بل يدخل بـ<strong>حساب تقني</strong> منفصل، وكل إجراء يحمل توقيع اسم <strong>الموظف الحقيقي</strong>، لا اسم الحساب التقني ولا اسم أحد مستخدمي العميل.</li>
+        <li><strong>بأي نطاق.</strong> تبدأ جلسة الدعم بصلاحية <strong>القراءة فقط</strong>. ولتعديل أي بيان يجب على الموظف رفع صلاحيتها مع بيان سبب محدّد، وينتهي ذلك الرفع <strong>تلقائياً</strong> بعد 30 دقيقة.</li>
+        <li><strong>ما الذي يُسجَّل.</strong> يُحفظ عن كل دخول: الموظف، وتاريخ وساعة الدخول والخروج، والسبب المُعلَن، وعنوان IP، وما إذا كان الدخول مأذوناً به من المشترك أم طارئاً، وإذا رُفعت صلاحية الجلسة، تفصيل كل بيان جرى تعديله.</li>
+        <li><strong>الدخول الطارئ.</strong> حين يتعذّر الحصول على إذن مسبق ويقتضي البلاغ ذلك، يمكن للموظف الدخول مع بيان السبب. ويُوسَم ذلك الدخول بأنه <strong>غير مأذون به</strong> ويتلقّى مالك الحساب إشعاراً.</li>
+        <li><strong>كيف يدقّقه المشترك.</strong> يطّلع مالك الحساب في أي وقت على السجلّ الكامل من <strong>الإعدادات ← سجلّ دخول الدعم</strong>، دون حاجة إلى طلب ذلك منّا.</li>
+        <li><strong>ما الذي لا نفعله.</strong> لا ندخل إلى بيانات أي مشترك لأغراض تجارية أو إحصائية أو لتدريب النماذج، ولا نستخرج نسخاً من معلوماته خارج ما يلزم لحلّ البلاغ.</li>
+        <li><strong>إدارة بيانات الاعتماد.</strong> لا يمكن استخدام الحساب التقني بإدخال بيانات اعتماد: فهو لا يُفتح إلا من أداة الدعم نفسها، التي تشترط أن يكون الموظف قد أتمّ التحقّق من هويته بخطوتين.</li>
+      </ul>
+      <h3>12.1. مكتب المساعدة وملفاته المرفقة</h3>
+      <p>حين يفتح المشترك حالة دعم، يُحفظ الموضوع والوصف وكامل المحادثة اللاحقة و<strong>الملفات التي يرفقها</strong>.</p>
+      <ul>
+        <li><strong>المرفق هو ما يستلزم أشدّ الحذر.</strong> فلشرح مشكلة ما يُعتاد إرفاق لقطة شاشة من النظام نفسه، وقد تظهر فيها <strong>بيانات شخصية لعملاء المشترك أو موظفيه</strong>: أسماء وأرقام هوية ومبالغ وأرصدة. وتعالج Zyntello تلك المعلومات بصفة <strong>المعالِج</strong>، ولغرض حلّ الحالة فحسب.</li>
+        <li><strong>تُحفظ في تخزين خاص</strong> لا يمكن الوصول إليه بعنوان عام: فلتنزيل ملف يجب تسجيل الدخول والانتماء إلى المشترك صاحب الحالة.</li>
+        <li><strong>شارِك ما يلزم فقط.</strong> فإذا تضمّنت لقطة الشاشة بيانات لا حاجة إليها للتشخيص، ننصح بإخفائها قبل إرفاقها. والمشترك هو من يقرّر ما يرسله.</li>
+        <li><strong>الملاحظات الداخلية.</strong> يمكن لفريق الدعم إضافة تدوينات عمل إلى الحالة لا يراها المشترك — تشخيصات أوّلية وتنسيق داخلي. وهي جزء من ملف الحالة ويُحتفظ بها معه.</li>
+        <li><strong>الاحتفاظ.</strong> يُحتفظ بالحالات وملفاتها طوال مدّة العلاقة التعاقدية وللمدّة العامة المبيّنة في البند 8؛ ثم تُحذف مع سائر بيانات المشترك.</li>
+        <li><strong>البريد المُرسَل إلى الدعم يدخل إلى النظام.</strong> تُدرَج الرسالة الموجَّهة إلى <strong>soporte@zyntello.com</strong> تلقائياً في الحالة: إذ <strong>يُحفظ نصّها والملفات المرفقة بها</strong> في الملف، بالمعالجة نفسها والحماية نفسها الموصوفتين أعلاه. ونشير إلى ذلك لأن الرسالة تُكتب بحذر أقلّ من النموذج، وكثيراً ما تجرّ معها سلسلة المراسلات السابقة ومرفقات أُرسلت لغرض آخر. و<strong>يُقتطع اقتباس الرسالة السابقة</strong> تفادياً لتكرار المعلومات، ولا يُحفظ الملف الذي يتجاوز الحجم المسموح: بل يُدوَّن اسمه في الحالة ليتمكّن الموظف من طلبه بوسيلة أخرى.</li>
+        <li><strong>المساعد المدعوم بالذكاء الاصطناعي.</strong> تتضمّن المنصّة مساعداً يجيب عن استفسارات الاستخدام. وعند سؤالك له يُرسَل إلى مزوّد ذكاء اصطناعي (<strong>Anthropic</strong>، بصفة <strong>معالِج من الباطن</strong>) <strong>أمران لا غير</strong>: <strong>نصّ سؤالك</strong> و<strong>وثائق Zyntello</strong> المتعلقة بالوحدة التي تسأل منها. <ul> <li><strong>لا تُرسَل بيانات أعمالك ولا بيانات عملائك.</strong> لا أسماء ولا مبالغ ولا أرصدة ولا سجلات من قاعدة بياناتك. فالنصّ المُرسَل يُبنى حصراً من أدلّتنا: إذ إن المكوّن الذي يجمّعه <strong>لا يستعلم من قاعدة البيانات</strong>، وقد تحقّقنا من ذلك باختبار آلي يفشل إن هو استعلم منها يوماً.</li>
+          <li><strong>الشيء الوحيد الخاص بك الذي يُرسَل هو ما تكتبه أنت في السؤال.</strong> ولذلك نرجو ألّا تُضمّنه بيانات شخصية لأطراف ثالثة: فلشرح كيفية إصدار فاتورة لا حاجة إلى اسم العميل.</li>
+          <li><strong>تُحفظ الإجابات</strong> تفادياً للرجوع إلى المزوّد مرة أخرى عن السؤال نفسه. ولا يتضمّن ذلك الأرشيف <strong>سوى</strong> أسئلة عن الاستخدام وإجابات مستندة إلى وثائقنا.</li>
+          <li><strong>لا ينفّذ المساعد أي إجراء</strong> ولا يعدّل معلوماتك: فهو يشرح لا غير.</li>
+        </ul></li>
+        <li><strong>الرسائل التي يتعذّر تحديد مصدرها.</strong> إذا وصلت رسالة إلى بريد الدعم و<strong>تعذّر تحديد المشترك الذي وردت منه</strong> — لأن المُرسِل لا يطابق أي مستخدم مسجَّل — فإنها <strong>لا تُضاف إلى أي حالة</strong>: بل تبقى في صندوق مراجعة مستقلّ، منفصل عن بيانات أي مشترك، تحديداً لئلّا تُدرَج في حساب عميل معلومات لم يُتحقَّق من مصدرها. فالبريد الإلكتروني يمكن تزوير مُرسِله، ولذلك لا يكفي أن تقول الرسالة ذلك.</li>
+      </ul>
+
+    </section>
+
+    <section id="s13">
+      <h2 class="sec"><span class="n">13.</span> الرسائل والتسويق</h2>
+      <ul>
+        <li><strong>الرسائل المعاملاتية</strong> (التحقّق من الهوية، ورموز الدخول، وإشعارات الفوترة، وتنبيهات الأمن، وإشعارات الصيانة والتعديلات التعاقدية) تُرسَل باعتبارها جزءاً من الخدمة ولا تستلزم موافقة إضافية ما دامت هناك علاقة تعاقدية سارية.</li>
+        <li><strong>الرسائل التجارية الصادرة عن Zyntello</strong> (المستجدّات والنشرات والعروض) لا تُرسَل إلا بـ<strong>موافقة مسبقة</strong> تُؤخذ عبر خانة غير محدَّدة سلفاً. ونحتفظ بقيد لتاريخ منح الموافقة وكيفيته.</li>
+        <li><strong>إلغاء الاشتراك</strong>: تتضمّن كل رسالة تجارية رابط إلغاء بنقرة واحدة. ويمكنك أيضاً طلبه بمراسلة <a href="mailto:info@zyntello.com">info@zyntello.com</a>. ويُعالَج الإلغاء خلال <strong>72 ساعة</strong> كحدّ أقصى ولا يمسّ الرسائل المعاملاتية للخدمة.</li>
+        <li><strong>الرسائل التي يرسلها المشتركون</strong>: إذا أرسلت إليك شركة تستخدم Zyntello رسائل بالبريد أو عبر واتساب، فتلك الشركة هي المسؤولة عن الحصول على موافقتك وعن معالجة طلب إلغاء اشتراكك (انظر البند 6).</li>
+      </ul>
+    </section>
+
+    <section id="s14">
+      <h2 class="sec"><span class="n">14.</span> ملفات تعريف الارتباط</h2>
+      <p>لا تستخدم المنصّة سوى ملفات ارتباط <strong>ضرورية قطعياً</strong> لعملها:</p>
+      <ul>
+        <li><strong>ملف ارتباط الجلسة</strong>: يُبقي المستخدم مسجَّل الدخول أثناء التصفّح.</li>
+        <li><strong>رمز حماية النماذج</strong>: يمنع إرسال طلبات احتيالية من مواقع أطراف ثالثة.</li>
+        <li><strong>ملف ارتباط «تذكُّر الجلسة»</strong>: فقط إذا حدّد المستخدم ذلك الخيار عند تسجيل الدخول.</li>
+        <li><strong>تفضيل آخر موضع</strong>: يتيح استئناف العمل من حيث توقّف عند العودة إلى الجلسة.</li>
+      </ul>
+      <div class="note ok">
+        <p><b>لا نستخدم ملفات ارتباط إعلانية ولا للتنميط ولا تتبّعية تابعة لأطراف ثالثة</b>، ولا ندمج في المنصّة بكسلات تتبّع لشبكات التواصل أو منصّات الإعلانات. ولهذا السبب لا يلزم شريط موافقة على ملفات الارتباط لاستخدامها.</p>
+      </div>
+      <p>يمكنك حذف ملفات الارتباط أو حجبها من إعدادات متصفّحك، مع مراعاة أن ذلك سيمنع تسجيل الدخول إلى المنصّة.</p>
+
+      <h3>14.1. الموارد المقدَّمة من أطراف ثالثة</h3>
+      <p>وهذا أمر مختلف عن ملفات الارتباط، ويحسن ألّا يُخلَط بها: فجزء من خطوط الواجهة وأيقوناتها ومكتباتها يُقدَّم من خوادم الأطراف الثالثة المذكورة في البند 5. و<strong>لا يثبّت أيٌّ منها ملفات ارتباط</strong> ولا يعيد إلينا أي معرّف للمستخدم، لكن الاتصال قائم، ويحمل عنوان IP الخاص به.</p>
+      <p>ونقول ذلك لأن انتفاء ملفات الارتباط الإعلانية لا يعني انتفاء الاتصالات بأطراف ثالثة، ولأن سياسةً تتحدّث عن ملفات الارتباط وحدها ستُغفل ما يحدث فعلاً عند فتح أي شاشة.</p>
+    </section>
+
+    <section id="s15">
+      <h2 class="sec"><span class="n">15.</span> الإبلاغ عن الحوادث الأمنية</h2>
+      <p>إذا وقع اختراق أمني يمسّ بيانات شخصية، نقيّم الخطر ونبلّغ:</p>
+      <ul>
+        <li><strong>المشتركين المتضرّرين</strong>، دون تأخير لا مبرّر له، بالمعلومات المتاحة عن النطاق وفئات البيانات المتأثّرة والتدابير المتّخذة؛</li>
+        <li><strong>الجهات المختصّة</strong> متى اقتضى القانون ذلك — خلال <strong>72 ساعة</strong> من العلم بالحادث في حالة اللائحة العامة لحماية البيانات؛</li>
+        <li><strong>أصحاب البيانات</strong>، متى شكّل الاختراق خطراً مرتفعاً على حقوقهم وحرياتهم واقتضى القانون الواجب التطبيق ذلك.</li>
+      </ul>
+      <p>وحين نعمل بصفة المعالِج، يُوجَّه الإبلاغ إلى المشترك المتحكّم، وعليه هو إبلاغ أصحاب البيانات والجهة المختصّة.</p>
+    </section>
+
+    <section id="s16">
+      <h2 class="sec"><span class="n">16.</span> القاصرون</h2>
+      <p>المنصّة موجَّهة حصراً إلى الشركات والمهنيين، وليست معدّة لمن هم دون 18 عاماً. ولا نجمع عن علم بيانات قاصرين بوصفهم مستخدمين للخدمة. وإذا سجّل مشترك بيانات قاصرين في سياق نشاطه، فعليه مسؤولية الحصول على إذن الوالدين أو الأوصياء وفقاً للقانون الواجب التطبيق.</p>
+    </section>
+
+    <section id="s17">
+      <h2 class="sec"><span class="n">17.</span> القرارات الآلية والذكاء الاصطناعي</h2>
+      <p>تتيح بعض الوحدات وظائف مُعانة بالذكاء الاصطناعي، وأبرزها <strong>استخراج البيانات من الفواتير والمستندات</strong> واقتراحات إحصائية مبنية على المعلومات التاريخية.</p>
+      <ul>
+        <li><strong>نحن لا نتّخذ قرارات آلية ذات آثار قانونية</strong> على الأشخاص. فكل تقييم تترتّب عليه نتائج — كاعتماد تسهيل ائتماني في وحدة Prestamello — يستلزم تدخّل مستخدم بشري وقراره.</li>
+        <li><strong>المراجعة البشرية إلزامية</strong>: إذ تُعرَض نتيجة النموذج بوصفها مسوّدة ولا تُحدث أثراً محاسبياً أو ضريبياً أو مخزنياً حتى يعتمدها مستخدم.</li>
+        <li>الوظيفة <strong>اختيارية</strong>، ومعطَّلة افتراضياً، وتستلزم أن يفعّلها المشترك ببيانات اعتماده الخاصة لدى مزوّد الذكاء الاصطناعي.</li>
+        <li><strong>لا نستخدم بيانات المشتركين لتدريب نماذج خاصة بنا.</strong> وتخضع المعالجة من جانب مزوّد الذكاء الاصطناعي للشروط التي قبلها المشترك مع ذلك المزوّد.</li>
+      </ul>
+    </section>
+
+    <section id="s18">
+      <h2 class="sec"><span class="n">18.</span> التعديلات على هذه السياسة</h2>
+      <p>سننشر أي تعديل على هذه الصفحة نفسها، مع تحديث تاريخ آخر تحديث. وإذا كان التعديل جوهرياً، أبلغنا به بالبريد الإلكتروني أو بإشعار بارز في المنصّة قبل <strong>30 يوماً</strong> على الأقل من نفاذه. والإصدارات السابقة متاحة عند الطلب.</p>
+    </section>
+
+    <section id="s19">
+      <h2 class="sec"><span class="n">19.</span> التواصل</h2>
+      <p>لأي استفسار أو طلب يتعلّق بالخصوصية وحماية البيانات:</p>
+      <ul>
+        <li><strong>Zyntello, S.R.L.</strong> — الجمهورية الدومينيكية</li>
+        <li>البريد الإلكتروني: <a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+        <li>الهاتف وواتساب: <a href="https://wa.me/18296399877">‎+1 829 639 9877</a></li>
+        <li>الموقع الإلكتروني: <a href="https://zyntello.com">https://zyntello.com</a></li>
+      </ul>
+      <p>راجِع أيضاً <a href="/ar/terminos/">شروط الخدمة</a> و<a href="/ar/eliminacion-datos/">تعليمات حذف البيانات</a>.</p>
+    </section>
+
+    <section id="s20">
+      <h2 class="sec"><span class="n">20.</span> سجلّ التغييرات</h2>
+      <p>سجلّ كامل وتراكمي لجميع إصدارات هذه السياسة منذ نشرها الأول. ويبيّن كل قيد الإصدار وتاريخ نفاذه وما الذي تغيّر. والقيود السابقة <strong>لا تُعدَّل ولا تُحذَف</strong>.</p>
+      <div class="note">
+        <p><b>كيف تُقرأ أرقام الإصدارات.</b> تغيير <strong>الإصدار الفرعي</strong> ‏(1.0 ← 1.1) يضيف معلومات أو يوضّحها — وحدة جديدة، أو جهة متلقّية، أو فئة بيانات — دون المساس بأغراض المعالجة ولا بأسسها القانونية. أما تغيير <strong>الإصدار الرئيسي</strong> ‏(1.x ← 2.0) فيعدّل الأغراض أو الأسس القانونية أو الجهات المتلقّية أو مدد الاحتفاظ أو حقوقك، ويُبلَّغ به قبل <strong>30 يوماً</strong> وفقاً للبند 17.</p>
+      </div>
+      <div class="tbl chg">
+        <table>
+          <thead>
+            <tr><th>الإصدار</th><th>التاريخ</th><th>التغييرات</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1.9 <span class="vig">سارٍ</span></td>
+              <td>18 سبتمبر 2026</td>
+              <td><strong>الأطراف الثالثة التي تتلقّى عنوان IP عند تحميل شاشة.</strong> لم يكن البند <strong>5</strong> يُعلن ثلاث جهات متلقّية قائمة فعلاً، وقد أُدرجت: <strong>(1)</strong> <strong>شبكات توزيع المحتوى ومزوّدو خطوط الويب</strong> — jsDelivr وCloudflare cdnjs وunpkg وGoogle Fonts وBunny Fonts — التي تُقدَّم منها مكتبات الواجهة وخطوطها وأيقوناتها؛ وتُحمَّل في <strong>جميع</strong> شاشات المنصّة وتتلقّى عنوان IP والمتصفّح والشاشة المطلوبة، ولا تتلقّى أبداً بيانات الحساب ولا معرّفات الجلسات. <strong>(2)</strong> <strong>QuickChart</strong>، الذي يُنشئ صورة رمز QR لفعالية ولا يتلقّى سوى رابط التسجيل العام، وفي وحدة Events فقط. <strong>(3)</strong> <strong>خدمة أسعار الصرف</strong> التي يستعلم منها الموقع العام، وتتلقّى عنوان IP للزائر ولا دخل لها بالمنصّة. وأُضيف بعد الجدول شرحٌ لسبب عدم اعتبار هذه الثلاث تنازلاً عن بيانات الأعمال: فـ<strong>متصفّح المستخدم نفسه</strong> هو من يطلب المورد، ويحمل ذلك الطلب عنوان IP الخاص به كما في أي زيارة لأي موقع. ويوسّع البند <strong>7</strong> نطاق النقل الدولي ليشمل هؤلاء المزوّدين، الذين تتوزّع خوادمهم في أنحاء العالم. ويوضّح البند <strong>14.1</strong> أن <strong>أياً منها لا يثبّت ملفات ارتباط</strong>، وأن انتفاء ملفات الارتباط الإعلانية لا يعني انتفاء الاتصالات بأطراف ثالثة. والتفاصيل التقنية لكل مكوّن واردة في <a href="/ar/avisos-terceros/">إشعارات برمجيات الأطراف الثالثة</a>، المنشورة مع الإصدار 1.7 من <a href="/ar/terminos/">الشروط</a>. ولا تتغيّر الأغراض ولا مدد الاحتفاظ ولا حقوق صاحب البيانات ولا الأسس القانونية للمعالجة.</td>
+            </tr>
+            <tr>
+              <td>1.8</td>
+              <td>11 سبتمبر 2026</td>
+              <td><strong>مخطّط المسارات وتتبّع موقع السائق.</strong> تدخل وحدة <strong>مخطّط المسارات</strong> في البند <strong>4</strong>، مع البيانات التي تعالجها: عناوين المحطات و<strong>إحداثياتها</strong>، والناقل والمركبة والسائق المُسنَد، وموقع السائق أثناء المسار. ويُضاف إلى البند <strong>3</strong> شرحٌ كان ناقصاً وليس تفصيلاً هامشياً: فـ<strong>تسجيل نقطة واحدة عند الحضور</strong> — وهو ما كانت تفعله الرواتب وPSA وPrestamello — <strong>ليس كتسجيل الموقع بصورة متكرّرة طوال يوم العمل</strong>، لأن الثاني يتيح إعادة تكوين مسيرة شخص ما. ويُعلَن أن ذلك التتبّع <strong>يبدأ معطَّلاً</strong> وأنه لا يُسجَّل أي موقع خارج المسار. وفي البند <strong>5</strong> تُعلَن <strong>جهة متلقّية جديدة</strong>: <strong>مزوّد الخرائط</strong> ‏(OpenStreetMap أو Google Maps أو HERE أو Mapbox، باختيار المشترك)، وتُرسَل إليه عناوين المحطات وإحداثياتها — لا اسم العميل ولا محتوى الطلب. وفي البند <strong>8</strong> تُحدَّد مدّة احتفاظ خاصة بـ<strong>الأثر نقطةً نقطة</strong>: <strong>90 يوماً</strong> بعد إغلاق المسار، يُحتفظ بعدها بالملخّص الذي تحتاجه التقارير فقط ويُمحى المسار التفصيلي.</td>
+            </tr>
+            <tr>
+              <td>1.7</td>
+              <td>9 سبتمبر 2026</td>
+              <td><strong>المساعد المدعوم بالذكاء الاصطناعي.</strong> يُوسَّع البند <strong>12.1</strong> ليُعلن وظيفة جديدة و<strong>المعالِج من الباطن</strong> الذي يتدخّل فيها: فعند استخدام المساعد يُرسَل إلى <strong>Anthropic</strong> فقط <strong>نصّ السؤال</strong> و<strong>وثائق Zyntello</strong> الخاصة بالوحدة المعنيّة. ويُعلَن صراحةً أنه <strong>لا تُرسَل بيانات أعمال المشترك ولا بياناته الشخصية</strong> — لا أسماء ولا مبالغ ولا أرصدة ولا سجلات من قاعدة البيانات — لأن المكوّن الذي يجمّع ذلك النصّ <strong>لا يستعلم من قاعدة البيانات</strong>، وأن ذلك موثَّق باختبار آلي يفشل إن هو استعلم منها يوماً. ويُنبَّه إلى أن الشيء الوحيد الخاص بالمشترك الذي يُرسَل هو ما يكتبه هو في السؤال، ويُعلَن أن الإجابات تُحفظ تفادياً لتكرار الاستعلامات وأن ذلك الأرشيف لا يتضمّن سوى أسئلة عن الاستخدام وإجابات مستندة إلى وثائقنا، وأن <strong>المساعد لا ينفّذ أي إجراء</strong>. و<strong>لا تتغيّر</strong> الأغراض ولا الأسس القانونية ولا مدد الاحتفاظ ولا حقوق صاحب البيانات.</td>
+            </tr>
+            <tr>
+              <td>1.6</td>
+              <td>9 سبتمبر 2026</td>
+              <td><strong>البريد المُرسَل إلى الدعم يدخل إلى النظام.</strong> يُوسَّع البند <strong>12.1</strong> بمنفذ دخول لم يغطّه الإصدار السابق: فالرسالة الموجَّهة إلى <strong>soporte@zyntello.com</strong> تُدرَج تلقائياً في الحالة، و<strong>يُحفظ نصّها ومرفقاتها</strong> في الملف بالمعالجة نفسها والحماية نفسها الموصوفتين سلفاً. ويُشار إلى ذلك لأن الرسالة تُكتب بحذر أقلّ من النموذج وكثيراً ما تجرّ معها سلسلة المراسلات السابقة ومرفقات أُرسلت لغرض آخر؛ ويُعلَن أنه <strong>يُقتطع اقتباس الرسالة السابقة</strong> وأن الملف الذي يتجاوز الحجم المسموح لا يُحفظ بل يُدوَّن اسمه. ويُعلَن كذلك ما يحدث للرسائل <strong>التي يتعذّر تحديد مُرسِلها</strong>: فهي لا تُضاف إلى أي حالة، بل تبقى في صندوق مراجعة <strong>منفصل عن بيانات أي مشترك</strong>، لأن البريد الإلكتروني يمكن تزوير مُرسِله ولا يكفي أن تقول الرسالة ذلك. و<strong>لا تتغيّر</strong> الأغراض ولا الأسس القانونية ولا الجهات المتلقّية ولا مدد الاحتفاظ ولا حقوق صاحب البيانات.</td>
+            </tr>
+            <tr>
+              <td>1.5</td>
+              <td>7 سبتمبر 2026</td>
+              <td><strong>مكتب المساعدة وملفاته المرفقة.</strong> يُضاف البند <strong>12.1</strong>، الذي يوثّق فئة بيانات لم يغطّها الإصدار السابق: محتوى حالات الدعم، وقبل كل شيء <strong>الملفات التي يرفقها المشترك</strong>. ويُوضَّح أن لقطة الشاشة قد تتضمّن بيانات شخصية لعملاء المشترك أو موظفيه وأن Zyntello تعالجها بصفة <strong>المعالِج</strong>، ولغرض حلّ الحالة فحسب؛ وأن المرفقات تُحفظ في تخزين خاص ويستلزم تنزيلها تسجيل الدخول والانتماء إلى المشترك صاحب الحالة؛ وأن فريق الدعم يمكنه إضافة ملاحظات داخلية تُشكّل جزءاً من الملف؛ ومدّة الاحتفاظ. ويُنصح كذلك بإخفاء ما لا يلزم للتشخيص من لقطة الشاشة. ولا تتغيّر الأغراض ولا الأسس القانونية ولا الجهات المتلقّية ولا حقوق صاحب البيانات.</td>
+            </tr>
+            <tr>
+              <td>1.4</td>
+              <td>6 سبتمبر 2026</td>
+              <td><strong>دخول فريق دعم Zyntello.</strong> يُضاف البند <strong>12</strong>، الذي يوثّق عمليةً لم يصفها الإصدار السابق: فحين يقتضي بلاغ ما ذلك، يمكن لأحد موظفي دعم Zyntello الدخول إلى مساحة عمل المشترك والاطّلاع على بياناته. ويُبيَّن على أي أساس يجري ذلك، وأن الموظف <strong>لا يستخدم أبداً</strong> بيانات اعتماد أحد العاملين لدى المشترك بل حساباً تقنياً خاصاً، وأن الجلسة تبدأ بصلاحية <strong>القراءة فقط</strong> وأن رفعها إلى الكتابة يستلزم بيان سبب وينتهي تلقائياً، وما الذي يُسجَّل عن كل دخول، وكيف يُوسَم الدخول الطارئ، وأين يدقّقه المشترك بنفسه (<strong>الإعدادات ← سجلّ دخول الدعم</strong>). وتُعاد ترقيم البنود 12 إلى 19 من الإصدار السابق لتصبح 13 إلى 20، دون تغيير في مضمونها. ولا تتغيّر الأغراض ولا الأسس القانونية ولا مدد الاحتفاظ ولا حقوق صاحب البيانات.</td>
+            </tr>
+            <tr>
+              <td>1.3</td>
+              <td>5 سبتمبر 2026</td>
+              <td><strong>نطاق وصول كل فئة من المستخدمين.</strong> يوضّح البند <strong>11</strong> أن التحكّم في الوصول له نطاقان مختلفان: فمستخدمو المشترك أنفسهم يصلون إلى جميع شركات الحساب بصلاحيات أدوارهم، بينما يُسنَد <strong>المستخدمون الداخليون</strong> — المخصَّصون للعاملين المؤقتين أو الخارجيين — إلى شركة واحدة فقط وتقتصر صلاحياتهم على بيانات تلك الشركة. وكانت الصياغة السابقة تتحدّث عن «أدوار وصلاحيات مفصَّلة لكل وحدة» دون تمييز حدود كل منها. ولا تتغيّر فئات البيانات المعالَجة ولا مدد الاحتفاظ ولا الجهات المتلقّية ولا حقوق صاحب البيانات.</td>
+            </tr>
+            <tr>
+              <td>1.2</td>
+              <td>4 سبتمبر 2026</td>
+              <td><strong>التحقّق بخطوتين عبر تطبيق مصادقة وسياسة الجلسة.</strong> تُضاف إلى جدول البند <strong>4</strong> البيانات التي تُحفظ عند تفعيل المستخدم للتحقّق بخطوتين عبر تطبيق: مفتاح التطبيق (مشفَّراً)، ورموز الاسترجاع (مشفَّرة تشفيراً غير قابل للعكس)، وسجلّ المحاولات الفاشلة؛ ولا تستطيع Zyntello قراءة أيٍّ منها. وتُحدَّث تدابير البند <strong>11</strong> بالطريقة الجديدة، والحظر المؤقّت بعد المحاولات الفاشلة، والإشعار بالبريد بأي تغيير في التحقّق. و<strong>يُصحَّح</strong> وصف سياسة الجلسة الذي كان يقول «إغلاق تلقائي بسبب عدم النشاط»: فمنذ 3 سبتمبر 2026 تُغلق الجلسة بإغلاق المتصفّح، وتنتهي في الخادم بعد سبعة أيام، وتوجد شاشة للأجهزة المتّصلة لإنهائها عن بُعد.</td>
+            </tr>
+            <tr>
+              <td>1.1</td>
+              <td>31 أغسطس 2026</td>
+              <td><strong>النسخ الاحتياطي ونقل البيانات ذاتياً.</strong> تُوثَّق الوظيفة التي تتيح للمشترك إنشاء نسخة كاملة من بيانات شركاته وتنزيلها بنفسه: البند <strong>9.4</strong> الجديد (ما يتضمّنه الملف، والعزل المضمون إزاء المشتركين الآخرين، والبيانات التقنية المستبعَدة، والمسؤولية عن النسخة بعد تنزيلها)، والإشارة في <strong>9.1</strong> إليها بوصفها طريقة لممارسة حقّ النقل دون طلب مسبق، ومدّة احتفاظ خاصة في جدول البند <strong>8</strong>، وتوضيح في البند <strong>11</strong> بأن النسخة الاحتياطية تطبّق العزل نفسه بين المشتركين. ولا تتغيّر أغراض المعالجة ولا أسسها القانونية ولا الجهات المتلقّية.</td>
+            </tr>
+            <tr>
+              <td>1.0</td>
+              <td>28 يوليو 2026</td>
+              <td><strong>النشر الأول.</strong> وثيقة أولية من 19 بنداً: المتحكّم بالبيانات، والدور المزدوج متحكّم/معالِج، والبيانات المعالَجة وأساسها القانوني، والبيانات بحسب الوحدة، والجهات المتلقّية والمعالِجون من الباطن، وواتساب وMeta، والنقل الدولي، ومدد الاحتفاظ، والحقوق وإجراء حذف البيانات، والتشريعات بحسب البلد، والأمن، والرسائل والتسويق، وملفات تعريف الارتباط، والإبلاغ عن الحوادث، والقاصرون، والقرارات الآلية والذكاء الاصطناعي، والتعديلات على السياسة، والتواصل، وسجلّ التغييرات.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>يمكنك طلب نسخة من النصّ الكامل لأي إصدار سابق بمراسلة <a href="mailto:info@zyntello.com">info@zyntello.com</a>.</p>
+    </section>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>تقنيات الأعمال والذكاء الاصطناعي</li>
+          <li>الجمهورية الدومينيكية</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/ar/terminos/">شروط الخدمة</a></li>
+          <li><a href="/ar/privacidad/">سياسة الخصوصية</a></li>
+          <li><a href="/ar/cookies/">سياسة ملفات تعريف الارتباط</a></li>
+          <li><a href="/ar/eliminacion-datos/">حذف البيانات</a></li>
+          <li><a href="/ar/sla/">اتفاقية مستوى الخدمة</a></li>
+          <li><a href="/ar/avisos-terceros/">إشعارات برمجيات الأطراف الثالثة</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>التواصل</h4>
+        <ul>
+          <li><a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+          <li><a href="https://zyntello.com">zyntello.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy">© 2026 Zyntello, S.R.L. جميع الحقوق محفوظة.</p>
+  </div>
+</footer>
+
+</body>
+</html>

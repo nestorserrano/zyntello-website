@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>اتفاقية مستوى الخدمة (SLA) | Zyntello</title>
+<meta name="description" content="اتفاقية مستوى الخدمة لدى Zyntello, S.R.L. — قنوات الدعم، وأوقات العمل، والأولويات، ومُهَل الاستجابة الأولى، والرخص المشمولة، ونطاق الخدمة.">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<link rel="canonical" href="https://zyntello.com/ar/sla/">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;padding:0 clamp(1.25rem,3vw,2.75rem)}
+
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:88ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:clamp(2rem,3.5vw,4rem);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:95ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:95ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note.ok{border-left-color:var(--ok);background:rgba(52,211,153,.05)}
+  .note b{color:#fff}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:600px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+
+
+
+<!--zyntello:legales-->
+<link rel="alternate" hreflang="es" href="https://zyntello.com/sla/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/sla/">
+<link rel="alternate" hreflang="fr" href="https://zyntello.com/fr/sla/">
+<link rel="alternate" hreflang="it" href="https://zyntello.com/it/sla/">
+<link rel="alternate" hreflang="zh-Hans" href="https://zyntello.com/zh-Hans/sla/">
+<link rel="alternate" hreflang="zh-Hant" href="https://zyntello.com/zh-Hant/sla/">
+<link rel="alternate" hreflang="ar" href="https://zyntello.com/ar/sla/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/sla/">
+<style>
+.idiomas{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:center;padding:.75rem 0;font-size:.82rem}
+.idiomas span{color:var(--tx3,#64748b);text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+.idiomas a{color:var(--tx3,#64748b);text-decoration:none;padding:.15rem .5rem;border-radius:99px;border:1px solid transparent}
+.idiomas a:hover{color:var(--ac,#60a5fa);border-color:var(--line2,rgba(255,255,255,.14))}
+.idiomas a[aria-current]{color:var(--ac,#60a5fa);border-color:var(--ac,#60a5fa)}
+.prevalece{margin:1rem 0;padding:.75rem 1rem;border-radius:.5rem;font-size:.86rem;
+  color:var(--tx2,#94a3b8);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.28)}
+.prevalece a{color:var(--ac,#60a5fa)}
+</style>
+<!--/zyntello:legales--></head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">الرئيسية</a>
+        <a href="/ar/terminos/">شروط الخدمة</a>
+        <a href="/ar/privacidad/">الخصوصية</a>
+        <a href="/ar/eliminacion-datos/">حذف البيانات</a>
+        <a href="/ar/avisos-terceros/">إشعارات الأطراف الثالثة</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">مستند قانوني</span>
+      <h1>اتفاقية مستوى الخدمة</h1>
+      <p class="lead">تصف هذه الاتفاقية (ويُشار إليها فيما يلي بـ<strong>اتفاقية مستوى الخدمة</strong>) الدعم الذي تقدّمه <strong>Zyntello, S.R.L.</strong> لمشتركي منصّتها <code>app.zyntello.com</code>: عبر أي قنوات يُقدَّم، وفي أي أوقات، وبأي أولويات، وفي كم من الوقت نردّ، وما المشمول وما يُفوتر على حدة. وهي مكمّلة <a href="/ar/terminos/">للشروط والأحكام</a> لا بديلة عنها.</p>
+      <div class="meta">
+        <span>آخر تحديث: <strong>9 سبتمبر 2026</strong></span>
+        <span>سريان المفعول: <strong>من تاريخ نشرها</strong></span>
+        <span>الإصدار: <strong><a class="verlink" href="#s13">1.4 — انظر سجلّ التغييرات</a></strong></span>
+      </div>
+    </div>
+  </div><!--zyntello:legales--><div class="idiomas" role="navigation" aria-label="اللغة"><span>اللغة:</span><a href="/sla/" hreflang="es" lang="es">Español</a><a href="/en/sla/" hreflang="en" lang="en">English</a><a href="/fr/sla/" hreflang="fr" lang="fr">Français</a><a href="/it/sla/" hreflang="it" lang="it">Italiano</a><a href="/zh-Hans/sla/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a><a href="/zh-Hant/sla/" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a><a href="/ar/sla/" hreflang="ar" lang="ar" aria-current="true">العربية</a></div><!--/zyntello:legales--></header>
+
+<main><!--zyntello:legales-->
+<div class="prevalece" role="note">هذه ترجمة للتيسير فقط. النسخة المُلزِمة لهذا المستند هي النسخة الإسبانية. <a href="/sla/" hreflang="es" lang="es">عرض النسخة الإسبانية</a>.</div><!--/zyntello:legales-->
+  <div class="wrap">
+    <div class="grid">
+
+      <aside class="toc">
+        <h2>المحتويات</h2>
+        <ol>
+          <li><a href="#s1">التعريف والموضوع</a></li>
+          <li><a href="#s2">التعريفات</a></li>
+          <li><a href="#s3">قنوات الدعم</a></li>
+          <li><a href="#s4">أوقات العمل</a></li>
+          <li><a href="#s5">تصنيف الأولويات</a></li>
+          <li><a href="#s6">مُهَل الاستجابة الأولى</a></li>
+          <li><a href="#s7">ما يشمله الدعم</a></li>
+          <li><a href="#s8">دخول فريق الدعم إلى الحساب</a></li>
+      <li><a href="#s9">ما لا يشمله الدعم وما يُفوتر</a></li>
+          <li><a href="#s10">رخص الاستخدام المشمولة</a></li>
+          <li><a href="#s11">توافر الخدمة</a></li>
+          <li><a href="#s12">الاستثناءات والحدود</a></li>
+          <li><a href="#s13">سجلّ التغييرات</a></li>
+        </ol>
+      </aside>
+
+      <article>
+
+<section id="s1">
+  <h2 class="sec"><span class="n">1.</span> التعريف والموضوع</h2>
+  <p><strong>Zyntello, S.R.L.</strong>، وهي شركة مؤسَّسة في الجمهورية الدومينيكية، تقدّم خدمة الدعم الموصوفة في هذه الوثيقة لكل مشترك لديه اشتراك سارٍ في منصّة <code>app.zyntello.com</code>.</p>
+  <p>جهة اتصال الدعم: <a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a> · واتساب <a href="https://wa.me/18296399877">‎+1 829 639 9877</a> · الشؤون الإدارية: <a href="mailto:info@zyntello.com">info@zyntello.com</a>.</p>
+  <div class="note"><b>تسري هذه الاتفاقية ما دام الاشتراك منتظماً في السداد.</b> فالحساب الموقوف لعدم السداد يحتفظ ببياناته وفقاً للشروط، لكنه يخرج عن مُهَل الاستجابة المتعهَّد بها هنا.</div>
+</section>
+
+<section id="s2">
+  <h2 class="sec"><span class="n">2.</span> التعريفات</h2>
+  <ul>
+    <li><strong>البلاغ:</strong> أي طلب دعم يرفعه المشترك.</li>
+    <li><strong>الاستجابة الأولى:</strong> اللحظة التي يردّ فيها أحد موظفي Zyntello على البلاغ بتشخيص أو سؤال محدّد أو حلّ. و<strong>ليست</strong> إشعار الاستلام التلقائي.</li>
+    <li><strong>ساعة العمل:</strong> ساعة تنقضي ضمن أوقات العمل المبيّنة في البند 4. فالبلاغ المرفوع يوم الجمعة الساعة 17:00 والمرتبط بتعهّد قدره 4 ساعات عمل يُردّ عليه في موعد أقصاه يوم الاثنين الساعة 11:00.</li>
+    <li><strong>زمن الحلّ:</strong> الزمن اللازم لإغلاق البلاغ. ويتوقّف على طبيعته، و<strong>لا تُقدَّم بشأنه تعهّدات</strong> في هذه الاتفاقية؛ فالتعهّد ينصبّ على الاستجابة الأولى.</li>
+  </ul>
+  <div class="note warn"><b>لماذا لا نتعهّد بزمن الحلّ.</b> استفسار عن الاستخدام يُحلّ في الردّ نفسه؛ أما عيب يستلزم تصحيح شيفرة واختبارها ونشرها فلا. والوعد بمهلة واحدة للأمرين معاً يعني الإخلال بها في نصف الحالات.</div>
+</section>
+
+<section id="s3">
+  <h2 class="sec"><span class="n">3.</span> قنوات الدعم</h2>
+  <p>يُطلب الدعم عبر أي من هذه القنوات:</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>القناة</th><th>كيف</th><th>الأنسب لماذا</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>البريد الإلكتروني</strong></td>
+          <td><a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a></td>
+          <td>القناة الرئيسية. تترك أثراً كتابياً لكامل الحالة وتتيح إرفاق لقطات الشاشة والملفات. ورسالتك <strong>تدخل تلقائياً إلى الحالة</strong>: فإن ردَدْتَ على رسالة منّا أُضيف ردّك إلى الحالة نفسها، وإن راسلتنا لأول مرة فُتحت حالة جديدة.</td>
+        </tr>
+        <tr>
+          <td><strong>واتساب</strong></td>
+          <td><a href="https://wa.me/18296399877">+1 829 639 9877</a></td>
+          <td>الاستفسارات القصيرة والتنبيهات العاجلة. وكل حالة تتطلّب متابعة تُنقل إلى البريد الإلكتروني.</td>
+        </tr>
+        <tr>
+          <td><strong>نموذج الويب</strong></td>
+          <td><a href="https://zyntello.com/#contacto">zyntello.com</a></td>
+          <td>حين لا يكون لديك بعدُ وصول إلى المنصّة ولا إلى البريد المسجَّل.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note"><b>ما الذي يُسرّع الردّ.</b> ذكر الشركة والوحدة التي حدثت فيها المشكلة، وما كان متوقّعاً وما حدث فعلاً، وإرفاق لقطة شاشة. فبهذه المعطيات الثلاثة تُحلّ معظم البلاغات في الردّ الأول، دون أخذ وردّ.</div>
+</section>
+
+<section id="s4">
+  <h2 class="sec"><span class="n">4.</span> أوقات العمل</h2>
+  <p><strong>من الاثنين إلى الجمعة، من 8:00 إلى 18:00</strong>، بتوقيت الجمهورية الدومينيكية ‏(GMT-4)، باستثناء العطل الوطنية الدومينيكية.</p>
+  <p>يمكن رفع البلاغات خارج تلك الأوقات عبر أي قناة: فتُسجَّل ويبدأ احتساب مهلة الردّ عليها مع بداية يوم العمل التالي.</p>
+</section>
+
+<section id="s5">
+  <h2 class="sec"><span class="n">5.</span> تصنيف الأولويات</h2>
+  <p>تحدّد Zyntello الأولوية بحسب <strong>الأثر الفعلي</strong> على أعمال المشترك، لا بحسب نبرة الاستعجال في البلاغ. وإن لم يوافق المشترك على التصنيف، فله أن يطلب مراجعته مع بيان الأثر المحدّد.</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>الأولوية</th><th>ما المقصود بها</th><th>أمثلة</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>حرجة</strong></td>
+          <td>المنصّة غير متاحة، أو إحدى الوحدات المتعاقد عليها غير قابلة للاستخدام في الشركة بأكملها ولا بديل عنها.</td>
+          <td>تعذّر تسجيل الدخول · تعذّر إصدار الفواتير · وحدة كاملة تُرجِع خطأً</td>
+        </tr>
+        <tr>
+          <td><strong>عالية</strong></td>
+          <td>وظيفة مهمّة تتعطّل أو تُظهر بيانات خاطئة، لكن توجد طريقة لمواصلة العمل.</td>
+          <td>تقرير يُظهر أرقاماً غير متطابقة · مستند يتعذّر إلغاؤه</td>
+        </tr>
+        <tr>
+          <td><strong>عادية</strong></td>
+          <td>وظيفة ثانوية تتعطّل، أو يوجد استفسار عن الاستخدام أو الإعداد.</td>
+          <td>كيفية إعداد تسلسل ترقيم · مرشّح لا يعمل كما هو متوقّع</td>
+        </tr>
+        <tr>
+          <td><strong>منخفضة</strong></td>
+          <td>اقتراحات وتحسينات واستفسارات لا تؤثّر في سير العمل.</td>
+          <td>طلب إضافة عمود جديد إلى قائمة · استفسار عن وظيفة مستقبلية</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s6">
+  <h2 class="sec"><span class="n">6.</span> مُهَل الاستجابة الأولى</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>الأولوية</th><th>الاستجابة الأولى</th></tr></thead>
+      <tbody>
+        <tr><td><strong>حرجة</strong></td><td>4 ساعات عمل</td></tr>
+        <tr><td><strong>عالية</strong></td><td>8 ساعات عمل</td></tr>
+        <tr><td><strong>عادية</strong></td><td>يوم عمل واحد</td></tr>
+        <tr><td><strong>منخفضة</strong></td><td>3 أيام عمل</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>تُحتسب المهلة من لحظة وصول البلاغ عبر إحدى قنوات البند 3، ضمن أوقات العمل المبيّنة في البند 4.</p>
+  <div class="note"><b>يُراجَع البريد كل 15 دقيقة.</b> تُدرَج الرسائل الواردة إلى <a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a> في الحالة عبر عملية تلقائية تُنفَّذ <strong>كل خمس عشرة دقيقة</strong>، بحيث قد تمضي حتى 15 دقيقة بين إرسال المشترك وتسجيل رسالته في النظام. وهذا الوقت <strong>لا يُخصَم</strong> من مُهَل هذا البند: فالعدّاد يبدأ من لحظة إرسال المشترك لرسالته، لا من لحظة معالجة نظامنا لها. ويُعلَن ذلك هنا لأنه تأخير من عندنا ولا يجوز احتسابه على المشترك.</div>
+  <div class="note warn"><b>إذا أخللنا بالمهلة.</b> يمكن للمشترك تصعيد الحالة بمراسلة <a href="mailto:info@zyntello.com">info@zyntello.com</a> بالموضوع الأصلي. والإخلال المتكرّر والموثَّق بمُهَل هذا البند يخوّل المشترك إلغاء اشتراكه دون غرامة، على أن يسري الإلغاء في نهاية المدّة المدفوعة.</div>
+</section>
+
+<section id="s7">
+  <h2 class="sec"><span class="n">7.</span> ما يشمله الدعم</h2>
+  <p>دون تكلفة إضافية، ضمن الاشتراك الساري:</p>
+  <ul>
+    <li><strong>تصحيح عيوب المنصّة.</strong> إذا لم يعمل شيء على النحو الموثَّق، فإصلاحه التزام علينا ولا يُفوتر أبداً.</li>
+    <li><strong>استفسارات الاستخدام</strong> المتعلقة بالوحدات المتعاقد عليها.</li>
+    <li><strong>إعداد</strong> الوحدات المتعاقد عليها: تسلسلات الترقيم، والحسابات المحاسبية، والضرائب، والصلاحيات، والمعاملات.</li>
+    <li><strong>مشكلات الدخول</strong>: استرجاع كلمة المرور، والتحقّق بخطوتين، والمستخدمون المحظورون.</li>
+    <li><strong>الإرشاد</strong> إلى كيفية الاستفادة من وظيفة قائمة.</li>
+  </ul>
+  <div class="note ok"><b>الإبلاغ عن عيب لا يكلّف شيئاً أبداً.</b> فإذا كانت المشكلة ناشئة عن المنصّة، فإصلاحها يدخل دائماً في الدعم المشمول، مهما استغرق من وقت.</div>
+
+  <h3>7.1. مساعد المعونة المدعوم بالذكاء الاصطناعي</h3>
+  <p>تتضمّن المنصّة <strong>مساعداً يجيب عن أسئلة الاستخدام</strong> استناداً إلى وثائق Zyntello. والغرض منه حلّ الاستفسارات الأكثر شيوعاً في حينها، دون انتظار ردّ أحد موظفي الدعم.</p>
+  <ul>
+    <li><strong>يجيب استناداً إلى وثائقنا فقط.</strong> وحين لا تغطّي الوثائق السؤال، <strong>يصرّح بذلك ويعرض فتح حالة دعم</strong> بدل ارتجال إجابة. ونحن نفضّل ألّا نجيب على أن نجيب خطأً: فتعليمة مختلَقة بشأن نظام إداري قد تكلّفك فقدان بيانات.</li>
+    <li><strong>لا ينفّذ أي إجراء.</strong> فهو يشرح كيفية القيام بالأمور؛ ولا يقوم بها نيابةً عنك ولا يعدّل معلوماتك.</li>
+    <li><strong>له حصة استخدام</strong> مشمولة بالاشتراك، بحدّ لكل مستخدم ولكل يوم كي لا يستنفد شخص واحد حصة الآخرين.</li>
+  </ul>
+  <div class="note ok"><b>نفاد حصة المساعد لا يتركك بلا دعم.</b> فإذا نفدت، يتوقّف الحوار مع الذكاء الاصطناعي، لكن <strong>البريد والحالات تبقى مشمولة تماماً كما هي</strong>: إذ لا يتوقّف الإبلاغ عن مشكلة في النظام على حصة أبداً.</div>
+  <div class="note"><b>بشأن مستويات الاستخدام.</b> يشمل الاشتراك حجماً من الاستفسارات الموجّهة إلى المساعد؛ وإن احتاجت أعمالك إلى أكثر من ذلك، فثمّة باقات موسَّعة ومستوى استخدام واسع بسياسة استخدام عادل <strong>يُصرّح بسقفه كتابةً</strong>. ولا نسوّق أي مستوى بوصفه «غير محدود». أما مساعد مخصَّص يعمل على بيانات المشترك أو متكامل مع أنظمة أطراف ثالثة، فهو <strong>خارج نطاق هذه الاتفاقية</strong> ويُتعاقد عليه على حدة.</div>
+  <div class="note ok"><b>الإجابة التي لم تُجدِك لا تستهلك حصتك.</b> فإذا لم يعرف المساعد الإجابة، لا يُخصَم ذلك الاستفسار: إذ لا معنى لمحاسبتك على إجابة لم تحصل عليها.</div>
+</section>
+
+<section id="s8">
+  <h2 class="sec"><span class="n">8.</span> دخول فريق الدعم إلى الحساب</h2>
+  <p>ثمّة بلاغات لا يمكن تشخيصها من الخارج: قيد محاسبي لا يتوازن، أو مستند لا يصدر، أو صلاحية لا تسري. ولحلّها قد يحتاج أحد موظفي الدعم إلى <strong>الدخول إلى مساحة عمل المشترك والاطّلاع على بياناته</strong>. ويبيّن هذا البند الحدود التي يجري ذلك ضمنها، وقبل كل شيء كيف يتحقّق المشترك من ذلك بنفسه.</p>
+
+  <h3>8.1. كيف يدخل موظف الدعم</h3>
+  <ul>
+    <li><strong>لا يدخل أبداً ببيانات اعتماد أحد العاملين لدى المشترك.</strong> فنحن لا نطلب ولا نستخدم اسم المستخدم أو كلمة المرور الخاصة بأي فرد من فريقك. ويدخل الموظف بـ<strong>حساب تقني تابع لـ Zyntello</strong>، منفصل عن حساباتكم.</li>
+    <li><strong>كل إجراء يحمل توقيع اسم الموظف الحقيقي</strong>، لا اسم الحساب التقني ولا اسم أحد مستخدمي المشترك. ويُظهر السجلّ من فعل ماذا.</li>
+    <li>الحساب التقني <strong>لا يستهلك أياً من الرخص المشمولة</strong> في باقتك (انظر البند 9) ولا يظهر في قائمة مستخدميك ولا في قوائم النظام المنسدلة.</li>
+    <li>يجب أن يكون الموظف قد أتمّ التحقّق من هويته بخطوتين كي يتمكّن من فتح الوصول.</li>
+  </ul>
+
+  <h3>8.2. القراءة فقط افتراضياً</h3>
+  <p>يبدأ الوصول <strong>بصلاحية القراءة فقط</strong>: فالموظف يرى، لكن النظام يمنعه من حفظ أي تغيير. ولتعديل شيء ما عليه <strong>رفع صلاحية الجلسة مع بيان السبب</strong>، وهذا الرفع <strong>ينتهي من تلقاء نفسه</strong> — فلا يبقى مفتوحاً إلى ما لا نهاية حتى لو نسي الموظف إغلاقه.</p>
+
+  <h3>8.3. ما الذي يُسجَّل</h3>
+  <p>يُحفظ عن كل دخول: الموظف، وتاريخ وساعة الدخول والخروج، والسبب المُعلَن، وعنوان IP، وما إذا كان الدخول مُصرَّحاً به أم طارئاً. وإذا رُفعت صلاحية الجلسة إلى الكتابة، يُسجَّل كذلك <strong>تفصيل كل بيان جرى تعديله</strong>.</p>
+
+  <h3>8.4. الدخول الطارئ</h3>
+  <p>حين لا يحتمل البلاغ انتظار إذن مسبق — كتعطّل يترك المشترك عاجزاً عن العمل مثلاً — يمكن للموظف الدخول مع بيان السبب. ويُوسَم ذلك الدخول بأنه <strong>غير مُصرَّح به</strong>، ويتلقّى مالك الحساب <strong>إشعاراً</strong> به. فهو ليس إذناً صامتاً: بل دخولاً يُعلَن ويُلحَظ.</p>
+
+  <h3>8.5. كيف تدقّقه بنفسك</h3>
+  <div class="note ok"><b>لا حاجة إلى طلب ذلك منّا.</b> فمالك الحساب يطّلع على السجلّ الكامل لعمليات دخول الدعم في أي وقت، من <strong>الإعدادات ← سجلّ دخول الدعم</strong>: من دخل، ومتى، ولماذا، وبأي مستوى صلاحية، وما إذا كان الدخول مأذوناً به.</div>
+
+  <h3>8.6. ما الذي لا نفعله</h3>
+  <ul>
+    <li>لا ندخل إلى بياناتك لأغراض تجارية أو إحصائية أو لتدريب نماذج الذكاء الاصطناعي.</li>
+    <li>لا نستخرج نسخاً من معلوماتك خارج ما يلزم لحلّ البلاغ.</li>
+    <li>لا نستخدم وصول الدعم لإجراء عمليات تشغيلية نيابةً عن المشترك: فإن لزم إدخال بيانات أو تصحيحها بالجملة، فذلك عمل قابل للفوترة ويُسعَّر على حدة (انظر البند 10).</li>
+  </ul>
+      <h3>8.7. بوابة الحالات</h3>
+      <p>يستطيع <strong>أي مستخدم</strong> لدى المشترك فتح حالة من قسم <strong>الدعم</strong> داخل نظامه، دون صلاحيات خاصة: فمن يصادف المشكلة هو الأقدر على وصفها. وتحصل كل حالة على رقم (<code>SOP-000123</code>) تُتابَع به عبر أي من القنوات الثلاث.</p>
+      <ul>
+        <li>يرى المشترك <strong>كامل سلسلة</strong> حالته، ويمكنه الردّ وإرفاق الملفات في أي وقت.</li>
+        <li>وما دمنا في انتظار ردّك، تُوسَم الحالة بذلك و<strong>لا يُحتسب ذلك الوقت</strong> ضمن مهل البند 6: إذ سيكون في ذلك تحميل Zyntello تأخيراً لا يخصّها.</li>
+        <li>لا تُوسَم حالة بأنها قابلة للفوترة إلا إذا <strong>أذِن المشترك بذلك قبل</strong> بدء العمل (البند 10). أما الإبلاغ عن عيب في المنصّة فلا يكلّف شيئاً أبداً.</li>
+      </ul>
+
+</section>
+
+<section id="s9">
+  <h2 class="sec"><span class="n">9.</span> ما لا يشمله الدعم وما يُفوتر</h2>
+  <p>تُسعَّر الأعمال التالية <strong>وتُفوتر على حدة</strong>، و<strong>لا يُنفَّذ أيٌّ منها دون موافقة مسبقة وكتابية</strong> من المشترك:</p>
+  <ul>
+    <li><strong>استيراد البيانات أو رفعها بالجملة</strong> من نظام آخر.</li>
+    <li><strong>تدريب</strong> العاملين لدى المشترك.</li>
+    <li><strong>تقارير مُفصَّلة على الطلب</strong> غير تلك التي توفّرها المنصّة أصلاً.</li>
+    <li><strong>تطويرات أو تكييفات</strong> خاصة بالمشترك.</li>
+    <li><strong>استعادة النسخ الاحتياطية</strong> لسبب خارج عن المنصّة.</li>
+    <li><strong>تصحيح البيانات</strong> حين لا يكون الخطأ ناشئاً عن المنصّة.</li>
+  </ul>
+  <div class="note warn"><b>لا يمضي أي عمل قابل للفوترة دون إذن.</b> فقبل تنفيذ أي من هذه الأعمال يُرسَل عرض سعر ببيان نطاقه ومبلغه. ولا يملك الموافقة عليه إلا من له صلاحية إدارة الفوترة في الحساب. وبدون تلك الموافقة لا يُنفَّذ العمل ولا تُحتسب ساعات.</div>
+</section>
+
+<section id="s10">
+  <h2 class="sec"><span class="n">10.</span> رخص الاستخدام المشمولة</h2>
+  <p>يشمل كل اشتراك فئتين من الوصول، مفصَّلتين في <a href="/ar/terminos/#s5">البند 5.3 من الشروط</a>:</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>الفئة</th><th>العدد المشمول</th><th>النطاق</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>مستخدمو المشترك</strong></td>
+          <td>3 لكل حساب<br>(بمن فيهم المالك)</td>
+          <td>يصلون إلى <strong>جميع</strong> شركات الحساب، بصلاحيات أدوارهم: مدير، أو معاملات، أو استعلام، أو تقارير.</td>
+        </tr>
+        <tr>
+          <td><strong>المستخدمون الداخليون</strong></td>
+          <td>5 لكل حساب</td>
+          <td>يُسنَد كل منهم إلى <strong>شركة واحدة فقط</strong>؛ وصلاحياتهم، القابلة للإعداد وحدةً وحدة، تقتصر على تلك الشركة وحدها.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>يمكن توسيع كلتا الحصتين بمراسلة <a href="mailto:info@zyntello.com">info@zyntello.com</a>؛ وتُفوتر الزيادة وفق التعريفة السارية. ويظلّ المستخدم المعطَّل شاغلاً لرخصته حتى يُزال من الحساب. أما الحسابات التقنية التي تستخدمها Zyntello لتقديم الدعم فهي <strong>لا تستهلك رخص المشترك</strong>.</p>
+</section>
+
+<section id="s11">
+  <h2 class="sec"><span class="n">11.</span> توافر الخدمة</h2>
+  <p>تسعى Zyntello إلى أعلى توافر ممكن للمنصّة، وتُجري نسخاً احتياطية دورية مع التحقّق من سلامتها، وفقاً <a href="/ar/terminos/#s18">للبند 18 من الشروط</a>.</p>
+  <div class="note warn"><b>هدف التوافر تحدّده الشروط لا هذه الوثيقة.</b> تُعلن <a href="/ar/terminos/#s18">شروط الخدمة</a> هدفاً شهرياً قدره <strong>99.5&nbsp;%</strong> وتوضّح أنه، ما لم يُتفق صراحةً وكتابةً على خلاف ذلك، <strong>هدف تشغيلي لا تعهّد مقترن بغرامات</strong>: فالمنصّة مستضافة على بنية تحتية لأطراف ثالثة لا نتحكّم في توافرها. ولا تغيّر هذه الاتفاقية ذلك الهدف ولا تضيف غرامات عليه. أما ما تتعهّد به فعلاً فهو <strong>مُهَل الاستجابة الأولى</strong> في البند 6 والإبلاغ في حينه عن أي انقطاع ذي شأن.</div>
+  <p>يُخطَر بـ<strong>نوافذ الصيانة المجدولة</strong> قبل 24 ساعة على الأقل بالبريد الإلكتروني، ويُسعى إلى إجرائها خارج أوقات العمل.</p>
+</section>
+
+<section id="s12">
+  <h2 class="sec"><span class="n">12.</span> الاستثناءات والحدود</h2>
+  <p>لا تغطّي هذه الاتفاقية:</p>
+  <ul>
+    <li>أعطال اتصال الإنترنت أو الأجهزة أو الشبكة لدى المشترك.</li>
+    <li>الانقطاعات الناجمة عن خدمات أطراف ثالثة خارجة عن Zyntello: بوابات الدفع، أو مزوّدي البريد، أو الإدارات الضريبية، أو خدمات المراسلة.</li>
+    <li>استخدام المنصّة على نحو مخالف للشروط.</li>
+    <li>نتائج البيانات التي يرفعها المشترك أو مستخدموه على نحو غير صحيح.</li>
+    <li>الوحدات غير المتعاقد عليها.</li>
+    <li>الحساب التجريبي، الذي تُحذف بياناته يومياً.</li>
+    <li>حالات القوة القاهرة المنصوص عليها في الشروط.</li>
+  </ul>
+  <div class="note"><b>القرارات الضريبية والمحاسبية.</b> توفّر Zyntello الأداة؛ أما المسؤولية عن الإقرارات والقيود واختيار الحسابات فتقع على المشترك ومحاسبه، وفقاً <a href="/ar/terminos/#s17">للبند 17 من الشروط</a>.</div>
+</section>
+
+<section id="s13">
+  <h2 class="sec"><span class="n">13.</span> سجلّ التغييرات</h2>
+  <p>سجلّ كامل وتراكمي لجميع إصدارات هذه الوثيقة منذ نشرها الأول. والإصدارات السابقة متاحة عند الطلب بمراسلة <a href="mailto:info@zyntello.com">info@zyntello.com</a>.</p>
+  <div class="note"><b>كيف تُقرأ أرقام الإصدارات.</b> تغيير <strong>الإصدار الفرعي</strong> ‏(1.0 &rarr; 1.1) يوضّح ما سبق وصفه أو يوسّعه دون المساس بالتعهّدات. أما تغيير <strong>الإصدار الرئيسي</strong> ‏(1.x &rarr; 2.0) فيعدّل المُهَل أو النطاق أو الشروط، ويُبلَّغ به قبل <strong>30 يوماً</strong>.</div>
+  <div class="tbl chg">
+    <table>
+      <thead>
+        <tr><th>الإصدار</th><th>التاريخ</th><th>التغييرات</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1.4 <span class="vig">سارٍ</span></td>
+          <td>9 سبتمبر 2026</td>
+          <td><strong>مساعد المعونة المدعوم بالذكاء الاصطناعي.</strong> يُضاف البند <strong>7.1</strong>، الذي يُعلن وظيفة جديدة مشمولة بالاشتراك: مساعد يجيب عن استفسارات الاستخدام <strong>استناداً إلى وثائق Zyntello</strong>، وحين لا تغطّي الوثائق السؤال <strong>يصرّح بذلك ويعرض فتح حالة دعم</strong> بدل الارتجال — فنحن نفضّل ألّا نجيب على أن نجيب خطأً، لأن تعليمة مختلَقة بشأن نظام إداري قد تؤدي إلى فقدان بيانات. ويُعلَن أنه <strong>لا ينفّذ أي إجراء</strong>، وأن له <strong>حصة استخدام</strong> بحدّ لكل مستخدم ولكل يوم، وقبل كل شيء أن <strong>استنفادها لا يترك المشترك بلا دعم</strong>: فالبريد والحالات تبقى مشمولة كما هي، لأن الإبلاغ عن مشكلة في النظام لا يمكن أن يتوقّف على حصة. ويُعلَن كذلك أن <strong>أي مستوى لا يُسوَّق بوصفه «غير محدود»</strong> — فالمستوى الأعلى يُصرّح بسقفه كتابةً — وأن <strong>الإجابة التي لم تُجدِ لا تستهلك حصة</strong>. و<strong>لا تتغيّر</strong> القنوات ولا أوقات العمل ولا الأولويات ولا مُهَل الاستجابة الأولى المتعهَّد بها ولا الرخص المشمولة ولا هدف التوافر.</td>
+        </tr>
+        <tr>
+          <td>1.3</td>
+          <td>9 سبتمبر 2026</td>
+          <td><strong>البريد يدخل إلى الحالة وحدها.</strong> يُعلَن في البند <strong>3</strong> أن الرسالة المُرسَلة إلى <strong>soporte@zyntello.com</strong> تُدرَج <strong>تلقائياً</strong> في الحالة — فالردّ على رسالة منّا يُضاف إلى الحالة نفسها؛ ورسالة جديدة تفتح حالة جديدة — ويُعلَن في البند <strong>6</strong> أن هذه العملية تُنفَّذ <strong>كل خمس عشرة دقيقة</strong>، ومن ثمّ قد تمضي حتى 15 دقيقة بين إرسال المشترك وتسجيل رسالته. ويُعلَن كذلك، وهو الأهم، أن <strong>ذلك الوقت لا يُخصَم</strong> من مُهَل الاستجابة الأولى: فالعدّاد يبدأ من لحظة إرسال المشترك لا من لحظة معالجة نظامنا — إذ سيكون في ذلك تحميل المشترك تأخيراً من عندنا. و<strong>لا تتغيّر</strong> القنوات ولا أوقات العمل ولا تصنيف الأولويات ولا مُهَل الاستجابة الأولى المتعهَّد بها ولا الرخص المشمولة ولا هدف التوافر.</td>
+        </tr>
+        <tr>
+          <td>1.2</td>
+          <td>7 سبتمبر 2026</td>
+          <td><strong>بوابة الحالات.</strong> يُضاف البند <strong>8.7</strong>: يفتح <strong>أي مستخدم</strong> لدى المشترك حالةً من نظامه الخاص، دون صلاحيات خاصة؛ وتحصل كل حالة على رقم تُتابَع به عبر القنوات الثلاث؛ ويرى المشترك السلسلة كاملة ويمكنه الردّ وإرفاق الملفات. ويُعلَن كذلك أن الوقت الذي تقضيه حالة ما <strong>في انتظار ردّ المشترك لا يُحتسب</strong> ضمن مُهَل الاستجابة الأولى في البند 6 — إذ سيكون في ذلك تحميل Zyntello تأخيراً لا يخصّها — ويُحال إلى البند 10 بشأن الإذن المسبق لما هو قابل للفوترة. و<strong>لا تتغيّر</strong> القنوات ولا أوقات العمل ولا الأولويات ولا المُهَل المتعهَّد بها ولا الرخص المشمولة.</td>
+        </tr>
+        <tr>
+          <td>1.1</td>
+          <td>6 سبتمبر 2026</td>
+          <td><strong>دخول فريق الدعم إلى الحساب.</strong> يُضاف البند <strong>8</strong>، الذي يُعلن عمليةً لم يغطّها الإصدار السابق: فلتشخيص بلاغات معيّنة قد يحتاج أحد موظفي الدعم إلى الدخول إلى مساحة عمل المشترك والاطّلاع على بياناته. وتُعلَن الحدود — فالموظف <strong>لا يستخدم أبداً</strong> بيانات اعتماد أحد العاملين لدى المشترك، بل حساباً تقنياً لا يستهلك رخصاً ولا يظهر في قوائمه؛ ويبدأ الوصول <strong>بصلاحية القراءة فقط</strong> ويستلزم رفعه بيان سبب وينتهي من تلقاء نفسه؛ ويُسجَّل الموظف والتاريخ والسبب وعنوان IP وتفصيل ما جرى تعديله؛ ويُوسَم الدخول غير المأذون مسبقاً بذلك ويُشعَر به المالك — وقبل كل شيء أن المشترك <strong>يدقّق ذلك بنفسه</strong> من <strong>الإعدادات ← سجلّ دخول الدعم</strong>، دون طلب. ويُعلَن كذلك ما لا نفعله: لا لأغراض تجارية أو إحصائية أو لتدريب النماذج، ولا لإجراء عمليات تشغيلية نيابةً عن المشترك — فذلك عمل قابل للفوترة بموجب البند 10. وتُعاد ترقيم البنود 8 إلى 12 السابقة لتصبح 9 إلى 13، دون تغيير في مضمونها. و<strong>لا تتغيّر</strong> القنوات ولا أوقات العمل ولا تصنيف الأولويات ولا مُهَل الاستجابة الأولى المتعهَّد بها ولا الرخص المشمولة ولا هدف التوافر.</td>
+        </tr>
+        <tr>
+          <td>1.0</td>
+          <td>5 سبتمبر 2026</td>
+          <td><strong>النشر الأول.</strong> وثيقة أولية من 12 بنداً: التعريف والموضوع، والتعريفات، وقنوات الدعم، وأوقات العمل، وتصنيف الأولويات في أربعة مستويات، ومُهَل الاستجابة الأولى المتعهَّد بها، ونطاق الدعم المشمول، والأعمال القابلة للفوترة بموافقة مسبقة إلزامية، ورخص الاستخدام المشمولة (3 من مستخدمي المشترك و5 مستخدمين داخليين)، وتوافر الخدمة — الذي يحدّد هدفه البالغ 99.5&nbsp;% <a href="/ar/terminos/#s18">الشروط</a> لا هذه الوثيقة — والاستثناءات وسجلّ التغييرات.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+      </article>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>الجمهورية الدومينيكية</li>
+          <li><a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>الوثائق القانونية</h4>
+        <ul>
+          <li><a href="/ar/terminos/">الشروط والأحكام</a></li>
+          <li><a href="/ar/privacidad/">سياسة الخصوصية</a></li>
+          <li><a href="/ar/cookies/">سياسة ملفات تعريف الارتباط</a></li>
+          <li><a href="/ar/eliminacion-datos/">حذف البيانات</a></li>
+          <li><a href="/ar/sla/">اتفاقية مستوى الخدمة</a></li>
+          <li><a href="/ar/avisos-terceros/">إشعارات برمجيات الأطراف الثالثة</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy">&copy; 2026 Zyntello, S.R.L. جميع الحقوق محفوظة.</div>
+  </div>
+</footer>
+
+</body>
+</html>
