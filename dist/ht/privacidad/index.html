@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="ht">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Politik Konfidansyalite | Zyntello</title>
+<meta name="description" content="Politik Konfidansyalite Zyntello, S.R.L. — ki done nou trete, ak kiyès nou pataje yo, dwa w ak kijan pou mande efase done w yo.">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<link rel="canonical" href="https://zyntello.com/ht/privacidad/">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;padding:0 clamp(1.25rem,3vw,2.75rem)}
+
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:88ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:clamp(2rem,3.5vw,4rem);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:95ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:95ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note.ok{border-left-color:var(--ok);background:rgba(52,211,153,.05)}
+  .note b{color:#fff}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:600px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  /* Control de cambios */
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+
+
+
+<!--zyntello:legales-->
+<link rel="alternate" hreflang="es" href="https://zyntello.com/privacidad/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/privacidad/">
+<link rel="alternate" hreflang="fr" href="https://zyntello.com/fr/privacidad/">
+<link rel="alternate" hreflang="it" href="https://zyntello.com/it/privacidad/">
+<link rel="alternate" hreflang="zh-Hans" href="https://zyntello.com/zh-Hans/privacidad/">
+<link rel="alternate" hreflang="zh-Hant" href="https://zyntello.com/zh-Hant/privacidad/">
+<link rel="alternate" hreflang="ar" href="https://zyntello.com/ar/privacidad/">
+<link rel="alternate" hreflang="ht" href="https://zyntello.com/ht/privacidad/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/privacidad/">
+<style>
+.idiomas{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:center;padding:.75rem 0;font-size:.82rem}
+.idiomas span{color:var(--tx3,#64748b);text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+.idiomas a{color:var(--tx3,#64748b);text-decoration:none;padding:.15rem .5rem;border-radius:99px;border:1px solid transparent}
+.idiomas a:hover{color:var(--ac,#60a5fa);border-color:var(--line2,rgba(255,255,255,.14))}
+.idiomas a[aria-current]{color:var(--ac,#60a5fa);border-color:var(--ac,#60a5fa)}
+.prevalece{margin:1rem 0;padding:.75rem 1rem;border-radius:.5rem;font-size:.86rem;
+  color:var(--tx2,#94a3b8);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.28)}
+.prevalece a{color:var(--ac,#60a5fa)}
+</style>
+<!--/zyntello:legales--></head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">Akèy</a>
+        <a href="/ht/terminos/">Kondisyon Sèvis la</a>
+        <a href="/ht/sla/">SLA</a>
+        <a href="/ht/eliminacion-datos/">Efase done</a>
+        <a href="/ht/avisos-terceros/">Avi twazyèm pati</a>
+        <a href="https://zyntello.com/#contacto">Kontak</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">Dokiman legal</span>
+      <h1>Politik Konfidansyalite</h1>
+      <p class="lead">Politik sa a esplike ki done pèsonèl <strong>Zyntello, S.R.L.</strong> trete atravè platfòm <code>app.zyntello.com</code> li a ak sit wèb li, pou ki objektif, ak kiyès li pataje yo, konbyen tan li kenbe yo ak kijan ou ka egzèse dwa w, ansanm ak <a href="#s9">demann pou efase done</a>.</p>
+      <div class="meta">
+        <span>Dènye mizajou: <strong>18 septanm 2026</strong></span>
+        <span>An vigè: <strong>depi li pibliye</strong></span>
+        <span>Vèsyon: <strong><a class="verlink" href="#s20">1.9 — gade kontwòl chanjman</a></strong></span>
+        <span>Lang orijinal: <strong>panyòl</strong></span>
+      </div>
+    </div>
+  </div><!--zyntello:legales--><div class="idiomas" role="navigation" aria-label="Lang"><span>Lang:</span><a href="/privacidad/" hreflang="es" lang="es">Español</a><a href="/en/privacidad/" hreflang="en" lang="en">English</a><a href="/fr/privacidad/" hreflang="fr" lang="fr">Français</a><a href="/it/privacidad/" hreflang="it" lang="it">Italiano</a><a href="/zh-Hans/privacidad/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a><a href="/zh-Hant/privacidad/" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a><a href="/ar/privacidad/" hreflang="ar" lang="ar">العربية</a><a href="/ht/privacidad/" hreflang="ht" lang="ht" aria-current="true">Kreyòl ayisyen</a></div><!--/zyntello:legales--></header>
+
+<main class="wrap"><!--zyntello:legales-->
+<div class="prevalece" role="note">Sa a se yon tradiksyon pou fasilite lekti. Se vèsyon an panyòl la ki gen fòs legal. <a href="/privacidad/" hreflang="es" lang="es">Gade vèsyon an panyòl la</a>.</div><!--/zyntello:legales-->
+<div class="grid">
+
+  <aside class="toc">
+    <h2>Kontni</h2>
+    <ol>
+      <li><a href="#s1">Responsab tretman an</a></li>
+      <li><a href="#s2">Doub wòl nou</a></li>
+      <li><a href="#s3">Ki done nou trete</a></li>
+      <li><a href="#s4">Done pa modil</a></li>
+      <li><a href="#s5">Ak kiyès nou pataje yo</a></li>
+      <li><a href="#s6">WhatsApp ak Meta</a></li>
+      <li><a href="#s7">Transfè entènasyonal</a></li>
+      <li><a href="#s8">Delè konsèvasyon</a></li>
+      <li><a href="#s9">Dwa w ak efasman done</a></li>
+      <li><a href="#s10">Règleman pa peyi</a></li>
+      <li><a href="#s11">Sekirite</a></li>
+      <li><a href="#s12">Aksè pèsonèl sipò Zyntello a</a></li>
+      <li><a href="#s13">Kominikasyon ak maketing</a></li>
+      <li><a href="#s14">Cookies</a></li>
+      <li><a href="#s15">Notifikasyon ensidan</a></li>
+      <li><a href="#s16">Timoun minè</a></li>
+      <li><a href="#s17">Desizyon otomatik ak IA</a></li>
+      <li><a href="#s18">Chanjman nan Politik sa a</a></li>
+      <li><a href="#s19">Kontak</a></li>
+      <li><a href="#s20">Kontwòl chanjman</a></li>
+    </ol>
+  </aside>
+
+  <article>
+
+    <section id="s1">
+      <h2 class="sec"><span class="n">1.</span> Responsab tretman an</h2>
+      <p><strong>Zyntello, S.R.L.</strong>, yon sosyete ki enskri epi ki gen syèj li nan <strong>Repiblik Dominiken</strong>, ak aktivite komèsyal ak sipò nan Repiblik Dominiken, Venezyela, Kolonbi, Gwatemala ak Kostarika.</p>
+      <ul>
+        <li>Kontak pou konfidansyalite: <a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+        <li>Telefòn ak WhatsApp: <a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+        <li>Sit wèb: <a href="https://zyntello.com">https://zyntello.com</a></li>
+        <li>Platfòm: <a href="https://app.zyntello.com">https://app.zyntello.com</a></li>
+      </ul>
+      <p>Politik sa a fè pati entegral <a href="/ht/terminos/">Kondisyon Sèvis nou yo</a>.</p>
+    </section>
+
+    <section id="s2">
+      <h2 class="sec"><span class="n">2.</span> Doub wòl nou: responsab ak chajedafè</h2>
+      <p>Zyntello se yon platfòm lojisyèl antrepriz ki sèvi plizyè antrepriz. Se poutèt sa nou jwe de wòl diferan, epi se sa ki deside devan kiyès ou dwe egzèse dwa w:</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Wòl</th><th>Sou ki done</th><th>Kiyès ki deside itilizasyon an</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Responsab</strong></td>
+              <td>Done kont Abonnè a: non, imèl, telefòn, idantifyan, done fakturasyon ak anrejistreman teknik sou itilizasyon.</td>
+              <td>Zyntello. Politik sa a aplike dirèkteman.</td>
+            </tr>
+            <tr>
+              <td><strong>Chajedafè</strong> (pwosesè)</td>
+              <td>Done chak Abonnè mete sou <strong>pwòp</strong> kliyan, anplwaye, founisè, rezidan, debitè oswa patisipan pa l.</td>
+              <td>Abonnè a. Zyntello sèlman ebèje epi trete yo pou ba li sèvis la.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <p><b>Si ou se kliyan, anplwaye, rezidan, debitè oswa patisipan yon antrepriz k ap sèvi ak Zyntello</b>, se antrepriz sa a ki responsab done w yo epi se devan li pou w egzèse dwa w. Si w ekri nou dirèkteman, n ap voye demann ou an bay antrepriz sa a epi n ap kolabore pou yo trete l, men nou pa ka pran desizyon nan plas li sou done ki pa pou nou.</p>
+      </div>
+    </section>
+
+    <section id="s3">
+      <h2 class="sec"><span class="n">3.</span> Ki done nou trete epi pou kisa</h2>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Kategori</th><th>Done</th><th>Objektif</th><th>Baz legal</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Kont ak itilizatè</strong></td>
+              <td>Non, imèl, modpas chifre yon fason ki pa ka defèt, wòl, pèmisyon, antrepriz kote li ye. Si Itilizatè a aktive verifikasyon an de etap: kle aplikasyon otantifikasyon li a (<strong>chifre</strong>), kòd rekiperasyon l yo (<strong>chifre yon fason ki pa ka defèt</strong>) ak anrejistreman tantativ ki echwe yo. Zyntello pa ka li okenn nan done sa yo.</td>
+              <td>Kreye epi jere kont lan, otantifikasyon, verifikasyon an de etap (pa imèl oswa pa yon aplikasyon otantifikasyon), retwouve aksè, kontwòl aksè.</td>
+              <td>Egzekisyon kontra a</td>
+            </tr>
+            <tr>
+              <td><strong>Fakturasyon</strong></td>
+              <td>Rezon sosyal, nimewo fiskal, adrès, peyi, istorik abònman ak peman.</td>
+              <td>Kolekte abònman an, bay pyès jistifikatif epi respekte obligasyon fiskal yo.</td>
+              <td>Kontra ak obligasyon legal</td>
+            </tr>
+            <tr>
+              <td><strong>Peman</strong></td>
+              <td><strong>Nou pa estoke nimewo kat konplè.</strong> Pwosesè yo pataje sèlman referans ak nou: idantifyan tranzaksyon an, estati chaj la ak dènye chif yo.</td>
+              <td>Trete peman epi jere abònman an.</td>
+              <td>Egzekisyon kontra a</td>
+            </tr>
+            <tr>
+              <td><strong>Done operasyonèl Abonnè a</strong></td>
+              <td>Tout sa Abonnè a anrejistre nan modil li yo (gade seksyon 4).</td>
+              <td>Bay sèvis ki anba kontra a. <strong>Trete kòm chajedafè.</strong></td>
+              <td>Enstriksyon Abonnè a</td>
+            </tr>
+            <tr>
+              <td><strong>Anrejistreman teknik</strong></td>
+              <td>Adrès IP, navigatè, aparèy, dat ak lè, aksyon ki fèt (jounal odit).</td>
+              <td>Sekirite, prevansyon fwod, trasabilite aksyon, sipò ak dyagnostik.</td>
+              <td>Enterè lejitim</td>
+            </tr>
+            <tr>
+              <td><strong>Cookies</strong></td>
+              <td>Cookie sesyon, jeton pwoteksyon fòmilè epi, si itilizatè a chwazi sa, cookie «sonje sesyon an». <strong>Pa gen cookie piblisitè ni cookie swivi twazyèm pati.</strong></td>
+              <td>Kenbe sesyon an ouvè epi pwoteje aplikasyon an.</td>
+              <td>Estrikteman nesesè</td>
+            </tr>
+            <tr>
+              <td><strong>Sipò ak kontak</strong></td>
+              <td>Non, imèl, telefòn ak kontni mesaj ki voye depi nan fòmilè sit wèb la oswa pa WhatsApp.</td>
+              <td>Reponn kesyon komèsyal ak kesyon sipò.</td>
+              <td>Konsantman ak mezi anvan kontra</td>
+            </tr>
+            <tr>
+              <td><strong>Maketing</strong></td>
+              <td>Imèl ak anrejistreman dat, lè ak orijin konsantman an.</td>
+              <td>Voye nouvèl ak mesaj komèsyal, sèlman ak konsantman davans.</td>
+              <td>Konsantman</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Baz legal yo eksprime ak tèminoloji Règleman Jeneral sou Pwoteksyon Done Inyon Ewopeyen an paske se li ki pi presi; konsèp ekivalan yo aplike anba lwa lokal yo endike nan seksyon 10.</p>
+    </section>
+
+    <section id="s4">
+      <h2 class="sec"><span class="n">4.</span> Done pa modil</h2>
+      <p>Chak Abonnè deside ki enfòmasyon li mete. Men kategori chak modil pèmèt anrejistre, epi Zyntello trete yo toujou kòm <strong>chajedafè</strong>:</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Modil</th><th>Kategori done</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Fakturasyon · Kont Pou Resevwa · CRM · Kès</strong></td><td>Non oswa rezon sosyal, nimewo fiskal, adrès, telefòn, imèl, istorik acha ak peman, kondisyon kredi, solda ak nòt sou swivi komèsyal.</td></tr>
+            <tr><td><strong>Acha · Kont Pou Peye</strong></td><td>Done founisè yo ak kontak yo, nimewo fiskal, kont labank pou peman, retni ak dokiman fiskal yo resevwa.</td></tr>
+            <tr><td><strong>Pewòl · PSA</strong></td><td>Idantifikasyon anplwaye a, pyès idantite, dat nesans, sèks, adrès, pòs, <strong>salè ak dediksyon</strong>, kont labank, sekirite sosyal, moun ki depann de li, absans ak jistifikatif, fèy tan, anrejistreman antre ak soti epi, lè anplwayè a aktive verifikasyon sa yo, <strong>kote jewografik</strong> ak <strong>foto figi</strong>.</td></tr>
+            <tr><td><strong>Zyntello Events</strong></td><td>Non, pyès idantite, imèl, telefòn, òganizasyon, foto lè yo pran l, ak anrejistreman antre ak prezans.</td></tr>
+            <tr><td><strong>Kondominyòm</strong></td><td>Done rezidan ak pwopriyetè yo, apatman, kòd pa, eta kont, rezèvasyon espas komen, siyalman ak foto epi vòt nan asanble.</td></tr>
+            <tr><td><strong>Prestamello</strong></td><td>Done moun k ap mande a ak garan l yo, pyès idantite, revni ak depans deklare, patrimwàn, referans, <strong>rezilta konsiltasyon nan biwo kredi</strong>, garanti ak dokiman yo, istorik peman ak <strong>kote jewografik</strong> pèsonèl kolekte ki sou wout.</td></tr>
+            <tr><td><strong>Planifikatè Wout</strong></td><td>Adrès livrezon ak vizit kliyan yo ak <strong>kowòdone jewografik</strong> yo; done transpòtè a, machin nan ak chofè yo asiyen an; epi, lè Abonnè a aktive swivi a, <strong>kote chofè a anrejistre repete pandan tout jounen an</strong> (pa defo chak 30 segonn), ansanm ak lè rive ak soti chak estasyon ak rezilta chak livrezon oswa vizit.</td></tr>
+            <tr><td><strong>Car Wash</strong></td><td>Done kliyan an ak machin li yo: plak, mak, modèl, koulè, odomèt, foto machin nan ak istorik sèvis yo.</td></tr>
+            <tr><td><strong>ConstructFlow</strong></td><td>Pèsonèl yo asiyen sou chantye a, dokiman ak foto sou avansman an.</td></tr>
+            <tr><td><strong>Envantè · Byen Fiks</strong></td><td>Responsab ak gadyen byen yo, anrejistreman konte ak envantè fizik.</td></tr>
+            <tr><td><strong>Kontabilite · Bank</strong></td><td>Kont labank antrepriz la, benefisyè chèk ak transfè, ak ekriti ki fè referans ak twazyèm pati.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note warn">
+        <p><b>Done ki gen gwo enpak.</b> Modil Pewòl, PSA, Prestamello ak Planifikatè Wout yo pèmèt trete pyès idantite, salè, enfòmasyon ki lye ak absans pou rezon sante, foto figi, kote jewografik pèsonèl ak istorik kredi. Se responsablite Abonnè a pou l enfòme moun yo davans, pou l gen yon baz legal oswa konsantman epi pou l aktive sèlman verifikasyon ki estrikteman nesesè yo.</p>
+        <p><strong>Swivi kontinyèl kote yon travayè ye.</strong> Li bon pou nou separe de bagay ki pa menm menmsi toude se kote moun ye. Nan Pewòl, PSA ak Prestamello nou anrejistre <strong>yon sèl pwen nan yon moman presi</strong>: lè yon moun make antre oswa soti, lè l fè yon lòd oswa lè l regle yon kolèk. Men Planifikatè Wout la ka anrejistre pozisyon chofè a <strong>repete pandan tout tan wout la dire</strong>, sa ki pèmèt rekonstwi tout trajè li fè nan jounen an. Se yon tretman ki antre pi fon nan lavi prive a epi se poutèt sa li <strong>kòmanse dezaktive</strong>: li mache sèlman si Abonnè a limen l epi si chofè a kòmanse wout la depi sou aparèy li. Anvan li aktive l, Abonnè a dwe enfòme moun ki konsène a sou kisa yo anrejistre, pandan konbyen tan epi pou kisa, epi li dwe gen yon baz legal oswa konsantman moun nan. Deyò jounen travay la oswa deyò wout la, pa gen kote ki anrejistre.</p>
+      </div>
+      <p><strong>Pòtay konsiltasyon piblik.</strong> Gen modil ki pwodui lyen oswa kòd QR pou konsilte san konekte (eta yon randevou, eta kont yon rezidan, tikè yon evènman, fich yon byen). Yo aksede ak yon idantifyan o aza, yo montre sèlman enfòmasyon minimòm ki nesesè yo epi se Abonnè a ki deside aktive yo.</p>
+    </section>
+
+    <section id="s5">
+      <h2 class="sec"><span class="n">5.</span> Ak kiyès nou pataje done</h2>
+      <div class="note ok">
+        <p><b>Nou pa vann, nou pa lwe epi nou pa bay twazyèm pati done pèsonèl pou rezon piblisite.</b></p>
+      </div>
+      <p>Nou pataje done sèlman ak destinatè sa yo epi pou rezon yo endike yo:</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Destinatè</th><th>Kisa li resevwa</th><th>Pou kisa</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Founisè ebèjman</strong> (Etazini)</td><td>Done ki ebèje nan Platfòm nan ak kopi sekou yo.</td><td>Enfrastrikti, estokaj ak kopi sekou.</td></tr>
+            <tr><td><strong>Stripe</strong></td><td>Done tranzaksyon peman an.</td><td>Trete abònman ak kolèk anliy. <a href="https://stripe.com/privacy" rel="noopener">Politik</a></td></tr>
+            <tr><td><strong>PayPal</strong></td><td>Done tranzaksyon peman an.</td><td>Trete abònman ak kolèk anliy. <a href="https://www.paypal.com/privacy" rel="noopener">Politik</a></td></tr>
+            <tr><td><strong>Mercado Pago</strong></td><td>Done tranzaksyon peman an.</td><td>Trete kolèk anliy. <a href="https://www.mercadopago.com/privacidad" rel="noopener">Politik</a></td></tr>
+            <tr><td><strong>WhatsApp / Meta Platforms</strong></td><td>Nimewo telefòn destinatè a ak kontni mesaj la, <strong>sèlman si Abonnè a aktive entegrasyon an</strong>.</td><td>Voye mesaj Abonnè a kòmanse. <a href="https://www.whatsapp.com/legal/privacy-policy" rel="noopener">Politik</a></td></tr>
+            <tr><td><strong>Founisè imèl sòti</strong></td><td>Adrès destinatè a ak kontni mesaj la.</td><td>Livrezon imèl tranzaksyonèl ak dokiman.</td></tr>
+            <tr><td><strong>Founisè entèlijans atifisyèl</strong></td><td>Imaj oswa tèks dokiman pou entèprete a, lè Abonnè a aktive fonksyon sa a ak pwòp idantifyan pa l.</td><td>Ekstraksyon asiste done fakti (gade seksyon 16).</td></tr>
+            <tr><td><strong>Administrasyon fiskal</strong></td><td>Done pyès fiskal la règleman an egzije yo.</td><td>Validasyon ak transmisyon pyès fiskal elektwonik.</td></tr>
+            <tr><td><strong>Biwo kredi</strong></td><td>Idantifikasyon moun k ap mande a, ak idantifyan epi anba otorizasyon Abonnè a menm.</td><td>Konsiltasyon istorik kredi nan modil Prestamello a.</td></tr>
+            <tr><td><strong>Founisè kat jewografik</strong> (OpenStreetMap, Google Maps, HERE oswa Mapbox, dapre chwa Abonnè a)</td><td>Adrès ak kowòdone estasyon yon wout. Nou pa voye ba yo non kliyan an ni kontni kòmand lan.</td><td>Transfòme yon adrès an kowòdone, kalkile distans epi trase trajè a, lè Abonnè a ap sèvi ak Planifikatè Wout la.</td></tr>
+            <tr><td><strong>Web3Forms</strong></td><td>Non, imèl ak mesaj fòmilè sit wèb la.</td><td>Livrezon kesyon komèsyal nan imèl nou.</td></tr>
+            <tr><td><strong>Rezo distribisyon kontni ak polis wèb</strong> (jsDelivr, Cloudflare&nbsp;cdnjs, unpkg, Google&nbsp;Fonts ak Bunny&nbsp;Fonts)</td><td><strong>Adrès IP</strong> aparèy la, navigatè a ak ekran kote resous la mande a. Yo <strong>pa resevwa</strong> done kont lan, ni kontni ekran yo, ni idantifyan sesyon.</td><td>Bay navigatè a bibliyotèk, polis ak ikòn ki fòme entèfas la. Yo chaje sou <strong>tout</strong> ekran Platfòm nan. Detay chak konpozan nan <a href="/ht/avisos-terceros/">Avi sou lojisyèl twazyèm pati</a>.</td></tr>
+            <tr><td><strong>QuickChart</strong></td><td><strong>Lyen piblik enskripsyon</strong> yon evènman. Nou pa voye ba li okenn done sou moun ni sou kont lan.</td><td>Pwodui imaj kòd QR yon evènman lè Platfòm nan pa ka fè l poukont li. Sèlman nan modil Events la.</td></tr>
+            <tr><td><strong>Sèvis to chanj</strong> (exchangerate-api)</td><td>Adrès IP vizitè <strong>sit wèb piblik</strong> <code>zyntello.com</code> la. Li pa entèvni nan Platfòm nan.</td><td>Montre pri konvèti nan paj solisyon yo.</td></tr>
+            <tr><td><strong>Otorite konpetan</strong></td><td>Sa yon lòd legal valid egzije estrikteman.</td><td>Respekte obligasyon legal yo.</td></tr>
+            <tr><td><strong>Konseye pwofesyonèl</strong></td><td>Sa ki estrikteman nesesè.</td><td>Kontabilite, odit ak defans legal.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Tout founisè yo aji anba pwòp angajman konfidansyalite ak sekirite yo. Idantifyan Abonnè a konfigire pou entegre ak twazyèm pati yo estoke <strong>chifre</strong> nan baz done nou an.</p>
+      <div class="note">
+        <p><b>Twa dènye destinatè yo pa resevwa anyen nou voye ba yo.</b> Lè yon ekran bezwen yon polis oswa yon bibliyotèk ki sèvi depi sou sèvè yon twazyèm pati, se <strong>navigatè itilizatè a menm</strong> ki mande l dirèkteman, epi nan demann sa a adrès IP li a vwayaje, menm jan ak nenpòt vizit sou yon sit wèb. Se yon bagay ki fè pati chaje yon resous deyò: se pa yon sesyon done Zyntello deside fè ak enfòmasyon kont lan, epi se poutèt sa founisè sa yo pa wè ni yon kliyan, ni yon fakti, ni yon anplwaye, ni sesyon pèsonn.</p>
+        <p>Nou deklare yo paske yo resevwa yon done pèsonèl — adrès IP la — epi paske abonnè a gen dwa konnen sa, pa paske gen yon flo done biznis k ap ale bò kote yo.</p>
+      </div>
+    </section>
+
+    <section id="s6">
+      <h2 class="sec"><span class="n">6.</span> WhatsApp ak Meta</h2>
+      <p>Platfòm nan pèmèt Abonnè a kominike ak pwòp kontak pa l atravè <strong>WhatsApp</strong>, nan de fason: ak yon lyen konvèsasyon Abonnè a louvri alamen, oswa atravè API WhatsApp Business la lè Abonnè a konfigire idantifyan li.</p>
+      <h3>6.1. Kisa ki voye</h3>
+      <p>Lè yon mesaj voye, se <strong>nimewo telefòn destinatè a</strong> ak <strong>kontni mesaj la</strong> ki voye, epi sa ka gen non kontak la, nimewo ak eta yon dokiman, montan ak lyen nan dokiman oswa pòtay konsiltasyon.</p>
+      <h3>6.2. Kiyès ki responsab</h3>
+      <p>Se <strong>Abonnè a ki moun k ap voye a</strong> epi ki responsab mesaj la: se li ki deside kontni an, destinatè yo ak objektif la, epi li dwe gen konsantman destinatè a davans pou kontakte l pa chanèl sa a. Zyntello pa voye mesaj komèsyal bay kontak Abonnè l yo sou pwòp inisyativ li.</p>
+      <h3>6.3. Objektif mesaj yo</h3>
+      <p>Mesaj ki voye depi nan Platfòm nan gen yon nati <strong>operasyonèl oswa tranzaksyonèl</strong>: fakti ak devi, resi ak pyès jistifikatif, eta kont, rapèl peman ak antretyen, avi sou randevou oswa sou eta yon sèvis, konvokasyon ak notifikasyon apwobasyon.</p>
+      <h3>6.4. Dwa pou dezabòne</h3>
+      <p>Si w ap resevwa mesaj nan men yon antrepriz k ap sèvi ak Zyntello epi ou pa vle kontinye resevwa yo, ou ka reponn pou mande dezabònman, bloke nimewo a oswa di antrepriz sa a dirèkteman, epi li dwe reponn ou imedyatman. Platfòm nan bay mekanis pou anrejistre preferans sa a pou chak kontak. Si w bezwen èd pou idantifye moun k ap voye a, ou ka ekri nou nan <a href="mailto:info@zyntello.com">info@zyntello.com</a> epi n ap gide w.</p>
+      <h3>6.5. Politik ki aplikab</h3>
+      <p>Tretman enfòmasyon an nan men WhatsApp LLC ak Meta Platforms, Inc. gouvène pa pwòp politik pa yo, ladan yo <a href="https://www.whatsapp.com/legal/privacy-policy" rel="noopener">Politik Konfidansyalite WhatsApp</a> ak <a href="https://www.whatsapp.com/legal/business-policy" rel="noopener">Politik WhatsApp Business</a>. Zyntello pa kontwole tretman antrepriz sa yo fè.</p>
+    </section>
+
+    <section id="s7">
+      <h2 class="sec"><span class="n">7.</span> Transfè entènasyonal</h2>
+      <p>Sèvè nou yo ebèje nan <strong>Etazini</strong>. Lè w ap sèvi ak Platfòm nan, done yo transfere epi estoke nan peyi sa a. Pwosesè peman yo, founisè imèl sòti a, WhatsApp ak Meta, ak founisè entèlijans atifisyèl yo ka trete done deyò peyi Abonnè a tou.</p>
+      <p>Menm bagay la rive, nan yon mezi pi piti, ak <strong>rezo distribisyon kontni ak founisè polis wèb</strong> seksyon 5 yo: sèvè yo gaye toupatou nan mond lan epi navigatè a konekte ak sa ki pi pre a, konsa adrès IP itilizatè a ka trete deyò peyi l. Se sèl done yo resevwa.</p>
+      <p>Pou moun ki anba Règleman Jeneral sou Pwoteksyon Done Inyon Ewopeyen an, transfè sa yo kouvri pa kloz kontraktyèl tip oswa pa mekanis transfè chak founisè gen an vigè. Ou ka mande nou enfòmasyon sou mekanis ki aplikab la lè w ekri <a href="mailto:info@zyntello.com">info@zyntello.com</a>.</p>
+    </section>
+
+    <section id="s8">
+      <h2 class="sec"><span class="n">8.</span> Delè konsèvasyon</h2>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Done</th><th>Delè konsèvasyon</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Kont ak done operasyonèl Abonnè a</td><td>Toutotan abònman an aktif, plis <strong>30 jou</strong> apre li fini pou pèmèt ekspòtasyon. Apre sa yo efase.</td></tr>
+            <tr><td>Done fakturasyon ak pyès fiskal</td><td><strong>10 an</strong>, oswa delè règleman fiskal ki aplikab la enpoze si li diferan.</td></tr>
+            <tr><td>Istorik pozisyon yon wout (Planifikatè Wout)</td><td><strong>90 jou</strong> depi wout la fèmen. Apre sa nou kenbe sèlman rezime wout la — estasyon yo, lè rive ak soti, distans ak rezilta chak livrezon oswa vizit — ki se sa rapò konfòmite yo bezwen, epi nou <strong>efase tras pwen pa pwen an</strong>, ki se done ki ta pèmèt rekonstwi trajè yon moun. Si Abonnè a pa aktive swivi a, pa gen okenn istorik pozisyon ki pwodui.</td></tr>
+            <tr><td>Anrejistreman teknik ak jounal odit</td><td><strong>12 mwa</strong>, sof si nou bezwen yo pi lontan pou envestige yon ensidan sekirite.</td></tr>
+            <tr><td>Kont demonstrasyon</td><td>Li <strong>efase otomatikman chak jou</strong> atravè yon pwosesis pwograme.</td></tr>
+            <tr><td>Kopi sekou</td><td>Sik wotasyon <strong>30 jou</strong>. Done yo efase yo disparèt nan kopi sekou yo lè sik la fini.</td></tr>
+            <tr><td>Kopi sekou otosèvis Abonnè a telechaje</td><td>Nou kenbe sou sèvè a <strong>5 ki pi resan yo</strong>; sa ki anvan yo efase. <strong>Prèv</strong> ke yo te kreye epi telechaje yo rete toutotan abònman an dire. Kopi ki deja telechaje yo rete anba kontwòl Abonnè a sèlman (gade 9.4).</td></tr>
+            <tr><td>Anrejistreman konsantman ak dezabònman maketing</td><td>Toutotan relasyon an dire, plis <strong>5 an</strong> kòm prèv konsantman an oswa dezabònman an.</td></tr>
+            <tr><td>Demann sou dwa ak repons yo</td><td><strong>3 an</strong> depi nou trete yo, kòm prèv konfòmite.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="s9">
+      <h2 class="sec"><span class="n">9.</span> Dwa w ak efasman done</h2>
+      <h3>9.1. Dwa ou ka egzèse</h3>
+      <p>Ou ka mande nenpòt kilè:</p>
+      <ul>
+        <li><strong>Aksè</strong>: konnen ki done pa w nou trete epi pou ki objektif.</li>
+        <li><strong>Koreksyon</strong>: korije done ki pa egzak oswa ki pa konplè.</li>
+        <li><strong>Efasman</strong> oswa anilasyon: efase done w yo lè yo pa nesesè ankò.</li>
+        <li><strong>Opozisyon</strong>: opoze w ak yon tretman ki baze sou enterè lejitim.</li>
+        <li><strong>Pòtabilite</strong> ak <strong>limitasyon</strong> tretman an, kote lwa ki aplikab la prevwa yo. Si se ou menm ki Abonnè a, ou ka egzèse pòtabilite a <strong>pou kont ou epi nenpòt kilè</strong> depi nan <em>Konfigirasyon&nbsp;→&nbsp;Kopi sekou done</em> (gade 9.4).</li>
+        <li><strong>Retire yon konsantman</strong> ou te bay anvan, san efè retwoaktif.</li>
+      </ul>
+
+      <h3>9.2. Kijan pou egzèse yo</h3>
+      <p>Ekri <a href="mailto:info@zyntello.com">info@zyntello.com</a> depi imèl ki anrejistre a oswa ak prèv idantite w, epi di klèman ki dwa w ap egzèse. N ap reponn nan yon delè maksimòm <strong>15 jou ouvrab</strong> (oswa <strong>yon mwa</strong> si Règleman Jeneral sou Pwoteksyon Done Inyon Ewopeyen an aplike pou ou).</p>
+
+      <h3>9.3. Demann pou efase done</h3>
+      <div class="note ok">
+        <p><b>Enstriksyon detaye nan pwòp paj pa yo:</b> <a href="/ht/eliminacion-datos/"><strong>zyntello.com/eliminacion-datos/</strong></a> — li gen pwosedi a etap pa etap, delè yo, kisa yo efase, kisa lalwa oblije kenbe ak kijan pou sispann resevwa mesaj.</p>
+      </div>
+      <div class="note">
+        <p><b>Pou mande efase done pèsonèl ou</b>, voye yon imèl bay <a href="mailto:info@zyntello.com">info@zyntello.com</a> ak sijè a <em>«Demann pou efase done»</em>, epi endike:</p>
+        <ul>
+          <li>non konplè w;</li>
+          <li>imèl oswa nimewo telefòn ou te enskri avè l la oswa yo te kontakte w avè l la;</li>
+          <li>si sa aplike, non antrepriz ki te kontakte w la oswa ki te enskri w nan Platfòm nan.</li>
+        </ul>
+        <p>N ap konfime nou resevwa l epi n ap trete demann lan nan yon delè maksimòm <strong>30 jou</strong>. N ap fè w konnen rezilta a alekri, ansanm ak ki done yo efase ak kiyès lalwa oblije nou kenbe.</p>
+      </div>
+      <p><strong>Si se yon antrepriz Abonnè ki te mete done w yo</strong> — paske ou se kliyan, anplwaye, rezidan, debitè oswa patisipan li — se antrepriz sa a ki responsab tretman an. Nan ka sa a n ap voye demann ou an ba li, n ap fè w konnen sa epi n ap kolabore pou yo trete l, men se antrepriz sa a ki pran desizyon final la sou efasman an.</p>
+      <p><strong>Limit.</strong> Efasman an pa aplike pou enfòmasyon nou oblije kenbe akòz yon obligasyon legal, kontab oswa fiskal (pa egzanp, pyès fiskal ki emèt), ni pou sa ki nesesè pou defann reklamasyon. Nan ka sa yo, done yo bloke epi tretman yo limite jiskaske delè legal konsèvasyon an fini.</p>
+      <p>Si w jwenn dwa w yo pa t respekte kòmsadwa, ou ka depoze yon plent devan otorite pwoteksyon done yo oswa tribinal konpetan nan peyi w.</p>
+
+      <h3>9.4. Kopi sekou ak pòtabilite otosèvis</h3>
+      <p>Abonnè a ka kreye epi telechaje, lè l vle epi san li pa mande, yon kopi konplè done antrepriz li yo depi nan <em>Konfigirasyon&nbsp;→&nbsp;Kopi sekou done</em>. Fichye a se yon ZIP ki gen ekstraksyon an nan fòma SQL, yon manifès ak detay sou kisa ki ladan l ak yon gid pou restore.</p>
+      <div class="note ok">
+        <p><b>Izolasyon garanti.</b> Fichye a gen <strong>sèlman liy Abonnè ki kreye l la</strong>. Se pa yon ekstraksyon baz done Zyntello a epi nan okenn ka li pa gen enfòmasyon lòt Abonnè. Anplis, done teknik ki komen nan tout Platfòm nan — sesyon, jeton rekiperasyon ak notifikasyon — rete deyò, paske yo pa pou okenn Abonnè an patikilye. Fichye a menm deklare ki tab yo kite deyò epi poukisa.</p>
+      </div>
+      <p><strong>Responsablite sou kopi ki telechaje a.</strong> Yon fwa li telechaje, fichye a rete anba kontwòl Abonnè a sèlman, epi se li menm ki vin responsab gade l, chifre l si li jwenn sa nesesè epi efase l. Zyntello pa ka retwouve, swiv ni efase kopi ki deja sòti nan Platfòm nan. Si fichye a gen done pèsonèl twazyèm pati ladan l — kliyan, anplwaye, rezidan — Abonnè a rete responsab tretman yo dapre seksyon 2.</p>
+      <p>Kopi sekou yo kreye yo rete sou sèvè a sèlman pou telechaje yo: nou kenbe <strong>5 ki pi resan yo</strong> pa Abonnè epi sa ki anvan yo efase. Men prèv ke yon kopi sekou te kreye epi telechaje rete, pou nou ka pwouve yo te egzèse dwa pòtabilite a.</p>
+    </section>
+
+    <section id="s10">
+      <h2 class="sec"><span class="n">10.</span> Règleman pa peyi</h2>
+      <ul>
+        <li><strong>Repiblik Dominiken</strong> — Lwa No. 172-13 sou Pwoteksyon Done ki gen Karaktè Pèsonèl: dwa aksè, koreksyon, anilasyon ak opozisyon; reklamasyon devan tribinal konpetan yo.</li>
+        <li><strong>Inyon Ewopeyen ak Espas Ekonomik Ewopeyen</strong> — Règleman (UE) 2016/679 (RGPD), lè li aplikab: baz jiridik seksyon 3 yo, dwa elaji seksyon 9 yo, notifikasyon vyolasyon bay otorite kontwòl la nan 72 èdtan ak dwa pou pote plent devan otorite kontwòl lokal la.</li>
+        <li><strong>Kolonbi</strong> — Lwa 1581 nan 2012 ak dekrè aplikasyon li yo (rejim habeas data): konsiltasyon ak reklamasyon dapre pwosedi Siperentandans Endistri ak Komès la.</li>
+        <li><strong>Kostarika</strong> — Lwa 8968 sou Pwoteksyon Moun nan devan Tretman Done Pèsonèl li (PRODHAB).</li>
+        <li><strong>Venezyela</strong> — dwa konstitisyonèl habeas data (atik 28 nan Konstitisyon an) ak règleman ki aplikab.</li>
+        <li><strong>Gwatemala</strong> — nan absans yon lwa jeneral sou pwoteksyon done, garanti konstitisyonèl yo ak Politik sa a aplike kòm yon angajman kontraktyèl ki ka egzije.</li>
+        <li><strong>Meksik</strong>, lè li aplikab — Lwa Federal sou Pwoteksyon Done Pèsonèl nan men Moun Prive: dwa aksè, koreksyon, anilasyon ak opozisyon devan kontak seksyon 1 la.</li>
+      </ul>
+      <p>Nan ka konfli, se règ obligatwa peyi moun ki mèt done yo ki gen dènye mo a.</p>
+    </section>
+
+    <section id="s11">
+      <h2 class="sec"><span class="n">11.</span> Sekirite</h2>
+      <p>Nou aplike mezi teknik ak òganizasyonèl ki pwopòsyonèl ak risk la, ladan yo:</p>
+      <ul>
+        <li>modpas estoke ak algoritm <em>hachaj</em> solid, pa janm an tèks klè;</li>
+        <li>chifraj trafik k ap vwayaje a atravè TLS;</li>
+        <li><strong>izolasyon strik done</strong> ant abonnè yo epi ant antrepriz yon menm abonnè, ki aplike otomatikman nan chak rechèch;</li>
+        <li><strong>kontwòl aksè ak de pòte diferan</strong>: itilizatè Abonnè a menm gen aksè nan tout antrepriz kont lan ak pèmisyon wòl yo, pandan ke <strong>itilizatè entèn</strong> yo — ki fèt pou pèsonèl tanporè oswa deyò — asiyen nan <strong>yon sèl antrepriz</strong> epi pèmisyon yo, ki konfigire modil pa modil, kouvri <strong>sèlman done antrepriz sa a</strong>;</li>
+        <li><strong>verifikasyon an de etap</strong> itilizatè a ka aktive, pa imèl oswa atravè yon aplikasyon otantifikasyon sou telefòn (estanda TOTP), ak kòd rekiperasyon pou yon sèl itilizasyon, blokaj tanporè apre plizyè tantativ ki echwe ak avi pa imèl pou nenpòt chanjman ladan l;</li>
+        <li>chifraj nan baz done idantifyan entegrasyon twazyèm pati yo;</li>
+        <li>jounal odit aksyon sou dokiman ak konfigirasyon;</li>
+        <li>kopi sekou regilye ak verifikasyon entegrite epi yon kopi deyò sèvè prensipal la;</li>
+        <li><strong>kopi sekou otosèvis</strong> Abonnè a aplike menm izolasyon an: li bati an filtre sèlman liy pa l yo, li kite deyò done teknik ki komen nan Platfòm nan epi li deklare nan manifès li kisa ki rete deyò;</li>
+        <li>sesyon an fèmen lè w fèmen navigatè a, epi nan tout ka li ekspire sou sèvè a apre sèt jou;</li>
+        <li>ekran <strong>aparèy ki konekte</strong> kote itilizatè a ka fèmen adistans sesyon ki ouvè sou lòt aparèy.</li>
+      </ul>
+      <p>Pa gen okenn sistèm ki enfayib nèt. Si gen yon vyolasyon ki ta afekte done w yo, n ap bay nouvèl dapre seksyon 14.</p>
+    </section>
+
+    <section id="s12">
+      <h2 class="sec"><span class="n">12.</span> Aksè pèsonèl sipò Zyntello a</h2>
+      <p>Pou trete yon siyalman li ka nesesè pou yon ajan sipò Zyntello antre nan espas travay Abonnè a epi gade done li yo. Seksyon sa a esplike ak ki limit sa fèt ak kijan Abonnè a menm ka verifye sa.</p>
+      <ul>
+        <li><strong>Sou ki baz.</strong> Se yon operasyon ki nesesè pou egzekite kontra sèvis la: san li nou pa ta ka dyagnostike ni korije yon pàn ki afekte done Abonnè a. Zyntello aji isit la kòm <strong>chajedafè tretman an</strong>, dapre enstriksyon Abonnè a, ki se responsab la (gade seksyon 2).</li>
+        <li><strong>Ak ki idantite.</strong> Ajan an <strong>pa janm</strong> sèvi ak non itilizatè ni modpas yon moun nan ekip Abonnè a. Li antre ak yon <strong>kont teknik</strong> apa, epi tout aksyon siyen ak non <strong>ajan reyèl la</strong>, pa ak non kont teknik la ni ak non yon itilizatè kliyan an.</li>
+        <li><strong>Ak ki pòte.</strong> Sesyon sipò a kòmanse an <strong>lekti sèlman</strong>. Pou modifye nenpòt done, ajan an dwe monte nivo li epi deklare yon rezon espesifik, epi nivo sa a <strong>ekspire pou kont li</strong> apre 30 minit.</li>
+        <li><strong>Kisa ki anrejistre.</strong> Pou chak aksè nou kenbe ajan an, dat ak lè antre ak soti, rezon ki deklare a, adrès IP la, si Abonnè a te otorize aksè a oswa si li te an ijans, epi — si sesyon an te monte — detay chak done ki modifye.</li>
+        <li><strong>Aksè ijans.</strong> Lè li pa posib pou jwenn otorizasyon davans epi siyalman an egzije sa, ajan an ka antre epi deklare rezon an. Aksè sa a make kòm <strong>pa otorize</strong> epi mèt kont lan resevwa yon avi.</li>
+        <li><strong>Kijan Abonnè a kontwole sa.</strong> Mèt kont lan konsilte nenpòt kilè istorik konplè a nan <strong>Konfigirasyon → Aksè sipò</strong>, san li pa bezwen mande nou sa.</li>
+        <li><strong>Kisa nou PA fè.</strong> Nou pa antre nan done yon Abonnè pou rezon komèsyal, estatistik ni pou antrene modèl, epi nou pa pran kopi enfòmasyon l deyò sa ki nesesè pou rezoud siyalman an.</li>
+        <li><strong>Jesyon idantifyan yo.</strong> Kont teknik la pa ka itilize lè w tape idantifyan: li louvri sèlman depi nan zouti sipò a menm, ki egzije pou ajan an gentan verifye idantite l an de etap.</li>
+      </ul>
+      <h3>12.1. Biwo èd la ak fichye li tache yo</h3>
+      <p>Lè Abonnè a louvri yon ka sipò, nou kenbe sijè a, deskripsyon an, tout konvèsasyon ki vini apre a ak <strong>fichye li tache yo</strong>.</p>
+      <ul>
+        <li><strong>Se fichye tache a ki mande plis atansyon.</strong> Pou esplike yon pwoblèm se abitid pou tache yon kaptire ekran sistèm nan menm, epi la ka parèt <strong>done pèsonèl kliyan oswa anplwaye Abonnè a</strong>: non, nimewo idantite, montan oswa solda. Zyntello trete enfòmasyon sa yo kòm <strong>chajedafè</strong>, sèlman pou rezoud ka a.</li>
+        <li><strong>Yo estoke nan yon espas prive</strong>, ki pa aksesib pa yon adrès piblik: pou telechaje yon fichye fòk ou konekte epi fòk ou fè pati Abonnè ki mèt ka a.</li>
+        <li><strong>Pataje sèlman sa ki nesesè.</strong> Si yon kaptire ekran gen done ki pa itil pou dyagnostik la, nou rekòmande kache yo anvan ou tache l. Se Abonnè a ki deside kisa li voye.</li>
+        <li><strong>Nòt entèn.</strong> Ekip sipò a ka ajoute nan ka a nòt travay Abonnè a pa wè — dyagnostik preliminè, kowòdinasyon entèn. Yo fè pati dosye ka a epi yo rete avè l.</li>
+        <li><strong>Konsèvasyon.</strong> Ka yo ak fichye yo rete toutotan relasyon kontraktyèl la dire epi pou delè jeneral seksyon 8 la; apre sa yo efase ansanm ak rès done Abonnè a.</li>
+        <li><strong>Imèl ou voye bay sipò a antre nan sistèm nan.</strong> Yon mesaj ki voye bay <strong>soporte@zyntello.com</strong> antre otomatikman nan ka a: <strong>tèks li ak fichye li tache yo konsève</strong> nan dosye a, ak menm tretman an ak menm pwoteksyon yo dekri anwo a. Nou siyale sa paske yon imèl ekri ak mwens prekosyon pase yon fòmilè, epi li konn trennen fil anvan an ak fichye ki te voye pou lòt bagay. <strong>Nou koupe sitasyon mesaj anvan an</strong> pou nou pa double enfòmasyon, epi fichye ki depase gwosè yo aksepte a pa konsève: nou note non li nan ka a pou ajan an ka mande l pa yon lòt chemen.</li>
+        <li><strong>Asistan ak entèlijans atifisyèl la.</strong> Platfòm nan gen yon asistan ki reponn kesyon sou itilizasyon. Lè w poze l yon kesyon, nou voye bay yon founisè entèlijans atifisyèl (<strong>Anthropic</strong>, k ap aji kòm <strong>sou-chajedafè</strong>) <strong>sèlman de bagay</strong>: <strong>tèks kesyon w lan</strong> ak <strong>dokimantasyon Zyntello</strong> sou modil kote w ap mande a. <ul> <li><strong>Nou PA voye done biznis ou ni done kliyan w yo.</strong> Ni non, ni montan, ni solda, ni anrejistreman nan baz done w. Tèks ki voye a bati sèlman ak manyèl nou yo: konpozan ki monte l la <strong>pa konsilte baz done a</strong>, epi sa verifye ak yon tès otomatik ki echwe si yon jou li ta konsilte l.</li>
+          <li><strong>Sèl bagay ki pou ou ki vwayaje se sa ou menm ou ekri nan kesyon an.</strong> Se poutèt sa nou mande w pou w pa mete done pèsonèl twazyèm pati ladan l: pou esplike kijan yon fakti fèt ou pa bezwen non kliyan an.</li>
+          <li><strong>Nou konsève repons yo</strong> pou nou pa retounen konsilte founisè a pou menm kesyon an. Achiv sa a gen <strong>sèlman</strong> kesyon sou itilizasyon ak repons ki baze sou dokimantasyon nou an.</li>
+          <li><strong>Asistan an pa egzekite okenn aksyon</strong> epi li pa modifye enfòmasyon w: li sèlman esplike.</li>
+        </ul></li>
+        <li><strong>Imèl nou pa ka idantifye yo.</strong> Si yon mesaj rive nan bwat sipò a epi <strong>nou pa ka detèmine ki Abonnè li soti</strong> — paske moun k ap voye a pa koresponn ak okenn itilizatè ki anrejistre — li <strong>pa ajoute nan okenn ka</strong>: li rete nan yon bwat revizyon apa, separe ak done nenpòt Abonnè, jisteman pou nou pa mete nan kont yon kliyan enfòmasyon nou pa verifye orijin li. Yon imèl ka fo moun k ap voye l la, epi se poutèt sa li pa ase pou mesaj la di sa.</li>
+      </ul>
+
+    </section>
+
+    <section id="s13">
+      <h2 class="sec"><span class="n">13.</span> Kominikasyon ak maketing</h2>
+      <ul>
+        <li><strong>Mesaj tranzaksyonèl</strong> (verifikasyon idantite, kòd aksè, avi fakturasyon, alèt sekirite, avi antretyen ak chanjman kontraktyèl) voye kòm yon pati nan sèvis la epi yo pa mande yon konsantman anplis toutotan gen yon relasyon kontraktyèl ki valid.</li>
+        <li><strong>Mesaj komèsyal Zyntello yo</strong> (nouvèl, bilten, òf) voye sèlman ak <strong>konsantman davans</strong>, ki pran atravè yon kaz ki pa koche davans. Nou kenbe yon anrejistreman sou kilè ak kijan yo te bay li.</li>
+        <li><strong>Dezabònman</strong>: chak imèl komèsyal gen yon lyen anilasyon ak yon sèl klik. Ou ka mande l tou lè w ekri <a href="mailto:info@zyntello.com">info@zyntello.com</a>. Dezabònman an trete nan <strong>72 èdtan</strong> maksimòm epi li pa afekte mesaj tranzaksyonèl sèvis la.</li>
+        <li><strong>Mesaj Abonnè yo voye</strong>: si yon antrepriz k ap sèvi ak Zyntello voye mesaj ba ou pa imèl oswa WhatsApp, se antrepriz sa a ki responsab pou gen konsantman w epi pou trete dezabònman w lan (gade seksyon 6).</li>
+      </ul>
+    </section>
+
+    <section id="s14">
+      <h2 class="sec"><span class="n">14.</span> Cookies</h2>
+      <p>Platfòm nan sèvi sèlman ak cookies ki <strong>estrikteman nesesè</strong> pou li fonksyone:</p>
+      <ul>
+        <li><strong>Cookie sesyon</strong>: li kenbe itilizatè a konekte pandan l ap navige.</li>
+        <li><strong>Jeton pwoteksyon fòmilè</strong>: li anpeche voye demann fwodilè depi sou sit twazyèm pati.</li>
+        <li><strong>Cookie «sonje sesyon an»</strong>: sèlman si itilizatè a koche opsyon sa a lè l konekte.</li>
+        <li><strong>Preferans dènye kote</strong>: li pèmèt rekòmanse travay la kote ou te kite l lè w retounen nan sesyon an.</li>
+      </ul>
+      <div class="note ok">
+        <p><b>Nou pa sèvi ak cookies piblisitè, cookies pwofilaj ni cookies swivi twazyèm pati</b>, epi nou pa mete piksèl rezo sosyal oswa platfòm piblisite nan Platfòm nan. Se poutèt sa pa gen bezwen yon banyè konsantman cookies pou itilize l.</p>
+      </div>
+      <p>Ou ka efase oswa bloke cookies yo depi nan konfigirasyon navigatè w, men sonje sa ap anpeche w konekte nan Platfòm nan.</p>
+
+      <h3>14.1. Resous ki sèvi depi nan twazyèm pati</h3>
+      <p>Se yon lòt bagay ki pa cookies, epi li bon pou nou pa konfonn yo: yon pati nan polis, ikòn ak bibliyotèk entèfas la sèvi depi sou sèvè twazyèm pati seksyon 5 bay lis la. <strong>Okenn nan yo pa enstale cookies</strong> ni yo pa remèt nou okenn idantifyan itilizatè, men koneksyon an egziste, epi adrès IP li a vwayaje ladan l.</p>
+      <p>Nou di sa paske absans cookies piblisitè pa vle di absans koneksyon ak twazyèm pati, epi yon politik ki ta pale sèlman sou cookies ta kite deyò sa ki reyèlman pase lè w louvri yon ekran.</p>
+    </section>
+
+    <section id="s15">
+      <h2 class="sec"><span class="n">15.</span> Notifikasyon ensidan sekirite</h2>
+      <p>Si gen yon vyolasyon sekirite ki afekte done pèsonèl, n ap evalye risk la epi n ap bay nouvèl:</p>
+      <ul>
+        <li>bay <strong>Abonnè ki afekte yo</strong>, san reta ki pa jistifye, ak enfòmasyon ki disponib sou pòte a, kategori done ki konpwomèt yo ak mezi nou pran yo;</li>
+        <li>bay <strong>otorite konpetan yo</strong> lè lalwa egzije sa — nan <strong>72 èdtan</strong> apre nou vin konnen, nan ka RGPD a;</li>
+        <li>bay <strong>moun ki mèt done yo</strong>, lè vyolasyon an reprezante yon gwo risk pou dwa ak libète yo epi lwa ki aplikab la egzije sa.</li>
+      </ul>
+      <p>Lè n ap aji kòm chajedafè, notifikasyon an ale bay Abonnè ki responsab la, epi se li menm ki dwe enfòme moun yo ak otorite a.</p>
+    </section>
+
+    <section id="s16">
+      <h2 class="sec"><span class="n">16.</span> Timoun minè</h2>
+      <p>Platfòm nan fèt sèlman pou antrepriz ak pwofesyonèl, epi li pa fèt pou moun ki poko gen 18 an. Nou pa kolekte konsyamman done minè kòm itilizatè sèvis la. Si yon Abonnè anrejistre done minè nan kad aktivite l, se responsablite l pou l gen otorizasyon paran oswa responsab legal yo dapre lwa ki aplikab la.</p>
+    </section>
+
+    <section id="s17">
+      <h2 class="sec"><span class="n">17.</span> Desizyon otomatik ak entèlijans atifisyèl</h2>
+      <p>Gen modil ki ofri fonksyon entèlijans atifisyèl asiste, sitou <strong>ekstraksyon done nan fakti ak dokiman</strong> ak sijesyon estatistik sou enfòmasyon istorik.</p>
+      <ul>
+        <li><strong>Nou pa pran desizyon otomatik ki gen efè jiridik</strong> sou moun. Tout evalyasyon ki gen konsekans — pa egzanp, apwobasyon yon kredi nan modil Prestamello a — mande entèvansyon ak desizyon yon itilizatè ki se yon moun.</li>
+        <li><strong>Revizyon yon moun obligatwa</strong>: rezilta modèl la prezante kòm yon bouyon epi li pa pwodui okenn efè kontab, fiskal oswa sou envantè jiskaske yon itilizatè valide l.</li>
+        <li>Fonksyon an <strong>opsyonèl</strong>, li dezaktive pa defo epi li mande pou Abonnè a aktive l ak pwòp idantifyan pa l nan men founisè entèlijans atifisyèl la.</li>
+        <li><strong>Nou pa sèvi ak done Abonnè yo pou antrene pwòp modèl nou.</strong> Tretman founisè entèlijans atifisyèl la fè gouvène pa kondisyon Abonnè a te aksepte ak founisè sa a.</li>
+      </ul>
+    </section>
+
+    <section id="s18">
+      <h2 class="sec"><span class="n">18.</span> Chanjman nan Politik sa a</h2>
+      <p>N ap pibliye nenpòt modifikasyon sou menm paj sa a, epi n ap mete dat dènye mizajou a ajou. Si chanjman an enpòtan, n ap bay nouvèl pa imèl oswa ak yon avi ki parèt byen klè nan Platfòm nan omwen <strong>30 jou</strong> anvan li antre an vigè. Vèsyon anvan yo disponib sou demann.</p>
+    </section>
+
+    <section id="s19">
+      <h2 class="sec"><span class="n">19.</span> Kontak</h2>
+      <p>Pou nenpòt kesyon oswa demann ki gen rapò ak konfidansyalite ak pwoteksyon done:</p>
+      <ul>
+        <li><strong>Zyntello, S.R.L.</strong> — Repiblik Dominiken</li>
+        <li>Imèl: <a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+        <li>Telefòn ak WhatsApp: <a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+        <li>Sit wèb: <a href="https://zyntello.com">https://zyntello.com</a></li>
+      </ul>
+      <p>Gade tou <a href="/ht/terminos/">Kondisyon Sèvis nou yo</a> ak <a href="/ht/eliminacion-datos/">enstriksyon pou efase done</a>.</p>
+    </section>
+
+    <section id="s20">
+      <h2 class="sec"><span class="n">20.</span> Kontwòl chanjman</h2>
+      <p>Rejis konplè ak kimilatif tout vèsyon Politik sa a depi premye piblikasyon l. Chak antre endike vèsyon an, dat li antre an vigè ak kisa ki chanje. Antre anvan yo <strong>pa modifye ni efase</strong>.</p>
+      <div class="note">
+        <p><b>Kijan pou li vèsyon yo.</b> Yon chanjman <strong>vèsyon minè</strong> (1.0 → 1.1) ajoute oswa presize enfòmasyon — yon modil nouvo, yon destinatè, yon kategori done — san li pa chanje objektif yo ni baz legal tretman an. Yon chanjman <strong>vèsyon majè</strong> (1.x → 2.0) modifye objektif, baz legal, destinatè, delè konsèvasyon oswa dwa w, epi nou bay nouvèl <strong>30 jou</strong> davans dapre seksyon 17.</p>
+      </div>
+      <div class="tbl chg">
+        <table>
+          <thead>
+            <tr><th>Vèsyon</th><th>Dat</th><th>Chanjman</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1.9 <span class="vig">An vigè</span></td>
+              <td>18 septanm 2026</td>
+              <td><strong>Twazyèm pati ki resevwa adrès IP la lè yon ekran chaje.</strong> Seksyon <strong>5</strong> pa t deklare twa destinatè ki egziste toutbon, epi nou ajoute yo: <strong>(1)</strong> <strong>rezo distribisyon kontni ak founisè polis wèb</strong> — jsDelivr, Cloudflare cdnjs, unpkg, Google Fonts ak Bunny Fonts — kote bibliyotèk, polis ak ikòn entèfas la sèvi; yo chaje sou <strong>tout</strong> ekran Platfòm nan epi yo resevwa adrès IP la, navigatè a ak ekran yo mande a, men pa janm done kont lan ni idantifyan sesyon. <strong>(2)</strong> <strong>QuickChart</strong>, ki pwodui imaj kòd QR yon evènman epi ki resevwa sèlman lyen piblik enskripsyon an, sèlman nan modil Events la. <strong>(3)</strong> <strong>sèvis to chanj</strong> sit wèb piblik la konsilte a, ki resevwa IP vizitè a epi ki pa entèvni nan Platfòm nan. Apre tablo a nou ajoute esplikasyon sou poukisa twa sa yo pa yon sesyon done biznis: se <strong>navigatè itilizatè a menm</strong> ki mande resous la, epi nan demann sa a IP li a vwayaje menm jan ak nenpòt vizit sou yon sit wèb. Seksyon <strong>7</strong> elaji transfè entènasyonal yo pou founisè sa yo, ki gen sèvè gaye toupatou nan mond lan. Seksyon <strong>14.1</strong> klarifye ke <strong>okenn nan yo pa enstale cookies</strong>, epi ke absans cookies piblisitè pa vle di absans koneksyon ak twazyèm pati. Detay teknik chak konpozan nan <a href="/ht/avisos-terceros/">Avi sou lojisyèl twazyèm pati</a>, ki pibliye ak vèsyon 1.7 nan <a href="/ht/terminos/">Kondisyon yo</a>. Pa gen chanjman nan objektif yo, delè konsèvasyon, dwa moun ki mèt done yo ni baz legal tretman an.</td>
+            </tr>
+            <tr>
+              <td>1.8</td>
+              <td>11 septanm 2026</td>
+              <td><strong>Planifikatè Wout la ak swivi kote yon chofè ye.</strong> Modil <strong>Planifikatè Wout</strong> la antre nan seksyon <strong>4</strong>, ak done li trete yo: adrès ak <strong>kowòdone</strong> estasyon yo, transpòtè a, machin nan ak chofè yo asiyen an, ak kote chofè a pandan wout la. Nan seksyon <strong>3</strong> nou ajoute yon esplikasyon ki te manke epi ki pa yon ti detay: <strong>anrejistre yon pwen lè yon moun make antre</strong> — sa Pewòl, PSA ak Prestamello t ap fè deja — <strong>se pa menm bagay ak anrejistre pozisyon an repete pandan tout jounen an</strong>, paske dezyèm nan pèmèt rekonstwi trajè yon moun. Nou deklare ke swivi sa a <strong>kòmanse dezaktive</strong> epi ke deyò wout la pa gen kote ki anrejistre. Nan seksyon <strong>5</strong> nou deklare yon <strong>destinatè nouvo</strong>: <strong>founisè kat jewografik</strong> (OpenStreetMap, Google Maps, HERE oswa Mapbox, dapre chwa Abonnè a), kote nou voye adrès ak kowòdone estasyon yo — pa non kliyan an ni kontni kòmand lan. Epi nan seksyon <strong>8</strong> nou fikse yon delè konsèvasyon apa pou <strong>tras pwen pa pwen an</strong>: <strong>90 jou</strong> apre wout la fèmen, epi apre sa nou kenbe sèlman rezime rapò yo bezwen an epi nou efase trajè detaye a.</td>
+            </tr>
+            <tr>
+              <td>1.7</td>
+              <td>9 septanm 2026</td>
+              <td><strong>Asistan ak entèlijans atifisyèl la.</strong> Nou elaji seksyon <strong>12.1</strong> pou deklare yon fonksyon nouvo ak <strong>sou-chajedafè</strong> ki entèvni a: lè w sèvi ak asistan an nou voye bay <strong>Anthropic</strong> sèlman <strong>tèks kesyon an</strong> ak <strong>dokimantasyon Zyntello</strong> modil ki konsène a. Nou deklare eksprèsman ke <strong>nou PA voye done biznis ni done pèsonèl Abonnè a</strong> — ni non, ni montan, ni solda, ni anrejistreman nan baz done a — paske konpozan ki monte tèks sa a <strong>pa konsilte baz done a</strong>, epi sa verifye ak yon tès otomatik ki echwe si yon jou li ta konsilte l. Nou avèti ke sèl bagay ki pou Abonnè a ki vwayaje se sa li menm li ekri nan kesyon an, nou deklare ke repons yo konsève pou nou pa repete konsiltasyon epi ke achiv sa a gen sèlman kesyon sou itilizasyon ak repons ki baze sou dokimantasyon nou an, epi ke <strong>asistan an pa egzekite okenn aksyon</strong>. <strong>Pa gen chanjman</strong> nan objektif yo, baz legal yo, delè konsèvasyon ni dwa moun ki mèt done yo.</td>
+            </tr>
+            <tr>
+              <td>1.6</td>
+              <td>9 septanm 2026</td>
+              <td><strong>Imèl ou voye bay sipò a antre nan sistèm nan.</strong> Nou elaji seksyon <strong>12.1</strong> ak yon chemen antre vèsyon anvan an pa t kouvri: yon mesaj ki voye bay <strong>soporte@zyntello.com</strong> antre otomatikman nan ka a, epi <strong>tèks li ak fichye li tache yo konsève</strong> nan dosye a ak menm tretman an ak menm pwoteksyon nou te deja dekri yo. Nou siyale sa paske yon imèl ekri ak mwens prekosyon pase yon fòmilè epi li konn trennen fil anvan an ak fichye ki te voye pou lòt bagay; nou deklare ke <strong>nou koupe sitasyon mesaj anvan an</strong> epi ke fichye ki depase gwosè yo aksepte a pa konsève, men nou note non li. Nou deklare tou kisa ki pase ak imèl <strong>nou pa ka idantifye moun k ap voye yo</strong>: yo pa ajoute nan okenn ka, men yo rete nan yon bwat revizyon ki <strong>separe ak done nenpòt Abonnè</strong>, paske yon imèl ka fo moun k ap voye l la epi li pa ase pou mesaj la di sa. <strong>Pa gen chanjman</strong> nan objektif yo, baz legal yo, destinatè yo, delè konsèvasyon ni dwa moun ki mèt done yo.</td>
+            </tr>
+            <tr>
+              <td>1.5</td>
+              <td>7 septanm 2026</td>
+              <td><strong>Biwo èd la ak fichye li tache yo.</strong> Nou ajoute seksyon <strong>12.1</strong>, ki dokimante yon kategori done vèsyon anvan an pa t kouvri: kontni ka sipò yo epi, sitou, <strong>fichye Abonnè a tache yo</strong>. Nou presize ke yon kaptire ekran ka gen done pèsonèl kliyan oswa anplwaye Abonnè a epi ke Zyntello trete yo kòm <strong>chajedafè</strong>, sèlman pou rezoud ka a; ke fichye tache yo konsève nan yon espas prive epi pou telechaje yo fòk ou konekte epi fòk ou fè pati Abonnè ki mèt ka a; ke ekip sipò a ka ajoute nòt entèn ki fè pati dosye a; ak delè konsèvasyon an. Nou rekòmande tou kache nan kaptire a sa ki pa itil pou dyagnostik la. Pa gen chanjman nan objektif yo, baz legal yo, destinatè yo ni dwa moun ki mèt done yo.</td>
+            </tr>
+            <tr>
+              <td>1.4</td>
+              <td>6 septanm 2026</td>
+              <td><strong>Aksè pèsonèl sipò Zyntello a.</strong> Nou ajoute seksyon <strong>12</strong>, ki dokimante yon operasyon vèsyon anvan an pa t dekri: lè yon siyalman egzije sa, yon ajan sipò Zyntello ka antre nan espas travay Abonnè a epi gade done li yo. Nou presize sou ki baz sa fèt, ke ajan an <strong>pa janm</strong> sèvi ak idantifyan yon moun nan ekip Abonnè a men ak yon kont teknik pa l, ke sesyon an kòmanse an <strong>lekti sèlman</strong> epi ke monte l an ekriti mande deklare yon rezon epi li ekspire pou kont li, kisa ki anrejistre pou chak aksè, kijan aksè ijans la make ak ki kote Abonnè a menm kontwole sa (<strong>Konfigirasyon → Aksè sipò</strong>). Seksyon 12 jiska 19 vèsyon anvan an vin nimewote 13 jiska 20; kontni yo pa chanje. Pa gen chanjman nan objektif yo, baz legal yo, delè konsèvasyon ni dwa moun ki mèt done yo.</td>
+            </tr>
+            <tr>
+              <td>1.3</td>
+              <td>5 septanm 2026</td>
+              <td><strong>Pòte aksè chak kalite itilizatè.</strong> Nan seksyon <strong>11</strong> nou presize ke kontwòl aksè a gen de pòte diferan: itilizatè Abonnè a menm gen aksè nan tout antrepriz kont lan ak pèmisyon wòl yo, pandan ke <strong>itilizatè entèn</strong> yo — ki fèt pou pèsonèl tanporè oswa deyò — asiyen nan yon sèl antrepriz epi pèmisyon yo kouvri sèlman done antrepriz sa a. Ansyen tèks la t ap pale de «wòl ak pèmisyon detaye pa modil» san li pa fè distenksyon jiska ki kote chak rive. Pa gen chanjman nan kategori done ki trete yo, delè konsèvasyon, destinatè yo ni dwa moun ki mèt done yo.</td>
+            </tr>
+            <tr>
+              <td>1.2</td>
+              <td>4 septanm 2026</td>
+              <td><strong>Verifikasyon an de etap ak yon aplikasyon otantifikasyon ak politik sesyon an.</strong> Nan tablo seksyon <strong>4</strong> la nou ajoute done ki konsève lè Itilizatè a aktive verifikasyon an de etap pa aplikasyon: kle aplikasyon an (chifre), kòd rekiperasyon yo (chifre yon fason ki pa ka defèt) ak anrejistreman tantativ ki echwe yo; Zyntello pa ka li okenn ladan yo. Nou mete mezi seksyon <strong>11</strong> yo ajou ak metòd nouvo a, blokaj tanporè apre tantativ ki echwe ak avi pa imèl pou nenpòt chanjman nan verifikasyon an. Nou <strong>korije</strong> deskripsyon politik sesyon an, ki te di «fèmti otomatik akòz inaktivite»: depi 3 septanm 2026 sesyon an fèmen lè w fèmen navigatè a, li ekspire sou sèvè a apre sèt jou, epi gen yon ekran aparèy ki konekte pou fèmen yo adistans.</td>
+            </tr>
+            <tr>
+              <td>1.1</td>
+              <td>31 out 2026</td>
+              <td><strong>Kopi sekou ak pòtabilite otosèvis.</strong> Nou dokimante fonksyon ki pèmèt Abonnè a kreye epi telechaje pou kont li yon kopi konplè done antrepriz li yo: seksyon <strong>9.4</strong> nouvo (kisa fichye a genyen, izolasyon garanti devan lòt Abonnè yo, done teknik ki rete deyò ak responsablite sou kopi a yon fwa li telechaje), mansyon nan <strong>9.1</strong> kòm yon fason pou egzèse pòtabilite a san demann davans, yon delè konsèvasyon apa nan tablo seksyon <strong>8</strong> la epi presizyon nan seksyon <strong>11</strong> ke kopi sekou a aplike menm izolasyon an ant Abonnè yo. Pa gen chanjman nan objektif yo, baz legal yo ni destinatè tretman an.</td>
+            </tr>
+            <tr>
+              <td>1.0</td>
+              <td>28 jiyè 2026</td>
+              <td><strong>Premye piblikasyon.</strong> Dokiman inisyal ak 19 seksyon: responsab tretman an, doub wòl responsab/chajedafè, done ki trete ak baz legal yo, done pa modil, destinatè ak sou-chajedafè, WhatsApp ak Meta, transfè entènasyonal, delè konsèvasyon, dwa ak pwosedi pou efase done, règleman pa peyi, sekirite, kominikasyon ak maketing, cookies, notifikasyon ensidan, timoun minè, desizyon otomatik ak entèlijans atifisyèl, chanjman nan Politik la, kontak ak kontwòl chanjman.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Ou ka mande yon kopi tèks konplè nenpòt vèsyon anvan lè w ekri <a href="mailto:info@zyntello.com">info@zyntello.com</a>.</p>
+    </section>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>Teknoloji antrepriz ak entèlijans atifisyèl</li>
+          <li>Repiblik Dominikèn</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/ht/terminos/">Kondisyon Sèvis la</a></li>
+          <li><a href="/ht/privacidad/">Politik Konfidansyalite</a></li>
+          <li><a href="/ht/cookies/">Règleman sou Cookies</a></li>
+          <li><a href="/ht/eliminacion-datos/">Efase done</a></li>
+          <li><a href="/ht/sla/">Akò sou Nivo Sèvis</a></li>
+          <li><a href="/ht/avisos-terceros/">Avi sou lojisyèl twazyèm pati</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Kontak</h4>
+        <ul>
+          <li><a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+          <li><a href="https://zyntello.com">zyntello.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy">© 2026 Zyntello, S.R.L. Tout dwa rezève.</p>
+  </div>
+</footer>
+
+</body>
+</html>

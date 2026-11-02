@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="ht">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Efase done itilizatè | Zyntello</title>
+<meta name="description" content="Enstriksyon pou mande efase done pèsonèl ou nan platfòm Zyntello a: kisa pou voye, ki kote, nan konbyen tan li trete ak ki enfòmasyon lalwa oblije kenbe.">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<link rel="canonical" href="https://zyntello.com/ht/eliminacion-datos/">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;padding:0 clamp(1.25rem,3vw,2.75rem)}
+
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:88ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:clamp(2rem,3.5vw,4rem);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:95ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:95ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note.ok{border-left-color:var(--ok);background:rgba(52,211,153,.05)}
+  .note b{color:#fff}
+
+  /* Bloque destacado de solicitud */
+  .box{border:1px solid rgba(96,165,250,.35);background:rgba(96,165,250,.06);border-radius:14px;
+    padding:1.4rem 1.5rem;margin:1.3rem 0}
+  .box h3{margin-top:0;color:#fff;font-size:1.05rem}
+  .box .mail{display:inline-block;margin:.35rem 0 .8rem;font-size:1.2rem;font-weight:700;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;text-decoration:none;
+    border-bottom:2px solid var(--ac)}
+  .box .mail:hover{color:var(--ac)}
+  .box .asunto{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--tx);
+    background:rgba(255,255,255,.07);padding:.2rem .5rem;border-radius:5px;font-size:.92em}
+
+  /* Pasos */
+  .pasos{list-style:none;counter-reset:p;margin:1.1rem 0 1rem;gap:.9rem}
+  .pasos li{counter-increment:p;position:relative;padding-left:2.6rem}
+  .pasos li::before{content:counter(p);position:absolute;left:0;top:.1rem;width:1.75rem;height:1.75rem;
+    display:flex;align-items:center;justify-content:center;border-radius:50%;
+    background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.4);
+    color:var(--ac);font-size:.82rem;font-weight:700;font-variant-numeric:tabular-nums}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:520px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+
+
+
+<!--zyntello:legales-->
+<link rel="alternate" hreflang="es" href="https://zyntello.com/eliminacion-datos/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/eliminacion-datos/">
+<link rel="alternate" hreflang="fr" href="https://zyntello.com/fr/eliminacion-datos/">
+<link rel="alternate" hreflang="it" href="https://zyntello.com/it/eliminacion-datos/">
+<link rel="alternate" hreflang="zh-Hans" href="https://zyntello.com/zh-Hans/eliminacion-datos/">
+<link rel="alternate" hreflang="zh-Hant" href="https://zyntello.com/zh-Hant/eliminacion-datos/">
+<link rel="alternate" hreflang="ar" href="https://zyntello.com/ar/eliminacion-datos/">
+<link rel="alternate" hreflang="ht" href="https://zyntello.com/ht/eliminacion-datos/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/eliminacion-datos/">
+<style>
+.idiomas{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:center;padding:.75rem 0;font-size:.82rem}
+.idiomas span{color:var(--tx3,#64748b);text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+.idiomas a{color:var(--tx3,#64748b);text-decoration:none;padding:.15rem .5rem;border-radius:99px;border:1px solid transparent}
+.idiomas a:hover{color:var(--ac,#60a5fa);border-color:var(--line2,rgba(255,255,255,.14))}
+.idiomas a[aria-current]{color:var(--ac,#60a5fa);border-color:var(--ac,#60a5fa)}
+.prevalece{margin:1rem 0;padding:.75rem 1rem;border-radius:.5rem;font-size:.86rem;
+  color:var(--tx2,#94a3b8);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.28)}
+.prevalece a{color:var(--ac,#60a5fa)}
+</style>
+<!--/zyntello:legales--></head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">Akèy</a>
+        <a href="/ht/terminos/">Kondisyon Sèvis la</a>
+        <a href="/ht/privacidad/">Politik Konfidansyalite</a>
+        <a href="/ht/sla/">SLA</a>
+        <a href="/ht/avisos-terceros/">Avi twazyèm pati</a>
+        <a href="https://zyntello.com/#contacto">Kontak</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">Dokiman legal</span>
+      <h1>Efase done itilizatè</h1>
+      <p class="lead">Paj sa a esplike <strong>kijan pou mande efase done pèsonèl ou</strong> nan platfòm <strong>Zyntello</strong> a: kisa pou w voye, ki kote, nan konbyen tan demann lan trete, kisa yo efase ak ki enfòmasyon lalwa oblije nou kenbe.</p>
+      <div class="meta">
+        <span>Dènye mizajou: <strong>31 out 2026</strong></span>
+        <span>An vigè: <strong>depi li pibliye</strong></span>
+        <span>Vèsyon: <strong><a class="verlink" href="#s8">1.1 — gade kontwòl chanjman</a></strong></span>
+        <span>Lang orijinal: <strong>panyòl</strong></span>
+      </div>
+    </div>
+  </div><!--zyntello:legales--><div class="idiomas" role="navigation" aria-label="Lang"><span>Lang:</span><a href="/eliminacion-datos/" hreflang="es" lang="es">Español</a><a href="/en/eliminacion-datos/" hreflang="en" lang="en">English</a><a href="/fr/eliminacion-datos/" hreflang="fr" lang="fr">Français</a><a href="/it/eliminacion-datos/" hreflang="it" lang="it">Italiano</a><a href="/zh-Hans/eliminacion-datos/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a><a href="/zh-Hant/eliminacion-datos/" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a><a href="/ar/eliminacion-datos/" hreflang="ar" lang="ar">العربية</a><a href="/ht/eliminacion-datos/" hreflang="ht" lang="ht" aria-current="true">Kreyòl ayisyen</a></div><!--/zyntello:legales--></header>
+
+<main class="wrap"><!--zyntello:legales-->
+<div class="prevalece" role="note">Sa a se yon tradiksyon pou fasilite lekti. Se vèsyon an panyòl la ki gen fòs legal. <a href="/eliminacion-datos/" hreflang="es" lang="es">Gade vèsyon an panyòl la</a>.</div><!--/zyntello:legales-->
+<div class="grid">
+
+  <aside class="toc">
+    <h2>Kontni</h2>
+    <ol>
+      <li><a href="#s1">Kijan pou mande efase</a></li>
+      <li><a href="#s2">Anvan ou mande: de sitiyasyon</a></li>
+      <li><a href="#s3">Kisa ki pase apre demann ou an</a></li>
+      <li><a href="#s4">Kisa yo efase</a></li>
+      <li><a href="#s5">Kisa yo kenbe epi poukisa</a></li>
+      <li><a href="#s6">Sispann resevwa mesaj</a></li>
+      <li><a href="#s7">Lòt dwa ak reklamasyon</a></li>
+      <li><a href="#s8">Kontwòl chanjman</a></li>
+    </ol>
+  </aside>
+
+  <article>
+
+    <section id="s1">
+      <h2 class="sec"><span class="n">1.</span> Kijan pou mande efase done ou yo</h2>
+
+      <div class="box">
+        <h3>Voye demann ou an pa imèl</h3>
+        <a class="mail" href="mailto:info@zyntello.com?subject=Solicitud%20de%20eliminaci%C3%B3n%20de%20datos">info@zyntello.com</a>
+        <p style="margin-bottom:.9rem">Ak sijè a <span class="asunto">Demann pou efase done</span></p>
+        <p style="margin-bottom:.4rem"><strong>Mete nan mesaj la:</strong></p>
+        <ul style="margin-bottom:0">
+          <li><strong>non konplè w</strong>;</li>
+          <li><strong>imèl</strong> oswa <strong>nimewo telefòn</strong> ou te enskri avè l la oswa yo te kontakte w avè l la;</li>
+          <li>si sa aplike, <strong>non antrepriz</strong> ki te kontakte w la oswa ki te anrejistre done w yo nan Platfòm nan;</li>
+          <li>si w vle, di si w vle efase <strong>tout bagay</strong> oswa yon sèl done an patikilye.</li>
+        </ul>
+      </div>
+
+      <p>Ou ka voye demann lan ban nou sou WhatsApp tou nan <a href="https://wa.me/18296399877">+1 829 639 9877</a>. Nan ka sa a n ap mande w konfime l pa imèl pou kite yon prèv ekri sou idantite w ak demann ou an.</p>
+
+      <div class="note">
+        <p><b>Ou pa bezwen gen yon kont.</b> Ou ka mande efase menmsi ou pa t janm enskri nan Zyntello: sifi yon antrepriz k ap sèvi ak platfòm nou an te mete done w yo ladan l oswa te voye yon mesaj ba ou depi ladan l.</p>
+      </div>
+
+      <p>Pou pwoteje enfòmasyon w, nou ka mande w yon <strong>verifikasyon idantite</strong> rezonab — pa egzanp, ekri depi imèl ki anrejistre a oswa konfime yon done ki nan dosye a. Nou p ap mande w modpas ou, ni done kat, ni dokiman ki pa nesesè pou idantifye w.</p>
+    </section>
+
+    <section id="s2">
+      <h2 class="sec"><span class="n">2.</span> Anvan ou mande: idantifye sitiyasyon w</h2>
+      <p>Zyntello se yon platfòm lòt antrepriz sèvi pou jere aktivite yo. Moun ki mèt done yo deside devan kiyès pou egzèse dwa a, kidonk gen de sitiyasyon diferan:</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Sitiyasyon w</th><th>Kiyès ki deside sou done w yo</th><th>Kisa nou fè</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Ou se yon itilizatè Zyntello</strong><br><span style="font-size:.92em">Ou gen oswa ou te gen yon kont, oswa ou se manm ekip yon kont.</span></td>
+              <td>Se <strong>Zyntello</strong> ki responsab la.</td>
+              <td>Nou trete epi nou egzekite demann ou an dirèkteman.</td>
+            </tr>
+            <tr>
+              <td><strong>Se yon antrepriz ki te mete done w yo</strong><br><span style="font-size:.92em">Ou se kliyan, anplwaye, founisè, rezidan, debitè oswa patisipan yon antrepriz k ap sèvi ak Zyntello.</span></td>
+              <td>Se <strong>antrepriz sa a</strong> ki responsab la. Zyntello sèlman ebèje epi trete done yo pou kont li.</td>
+              <td>Nou voye demann ou an bay antrepriz sa a, nou fè w konnen sa alekri epi nou kolabore pou yo trete l. Se li menm ki pran desizyon final la.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note warn">
+        <p><b>Si w pa konnen nan ki sitiyasyon ou ye, ekri nou kanmenm.</b> Ak imèl la oswa telefòn ou ban nou an, nou ka detèmine kiyès ki responsab done w yo epi di w sa. Okenn demann pa jete paske li te voye bay moun ki pa konsène a.</p>
+      </div>
+    </section>
+
+    <section id="s3">
+      <h2 class="sec"><span class="n">3.</span> Kisa ki pase apre demann ou an</h2>
+      <ol class="pasos">
+        <li><strong>Konfimasyon resepsyon.</strong> Nou reponn ou pou konfime nou resevwa demann lan, nòmalman nan <strong>2 jou ouvrab</strong>.</li>
+        <li><strong>Verifikasyon.</strong> Nou verifye idantite w epi nou jwenn kote done w yo ye. Si nou bezwen yon done anplis pou idantifye w, nou mande w li nan moman sa a.</li>
+        <li><strong>Detèminasyon responsab la.</strong> Si se yon antrepriz abonnè ki te mete done w yo, nou kontakte l epi nou fè w konnen bay kiyès demann lan voye.</li>
+        <li><strong>Egzekisyon.</strong> Nou efase oswa nou bloke done ki konsène yo.</li>
+        <li><strong>Repons final alekri.</strong> Nou fè w konnen kisa yo efase, kisa yo kenbe epi poukisa. <strong>Delè maksimòm: 30 jou</strong> depi resepsyon demann lan apre verifikasyon an.</li>
+      </ol>
+      <div class="note ok">
+        <p><b>Sèvis la gratis.</b> Nou pa fè peye pou trete yon demann efasman, epi nou pa egzije okenn rezon pou prezante l.</p>
+      </div>
+      <p>Done yo efase yo disparèt nan <strong>kopi sekou</strong> nou yo tou lè sik wotasyon an fini, ki se <strong>30 jou</strong>. Pandan tan sa a yo rete bloke epi yo pa sèvi pou okenn rezon.</p>
+      <div class="note">
+        <p><b>Kopi antrepriz abonnè a telechaje.</b> Platfòm nan pèmèt chak antrepriz abonnè telechaje yon fichye kopi sekou ak pwòp done pa l. Yon fwa li telechaje, fichye sa a rete nan men antrepriz la epi <strong>deyò pòte Zyntello</strong>: nou pa ka jwenn li ni efase l. Si se yon antrepriz abonnè ki te mete done w yo, se antrepriz sa a ki responsab efase kopi sa yo, epi n ap voye demann ou an ba li jan nou di anwo a.</p>
+      </div>
+    </section>
+
+    <section id="s4">
+      <h2 class="sec"><span class="n">4.</span> Kisa yo efase</h2>
+      <p>Dapre sitiyasyon w ak pòte w mande a, efasman an ka kouvri:</p>
+      <ul>
+        <li><strong>done kont ou ak aksè w</strong>: non, imèl, telefòn, modpas, wòl ak pèmisyon;</li>
+        <li><strong>done kontak ou</strong> nan rejis kliyan, founisè oswa kontak komèsyal yo;</li>
+        <li><strong>foto</strong> ou menm oswa byen w yo ki te mete ladan l;</li>
+        <li><strong>anrejistreman kote jewografik</strong> ki lye ak aktivite w;</li>
+        <li><strong>nòt, kòmantè ak anotasyon jesyon</strong> ki mansyone w;</li>
+        <li><strong>nimewo telefòn ou</strong> nan lis voye mesaj yo, ansanm ak anrejistreman demann dezabònman w lan;</li>
+        <li><strong>preferans kominikasyon</strong> ou ak konsantman maketing yo.</li>
+      </ul>
+    </section>
+
+    <section id="s5">
+      <h2 class="sec"><span class="n">5.</span> Kisa yo kenbe epi poukisa</h2>
+      <p>Gen enfòmasyon nou <strong>pa ka efase</strong> paske lalwa oblije kenbe yo oswa paske yo nesesè pou pwouve kèk reyalite. Nan ka sa yo done yo <strong>bloke</strong>: tretman yo limite ak rezon legal ki jistifye konsèvasyon an epi yo pa sèvi pou anyen lòt.</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>Kisa yo kenbe</th><th>Rezon</th><th>Delè</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Pyès fiskal ak fakti yo te emèt kote non w parèt</td><td>Obligasyon fiskal ak kontab</td><td>10 an, oswa delè lwa ki aplikab la fikse</td></tr>
+            <tr><td>Anrejistreman operasyon kredi ak peman</td><td>Obligasyon legal ak prèv relasyon an</td><td>Delè preskripsyon legal ki aplikab la</td></tr>
+            <tr><td>Anrejistreman travay ak sekirite sosyal</td><td>Obligasyon anplwayè a nan domèn travay</td><td>Delè lejislasyon travay la fikse</td></tr>
+            <tr><td>Prèv demann ou an ak repons nou an</td><td>Prèv konfòmite devan yon otorite</td><td>3 an</td></tr>
+            <tr><td>Anrejistreman dezabònman w nan mesaj yo</td><td>Nesesè pou <strong>nou pa kontakte w ankò</strong></td><td>Toutotan lis eksklizyon an egziste</td></tr>
+            <tr><td>Done ki nesesè pou defann yon reklamasyon k ap dewoule</td><td>Enterè lejitim nan yon litij</td><td>Jiska yon desizyon definitif</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <p><b>Sou anrejistreman dezabònman an.</b> Li ka sanble kontradiktwa pou nou kenbe telefòn ou oswa imèl ou apre w mande efase, men se sèl fason pou garanti ou p ap resevwa mesaj ankò: si nou ta efase done a nèt, yon chajman pita ta ka remete w ladan l. Nou kenbe l sèlman pou rezon mete w deyò nan lis la.</p>
+      </div>
+    </section>
+
+    <section id="s6">
+      <h2 class="sec"><span class="n">6.</span> Mwen vle sèlman sispann resevwa mesaj</h2>
+      <p>Si entansyon w se pa efase done w yo men <strong>sispann resevwa mesaj</strong>, demach la pi senp epi pi rapid:</p>
+      <ul>
+        <li><strong>WhatsApp</strong>: reponn mesaj la pou mande dezabònman, oswa bloke nimewo a. Si mesaj yo soti nan yon antrepriz k ap sèvi ak Zyntello, antrepriz sa a dwe sispann voye yo imedyatman. Si li pa fè sa, ekri nou epi n ap regle sa avè l.</li>
+        <li><strong>Imèl</strong>: sèvi ak lyen anilasyon ki parèt anba chak imèl komèsyal.</li>
+        <li><strong>Nan tout ka</strong>: ekri nou nan <a href="mailto:info@zyntello.com?subject=Baja%20de%20comunicaciones">info@zyntello.com</a> ak sijè a <span class="asunto">Dezabònman nan mesaj</span>. Nou trete l nan <strong>72 èdtan</strong> maksimòm.</li>
+      </ul>
+      <div class="note warn">
+        <p><b>Se pa Zyntello ki voye mesaj antrepriz abonnè yo voye yo.</b> Chak antrepriz responsab pou gen konsantman w epi pou trete dezabònman w lan. Nou menm nou bay zouti a ak mekanis pou anrejistre preferans sa a, epi nou kolabore lè yon demann pa trete.</p>
+      </div>
+      <p>Dezabònman nan mesaj komèsyal yo pa koupe mesaj ki senpleman <strong>tranzaksyonèl</strong> yo toutotan ou gen yon relasyon aktif ak antrepriz sa a (pa egzanp, fakti yon sèvis ou te pran).</p>
+    </section>
+
+    <section id="s7">
+      <h2 class="sec"><span class="n">7.</span> Lòt dwa ak reklamasyon</h2>
+      <p>Anplis efasman an, ou ka mande <strong>aksè</strong> ak done w yo, <strong>koreksyon</strong> yo, <strong>opoze</strong> ou ak yon tretman, epi — kote lalwa prevwa sa — <strong>pòtabilite</strong> ak <strong>limitasyon</strong> tretman an, menm jan ou ka <strong>retire yon konsantman</strong> ou te bay. Pwosedi a ak delè yo se menm sa ki dekri isit la.</p>
+      <p>Detay dwa w yo, règleman ki aplikab nan chak peyi ak kategori done nou trete yo nan <a href="/ht/privacidad/">Politik Konfidansyalite a</a> (seksyon 9 ak 10).</p>
+      <p>Si w jwenn demann ou an pa t trete kòmsadwa, ou ka depoze yon plent devan otorite pwoteksyon done yo oswa tribinal konpetan nan peyi w.</p>
+      <h3>Kontak</h3>
+      <ul>
+        <li><strong>Zyntello, S.R.L.</strong> — Repiblik Dominiken</li>
+        <li>Imèl: <a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+        <li>Telefòn ak WhatsApp: <a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+      </ul>
+    </section>
+
+    <section id="s8">
+      <h2 class="sec"><span class="n">8.</span> Kontwòl chanjman</h2>
+      <p>Rejis konplè ak kimilatif tout vèsyon dokiman sa a depi premye piblikasyon l. Chak antre endike vèsyon an, dat li antre an vigè ak kisa ki chanje. Antre anvan yo <strong>pa modifye ni efase</strong>.</p>
+      <div class="tbl chg">
+        <table>
+          <thead>
+            <tr><th>Vèsyon</th><th>Dat</th><th>Chanjman</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1.1 <span class="vig">An vigè</span></td>
+              <td>31 out 2026</td>
+              <td><strong>Kopi sekou antrepriz abonnè a telechaje.</strong> Nou presize yon limit nan efasman an: Platfòm nan pèmèt chak antrepriz abonnè telechaje yon fichye ak pwòp done pa l, epi yon fwa li telechaje fichye sa a rete deyò pòte Zyntello. Nou endike se antrepriz abonnè a ki responsab efase kopi sa yo epi demann ou an voye ba li. Pwosedi a, delè yo ak done yo efase oswa kenbe yo pa chanje.</td>
+            </tr>
+            <tr>
+              <td>1.0</td>
+              <td>28 jiyè 2026</td>
+              <td><strong>Premye piblikasyon.</strong> Enstriksyon pou efase done kòm yon dokiman endepandan: kijan pou mande l, de sitiyasyon yo dapre kiyès ki responsab, senk etap pwosedi a ak yon delè maksimòm 30 jou, kisa yo efase, kisa yo kenbe epi poukisa, dezabònman nan mesaj, lòt dwa ak kontwòl chanjman.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Ou ka mande yon kopi tèks konplè nenpòt vèsyon anvan lè w ekri <a href="mailto:info@zyntello.com">info@zyntello.com</a>.</p>
+    </section>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>Teknoloji antrepriz ak entèlijans atifisyèl</li>
+          <li>Repiblik Dominikèn</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/ht/terminos/">Kondisyon Sèvis la</a></li>
+          <li><a href="/ht/privacidad/">Règleman Konfidansyalite</a></li>
+          <li><a href="/ht/eliminacion-datos/">Efase done</a></li>
+          <li><a href="/ht/sla/">Akò sou Nivo Sèvis</a></li>
+          <li><a href="/ht/avisos-terceros/">Avi sou lojisyèl twazyèm pati</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Kontak</h4>
+        <ul>
+          <li><a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+          <li><a href="https://zyntello.com">zyntello.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy">© 2026 Zyntello, S.R.L. Tout dwa rezève.</p>
+  </div>
+</footer>
+
+</body>
+</html>

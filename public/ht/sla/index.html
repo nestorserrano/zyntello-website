@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="ht">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Akò sou Nivo Sèvis (SLA) | Zyntello</title>
+<meta name="description" content="Akò sou Nivo Sèvis Zyntello, S.R.L. — chanèl sipò, orè, priyorite, delè premye repons, lisans ki ladan l ak pòte sèvis la.">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<link rel="canonical" href="https://zyntello.com/ht/sla/">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;padding:0 clamp(1.25rem,3vw,2.75rem)}
+
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:88ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:clamp(2rem,3.5vw,4rem);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:95ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:95ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note.ok{border-left-color:var(--ok);background:rgba(52,211,153,.05)}
+  .note b{color:#fff}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:600px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+
+
+
+<!--zyntello:legales-->
+<link rel="alternate" hreflang="es" href="https://zyntello.com/sla/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/sla/">
+<link rel="alternate" hreflang="fr" href="https://zyntello.com/fr/sla/">
+<link rel="alternate" hreflang="it" href="https://zyntello.com/it/sla/">
+<link rel="alternate" hreflang="zh-Hans" href="https://zyntello.com/zh-Hans/sla/">
+<link rel="alternate" hreflang="zh-Hant" href="https://zyntello.com/zh-Hant/sla/">
+<link rel="alternate" hreflang="ar" href="https://zyntello.com/ar/sla/">
+<link rel="alternate" hreflang="ht" href="https://zyntello.com/ht/sla/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/sla/">
+<style>
+.idiomas{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:center;padding:.75rem 0;font-size:.82rem}
+.idiomas span{color:var(--tx3,#64748b);text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+.idiomas a{color:var(--tx3,#64748b);text-decoration:none;padding:.15rem .5rem;border-radius:99px;border:1px solid transparent}
+.idiomas a:hover{color:var(--ac,#60a5fa);border-color:var(--line2,rgba(255,255,255,.14))}
+.idiomas a[aria-current]{color:var(--ac,#60a5fa);border-color:var(--ac,#60a5fa)}
+.prevalece{margin:1rem 0;padding:.75rem 1rem;border-radius:.5rem;font-size:.86rem;
+  color:var(--tx2,#94a3b8);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.28)}
+.prevalece a{color:var(--ac,#60a5fa)}
+</style>
+<!--/zyntello:legales--></head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">Akèy</a>
+        <a href="/ht/terminos/">Kondisyon Sèvis la</a>
+        <a href="/ht/privacidad/">Konfidansyalite</a>
+        <a href="/ht/eliminacion-datos/">Efase done</a>
+        <a href="/ht/avisos-terceros/">Avi twazyèm pati</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">Dokiman legal</span>
+      <h1>Akò sou Nivo Sèvis</h1>
+      <p class="lead">Akò sa a (apati kounye a, <strong>SLA</strong> la) dekri sipò <strong>Zyntello, S.R.L.</strong> bay Abonnè platfòm <code>app.zyntello.com</code> li a: pa ki chanèl nou reponn, nan ki orè, ak ki priyorite, nan konbyen tan nou reponn, kisa ki ladan l ak kisa ki fakture apa. Li konplete <a href="/ht/terminos/">Kondisyon Jeneral yo</a> epi li pa ranplase yo.</p>
+      <div class="meta">
+        <span>Dènye mizajou: <strong>9 septanm 2026</strong></span>
+        <span>An vigè: <strong>depi li pibliye</strong></span>
+        <span>Vèsyon: <strong><a class="verlink" href="#s13">1.4 — gade kontwòl chanjman</a></strong></span>
+      </div>
+    </div>
+  </div><!--zyntello:legales--><div class="idiomas" role="navigation" aria-label="Lang"><span>Lang:</span><a href="/sla/" hreflang="es" lang="es">Español</a><a href="/en/sla/" hreflang="en" lang="en">English</a><a href="/fr/sla/" hreflang="fr" lang="fr">Français</a><a href="/it/sla/" hreflang="it" lang="it">Italiano</a><a href="/zh-Hans/sla/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a><a href="/zh-Hant/sla/" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a><a href="/ar/sla/" hreflang="ar" lang="ar">العربية</a><a href="/ht/sla/" hreflang="ht" lang="ht" aria-current="true">Kreyòl ayisyen</a></div><!--/zyntello:legales--></header>
+
+<main><!--zyntello:legales-->
+<div class="prevalece" role="note">Sa a se yon tradiksyon pou fasilite lekti. Se vèsyon an panyòl la ki gen fòs legal. <a href="/sla/" hreflang="es" lang="es">Gade vèsyon an panyòl la</a>.</div><!--/zyntello:legales-->
+  <div class="wrap">
+    <div class="grid">
+
+      <aside class="toc">
+        <h2>Kontni</h2>
+        <ol>
+          <li><a href="#s1">Idantifikasyon ak objè</a></li>
+          <li><a href="#s2">Definisyon</a></li>
+          <li><a href="#s3">Chanèl sipò</a></li>
+          <li><a href="#s4">Orè sèvis</a></li>
+          <li><a href="#s5">Klasifikasyon priyorite</a></li>
+          <li><a href="#s6">Delè premye repons</a></li>
+          <li><a href="#s7">Kisa sipò a gen ladan l</a></li>
+          <li><a href="#s8">Aksè sipò a nan kont lan</a></li>
+      <li><a href="#s9">Kisa ki pa ladan l epi kisa ki fakture</a></li>
+          <li><a href="#s10">Lisans itilizasyon ki ladan l</a></li>
+          <li><a href="#s11">Disponiblite sèvis la</a></li>
+          <li><a href="#s12">Eksklizyon ak limit</a></li>
+          <li><a href="#s13">Kontwòl chanjman</a></li>
+        </ol>
+      </aside>
+
+      <article>
+
+<section id="s1">
+  <h2 class="sec"><span class="n">1.</span> Idantifikasyon ak objè</h2>
+  <p><strong>Zyntello, S.R.L.</strong>, yon sosyete ki enskri nan Repiblik Dominiken, bay sèvis sipò ki dekri nan dokiman sa a pou tout Abonnè ki gen yon abònman valid nan platfòm <code>app.zyntello.com</code> la.</p>
+  <p>Kontak sipò: <a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a> · WhatsApp <a href="https://wa.me/18296399877">+1 829 639 9877</a> · Administrasyon: <a href="mailto:info@zyntello.com">info@zyntello.com</a>.</p>
+  <div class="note"><b>SLA sa a aplike toutotan abònman an ajou.</b> Yon kont ki sispann paske li pa peye kenbe done l yo dapre Kondisyon yo, men li rete deyò delè repons nou pran angajman sou yo isit la.</div>
+</section>
+
+<section id="s2">
+  <h2 class="sec"><span class="n">2.</span> Definisyon</h2>
+  <ul>
+    <li><strong>Siyalman:</strong> nenpòt demann sipò Abonnè a rapòte.</li>
+    <li><strong>Premye repons:</strong> moman kote yon moun nan Zyntello reponn siyalman an ak yon dyagnostik, yon kesyon presi oswa yon solisyon. Se <strong>pa</strong> akize resepsyon otomatik la.</li>
+    <li><strong>Èdtan ouvrab:</strong> èdtan ki pase andedan orè sèvis seksyon 4 la. Yon siyalman ki rapòte yon vandredi a 17:00 ak yon angajman 4 èdtan ouvrab resevwa repons pi ta lendi a 11:00.</li>
+    <li><strong>Tan rezolisyon:</strong> tan sa pran pou fèmen siyalman an. Li depann de nati li epi SLA sa a <strong>pa pran angajman</strong> sou li; sa nou pran angajman sou li se premye repons lan.</li>
+  </ul>
+  <div class="note warn"><b>Poukisa nou pa pran angajman sou tan rezolisyon an.</b> Yon kesyon sou itilizasyon rezoud nan menm repons lan; yon defo ki mande korije kòd, teste l epi deplwaye l, non. Pwomèt yon sèl delè pou toude bagay sa yo ta vle di manke l nan mwatye ka yo.</div>
+</section>
+
+<section id="s3">
+  <h2 class="sec"><span class="n">3.</span> Chanèl sipò</h2>
+  <p>Ou mande sipò pa nenpòt nan chanèl sa yo:</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Chanèl</th><th>Kijan</th><th>Pou kisa li pi bon</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Imèl</strong></td>
+          <td><a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a></td>
+          <td>Chanèl prensipal la. Li kite yon prèv ekri sou tout ka a epi li pèmèt tache kaptire ekran ak fichye. Imèl ou <strong>antre otomatikman nan ka a</strong>: si w reponn yon mesaj nou voye, repons ou an ajoute nan menm ka a, epi si w ekri pou premye fwa yo louvri yon ka nouvo.</td>
+        </tr>
+        <tr>
+          <td><strong>WhatsApp</strong></td>
+          <td><a href="https://wa.me/18296399877">+1 829 639 9877</a></td>
+          <td>Kesyon kout ak avi ijan. Tout ka ki mande swivi pase sou imèl.</td>
+        </tr>
+        <tr>
+          <td><strong>Fòmilè wèb</strong></td>
+          <td><a href="https://zyntello.com/#contacto">zyntello.com</a></td>
+          <td>Lè ou poko gen aksè ni nan platfòm nan ni nan imèl ki anrejistre a.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note"><b>Kisa ki akselere repons lan.</b> Di ki antrepriz ak ki modil sa rive, kisa ou t ap tann epi kisa ki pase, epi tache yon kaptire ekran. Ak twa done sa yo pifò siyalman yo rezoud nan premye repons lan, san ale vini.</div>
+</section>
+
+<section id="s4">
+  <h2 class="sec"><span class="n">4.</span> Orè sèvis</h2>
+  <p><strong>Lendi jiska vandredi, soti 8:00 rive 18:00</strong>, lè Repiblik Dominiken (GMT-4), eksepte jou ferye nasyonal dominiken yo.</p>
+  <p>Deyò orè sa a ou ka rapòte siyalman pa nenpòt chanèl: yo anrejistre epi delè repons lan kòmanse konte nan kòmansman jou ouvrab ki vini an.</p>
+</section>
+
+<section id="s5">
+  <h2 class="sec"><span class="n">5.</span> Klasifikasyon priyorite</h2>
+  <p>Se Zyntello ki bay priyorite a dapre <strong>enpak reyèl</strong> la sou aktivite Abonnè a, pa dapre jan siyalman an rapòte an ijans. Si Abonnè a pa dakò ak klasman an, li ka mande yon revizyon epi presize ki enpak konkrè a.</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Priyorite</th><th>Kisa sa vle di</th><th>Egzanp</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Kritik</strong></td>
+          <td>Platfòm nan pa disponib, oswa yon modil ki anba kontra pa ka itilize pou tout antrepriz la epi pa gen altènativ.</td>
+          <td>Pa ka konekte · Pa ka fakture · Yon modil antye bay erè</td>
+        </tr>
+        <tr>
+          <td><strong>Wo</strong></td>
+          <td>Yon fonksyon enpòtan pa mache oswa li bay done ki pa kòrèk, men gen yon fason pou kontinye travay.</td>
+          <td>Yon rapò montre chif ki pa kadre · Yon dokiman pa ka anile</td>
+        </tr>
+        <tr>
+          <td><strong>Nòmal</strong></td>
+          <td>Yon fonksyon segondè pa mache, oswa gen yon kesyon sou itilizasyon oswa konfigirasyon.</td>
+          <td>Kijan pou konfigire yon nimewotasyon · Yon filtè pa aplike jan nou tann li</td>
+        </tr>
+        <tr>
+          <td><strong>Ba</strong></td>
+          <td>Sijesyon, amelyorasyon ak kesyon ki pa afekte travay la.</td>
+          <td>Demann pou yon kolòn nouvo nan yon lis · Kesyon sou yon fonksyon k ap vini</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s6">
+  <h2 class="sec"><span class="n">6.</span> Delè premye repons</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Priyorite</th><th>Premye repons</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Kritik</strong></td><td>4 èdtan ouvrab</td></tr>
+        <tr><td><strong>Wo</strong></td><td>8 èdtan ouvrab</td></tr>
+        <tr><td><strong>Nòmal</strong></td><td>1 jou ouvrab</td></tr>
+        <tr><td><strong>Ba</strong></td><td>3 jou ouvrab</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Delè a konte depi siyalman an rive pa youn nan chanèl seksyon 3 yo, andedan orè seksyon 4 la.</p>
+  <div class="note"><b>Nou tcheke imèl la chak 15 minit.</b> Mesaj ki rive nan <a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a> antre nan ka a atravè yon pwosesis otomatik ki egzekite <strong>chak kenz minit</strong>, konsa ant moman Abonnè a voye a ak anrejistreman an nan sistèm nan ka pase jiska 15 minit. Tan sa a <strong>pa dedui</strong> nan delè seksyon sa a: revèy la kòmanse depi Abonnè a voye imèl li a, pa depi sistèm nou an trete l. Nou deklare sa isit la paske se yon reta ki pou nou epi li pa ka konte kont Abonnè a.</div>
+  <div class="note warn"><b>Si nou pa respekte delè a.</b> Abonnè a ka monte ka a pi wo lè l ekri <a href="mailto:info@zyntello.com">info@zyntello.com</a> ak sijè orijinal la. Yon manke repete epi dokimante nan delè seksyon sa a bay Abonnè a dwa pou anile abònman l san penalite, ak efè nan fen peryòd li deja peye a.</div>
+</section>
+
+<section id="s7">
+  <h2 class="sec"><span class="n">7.</span> Kisa sipò a gen ladan l</h2>
+  <p>San okenn frè anplis, andedan abònman ki valid la:</p>
+  <ul>
+    <li><strong>Korije defo nan platfòm nan.</strong> Si yon bagay pa mache jan dokimantasyon an di a, korije l se obligasyon nou epi sa pa janm fakture.</li>
+    <li><strong>Kesyon sou itilizasyon</strong> modil ki anba kontra yo.</li>
+    <li><strong>Konfigirasyon</strong> modil ki anba kontra yo: nimewotasyon, kont kontab, taks, pèmisyon ak paramèt.</li>
+    <li><strong>Pwoblèm aksè</strong>: retwouve modpas, verifikasyon an de etap ak itilizatè ki bloke.</li>
+    <li><strong>Oryantasyon</strong> sou kijan pou pwofite yon fonksyon ki deja la.</li>
+  </ul>
+  <div class="note ok"><b>Rapòte yon defo pa janm koute anyen.</b> Si se platfòm nan ki lakòz pwoblèm nan, korije l antre toujou nan sipò ki ladan l, kèlkeswa tan sa pran.</div>
+
+  <h3>7.1. Asistan èd ak entèlijans atifisyèl la</h3>
+  <p>Andedan platfòm nan gen yon <strong>asistan ki reponn kesyon sou itilizasyon</strong> apati dokimantasyon Zyntello a. Li fèt pou rezoud kesyon ki pi kouran yo menm kote a, san tann yon ajan reponn.</p>
+  <ul>
+    <li><strong>Li reponn sèlman sou baz dokimantasyon nou an.</strong> Lè dokimantasyon an pa kouvri kesyon an, <strong>li di sa epi li pwopoze louvri yon ka</strong> olye pou l envante yon repons. Nou pito pa reponn pase reponn mal: yon enstriksyon envante sou yon sistèm administratif ka fè w pèdi done.</li>
+    <li><strong>Li pa egzekite okenn aksyon.</strong> Li esplike kijan pou fè bagay yo; li pa fè yo pou ou epi li pa modifye enfòmasyon w.</li>
+    <li><strong>Li gen yon kota itilizasyon</strong> ki ladan abònman an, ak yon limit pa itilizatè ak pa jou pou yon sèl moun pa fin itilize sa lòt yo.</li>
+  </ul>
+  <div class="note ok"><b>Fini kota asistan an PA kite w san sipò.</b> Si li fini, chat ak entèlijans atifisyèl la kanpe, men <strong>imèl ak ka yo rete ladan l egzakteman menm jan</strong>: rapòte yon pwoblèm sistèm pa janm depann de yon kota.</div>
+  <div class="note"><b>Sou nivo itilizasyon yo.</b> Abònman an gen yon kantite kesyon pou asistan an ladan l; si aktivite w bezwen plis, gen pake elaji ak yon nivo itilizasyon laj ak yon politik itilizasyon jis, ki <strong>deklare plafon li alekri</strong>. Nou pa vann okenn nivo kòm «san limit». Yon asistan dedye sou done Abonnè a oswa entegre ak sistèm twazyèm pati rete <strong>deyò Akò sa a</strong> epi li pran yon kontra apa.</div>
+  <div class="note ok"><b>Yon repons ki pa t sèvi w pa pran kota w.</b> Si asistan an pa t konn reponn, kesyon sa a pa dedui: li pa ta gen sans pou nou fè w peye pou yon repons ou pa t jwenn.</div>
+</section>
+
+<section id="s8">
+  <h2 class="sec"><span class="n">8.</span> Aksè sipò a nan kont lan</h2>
+  <p>Gen siyalman yo pa ka dyagnostike depi deyò: yon ekriti ki pa kadre, yon dokiman ki pa soti, yon pèmisyon ki pa fè efè. Pou rezoud yo, yon ajan sipò ka bezwen <strong>antre nan espas travay Abonnè a epi gade done li yo</strong>. Seksyon sa a di ak ki limit sa fèt epi — sitou — kijan Abonnè a verifye sa pou kont li.</p>
+
+  <h3>8.1. Kijan ajan an antre</h3>
+  <ul>
+    <li><strong>Li pa janm sèvi ak idantifyan yon moun nan ekip Abonnè a.</strong> Nou pa mande ni nou pa sèvi ak non itilizatè ni modpas okenn moun nan ekip ou. Ajan an antre ak yon <strong>kont teknik Zyntello</strong>, ki separe ak pa w yo.</li>
+    <li><strong>Tout aksyon siyen ak non ajan reyèl la</strong>, pa ak non kont teknik la ni ak non yon itilizatè Abonnè a. Nan jounal la ou wè kiyès ki fè kisa.</li>
+    <li>Kont teknik la <strong>pa pran okenn nan lisans ki ladan</strong> plan w lan (gade seksyon 9) epi li pa parèt nan lis itilizatè w yo ni nan lis chwa sistèm nan.</li>
+    <li>Ajan an dwe gentan verifye idantite l an de etap pou li ka louvri aksè a.</li>
+  </ul>
+
+  <h3>8.2. Lekti sèlman pa defo</h3>
+  <p>Aksè a <strong>kòmanse an lekti sèlman</strong>: ajan an wè, men sistèm nan anpeche l anrejistre okenn chanjman. Pou modifye yon bagay li dwe <strong>monte nivo sesyon an epi deklare yon rezon</strong>, epi nivo sa a <strong>ekspire pou kont li</strong> — li pa rete ouvè san fen menmsi ajan an bliye fèmen l.</p>
+
+  <h3>8.3. Kisa ki anrejistre</h3>
+  <p>Pou chak aksè nou kenbe ajan an, dat ak lè antre ak soti, rezon ki deklare a, adrès IP la ak si aksè a te otorize oswa si li te an ijans. Si sesyon an te monte an ekriti, nou anrejistre tou <strong>detay chak done ki modifye</strong>.</p>
+
+  <h3>8.4. Aksè ijans</h3>
+  <p>Lè siyalman an pa pèmèt tann yon otorizasyon davans — yon blokaj ki kite Abonnè a san l pa ka travay, pa egzanp — ajan an ka antre epi deklare rezon an. Aksè sa a <strong>make kòm pa otorize</strong> epi mèt kont lan <strong>resevwa yon avi</strong>. Se pa yon pèmisyon an silans: se yon aksè ki deklare epi ki parèt.</p>
+
+  <h3>8.5. Kijan ou menm ou kontwole sa</h3>
+  <div class="note ok"><b>Ou pa bezwen mande nou sa.</b> Mèt kont lan konsilte istorik konplè aksè sipò yo nenpòt kilè, depi nan <strong>Konfigirasyon → Aksè sipò</strong>: kiyès ki antre, kilè, poukisa, ak ki nivo epi si aksè a te otorize.</div>
+
+  <h3>8.6. Kisa nou pa fè</h3>
+  <ul>
+    <li>Nou pa antre nan done w yo pou rezon komèsyal, estatistik ni pou antrene modèl entèlijans atifisyèl.</li>
+    <li>Nou pa pran kopi enfòmasyon w deyò sa ki nesesè pou rezoud siyalman an.</li>
+    <li>Nou pa sèvi ak aksè sipò a pou fè operasyon biznis pou kont Abonnè a: si fòk nou antre oswa korije done an gwo kantite, se yon travay ki fakture epi li devize apa (gade seksyon 10).</li>
+  </ul>
+      <h3>8.7. Pòtay ka yo</h3>
+      <p><strong>Nenpòt itilizatè</strong> Abonnè a ka louvri yon ka depi nan <strong>Sipò</strong> nan pwòp sistèm li, san pèmisyon espesyal: moun ki rankontre pwoblèm nan se li menm ki ka dekri l pi byen. Chak ka resevwa yon nimewo (<code>SOP-000123</code>) ki pèmèt swiv li nan nenpòt nan twa chanèl yo.</p>
+      <ul>
+        <li>Abonnè a wè <strong>tout fil</strong> ka li a epi li ka reponn ak tache fichye nenpòt kilè.</li>
+        <li>Pandan n ap tann yon repons nan men w, ka a make konsa epi <strong>tan sa a pa konte</strong> nan delè seksyon 6 yo: sa ta vle di mete sou do Zyntello yon reta ki pa pou li.</li>
+        <li>Yon ka make kòm fakturab sèlman si Abonnè a <strong>bay otorizasyon anvan</strong> travay la kòmanse (seksyon 10). Rapòte yon defo nan platfòm nan pa janm koute anyen.</li>
+      </ul>
+
+</section>
+
+<section id="s9">
+  <h2 class="sec"><span class="n">9.</span> Kisa ki pa ladan l epi kisa ki fakture</h2>
+  <p>Travay sa yo <strong>devize epi fakture apa</strong>, epi <strong>okenn ladan yo pa egzekite san apwobasyon davans alekri</strong> nan men Abonnè a:</p>
+  <ul>
+    <li><strong>Enpòtasyon oswa chajman an gwo</strong> done depi yon lòt sistèm.</li>
+    <li><strong>Fòmasyon</strong> pèsonèl Abonnè a.</li>
+    <li><strong>Rapò sou mezi</strong> ki diferan de sa platfòm nan ofri deja.</li>
+    <li><strong>Devlopman oswa adaptasyon</strong> espesifik pou Abonnè a.</li>
+    <li><strong>Restorasyon kopi sekou</strong> pou yon rezon ki pa sot nan platfòm nan.</li>
+    <li><strong>Koreksyon done</strong> lè se pa platfòm nan ki lakòz erè a.</li>
+  </ul>
+  <div class="note warn"><b>Anyen ki fakturab pa avanse san otorizasyon.</b> Anvan nou egzekite nenpòt nan travay sa yo nou voye yon devi ak pòte l ak montan l. Se sèlman moun ki gen pèmisyon pou jere fakturasyon kont lan ki ka apwouve l. San apwobasyon sa a travay la pa fèt epi pa gen èdtan ki akimile.</div>
+</section>
+
+<section id="s10">
+  <h2 class="sec"><span class="n">10.</span> Lisans itilizasyon ki ladan l</h2>
+  <p>Chak abònman gen de kalite aksè ladan l, ki dekri an detay nan <a href="/ht/terminos/#s5">seksyon 5.3 nan Kondisyon yo</a>:</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Kalite</th><th>Konbyen ladan l</th><th>Pòte</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Itilizatè Abonnè a</strong></td>
+          <td>3 pa kont<br>(mèt kont lan ladan l)</td>
+          <td>Yo gen aksè nan <strong>tout</strong> antrepriz kont lan, ak pèmisyon wòl yo: Administratè, Tranzaksyon, Konsiltasyon oswa Rapò.</td>
+        </tr>
+        <tr>
+          <td><strong>Itilizatè entèn</strong></td>
+          <td>5 pa kont</td>
+          <td>Chak youn asiyen nan <strong>yon sèl antrepriz</strong>; pèmisyon yo, ki konfigirab modil pa modil, kouvri antrepriz sa a sèlman.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Ou ka agrandi toude kota yo lè w ekri <a href="mailto:info@zyntello.com">info@zyntello.com</a>; agrandisman an fakture dapre tarif ki an vigè a. Yon itilizatè ki dezaktive kontinye pran lisans li jiskaske yo retire l nan kont lan. Kont teknik Zyntello sèvi pou bay sipò yo <strong>pa pran lisans Abonnè a</strong>.</p>
+</section>
+
+<section id="s11">
+  <h2 class="sec"><span class="n">11.</span> Disponiblite sèvis la</h2>
+  <p>Zyntello chèche pi gwo disponiblite posib pou platfòm nan epi li fè kopi sekou regilye ak verifikasyon entegrite, dapre <a href="/ht/terminos/#s18">seksyon 18 nan Kondisyon yo</a>.</p>
+  <div class="note warn"><b>Se Kondisyon yo ki fikse objektif disponiblite a, pa dokiman sa a.</b> <a href="/ht/terminos/#s18">Kondisyon Sèvis yo</a> deklare yon objektif mansyèl <strong>99.5&nbsp;%</strong> epi yo presize ke, sof si gen yon akò eksprès alekri, se yon <strong>objektif operasyonèl epi non yon angajman ak penalite</strong>: platfòm nan ebèje sou enfrastrikti twazyèm pati nou pa kontwole disponiblite yo. SLA sa a pa chanje objektif sa a ni li pa ajoute penalite sou li. Sa li pran angajman sou li se <strong>delè premye repons</strong> seksyon 6 yo ak kominikasyon alè sou nenpòt entèripsyon enpòtan.</div>
+  <p>Nou avèti sou <strong>fenèt antretyen pwograme yo</strong> omwen 24 èdtan davans pa imèl, epi nou chèche fè yo deyò orè sèvis la.</p>
+</section>
+
+<section id="s12">
+  <h2 class="sec"><span class="n">12.</span> Eksklizyon ak limit</h2>
+  <p>SLA sa a pa kouvri:</p>
+  <ul>
+    <li>Pàn nan koneksyon entènèt, aparèy oswa rezo Abonnè a.</li>
+    <li>Entèripsyon ki soti nan sèvis twazyèm pati ki pa gen rapò ak Zyntello: pasrèl peman, founisè imèl, administrasyon fiskal oswa sèvis mesaj.</li>
+    <li>Itilizasyon platfòm nan yon fason ki kontrè ak Kondisyon yo.</li>
+    <li>Konsekans done Abonnè a oswa itilizatè l yo te mete mal.</li>
+    <li>Modil ki pa anba kontra.</li>
+    <li>Kont demonstrasyon an, ki gen done yo efase chak jou.</li>
+    <li>Ka fòs majè yo prevwa nan Kondisyon yo.</li>
+  </ul>
+  <div class="note"><b>Desizyon fiskal ak kontab.</b> Zyntello bay zouti a; responsablite sou deklarasyon yo, ekriti yo ak chwa kont yo se pou Abonnè a ak kontab li, dapre <a href="/ht/terminos/#s17">seksyon 17 nan Kondisyon yo</a>.</div>
+</section>
+
+<section id="s13">
+  <h2 class="sec"><span class="n">13.</span> Kontwòl chanjman</h2>
+  <p>Rejis konplè ak kimilatif tout vèsyon dokiman sa a depi premye piblikasyon l. Vèsyon anvan yo disponib sou demann lè w ekri <a href="mailto:info@zyntello.com">info@zyntello.com</a>.</p>
+  <div class="note"><b>Kijan pou li vèsyon yo.</b> Yon chanjman <strong>vèsyon minè</strong> (1.0 &rarr; 1.1) presize oswa elaji sa ki deja dekri a san chanje angajman yo. Yon chanjman <strong>vèsyon majè</strong> (1.x &rarr; 2.0) modifye delè, pòte oswa kondisyon, epi nou kominike l <strong>30 jou davans</strong>.</div>
+  <div class="tbl chg">
+    <table>
+      <thead>
+        <tr><th>Vèsyon</th><th>Dat</th><th>Chanjman</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1.4 <span class="vig">An vigè</span></td>
+          <td>9 septanm 2026</td>
+          <td><strong>Asistan èd ak entèlijans atifisyèl la.</strong> Nou ajoute seksyon <strong>7.1</strong>, ki deklare yon fonksyon nouvo ki ladan abònman an: yon asistan ki reponn kesyon sou itilizasyon <strong>apati dokimantasyon Zyntello a</strong> epi ki, lè dokimantasyon an pa kouvri kesyon an, <strong>di sa epi pwopoze louvri yon ka</strong> olye pou l envante — nou pito pa reponn pase reponn mal, paske yon enstriksyon envante sou yon sistèm administratif ka fè pèdi done. Nou deklare li <strong>pa egzekite okenn aksyon</strong>, li gen yon <strong>kota itilizasyon</strong> ak limit pa itilizatè ak pa jou, epi sitou ke <strong>fini kota a PA kite Abonnè a san sipò</strong>: imèl ak ka yo rete ladan l menm jan, paske rapòte yon pwoblèm sistèm pa ka depann de yon kota. Nou deklare tou ke <strong>pa gen okenn nivo ki vann kòm «san limit»</strong> — nivo ki pi wo a deklare plafon li alekri — epi ke <strong>yon repons ki pa t sèvi pa pran kota</strong>. <strong>Pa gen chanjman</strong> nan chanèl yo, orè a, priyorite yo, delè premye repons nou pran angajman sou yo, lisans ki ladan l yo ni objektif disponiblite a.</td>
+        </tr>
+        <tr>
+          <td>1.3</td>
+          <td>9 septanm 2026</td>
+          <td><strong>Imèl la antre nan ka a pou kont li.</strong> Nou deklare nan seksyon <strong>3</strong> ke yon mesaj ki voye nan <strong>soporte@zyntello.com</strong> antre <strong>otomatikman</strong> nan ka a — repons yon imèl nou voye ajoute nan menm ka a; yon imèl nouvo louvri yon lòt — epi nan seksyon <strong>6</strong> ke pwosesis sa a egzekite <strong>chak kenz minit</strong>, kidonk ant moman Abonnè a voye a ak anrejistreman an ka pase jiska 15 minit. Nou deklare tou, epi se sa ki konte, ke <strong>tan sa a pa dedui</strong> nan delè premye repons yo: revèy la kòmanse depi Abonnè a voye a, pa depi sistèm nou an trete — sa ta vle di mete sou do Abonnè a yon reta ki pou nou. <strong>Pa gen chanjman</strong> nan chanèl yo, orè a, klasifikasyon priyorite yo, delè premye repons nou pran angajman sou yo, lisans ki ladan l yo ni objektif disponiblite a.</td>
+        </tr>
+        <tr>
+          <td>1.2</td>
+          <td>7 septanm 2026</td>
+          <td><strong>Pòtay ka yo.</strong> Nou ajoute seksyon <strong>8.7</strong>: <strong>nenpòt itilizatè</strong> Abonnè a louvri yon ka depi nan pwòp sistèm li, san pèmisyon espesyal; chak ka resevwa yon nimewo ki pèmèt swiv li nan twa chanèl yo; Abonnè a wè tout fil la epi li ka reponn ak tache fichye. Nou deklare tou ke tan yon ka pase <strong>ap tann repons Abonnè a pa konte</strong> nan delè premye repons seksyon 6 yo — sa ta vle di mete sou do Zyntello yon reta ki pa pou li — epi nou voye nan seksyon 10 pou otorizasyon davans sa ki fakturab. <strong>Pa gen chanjman</strong> nan chanèl yo, orè a, priyorite yo, delè nou pran angajman sou yo ni lisans ki ladan l yo.</td>
+        </tr>
+        <tr>
+          <td>1.1</td>
+          <td>6 septanm 2026</td>
+          <td><strong>Aksè sipò a nan kont lan.</strong> Nou ajoute seksyon <strong>8</strong>, ki deklare yon operasyon vèsyon anvan an pa t kouvri: pou dyagnostike kèk siyalman, yon ajan sipò ka bezwen antre nan espas travay Abonnè a epi gade done li yo. Nou deklare limit yo — ajan an <strong>pa janm</strong> sèvi ak idantifyan yon moun nan ekip Abonnè a men ak yon kont teknik ki pa pran lisans ni ki pa parèt nan lis li yo; aksè a kòmanse an <strong>lekti sèlman</strong> epi monte l mande deklare yon rezon epi li ekspire pou kont li; nou anrejistre ajan an, dat la, rezon an, IP la ak detay sa ki modifye; yon aksè san otorizasyon davans make konsa epi li avèti mèt kont lan — epi, sitou, ke Abonnè a <strong>kontwole sa pou kont li</strong> depi nan <strong>Konfigirasyon → Aksè sipò</strong>, san li pa mande nou. Nou deklare tou kisa nou PA fè: ni rezon komèsyal, estatistik oswa antrènman modèl, ni operasyon biznis pou kont Abonnè a — sa se travay fakturab seksyon 10 la. Ansyen seksyon 8 jiska 12 yo vin nimewote 9 jiska 13; kontni yo pa chanje. <strong>Pa gen chanjman</strong> nan chanèl yo, orè a, klasifikasyon priyorite yo, delè premye repons nou pran angajman sou yo, lisans ki ladan l yo ni objektif disponiblite a.</td>
+        </tr>
+        <tr>
+          <td>1.0</td>
+          <td>5 septanm 2026</td>
+          <td><strong>Premye piblikasyon.</strong> Dokiman inisyal ak 12 seksyon: idantifikasyon ak objè, definisyon, chanèl sipò, orè sèvis, klasifikasyon priyorite an kat nivo, delè premye repons nou pran angajman sou yo, pòte sipò ki ladan l, travay fakturab ak apwobasyon davans obligatwa, lisans itilizasyon ki ladan l (3 itilizatè Abonnè a ak 5 itilizatè entèn), disponiblite sèvis la — ki gen objektif 99.5&nbsp;% li fikse nan <a href="/ht/terminos/#s18">Kondisyon yo</a>, pa nan dokiman sa a — eksklizyon ak kontwòl chanjman.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+      </article>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>Repiblik Dominikèn</li>
+          <li><a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Dokiman legal</h4>
+        <ul>
+          <li><a href="/ht/terminos/">Kondisyon Jeneral</a></li>
+          <li><a href="/ht/privacidad/">Règleman Konfidansyalite</a></li>
+          <li><a href="/ht/cookies/">Règleman sou Cookies</a></li>
+          <li><a href="/ht/eliminacion-datos/">Efase done</a></li>
+          <li><a href="/ht/sla/">Akò sou Nivo Sèvis</a></li>
+          <li><a href="/ht/avisos-terceros/">Avi sou lojisyèl twazyèm pati</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy">&copy; 2026 Zyntello, S.R.L. Tout dwa rezève.</div>
+  </div>
+</footer>
+
+</body>
+</html>
