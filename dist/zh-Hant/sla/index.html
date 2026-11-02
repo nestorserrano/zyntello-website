@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>服務級別協議（SLA）| Zyntello</title>
+<meta name="description" content="Zyntello, S.R.L. 服務級別協議 —— 支援渠道、服務時間、優先順序、首次響應時限、已含許可與服務範圍。">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<link rel="canonical" href="https://zyntello.com/zh-Hant/sla/">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;padding:0 clamp(1.25rem,3vw,2.75rem)}
+
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:88ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:clamp(2rem,3.5vw,4rem);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:95ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:95ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note.ok{border-left-color:var(--ok);background:rgba(52,211,153,.05)}
+  .note b{color:#fff}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:600px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+
+
+
+<!--zyntello:legales-->
+<link rel="alternate" hreflang="es" href="https://zyntello.com/sla/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/sla/">
+<link rel="alternate" hreflang="fr" href="https://zyntello.com/fr/sla/">
+<link rel="alternate" hreflang="it" href="https://zyntello.com/it/sla/">
+<link rel="alternate" hreflang="zh-Hans" href="https://zyntello.com/zh-Hans/sla/">
+<link rel="alternate" hreflang="zh-Hant" href="https://zyntello.com/zh-Hant/sla/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/sla/">
+<style>
+.idiomas{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:center;padding:.75rem 0;font-size:.82rem}
+.idiomas span{color:var(--tx3,#64748b);text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+.idiomas a{color:var(--tx3,#64748b);text-decoration:none;padding:.15rem .5rem;border-radius:99px;border:1px solid transparent}
+.idiomas a:hover{color:var(--ac,#60a5fa);border-color:var(--line2,rgba(255,255,255,.14))}
+.idiomas a[aria-current]{color:var(--ac,#60a5fa);border-color:var(--ac,#60a5fa)}
+.prevalece{margin:1rem 0;padding:.75rem 1rem;border-radius:.5rem;font-size:.86rem;
+  color:var(--tx2,#94a3b8);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.28)}
+.prevalece a{color:var(--ac,#60a5fa)}
+</style>
+<!--/zyntello:legales--></head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">首頁</a>
+        <a href="/zh-Hant/terminos/">服務條款</a>
+        <a href="/zh-Hant/privacidad/">隱私</a>
+        <a href="/zh-Hant/eliminacion-datos/">資料刪除</a>
+        <a href="/zh-Hant/avisos-terceros/">第三方聲明</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">法律文件</span>
+      <h1>服務級別協議</h1>
+      <p class="lead">本協議（以下簡稱 <strong>SLA</strong>）說明 <strong>Zyntello, S.R.L.</strong> 向其平臺 <code>app.zyntello.com</code> 的訂閱方提供的支援服務：通過哪些渠道受理、服務時間、優先順序劃分、響應時限、哪些內容已包含以及哪些另行計費。本協議是<a href="/zh-Hant/terminos/">服務條款</a>的補充，不構成替代。</p>
+      <div class="meta">
+        <span>最後更新： <strong>2026 年 9 月 9 日</strong></span>
+        <span>生效： <strong>自發布之日起</strong></span>
+        <span>版本： <strong><a class="verlink" href="#s13">1.4 — 參見變更記錄</a></strong></span>
+      </div>
+    </div>
+  </div><!--zyntello:legales--><div class="idiomas" role="navigation" aria-label="語言"><span>語言:</span><a href="/sla/" hreflang="es" lang="es">Español</a><a href="/en/sla/" hreflang="en" lang="en">English</a><a href="/fr/sla/" hreflang="fr" lang="fr">Français</a><a href="/it/sla/" hreflang="it" lang="it">Italiano</a><a href="/zh-Hans/sla/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a><a href="/zh-Hant/sla/" hreflang="zh-Hant" lang="zh-Hant" aria-current="true">繁體中文</a></div><!--/zyntello:legales--></header>
+
+<main><!--zyntello:legales-->
+<div class="prevalece" role="note">本文為便於理解提供的譯文。具有法律拘束力的版本為西班牙語版本。 <a href="/sla/" hreflang="es" lang="es">檢視西班牙語版本</a>.</div><!--/zyntello:legales-->
+  <div class="wrap">
+    <div class="grid">
+
+      <aside class="toc">
+        <h2>目錄</h2>
+        <ol>
+          <li><a href="#s1">主體與目的</a></li>
+          <li><a href="#s2">定義</a></li>
+          <li><a href="#s3">支援渠道</a></li>
+          <li><a href="#s4">服務時間</a></li>
+          <li><a href="#s5">優先順序劃分</a></li>
+          <li><a href="#s6">首次響應時限</a></li>
+          <li><a href="#s7">支援服務包含哪些內容</a></li>
+          <li><a href="#s8">支援人員訪問帳戶</a></li>
+      <li><a href="#s9">不包含的內容與另行計費項</a></li>
+          <li><a href="#s10">已含使用許可</a></li>
+          <li><a href="#s11">服務可用性</a></li>
+          <li><a href="#s12">除外情形與限制</a></li>
+          <li><a href="#s13">變更記錄</a></li>
+        </ol>
+      </aside>
+
+      <article>
+
+<section id="s1">
+  <h2 class="sec"><span class="n">1.</span> 主體與目的</h2>
+  <p><strong>Zyntello, S.R.L.</strong> 是在多明尼加共和國設立的公司，向持有 <code>app.zyntello.com</code> 平臺有效訂閱的每一位訂閱方提供本文件所述的支援服務。</p>
+  <p>支援聯絡方式：<a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a> · WhatsApp <a href="https://wa.me/18296399877">+1 829 639 9877</a> · 行政事務：<a href="mailto:info@zyntello.com">info@zyntello.com</a>。</p>
+  <div class="note"><b>本 SLA 在訂閱款項結清期間適用。</b>因欠費而被暫停的帳戶，其資料按服務條款保留，但不再享有本文件承諾的響應時限。</div>
+</section>
+
+<section id="s2">
+  <h2 class="sec"><span class="n">2.</span> 定義</h2>
+  <ul>
+    <li><strong>工單：</strong>訂閱方提出的任何支援請求。</li>
+    <li><strong>首次響應：</strong>Zyntello 的工作人員以診斷結論、具體詢問或解決方案回覆工單的時刻。<strong>不是</strong>自動回執。</li>
+    <li><strong>工作小時：</strong>在第 4 節所述服務時間內經過的小時數。週五 17:00 提交、承諾 4 個工作小時的工單，最遲在週一 11:00 前得到回覆。</li>
+    <li><strong>解決時長：</strong>把工單徹底關閉所需的時間。取決於問題性質，本 SLA <strong>不作承諾</strong>；所承諾的是首次響應。</li>
+  </ul>
+  <div class="note warn"><b>為什麼我們不承諾解決時長。</b>一個使用疑問在回覆中即可解決；一個需要改代碼、測試再上線的缺陷則不行。為這兩類情況承諾同一個時限，等於一半的情況下必然違約。</div>
+</section>
+
+<section id="s3">
+  <h2 class="sec"><span class="n">3.</span> 支援渠道</h2>
+  <p>可通過以下任一渠道申請支援：</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>渠道</th><th>方式</th><th>最適合的用途</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>電子郵件</strong></td>
+          <td><a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a></td>
+          <td>主渠道。為整個工單留下書面記錄，並可附上截圖和文件。您的郵件會<strong>自動進入工單</strong>：回覆我們的訊息時，回覆會併入同一工單；首次來信則會新建一個工單。</td>
+        </tr>
+        <tr>
+          <td><strong>WhatsApp</strong></td>
+          <td><a href="https://wa.me/18296399877">+1 829 639 9877</a></td>
+          <td>簡短諮詢與緊急告知。凡需跟進的工單都會轉到電子郵件。</td>
+        </tr>
+        <tr>
+          <td><strong>網頁表單</strong></td>
+          <td><a href="https://zyntello.com/#contacto">zyntello.com</a></td>
+          <td>當您尚無法訪問平臺、也無法使用已登記郵箱時。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note"><b>怎樣能更快得到答覆。</b>說明問題發生在哪家公司、哪個模組，預期結果是什麼、實際發生了什麼，並附上一張截圖。有了這三項，多數工單在首次回覆中即可解決，無需來回往返。</div>
+</section>
+
+<section id="s4">
+  <h2 class="sec"><span class="n">4.</span> 服務時間</h2>
+  <p><strong>週一至週五 8:00 至 18:00</strong>，多明尼加共和國時間（GMT-4），多明尼加法定節假日除外。</p>
+  <p>在該時段之外仍可通過任一渠道提交工單：工單會被記錄，響應時限自下一個工作日開始計算。</p>
+</section>
+
+<section id="s5">
+  <h2 class="sec"><span class="n">5.</span> 優先順序劃分</h2>
+  <p>優先順序由 Zyntello 根據對訂閱方業務的<strong>實際影響</strong>確定，而非根據提交時的緊迫措辭。訂閱方如不認同該劃分，可說明具體影響並申請複核。</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>優先順序</th><th>含義</th><th>示例</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>緊急</strong></td>
+          <td>平臺不可用，或某個已訂閱模組對整個公司都無法使用且無替代方案。</td>
+          <td>無法登入 · 無法開票 · 整個模組報錯</td>
+        </tr>
+        <tr>
+          <td><strong>高</strong></td>
+          <td>某項重要功能失效或返回錯誤資料，但仍有辦法繼續作業。</td>
+          <td>報表數字對不上 · 某單據無法作廢</td>
+        </tr>
+        <tr>
+          <td><strong>普通</strong></td>
+          <td>次要功能失效，或屬於使用、配置方面的疑問。</td>
+          <td>如何配置單據編號 · 篩選條件未按預期生效</td>
+        </tr>
+        <tr>
+          <td><strong>低</strong></td>
+          <td>不影響業務運轉的建議、改進意見與諮詢。</td>
+          <td>申請在列表中新增一列 · 諮詢某項未來功能</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s6">
+  <h2 class="sec"><span class="n">6.</span> 首次響應時限</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>優先順序</th><th>首次響應</th></tr></thead>
+      <tbody>
+        <tr><td><strong>緊急</strong></td><td>4 個工作小時</td></tr>
+        <tr><td><strong>高</strong></td><td>8 個工作小時</td></tr>
+        <tr><td><strong>普通</strong></td><td>1 個工作日</td></tr>
+        <tr><td><strong>低</strong></td><td>3 個工作日</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>時限自工單經第 3 節所列渠道之一送達起算，並在第 4 節的服務時間內計算。</p>
+  <div class="note"><b>郵箱每 15 分鐘檢查一次。</b>傳送至 <a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a> 的郵件由一個<strong>每十五分鐘</strong>運行一次的自動流程併入工單，因此從訂閱方發出到系統登記之間最多可能相隔 15 分鐘。這段時間<strong>不從本節時限中扣除</strong>：計時自訂閱方發出郵件之時開始，而非自我們系統處理之時開始。之所以在此聲明，是因為這是我們這邊的延誤，不能算到訂閱方頭上。</div>
+  <div class="note warn"><b>如果我們沒有按時響應。</b>訂閱方可寫信至 <a href="mailto:info@zyntello.com">info@zyntello.com</a>（沿用原主題）升級該工單。若多次且有據可查地未達本節時限，訂閱方有權無違約金退訂，自已付費週期結束之日起生效。</div>
+</section>
+
+<section id="s7">
+  <h2 class="sec"><span class="n">7.</span> 支援服務包含哪些內容</h2>
+  <p>在有效訂閱範圍內，不另行收費：</p>
+  <ul>
+    <li><strong>修復平臺缺陷。</strong>若某項功能與文件描述不符，修復是我們的義務，絕不計費。</li>
+    <li>已訂閱模組的<strong>使用疑問</strong>。</li>
+    <li>已訂閱模組的<strong>配置</strong>：單據編號、會計科目、稅率、權限與參數。</li>
+    <li><strong>登入相關問題</strong>：找回密碼、兩步驗證與帳號鎖定。</li>
+    <li>關於如何用好現有功能的<strong>指導</strong>。</li>
+  </ul>
+  <div class="note ok"><b>報告缺陷永遠不收費。</b>只要問題由平臺造成，修復始終屬於已含支援的範圍，無論耗時多久。</div>
+
+  <h3>7.1. 人工智慧幫助助手</h3>
+  <p>平臺內置一個<strong>基於 Zyntello 文件回答使用問題的助手</strong>。它的用途是當場解決最常見的疑問，無需等待人工客服回覆。</p>
+  <ul>
+    <li><strong>它只依據我們的文件作答。</strong>當文件未涵蓋某個問題時，它會<strong>如實說明並建議開立工單</strong>，而不是臨場編造答案。我們寧可不答，也不願答錯：對一套管理系統憑空杜撰的操作指引，可能讓您丟失資料。</li>
+    <li><strong>它不執行任何操作。</strong>它只說明怎麼做，不替您操作，也不修改您的資訊。</li>
+    <li><strong>它設有使用額度</strong>，已包含在訂閱內，並按使用者、按日設限，以免一個人用光其他人的額度。</li>
+  </ul>
+  <div class="note ok"><b>助手額度用盡並不會讓您失去支援。</b>額度用完後人工智慧對話會停止，但<strong>郵件和工單仍然完全照舊包含在內</strong>：報告系統問題從不取決於任何額度。</div>
+  <div class="note"><b>關於使用檔位。</b>訂閱內含一定量的助手問答；若您的業務需要更多，可選擴容包，以及帶合理使用政策的大用量檔位，該檔位<strong>以書面形式寫明其上限</strong>。我們不以「無限量」對外銷售任何檔位。基於訂閱方資料的專屬助手，或與第三方系統集成的助手，<strong>不在本協議範圍內</strong>，需另行訂購。</div>
+  <div class="note ok"><b>沒能幫到您的回答不扣減額度。</b>如果助手答不上來，該次提問不計入額度：為一個您並未得到的答案收費毫無道理。</div>
+</section>
+
+<section id="s8">
+  <h2 class="sec"><span class="n">8.</span> 支援人員訪問帳戶</h2>
+  <p>有些問題無法從外部診斷：對不上的憑證、開不出的單據、不生效的權限。為了解決它們，支援人員可能需要<strong>進入訂閱方的工作區並查看其資料</strong>。本節說明這種訪問受哪些限制，更重要的是，訂閱方如何自行核查。</p>
+
+  <h3>8.1. 支援人員如何登入</h3>
+  <ul>
+    <li><strong>絕不使用訂閱方任何人的憑據。</strong>我們既不索要也不使用您團隊中任何人的帳號或密碼。支援人員使用 <strong>Zyntello 的技術帳號</strong>登入，與您的帳號完全分離。</li>
+    <li><strong>每一項操作都以真實支援人員的姓名署名</strong>，而非技術帳號或訂閱方使用者的名義。日誌中可以看到誰做了什麼。</li>
+    <li>技術帳號<strong>不佔用您套餐內的任何許可</strong>（見第 9 節），也不會出現在您的使用者列表或系統下拉框中。</li>
+    <li>支援人員必須完成兩步身份驗證，才能開啟該訪問。</li>
+  </ul>
+
+  <h3>8.2. 預設只讀</h3>
+  <p>訪問<strong>初始為只讀</strong>：支援人員能看，但系統禁止其保存任何更改。要修改內容，必須<strong>聲明理由後提升會話權限</strong>，而該提升<strong>會自動失效</strong>——即便支援人員忘記關閉，也不會無限期保持開啟。</p>
+
+  <h3>8.3. 記錄哪些內容</h3>
+  <p>每次訪問都會保存支援人員、進入與退出的日期時間、所聲明的理由、IP 地址，以及該訪問是已獲授權還是緊急訪問。若會話被提升為可寫，還會記錄<strong>每一項被修改資料的明細</strong>。</p>
+
+  <h3>8.4. 緊急訪問</h3>
+  <p>當情況緊急到無法等待事先授權時——例如訂閱方被卡住完全無法作業——支援人員可在聲明理由後登入。該訪問會被<strong>標記為未授權</strong>，帳戶所有者也會<strong>收到通知</strong>。這不是一項悄無聲息的權限：它必須聲明，而且看得見。</p>
+
+  <h3>8.5. 您如何自行核查</h3>
+  <div class="note ok"><b>無需向我們申請。</b>帳戶所有者可隨時在<strong>配置 → 支援訪問記錄</strong>中查看完整的支援訪問歷史：誰進入、何時、為何、以何種權限級別，以及該訪問是否已獲授權。</div>
+
+  <h3>8.6. 我們不做什麼</h3>
+  <ul>
+    <li>我們不會出於商業、統計或訓練人工智慧模型的目的訪問您的資料。</li>
+    <li>除解決該問題所必需外，我們不會提取您資訊的任何副本。</li>
+    <li>我們不會利用支援訪問權限代訂閱方處理業務：若需批量錄入或批量更正資料，屬於可計費工作，另行報價（見第 10 節）。</li>
+  </ul>
+      <h3>8.7. 工單門戶</h3>
+      <p>訂閱方的<strong>任何使用者</strong>都可以在自己系統的<strong>支援</strong>中開立工單，無需特殊權限：碰到問題的人最清楚該怎麼描述。每個工單都有一個編號（<code>SOP-000123</code>），憑它可在三個渠道中的任意一個跟進。</p>
+      <ul>
+        <li>訂閱方可以看到自己工單的<strong>全部往來記錄</strong>，並隨時回覆和上傳附件。</li>
+        <li>在等待您回覆期間，工單會被相應標記，<strong>該時段不計入</strong>第 6 節的時限：否則就是把不屬於 Zyntello 的延誤算在它頭上。</li>
+        <li>只有在工作開始<strong>之前</strong>獲得訂閱方<strong>授權</strong>，工單才會被標記為可計費（第 10 節）。報告平臺缺陷永遠不收費。</li>
+      </ul>
+
+</section>
+
+<section id="s9">
+  <h2 class="sec"><span class="n">9.</span> 不包含的內容與另行計費項</h2>
+  <p>以下工作<strong>另行報價並單獨計費</strong>，且<strong>未經訂閱方事先書面批准一律不予執行</strong>：</p>
+  <ul>
+    <li>從其他系統<strong>匯入或批量上傳</strong>資料。</li>
+    <li>對訂閱方人員的<strong>培訓</strong>。</li>
+    <li>平臺現有報表之外的<strong>定製報表</strong>。</li>
+    <li>為訂閱方專門進行的<strong>開發或定製改造</strong>。</li>
+    <li>因平臺之外的原因進行的<strong>備份恢復</strong>。</li>
+    <li>錯誤非由平臺造成時的<strong>資料更正</strong>。</li>
+  </ul>
+  <div class="note warn"><b>任何計費工作未經授權都不會推進。</b>執行上述任一工作之前，我們都會發出載明範圍與金額的報價。只有具備帳戶賬務管理權限的人才能批准。未獲批准，工作既不開展，也不累計工時。</div>
+</section>
+
+<section id="s10">
+  <h2 class="sec"><span class="n">10.</span> 已含使用許可</h2>
+  <p>每份訂閱包含兩類訪問權限，詳見<a href="/zh-Hant/terminos/#s5">服務條款第 5.3 節</a>：</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>類別</th><th>包含數量</th><th>範圍</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>訂閱方使用者</strong></td>
+          <td>每帳戶 3 名<br>（含帳戶所有者）</td>
+          <td>可訪問帳戶下的<strong>所有</strong>公司，權限依其角色而定：管理員、業務操作、查詢或報表。</td>
+        </tr>
+        <tr>
+          <td><strong>內部使用者</strong></td>
+          <td>每帳戶 5 名</td>
+          <td>每人僅歸屬<strong>一家公司</strong>；其權限按模組逐一配置，且只及於該公司。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>兩類名額均可寫信至 <a href="mailto:info@zyntello.com">info@zyntello.com</a> 申請擴充；擴充按現行價目計費。已停用的使用者在被移出帳戶之前仍佔用其許可。Zyntello 用於提供支援的技術帳號<strong>不佔用訂閱方的許可</strong>。</p>
+</section>
+
+<section id="s11">
+  <h2 class="sec"><span class="n">11.</span> 服務可用性</h2>
+  <p>Zyntello 力求平臺儘可能高的可用性，並按<a href="/zh-Hant/terminos/#s18">服務條款第 18 節</a>執行帶完整性校驗的定期備份。</p>
+  <div class="note warn"><b>可用性目標由服務條款設定，而非本文件。</b><a href="/zh-Hant/terminos/#s18">服務條款</a>聲明每月 <strong>99.5&nbsp;%</strong> 的目標，並說明除非另有明確書面約定，這是一項<strong>運營目標，而非附帶罰則的承諾</strong>：平臺託管在第三方基礎設施上，其可用性不由我們掌控。本 SLA 既不改變該目標，也不為其附加罰則。本協議真正承諾的是第 6 節的<strong>首次響應時限</strong>，以及對任何重大中斷的及時告知。</div>
+  <p><strong>計劃內維護窗口</strong>至少提前 24 小時通過電子郵件告知，並儘量安排在服務時間之外。</p>
+</section>
+
+<section id="s12">
+  <h2 class="sec"><span class="n">12.</span> 除外情形與限制</h2>
+  <p>本 SLA 不涵蓋：</p>
+  <ul>
+    <li>訂閱方的網際網路連接、裝置或網路故障。</li>
+    <li>由 Zyntello 之外的第三方服務造成的中斷：支付網關、郵件服務商、稅務機關或訊息服務。</li>
+    <li>違反服務條款使用平臺的行為。</li>
+    <li>訂閱方或其使用者錯誤上傳資料所造成的後果。</li>
+    <li>未訂閱的模組。</li>
+    <li>演示帳戶，其資料每日清除。</li>
+    <li>服務條款所列的不可抗力情形。</li>
+  </ul>
+  <div class="note"><b>稅務與會計決策。</b>Zyntello 提供工具；申報、記賬憑證與科目選擇的責任在訂閱方及其會計，詳見<a href="/zh-Hant/terminos/#s17">服務條款第 17 節</a>。</div>
+</section>
+
+<section id="s13">
+  <h2 class="sec"><span class="n">13.</span> 變更記錄</h2>
+  <p>自首次發布以來本文件所有版本的完整累積記錄。歷史版本可寫信至 <a href="mailto:info@zyntello.com">info@zyntello.com</a> 索取。</p>
+  <div class="note"><b>如何理解版本號。</b><strong>小版本</strong>變更（1.0 &rarr; 1.1）是對既有內容的澄清或補充，不改變各項承諾。<strong>大版本</strong>變更（1.x &rarr; 2.0）會修改時限、範圍或條件，並提前 <strong>30 天</strong>告知。</div>
+  <div class="tbl chg">
+    <table>
+      <thead>
+        <tr><th>版本</th><th>日期</th><th>變更內容</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1.4 <span class="vig">現行</span></td>
+          <td>2026 年 9 月 9 日</td>
+          <td><strong>人工智慧幫助助手。</strong>新增第 <strong>7.1</strong> 節，聲明訂閱內包含的一項新功能：一個<strong>依據 Zyntello 文件</strong>回答使用疑問的助手；當文件未涵蓋該問題時，它會<strong>如實說明並建議開立工單</strong>，而不是臨場發揮——我們寧可不答，也不願答錯，因為對一套管理系統憑空杜撰的操作指引可能導致資料丟失。文中聲明它<strong>不執行任何操作</strong>，設有按使用者、按日限額的<strong>使用額度</strong>，更重要的是<strong>額度用盡並不會讓訂閱方失去支援</strong>：郵件和工單照常包含在內，因為報告系統問題不能取決於某個額度。此外還聲明<strong>任何檔位都不以「無限量」對外銷售</strong>——高檔位以書面形式寫明其上限——並且<strong>沒能解決問題的回答不扣減額度</strong>。渠道、服務時間、優先順序、承諾的首次響應時限、已含許可與可用性目標<strong>均未改變</strong>。</td>
+        </tr>
+        <tr>
+          <td>1.3</td>
+          <td>2026 年 9 月 9 日</td>
+          <td><strong>郵件自動進入工單。</strong>第 <strong>3</strong> 節聲明，傳送至 <strong>soporte@zyntello.com</strong> 的郵件會<strong>自動</strong>併入工單——回覆我們的郵件會併入同一工單，新郵件則新建一個；第 <strong>6</strong> 節說明該流程<strong>每十五分鐘</strong>執行一次，因此從訂閱方發出到系統登記之間最多可能相隔 15 分鐘。更重要的是，文中聲明<strong>這段時間不從首次響應時限中扣除</strong>：計時自訂閱方發出之時開始，而非自我們系統處理之時開始——否則就是把我們的延誤算到訂閱方頭上。渠道、服務時間、優先順序劃分、承諾的首次響應時限、已含許可與可用性目標<strong>均未改變</strong>。</td>
+        </tr>
+        <tr>
+          <td>1.2</td>
+          <td>2026 年 9 月 7 日</td>
+          <td><strong>工單門戶。</strong>新增第 <strong>8.7</strong> 節：訂閱方的<strong>任何使用者</strong>都可以從自己的系統開立工單，無需特殊權限；每個工單都有編號，可在三個渠道跟進；訂閱方可查看全部往來記錄，並可回覆和上傳附件。此外聲明，工單<strong>等待訂閱方回覆</strong>的時間<strong>不計入</strong>第 6 節的首次響應時限——否則就是把不屬於 Zyntello 的延誤算在它頭上——並援引第 10 節關於可計費工作須事先授權的規定。渠道、服務時間、優先順序、承諾時限與已含許可<strong>均未改變</strong>。</td>
+        </tr>
+        <tr>
+          <td>1.1</td>
+          <td>2026 年 9 月 6 日</td>
+          <td><strong>支援人員訪問帳戶。</strong>新增第 <strong>8</strong> 節，聲明此前版本未涵蓋的一項操作：為診斷某些問題，支援人員可能需要進入訂閱方的工作區並查看其資料。文中聲明瞭相應限制——支援人員<strong>絕不</strong>使用訂閱方任何人的憑據，而是使用不佔用許可、也不出現在其名單中的技術帳號；訪問初始為<strong>只讀</strong>，提升權限須聲明理由且會自動失效；會記錄支援人員、日期、理由、IP 以及被修改內容的明細；未經事先授權的訪問會被標記並通知帳戶所有者——更重要的是，訂閱方可<strong>自行核查</strong>，無需申請，路徑為<strong>配置 → 支援訪問記錄</strong>。此外還聲明瞭我們不做什麼：不用於商業、統計或模型訓練目的，也不代訂閱方處理業務——那屬於第 10 節的可計費工作。原第 8 至 12 節順延為第 9 至 13 節，內容不變。渠道、服務時間、優先順序劃分、承諾的首次響應時限、已含許可與可用性目標<strong>均未改變</strong>。</td>
+        </tr>
+        <tr>
+          <td>1.0</td>
+          <td>2026 年 9 月 5 日</td>
+          <td><strong>首次發布。</strong>初始文件共 12 節：主體與目的、定義、支援渠道、服務時間、四級優先順序劃分、承諾的首次響應時限、已含支援的範圍、須事先批准的可計費工作、已含使用許可（3 名訂閱方使用者與 5 名內部使用者）、服務可用性——其 99.5&nbsp;% 的目標由<a href="/zh-Hant/terminos/#s18">服務條款</a>設定，而非本文件——、除外情形以及變更記錄。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+      </article>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>多明尼加共和國</li>
+          <li><a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>法律文件</h4>
+        <ul>
+          <li><a href="/zh-Hant/terminos/">服務條款</a></li>
+          <li><a href="/zh-Hant/privacidad/">隱私政策</a></li>
+          <li><a href="/zh-Hant/cookies/">Cookie 政策</a></li>
+          <li><a href="/zh-Hant/eliminacion-datos/">資料刪除</a></li>
+          <li><a href="/zh-Hant/sla/">服務級別協議</a></li>
+          <li><a href="/zh-Hant/avisos-terceros/">第三方軟體聲明</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy">&copy; 2026 Zyntello, S.R.L. 保留所有權利。</div>
+  </div>
+</footer>
+
+</body>
+</html>

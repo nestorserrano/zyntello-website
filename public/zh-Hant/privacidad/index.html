@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>隱私政策 | Zyntello</title>
+<meta name="description" content="Zyntello, S.R.L. 隱私政策——我們處理哪些資料、與誰共享、您享有哪些權利，以及如何申請刪除您的資料。">
+<link rel="icon" type="image/x-icon" href="/logos/favicon.ico">
+<link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png">
+<link rel="canonical" href="https://zyntello.com/zh-Hant/privacidad/">
+<meta name="robots" content="index, follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#060610; --bg2:#0b0b18; --card:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --tx:#e2e8f0; --tx2:#94a3b8; --tx3:#64748b;
+    --ac:#60a5fa; --ac2:#3b82f6; --warn:#fbbf24; --ok:#34d399;
+    --fs:15.5px;
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{
+    background:var(--bg); color:var(--tx2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:var(--fs); line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;padding:0 clamp(1.25rem,3vw,2.75rem)}
+
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b18 0%,#060610 100%)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+  .brand img{height:30px;width:auto;display:block}
+  .brand b{color:#fff;font-size:1.15rem;letter-spacing:-.3px}
+  .top nav{display:flex;gap:1.25rem;flex-wrap:wrap}
+  .top nav a{color:var(--tx3);text-decoration:none;font-size:.86rem;font-weight:500}
+  .top nav a:hover{color:var(--ac)}
+  .hero{padding:3rem 0 2.5rem}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);
+    border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.07);padding:.3rem .8rem;border-radius:99px;margin-bottom:1.1rem}
+  h1{color:#fff;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.12;letter-spacing:-1px;font-weight:700}
+  .lead{margin-top:1rem;max-width:88ch;font-size:1.03rem;color:var(--tx2)}
+  .meta{margin-top:1.6rem;display:flex;gap:.5rem 1.75rem;flex-wrap:wrap;font-size:.84rem;color:var(--tx3)}
+  .meta span strong{color:var(--tx);font-weight:600}
+
+  main{padding:2.5rem 0 4rem}
+  .grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:clamp(2rem,3.5vw,4rem);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;gap:1.5rem}}
+
+  .toc{position:sticky;top:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:1.1rem 1rem}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:.7rem;font-weight:700}
+  .toc ol{list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:.18rem}
+  .toc li{counter-increment:t}
+  .toc a{display:block;color:var(--tx2);text-decoration:none;font-size:.83rem;padding:.28rem .45rem;border-radius:7px;line-height:1.4}
+  .toc a::before{content:counter(t) ". ";color:var(--tx3);font-variant-numeric:tabular-nums}
+  .toc a:hover{background:rgba(96,165,250,.08);color:var(--ac)}
+
+  article{min-width:0}
+  section{scroll-margin-top:1.5rem;padding-bottom:2.4rem}
+  section+section{border-top:1px solid var(--line);padding-top:2.4rem}
+  h2.sec{color:#fff;font-size:1.32rem;line-height:1.3;letter-spacing:-.4px;font-weight:700;margin-bottom:1rem;display:flex;gap:.7rem}
+  h2.sec .n{color:var(--ac);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  h3{color:var(--tx);font-size:1rem;font-weight:650;margin:1.5rem 0 .55rem}
+  p{margin-bottom:.9rem;max-width:95ch}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--tx);font-weight:600}
+  em{color:var(--tx);font-style:normal;font-weight:600}
+  a{color:var(--ac)}
+  a:hover{color:#93c5fd}
+  ul,ol{margin:.3rem 0 1rem 1.35rem;display:flex;flex-direction:column;gap:.42rem;max-width:95ch}
+  li{padding-left:.2rem}
+  li>ul,li>ol{margin-top:.42rem;margin-bottom:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--tx);
+    background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:4px}
+
+  .note{border:1px solid var(--line2);border-left:3px solid var(--ac);background:rgba(96,165,250,.05);
+    border-radius:10px;padding:.95rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.05)}
+  .note.ok{border-left-color:var(--ok);background:rgba(52,211,153,.05)}
+  .note b{color:#fff}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:1.1rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:600px}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#fff;font-weight:650;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+    background:rgba(255,255,255,.03);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td strong{color:var(--tx)}
+
+  /* Control de cambios */
+  .chg table{min-width:520px}
+  .chg td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;font-weight:600;white-space:nowrap}
+  .chg td:nth-child(2){white-space:nowrap;color:var(--tx2)}
+  .vig{display:inline-block;margin-left:.45rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    font-family:inherit;font-weight:700;color:var(--ok);border:1px solid rgba(52,211,153,.4);
+    background:rgba(52,211,153,.1);padding:.05rem .4rem;border-radius:99px;vertical-align:middle}
+  a.verlink{color:var(--tx);border-bottom:1px dotted var(--tx3);text-decoration:none}
+  a.verlink:hover{color:var(--ac);border-bottom-color:var(--ac)}
+
+  footer{border-top:1px solid var(--line);background:#04040c;padding:2.5rem 0 3rem;font-size:.88rem}
+  .fgrid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .fgrid h4{color:#fff;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .fgrid ul{list-style:none;margin:0;gap:.35rem}
+  .fgrid a{color:var(--tx3);text-decoration:none}
+  .fgrid a:hover{color:var(--ac)}
+  .copy{margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);color:var(--tx3);font-size:.82rem}
+</style>
+
+
+
+<!--zyntello:legales-->
+<link rel="alternate" hreflang="es" href="https://zyntello.com/privacidad/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/privacidad/">
+<link rel="alternate" hreflang="fr" href="https://zyntello.com/fr/privacidad/">
+<link rel="alternate" hreflang="it" href="https://zyntello.com/it/privacidad/">
+<link rel="alternate" hreflang="zh-Hans" href="https://zyntello.com/zh-Hans/privacidad/">
+<link rel="alternate" hreflang="zh-Hant" href="https://zyntello.com/zh-Hant/privacidad/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/privacidad/">
+<style>
+.idiomas{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:center;padding:.75rem 0;font-size:.82rem}
+.idiomas span{color:var(--tx3,#64748b);text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+.idiomas a{color:var(--tx3,#64748b);text-decoration:none;padding:.15rem .5rem;border-radius:99px;border:1px solid transparent}
+.idiomas a:hover{color:var(--ac,#60a5fa);border-color:var(--line2,rgba(255,255,255,.14))}
+.idiomas a[aria-current]{color:var(--ac,#60a5fa);border-color:var(--ac,#60a5fa)}
+.prevalece{margin:1rem 0;padding:.75rem 1rem;border-radius:.5rem;font-size:.86rem;
+  color:var(--tx2,#94a3b8);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.28)}
+.prevalece a{color:var(--ac,#60a5fa)}
+</style>
+<!--/zyntello:legales--></head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="https://zyntello.com">
+        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
+        <b>Zyntello</b>
+      </a>
+      <nav>
+        <a href="https://zyntello.com">首頁</a>
+        <a href="/zh-Hant/terminos/">服務條款</a>
+        <a href="/zh-Hant/sla/">SLA</a>
+        <a href="/zh-Hant/eliminacion-datos/">資料刪除</a>
+        <a href="/zh-Hant/avisos-terceros/">第三方聲明</a>
+        <a href="https://zyntello.com/#contacto">聯絡方式</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <span class="kicker">法律文件</span>
+      <h1>隱私政策</h1>
+      <p class="lead">本政策說明 <strong>Zyntello, S.R.L.</strong> 通過其平臺 <code>app.zyntello.com</code> 和網站處理哪些個人資料、用於什麼目的、與誰共享、保留多久，以及您如何行使自己的權利，包括<a href="#s9">資料刪除申請</a>。</p>
+      <div class="meta">
+        <span>最後更新： <strong>2026 年 9 月 18 日</strong></span>
+        <span>生效： <strong>自發布之日起</strong></span>
+        <span>版本： <strong><a class="verlink" href="#s20">1.9 — 參見變更記錄</a></strong></span>
+        <span>原始語言： <strong>西班牙語</strong></span>
+      </div>
+    </div>
+  </div><!--zyntello:legales--><div class="idiomas" role="navigation" aria-label="語言"><span>語言:</span><a href="/privacidad/" hreflang="es" lang="es">Español</a><a href="/en/privacidad/" hreflang="en" lang="en">English</a><a href="/fr/privacidad/" hreflang="fr" lang="fr">Français</a><a href="/it/privacidad/" hreflang="it" lang="it">Italiano</a><a href="/zh-Hans/privacidad/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a><a href="/zh-Hant/privacidad/" hreflang="zh-Hant" lang="zh-Hant" aria-current="true">繁體中文</a></div><!--/zyntello:legales--></header>
+
+<main class="wrap"><!--zyntello:legales-->
+<div class="prevalece" role="note">本文為便於理解提供的譯文。具有法律拘束力的版本為西班牙語版本。 <a href="/privacidad/" hreflang="es" lang="es">檢視西班牙語版本</a>.</div><!--/zyntello:legales-->
+<div class="grid">
+
+  <aside class="toc">
+    <h2>目錄</h2>
+    <ol>
+      <li><a href="#s1">資料控制者</a></li>
+      <li><a href="#s2">我們的雙重角色</a></li>
+      <li><a href="#s3">我們處理哪些資料</a></li>
+      <li><a href="#s4">各模組涉及的資料</a></li>
+      <li><a href="#s5">我們與誰共享</a></li>
+      <li><a href="#s6">WhatsApp 與 Meta</a></li>
+      <li><a href="#s7">跨境傳輸</a></li>
+      <li><a href="#s8">保留期限</a></li>
+      <li><a href="#s9">您的權利與資料刪除</a></li>
+      <li><a href="#s10">各國適用法規</a></li>
+      <li><a href="#s11">安全保障</a></li>
+      <li><a href="#s12">Zyntello 支援人員的訪問</a></li>
+      <li><a href="#s13">通訊與營銷</a></li>
+      <li><a href="#s14">Cookie</a></li>
+      <li><a href="#s15">事件通知</a></li>
+      <li><a href="#s16">未成年人</a></li>
+      <li><a href="#s17">自動化決策與人工智慧</a></li>
+      <li><a href="#s18">本政策的變更</a></li>
+      <li><a href="#s19">聯絡方式</a></li>
+      <li><a href="#s20">變更記錄</a></li>
+    </ol>
+  </aside>
+
+  <article>
+
+    <section id="s1">
+      <h2 class="sec"><span class="n">1.</span> 資料控制者</h2>
+      <p><strong>Zyntello, S.R.L.</strong>，在<strong>多明尼加共和國</strong>設立並註冊住所的公司，在多明尼加共和國、委內瑞拉、哥倫比亞、危地馬拉和哥斯達黎加開展商務與支援業務。</p>
+      <ul>
+        <li>隱私事務聯絡方式：<a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+        <li>電話與 WhatsApp：<a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+        <li>網站：<a href="https://zyntello.com">https://zyntello.com</a></li>
+        <li>平臺：<a href="https://app.zyntello.com">https://app.zyntello.com</a></li>
+      </ul>
+      <p>本政策構成我們<a href="/zh-Hant/terminos/">服務條款</a>不可分割的組成部分。</p>
+    </section>
+
+    <section id="s2">
+      <h2 class="sec"><span class="n">2.</span> 我們的雙重角色：控制者與處理者</h2>
+      <p>Zyntello 是一套多公司架構的企業軟體平臺。因此我們承擔兩種不同角色，而您應向誰行使權利取決於此：</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>角色</th><th>針對哪些資料</th><th>由誰決定用途</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>控制者</strong></td>
+              <td>訂閱方的帳戶資料：姓名、郵箱、電話、登入憑據、開票資料及使用的技術日誌。</td>
+              <td>Zyntello。本政策直接適用。</td>
+            </tr>
+            <tr>
+              <td><strong>受託方</strong>（處理者）</td>
+              <td>各訂閱方上傳的有關<strong>其</strong>客戶、員工、供應商、住戶、債務人或參與者的資料。</td>
+              <td>訂閱方。Zyntello 僅為向其提供服務而託管和處理這些資料。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <p><b>如果您是某家使用 Zyntello 的公司的客戶、員工、住戶、債務人或參與者</b>，該公司才是您資料的控制者，您應向其行使權利。如果您直接寫信給我們，我們會把您的請求轉交該公司並協助處理，但我們無法就不屬於我們的資料代其作出決定。</p>
+      </div>
+    </section>
+
+    <section id="s3">
+      <h2 class="sec"><span class="n">3.</span> 我們處理哪些資料以及用途</h2>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>類別</th><th>資料</th><th>目的</th><th>法律依據</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>帳戶與使用者</strong></td>
+              <td>姓名、電子郵箱、不可逆加密的密碼、角色、權限、所屬公司。若使用者啟用兩步驗證：其驗證器應用的密鑰（<strong>已加密</strong>）、恢復碼（<strong>不可逆加密</strong>）及失敗嘗試記錄。以上資料 Zyntello 均無法讀取。</td>
+              <td>創建與管理帳戶、身份認證、兩步驗證（通過郵箱或驗證器應用）、找回訪問權限、訪問控制。</td>
+              <td>履行合同</td>
+            </tr>
+            <tr>
+              <td><strong>開票</strong></td>
+              <td>公司名稱、稅務識別號、地址、國家、訂閱與付款記錄。</td>
+              <td>收取訂閱費、開具憑證並履行稅務義務。</td>
+              <td>合同與法定義務</td>
+            </tr>
+            <tr>
+              <td><strong>支付</strong></td>
+              <td><strong>我們不儲存完整的卡號。</strong>支付處理方只向我們提供參考資訊：交易標識、扣款狀態和卡號末幾位。</td>
+              <td>處理付款並管理訂閱。</td>
+              <td>履行合同</td>
+            </tr>
+            <tr>
+              <td><strong>訂閱方的業務資料</strong></td>
+              <td>訂閱方在其模組中錄入的全部內容（見第 4 節）。</td>
+              <td>提供已訂購的服務。<strong>以受託方身份處理。</strong></td>
+              <td>訂閱方的指示</td>
+            </tr>
+            <tr>
+              <td><strong>技術日誌</strong></td>
+              <td>IP 地址、瀏覽器、裝置、日期時間、所執行的操作（審計日誌）。</td>
+              <td>安全防護、欺詐預防、操作可追溯、支援與故障診斷。</td>
+              <td>合法利益</td>
+            </tr>
+            <tr>
+              <td><strong>Cookie</strong></td>
+              <td>會話 Cookie、表單保護令牌，以及使用者自行選擇時的「記住登入」Cookie。<strong>不含廣告 Cookie，也不含第三方跟蹤 Cookie。</strong></td>
+              <td>維持登入狀態並保護應用安全。</td>
+              <td>嚴格必要</td>
+            </tr>
+            <tr>
+              <td><strong>支援與聯絡</strong></td>
+              <td>通過網站表單或 WhatsApp 傳送的姓名、郵箱、電話及訊息內容。</td>
+              <td>處理商務諮詢與支援請求。</td>
+              <td>同意與訂約前措施</td>
+            </tr>
+            <tr>
+              <td><strong>營銷</strong></td>
+              <td>電子郵箱，以及同意的日期、時間和來源記錄。</td>
+              <td>傳送動態與商業通訊，僅在事先取得同意的情況下進行。</td>
+              <td>同意</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>法律依據採用歐盟《通用資料保護條例》的術語表述，因其最為精確；在第 10 節所列各國法律下適用相應的對等概念。</p>
+    </section>
+
+    <section id="s4">
+      <h2 class="sec"><span class="n">4.</span> 各模組涉及的資料</h2>
+      <p>由各訂閱方決定上傳哪些資訊。以下是各模組允許錄入的資料類別，Zyntello 始終以<strong>受託方</strong>身份處理：</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>模組</th><th>資料類別</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>開票 · 應收賬款 · CRM · 收銀</strong></td><td>姓名或公司名稱、稅務識別號、地址、電話、郵箱、採購與收款記錄、信用條件、餘額及商務跟進備註。</td></tr>
+            <tr><td><strong>採購 · 應付賬款</strong></td><td>供應商及其聯絡人資料、稅務識別號、收款銀行帳戶、代扣稅款及收到的稅務單據。</td></tr>
+            <tr><td><strong>薪資 · PSA</strong></td><td>員工編號、身份證件、出生日期、性別、住址、職位、<strong>薪酬與扣款</strong>、銀行帳戶、社會保險、受撫養人、缺勤及證明材料、工時表、上下班打卡記錄，以及在僱主啟用相應核驗時的<strong>地理位置</strong>與<strong>人臉照片</strong>。</td></tr>
+            <tr><td><strong>Zyntello Events</strong></td><td>姓名、身份證件、郵箱、電話、所屬機構、採集到的照片，以及入場與出席記錄。</td></tr>
+            <tr><td><strong>物業管理</strong></td><td>住戶與業主資料、房號、分攤比例、帳戶對賬單、公共區域預約、帶照片的報修記錄及業主大會表決。</td></tr>
+            <tr><td><strong>Prestamello</strong></td><td>申請人及其擔保人的資料、身份證件、申報的收入與支出、資產、推薦人、<strong>徵信機構查詢結果</strong>、擔保物及其文件、還款記錄，以及外勤催收人員的<strong>地理位置</strong>。</td></tr>
+            <tr><td><strong>路線規劃</strong></td><td>客戶的送貨與拜訪地址及其<strong>地理座標</strong>；承運商、車輛及指派司機的資料；以及在訂閱方啟用跟蹤時，<strong>在工作時段內被反覆記錄的司機位置</strong>（預設每 30 秒一次），連同每個站點的到達與離開時間及每次送貨或拜訪的結果。</td></tr>
+            <tr><td><strong>洗車</strong></td><td>客戶及其車輛資料：車牌、品牌、型號、顏色、里程錶讀數、車輛照片及服務記錄。</td></tr>
+            <tr><td><strong>ConstructFlow</strong></td><td>派駐工地的人員、文件及進度照片。</td></tr>
+            <tr><td><strong>庫存 · 固定資產</strong></td><td>資產責任人與保管人、盤點與實物清查記錄。</td></tr>
+            <tr><td><strong>會計 · 銀行</strong></td><td>公司的銀行帳戶、支票與轉賬的收款人，以及涉及第三方的會計分錄。</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note warn">
+        <p><b>影響重大的資料。</b>薪資、PSA、Prestamello 和路線規劃模組可處理身份證件、薪酬、與病假相關的資訊、人臉照片、人員地理位置及徵信記錄。訂閱方有責任事先告知資料主體、具備法律依據或取得同意，並僅啟用嚴格必要的核驗功能。</p>
+        <p><strong>對員工位置的持續跟蹤。</strong>有兩件事雖同屬位置資料，卻並不相同，值得區分。在薪資、PSA 和 Prestamello 中記錄的是<strong>某一具體時刻的一個點</strong>：打上下班卡時、處理工單時或辦理催收時。而路線規劃模組可以<strong>在整條路線期間反覆</strong>記錄司機的位置，從而還原其當天的行駛軌跡。這是一種更具侵入性的處理，因此它<strong>預設處於關閉狀態</strong>：只有訂閱方開啟、且司機從其裝置上開始路線時才會運行。啟用之前，訂閱方必須告知相關人員記錄什麼、記錄多久、用於何處，並具備法律依據或取得其同意。工作時段或路線之外不記錄位置。</p>
+      </div>
+      <p><strong>公開查詢頁面。</strong>部分模組會生成無需登入即可查詢的鏈接或二維碼（排隊狀態、住戶賬單、活動門票、資產卡片）。它們通過隨機標識符訪問，僅顯示最低限度的必要資訊，是否啟用由訂閱方決定。</p>
+    </section>
+
+    <section id="s5">
+      <h2 class="sec"><span class="n">5.</span> 我們與誰共享資料</h2>
+      <div class="note ok">
+        <p><b>我們不會為廣告目的向第三方出售、出租或轉讓個人資料。</b></p>
+      </div>
+      <p>我們僅向以下接收方、併為所列目的共享資料：</p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>接收方</th><th>接收什麼</th><th>用於什麼</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>主機服務商</strong>（美國）</td><td>平臺上託管的資料及其備份。</td><td>基礎設施、儲存與備份。</td></tr>
+            <tr><td><strong>Stripe</strong></td><td>支付交易資料。</td><td>處理在線訂閱與收款。<a href="https://stripe.com/privacy" rel="noopener">政策</a></td></tr>
+            <tr><td><strong>PayPal</strong></td><td>支付交易資料。</td><td>處理在線訂閱與收款。<a href="https://www.paypal.com/privacy" rel="noopener">政策</a></td></tr>
+            <tr><td><strong>Mercado Pago</strong></td><td>支付交易資料。</td><td>處理在線收款。<a href="https://www.mercadopago.com/privacidad" rel="noopener">政策</a></td></tr>
+            <tr><td><strong>WhatsApp / Meta Platforms</strong></td><td>收件人的電話號碼與訊息內容，<strong>僅在訂閱方啟用該集成時</strong>。</td><td>傳送由訂閱方發起的訊息。<a href="https://www.whatsapp.com/legal/privacy-policy" rel="noopener">政策</a></td></tr>
+            <tr><td><strong>外發郵件服務商</strong></td><td>收件人地址與訊息內容。</td><td>投遞交易類郵件與文件。</td></tr>
+            <tr><td><strong>人工智慧服務商</strong></td><td>待識別單據的圖像或文本，僅當訂閱方以其自有憑據啟用該功能時。</td><td>發票資料的輔助提取（見第 16 節）。</td></tr>
+            <tr><td><strong>稅務主管機關</strong></td><td>法規要求的稅務憑證資料。</td><td>電子稅務憑證的校驗與報送。</td></tr>
+            <tr><td><strong>徵信機構</strong></td><td>申請人的身份資訊，使用訂閱方自有的憑據並在其授權下進行。</td><td>在 Prestamello 模組中查詢徵信記錄。</td></tr>
+            <tr><td><strong>地圖服務商</strong>（OpenStreetMap、Google Maps、HERE 或 Mapbox，由訂閱方選擇）</td><td>路線各站點的地址與座標。不會向其傳送客戶名稱或訂單內容。</td><td>在訂閱方使用路線規劃模組時，將地址轉換為座標、計算距離並繪製路線。</td></tr>
+            <tr><td><strong>Web3Forms</strong></td><td>網站表單中的姓名、郵箱與留言。</td><td>將商務諮詢投遞至我們的郵箱。</td></tr>
+            <tr><td><strong>內容分發網路與網頁字型服務</strong>（jsDelivr、Cloudflare&nbsp;cdnjs、unpkg、Google&nbsp;Fonts 與 Bunny&nbsp;Fonts）</td><td>發起資源請求的裝置<strong>IP 地址</strong>、瀏覽器和屏幕資訊。它們<strong>不會收到</strong>帳戶資料、界面內容或會話標識。</td><td>向瀏覽器提供構成界面的庫、字型和圖示。它們在平臺的<strong>所有</strong>頁面上加載。各元件的明細見<a href="/zh-Hant/avisos-terceros/">第三方軟體聲明</a>。</td></tr>
+            <tr><td><strong>QuickChart</strong></td><td>某場活動的<strong>公開報名鏈接</strong>。不會向其傳送任何個人或帳戶資料。</td><td>在平臺無法自行生成時，製作活動二維碼的圖片。僅限 Events 模組。</td></tr>
+            <tr><td><strong>匯率服務</strong>（exchangerate-api）</td><td><strong>公開網站</strong> <code>zyntello.com</code> 訪問者的 IP 地址。不涉及平臺本身。</td><td>在解決方案頁面上顯示換算後的價格。</td></tr>
+            <tr><td><strong>主管機關</strong></td><td>有效法律命令所嚴格要求的內容。</td><td>履行法定義務。</td></tr>
+            <tr><td><strong>專業顧問</strong></td><td>嚴格必要的內容。</td><td>會計、審計與法律抗辯。</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>所有服務商均依其自身的保密與安全承諾行事。訂閱方為對接第三方而配置的憑據，在我們的資料庫中以<strong>加密</strong>形式儲存。</p>
+      <div class="note">
+        <p><b>最後三類接收方收到的並不是我們發給它們的東西。</b>當某個頁面需要由第三方伺服器提供的字型或庫時，是<strong>使用者自己的瀏覽器</strong>直接向其發起請求，而該請求會帶上使用者的 IP 地址，就像訪問任何網站一樣。這是加載外部資源的固有特性：並不是 Zyntello 就帳戶資訊作出的資料轉讓，因此這些服務商既看不到任何客戶、發票、員工，也看不到任何人的會話。</p>
+        <p>之所以予以聲明，是因為它們接收到了一項個人資料——IP 地址，而訂閱方有權知情，並非因為存在流向它們的業務資料。</p>
+      </div>
+    </section>
+
+    <section id="s6">
+      <h2 class="sec"><span class="n">6.</span> WhatsApp 與 Meta</h2>
+      <p>平臺允許訂閱方通過 <strong>WhatsApp</strong> 與自己的聯絡人溝通，有兩種方式：由訂閱方手動打開的會話鏈接，或在訂閱方配置了自有憑據時通過 WhatsApp Business API。</p>
+      <h3>6.1. 傳輸哪些內容</h3>
+      <p>傳送訊息時會傳輸<strong>收件人的電話號碼</strong>和<strong>訊息內容</strong>，後者可能包含聯絡人姓名、單據號與單據狀態、金額，以及指向文件或查詢頁面的鏈接。</p>
+      <h3>6.2. 由誰負責</h3>
+      <p><strong>訂閱方是傳送人</strong>，對訊息負責：由其決定內容、收件人和目的，並且必須事先取得收件人同意才能通過該渠道聯絡對方。Zyntello 不會主動向訂閱方的聯絡人傳送商業通訊。</p>
+      <h3>6.3. 訊息的用途</h3>
+      <p>通過平臺傳送的訊息屬於<strong>業務或交易</strong>性質：發票與報價單、收據與憑證、對賬單、收款與保養提醒、排隊或服務狀態通知、會議通知及審批通知。</p>
+      <h3>6.4. 退訂權</h3>
+      <p>如果您收到某家使用 Zyntello 的公司發來的訊息且不願再收到，可以回覆要求退訂、拉黑該號碼，或直接告知該公司，該公司必須立即處理。平臺提供按聯絡人記錄該偏好的機制。如果您需要幫助識別傳送方，可寫信至 <a href="mailto:info@zyntello.com">info@zyntello.com</a>，我們會為您指引。</p>
+      <h3>6.5. 適用的政策</h3>
+      <p>WhatsApp LLC 與 Meta Platforms, Inc. 對資訊的處理受其自身政策約束，包括 <a href="https://www.whatsapp.com/legal/privacy-policy" rel="noopener">WhatsApp 隱私政策</a>與 <a href="https://www.whatsapp.com/legal/business-policy" rel="noopener">WhatsApp Business 政策</a>。Zyntello 不控制上述公司所進行的處理。</p>
+    </section>
+
+    <section id="s7">
+      <h2 class="sec"><span class="n">7.</span> 跨境傳輸</h2>
+      <p>我們的伺服器位於<strong>美國</strong>。使用平臺時，資料會傳輸並儲存在該國。支付處理方、外發郵件服務商、WhatsApp 與 Meta，以及人工智慧服務商，也可能在訂閱方所在國之外處理資料。</p>
+      <p>第 5 節所列的<strong>內容分發網路與網頁字型服務商</strong>也存在同樣情形，程度較輕：其伺服器遍佈全球，瀏覽器會連接到最近的一個，因此使用者的 IP 地址可能在其所在國之外被處理。這是它們收到的唯一資料。</p>
+      <p>對於適用歐盟《通用資料保護條例》的資料主體，這些傳輸依據標準合同條款或各服務商現行的傳輸機制進行。您可寫信至 <a href="mailto:info@zyntello.com">info@zyntello.com</a> 索取適用機制的相關資訊。</p>
+    </section>
+
+    <section id="s8">
+      <h2 class="sec"><span class="n">8.</span> 保留期限</h2>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr><th>資料</th><th>保留期限</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>訂閱方的帳戶與業務資料</td><td>訂閱有效期內，外加終止後<strong>30 天</strong>以便匯出。之後予以刪除。</td></tr>
+            <tr><td>開票資料與稅務憑證</td><td><strong>10 年</strong>，若適用稅務法規另有規定則按其規定。</td></tr>
+            <tr><td>路線的位置歷史記錄（路線規劃）</td><td>自路線關閉起<strong>90 天</strong>。此後僅保留路線摘要——站點、到達與離開時間、距離以及每次送貨或拜訪的結果——這是履約報告所必需的，同時<strong>刪除逐點軌跡</strong>，因為正是它可以還原一個人的行程。如果訂閱方未啟用跟蹤，則不會產生任何位置歷史記錄。</td></tr>
+            <tr><td>技術日誌與審計日誌</td><td><strong>12 個月</strong>，除非因調查安全事件需要保留更久。</td></tr>
+            <tr><td>演示帳戶</td><td>通過定時任務<strong>每天自動刪除</strong>。</td></tr>
+            <tr><td>備份</td><td><strong>30 天</strong>輪換週期。已刪除的資料在一個週期結束時從備份中消失。</td></tr>
+            <tr><td>訂閱方自助下載的備份</td><td>伺服器上保留<strong>最近 5 個</strong>；更早的予以刪除。其生成與下載的<strong>記錄</strong>在訂閱存續期間保留。已下載的副本完全由訂閱方自行掌控（見 9.4）。</td></tr>
+            <tr><td>營銷同意與退訂記錄</td><td>關係存續期間，外加<strong>5 年</strong>作為同意或退訂的證據。</td></tr>
+            <tr><td>權利請求及其答覆</td><td>自處理完畢起<strong>3 年</strong>，作為合規證據。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="s9">
+      <h2 class="sec"><span class="n">9.</span> 您的權利與資料刪除</h2>
+      <h3>9.1. 您可以行使的權利</h3>
+      <p>您可以隨時申請：</p>
+      <ul>
+        <li><strong>查閱</strong>：瞭解我們處理您的哪些資料以及用於什麼目的。</li>
+        <li><strong>更正</strong>：修正不準確或不完整的資料。</li>
+        <li><strong>刪除</strong>或註銷：在資料不再必要時予以清除。</li>
+        <li><strong>反對</strong>：反對基於合法利益進行的處理。</li>
+        <li>在適用法律有規定時，享有資料<strong>可攜帶權</strong>與處理<strong>限制權</strong>。如果您是訂閱方，可<strong>隨時自行</strong>在<em>設定&nbsp;→&nbsp;資料備份</em>中行使可攜帶權（見 9.4）。</li>
+        <li><strong>撤回</strong>此前給予的<strong>同意</strong>，不具溯及力。</li>
+      </ul>
+
+      <h3>9.2. 如何行使</h3>
+      <p>請使用已登記的郵箱或在證明身份的前提下寫信至 <a href="mailto:info@zyntello.com">info@zyntello.com</a>，並清楚說明所行使的權利。我們將在最長<strong>15 個工作日</strong>內答覆（若適用歐盟《通用資料保護條例》，則為<strong>一個月</strong>）。</p>
+
+      <h3>9.3. 資料刪除申請</h3>
+      <div class="note ok">
+        <p><b>詳細說明見其專頁：</b><a href="/zh-Hant/eliminacion-datos/"><strong>zyntello.com/eliminacion-datos/</strong></a>——包含逐步流程、期限、刪除範圍、依法保留的內容，以及如何停止接收訊息。</p>
+      </div>
+      <div class="note">
+        <p><b>如需申請刪除您的個人資料</b>，請傳送郵件至 <a href="mailto:info@zyntello.com">info@zyntello.com</a>，主題為<em>「資料刪除申請」</em>，並註明：</p>
+        <ul>
+          <li>您的全名；</li>
+          <li>您註冊時使用或被聯絡時使用的電子郵箱或電話號碼；</li>
+          <li>如適用，聯絡您或將您錄入平臺的公司名稱。</li>
+        </ul>
+        <p>我們會確認收到，並在最長<strong>30 天</strong>內處理該申請。我們將以書面形式告知結果，包括刪除了哪些資料以及哪些資料我們依法必須保留。</p>
+      </div>
+      <p><strong>如果您的資料是由某家訂閱公司上傳的</strong>——因為您是其客戶、員工、住戶、債務人或參與者——該公司才是資料處理的控制者。在這種情況下，我們會將您的申請轉交該公司、告知您並協助其處理，但刪除與否的最終決定權在該公司。</p>
+      <p><strong>限制。</strong>刪除不適用於我們因法律、會計或稅務義務必須保留的資訊（例如已開具的稅務憑證），也不適用於抗辯所必需的資訊。在這些情況下，資料會被封存，其處理受到限制，直至法定保留期屆滿。</p>
+      <p>如果您認為自己的權利未獲妥善處理，可向貴國的資料保護機關或有管轄權的法院提出投訴。</p>
+
+      <h3>9.4. 自助備份與資料可攜帶</h3>
+      <p>訂閱方可隨時自行生成並下載其各公司資料的完整副本，無需提出申請，入口在<em>設定&nbsp;→&nbsp;資料備份</em>。該文件是一個 ZIP 壓縮包，內含 SQL 格式的匯出文件、列明所含內容的清單，以及一份恢復說明。</p>
+      <div class="note ok">
+        <p><b>確保隔離。</b>該文件<strong>僅包含生成它的訂閱方自己的記錄</strong>。它不是 Zyntello 資料庫的全量匯出，在任何情況下都不含其他訂閱方的資訊。此外，全平臺通用的技術資料——會話、找回令牌和通知——也不在其中，因為它們不屬於任何特定訂閱方。文件本身會聲明省略了哪些表以及原因。</p>
+      </div>
+      <p><strong>對已下載副本的責任。</strong>文件一經下載即完全由訂閱方掌控，其保管、必要時的加密以及刪除均由訂閱方負責。Zyntello 無法找回、追蹤或刪除已離開平臺的副本。如果文件包含第三方的個人資料——客戶、員工、住戶——訂閱方仍按第 2 節的規定對其處理負責。</p>
+      <p>生成的備份僅為供下載而保存在伺服器上：每個訂閱方保留<strong>最近 5 個</strong>，更早的予以刪除。備份已生成並已下載的記錄則會保留，以便證明可攜帶權的行使。</p>
+    </section>
+
+    <section id="s10">
+      <h2 class="sec"><span class="n">10.</span> 各國適用法規</h2>
+      <ul>
+        <li><strong>多明尼加共和國</strong> — 第 172-13 號《個人資料保護法》：查閱權、更正權、註銷權與反對權；可向有管轄權的法院提出申訴。</li>
+        <li><strong>歐盟與歐洲經濟區</strong> — 在適用時適用第 (EU) 2016/679 號條例（GDPR）：第 3 節的法律依據、第 9 節的擴展權利、72 小時內向監管機關通報資料洩露，以及向當地監管機關投訴的權利。</li>
+        <li><strong>哥倫比亞</strong> — 2012 年第 1581 號法律及其實施法令（個人資料自決制度）：按工商監管局的程序提出查詢與投訴。</li>
+        <li><strong>哥斯達黎加</strong> — 第 8968 號《個人資料處理中的人身保護法》（PRODHAB）。</li>
+        <li><strong>委內瑞拉</strong> — 憲法規定的個人資料自決權（憲法第 28 條）及相關適用法規。</li>
+        <li><strong>危地馬拉</strong> — 在缺少綜合性資料保護法的情況下，適用憲法保障，並以本政策作為可強制執行的合同承諾。</li>
+        <li><strong>墨西哥</strong>，在適用時 — 《私人持有個人資料保護聯邦法》：可向第 1 節所列聯絡方式行使查閱權、更正權、註銷權與反對權。</li>
+      </ul>
+      <p>如有衝突，以資料主體所在國的強制性規範為準。</p>
+    </section>
+
+    <section id="s11">
+      <h2 class="sec"><span class="n">11.</span> 安全保障</h2>
+      <p>我們採取與風險相稱的技術與組織措施，其中包括：</p>
+      <ul>
+        <li>密碼以強<em>哈希</em>算法儲存，絕不以明文保存；</li>
+        <li>通過 TLS 對傳輸中的流量加密；</li>
+        <li>在訂閱方之間以及同一訂閱方的各公司之間實行<strong>嚴格的資料隔離</strong>，並在每一次查詢中自動生效；</li>
+        <li><strong>兩種不同範圍的訪問控制</strong>：訂閱方自己的使用者可按其角色權限訪問帳戶下的所有公司，而<strong>內部使用者</strong>——面向臨時或外部人員——只被指派到<strong>一家公司</strong>，其逐模組配置的權限<strong>僅覆蓋該公司的資料</strong>；</li>
+        <li>使用者可自行啟用的<strong>兩步驗證</strong>，通過電子郵件或手機上的驗證器應用（TOTP 標準），配有一次性恢復碼、多次失敗後的臨時鎖定，以及任何相關變更的郵件提醒；</li>
+        <li>第三方集成憑據在資料庫中加密儲存；</li>
+        <li>對單據與配置所做操作的審計日誌；</li>
+        <li>定期備份，帶完整性校驗並在主伺服器之外留存副本；</li>
+        <li>訂閱方的<strong>自助備份</strong>適用同樣的隔離機制：僅篩選其自有記錄生成，排除全平臺通用的技術資料，並在清單中聲明省略了哪些內容；</li>
+        <li>關閉瀏覽器即退出登入，且無論如何會話在伺服器端七天後失效；</li>
+        <li><strong>已登入裝置</strong>頁面，使用者可在此遠程結束其他裝置上的會話。</li>
+      </ul>
+      <p>沒有任何系統是萬無一失的。若發生影響您資料的洩露事件，我們將按第 14 節的規定予以通知。</p>
+    </section>
+
+    <section id="s12">
+      <h2 class="sec"><span class="n">12.</span> Zyntello 支援人員的訪問</h2>
+      <p>為處理某個工單，Zyntello 的支援人員可能需要進入訂閱方的工作空間並查看其資料。本節說明其界限，以及訂閱方如何自行核查。</p>
+      <ul>
+        <li><strong>依據何在。</strong>這是履行服務合同所必需的操作：沒有它，我們就無法診斷和修復影響訂閱方資料的故障。在此 Zyntello 以<strong>受託處理方</strong>身份行事，按作為控制者的訂閱方的指示執行（見第 2 節）。</li>
+        <li><strong>以何種身份。</strong>支援人員<strong>絕不</strong>使用訂閱方某位人員的使用者名或密碼。他們以另設的<strong>技術帳戶</strong>登入，而所有操作都以<strong>真實支援人員</strong>的姓名署名，而非技術帳戶或客戶某個使用者的名義。</li>
+        <li><strong>範圍多大。</strong>支援會話預設為<strong>只讀</strong>。若要修改任何資料，支援人員必須聲明具體理由以提升權限，而該提升會在 30 分鐘後<strong>自動失效</strong>。</li>
+        <li><strong>記錄什麼。</strong>每次訪問都會記錄支援人員、進入與退出的日期時間、所聲明的理由、IP 地址、該訪問是經訂閱方授權還是屬於緊急訪問，以及——若會話被提升——每一項被修改資料的明細。</li>
+        <li><strong>緊急訪問。</strong>當無法事先取得授權而工單又確有需要時，支援人員可在聲明理由後進入。該訪問會被標記為<strong>未授權</strong>，且帳戶所有者會收到提醒。</li>
+        <li><strong>訂閱方如何審計。</strong>帳戶所有者可隨時在<strong>設定 → 支援訪問記錄</strong>中查看完整歷史，無需向我們提出申請。</li>
+        <li><strong>我們不做什麼。</strong>我們不會出於商業、統計或模型訓練目的訪問訂閱方的資料，也不會在解決工單所必需的範圍之外提取其資訊副本。</li>
+        <li><strong>憑據的管理。</strong>技術帳戶無法通過輸入憑據登入：只能從支援工具內部打開，而該工具要求支援人員已完成兩步身份驗證。</li>
+      </ul>
+      <h3>12.1. 工單系統及其附件</h3>
+      <p>訂閱方開立支援工單時，系統會保存主題、描述、後續全部對話，以及<strong>所上傳的附件</strong>。</p>
+      <ul>
+        <li><strong>最需留意的是附件。</strong>說明問題時通常會附上系統界面的截圖，而截圖中可能出現<strong>訂閱方客戶或員工的個人資料</strong>：姓名、證件號、金額或餘額。Zyntello 以<strong>受託方</strong>身份處理這些資訊，且僅用於解決該工單。</li>
+        <li><strong>它們存放在私有儲存中</strong>，無法通過公開網址訪問：下載文件必須已登入且屬於該工單所屬的訂閱方。</li>
+        <li><strong>只分享必要的內容。</strong>如果截圖中含有診斷用不到的資料，建議在上傳前將其遮擋。傳送什麼由訂閱方決定。</li>
+        <li><strong>內部備註。</strong>支援團隊可在工單中添加訂閱方看不到的工作記錄——初步診斷、內部協調。它們構成工單檔案的一部分，並隨之一同保留。</li>
+        <li><strong>保留。</strong>工單及其文件在合同關係存續期間以及第 8 節的一般期限內保留；之後與訂閱方的其餘資料一併刪除。</li>
+        <li><strong>發給支援郵箱的郵件會進入系統。</strong>寄往 <strong>soporte@zyntello.com</strong> 的郵件會自動併入工單：其<strong>正文與所帶附件都會被保存</strong>在工單檔案中，適用與上文相同的處理方式和保護措施。我們特別說明這一點，是因為寫郵件時通常不如填表單那樣謹慎，而且郵件往往會帶上此前的會話內容和為別的用途傳送過的附件。為避免資訊重複，<strong>上一封郵件的引用部分會被裁剪</strong>；超過允許大小的附件不會被保存：系統會在工單中記下其文件名，以便支援人員另行索取。</li>
+        <li><strong>人工智慧助手。</strong>平臺內置一個回答使用疑問的助手。當您向它提問時，傳送給人工智慧服務商（<strong>Anthropic</strong>，以<strong>次級受託方</strong>身份）的<strong>只有兩樣東西</strong>：<strong>您提問的文本</strong>，以及您提問所在模組的 <strong>Zyntello 文件</strong>。<ul> <li><strong>不會傳送您的業務資料或客戶資料。</strong>既無姓名，也無金額、餘額或您資料庫中的記錄。傳送出去的文本完全由我們的手冊構成：負責組裝它的元件<strong>不查詢資料庫</strong>，這一點已由一項自動化測試驗證，一旦哪天它去查詢資料庫，該測試就會失敗。</li>
+          <li><strong>唯一外傳的屬於您的內容，就是您在問題中寫下的文字。</strong>因此我們請您不要在其中寫入第三方的個人資料：要說明如何開具一張發票，並不需要客戶的姓名。</li>
+          <li><strong>答覆會被保存</strong>，以免同樣的問題再次向服務商發起查詢。該存檔<strong>僅</strong>包含使用類問題以及基於我們文件的答覆。</li>
+          <li><strong>該助手不執行任何操作</strong>，也不修改您的資訊：它只作說明。</li>
+        </ul></li>
+        <li><strong>無法識別來源的郵件。</strong>如果某封郵件到達支援郵箱而<strong>無法確定它來自哪個訂閱方</strong>——因為發件人不對應任何已註冊使用者——它<strong>不會併入任何工單</strong>：而是留在一個獨立的待審收件箱中，與任何訂閱方的資料相分離，正是為了避免把來源未經核實的資訊併入某個客戶的帳戶。電子郵件的發件人可以偽造，因此僅憑郵件自述是不夠的。</li>
+      </ul>
+
+    </section>
+
+    <section id="s13">
+      <h2 class="sec"><span class="n">13.</span> 通訊與營銷</h2>
+      <ul>
+        <li><strong>交易類通訊</strong>（身份驗證、登入驗證碼、賬單通知、安全提醒、維護公告與合同變更）作為服務的一部分傳送，在合同關係有效期間無需額外取得同意。</li>
+        <li><strong>Zyntello 的商業通訊</strong>（動態、簡報、優惠）僅在<strong>事先同意</strong>的情況下傳送，該同意通過未預先勾選的複選框取得。我們會保留何時、以何種方式取得同意的記錄。</li>
+        <li><strong>退訂</strong>：每封商業郵件都含有一鍵退訂鏈接。您也可以寫信至 <a href="mailto:info@zyntello.com">info@zyntello.com</a> 申請。退訂最遲在<strong>72 小時</strong>內處理完畢，且不影響服務的交易類通訊。</li>
+        <li><strong>由訂閱方發出的通訊</strong>：如果某家使用 Zyntello 的公司通過郵件或 WhatsApp 向您傳送訊息，取得您的同意並處理您的退訂是該公司的責任（見第 6 節）。</li>
+      </ul>
+    </section>
+
+    <section id="s14">
+      <h2 class="sec"><span class="n">14.</span> Cookie</h2>
+      <p>平臺僅使用運行所<strong>嚴格必要</strong>的 Cookie：</p>
+      <ul>
+        <li><strong>會話 Cookie</strong>：在瀏覽過程中維持使用者的登入狀態。</li>
+        <li><strong>表單保護令牌</strong>：防止從第三方站點發出的偽造請求。</li>
+        <li><strong>「記住登入」Cookie</strong>：僅在使用者登入時勾選該選項的情況下使用。</li>
+        <li><strong>上次位置偏好</strong>：便於恢復會話時從上次中斷處繼續工作。</li>
+      </ul>
+      <div class="note ok">
+        <p><b>我們不使用廣告 Cookie、畫像 Cookie 或第三方跟蹤 Cookie</b>，也不在平臺中嵌入社交網路或廣告平臺的像素代碼。因此使用本平臺無需 Cookie 同意橫幅。</p>
+      </div>
+      <p>您可以在瀏覽器設定中刪除或阻止 Cookie，但請注意這樣做將無法登入平臺。</p>
+
+      <h3>14.1. 由第三方提供的資源</h3>
+      <p>這與 Cookie 是兩回事，不宜混為一談：界面所用的部分字型、圖示和庫由第 5 節列出的第三方伺服器提供。<strong>它們都不會安裝 Cookie</strong>，也不會向我們返回任何使用者標識，但這一連接確實存在，並會帶上您的 IP 地址。</p>
+      <p>我們之所以說明這一點，是因為「沒有廣告 Cookie」並不等於「沒有對第三方的連接」，而一份只談 Cookie 的政策會遺漏打開一個頁面時真正發生的事。</p>
+    </section>
+
+    <section id="s15">
+      <h2 class="sec"><span class="n">15.</span> 安全事件通知</h2>
+      <p>若發生影響個人資料的安全洩露事件，我們將評估風險並通知：</p>
+      <ul>
+        <li><strong>受影響的訂閱方</strong>，不得無故拖延，並提供已掌握的影響範圍、受波及的資料類別及已採取措施的資訊；</li>
+        <li>法律要求時通知<strong>主管機關</strong>——在 GDPR 之下為知悉後<strong>72 小時</strong>內；</li>
+        <li>在洩露對<strong>資料主體</strong>的權利與自由構成高風險且適用法律有要求時，通知資料主體。</li>
+      </ul>
+      <p>當我們以受託方身份行事時，通知對象是作為控制者的訂閱方，由其負責向資料主體和主管機關通報。</p>
+    </section>
+
+    <section id="s16">
+      <h2 class="sec"><span class="n">16.</span> 未成年人</h2>
+      <p>本平臺僅面向企業和專業人士，不面向 18 週歲以下的未成年人。我們不會有意收集作為服務使用者的未成年人資料。如果訂閱方在開展業務時錄入未成年人的資料，取得父母或監護人依適用法律的授權是其責任。</p>
+    </section>
+
+    <section id="s17">
+      <h2 class="sec"><span class="n">17.</span> 自動化決策與人工智慧</h2>
+      <p>部分模組提供由人工智慧輔助的功能，主要是<strong>從發票和單據中提取資料</strong>，以及基於歷史資訊的統計建議。</p>
+      <ul>
+        <li>我們<strong>不作出對個人產生法律效果的自動化決策</strong>。任何有後果的評估——例如 Prestamello 模組中的授信審批——都必須有人工使用者介入並作出決定。</li>
+        <li><strong>人工複核是強制的</strong>：模型的結果以草稿形式呈現，在使用者確認之前不會產生任何會計、稅務或庫存效果。</li>
+        <li>該功能為<strong>可選</strong>，預設關閉，需由訂閱方以其自有的人工智慧服務商憑據啟用。</li>
+        <li><strong>我們不使用訂閱方的資料訓練自有模型。</strong>人工智慧服務商所進行的處理，受訂閱方與該服務商約定的條款約束。</li>
+      </ul>
+    </section>
+
+    <section id="s18">
+      <h2 class="sec"><span class="n">18.</span> 本政策的變更</h2>
+      <p>任何修改都會發布在本頁面上，並更新最後更新日期。如屬實質性變更，我們會在其生效前至少<strong>30 天</strong>通過電子郵件或平臺內的醒目公告通知。歷史版本可應要求提供。</p>
+    </section>
+
+    <section id="s19">
+      <h2 class="sec"><span class="n">19.</span> 聯絡方式</h2>
+      <p>有關隱私與資料保護的任何諮詢或請求：</p>
+      <ul>
+        <li><strong>Zyntello, S.R.L.</strong> — 多明尼加共和國</li>
+        <li>電子郵箱：<a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+        <li>電話與 WhatsApp：<a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+        <li>網站：<a href="https://zyntello.com">https://zyntello.com</a></li>
+      </ul>
+      <p>另請參閱我們的<a href="/zh-Hant/terminos/">服務條款</a>與<a href="/zh-Hant/eliminacion-datos/">資料刪除說明</a>。</p>
+    </section>
+
+    <section id="s20">
+      <h2 class="sec"><span class="n">20.</span> 變更記錄</h2>
+      <p>自首次發布以來本政策所有版本的完整累積記錄。每條記錄註明版本、生效日期及變更內容。既往記錄<strong>不作修改，也不予刪除</strong>。</p>
+      <div class="note">
+        <p><b>如何理解版本號。</b><strong>次版本</strong>變更（1.0 → 1.1）表示補充或細化了資訊——新增模組、接收方或資料類別——而未改變處理的目的或法律依據。<strong>主版本</strong>變更（1.x → 2.0）則修改了目的、法律依據、接收方、保留期限或您的權利，並按第 17 節的規定提前<strong>30 天</strong>通知。</p>
+      </div>
+      <div class="tbl chg">
+        <table>
+          <thead>
+            <tr><th>版本</th><th>日期</th><th>變更內容</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1.9 <span class="vig">現行</span></td>
+              <td>2026 年 9 月 18 日</td>
+              <td><strong>加載頁面時收到 IP 地址的第三方。</strong>第 <strong>5</strong> 節此前未聲明三類確實存在的接收方，現予補入：<strong>(1)</strong> <strong>內容分發網路與網頁字型服務商</strong>——jsDelivr、Cloudflare cdnjs、unpkg、Google Fonts 與 Bunny Fonts——界面的庫、字型和圖示由其提供；它們在平臺的<strong>所有</strong>頁面上加載，收到 IP 地址、瀏覽器及所請求的頁面，但絕不收到帳戶資料或會話標識。<strong>(2)</strong> <strong>QuickChart</strong>，用於生成活動二維碼圖片，僅收到公開報名鏈接，且僅限 Events 模組。<strong>(3)</strong> 公開網站所調用的<strong>匯率服務</strong>，收到訪問者的 IP，不涉及平臺本身。表格之後補充說明了為何這三者並非業務資料的轉讓：是<strong>使用者自己的瀏覽器</strong>發起資源請求，該請求會帶上其 IP，就像訪問任何網站一樣。第 <strong>7</strong> 節將跨境傳輸的範圍擴展至這些服務商，其伺服器遍佈全球。第 <strong>14.1</strong> 節澄清<strong>它們都不安裝 Cookie</strong>，並指出沒有廣告 Cookie 並不等於沒有對第三方的連接。各元件的技術明細見隨<a href="/zh-Hant/terminos/">服務條款</a>第 1.7 版發布的<a href="/zh-Hant/avisos-terceros/">第三方軟體聲明</a>。處理目的、保留期限、資料主體權利及法律依據均未改變。</td>
+            </tr>
+            <tr>
+              <td>1.8</td>
+              <td>2026 年 9 月 11 日</td>
+              <td><strong>路線規劃與司機位置跟蹤。</strong>第 <strong>4</strong> 節納入<strong>路線規劃</strong>模組及其處理的資料：站點的地址與<strong>座標</strong>、承運商、車輛與指派司機，以及司機在路線期間的位置。第 <strong>3</strong> 節補上了一項此前缺失、且絕非細枝末節的說明：<strong>打卡時記錄一個點</strong>——薪資、PSA 和 Prestamello 早已如此——<strong>與在整個工作時段內反覆記錄位置並不相同</strong>，因為後者可以還原一個人的行程。文中聲明該跟蹤功能<strong>預設關閉</strong>，且路線之外不記錄位置。第 <strong>5</strong> 節聲明瞭一個<strong>新的接收方</strong>：<strong>地圖服務商</strong>（OpenStreetMap、Google Maps、HERE 或 Mapbox，由訂閱方選擇），傳送給它的是站點的地址與座標——而非客戶名稱或訂單內容。第 <strong>8</strong> 節為<strong>逐點軌跡</strong>設定了專門的保留期限：路線關閉後<strong>90 天</strong>，此後僅保留報表所需的摘要，詳細行程予以刪除。</td>
+            </tr>
+            <tr>
+              <td>1.7</td>
+              <td>2026 年 9 月 9 日</td>
+              <td><strong>人工智慧助手。</strong>第 <strong>12.1</strong> 節予以擴充，聲明一項新功能及其涉及的<strong>次級受託方</strong>：使用該助手時，傳送給 <strong>Anthropic</strong> 的只有<strong>問題文本</strong>與相應模組的 <strong>Zyntello 文件</strong>。文中明確聲明<strong>不會傳送訂閱方的業務資料或個人資料</strong>——既無姓名，也無金額、餘額或資料庫記錄——因為組裝該文本的元件<strong>不查詢資料庫</strong>，且這一點已由一項自動化測試驗證，一旦它去查詢資料庫，該測試便會失敗。文中提醒，唯一外傳的屬於訂閱方的內容就是其本人在問題中寫下的文字；聲明答覆會被保存以免重複查詢，該存檔僅含使用類問題及基於我們文件的答覆；並聲明<strong>該助手不執行任何操作</strong>。處理目的、法律依據、保留期限及資料主體權利<strong>均未改變</strong>。</td>
+            </tr>
+            <tr>
+              <td>1.6</td>
+              <td>2026 年 9 月 9 日</td>
+              <td><strong>發給支援郵箱的郵件會進入系統。</strong>第 <strong>12.1</strong> 節補入了上一版未覆蓋的一條資料入口：寄往 <strong>soporte@zyntello.com</strong> 的郵件會自動併入工單，其<strong>正文與附件都會被保存</strong>在工單檔案中，適用已述的相同處理方式與保護措施。之所以特別說明，是因為寫郵件時不如填表單謹慎，且往往會帶上此前的會話內容和為別的用途傳送過的附件；文中聲明<strong>上一封郵件的引用部分會被裁剪</strong>，超過允許大小的附件不予保存，僅記下其文件名。此外還聲明瞭<strong>發件人無法識別</strong>的郵件會如何處理：不併入任何工單，而是留在一個<strong>與任何訂閱方資料相分離</strong>的待審收件箱中，因為郵件的發件人可以偽造，僅憑郵件自述並不足夠。處理目的、法律依據、接收方、保留期限及資料主體權利<strong>均未改變</strong>。</td>
+            </tr>
+            <tr>
+              <td>1.5</td>
+              <td>2026 年 9 月 7 日</td>
+              <td><strong>工單系統及其附件。</strong>新增第 <strong>12.1</strong> 節，載明上一版未覆蓋的一類資料：支援工單的內容，尤其是<strong>訂閱方上傳的附件</strong>。文中明確，一張界面截圖可能含有訂閱方客戶或員工的個人資料，Zyntello 以<strong>受託方</strong>身份處理，且僅用於解決該工單；附件存放在私有儲存中，下載時須已登入且屬於該工單所屬的訂閱方；支援團隊可添加構成工單檔案一部分的內部備註；並說明了保留期限。此外建議把截圖中診斷用不到的內容遮擋掉。處理目的、法律依據、接收方及資料主體權利均未改變。</td>
+            </tr>
+            <tr>
+              <td>1.4</td>
+              <td>2026 年 9 月 6 日</td>
+              <td><strong>Zyntello 支援人員的訪問。</strong>新增第 <strong>12</strong> 節，載明上一版未描述的一項操作：當工單確有需要時，Zyntello 的支援人員可進入訂閱方的工作空間並查看其資料。文中明確其依據，說明支援人員<strong>絕不</strong>使用訂閱方某位人員的憑據，而是使用自有的技術帳戶；會話預設為<strong>只讀</strong>，提升為可寫須聲明理由且會自動失效；每次訪問記錄哪些內容；緊急訪問如何標記；以及訂閱方在何處自行審計（<strong>設定 → 支援訪問記錄</strong>）。上一版的第 12 至 19 節順延編號為第 13 至 20 節，內容不變。處理目的、法律依據、保留期限及資料主體權利均未改變。</td>
+            </tr>
+            <tr>
+              <td>1.3</td>
+              <td>2026 年 9 月 5 日</td>
+              <td><strong>各類使用者的訪問範圍。</strong>第 <strong>11</strong> 節明確訪問控制存在兩種不同範圍：訂閱方自己的使用者可按其角色權限訪問帳戶下的所有公司，而<strong>內部使用者</strong>——面向臨時或外部人員——只被指派到一家公司，其權限僅覆蓋該公司的資料。上一版的表述只提到「按模組細分的角色與權限」，並未區分各自的邊界。所處理的資料類別、保留期限、接收方及資料主體權利均未改變。</td>
+            </tr>
+            <tr>
+              <td>1.2</td>
+              <td>2026 年 9 月 4 日</td>
+              <td><strong>基於驗證器應用的兩步驗證與會話策略。</strong>第 <strong>4</strong> 節的表格補入了使用者啟用應用兩步驗證時所保存的資料：應用密鑰（已加密）、恢復碼（不可逆加密）及失敗嘗試記錄；這些資料 Zyntello 均無法讀取。第 <strong>11</strong> 節的安全措施隨之更新，納入新的驗證方式、失敗多次後的臨時鎖定，以及驗證設定任何變更的郵件提醒。同時<strong>更正</strong>了會話策略的描述，原文寫作「因閒置自動退出」：自 2026 年 9 月 3 日起，關閉瀏覽器即退出登入，會話在伺服器端七天後失效，並設有「已登入裝置」頁面可遠程結束會話。</td>
+            </tr>
+            <tr>
+              <td>1.1</td>
+              <td>2026 年 8 月 31 日</td>
+              <td><strong>自助備份與資料可攜帶。</strong>載明瞭允許訂閱方自行生成並下載其各公司資料完整副本的功能：新增第 <strong>9.4</strong> 節（文件包含什麼、相對其他訂閱方的隔離保證、被排除在外的技術資料，以及下載後對副本的責任），在 <strong>9.1</strong> 中將其列為無需提出申請即可行使可攜帶權的方式，在第 <strong>8</strong> 節的表格中設定其專門的保留期限，並在第 <strong>11</strong> 節明確該備份適用訂閱方之間的同一隔離機制。處理目的、法律依據及接收方均未改變。</td>
+            </tr>
+            <tr>
+              <td>1.0</td>
+              <td>2026 年 7 月 28 日</td>
+              <td><strong>首次發布。</strong>初始文件共 19 節：資料控制者、控制者／受託方雙重角色、所處理的資料及其法律依據、各模組涉及的資料、接收方與次級受託方、WhatsApp 與 Meta、跨境傳輸、保留期限、權利與資料刪除流程、各國適用法規、安全保障、通訊與營銷、Cookie、事件通知、未成年人、自動化決策與人工智慧、本政策的變更、聯絡方式及變更記錄。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>您可寫信至 <a href="mailto:info@zyntello.com">info@zyntello.com</a> 索取任一歷史版本的完整文本。</p>
+    </section>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Zyntello, S.R.L.</h4>
+        <ul>
+          <li>企業技術與人工智慧</li>
+          <li>多明尼加共和國</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/zh-Hant/terminos/">服務條款</a></li>
+          <li><a href="/zh-Hant/privacidad/">隱私政策</a></li>
+          <li><a href="/zh-Hant/cookies/">Cookie 政策</a></li>
+          <li><a href="/zh-Hant/eliminacion-datos/">資料刪除</a></li>
+          <li><a href="/zh-Hant/sla/">服務級別協議</a></li>
+          <li><a href="/zh-Hant/avisos-terceros/">第三方軟體聲明</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>聯絡方式</h4>
+        <ul>
+          <li><a href="mailto:info@zyntello.com">info@zyntello.com</a></li>
+          <li><a href="https://wa.me/18296399877">+1 829 639 9877</a></li>
+          <li><a href="https://zyntello.com">zyntello.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy">© 2026 Zyntello, S.R.L. 保留所有權利。</p>
+  </div>
+</footer>
+
+</body>
+</html>
