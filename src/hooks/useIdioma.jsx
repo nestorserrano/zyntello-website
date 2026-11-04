@@ -82,11 +82,36 @@ function leerGuardado() {
   }
 }
 
+/**
+ * El idioma que pide la URL: `/en/`, `/ar/blog/...` → `en`, `ar`. La portada española no lleva
+ * prefijo, así que devuelve `null` y deciden el resto de reglas.
+ *
+ * ⚠️⚠️ Esto MANDA sobre lo guardado y sobre el navegador, y es la única precedencia que tiene
+ * sentido: una URL con prefijo no es una preferencia que el visitante tenga configurada en algún
+ * sitio — es la página concreta que ha pedido, o la que alguien le ha compartido. Si `localStorage`
+ * ganara, quien reciba `zyntello.com/ar/` por WhatsApp y haya visitado el sitio antes en español
+ * vería la portada EN ESPAÑOL bajo una URL árabe: contenido de un idioma bajo la etiqueta de otro,
+ * que es justo lo que el resto del sitio evita generando una página por idioma.
+ *
+ * ⚠️ No se escribe en `localStorage`: llegar por un enlace en otro idioma no debe cambiar la
+ * preferencia de quien ya eligió una. Vale para esta visita, como el `Accept-Language`.
+ */
+function detectarDeLaUrl() {
+  try {
+    const primero = window.location.pathname.split('/').filter(Boolean)[0]
+    return CODIGOS.includes(primero) && primero !== 'es' ? primero : null
+  } catch {
+    return null
+  }
+}
+
 const Contexto = createContext(null)
 
 export function ProveedorIdioma({ children }) {
-  // ⚠️ Lo GUARDADO gana sobre lo detectado: el navegador solo decide la primera visita.
-  const [idioma, setIdiomaEstado] = useState(() => leerGuardado() || detectarDelNavegador())
+  // ⚠️ La URL manda sobre todo; después lo GUARDADO, y el navegador solo decide la primera visita.
+  const [idioma, setIdiomaEstado] = useState(
+    () => detectarDeLaUrl() || leerGuardado() || detectarDelNavegador(),
+  )
   const [textos, setTextos] = useState(() => {
     try { return JSON.parse(localStorage.getItem(CLAVE_CACHE)) || {} } catch { return {} }
   })
@@ -116,8 +141,21 @@ export function ProveedorIdioma({ children }) {
 
   const setIdioma = (nuevo) => {
     if (!CODIGOS.includes(nuevo)) return
-    setIdiomaEstado(nuevo)
     try { localStorage.setItem(CLAVE_IDIOMA, nuevo) } catch { /* vale para esta visita */ }
+
+    /* ⚠️⚠️ Si la portada se está viendo bajo un prefijo, elegir idioma tiene que MOVER la URL.
+       Cambiar solo el estado deja `/en/` mostrando español: se ve bien hasta que el visitante
+       recarga o comparte el enlace, y entonces la elección se deshace sola porque la URL manda.
+       Un selector que se deshace al recargar es peor que uno que no está, porque el visitante
+       cree que eligió. */
+    const destino = nuevo === 'es' ? '/' : `/${nuevo}/`
+    const actual = `/${window.location.pathname.split('/').filter(Boolean)[0] ?? ''}`
+    const enPortadaConPrefijo = detectarDeLaUrl() !== null
+    if (enPortadaConPrefijo && actual !== destino.replace(/\/$/, '')) {
+      window.location.assign(destino)
+      return
+    }
+    setIdiomaEstado(nuevo)
   }
 
   /**

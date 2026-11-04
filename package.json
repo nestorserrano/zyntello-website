@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/verificar-traducciones.mjs && node scripts/verificar-legales.mjs && vite build",
+    "build": "node scripts/verificar-traducciones.mjs && node scripts/verificar-legales.mjs && vite build && node scripts/generar-portadas-idioma.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "generar": "node scripts/generar-servicios.mjs && node scripts/generar-funcionalidades.mjs && node scripts/generar-paginas.mjs && node scripts/generar-blog.mjs && node scripts/generar-legales.mjs && node scripts/generar-sitemap.mjs",
