@@ -13,12 +13,38 @@
  * va por donde vino.
  */
 
-import { estilos, redesSociales } from './plantilla.mjs'
+import { estilos, redesSociales, rotuloIdioma } from './plantilla.mjs'
 import { CLUSTERS, PAISES } from '../blog/clusters.mjs'
+import { IDIOMAS } from './idiomas.mjs'
 
 const SITIO = 'https://zyntello.com'
 const WHATSAPP = '18296399877'
 const COLOR = '#6366f1'
+
+/** La URL de una ruta del blog en un idioma. El español no lleva prefijo. */
+const rutaEn = (prefijo, resto = '') => `${SITIO}/${prefijo}blog/${resto}`
+
+/** Traductor de respaldo: devuelve el texto español tal cual. */
+const sinTraducir = (clave, respaldo) => respaldo
+
+/**
+ * Reescribe los enlaces a otros artículos para que lleven al MISMO idioma,
+ * pero solo cuando ese artículo existe traducido.
+ *
+ * ⚠️⚠️ Las dos mitades importan. Sin reescribir, el lector árabe que pulsa un
+ * enlace del texto cae en el artículo español y el sitio deja de hablarle en su
+ * idioma a mitad de lectura. Reescribiendo a ciegas es peor: el enlace iría a
+ * `/ar/blog/{slug}/` y, si ese artículo aún no está traducido, da un 404 — un
+ * 404 interno enlazado desde el cuerpo, que Google encuentra él solo rastreando
+ * el sitio. Por eso hace falta saber cuáles existen, y por eso `disponibles`
+ * llega desde el generador y no se adivina aquí.
+ */
+const enlazarEnIdioma = (html, idioma, disponibles) => {
+  if (idioma === 'es') return html
+  const p = prefijoDe(idioma)
+  return html.replace(/(href="https:\/\/zyntello\.com)\/blog\/([a-z0-9-]+)\/"/g,
+    (todo, inicio, slug) => disponibles.has(slug) ? `${inicio}/${p}blog/${slug}/"` : todo)
+}
 
 const esc = (s) => String(s)
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -60,9 +86,24 @@ const ESTILOS_BLOG = `
    una máquina. */
 const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
   'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
-const enLetra = (iso) => {
+
+/* ⚠️⚠️ `Intl` NO conoce el criollo haitiano y NO falla al pedírselo: devuelve
+   la fecha en ESPAÑOL. Medido — `Intl.DateTimeFormat('ht')` da «26 de
+   septiembre de 2026», exactamente igual que `'es'`. Dentro de un artículo en
+   criollo eso es una línea en otro idioma que nadie va a ver revisando el
+   resto del texto, porque el resto está bien.
+
+   Por eso `ht` lleva su tabla y los demás no: escribir ocho tablas sería
+   reimplementar lo que el motor ya hace para siete. */
+const MESES_HT = ['janvye', 'fevriye', 'mas', 'avril', 'me', 'jen',
+  'jiyè', 'out', 'septanm', 'oktòb', 'novanm', 'desanm']
+
+const enLetra = (iso, idioma = 'es') => {
   const [a, m, d] = iso.split('-').map(Number)
-  return `${d} de ${MESES[m - 1]} de ${a}`
+  if (idioma === 'es') return `${d} de ${MESES[m - 1]} de ${a}`
+  if (idioma === 'ht') return `${d} ${MESES_HT[m - 1]} ${a}`
+  return new Intl.DateTimeFormat(idioma, { dateStyle: 'long', timeZone: 'UTC' })
+    .format(new Date(`${iso}T00:00:00Z`))
 }
 
 /* ⚠️ La rejilla reparte en el mayor divisor: 5 elementos no tienen divisor y
@@ -70,14 +111,31 @@ const enLetra = (iso) => {
    que se ve mejor que una columna de cinco tarjetas anchas. */
 const columnasPara = (n) => (n % 3 === 0 ? 3 : n % 2 === 0 ? 2 : Math.min(n, 3))
 
-const cabecera = ({ titulo, descripcion, url, jsonLd, color = COLOR }) => `<!DOCTYPE html>
-<html lang="es">
+/**
+ * ⚠️⚠️ `idiomas` son aquellos en los que ESTA página existe, no los ocho. Una
+ * página que declara `hreflang` hacia una URL que responde 404 le dice a Google
+ * que tiene versiones que no tiene, y Google deja de fiarse del bloque entero
+ * —también en las páginas que sí las tienen—. No se ve en pantalla: la etiqueta
+ * vive en el `<head>`. Ya pasó con las cuatro páginas de primer nivel, medido en
+ * producción.
+ *
+ * ⚠️ `resto` es lo que va después de `/blog/` en la URL: el slug del artículo o
+ * nada para el índice. Hace falta para que el selector de idioma lleve al MISMO
+ * artículo en el otro idioma y no a la portada del blog.
+ */
+const cabecera = ({ titulo, descripcion, url, jsonLd, color = COLOR,
+                    idioma = 'es', idiomas = [], resto = '', t = sinTraducir }) => {
+  const dir = IDIOMAS.find(i => i.codigo === idioma)?.dir ?? 'ltr'
+  return `<!DOCTYPE html>
+<html lang="${idioma}" dir="${dir}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(titulo)}</title>
 <meta name="description" content="${esc(descripcion)}">
 <link rel="canonical" href="${url}">
+${idiomas.map(i => `<link rel="alternate" hreflang="${i.codigo}" href="${rutaEn(i.prefijo, resto)}">`).join('\n')}
+${idiomas.length ? `<link rel="alternate" hreflang="x-default" href="${rutaEn('', resto)}">` : ''}
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Zyntello">
@@ -108,56 +166,85 @@ ${ESTILOS_BLOG.trim()}
 <nav class="barra">
   <div class="contenedor barra-caja">
     <div class="barra-izq">
-      <a class="barra-volver" href="${SITIO}/blog/">
+      <a class="barra-volver" href="${rutaEn(prefijoDe(idioma))}">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
-        <span>Blog</span>
+        <span>${esc(t('blogp.blog', 'Blog'))}</span>
       </a>
       <span class="barra-sep" aria-hidden="true"></span>
-      <a class="barra-marca" href="${SITIO}/">
+      <a class="barra-marca" href="${SITIO}/${prefijoDe(idioma)}">
         <img src="${SITIO}/logos/zyntello_isotipo_transparente.png" alt="" width="30" height="30">
         <strong>Zyntello</strong>
       </a>
     </div>
     <div class="barra-acciones">
-      <a href="${SITIO}/#soluciones" class="btn btn-fantasma btn-barra">Ver los módulos</a>
+${idiomas.length > 1 ? `      <div class="barra-idiomas" role="navigation" aria-label="${esc(t('a11y.idiomas', 'Idioma'))}">
+${idiomas.map(i => i.codigo === idioma
+    ? `        <span class="idioma-activo" aria-current="true">${rotuloIdioma(i.codigo)}</span>`
+    : `        <a href="${rutaEn(i.prefijo, resto)}" hreflang="${i.codigo}" lang="${i.codigo}" title="${esc(i.nombre)}">${rotuloIdioma(i.codigo)}</a>`).join('\n')}
+      </div>` : ''}
+      <a href="${SITIO}/${prefijoDe(idioma)}#soluciones" class="btn btn-fantasma btn-barra">${esc(t('pag.boton.modulos', 'Ver los módulos'))}</a>
     </div>
   </div>
 </nav>`
+}
 
-const pie = () => `
+/** El prefijo de URL de un idioma: `''` para el español, `'ar/'` para el árabe. */
+const prefijoDe = (codigo) => IDIOMAS.find(i => i.codigo === codigo)?.prefijo ?? ''
+
+/* ⚠️ Los enlaces del pie llevan el prefijo del idioma. Sin él, un lector del
+   artículo en árabe que pulsa «Precios» cae en la página española — y lo que
+   ve es un sitio que le ha dejado de hablar en su idioma a mitad de camino. */
+const pie = (idioma = 'es', t = sinTraducir) => {
+  const p = prefijoDe(idioma)
+  return `
 <footer class="pie">
   <div class="contenedor pie-caja">
-    <span>© ${new Date().getFullYear()} Zyntello, S.R.L. · República Dominicana</span>
+    <span>© ${new Date().getFullYear()} Zyntello, S.R.L. · ${esc(t('nos.pais.rd', 'República Dominicana'))}</span>
     <span>
-      <a href="${SITIO}/blog/">Blog</a> ·
-      <a href="${SITIO}/precios/">Precios</a> ·
-      <a href="${SITIO}/nosotros/">Nosotros</a> ·
-      <a href="${SITIO}/contacto/">Contacto</a> ·
+      <a href="${rutaEn(p)}">${esc(t('blogp.blog', 'Blog'))}</a> ·
+      <a href="${SITIO}/${p}precios/">${esc(t('pri.precios.nombre', 'Precios'))}</a> ·
+      <a href="${SITIO}/${p}nosotros/">${esc(t('pri.nosotros.nombre', 'Nosotros'))}</a> ·
+      <a href="${SITIO}/${p}contacto/">${esc(t('pri.contacto.nombre', 'Contacto'))}</a> ·
       <a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a>
     </span>
     <div class="pie-redes">
-      <span>Síguenos</span>
-      ${redesSociales()}
+      <span>${esc(t('pag.redes.seguir', 'Síguenos'))}</span>
+      ${redesSociales(t)}
     </div>
   </div>
 </footer>
 </body>
 </html>
 `
+}
 
-const tarjeta = (a) => `<a class="entrada" href="${SITIO}/blog/${a.slug}/" style="border-left:2px solid ${CLUSTERS[a.cluster].color}">
-        <time datetime="${a.fecha}">${enLetra(a.fecha)} · ${a.minutos} min${a.pais ? ` · ${PAISES[a.pais]}` : ''}</time>
-        <h3>${esc(a.titulo)}</h3>
-        <p>${esc(a.resumen)}</p>
+/* ⚠️ La tarjeta enlaza al artículo EN EL MISMO IDIOMA. Con el enlace en
+   español, el lector chino que pulsa un relacionado sale del chino sin saber
+   por qué — y si ese artículo aún no está traducido, a un 404. */
+const tarjeta = (a, idioma = 'es', t = sinTraducir) => `<a class="entrada" href="${rutaEn(prefijoDe(idioma), `${a.slug}/`)}" style="border-left:2px solid ${CLUSTERS[a.cluster].color}">
+        <time datetime="${a.fecha}">${enLetra(a.fecha, idioma)} · ${a.minutos} ${esc(t('blogp.min', 'min'))}${a.pais ? ` · ${esc(t(`pais.${a.pais}`, PAISES[a.pais]))}` : ''}</time>
+        <h3>${esc(t(`blog.${a.slug}.titulo`, a.titulo))}</h3>
+        <p>${esc(t(`blog.${a.slug}.resumen`, a.resumen))}</p>
       </a>`
 
-/** Un artículo. */
-export function articulo(a, hermanos = []) {
-  const url = `${SITIO}/blog/${a.slug}/`
+/**
+ * Un artículo.
+ *
+ * ⚠️ `a` llega YA TRADUCIDO (lo traduce el generador con `traducir()`), así que
+ * `a.titulo` es el titular en el idioma que toca. `t` se usa solo para el
+ * chrome —rótulos, botones, nombres de clúster y de país—, que no viaja dentro
+ * del artículo sino en `clusters.mjs`.
+ */
+export function articulo(a, hermanos = [], opciones = {}) {
+  const { idioma = 'es', idiomas = [], t = sinTraducir, disponibles = new Set(),
+          rutaDestino = (r) => r } = opciones
+  const p = prefijoDe(idioma)
+  const url = rutaEn(p, `${a.slug}/`)
   const grupo = CLUSTERS[a.cluster]
   const destino = a.destino || grupo.destino
+  const nombreGrupo = t(`clus.${a.cluster}.nombre`, grupo.nombre)
 
-  const cuerpo = a.secciones.map((s) => {
+  const cuerpo = enlazarEnIdioma(a.secciones.map((s) => {
     const partes = [`<h2 id="${s.id}">${esc(s.titulo)}</h2>`]
     for (const b of s.bloques) {
       if (typeof b === 'string') partes.push(`<p>${b}</p>`)
@@ -165,7 +252,7 @@ export function articulo(a, hermanos = []) {
       else if (b.aviso) partes.push(`<div class="aviso"><p>${b.aviso}</p></div>`)
     }
     return partes.join('\n')
-  }).join('\n')
+  }).join('\n'), idioma, disponibles)
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -176,23 +263,23 @@ export function articulo(a, hermanos = []) {
         headline: a.titulo,
         description: a.resumen,
         url,
-        inLanguage: 'es',
+        inLanguage: idioma,
         datePublished: a.fecha,
         dateModified: a.actualizado || a.fecha,
         image: `${SITIO}/logos/zyntello_facebook_portada.png`,
-        articleSection: grupo.nombre,
+        articleSection: nombreGrupo,
         /* ⚠️ El autor es la ORGANIZACIÓN, no una persona inventada. Un autor
            falso con nombre y apellido es lo primero que desmonta la confianza
            de una página, y Google valora la autoría real. */
         author: { '@type': 'Organization', name: 'Zyntello, S.R.L.', url: SITIO },
         publisher: { '@id': `${SITIO}/#organizacion` },
-        isPartOf: { '@type': 'Blog', '@id': `${SITIO}/blog/#blog`, name: 'Blog de Zyntello' },
+        isPartOf: { '@type': 'Blog', '@id': `${rutaEn(p)}#blog`, name: t('blogp.nombre', 'Blog de Zyntello') },
       },
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITIO}/` },
-          { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITIO}/blog/` },
+          { '@type': 'ListItem', position: 1, name: t('pag.pri.volver', 'Inicio'), item: `${SITIO}/${p}` },
+          { '@type': 'ListItem', position: 2, name: t('blogp.blog', 'Blog'), item: rutaEn(p) },
           { '@type': 'ListItem', position: 3, name: a.titulo, item: url },
         ],
       },
@@ -202,24 +289,27 @@ export function articulo(a, hermanos = []) {
   const relacionados = hermanos.length ? `
 <section class="seccion seccion-alta">
   <div class="contenedor">
-    <p class="rotulo">${esc(grupo.nombre)}</p>
-    <h2 class="titulo-seccion">Del mismo tema</h2>
+    <p class="rotulo">${esc(nombreGrupo)}</p>
+    <h2 class="titulo-seccion">${esc(t('blogp.mismotema', 'Del mismo tema'))}</h2>
     <div class="rejilla" style="--cols:${columnasPara(hermanos.length)}">
-      ${hermanos.map(tarjeta).join('\n      ')}
+      ${hermanos.map(h => tarjeta(h, idioma, t)).join('\n      ')}
     </div>
   </div>
 </section>` : ''
 
-  return cabecera({ titulo: `${a.titulo} | Zyntello`, descripcion: a.resumen, url, jsonLd, color: grupo.color })
+  return cabecera({
+    titulo: `${a.titulo} | Zyntello`, descripcion: a.resumen, url, jsonLd,
+    color: grupo.color, idioma, idiomas, resto: `${a.slug}/`, t,
+  })
     + `
 <article>
   <header class="art">
     <div class="contenedor contenedor-estrecho">
       <div class="art-meta">
-        ${a.pais ? `<span class="pais">${PAISES[a.pais]}</span>` : ''}
-        <span><time datetime="${a.fecha}">${enLetra(a.fecha)}</time></span>
+        ${a.pais ? `<span class="pais">${esc(t(`pais.${a.pais}`, PAISES[a.pais]))}</span>` : ''}
+        <span><time datetime="${a.fecha}">${enLetra(a.fecha, idioma)}</time></span>
         <span aria-hidden="true">·</span>
-        <span>${a.minutos} min de lectura</span>
+        <span>${a.minutos} ${esc(t('blogp.lectura', 'min de lectura'))}</span>
         <span aria-hidden="true">·</span>
         <span>${esc(a.tema)}</span>
       </div>
@@ -240,17 +330,26 @@ ${relacionados}
     <h2>${esc(a.cierre.titulo)}</h2>
     <p>${esc(a.cierre.texto)}</p>
     <div class="acciones">
-      <a href="https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`¡Hola Zyntello! Leí «${a.titulo}» y quiero saber más.`)}" target="_blank" rel="noopener" class="btn btn-principal">Hablar con Zyntello</a>
-      <a href="${SITIO}${destino.ruta}" class="btn btn-fantasma">${esc(destino.texto)}</a>
+      <a href="https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`¡Hola Zyntello! Leí «${a.tituloEs ?? a.titulo}» y quiero saber más.`)}" target="_blank" rel="noopener" class="btn btn-principal">${esc(t('pag.boton.whatsapp', 'Hablar con Zyntello'))}</a>
+      <a href="${SITIO}${rutaDestino(destino.ruta, idioma)}" class="btn btn-fantasma">${esc(a.destino ? destino.texto : t(`clus.${a.cluster}.destino`, destino.texto))}</a>
     </div>
   </div>
 </section>
-` + pie()
+` + pie(idioma, t)
 }
 
-/** El índice del blog, agrupado por tema. */
-export function indice(articulos) {
-  const url = `${SITIO}/blog/`
+/**
+ * El índice del blog, agrupado por tema.
+ *
+ * ⚠️ `articulos` llega YA TRADUCIDO y YA FILTRADO: solo los que existen en este
+ * idioma. Listar aquí los que faltan pondría tarjetas cuyo enlace da 404, que
+ * es lo peor que se le puede dar a Google — un 404 interno que encuentra él
+ * solo rastreando el sitio.
+ */
+export function indice(articulos, opciones = {}) {
+  const { idioma = 'es', idiomas = [], t = sinTraducir, rutaDestino = (r) => r } = opciones
+  const p = prefijoDe(idioma)
+  const url = rutaEn(p)
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -258,68 +357,68 @@ export function indice(articulos) {
       {
         '@type': 'Blog',
         '@id': `${url}#blog`,
-        name: 'Blog de Zyntello',
-        description: 'Lo que hemos aprendido implantando sistemas de gestión en República Dominicana, Venezuela, Colombia, Guatemala y Costa Rica.',
+        name: t('blogp.nombre', 'Blog de Zyntello'),
+        description: t('blogp.descripcion', 'Lo que hemos aprendido implantando sistemas de gestión en República Dominicana, Venezuela, Colombia, Guatemala y Costa Rica.'),
         url,
-        inLanguage: 'es',
+        inLanguage: idioma,
         publisher: { '@id': `${SITIO}/#organizacion` },
         blogPost: articulos.map((a) => ({
           '@type': 'BlogPosting',
           headline: a.titulo,
           description: a.resumen,
-          url: `${SITIO}/blog/${a.slug}/`,
+          url: rutaEn(p, `${a.slug}/`),
           datePublished: a.fecha,
         })),
       },
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITIO}/` },
-          { '@type': 'ListItem', position: 2, name: 'Blog', item: url },
+          { '@type': 'ListItem', position: 1, name: t('pag.pri.volver', 'Inicio'), item: `${SITIO}/${p}` },
+          { '@type': 'ListItem', position: 2, name: t('blogp.blog', 'Blog'), item: url },
         ],
       },
     ],
   }
 
   const grupos = Object.entries(CLUSTERS)
-    .map(([clave, g]) => [g, articulos.filter((a) => a.cluster === clave)])
+    .map(([clave, g]) => [g, articulos.filter((a) => a.cluster === clave), clave])
     .filter(([, arts]) => arts.length)
 
   return cabecera({
-    titulo: 'Blog | Zyntello',
-    descripcion: 'Facturación fiscal, nómina, inventario y gestión en República Dominicana, Venezuela, Colombia, Guatemala y Costa Rica. Lo que se aprende operando.',
-    url, jsonLd,
+    titulo: `${t('blogp.blog', 'Blog')} | Zyntello`,
+    descripcion: t('blogp.meta', 'Facturación fiscal, nómina, inventario y gestión en República Dominicana, Venezuela, Colombia, Guatemala y Costa Rica. Lo que se aprende operando.'),
+    url, jsonLd, idioma, idiomas, resto: '', t,
   }) + `
 <header class="art">
   <div class="contenedor">
-    <p class="rotulo">Blog</p>
-    <h1>Lo que se aprende operando, no leyendo</h1>
-    <p class="art-entradilla">Cosas que cuestan dinero y casi nadie explica: qué comprueba de verdad cada organismo en un comprobante, por qué el pago de vacaciones se descuenta después y por qué el inventario del sistema nunca es el del almacén. ${articulos.length} artículos, en ${grupos.length} temas y cinco países.</p>
+    <p class="rotulo">${esc(t('blogp.blog', 'Blog'))}</p>
+    <h1>${esc(t('blogp.titular', 'Lo que se aprende operando, no leyendo'))}</h1>
+    <p class="art-entradilla">${esc(t('blogp.entradilla', 'Cosas que cuestan dinero y casi nadie explica: qué comprueba de verdad cada organismo en un comprobante, por qué el pago de vacaciones se descuenta después y por qué el inventario del sistema nunca es el del almacén.'))} ${articulos.length} ${esc(t('blogp.articulos', 'artículos'))}, ${esc(t('blogp.en', 'en'))} ${grupos.length} ${esc(t('blogp.temas', 'temas'))}.</p>
   </div>
 </header>
 
-${grupos.map(([g, arts]) => `<section class="grupo">
+${grupos.map(([g, arts, clave]) => `<section class="grupo">
   <div class="contenedor">
     <div class="grupo-cab">
-      <h2>${esc(g.nombre)}</h2>
-      <a class="grupo-ir" href="${SITIO}${g.destino.ruta}">${esc(g.destino.texto)} →</a>
+      <h2>${esc(t(`clus.${clave}.nombre`, g.nombre))}</h2>
+      <a class="grupo-ir" href="${SITIO}${rutaDestino(g.destino.ruta, idioma)}">${esc(t(`clus.${clave}.destino`, g.destino.texto))} →</a>
     </div>
-    <p class="grupo-txt">${esc(g.entradilla)}</p>
+    <p class="grupo-txt">${esc(t(`clus.${clave}.entradilla`, g.entradilla))}</p>
     <div class="rejilla" style="--cols:${columnasPara(arts.length)}">
-      ${arts.map(tarjeta).join('\n      ')}
+      ${arts.map(a => tarjeta(a, idioma, t)).join('\n      ')}
     </div>
   </div>
 </section>`).join('\n')}
 
 <section class="cierre">
   <div class="contenedor">
-    <h2>¿Alguno de estos te está pasando?</h2>
-    <p>Son problemas que hemos visto muchas veces. Cuéntanos el tuyo y te decimos si se arregla con un módulo o con otra cosa.</p>
+    <h2>${esc(t('blogp.cierre.titulo', '¿Alguno de estos te está pasando?'))}</h2>
+    <p>${esc(t('blogp.cierre.texto', 'Son problemas que hemos visto muchas veces. Cuéntanos el tuyo y te decimos si se arregla con un módulo o con otra cosa.'))}</p>
     <div class="acciones">
-      <a href="https://wa.me/${WHATSAPP}" target="_blank" rel="noopener" class="btn btn-principal">Hablar con Zyntello</a>
-      <a href="${SITIO}/#soluciones" class="btn btn-fantasma">Ver los módulos</a>
+      <a href="https://wa.me/${WHATSAPP}" target="_blank" rel="noopener" class="btn btn-principal">${esc(t('pag.boton.whatsapp', 'Hablar con Zyntello'))}</a>
+      <a href="${SITIO}/${p}#soluciones" class="btn btn-fantasma">${esc(t('pag.boton.modulos', 'Ver los módulos'))}</a>
     </div>
   </div>
 </section>
-` + pie()
+` + pie(idioma, t)
 }

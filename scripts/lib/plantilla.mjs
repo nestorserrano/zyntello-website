@@ -48,7 +48,7 @@ const rejilla = (items, max, render) =>
  * como un sitio que no es para ti. Se muestran los caracteres que los
  * distinguen de verdad.
  */
-const rotuloIdioma = (codigo) =>
+export const rotuloIdioma = (codigo) =>
   codigo === 'zh-Hans' ? '简' : codigo === 'zh-Hant' ? '繁' : codigo.toUpperCase()
 
 /* ⚠️ `t` llega por parámetro con un valor por defecto que devuelve el respaldo

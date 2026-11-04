@@ -112,7 +112,11 @@ const PREFIJOS = ['nav.', 'hero.', 'porque.', 'cookies.', 'idioma.', 'pie.', 'co
    esta entrada, las 276 aparecían como «sembradas que ninguna vista pide»:
    traducidas y publicadas, pero denunciadas. Un aviso falso de 276 líneas no
    se lee, y el de verdad se pierde dentro. */
-const PREFIJOS_ABIERTOS = ['mod.', 'fun.', 'pri.']
+/* ⚠️ `blog.*` es el mismo caso: las claves de cada artículo
+   —`blog.{slug}.secciones.1.bloques.0.lista.3`— las arma `generar-blog.mjs`
+   recorriendo los datos del blog, con una profundidad que depende de cómo esté
+   escrito cada artículo. No hay lista que enumerarlas. */
+const PREFIJOS_ABIERTOS = ['mod.', 'fun.', 'pri.', 'blog.']
 
 /**
  * ¿Es una clave de conjunto abierto, que no se cuenta en ninguna dirección?
@@ -152,6 +156,8 @@ const GENERADORES = [
   join(AQUI, 'generar-servicios.mjs'),
   join(AQUI, 'generar-funcionalidades.mjs'),
   join(AQUI, 'generar-paginas.mjs'),
+  join(AQUI, 'generar-blog.mjs'),
+  join(AQUI, 'lib', 'plantilla-articulo.mjs'),
 ].filter(existsSync)
 
 for (const n of [...fuentesJsx(), ...GENERADORES]) {
@@ -163,6 +169,21 @@ for (const n of [...fuentesJsx(), ...GENERADORES]) {
 }
 
 // ── Las que se arman al vuelo, una a una ────────────────────────────────────
+
+/* Blog: los nueve temas y los cinco países.
+ *
+ * ⚠️ Se ENUMERAN leyendo `clusters.mjs`, no se declaran como conjunto abierto.
+ * Son listas cerradas y conocidas, así que enumerarlas hace que la guarda
+ * también detecte lo contrario: un tema nuevo cuyo nombre nadie tradujo. Con
+ * un prefijo abierto, ese tema saldría en español en las ocho banderas y la
+ * guarda seguiría en verde. */
+const { CLUSTERS, PAISES } = await import(pathToFileURL(join(AQUI, 'blog', 'clusters.mjs')).href)
+for (const clave of Object.keys(CLUSTERS)) {
+  pide('clusters.mjs', `clus.${clave}.nombre`)
+  pide('clusters.mjs', `clus.${clave}.entradilla`)
+  pide('clusters.mjs', `clus.${clave}.destino`)
+}
+for (const codigo of Object.keys(PAISES)) pide('clusters.mjs', `pais.${codigo}`)
 
 /* Servicios: cada tarjeta pide su título y su descripción, más su grupo. */
 const servicios = leer('Servicios.jsx')
