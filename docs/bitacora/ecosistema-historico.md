@@ -9,6 +9,52 @@
 
 ### Bitácora reciente (estado actual — 2026-09-08)
 
+> **EL BLOG ENTERO EN LOS OCHO IDIOMAS — CERRADO (2026-11-04)**: los **38 artículos** y su índice
+> existen ahora en los ocho idiomas. **312 páginas**, 39 por idioma, desplegadas y verificadas por
+> contenido contra producción —`lang`, `dir`, título traducido y un 404 de control— no por el hash
+> del commit. El sitemap pasa de 260 a **572 URLs**.
+>
+> Son **958 claves** en `textos_sitio`, todas con sus ocho idiomas, ninguna fila a medias. Antes
+> solo estaban los dos artículos de tesorería; los otros 36 salían en español bajo una etiqueta de
+> idioma que no era la suya — válidos, indexables y equivocados, que es peor que no tener la
+> página.
+>
+> ⚠️⚠️ **El vocabulario que nombra un documento o un organismo de un país NO se traduce, y la
+> distinción no es de estilo sino legal.** NCF, e-CF, ITBIS, RNC, DGII, DIAN, CUFE, DTE, SAT,
+> SENIAT, IGTF, TSS, CCSS, IGSS y Bono 14 van igual en los ocho. Lo que se traduce es la prosa que
+> los explica. Un «Comprobante de Compras» **no** es una *purchase invoice* —lo emite el
+> comprador—, «Gastos Menores» **no** es *petty cash* —eso es Caja Chica, otro módulo— y el ITBIS
+> **no** es el IVA aunque se le parezca. Traducir el término deja al lector buscando una palabra
+> que su administración tributaria no usa.
+>
+> ⚠️⚠️ **Esa misma distinción se le pasó a otra sesión que construía los e-CF 41 y 43, y cambió su
+> diseño.** Lo que vale para el blog vale para la app: la **interfaz** (menú, listado, estados,
+> tooltips) va al idioma del USUARIO; el **XML que se transmite a la DGII y la representación
+> impresa que recibe el proveedor** van en ESPAÑOL siempre. El síntoma de confundirlos no es un
+> error: es un usuario con la pantalla en árabe emitiendo un comprobante fiscal en árabe a un
+> proveedor dominicano, con el XML ya transmitido. Quedó resuelto fijando el locale a `es` en la
+> plantilla impresa y en el servicio de XML, con el motivo escrito en el docblock — no dependiendo
+> de que alguien se acuerde.
+>
+> **La validación que lo sostiene, y que conviene repetir**: cada clúster se vuelca con
+> `claves-blog.mjs --tsv`, se traduce, y antes de sembrar se compara con el extractor por clave y
+> por columna española con `comm -3`. Solo se siembra con salida vacía. Así se cazaron **cinco
+> índices de bloque equivocados** en el clúster de compras (`bloques.1.lista.0` donde el dato dice
+> `bloques.0.lista.0`). ⚠️ Ninguno habría dado error: se habrían sembrado, nadie los habría pedido,
+> y esos párrafos saldrían en español en los siete idiomas **sin que nada lo dijera**.
+>
+> ⚠️ **Dos mediciones mal planteadas que casi inventan un defecto**, anotadas para no repetirlas:
+> `grep -c $'' fichero` cae a patrón vacío y devuelve el **total de líneas** —dio «14.094 de
+> 14.094» y parecía catástrofe; lo correcto es `b.count(13) - b.count(b'
+')` sobre los bytes—,
+> y el JSON de `/api/textos-sitio` está indexado **por idioma primero** (`textos.ar.{clave}`), así
+> que contar `blog.*` en la raíz devuelve cero aunque las 958 estén ahí.
+>
+> **El orden de publicación no es negociable**: el dato sube ANTES que el código que lo pide.
+> Primero `db:seed` en el admin de producción, se verifica que el API sirve las claves, y solo
+> entonces se genera y despliega el sitio. Al revés, el sitio pide claves que el catálogo no tiene
+> y las páginas salen en español **sin dar ningún error**.
+
 > **EL MARCO LEGAL EN LOS OCHO IDIOMAS — CERRADO (2026-11-01)**: las **seis** páginas legales
 > —términos, privacidad, cookies, eliminación de datos, SLA y avisos de terceros— existen ahora
 > en los **ocho idiomas** que el selector ofrece: español, inglés, francés, italiano, chino
