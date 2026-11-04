@@ -44,12 +44,43 @@
 > y esos párrafos saldrían en español en los siete idiomas **sin que nada lo dijera**.
 >
 > ⚠️ **Dos mediciones mal planteadas que casi inventan un defecto**, anotadas para no repetirlas:
-> `grep -c $'' fichero` cae a patrón vacío y devuelve el **total de líneas** —dio «14.094 de
-> 14.094» y parecía catástrofe; lo correcto es `b.count(13) - b.count(b'
+> `grep -c $'
+' fichero` cae a patrón vacío y devuelve el **total de líneas** —dio «14.094 de
+> 14.094» y parecía catástrofe; lo correcto es `b.count(13) - b.count(b'
+
 ')` sobre los bytes—,
 > y el JSON de `/api/textos-sitio` está indexado **por idioma primero** (`textos.ar.{clave}`), así
 > que contar `blog.*` en la raíz devuelve cero aunque las 958 estén ahí.
 >
+> **LA PORTADA, EN LOS OCHO IDIOMAS (2026-11-04)**: `/en/`, `/fr/`, `/it/`, `/zh-Hans/`,
+> `/zh-Hant/`, `/ar/` y `/ht/` devolvían **403**. El resto del sitio sí tenía una página por idioma,
+> así que esos directorios existían llenos de subcarpetas pero sin índice, y Apache no puede
+> listarlos. ⚠️ Un 403 no es un 404: el 404 dice «esto no existe» y Google lo retira; el 403 dice
+> «existe y no te dejo». Lo encontraba cualquiera que **recortara una URL compartida**.
+>
+> ⚠️⚠️ **La primera versión de la corrección copiaba la plantilla `index.html`, y eso era peor que
+> el 403.** La plantilla carga `/src/main.jsx` —el fuente, que existe en desarrollo y **no en
+> producción**—; el `dist/index.html` del build carga `/assets/index-HASH.js`. La copia daba HTML
+> válido, build sin una sola advertencia y **página en blanco** al abrirla. Se cazó comparando los
+> dos ficheros antes de publicar, y el generador lleva ahora una guarda que aborta si lo que lee
+> contiene el fuente.
+>
+> ⚠️⚠️ **Son DOS piezas que solo funcionan juntas**, y publicar una sola habría sido un defecto con
+> otra cara: el HTML declara el idioma, y `detectarDeLaUrl()` en `useIdioma.jsx` le da **precedencia
+> sobre `localStorage` y sobre el navegador**. Sin el hook, quien reciba `zyntello.com/ar/` y haya
+> visitado el sitio antes en español vería la portada **en español bajo una URL árabe**. Una URL con
+> prefijo no es una preferencia guardada: es la página que han pedido.
+>
+> ⚠️ Y el selector **mueve la URL** cuando se está bajo un prefijo. Cambiar solo el estado deja
+> `/en/` mostrando español: se ve bien hasta recargar, y entonces la elección se deshace sola porque
+> la URL manda. Un selector que se deshace al recargar es peor que no tenerlo, porque el visitante
+> cree que eligió.
+>
+> Cada portada lleva su `lang`, su `dir`, su título y descripción del catálogo (`pag.portada.*`,
+> sembradas en los ocho), su `canonical` y los **hreflang de los ocho más `x-default`** — sin ellos
+> Google vería ocho URLs con el mismo contenido y descartaría siete como duplicadas. Sitemap: 572 →
+> 579.
+
 > **El orden de publicación no es negociable**: el dato sube ANTES que el código que lo pide.
 > Primero `db:seed` en el admin de producción, se verifica que el API sirve las claves, y solo
 > entonces se genera y despliega el sitio. Al revés, el sitio pide claves que el catálogo no tiene
