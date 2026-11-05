@@ -34,7 +34,10 @@ dist-ssr
 *.sw?
 
 # Panel admin y apps SaaS (cada uno tiene su propio repo Git)
-# Excepción: app/.htaccess sí se versiona para el deploy en Bluehost
+# ⚠️ Cada repo versiona su propio .htaccess desde el 2026-11-05. Este repo versiona
+# el suyo (dist/.htaccess, que es el de public_html/zyntello/) y la app y el panel
+# los suyos. La excepcion `!app/.htaccess` que habia aqui apuntaba a un archivo que
+# nunca existio: era un intento de versionar el de la app desde este repo.
 admin/
 app/*
 
@@ -45,7 +48,6 @@ app/*
 # —"nunca un repo Laravel separado por modulo"—: todo modulo nuevo va DENTRO de
 # app/zyntello-app. Queda declarado para que el director tecnico decida si se elimina.
 zyntello-saas/
-!app/.htaccess
 
 # Artefactos PHP y mobile que no pertenecen al repo del sitio web
 /vendor/
