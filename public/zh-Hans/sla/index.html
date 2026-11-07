@@ -107,7 +107,95 @@
 
 
 
-<!--zyntello:legales-->
+<style>
+/* ── Tema claro ───────────────────────────────────────────────────────────────
+   Mismos valores que el sitio (financial-ui.css), para que no haya dos claros. */
+html[data-appearance="light"]{
+  color-scheme:light;
+  --bg:#f4f5f7; --bg2:#f8f9fa; --card:#ffffff;
+  --line:#e2e8f0; --line2:#cbd5e1;
+  --tx:#202f40; --tx2:#435367; --tx3:#627185;
+  --ac:#345775; --ac2:#2a4660; --warn:#8a5a00; --ok:#0f7a56;
+}
+html[data-appearance="light"] body{background:var(--bg);color:var(--tx2)}
+html[data-appearance="light"] .brand-txt b{color:#202f40}
+html[data-appearance="light"] .prevalece{background:#fff7e6;border-color:#e8c478;color:#5c4100}
+
+/* ⚠️⚠️ Estas cuatro reglas NO son decoración: el documento traía los colores
+   ESCRITOS A MANO en vez de en variables, así que al poner el tema claro el
+   cuerpo se aclaraba y el encabezado y el pie se quedaban oscuros — con el
+   texto, que sí había cambiado a oscuro, encima. El resultado no era feo: era
+   ILEGIBLE, y solo en el tema que se acababa de añadir. Un tema claro a medias
+   es peor que no tenerlo. */
+html[data-appearance="light"] header{background:linear-gradient(180deg,#ffffff 0%,#f4f5f7 100%)}
+html[data-appearance="light"] footer{background:#eef1f4}
+html[data-appearance="light"] a:hover{color:var(--ac2)}
+html[data-appearance="light"] .note b{color:#202f40}
+
+/* ⚠️⚠️ Los SIETE textos que el documento pinta de blanco fijo. Se cazaron buscando
+   «color:#fff» en la hoja, no a ojo: el título y los epígrafes quedaban en blanco
+   sobre fondo claro —invisibles— y el primer vistazo solo delató dos de ellos.
+   Las tablas, las notas y el control de cambios fallaban igual más abajo, donde
+   no se ve sin bajar. Un tema que hay que ir corrigiendo a medida que alguien
+   tropieza no está terminado. */
+html[data-appearance="light"] h1,
+html[data-appearance="light"] h2.sec,
+html[data-appearance="light"] th,
+html[data-appearance="light"] .chg td:first-child,
+html[data-appearance="light"] .fgrid h4{color:#202f40}
+
+/* ── Marca: el mismo isotipo y lema que la portada ───────────────────────────── */
+.brand img{height:39px;width:auto;display:block}
+.brand-txt{display:flex;flex-direction:column;line-height:1.15}
+.brand-txt b{color:var(--tx);font-size:1.15rem;letter-spacing:-.3px}
+.brand-txt small{color:var(--tx3);font-size:.63rem;letter-spacing:.01em}
+@media (max-width:560px){ .brand-txt small{display:none} }
+
+/* ── Panel de lectura ─────────────────────────────────────────────────────────
+   En el encabezado y dentro del contenedor, no flotando: un panel fijo sobre el
+   texto tapa justo lo que se está leyendo en una pantalla de teléfono. */
+.lectura{display:flex;align-items:center;gap:.3rem;padding:.35rem 0 .9rem}
+.lec-btn{display:inline-flex;align-items:center;justify-content:center;gap:1px;
+  min-width:2.1rem;height:2.1rem;padding:0 .5rem;cursor:pointer;
+  border:1px solid var(--line2);border-radius:.55rem;background:var(--card);
+  color:var(--tx2);font:600 .85rem/1 inherit;font-family:inherit}
+.lec-btn span{font-size:.72em;opacity:.85}
+.lec-btn:hover{color:var(--ac);border-color:var(--ac)}
+/* ⚠️ El foco visible NO se quita: sin él, quien navega con el teclado no sabe
+   dónde está, y estos botones son justamente los de accesibilidad. */
+.lec-btn:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.lec-sep{width:1px;height:1.3rem;background:var(--line2);margin:0 .25rem}
+
+/* ── El selector de idioma, dentro de los márgenes ────────────────────────────
+   ⚠️⚠️ Se inserta FUERA del «.wrap» —el marcador está detrás de su «</div>»—, así
+   que no heredaba el padding lateral y quedaba pegado al borde izquierdo de la
+   pantalla mientras el resto de la página sí respetaba el margen. Se le repone
+   aquí el mismo «clamp» que usa «.wrap», en vez de mover el marcador, porque la
+   estructura del HTML español es la fuente de las traducciones y no se toca. */
+.idiomas{padding:.75rem clamp(1.25rem,3vw,2.75rem)}
+
+/* ── Índice en el teléfono ────────────────────────────────────────────────────
+   Debajo de 900px el índice deja de ser una columna y pasa a ser un bloque sobre
+   el texto. Con cuarenta epígrafes eso son varias pantallas de lista antes de
+   llegar al documento, así que se limita y se desplaza dentro de sí mismo. */
+@media (max-width:900px){
+  .toc{max-height:14rem;overflow:auto;-webkit-overflow-scrolling:touch}
+  .lectura{padding-top:.1rem}
+}
+
+/* ⚠️ Respeta a quien pidió que nada se mueva: el salto suave al pulsar un
+   epígrafe marea a quien tiene sensibilidad al movimiento. */
+@media (prefers-reduced-motion:no-preference){ html{scroll-behavior:smooth} }
+</style>
+<script>
+/* Aplica el tema guardado antes del primer pintado. Misma clave que el sitio. */
+try{
+  var t = localStorage.getItem('zyntello-website-appearance');
+  if (t === 'light' || t === 'dark') document.documentElement.dataset.appearance = t;
+  var z = parseFloat(localStorage.getItem('zyntello-legales-zoom'));
+  if (z >= 0.8 && z <= 1.8) document.documentElement.style.setProperty('--fs', (15.5 * z) + 'px');
+}catch(e){/* Sin almacenamiento la página se ve igual, en oscuro y a tamaño normal. */}
+</script><!--zyntello:legales-->
 <link rel="alternate" hreflang="es" href="https://zyntello.com/sla/">
 <link rel="alternate" hreflang="en" href="https://zyntello.com/en/sla/">
 <link rel="alternate" hreflang="fr" href="https://zyntello.com/fr/sla/">
@@ -134,16 +222,29 @@
   <div class="wrap">
     <div class="top">
       <a class="brand" href="https://zyntello.com">
-        <img src="/logos/zyntello_isotipo_blanco.svg" alt="Zyntello" onerror="this.style.display='none'">
-        <b>Zyntello</b>
+        <img src="/logos/zyntello_isotipo_transparente.png" alt="Zyntello" width="39" height="39">
+        <span class="brand-txt">
+          <b>Zyntello</b>
+          <small>人工智能 · ERP · 企业技术</small>
+        </span>
       </a>
       <nav>
         <a href="https://zyntello.com">首页</a>
         <a href="/zh-Hans/terminos/">服务条款</a>
-        <a href="/zh-Hans/privacidad/">隐私</a>
+        <a href="/zh-Hans/privacidad/">隐私政策</a>
+        <a href="/zh-Hans/cookies/">Cookie 政策</a>
+        <a href="/zh-Hans/sla/" aria-current="page">SLA</a>
         <a href="/zh-Hans/eliminacion-datos/">数据删除</a>
         <a href="/zh-Hans/avisos-terceros/">第三方声明</a>
+        <a href="https://zyntello.com/#contacto">联系方式</a>
       </nav>
+    </div>
+    <div class="lectura" role="group" aria-label="阅读选项">
+      <button type="button" class="lec-btn" data-lec="menos" aria-label="缩小文字" title="更小的文字">A<span>−</span></button>
+      <button type="button" class="lec-btn" data-lec="reset" aria-label="默认文字大小" title="默认大小">A</button>
+      <button type="button" class="lec-btn" data-lec="mas" aria-label="放大文字" title="更大的文字">A<span>+</span></button>
+      <span class="lec-sep" aria-hidden="true"></span>
+      <button type="button" class="lec-btn lec-tema" data-lec="tema" aria-label="切换浅色和深色主题" title="浅色或深色主题"></button>
     </div>
     <div class="hero">
       <span class="kicker">法律文件</span>
@@ -480,5 +581,51 @@
   </div>
 </footer>
 
+<script>
+(function(){
+  var raiz = document.documentElement;
+  var PASOS = [0.85, 1, 1.15, 1.3, 1.5];
+  var BASE = 15.5;
+
+  function leerZoom(){
+    try{ var z = parseFloat(localStorage.getItem('zyntello-legales-zoom')); return isNaN(z) ? 1 : z; }
+    catch(e){ return 1; }
+  }
+  function aplicarZoom(z){
+    raiz.style.setProperty('--fs', (BASE * z) + 'px');
+    try{ localStorage.setItem('zyntello-legales-zoom', z); }catch(e){}
+  }
+  function moverZoom(dir){
+    var i = PASOS.indexOf(leerZoom());
+    if (i === -1) i = 1;
+    // Sin salirse del rango: por debajo no se lee y por encima el documento se desarma.
+    aplicarZoom(PASOS[Math.min(Math.max(i + dir, 0), PASOS.length - 1)]);
+  }
+  function pintarTema(){
+    var claro = raiz.dataset.appearance === 'light';
+    var b = document.querySelector('.lec-tema');
+    if (b) b.textContent = claro ? '\u263E' : '\u2600';
+  }
+  function cambiarTema(){
+    var claro = raiz.dataset.appearance === 'light';
+    raiz.dataset.appearance = claro ? 'dark' : 'light';
+    try{ localStorage.setItem('zyntello-website-appearance', raiz.dataset.appearance); }catch(e){}
+    pintarTema();
+  }
+
+  if (!raiz.dataset.appearance) raiz.dataset.appearance = 'dark';
+  pintarTema();
+
+  document.addEventListener('click', function(ev){
+    var b = ev.target.closest ? ev.target.closest('[data-lec]') : null;
+    if (!b) return;
+    var q = b.getAttribute('data-lec');
+    if (q === 'mas') moverZoom(1);
+    else if (q === 'menos') moverZoom(-1);
+    else if (q === 'reset') aplicarZoom(1);
+    else if (q === 'tema') cambiarTema();
+  });
+})();
+</script>
 </body>
 </html>
