@@ -191,7 +191,12 @@ html[data-appearance="light"] .fgrid h4{color:#202f40}
    pantalla mientras el resto de la página sí respetaba el margen. Se le repone
    aquí el mismo «clamp» que usa «.wrap», en vez de mover el marcador, porque la
    estructura del HTML español es la fuente de las traducciones y no se toca. */
-.idiomas{padding:.75rem clamp(1.25rem,3vw,2.75rem)}
+/* ⚠️⚠️ Doble clase a propósito. El generador inyecta su propio «<style>» DESPUÉS
+   de este, con «.idiomas{padding:.75rem 0}»: a igual especificidad gana la última
+   regla del documento, así que la de aquí se perdía y la fila seguía pegada al
+   borde. Medido en producción: padding-left 0px mientras el contenedor tenía
+   38,4px. «.idiomas.idiomas» pesa más sin depender de dónde cuelgue el bloque. */
+.idiomas.idiomas{padding:.75rem clamp(1.25rem,3vw,2.75rem)}
 
 /* ── Índice en el teléfono ────────────────────────────────────────────────────
    Debajo de 900px el índice deja de ser una columna y pasa a ser un bloque sobre
