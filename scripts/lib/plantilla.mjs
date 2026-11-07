@@ -93,7 +93,7 @@ img{max-width:100%;display:block}
 .barra-volver:hover{color:var(--texto)}
 .barra-sep{width:1px;height:22px;background:var(--borde2);flex-shrink:0}
 .barra-marca{display:flex;align-items:center;gap:9px;min-width:0}
-.barra-marca img{height:30px;width:auto;flex-shrink:0}
+.barra-marca img{height:39px;width:auto;flex-shrink:0}
 .barra-marca strong{font-family:var(--display);font-weight:700;font-size:1.12rem;letter-spacing:-.03em;color:var(--color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .barra-menu{display:flex;align-items:center;gap:26px}
 .barra-menu a{color:var(--suave);font-size:.88rem;transition:color .28s}
@@ -375,7 +375,7 @@ ${estilos(f.color).trim()}
       </a>
       <span class="barra-sep" aria-hidden="true"></span>
       <span class="barra-marca">
-        <img src="${SITIO}/logos/zyntello_isotipo_transparente.png" alt="" width="30" height="30">
+        <img src="${SITIO}/logos/zyntello_isotipo_transparente.png" alt="" width="39" height="39">
         <strong>${esc(f.nombre)}</strong>
       </span>
     </div>

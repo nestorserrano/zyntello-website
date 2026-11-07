@@ -172,7 +172,7 @@ ${ESTILOS_BLOG.trim()}
       </a>
       <span class="barra-sep" aria-hidden="true"></span>
       <a class="barra-marca" href="${SITIO}/${prefijoDe(idioma)}">
-        <img src="${SITIO}/logos/zyntello_isotipo_transparente.png" alt="" width="30" height="30">
+        <img src="${SITIO}/logos/zyntello_isotipo_transparente.png" alt="" width="39" height="39">
         <strong>Zyntello</strong>
       </a>
     </div>
