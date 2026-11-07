@@ -378,18 +378,54 @@ consecutivos y cualquier dato operativo o de configuración.
 
 ### La regla, en una línea
 
-**Toda pantalla, vista o sección nueva se entrega CON su ayuda, sus tooltips, su diccionario de
-datos y —si aplica— su reporte. En el MISMO trabajo que la crea, no en el siguiente.**
+**Toda pantalla, vista o sección nueva se entrega TRADUCIDA a los 8 idiomas y CON su ayuda, sus
+tooltips, su diccionario de datos y —si aplica— su reporte. En el MISMO trabajo que la crea, no en
+el siguiente.**
 
 No es documentación de cortesía: **es parte del producto.** Una pantalla sin ayuda es una pantalla
 que el usuario no usa, y un campo sin explicar es un campo que se llena mal.
 
 | # | Artefacto | Dónde | Si falta… |
 |---|---|---|---|
-| 1 | Ayuda de la pantalla | entrada en `resources/help/{modulo}.php` **+** `@section('ayudaClave', ...)` en la vista | el panel «?» no aparece y **nada lo dice** |
-| 2 | Tooltips de los campos | `<x-help.campo>` tras cada `<label>` | el usuario adivina qué va en el campo |
-| 3 | Diccionario de la tabla | `resources/diccionario/{modulo}.php` | el dato queda sin explicar y la suite falla |
-| 4 | Reporte, si aplica | decidir si se ofrece como origen y con qué etiquetas | el usuario ve ids crudos, o ve una tabla interna |
+| 1 | **Idioma** | `idioma:extraer {modulo}` + `idioma:extraer-dialogos {modulo}` + `idioma:verificar {modulo}` **+** las claves nuevas traducidas en los 7 `lang/modulos/{modulo}/{idioma}.json` | la pantalla sale **en español dentro de una interfaz en inglés** y la suite se pone roja |
+| 2 | Ayuda de la pantalla | entrada en `resources/help/{modulo}.php` **+** `@section('ayudaClave', ...)` en la vista | el panel «?» no aparece y **nada lo dice** |
+| 3 | Tooltips de los campos | `<x-help.campo>` tras cada `<label>` | el usuario adivina qué va en el campo |
+| 4 | Diccionario de la tabla | `resources/diccionario/{modulo}.php` | el dato queda sin explicar y la suite falla |
+| 5 | Reporte, si aplica | decidir si se ofrece como origen y con qué etiquetas | el usuario ve ids crudos, o ve una tabla interna |
+
+### ⚠️⚠️ El idioma es el artefacto 1 desde el 2026-11-06, y hace falta decir por qué
+
+Era el que más fácil se olvidaba **porque no se nota al escribirlo**: quien crea la pantalla la
+mira en español, donde se ve perfecta. El texto sin envolver no da ningún error, no falta ninguna
+clave —la clave no llega a existir— y hasta ese día **ninguna guarda miraba las vistas**: medían
+que lo ya extraído estuviera completo en los ocho idiomas, y eso daba verde.
+
+Medido ese día: **340 textos en 26 módulos**, escritos después de la ola de extracción de cada
+uno, saliendo en español en las ocho interfaces con la suite en verde todo ese tiempo.
+
+Ahora lo custodian tres trinquetes, y los tres fallan **hoy**, no dentro de seis meses:
+
+- `NingunaVistaLlevaTextoSinTraducirTest` — una vista con un literal sin `__()`.
+- `ExtractorDeDialogosTest` — que el extractor de diálogos no toque un atributo, una clase CSS ni un color.
+- `DiccionarioIdiomasCompletoTest` — una clave sin sus 7 traducciones. ⚠️ Desde el 2026-11-06 los
+  módulos **se descubren del disco**: ya no hay lista blanca a la que hubiera que acordarse de
+  añadirse. Lo que se declara es la excepción (`config/idiomas.php → modulos_sin_traducir`), y
+  está vacía.
+- `ElContenidoPasaPorElTraductorTest` — una etiqueta nueva del generador de reportes sin traducir.
+- `LasTraduccionesRespetanElGlosarioTest` — un término del glosario escrito de otra forma.
+
+⚠️ **Y hay un cuarto sitio que no es una vista: los mensajes de PHP** (validación, respuestas JSON
+de la API móvil, `abort()`). No los ve el extractor ni ninguna guarda de vistas, y una frase con un
+dato dentro se reescribe **con parámetros** —`__('La fecha :fecha …', [...])`—, nunca envolviendo
+solo el primer trozo: a medias sale «The date 05/11/2026 está fuera del período».
+
+⚠️ **Y el CONTENIDO también se traduce, no solo la interfaz.** La ayuda y el diccionario viven en
+archivos PHP, así que no pasan por `__()`: van por `App\Support\ContenidoTraducido`, que lee
+`lang/contenido/{idioma}.json` y, si no lo encuentra ahí, reutiliza lo que la interfaz ya traduce.
+Se mide con `php artisan idioma:censo-contenido` y se llena con `idioma:traducir-contenido`.
+⚠️⚠️ Ese comando usa la clave de **Zyntello** (`IA_TRADUCTOR_CLAVE` del `.env` del servidor), nunca
+la de un suscriptor: traducir el producto no se le puede cobrar a un cliente ni descontar de su
+tope mensual de IA.
 
 ⚠️⚠️ **Escribir la ayuda y CONECTARLA son DOS actos, y al segundo le falta síntoma.** Sin el
 `@section('ayudaClave')` el panel no se pinta: no hay error ni log. **Medido: 115+ pantallas
@@ -402,8 +438,10 @@ operaciones.»*
 
 **El detalle operativo —comandos, guardas, la comprobación campo por campo y qué decidir sobre los
 reportes— está en el Paso 8 de [`app/zyntello-app/CLAUDE.md`](app/zyntello-app/CLAUDE.md).**
-Custodian la regla `AyudaCompletoTest`, `AyudaIntegridadTest` y `DiccionarioCompletoTest`: son
-trinquetes, así que **una pantalla nueva sin ayuda o sin tooltips pone la suite roja hoy**.
+Custodian la regla `AyudaCompletoTest`, `AyudaIntegridadTest`, `DiccionarioCompletoTest`,
+`NingunaVistaLlevaTextoSinTraducirTest`, `DiccionarioIdiomasCompletoTest` y
+`ElContenidoPasaPorElTraductorTest`: son trinquetes, así que **una pantalla nueva sin ayuda, sin
+tooltips o sin traducir pone la suite roja hoy**.
 
 ---
 
@@ -668,8 +706,35 @@ c:/wamp64/www/zyntello/         ← Esta carpeta (repo: zyntello-website)
 ## Despliegue en Bluehost
 
 ### Sitio web (este repo)
-Deploy via **cPanel Git Version Control**. `.cpanel.yml` copia `dist/*` a `/home/ukrmeumy/public_html/zyntello/`.
-Antes de push: ejecutar build con PowerShell:
+
+**Se despliega con `.\deploy-website.ps1`. No se despliega solo, y nunca lo hizo.**
+
+```powershell
+.\deploy-website.ps1 -Build     # build + commit dist + push + deploy + poda de assets
+.\deploy-website.ps1            # solo deploy (si dist ya esta pusheado)
+```
+
+⚠️⚠️ **Lo de «cPanel Git Version Control» que ponia aqui es lo que hacia perder el rato.** El
+`.cpanel.yml` existe y es correcto, pero **cPanel no lo ha ejecutado ni una sola vez**: medido el
+2026-11-07, no hay ningun `.cpanel_deploy.log` en toda la cuenta.
+
+El motivo es el mecanismo, no una averia. cPanel instala un hook **`post-receive`**, que —como su
+nombre dice— corre cuando el servidor **RECIBE un push**. Nuestro flujo es el contrario: se pushea
+a GitHub y el servidor hace `git pull`. **Un `pull` no dispara `post-receive`.** El repo del
+servidor queda en el commit nuevo —lo que invita a darlo por desplegado— mientras
+`public_html/zyntello/` sigue sirviendo el build anterior.
+
+⚠️ **Y ese es justo el sintoma que no se ve**: `git log` en el servidor responde lo que uno quiere
+oir, el sitio carga sin ningun error y lo unico desactualizado es lo que ve el visitante.
+Verificar por el commit no verifica — hay que mirar el archivo publicado.
+
+El script replica el `.cpanel.yml` desde aqui (pull + `cp -rf dist/.`) y ademas **poda los assets
+huerfanos**, que el `cp -rf` nunca borra: en septiembre habia 27 acumulados, 7,3 MB.
+
+⚠️ `public_html/zyntello/` tambien aloja `admin/` y `app/`, que son OTROS repos. Por eso la copia
+es `cp -rf` y **jamas `rsync --delete`**: borraria las dos aplicaciones.
+
+Antes de cualquier push manual, el build:
 ```powershell
 & 'C:\Program Files\nodejs\node.exe' 'C:\Users\Sistemas\AppData\Roaming\npm\node_modules\npm\bin\npm-cli.js' run build
 ```
