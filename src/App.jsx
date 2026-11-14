@@ -10,6 +10,7 @@ import Contacto from './components/Contacto'
 import Footer from './components/Footer'
 import WhatsAppChat from './components/WhatsAppChat'
 import AvisoCookies from './components/AvisoCookies'
+import AvisoIdiomas from './components/AvisoIdiomas'
 import { ProveedorIdioma, useIdioma } from './hooks/useIdioma'
 import { useRevelar } from './hooks/useRevelar'
 import './styles/zyntello.css'
@@ -17,6 +18,7 @@ import './styles/Secciones.css'
 import './styles/financial-ui.css'
 import './styles/AvisoCookies.css'
 import './styles/SelectorIdioma.css'
+import './styles/AvisoIdiomas.css'
 
 /**
  * Primer elemento enfocable de la página: sin esto, quien navega con teclado
@@ -43,6 +45,10 @@ function App() {
       <SaltarAlContenido />
 
       <Navbar />
+      {/* ⚠️ Va ENTRE la barra y el contenido, no flotando encima: lo primero que se ve al
+          llegar, y la flecha apunta al selector que tiene justo arriba. Dentro de un overlay
+          se leería como publicidad y la gente lo cerraría sin mirarlo. */}
+      <AvisoIdiomas />
       <main>
         <Hero />
         <Servicios />

@@ -17,6 +17,20 @@ export default function SelectorIdioma() {
 
   const actual = idiomas.find((i) => i.codigo === idioma) || idiomas[0]
 
+  /* La tira de «léenos en tu idioma» pide abrir esta lista. Va por un evento del DOM y no por
+     estado compartido: son dos componentes en ramas distintas del árbol, y levantar el estado a
+     un contexto solo para esto sería más piezas de las que el problema necesita.
+     ⚠️ El foco se mueve al botón: quien llegó aquí con el teclado tiene que poder recorrer la
+     lista que acaba de abrir, y sin esto el foco se queda en el banner. */
+  useEffect(() => {
+    const abrir = () => {
+      setAbierto(true)
+      caja.current?.querySelector('.zy-idioma-boton')?.focus()
+    }
+    window.addEventListener('zy-abrir-idiomas', abrir)
+    return () => window.removeEventListener('zy-abrir-idiomas', abrir)
+  }, [])
+
   // Cerrar al hacer clic fuera y con Escape: las dos, porque con teclado no hay clic fuera.
   useEffect(() => {
     if (!abierto) return

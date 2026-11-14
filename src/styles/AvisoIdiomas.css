@@ -1,0 +1,119 @@
+/*
+ * Tira de «léenos en tu idioma», justo bajo la barra superior.
+ *
+ * ⚠️ Los colores salen de los tokens de `tokens.css`: una variable inventada NO da error, el
+ *    navegador simplemente ignora la declaración y el elemento sale sin color.
+ *
+ * ⚠️⚠️ La flecha apunta a la ESQUINA SUPERIOR DERECHA porque ahí está el selector. En árabe el
+ *    sitio se invierte entero, así que la flecha se refleja con `scaleX(-1)` — sin eso señalaría
+ *    al lado contrario, que es peor que no señalar nada: manda a mirar donde no hay nada.
+ */
+
+.zy-aviso-idiomas {
+  border-bottom: 1px solid var(--zy-borde);
+  background: var(--zy-fondo-alto);
+}
+
+.zy-aviso-idiomas-caja {
+  position: relative;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: .55rem clamp(16px, 4vw, 28px);
+  padding-inline-end: 2.6rem; /* deja sitio a la ✕ sin solaparse, también en árabe */
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  flex-wrap: wrap;
+}
+
+.zy-aviso-idiomas-flecha {
+  width: 34px;
+  height: 28px;
+  flex-shrink: 0;
+  color: var(--zy-coral);
+  /* La punta mira arriba-derecha; en RTL se refleja para seguir apuntando al selector. */
+  transform: translateY(-2px);
+}
+
+[dir='rtl'] .zy-aviso-idiomas-flecha { transform: translateY(-2px) scaleX(-1); }
+
+.zy-aviso-idiomas-texto {
+  margin: 0;
+  flex: 1 1 18rem;
+  font-size: .86rem;
+  line-height: 1.45;
+  color: var(--zy-texto-medio);
+}
+
+.zy-aviso-idiomas-texto strong { color: var(--zy-texto); font-weight: 700; }
+
+.zy-aviso-idiomas-acciones {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  flex-shrink: 0;
+}
+
+.zy-aviso-idiomas-boton {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .4rem .85rem;
+  border: 0;
+  border-radius: var(--zy-radio-sm);
+  background: var(--zy-coral);
+  color: var(--zy-sobre-coral);
+  font: inherit;
+  font-size: .82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter .18s ease, transform .18s ease;
+}
+
+.zy-aviso-idiomas-boton:hover { filter: brightness(1.08); }
+.zy-aviso-idiomas-boton:active { transform: translateY(1px); }
+
+.zy-aviso-idiomas-bandera { font-size: 1rem; line-height: 1; }
+
+.zy-aviso-idiomas-enlace {
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--zy-texto-medio);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.zy-aviso-idiomas-enlace:hover { color: var(--zy-texto); }
+
+.zy-aviso-idiomas-cerrar {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: clamp(8px, 2vw, 14px);
+  transform: translateY(-50%);
+  width: 1.8rem;
+  height: 1.8rem;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--zy-texto-medio);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.zy-aviso-idiomas-cerrar:hover { color: var(--zy-texto); background: var(--zy-elevado); }
+
+/* ⚠️ En el móvil la flecha se esconde: ahí el selector NO está donde ella apunta —la barra se
+   pliega en un menú— así que señalaría a un sitio vacío. El botón sigue funcionando, que es lo
+   que de verdad resuelve el problema. */
+@media (max-width: 720px) {
+  .zy-aviso-idiomas-flecha { display: none; }
+  .zy-aviso-idiomas-caja { gap: .65rem; }
+  .zy-aviso-idiomas-texto { flex-basis: 100%; font-size: .82rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zy-aviso-idiomas-boton { transition: none; }
+}
