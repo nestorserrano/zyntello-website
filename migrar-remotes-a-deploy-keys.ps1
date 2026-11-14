@@ -120,7 +120,63 @@ if ($pendientes.Count -gt 0) {
 }
 Write-Host "=====================================================================" -ForegroundColor Magenta
 
-# Resumen final SIN exponer el token: solo dice si la URL lo lleva o no.
-Write-Host "`nEstado de los remotes (enmascarado):" -ForegroundColor Cyan
-Remoto "for d in ~/repositories/*/; do u=`$(cd `"`$d`" && git config --get remote.origin.url); case `"`$u`" in *ghp_*|*github_pat_*) echo `"  TOKEN EN CLARO -> `$(basename `$d)`";; git@*) echo `"  ssh (deploy key) -> `$(basename `$d)`";; *) echo `"  https sin token  -> `$(basename `$d)`";; esac; done"
+# ============================================================================
+# AUDITORIA FINAL — ANTES DE REVOCAR EL TOKEN, MIRARLO TODO
+# ============================================================================
+# ⚠️⚠️ Los pasos de arriba solo tocan ~/repositories/. Pero el deploy de la APP
+#   corre `git pull` en public_html/zyntello/app/, que es OTRO clon con su
+#   propio .git/config. Si ese sigue con el token en la URL, revocarlo rompe
+#   el deploy de la app — y el fallo no aparece ahora, aparece en el PROXIMO
+#   despliegue. Por eso se recorre la cuenta ENTERA, no una carpeta.
+#
+# Se miran ademas los ficheros donde git guarda credenciales por su cuenta:
+# un credential.helper activo vuelve a escribir el token la proxima vez que
+# alguien teclee una contrasena, y entonces todo esto habria sido en balde.
+#
+# Nada de esto imprime el token: solo dice si la URL lo lleva.
+# ============================================================================
+Write-Host "`nAuditoria de la cuenta ENTERA (enmascarada):" -ForegroundColor Cyan
+
+$auditoria = @'
+echo "-- clones y la URL de su remote --"
+find /home4/ukrmeumy -maxdepth 5 -name config -path '*/.git/*' 2>/dev/null | while read f; do
+  d=$(dirname $(dirname "$f"))
+  u=$(git -C "$d" config --get remote.origin.url 2>/dev/null)
+  [ -z "$u" ] && continue
+  case "$u" in
+    *ghp_*|*github_pat_*) echo "  TOKEN EN CLARO  -> $d" ;;
+    git@*)                echo "  ssh deploy key  -> $d" ;;
+    *)                    echo "  https sin token -> $d" ;;
+  esac
+done
+echo "-- ficheros de credenciales --"
+for f in ~/.git-credentials ~/.netrc ~/.gitconfig; do
+  if [ -f "$f" ]; then
+    grep -qE 'ghp_|github_pat_' "$f" 2>/dev/null && echo "  TOKEN EN $f" || echo "  limpio: $f"
+  else
+    echo "  no existe: $f"
+  fi
+done
+echo "-- credential.helper (volveria a guardar el token) --"
+git config --global --get credential.helper || echo "  ninguno, bien"
+'@
+
+$tmp = Join-Path $env:TEMP "auditar_tokens_$PID.sh"
+# ASCII puro: plink por stdin no traga UTF-8 multibyte y cierra la conexion.
+[IO.File]::WriteAllText($tmp, ($auditoria -replace "`r`n", "`n"), [Text.Encoding]::ASCII)
+$salida = (Get-Content $tmp -Raw | plink -i $KEY -P $PORT -hostkey $HOSTKEY -batch ${SSHHOST} "sh -s" 2>&1 | Out-String)
+Remove-Item $tmp -ErrorAction SilentlyContinue
+
+if ($salida -match "clones y la URL") {
+    Write-Host $salida.Trim()
+    if ($salida -match "TOKEN EN") {
+        Write-Host "`n  ⚠️ NO REVOQUES TODAVIA: queda al menos un sitio con el token." -ForegroundColor Red
+    } else {
+        Write-Host "`n  Ni un token en toda la cuenta. Ya se puede revocar." -ForegroundColor Green
+    }
+} else {
+    Write-Host "  no se pudo auditar — el SSH no respondio:" -ForegroundColor Yellow
+    Write-Host "  $($salida -replace '\s+', ' ')" -ForegroundColor DarkGray
+    Write-Host "  ⚠️ Sin esta auditoria NO se revoca el token." -ForegroundColor Red
+}
 Write-Host ""
