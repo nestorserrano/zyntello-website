@@ -128,7 +128,11 @@ const NODOS = {
       '**Softland** es ideal para empresas medianas/grandes con operaciones complejas. **Profit** es perfecto para PyMEs en Venezuela y RD. **ODOO** es una excelente opción open-source altamente personalizable.',
       '¿En qué país opera tu empresa?'
     ],
-    opciones: ['🇩🇴 República Dominicana', '🇻🇪 Venezuela', '🇨🇴 Colombia', '🇬🇹 Guatemala', '🇨🇷 Costa Rica', '🌎 Otro país'],
+    /* ⚠⚠ SIN banderas: en Windows el emoji de bandera no existe y el sistema lo pinta
+       como el par de letras del país, asi que salía «DO República Dominicana». El resto de
+       los emojis del chat sí se ven —no son indicadores regionales—, por eso se sustituyen
+       por un icono de lugar en vez de quitarlos: la lista mantiene el patrón visual. */
+    opciones: ['📍 República Dominicana', '📍 Venezuela', '📍 Colombia', '📍 Guatemala', '📍 Costa Rica', '🌎 Otro país'],
     siguiente: { default: 'erp_cierre' }
   },
   erp_cierre: {
@@ -304,7 +308,7 @@ const NODOS = {
       'Diseñamos el cuestionario, definimos la muestra, realizamos el trabajo de campo y entregamos un **informe con visualizaciones y análisis profundo**.',
       '¿Cuál es el ámbito geográfico de la encuesta?'
     ],
-    opciones: ['🏙️ Local / municipal', '🌆 Regional / provincial', '🇩🇴 Nacional', '🌎 Multi-país'],
+    opciones: ['🏙️ Local / municipal', '🌆 Regional / provincial', '🗺️ Nacional', '🌎 Multi-país'],
     siguiente: { default: 'encuestas_cierre' }
   },
   encuestas_mercado: {
