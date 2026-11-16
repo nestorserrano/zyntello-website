@@ -168,7 +168,7 @@
 
   .zy-nav-menu {
     position: fixed;
-    inset: var(--zy-navbar-h) 0 auto 0;
+    inset: calc(var(--zy-navbar-h) + var(--zy-aviso-h)) 0 auto 0;
     flex-direction: column;
     align-items: stretch;
     gap: 6px;
@@ -176,7 +176,7 @@
     background: var(--zy-fondo-alto);
     border-bottom: 1px solid var(--zy-borde);
     box-shadow: var(--zy-sombra-3);
-    max-height: calc(100svh - var(--zy-navbar-h));
+    max-height: calc(100svh - var(--zy-navbar-h) - var(--zy-aviso-h));
     overflow-y: auto;
 
     /* Cerrado: fuera de pantalla Y fuera del orden de tabulacion.

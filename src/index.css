@@ -8,7 +8,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: var(--zy-navbar-h);
+  scroll-padding-top: calc(var(--zy-navbar-h) + var(--zy-aviso-h));
   -webkit-text-size-adjust: 100%;
   color-scheme: dark;         /* barras de scroll y controles nativos en oscuro */
 }

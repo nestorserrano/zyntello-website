@@ -13,7 +13,7 @@
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  padding-top: calc(var(--zy-navbar-h) + clamp(28px, 3.4vw, 52px));
+  padding-top: calc(var(--zy-navbar-h) + var(--zy-aviso-h) + clamp(28px, 3.4vw, 52px));
   padding-bottom: clamp(96px, 9vw, 124px);   /* sitio para el desfile */
   text-align: center;
   background: var(--zy-fondo);
@@ -189,7 +189,7 @@
 }
 
 @media (max-width: 1199.98px) {
-  .zy-hero { padding-top: calc(var(--zy-navbar-h) + 44px); }
+  .zy-hero { padding-top: calc(var(--zy-navbar-h) + var(--zy-aviso-h) + 44px); }
   .zy-hero-bajar { display: none; }
 }
 
@@ -210,7 +210,7 @@
 
 /* Pantalla baja (portátil 1366×640, tableta apaisada) */
 @media (max-height: 760px) and (min-width: 992px) {
-  .zy-hero { padding-top: calc(var(--zy-navbar-h) + 36px); padding-bottom: 108px; }
+  .zy-hero { padding-top: calc(var(--zy-navbar-h) + var(--zy-aviso-h) + 36px); padding-bottom: 108px; }
   .zy-hero-titulo { font-size: clamp(2.4rem, 5vw, 4rem); margin-bottom: 20px; }
   .zy-hero-bajada { margin-bottom: 28px; }
   .zy-hero-cifras { margin-top: 36px; }

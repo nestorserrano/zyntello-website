@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useIdioma } from '../hooks/useIdioma'
 
 /**
@@ -31,6 +31,32 @@ export const EVENTO_ABRIR_IDIOMAS = 'zy-abrir-idiomas'
 export default function AvisoIdiomas() {
   const { t, idiomas, idioma } = useIdioma()
   const [visible, setVisible] = useState(false)
+  const caja = useRef(null)
+
+  /*
+   * Publica el alto real de la tira en `--zy-aviso-h`, que es lo que el hero, el
+   * `scroll-padding` de los enlaces internos y el menú del móvil suman para apartarse.
+   *
+   * ⚠️⚠️ Se MIDE y no se escribe un número: la tira se pliega a dos líneas en pantallas
+   *     estrechas y cambia de alto según la longitud del texto, que es distinta en cada uno de
+   *     los ocho idiomas. Un 48px fijo cuadraría en español y taparía el hero en alemán o en
+   *     criollo — y nada lo avisaría.
+   * ⚠️ El `ResizeObserver` hace falta además del cálculo inicial: al girar el teléfono o
+   *     estrechar la ventana la tira cambia de alto y el hueco se quedaría con el alto viejo.
+   */
+  useEffect(() => {
+    const raiz = document.documentElement
+    const aCero = () => raiz.style.setProperty('--zy-aviso-h', '0px')
+
+    if (!visible) { aCero(); return }
+
+    const medir = () => raiz.style.setProperty('--zy-aviso-h', `${caja.current?.offsetHeight ?? 0}px`)
+    medir()
+
+    const observador = new ResizeObserver(medir)
+    if (caja.current) observador.observe(caja.current)
+    return () => { observador.disconnect(); aCero() }
+  }, [visible])
 
   useEffect(() => {
     try {
@@ -56,7 +82,7 @@ export default function AvisoIdiomas() {
   const actual = idiomas.find((i) => i.codigo === idioma) || idiomas[0]
 
   return (
-    <div className="zy-aviso-idiomas" role="region" aria-label={t('avisoIdiomas.region', 'Idiomas disponibles')}>
+    <div ref={caja} className="zy-aviso-idiomas" role="region" aria-label={t('avisoIdiomas.region', 'Idiomas disponibles')}>
       <div className="zy-aviso-idiomas-caja">
         {/* ⚠️ La flecha es decorativa y va con `aria-hidden`: a un lector de pantalla no le dice
             nada «curva hacia arriba», y el botón de al lado ya nombra la acción. */}

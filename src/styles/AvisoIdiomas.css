@@ -9,7 +9,26 @@
  *    al lado contrario, que es peor que no señalar nada: manda a mirar donde no hay nada.
  */
 
+/*
+ * ⚠️⚠️ VA FIJA, pegada bajo la barra, y no es una preferencia estética.
+ *
+ * La barra es `position: fixed`, así que SALE DEL FLUJO: una tira puesta detrás de ella en el
+ * DOM se dibuja en los píxeles 0-88, **debajo de la barra**, y queda tapada. Medido en
+ * producción el 2026-11-16: `elementFromPoint` sobre el centro del botón devolvía un `<li>` del
+ * menú, o sea que el clic **nunca llegaba al botón**.
+ *
+ * ⚠️ Y el defecto no tiene síntoma: el componente se monta, el texto está en el DOM, traducido,
+ * y toda comprobación que busque el texto da verde. Solo falla lo único que importa — que se vea
+ * y se pueda pulsar.
+ *
+ * Al ser fija, además, la flecha sigue señalando al selector mientras se hace scroll. Si la tira
+ * scrollara y la barra no, la flecha acabaría apuntando a cualquier sitio.
+ */
 .zy-aviso-idiomas {
+  position: fixed;
+  inset: var(--zy-navbar-h) 0 auto 0;
+  /* Justo por debajo de la barra (1030): si se solapan, manda la barra. */
+  z-index: 1020;
   border-bottom: 1px solid var(--zy-borde);
   background: var(--zy-fondo-alto);
 }

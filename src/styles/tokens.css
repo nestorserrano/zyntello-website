@@ -85,6 +85,15 @@
   --zy-texto-fuente: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
 
   --zy-navbar-h: 88px;
+
+  /* Alto de la tira de idiomas, que vive FIJA justo debajo de la barra. Lo escribe
+     `AvisoIdiomas` al medirse, y vuelve a 0px al cerrarse.
+
+     ⚠️⚠️ Va en `0px` y NO en `0`: `calc(88px + 0)` es invalido y el navegador
+     DESCARTA la declaracion entera sin decir nada — el hero se subiria bajo la barra.
+     ⚠️ Y se declara aqui aunque lo escriba el JS: sin valor inicial, los `calc()` que
+     la suman no resuelven hasta que React monta, y la primera pintura sale descolocada. */
+  --zy-aviso-h: 0px;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
