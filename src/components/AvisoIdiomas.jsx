@@ -6,7 +6,7 @@ import { useIdioma } from '../hooks/useIdioma'
  *
  * ## ⚠️⚠️ Por qué hace falta si el selector ya está arriba
  *
- * El selector es una bandera pequeña en la esquina de la barra. Quien llega al sitio **no lo
+ * El selector es un código de dos letras en la esquina de la barra. Quien llega al sitio **no lo
  * está buscando**: está leyendo la portada, y si la portada no está en su idioma se va antes de
  * recorrer la barra con la vista. Un visitante que se marcha no informa de que se marchó, así
  * que el defecto no tiene síntoma — solo una tasa de rebote que nadie atribuye al idioma.
@@ -111,7 +111,6 @@ export default function AvisoIdiomas() {
 
         <div className="zy-aviso-idiomas-acciones">
           <button type="button" className="zy-aviso-idiomas-boton" onClick={abrirSelector}>
-            <span className="zy-aviso-idiomas-bandera" aria-hidden="true">{actual.bandera}</span>
             {t('avisoIdiomas.elegir', 'Elegir idioma')}
           </button>
 

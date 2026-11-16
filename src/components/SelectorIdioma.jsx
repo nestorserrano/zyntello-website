@@ -57,7 +57,11 @@ export default function SelectorIdioma() {
            puede usar, y justo el que arregla todo lo demás. */
         aria-label={t('idioma.etiqueta', 'Cambiar idioma')}
       >
-        <span className="zy-idioma-bandera" aria-hidden="true">{actual.bandera}</span>
+        {/* ⚠️⚠️ SIN bandera, y el motivo no es estético: en Windows el emoji de bandera NO
+            existe, y el sistema lo sustituye por el par de letras del país. Junto al código
+            del idioma eso sale «FR FR», «IT IT» y «HT HT» —la etiqueta repetida dos veces—,
+            que es como el director técnico lo vio el 2026-11-16. El código ISO ya dice el
+            idioma. Mismo motivo que `MONEDAS_INFO` en Soluciones.jsx. */}
         <span className="zy-idioma-codigo">{actual.codigo.split('-')[0].toUpperCase()}</span>
       </button>
 
@@ -72,7 +76,6 @@ export default function SelectorIdioma() {
                 className={`zy-idioma-opcion${i.codigo === idioma ? ' zy-idioma-activa' : ''}`}
                 onClick={() => { setIdioma(i.codigo); setAbierto(false) }}
               >
-                <span className="zy-idioma-bandera" aria-hidden="true">{i.bandera}</span>
                 {/* ⚠️ El nombre va en SU PROPIO idioma —「简体中文」y no「Chino simplificado」—:
                     quien lo busca no lee el idioma en el que estaría escrito si no. */}
                 <span dir={i.codigo === 'ar' ? 'rtl' : 'ltr'}>{i.nativo}</span>

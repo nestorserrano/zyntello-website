@@ -92,7 +92,6 @@
 .zy-aviso-idiomas-boton:hover { filter: brightness(1.08); }
 .zy-aviso-idiomas-boton:active { transform: translateY(1px); }
 
-.zy-aviso-idiomas-bandera { font-size: 1rem; line-height: 1; }
 
 .zy-aviso-idiomas-enlace {
   font-size: .82rem;

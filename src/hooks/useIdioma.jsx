@@ -21,18 +21,30 @@ const CLAVE_IDIOMA = 'zyntello-sitio-idioma'
 const CLAVE_CACHE = 'zyntello-sitio-textos-v1'
 const API = `${(import.meta.env.VITE_ADMIN_URL || 'https://admin.zyntello.com').replace(/\/$/, '')}/api/textos-sitio`
 
-/** Los que habla la plataforma. El orden es el del selector. */
+/**
+ * Los que habla la plataforma. El orden es el del selector.
+ *
+ * ⚠⚠ **NO se les añade `bandera`, y el motivo está medido.** En Windows el emoji de bandera
+ * NO existe: el sistema lo sustituye por el par de letras del indicador regional. Junto al
+ * código del idioma eso sale **«FR FR», «IT IT» y «HT HT»** —la etiqueta repetida dos
+ * veces— y en los demás, dos pares de letras sin relación («DO ES», «US EN»). Así lo vio el
+ * director técnico el 2026-11-16 en la página francesa.
+ *
+ * ⚠ Y una bandera no identifica un idioma: el árabe no tiene ninguna que lo represente entre
+ * sus 22 países, el francés se habla en 29 y el español en 21. El **nombre en su propio
+ * idioma** —«Français», «简体中文»— lo dice sin ambigüedad y se lee en todos los sistemas.
+ *
+ * Misma decisión y mismo motivo que `MONEDAS_INFO` en `Soluciones.jsx`.
+ */
 export const IDIOMAS = [
-  { codigo: 'es', nativo: 'Español', bandera: '🇩🇴' },
-  { codigo: 'en', nativo: 'English', bandera: '🇺🇸' },
-  { codigo: 'fr', nativo: 'Français', bandera: '🇫🇷' },
-  { codigo: 'it', nativo: 'Italiano', bandera: '🇮🇹' },
-  { codigo: 'zh-Hans', nativo: '简体中文', bandera: '🇨🇳' },
-  { codigo: 'zh-Hant', nativo: '繁體中文', bandera: '🇹🇼' },
-  // ⚠️ El árabe no lleva bandera: ninguna de sus 22 lo representa, y elegir una sería tomar
-  //    partido por un país frente a los demás. Lleva la letra ع, como en la app.
-  { codigo: 'ar', nativo: 'العربية', bandera: 'ع' },
-  { codigo: 'ht', nativo: 'Kreyòl ayisyen', bandera: '🇭🇹' },
+  { codigo: 'es', nativo: 'Español' },
+  { codigo: 'en', nativo: 'English' },
+  { codigo: 'fr', nativo: 'Français' },
+  { codigo: 'it', nativo: 'Italiano' },
+  { codigo: 'zh-Hans', nativo: '简体中文' },
+  { codigo: 'zh-Hant', nativo: '繁體中文' },
+  { codigo: 'ar', nativo: 'العربية' },
+  { codigo: 'ht', nativo: 'Kreyòl ayisyen' },
 ]
 
 const CODIGOS = IDIOMAS.map((i) => i.codigo)

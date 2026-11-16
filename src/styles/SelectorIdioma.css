@@ -23,7 +23,6 @@
 
 .zy-idioma-boton:hover { color: var(--zy-texto); border-color: var(--zy-borde-fuerte); }
 
-.zy-idioma-bandera { font-size: 1rem; line-height: 1; }
 .zy-idioma-codigo { letter-spacing: .04em; }
 
 .zy-idioma-lista {
