@@ -49,30 +49,34 @@
    arriba a la derecha. En el orden anterior salía la primera, a la izquierda, señalando un
    hueco vacío —y una flecha que no apunta a nada se lee como un adorno, no como una indicación. */
 .zy-aviso-idiomas-flecha {
-  width: 46px;
-  height: 36px;
+  width: 50px;
+  height: 38px;
   flex-shrink: 0;
-  color: var(--zy-coral);
+  /* Azul, no coral: el coral ya lo lleva el boton que esta a su lado, y dos piezas del
+     mismo color compiten en vez de guiarse. El azul separa la indicacion de la accion. */
+  color: var(--zy-indigo-claro);
   margin-inline-start: .35rem;
   /* La punta mira arriba-derecha; en RTL se refleja para seguir apuntando al selector,
      que ahí está en el lado contrario. */
-  transform: translateY(-3px);
+  /* Inclinada: el selector no esta al lado, esta ARRIBA a la derecha, asi que la punta
+     tiene que mirar en diagonal y no en horizontal. */
+  transform: translateY(-3px) rotate(-20deg);
   animation: zy-flecha-idioma 2.4s var(--zy-curva-suave) infinite;
 }
 
-[dir='rtl'] .zy-aviso-idiomas-flecha { transform: translateY(-3px) scaleX(-1); }
+[dir='rtl'] .zy-aviso-idiomas-flecha { transform: translateY(-3px) scaleX(-1) rotate(-20deg); }
 
 /* Un vaivén corto hacia la punta: lo que hace que la vista la siga hasta el selector.
    Son 3px —suficiente para notarse en la periferia, no tanto como para distraer leyendo. */
 @keyframes zy-flecha-idioma {
-  0%, 100% { transform: translateY(-3px) translateX(0); }
-  50%      { transform: translateY(-6px) translateX(3px); }
+  0%, 100% { transform: translateY(-3px) translateX(0) rotate(-20deg); }
+  50%      { transform: translateY(-7px) translateX(4px) rotate(-20deg); }
 }
 
 [dir='rtl'] .zy-aviso-idiomas-flecha { animation-name: zy-flecha-idioma-rtl; }
 @keyframes zy-flecha-idioma-rtl {
-  0%, 100% { transform: translateY(-3px) translateX(0)    scaleX(-1); }
-  50%      { transform: translateY(-6px) translateX(-3px) scaleX(-1); }
+  0%, 100% { transform: translateY(-3px) translateX(0)    scaleX(-1) rotate(-20deg); }
+  50%      { transform: translateY(-7px) translateX(-4px) scaleX(-1) rotate(-20deg); }
 }
 
 /* ⚠️ Quien tiene trastorno vestibular no necesita que nada se mueva para entender la
