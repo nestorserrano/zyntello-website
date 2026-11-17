@@ -45,16 +45,41 @@
   flex-wrap: wrap;
 }
 
+/* ⚠⚠ Va al FINAL de la fila, pegada al borde: apunta al selector de idioma, que está
+   arriba a la derecha. En el orden anterior salía la primera, a la izquierda, señalando un
+   hueco vacío —y una flecha que no apunta a nada se lee como un adorno, no como una indicación. */
 .zy-aviso-idiomas-flecha {
-  width: 34px;
-  height: 28px;
+  width: 46px;
+  height: 36px;
   flex-shrink: 0;
   color: var(--zy-coral);
-  /* La punta mira arriba-derecha; en RTL se refleja para seguir apuntando al selector. */
-  transform: translateY(-2px);
+  margin-inline-start: .35rem;
+  /* La punta mira arriba-derecha; en RTL se refleja para seguir apuntando al selector,
+     que ahí está en el lado contrario. */
+  transform: translateY(-3px);
+  animation: zy-flecha-idioma 2.4s var(--zy-curva-suave) infinite;
 }
 
-[dir='rtl'] .zy-aviso-idiomas-flecha { transform: translateY(-2px) scaleX(-1); }
+[dir='rtl'] .zy-aviso-idiomas-flecha { transform: translateY(-3px) scaleX(-1); }
+
+/* Un vaivén corto hacia la punta: lo que hace que la vista la siga hasta el selector.
+   Son 3px —suficiente para notarse en la periferia, no tanto como para distraer leyendo. */
+@keyframes zy-flecha-idioma {
+  0%, 100% { transform: translateY(-3px) translateX(0); }
+  50%      { transform: translateY(-6px) translateX(3px); }
+}
+
+[dir='rtl'] .zy-aviso-idiomas-flecha { animation-name: zy-flecha-idioma-rtl; }
+@keyframes zy-flecha-idioma-rtl {
+  0%, 100% { transform: translateY(-3px) translateX(0)    scaleX(-1); }
+  50%      { transform: translateY(-6px) translateX(-3px) scaleX(-1); }
+}
+
+/* ⚠️ Quien tiene trastorno vestibular no necesita que nada se mueva para entender la
+   indicación: la flecha sigue ahí, apuntando, simplemente quieta. */
+@media (prefers-reduced-motion: reduce) {
+  .zy-aviso-idiomas-flecha { animation: none; }
+}
 
 .zy-aviso-idiomas-texto {
   margin: 0;

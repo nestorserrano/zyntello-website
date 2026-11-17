@@ -84,26 +84,6 @@ export default function AvisoIdiomas() {
   return (
     <div ref={caja} className="zy-aviso-idiomas" role="region" aria-label={t('avisoIdiomas.region', 'Idiomas disponibles')}>
       <div className="zy-aviso-idiomas-caja">
-        {/* ⚠️ La flecha es decorativa y va con `aria-hidden`: a un lector de pantalla no le dice
-            nada «curva hacia arriba», y el botón de al lado ya nombra la acción. */}
-        <svg className="zy-aviso-idiomas-flecha" viewBox="0 0 48 40" aria-hidden="true" focusable="false">
-          <path
-            d="M4 36 C 4 18, 16 8, 40 7"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          />
-          <path
-            d="M32 4 L 41 6.8 L 34 13"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-
         <p className="zy-aviso-idiomas-texto">
           <strong>{t('avisoIdiomas.titulo', 'Visítanos en tu idioma.')}</strong>{' '}
           {t('avisoIdiomas.cuerpo', 'Este sitio se lee en 8 idiomas. ¿No está el tuyo? Avísanos y lo agregamos.')}
@@ -120,6 +100,29 @@ export default function AvisoIdiomas() {
             {t('avisoIdiomas.pedir', 'Pedir otro idioma')}
           </a>
         </div>
+
+        {/* ⚠⚠ La flecha va AL FINAL, no al principio: lo que señala —el selector de idioma—
+            está arriba a la DERECHA. Puesta a la izquierda apuntaba a un hueco vacío de la
+            barra, así que no señalaba nada y se leía como un adorno.
+            ⚠️ Decorativa, con `aria-hidden`: a un lector de pantalla no le dice nada «curva
+            hacia arriba», y el botón de al lado ya nombra la acción. */}
+        <svg className="zy-aviso-idiomas-flecha" viewBox="0 0 52 40" aria-hidden="true" focusable="false">
+          <path
+            d="M3 36 C 6 14, 22 5, 44 4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeLinecap="round"
+          />
+          <path
+            d="M34 1.5 L 46.5 4 L 36.5 12"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
 
         <button
           type="button"
