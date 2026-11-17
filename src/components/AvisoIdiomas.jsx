@@ -106,20 +106,26 @@ export default function AvisoIdiomas() {
             barra, así que no señalaba nada y se leía como un adorno.
             ⚠️ Decorativa, con `aria-hidden`: a un lector de pantalla no le dice nada «curva
             hacia arriba», y el botón de al lado ya nombra la acción. */}
-        <svg className="zy-aviso-idiomas-flecha" viewBox="0 0 58 58" aria-hidden="true" focusable="false">
-          {/* Nace PLANA abajo a la izquierda y se eleva hacia la derecha hasta una punta a
-              unos 60 grados. El angulo va en el propio path, no en un `rotate` del CSS: asi
-              la cola se queda horizontal —apoyada en la linea del texto— mientras solo sube
-              la punta, que es lo que hace el gesto de «mira ahi arriba». */}
+        <svg className="zy-aviso-idiomas-flecha" viewBox="0 0 34 56" aria-hidden="true" focusable="false">
+          {/* Nace PLANA abajo a la izquierda y se eleva, CERRADA, hasta una punta a unos 60
+              grados. El angulo va en el propio path y no en un `rotate` del CSS: rotando el
+              dibujo entero se inclinaria tambien la cola, que debe quedar horizontal. */}
+          <defs>
+            <linearGradient id="zyFlechaIdioma" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0%"   stopColor="#22d3ee" />
+              <stop offset="55%"  stopColor="#3b82f6" />
+              <stop offset="100%" stopColor="#8b5cf6" />
+            </linearGradient>
+          </defs>
           <path
-            fill="currentColor"
-            d="M3 51
-               C 20 56, 38 46, 45.9 24.3
-               L 50.7 27
-               L 50 8
-               L 33.3 17
-               L 38.1 19.8
-               C 31 38, 18 46, 3 42
+            fill="url(#zyFlechaIdioma)"
+            d="M3 50
+               C 13 53.5, 21.5 43, 26.5 20.1
+               L 30.4 22.4
+               L 30 6
+               L 15.6 13.9
+               L 19.5 16.1
+               C 15.5 36, 11 43, 3 42
                Z"
           />
         </svg>

@@ -49,15 +49,29 @@
    arriba a la derecha. En el orden anterior salía la primera, a la izquierda, señalando un
    hueco vacío —y una flecha que no apunta a nada se lee como un adorno, no como una indicación. */
 .zy-aviso-idiomas-flecha {
-  /* ⚠ Cuadrado, como su viewBox (58x58): con 50x38 el SVG se escalaba al lado corto y la
-     flecha salia aplastada, con la punta sin distinguirse. */
-  width: 44px;
-  height: 44px;
+  /* ⚠ La proporcion sigue a su viewBox (46x58). Con un alto que no cuadre, el SVG se
+     escala al lado corto y la flecha sale APLASTADA, con la punta sin distinguirse: no da
+     ningun error, simplemente se deforma. */
+  width: 32px;
+  height: 53px;
   flex-shrink: 0;
-  /* Azul, no coral: el coral ya lo lleva el boton que esta a su lado, y dos piezas del
-     mismo color compiten en vez de guiarse. El azul separa la indicacion de la accion. */
-  color: var(--zy-indigo-claro);
   margin-inline-start: .35rem;
+
+  /* ⚠⚠ SE SALE de la tira por ABAJO, sobre el hero —no por arriba—. La barra superior es
+     `position: fixed` con z-index 1030 y la tira 1020, asi que lo que asome por arriba
+     queda DETRAS de ella: visible en el DOM, invisible en pantalla. Hacia abajo solo tiene
+     el hero (z-index 2), y ademas encaja con el gesto: la flecha nace en el hero y sube.
+
+     ⚠⚠ Y para salir hay que dejar de EMPUJAR: en un flex con `align-items:center` el hijo
+     mas alto fija la altura de la linea, asi que la flecha hacia crecer la tira hasta su
+     propio alto y acababa encajada dentro, sobresaliendo 3px. Los margenes negativos
+     recortan lo que aporta al alto; el dibujo se queda entero y asoma por abajo. */
+  margin-block: -4px -38px;
+  position: relative;
+  z-index: 1;
+
+  /* El degradado del `fill` es lo que da el color; esto solo tiñe un posible respaldo. */
+  color: #3b82f6;
   /* La punta mira arriba-derecha; en RTL se refleja para seguir apuntando al selector,
      que ahí está en el lado contrario. */
   /* Sin `rotate`: el angulo de 60 grados va en el propio path, para que la cola quede
