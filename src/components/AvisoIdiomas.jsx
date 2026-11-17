@@ -106,19 +106,20 @@ export default function AvisoIdiomas() {
             barra, así que no señalaba nada y se leía como un adorno.
             ⚠️ Decorativa, con `aria-hidden`: a un lector de pantalla no le dice nada «curva
             hacia arriba», y el botón de al lado ya nombra la acción. */}
-        <svg className="zy-aviso-idiomas-flecha" viewBox="0 0 60 48" aria-hidden="true" focusable="false">
-          {/* Flecha SOLIDA de un solo contorno: nace abajo a la izquierda, curva hacia
-              arriba y termina en una punta triangular que mira al selector. De trazo fino
-              y punta en V se leia como un signo de puntuacion entre tanto texto. */}
+        <svg className="zy-aviso-idiomas-flecha" viewBox="0 0 58 58" aria-hidden="true" focusable="false">
+          {/* Nace PLANA abajo a la izquierda y se eleva hacia la derecha hasta una punta a
+              unos 60 grados. El angulo va en el propio path, no en un `rotate` del CSS: asi
+              la cola se queda horizontal —apoyada en la linea del texto— mientras solo sube
+              la punta, que es lo que hace el gesto de «mira ahi arriba». */}
           <path
             fill="currentColor"
-            d="M4 46
-               C 4 23, 20.5 7.5, 42 7.5
-               L 42 0.5
-               L 58 12
-               L 42 23.5
-               L 42 16.5
-               C 26.5 16.5, 14.5 28, 14.5 46
+            d="M3 51
+               C 20 56, 38 46, 45.9 24.3
+               L 50.7 27
+               L 50 8
+               L 33.3 17
+               L 38.1 19.8
+               C 31 38, 18 46, 3 42
                Z"
           />
         </svg>
