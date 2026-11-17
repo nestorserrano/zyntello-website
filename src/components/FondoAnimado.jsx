@@ -30,12 +30,17 @@ import { useEffect, useRef } from 'react'
  * porque se mide sobre un fotograma cualquiera y el siguiente ya es otro.
  */
 
-/* Velos. En oscuro el velo es OSCURO: sirve para lo mismo que en claro
-   —sostener el contraste del texto— pero apagando el fondo, no aclarándolo. */
+/* ⚠⚠ **Los velos son TOKENS DE TEMA** (`financial-ui.css`), no constantes de aquí.
+   Tienen que ir en la MISMA dirección que el texto: oscurecer cuando el texto es
+   claro, aclarar cuando es oscuro. Escritos aquí como un único valor oscuro, el
+   tema claro quedaba con el fondo apagado y el texto oscuro encima —el título a
+   2,24 y la bajada a 1,04, gris ceniza ilegible— mientras el oscuro daba 17,73 y
+   7,12. **Un velo escrito en JS no puede responder al tema**: es CSS lo que sabe
+   en qué tema está la página. */
 const VELOS = {
-  indigo: 'radial-gradient(ellipse 75% 60% at 50% 42%, rgba(8,8,12,.62) 0%, rgba(8,8,12,.86) 62%, rgba(8,8,12,.96) 100%)',
-  coral:  'radial-gradient(ellipse 80% 65% at 50% 45%, rgba(8,8,12,.6) 0%, rgba(8,8,12,.84) 60%, rgba(8,8,12,.96) 100%)',
-  neutro: 'radial-gradient(ellipse 85% 70% at 50% 50%, rgba(8,8,12,.7) 0%, rgba(8,8,12,.9) 65%, rgba(8,8,12,.98) 100%)',
+  indigo: 'var(--zy-velo-indigo)',
+  coral:  'var(--zy-velo-coral)',
+  neutro: 'var(--zy-velo-neutro)',
 }
 
 const INDIGO = '99, 102, 241'

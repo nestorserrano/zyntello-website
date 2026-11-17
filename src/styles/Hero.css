@@ -119,7 +119,10 @@
   flex-direction: column;
   gap: 4px;
   padding: clamp(16px, 1.8vw, 22px) 14px;
-  background: rgba(8, 8, 12, .72);
+  /* ⚠⚠ Token de tema, NO un negro fijo: escrito a mano, en tema claro pintaba
+     esta banda oscura con el texto oscuro del tema encima —ilegible—. El navbar
+     tuvo el mismo defecto y se parcheó aparte en financial-ui.css. */
+  background: var(--zy-velo-panel);
   backdrop-filter: blur(8px);
   transition: background var(--zy-t-medio);
 }
