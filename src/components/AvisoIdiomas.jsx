@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useIdioma } from '../hooks/useIdioma'
 
 /**
@@ -14,6 +14,11 @@ import { useIdioma } from '../hooks/useIdioma'
  * La flecha curva existe por eso: el banner **no sustituye** al selector, lo SEÑALA. Quien lo
  * use una vez ya sabe dónde está para siempre.
  *
+ * ⚠️⚠️ **El dibujo de la flecha NO está en este archivo**, está en `SelectorIdioma`: cuelga del
+ * propio botón al que apunta. Dibujada aquí no podía asomar sobre la barra —fija, z-index 1030
+ * contra el 1020 de la tira— y acababa saliendo por abajo, de cola, al revés de lo que una
+ * flecha hace. Lo único que queda aquí es encenderla y apartarle el sitio.
+ *
  * ## ⚠️ Y la segunda mitad del mensaje es la que no puede faltar
  *
  * «Si no está el tuyo, dínoslo y lo añadimos» convierte una limitación en una conversación.
@@ -25,13 +30,51 @@ import { useIdioma } from '../hooks/useIdioma'
  */
 const CLAVE = 'zyntello-aviso-idiomas'
 
+/** Ancho del dibujo de la flecha; el mismo número que `SelectorIdioma.css`. */
+const ANCHO_FLECHA = 42
+
 /** Lo escucha `SelectorIdioma` para desplegarse sin que haya que compartir estado entre ellos. */
 export const EVENTO_ABRIR_IDIOMAS = 'zy-abrir-idiomas'
 
 export default function AvisoIdiomas() {
-  const { t, idiomas, idioma } = useIdioma()
+  const { t, idioma } = useIdioma()
   const [visible, setVisible] = useState(false)
   const caja = useRef(null)
+
+  /*
+   * Aparta el contenido de la tira de debajo de la flecha, que cuelga de la barra sobre su
+   * franja superior.
+   *
+   * ⚠⚠ Se MIDE el selector y no se escribe un número. Lo que hay a su derecha —«Se
+   *     connecter», «登录», «Iniciar sesión»— no mide lo mismo en los ocho idiomas, así que
+   *     el botón se desplaza: un hueco fijo dejaría la flecha encima del botón coral en unos
+   *     idiomas y con 100px de aire de más en otros. Y el defecto no avisa —se ve torcido,
+   *     nada falla—.
+   * ⚠️ Si no hay flecha (móvil, o la barra aún sin montar) no se reserva nada: el hueco
+   *     estrecharía el texto a cambio de apartarse de algo que no está.
+   */
+  const apartarse = useCallback(() => {
+    const c = caja.current
+    if (!c) return
+
+    const sel = document.querySelector('.zy-idioma')
+    if (!sel || !window.matchMedia('(min-width: 721px)').matches) {
+      c.style.removeProperty('--zy-aviso-hueco')
+      return
+    }
+
+    const b = sel.getBoundingClientRect()
+    /* ⚠️ El rect es el de la CAJA interior, no el del `ref`, que ocupa la ventana entera: el
+       padding se aplica desde el borde de la caja, así que medir desde el de la ventana
+       reservaba de más —149px sobrantes en una pantalla de 1600—. */
+    const r = (c.querySelector('.zy-aviso-idiomas-caja') ?? c).getBoundingClientRect()
+    const centro = b.left + b.width / 2
+    const rtl = getComputedStyle(document.documentElement).direction === 'rtl'
+    /* Distancia del borde FINAL de la caja al centro del botón —derecho en LTR, izquierdo
+       en árabe—, más el ancho de la flecha y un respiro. */
+    const hasta = rtl ? centro - r.left : r.right - centro
+    c.style.setProperty('--zy-aviso-hueco', `${Math.max(0, Math.round(hasta + ANCHO_FLECHA + 10))}px`)
+  }, [])
 
   /*
    * Publica el alto real de la tira en `--zy-aviso-h`, que es lo que el hero, el
@@ -50,13 +93,28 @@ export default function AvisoIdiomas() {
 
     if (!visible) { aCero(); return }
 
-    const medir = () => raiz.style.setProperty('--zy-aviso-h', `${caja.current?.offsetHeight ?? 0}px`)
+    /*
+     * ⚠⚠ El marcador es lo que ENCIENDE la flecha, que vive en la barra y no aquí
+     *     (ver `SelectorIdioma.css`). Sin tira no hay nada que explique por qué hay una
+     *     flecha señalando, y una flecha sin motivo se lee como un adorno.
+     */
+    raiz.dataset.avisoIdiomas = ''
+
+    const medir = () => {
+      raiz.style.setProperty('--zy-aviso-h', `${caja.current?.offsetHeight ?? 0}px`)
+      apartarse()
+    }
     medir()
 
     const observador = new ResizeObserver(medir)
     if (caja.current) observador.observe(caja.current)
-    return () => { observador.disconnect(); aCero() }
-  }, [visible])
+    return () => {
+      observador.disconnect()
+      aCero()
+      delete raiz.dataset.avisoIdiomas
+      caja.current?.style.removeProperty('--zy-aviso-hueco')
+    }
+  }, [visible, idioma, apartarse])
 
   useEffect(() => {
     try {
@@ -79,8 +137,6 @@ export default function AvisoIdiomas() {
 
   if (!visible) return null
 
-  const actual = idiomas.find((i) => i.codigo === idioma) || idiomas[0]
-
   return (
     <div ref={caja} className="zy-aviso-idiomas" role="region" aria-label={t('avisoIdiomas.region', 'Idiomas disponibles')}>
       <div className="zy-aviso-idiomas-caja">
@@ -100,35 +156,6 @@ export default function AvisoIdiomas() {
             {t('avisoIdiomas.pedir', 'Pedir otro idioma')}
           </a>
         </div>
-
-        {/* ⚠⚠ La flecha va AL FINAL, no al principio: lo que señala —el selector de idioma—
-            está arriba a la DERECHA. Puesta a la izquierda apuntaba a un hueco vacío de la
-            barra, así que no señalaba nada y se leía como un adorno.
-            ⚠️ Decorativa, con `aria-hidden`: a un lector de pantalla no le dice nada «curva
-            hacia arriba», y el botón de al lado ya nombra la acción. */}
-        <svg className="zy-aviso-idiomas-flecha" viewBox="0 0 34 56" aria-hidden="true" focusable="false">
-          {/* Nace PLANA abajo a la izquierda y se eleva, CERRADA, hasta una punta a unos 60
-              grados. El angulo va en el propio path y no en un `rotate` del CSS: rotando el
-              dibujo entero se inclinaria tambien la cola, que debe quedar horizontal. */}
-          <defs>
-            <linearGradient id="zyFlechaIdioma" x1="0" y1="1" x2="1" y2="0">
-              <stop offset="0%"   stopColor="#22d3ee" />
-              <stop offset="55%"  stopColor="#3b82f6" />
-              <stop offset="100%" stopColor="#8b5cf6" />
-            </linearGradient>
-          </defs>
-          <path
-            fill="url(#zyFlechaIdioma)"
-            d="M3 50
-               C 13 53.5, 21.5 43, 26.5 20.1
-               L 30.4 22.4
-               L 30 6
-               L 15.6 13.9
-               L 19.5 16.1
-               C 15.5 36, 11 43, 3 42
-               Z"
-          />
-        </svg>
 
         <button
           type="button"

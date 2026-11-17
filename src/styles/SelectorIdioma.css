@@ -71,3 +71,78 @@
   outline: 2px solid var(--zy-indigo);
   outline-offset: 2px;
 }
+
+/* ===========================================================================
+   Flecha que señala este botón desde la tira de «léenos en tu idioma»
+   ===========================================================================
+
+   ⚠️⚠️ Cuelga del selector hacia ABAJO, aunque lo que se ve es que SUBE desde la tira.
+   Está aquí y no en la tira porque la barra es `position: fixed` con z-index 1030 y la
+   tira 1020: una flecha dibujada allí NO puede asomar sobre la barra —queda detrás, en
+   el DOM pero fuera de la vista— y lo único que podía sobresalir era la cola, por abajo,
+   sobre el hero. Era justo lo contrario de lo que hace falta: sobresale la PUNTA.
+
+   ⚠️⚠️ Y colgada de aquí apunta sola. En la tira quedó a 267px del selector, señalando el
+   borde de la pantalla, y no por un descuido: a la derecha del botón está «Se connecter»,
+   «登录» o «Iniciar sesión», que no miden lo mismo, así que ninguna posición escrita a mano
+   acierta en los ocho idiomas. Siendo hermana del botón no hay nada que mantener.
+
+   ⚠️ Solo se enseña con la tira puesta: sin ella no hay nada que explique por qué hay una
+   flecha ahí, y una flecha sin motivo se lee como un adorno. */
+.zy-nav-flecha { display: none; }
+
+html[data-aviso-idiomas] .zy-nav-flecha {
+  display: block;
+  position: absolute;
+  /* Justo bajo el botón; la punta del dibujo queda 4px más abajo todavía. */
+  top: calc(100% + 2px);
+  /* El dibujo tiene la punta a 39px de sus 42 de ancho: con este desplazamiento la punta
+     cae en el centro del botón y la cola sale por la izquierda, sobre la tira. */
+  inset-inline-start: -24px;
+  width: 42px;
+  height: 64px;
+
+  /* ⚠️ No intercepta clics: pisa la franja superior de la tira, y sin esto el ratón se
+     quedaría con ella en vez de con lo que haya debajo —sin dar ningún aviso—. */
+  pointer-events: none;
+
+  /* ⚠️ Por DEBAJO del desplegable (80): al abrir la lista de idiomas, la flecha ya cumplió
+     su función y la lista tiene que taparla, no al revés. */
+  z-index: 0;
+
+  animation: zy-nav-flecha 2.4s var(--zy-curva-suave) infinite;
+}
+
+/* ⚠️ En árabe la página se invierte entera y el selector queda al otro lado: sin el reflejo
+   la flecha señalaría al lado contrario, que es peor que no señalar —manda a mirar donde no
+   hay nada—. `inset-inline-start` ya la ancla al lado correcto; esto voltea el dibujo. */
+[dir='rtl'] html[data-aviso-idiomas] .zy-nav-flecha,
+html[dir='rtl'][data-aviso-idiomas] .zy-nav-flecha {
+  transform: scaleX(-1);
+  animation-name: zy-nav-flecha-rtl;
+}
+
+/* Un vaivén corto hacia la punta: es lo que hace que la vista la siga hasta el botón.
+   Son 3px —suficiente para notarse por el rabillo del ojo, no tanto como para distraer. */
+@keyframes zy-nav-flecha {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(3px, -4px); }
+}
+
+@keyframes zy-nav-flecha-rtl {
+  0%, 100% { transform: translate(0, 0)      scaleX(-1); }
+  50%      { transform: translate(-3px, -4px) scaleX(-1); }
+}
+
+/* ⚠️ Quien tiene trastorno vestibular no necesita que nada se mueva para entender la
+   indicación: la flecha sigue ahí, apuntando, simplemente quieta. */
+@media (prefers-reduced-motion: reduce) {
+  html[data-aviso-idiomas] .zy-nav-flecha { animation: none; }
+}
+
+/* ⚠️ En el móvil no hay a qué apuntar: la barra se pliega en un menú y el selector deja de
+   estar donde la flecha señala. El botón de la tira sigue abriendo la lista, que es lo que
+   de verdad resuelve el problema. */
+@media (max-width: 720px) {
+  html[data-aviso-idiomas] .zy-nav-flecha { display: none; }
+}

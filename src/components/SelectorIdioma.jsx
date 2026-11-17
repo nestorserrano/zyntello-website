@@ -65,6 +65,38 @@ export default function SelectorIdioma() {
         <span className="zy-idioma-codigo">{actual.codigo.split('-')[0].toUpperCase()}</span>
       </button>
 
+      {/* ⚠⚠ La flecha vive AQUÍ, dentro de la barra, y no en la tira que la motiva.
+          El motivo es de capas: la barra es `position: fixed` con z-index 1030 y la tira 1020,
+          así que una flecha dibujada en la tira **no puede asomar sobre la barra** —queda
+          detrás de ella, presente en el DOM e invisible en pantalla—. Colgada desde aquí
+          sube hasta el botón y baja sobre la tira, que es el gesto que se quería.
+          ⚠⚠ Y además apunta sola: al ser hermana del botón, no hay ninguna medida que
+          mantener. Puesta en la tira quedó a 267px del selector —señalando el borde de la
+          pantalla— porque la posición del botón cambia con el idioma: lo que hay a su
+          derecha es «Se connecter», «登录» o «Iniciar sesión», y no miden lo mismo.
+          ⚠️ Decorativa, con `aria-hidden`: a un lector de pantalla no le dice nada una
+          curva, y el botón de al lado ya se nombra solo. */}
+      <svg className="zy-nav-flecha" viewBox="0 0 42 64" aria-hidden="true" focusable="false">
+        <defs>
+          {/* `userSpaceOnUse` y no la caja de cada trazo: con el degradado relativo a cada
+              forma, la punta recorrería ella sola los tres colores y no empalmaría con el
+              final de la curva —se verían dos piezas de distinto color pegadas. */}
+          <linearGradient id="zyFlechaIdioma" gradientUnits="userSpaceOnUse" x1="5" y1="58" x2="39" y2="4">
+            <stop offset="0%"   stopColor="#22d3ee" />
+            <stop offset="55%"  stopColor="#3b82f6" />
+            <stop offset="100%" stopColor="#8b5cf6" />
+          </linearGradient>
+        </defs>
+        {/* Nace PLANA abajo a la izquierda, sobre la tira, y sube cerrada hasta la punta.
+            Es un trazo con punta aparte y no una silueta maciza: la silueta anterior tenía
+            que dibujar su propio contorno de vuelta, y esa vuelta se leía como una segunda
+            curva —una banana, no una flecha—. */}
+        <path d="M5 58 C 17 59, 20.6 35.9, 31 17.9" fill="none" stroke="url(#zyFlechaIdioma)" strokeWidth="6.5" strokeLinecap="round" />
+        {/* La punta, a 60 grados: dirección (cos60, -sen60). El ángulo va en las coordenadas
+            y no en un `rotate` del CSS, que inclinaría también la cola. */}
+        <path d="M39 4 L38.7 24.6 L21.3 14.6 Z" fill="url(#zyFlechaIdioma)" />
+      </svg>
+
       {abierto && (
         <ul className="zy-idioma-lista" role="listbox" aria-label={t('idioma.etiqueta', 'Cambiar idioma')}>
           {idiomas.map((i) => (
