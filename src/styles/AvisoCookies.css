@@ -93,6 +93,20 @@
 /* En teléfono el aviso ocupa el ancho y las acciones se separan del texto. */
 @media (max-width: 640px) {
   .zy-cookies { flex-direction: column; align-items: stretch; gap: .85rem; }
+
+  /* ⚠️⚠️ `flex-basis: auto` NO es cosmético: sin él el aviso ocupaba el 53% del
+     teléfono. El texto declara `flex: 1 1 22rem` para el escritorio, donde la
+     caja es una FILA y esos 22rem son el ANCHO mínimo que debe tener antes de
+     que las acciones bajen de línea. Aquí la caja pasa a COLUMNA, y entonces el
+     mismo 22rem deja de medir el ancho y pasa a medir el ALTO: el bloque de
+     texto reservaba 352px aunque su contenido ocupara cuatro líneas.
+
+     Medido el 2026-11-20 a 375×812: aviso de 434px, de los cuales 352 eran ese
+     hueco vacío. Y el defecto no da ningún síntoma —no desborda, no hay scroll
+     horizontal, el texto se lee— sencillamente tapa media pantalla, en todas
+     las páginas, hasta que el visitante lo cierra. */
+  .zy-cookies-texto { flex-basis: auto; }
+
   .zy-cookies-acciones { justify-content: space-between; }
 }
 
