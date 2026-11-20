@@ -422,10 +422,21 @@ solo el primer trozo: a medias sale «The date 05/11/2026 está fuera del perío
 ⚠️ **Y el CONTENIDO también se traduce, no solo la interfaz.** La ayuda y el diccionario viven en
 archivos PHP, así que no pasan por `__()`: van por `App\Support\ContenidoTraducido`, que lee
 `lang/contenido/{idioma}.json` y, si no lo encuentra ahí, reutiliza lo que la interfaz ya traduce.
-Se mide con `php artisan idioma:censo-contenido` y se llena con `idioma:traducir-contenido`.
-⚠️⚠️ Ese comando usa la clave de **Zyntello** (`IA_TRADUCTOR_CLAVE` del `.env` del servidor), nunca
-la de un suscriptor: traducir el producto no se le puede cobrar a un cliente ni descontar de su
-tope mensual de IA.
+Se mide con `php artisan idioma:censo-contenido`. ✅ **Desde el 2026-11-10 está al 100%**: 19.830
+textos en los siete idiomas. El proceso entero —cómo repartirlo entre varias sesiones y qué hay
+pendiente de revisar— vive en **`app/zyntello-app/docs/traduccion-contenido/LEEME.md`**.
+
+Para lo que se añada a partir de ahora hay **dos vías, y las dos entran por la misma validación**:
+
+- `idioma:lotes-contenido` + agentes + `idioma:traducir-contenido --desde=…` (es como se hizo).
+- `idioma:traducir-contenido` a secas, con un proveedor de IA. ⚠️⚠️ Esa vía usa la clave de
+  **Zyntello** (`IA_TRADUCTOR_CLAVE` del `.env` del servidor), nunca la de un suscriptor:
+  traducir el producto no se le puede cobrar a un cliente ni descontar de su tope mensual de IA.
+
+⚠️⚠️ **El glosario (`lang/glosario.json`) MULTIPLICA lo que contiene.** Un término se mete tras
+**CONTAR** cuántas veces usa la app cada variante, mirando singular **y** plural. Se fijó «Nómina»
+→ `Lapè` (7 usos) en vez de `pewòl` (214) y se propagó a **157 textos**, con la suite en verde: la
+guarda comprueba que el glosario se respete, **nunca que el glosario tenga razón**.
 
 ⚠️⚠️ **Escribir la ayuda y CONECTARLA son DOS actos, y al segundo le falta síntoma.** Sin el
 `@section('ayudaClave')` el panel no se pinta: no hay error ni log. **Medido: 115+ pantallas
