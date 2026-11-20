@@ -640,7 +640,23 @@ export default function WhatsAppChat() {
 
   return (
     <>
-      <div data-chat style={{ position: 'fixed', bottom: '1.5rem', right: '1.5rem', zIndex: 9999 }}>
+      {/*
+        ⚠️⚠️ El z-index es 55 y NO 9999, y esto se midió el 2026-11-20 en un
+        teléfono de 375px: con 9999 este botón se sentaba ENCIMA del botón
+        «Entendido» del aviso de cookies (z-index 60). `elementFromPoint` sobre
+        el centro de «Entendido» devolvía este botón, así que en el móvil el
+        aviso legal NO SE PODÍA ACEPTAR — quien lo intentaba abría el chat de
+        WhatsApp, y el aviso seguía tapando media pantalla en cada página.
+
+        El defecto no da ningún error: los dos botones existen, los dos están
+        pintados y en el escritorio funciona, porque allí el aviso es una franja
+        ancha y sus botones quedan lejos de esta esquina.
+
+        Con 55 el chat sigue por encima de todo el contenido de la página y solo
+        cede ante lo que exige una decisión del visitante —el aviso de cookies—,
+        que además dura hasta que lo acepta y nunca más.
+      */}
+      <div data-chat style={{ position: 'fixed', bottom: '1.5rem', right: '1.5rem', zIndex: 55 }}>
 
         {/* Panel del chat */}
         {abierto && (
@@ -654,7 +670,7 @@ export default function WhatsAppChat() {
                   style={{ width: 42, height: 42, background: '#128c7e', fontSize: '1.1rem', flexShrink: 0 }}>Z</div>
                 <div>
                   <div className="fw-bold text-white" style={{ fontSize: '0.95rem', lineHeight: 1.2 }}>Zyntello</div>
-                  <div style={{ fontSize: '0.72rem', color: '#a7f3d0' }}>● {t('chat.ui.en-linea', 'En línea · Responde rápido')}</div>
+                  <div style={{ fontSize: '0.75rem', color: '#a7f3d0' }}>● {t('chat.ui.en-linea', 'En línea · Responde rápido')}</div>
                 </div>
               </div>
               <button onClick={() => setAbierto(false)}

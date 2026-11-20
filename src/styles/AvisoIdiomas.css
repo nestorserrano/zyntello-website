@@ -97,6 +97,11 @@
 
 .zy-aviso-idiomas-enlace:hover { color: var(--zy-texto); }
 
+/* ⚠️ Medía 22px de alto, por debajo de los 24 que pide WCAG 2.2 AA para algo
+   que se pulsa con el dedo. Va en `padding-block` y no en altura fija porque en
+   el teléfono la tira se pliega y este enlace acaba en su propia línea. */
+.zy-aviso-idiomas-enlace { display: inline-block; padding-block: 2px; }
+
 .zy-aviso-idiomas-cerrar {
   position: absolute;
   inset-block-start: 50%;

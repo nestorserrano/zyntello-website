@@ -62,7 +62,7 @@
 .zy-serv-grupo {
   align-self: flex-start;
   font-family: var(--zy-display);
-  font-size: .66rem;
+  font-size: .75rem;
   font-weight: 600;
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -131,3 +131,7 @@
 .zy-serv-enlazada { color: inherit; text-decoration: none; display: flex; }
 .zy-serv-enlazada:hover { color: inherit; }
 .zy-serv-enlazada .zy-serv-enlace { margin-top: auto; }
+
+/* ⚠️ 20px de alto, por debajo de los 24 de WCAG 2.2 AA. Al ir dentro de un
+   párrafo no hereda el respiro de ningún contenedor, así que se lo pone él. */
+.zy-serv-nota a { padding-block: 3px; }

@@ -159,7 +159,7 @@
   right: clamp(22px, 2.2vw, 28px);
   font-family: var(--zy-display);
   font-weight: 600;
-  font-size: .74rem;
+  font-size: .75rem;
   letter-spacing: .04em;
   color: var(--zy-color-acento);
   padding: 4px 10px;
@@ -266,7 +266,7 @@
 
 .zy-port-categoria {
   font-family: var(--zy-display);
-  font-size: .7rem;
+  font-size: .75rem;
   font-weight: 600;
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -348,7 +348,7 @@
   gap: 8px;
   color: var(--zy-texto-tenue);
   font-family: var(--zy-display);
-  font-size: .7rem;
+  font-size: .75rem;
   font-weight: 600;
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -438,7 +438,7 @@
 }
 .zy-cont-canal-titulo {
   font-family: var(--zy-display);
-  font-size: .7rem;
+  font-size: .75rem;
   font-weight: 600;
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -589,7 +589,7 @@
   margin: 22px 0 10px;
   color: var(--zy-texto-tenue);
   font-family: var(--zy-display);
-  font-size: .7rem;
+  font-size: .75rem;
   font-weight: 600;
   letter-spacing: .13em;
   text-transform: uppercase;
@@ -618,7 +618,7 @@
 
 .zy-pie-titulo {
   font-family: var(--zy-display);
-  font-size: .72rem;
+  font-size: .75rem;
   font-weight: 600;
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -633,6 +633,20 @@
   transition: color var(--zy-t-medio);
 }
 .zy-pie-lista a:hover { color: var(--zy-indigo-claro); }
+
+/* ⚠️ WCAG 2.2 AA (Target Size) pide 24px de alto en un objetivo que se pulsa.
+   Medido el 2026-11-20 en un teléfono de 375px: estos enlaces median 19px, y en
+   el pie van veinte seguidos — fallar uno significa pulsar el de al lado.
+
+   El respiro va en `padding-block` y NO en `min-height`: estos enlaces se parten
+   en dos líneas —«Transformación digital», «Capacitación en TI e IA»— y una
+   altura fija les cortaría la segunda. En un elemento `inline` el padding
+   vertical agranda el área que recibe el toque sin mover la línea de al lado,
+   así que el pie no cambia de aspecto. El `gap` de la lista es de 10px, mayor
+   que los 3+3 que se añaden, así que dos enlaces contiguos no se solapan. */
+.zy-pie-lista a,
+.zy-pie-contactos a,
+.zy-cont-canal-enlace { padding-block: 3px; }
 
 .zy-pie-acceso { margin-top: 26px; width: 100%; }
 
@@ -650,9 +664,22 @@
 .zy-pie-dominio { font-family: var(--zy-display); font-weight: 600; color: var(--zy-indigo-claro); }
 
 /* Hueco para el botón flotante de WhatsApp, que si no se sienta encima del
-   dominio y lo tapa justo en la esquina donde el ojo lo busca. */
+   dominio y lo tapa justo en la esquina donde el ojo lo busca.
+
+   ⚠️⚠️ Hasta el 2026-11-20 este hueco se reservaba SOLO a partir de 768px, o sea
+   justo donde menos falta. El botón es `fixed` y ocupa la misma esquina en el
+   teléfono, sobre una pantalla cuatro veces más estrecha: ahí tapaba el dominio
+   y el aviso de derechos, que es lo último que el pie dice. Medido ese día.
+
+   En móvil el hueco va DEBAJO y no a la derecha: 88px de los 375 del teléfono
+   son casi un cuarto del ancho, y partirían el aviso de derechos en cuatro
+   líneas para esquivar un botón que solo ocupa la esquina. */
 @media (min-width: 768px) {
   .zy-pie-final { padding-right: 88px; }
+}
+
+@media (max-width: 767.98px) {
+  .zy-pie-final { padding-bottom: 72px; }
 }
 
 /* ═══ Adaptación ══════════════════════════════════════════════════════════ */

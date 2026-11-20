@@ -496,7 +496,7 @@ export default function Soluciones() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexShrink: 0 }}>
               <div style={{ textAlign: 'right' }}>
                 <div style={{ color: '#f5f5f7', fontWeight: 800, fontSize: '1.4rem', lineHeight: 1 }}>
-                  {simbolo} {formatPrecio(erpApp?.precio)}<span style={{ color: '#9c9caa', fontSize: '0.72rem', fontWeight: 400 }}>{t('sol.periodo.mes', '/mes')}</span>
+                  {simbolo} {formatPrecio(erpApp?.precio)}<span style={{ color: '#9c9caa', fontSize: '0.75rem', fontWeight: 400 }}>{t('sol.periodo.mes', '/mes')}</span>
                 </div>
               </div>
               <a href="https://app.zyntello.com/erp" onClick={e => e.stopPropagation()} className="sol-bundle-btn" style={{ textDecoration: 'none' }}>

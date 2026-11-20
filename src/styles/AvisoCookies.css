@@ -95,3 +95,7 @@
   .zy-cookies { flex-direction: column; align-items: stretch; gap: .85rem; }
   .zy-cookies-acciones { justify-content: space-between; }
 }
+
+/* ⚠️ 22px de alto, por debajo de los 24 de WCAG 2.2 AA — y este convive con los
+   botones de aceptar y rechazar, donde fallar el toque acepta lo que no querías. */
+.zy-cookies-enlace { padding-block: 3px; }
