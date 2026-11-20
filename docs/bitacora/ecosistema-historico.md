@@ -9,6 +9,58 @@
 
 ### Bitácora reciente (estado actual — 2026-09-08)
 
+> **EL SITIO INVITA A LEERSE EN TU IDIOMA, Y SEÑALA DÓNDE SE CAMBIA (2026-11-19)**: bajo la barra
+> aparece una tira —«Visítanos en tu idioma. ¿No está el tuyo? Avísanos y lo agregamos»— y una
+> flecha curva que apunta al selector. El selector llevaba meses siendo un código de dos letras en
+> la esquina, y quien llegaba en un idioma que no habla **no lo estaba buscando**: leía la portada
+> y se iba. ⚠️ **Un visitante que se marcha no informa de que se marchó**, así que el defecto no
+> tenía más síntoma que una tasa de rebote que nadie atribuía al idioma. Son **6 claves nuevas en
+> los ocho idiomas**, sembradas en `TextosSitioSeeder` del admin, que es de donde el sitio lee sus
+> textos en caliente. La segunda frase —la invitación a pedir un idioma— no es relleno: sin ella,
+> quien hable uno que no ofrecemos concluye que el producto no es para él.
+>
+> ⚠️⚠️ **Una flecha dibujada en la tira NO puede asomar sobre la barra, y el síntoma es que sale al
+> revés.** La barra es `position: fixed` con z-index 1030 y la tira 1020: la punta quedaba detrás,
+> presente en el DOM e invisible en pantalla, y lo único que sobresalía era la **cola, por abajo**,
+> sobre el hero. Costó cuatro intentos rechazados antes de ver que el problema no era el dibujo.
+>
+> ⚠️⚠️ **Y subir la tira habría sido el arreglo equivocado**: `fixed` con z-index crea un contexto
+> de apilamiento que **encierra a todos sus hijos**, así que la tira habría tapado el desplegable de
+> idiomas —z-index 80, encerrado en la capa 1030—, que es justo lo que la tira existe para abrir. Se
+> resolvió colgando la flecha **del propio selector**, dentro de la capa alta: sube hasta el botón y
+> baja sobre la tira. Con el desplegable abierto, la lista la tapa a ella, que es el orden correcto.
+>
+> ⚠️⚠️ **Así apunta sola, y eso es lo que de verdad lo cierra.** Escrita en la tira quedó a
+> **267px** del botón, señalando el borde de la pantalla. No era un descuido: a la derecha del
+> selector está «Se connecter», «登录» o «Iniciar sesión», que **no miden lo mismo**, así que
+> ninguna posición escrita a mano acierta en los ocho idiomas. Siendo hermana del botón, el desvío
+> es de **3,6 a 4,8px** y no hay ninguna medida que mantener. El hueco que la tira le aparta sí se
+> mide (`--zy-aviso-hueco`), y se mide contra la **caja interior**: tomar el rect del `ref` —que
+> ocupa la ventana entera— reservaba 149px de más.
+>
+> ⚠️⚠️ **El emoji de bandera NO existe en Windows.** El sistema lo sustituye por el par de letras
+> del indicador regional, así que junto al código del idioma salía **«FR FR», «IT IT», «HT HT»** —la
+> etiqueta repetida dos veces—. Se retiraron las banderas del selector: el nombre en su propio
+> idioma («Français», «简体中文») lo dice sin ambigüedad y se lee en todos los sistemas. Lo custodia
+> `verificar-emojis-bandera.mjs` sobre 608 archivos. ⚠️ Y una bandera tampoco identifica un idioma:
+> el árabe no tiene ninguna que lo represente entre sus 22 países y el francés se habla en 29.
+>
+> ⚠️⚠️ **Una sección cuyo FONDO no sigue al tema deja el texto del tema encima.** El hero lleva el
+> velo oscuro de marca —identidad, no preferencia— pero los colores del texto salían de los tokens:
+> en **tema claro** eso pintaba texto oscuro sobre fondo oscuro. Contraste medido en producción:
+> **1,04** en la bajada, **2,24** en el título. 1,04 no es «poco contraste», es **invisible** — la
+> insignia se veía como una píldora vacía. En tema oscuro daba 7,12 y 17,73, o sea perfecto, así que
+> **el defecto solo existía en una de las dos apariencias** y quien revisara en la suya no tenía
+> forma de encontrarlo. Se arregla dando a la sección **su propio ámbito de tokens**, y fijando
+> también `--zy-fondo`: el velo es translúcido, y sobre el fondo claro daba un gris medio, que es el
+> peor sitio posible. ⚠️ Aclarar el fondo fue el primer intento y se rechazó — dejaba el banner
+> blanco y sin carácter.
+>
+> **Queda abierto y escalado a otra sesión**: `verificar-traducciones.mjs` mide contra el seeder del
+> repo del **admin**, y en su línea 49, **si ese archivo no está, sale con código 0 sin comprobar
+> nada**. Quien clone solo el sitio obtiene el verde completo de la guarda de idiomas sin que haya
+> mirado una sola clave.
+
 > **EL BLOG ENTERO EN LOS OCHO IDIOMAS — CERRADO (2026-11-04)**: los **38 artículos** y su índice
 > existen ahora en los ocho idiomas. **312 páginas**, 39 por idioma, desplegadas y verificadas por
 > contenido contra producción —`lang`, `dir`, título traducido y un 404 de control— no por el hash
