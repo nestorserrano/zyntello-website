@@ -9,6 +9,56 @@
 
 ### Bitácora reciente (estado actual — 2026-09-08)
 
+> **EL CATÁLOGO ENTERO, CERRADO EN CHINO Y ÁRABE (2026-11-22)**: último bloque —`serv.*` (981),
+> `fun.*` (259) y las secciones pequeñas (~360)— leído línea a línea en `zh-Hans`, `zh-Hant` y
+> `ar`. **44 textos corregidos.** Con esto, las 8.000 claves del sitio están revisadas por un
+> hablante en los tres idiomas.
+>
+> ⚠️⚠️ **La peor no daba ningún error: una tarjeta decía «MORIMOS».** El título árabe de
+> `serv.transformacion-digital.publico.2` era `نموت بلا تنظيم`. El español dice «Creciste sin
+> orden», que en árabe es `نَمَوْتَ` (de نما, crecer) — pero **sin vocales se escribe con las mismas
+> letras que `نَموت`, «morimos» (de مات)**, y gana la lectura frecuente. Un corrector automático
+> no lo ve, la suite no lo ve y la página carga perfecta. Se cambió a `توسّعت` (te expandiste),
+> que no es ambiguo. *Las letras correctas no bastan en árabe: hay que leerlo en voz alta.*
+>
+> ⚠️⚠️ **Tres nombres para la misma sección, y en la NAVEGACIÓN.** El menú árabe decía `الميزات`,
+> la portada titula la sección `إمكانات المنصة` y el enlace de vuelta `كل الإمكانات`. En español
+> los tres dicen «Funcionalidades». El usuario pulsaba una palabra y aterrizaba en otra. **Se
+> arregló cambiando SOLO el menú**: los otros dos ya compartían raíz. Mismo defecto que
+> «percepción ciudadana», y la misma lección — al tocar un término se BARRE el catálogo entero,
+> porque corregir donde se miró deja el defecto vivo donde no. Así salieron también las 6 claves
+> que escribían el país de la empresa `جمهورية الدومينيكان` frente a las 20 —incluido el pie de
+> todas las páginas— que usan la forma oficial `الجمهورية الدومينيكية`.
+>
+> ⚠️ **El simplificado citaba con la comilla recta `"`, que el chino no usa: 20 pares en 18
+> claves.** Lo barato fue medir el tradicional primero: **ya traía `「」` bien puestas en las 18**,
+> posición a posición, así que el defecto era solo del simplificado y no hubo que decidir dónde
+> abre y dónde cierra.
+>
+> ⚠️⚠️ **Dos hallazgos se descartaron por chocar con decisiones ya documentadas, y eso es el
+> valor de comprobar contra el seeder ANTES de escribir.** (1) Las 10 claves en `您` frente a las
+> 508 en `你` parecían una inconsistencia obvia; el propio seeder explica que se pasaron a `您`
+> **porque esa sección convive con el formulario de contacto en la misma página**. Unificarlas
+> habría deshecho trabajo razonado. (2) `nos.cifra.ia` en latín («AI») no es un descuido: la
+> sigla árabe no existe en uso y el valor va en una cifra de tamaño fijo donde
+> `الذكاء الاصطناعي` no cabe.
+>
+> ⚠️ **Un barrido de un solo carácter miente si no se excluye el HTML.** Buscar `"` en el
+> catálogo devolvió 25 claves del blog «sin corregir» — eran los `href="…"` de los enlaces,
+> idénticos en los 8 idiomas. Quitando etiquetas y `<script>`: **cero comillas de cita rectas en
+> todo el catálogo**, que era lo que se quería medir.
+>
+> **Lo que NO se tocó, y queda dicho por qué**: el `fun.aprobaciones` árabe traduce «se para los
+> viernes» por **jueves** — es localización correcta (último día laborable), y el chino conserva
+> el viernes; y el tanwīn `ـاً` frente a `ـًا`, que se reparte por secciones y es ortografía
+> estándar en las dos formas.
+>
+> Seeder corrido dos veces (44 → **0**) y verificado contra las **páginas servidas**, no contra
+> el commit: 15/15 correcciones presentes, cero restos. El menú vive en la app React, que **lee
+> el catálogo del API en runtime** —no va en el bundle—, así que esa corrección llegó a
+> producción sin rebuild. Commits: admin `7d7c920`, sitio `0dc11db`.
+
+
 > **EL BLOG, LEÍDO LÍNEA A LÍNEA EN CHINO Y ÁRABE (2026-11-22)**: los mismos 958 textos que se
 > revisaron en criollo, ahora en `zh-Hans`, `zh-Hant` y `ar`: **2.874 leídos uno a uno, 55
 > correcciones**. Densidad parecida a la del criollo, o sea que estaban bien traducidos.
