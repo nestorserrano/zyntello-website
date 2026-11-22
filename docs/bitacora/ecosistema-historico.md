@@ -9,6 +9,54 @@
 
 ### Bitácora reciente (estado actual — 2026-09-08)
 
+> **EL BLOG, LEÍDO LÍNEA A LÍNEA EN CHINO Y ÁRABE (2026-11-22)**: los mismos 958 textos que se
+> revisaron en criollo, ahora en `zh-Hans`, `zh-Hant` y `ar`: **2.874 leídos uno a uno, 55
+> correcciones**. Densidad parecida a la del criollo, o sea que estaban bien traducidos.
+>
+> ⚠️⚠️ **El tradicional se MIDIÓ antes de tocarlo, y eso ahorró la mitad del trabajo**: ni un solo
+> texto difiere en longitud del simplificado, así que es conversión y **hereda todos sus
+> defectos**. Cada corrección fue en las dos columnas. Para sacar el fragmento tradicional exacto
+> se alinea por POSICIÓN con el simplificado, no con un mapa de caracteres: el conversor también
+> cambia vocabulario (`数据→資料`, `密钥→金鑰`), y un mapa carácter a carácter da 224 conflictos.
+>
+> ⚠️⚠️ **Tres avisos en chino mostraban los `**` de Markdown CRUDOS en pantalla.** El blog inserta
+> el texto tal cual; **el único sitio que convierte `**` es el chat**, y los 26 `**` del español
+> son todos de `chat.*`. Se comprobó antes de elegir reemplazo: de los 52 avisos del blog ninguno
+> lleva `<strong>`, y `resumen` pasa por `esc()` y va a la meta description.
+>
+> **Lo que cambiaba lo que el lector entiende**: `数字密钥` es clave CRIPTOGRÁFICA por un código
+> público de 50 dígitos —y en tradicional el conversor lo había pasado a `金鑰`, que en Taiwán es
+> inequívocamente la llave de cifrado—; `回执` es acuse de RECIBO en el artículo que trata de que
+> la respuesta puede ser un RECHAZO, y estaba en el título; `不是一笔收入` dice «no es un INGRESO»
+> donde el español dice «no es un COBRO», en flujo de caja; `أُجِّرت الساعات الإضافية` se lee «las
+> horas extra fueron ALQUILADAS»; `أقلّ المهامّ احتمالاً للخطأ` dice que la tarea es poco PROPENSA
+> al error cuando el punto es que no lo TOLERA; y `ألحظ لحظات اليوم توتّراً` usa el VERBO
+> «observo» donde hacía falta el elativo, **en un título de sección**.
+>
+> ⚠️⚠️ **Dos idiomas traducidos por separado tropezaron en la MISMA piedra, dos veces**: en «mora»
+> (`滞纳利息` vs `滞纳金` / `فوائد` vs `غرامة`), justo en el artículo cuya lista de al lado enumera
+> recargo, interés y capital como tres cosas distintas; y en «subestimar», que ya había fallado en
+> criollo como `sou-estime`. No son descuidos sueltos: son términos del español cuyo significado
+> **no sale de sus partes**, y conviene mirarlos en todos los idiomas a la vez.
+>
+> ⚠️⚠️ **El defecto más caro no estaba en las traducciones sino en el SEEDER.** Dos correcciones
+> añadían palabras al final (`…نظام` → `…نظام ERP`), así que el texto corregido **contiene** al
+> original y el `str_replace` se encuentra a sí mismo: la siguiente siembra habría escrito
+> `ERP ERP`. **Aplicado una vez se ve perfecto**; solo aparece al volver a sembrar, que es cuando
+> nadie lo mira. Se movieron a `correcciones()`, que escribe el valor completo. La comprobación
+> que lo caza: *¿está el «antes» contenido en el «después»?*
+>
+> ⚠️ **Y el barrido de restos hay que hacerlo DESPUÉS de aplicar**: dos apariciones que la lectura
+> sí vio se perdieron al pasarlas a correcciones, y las encontró el barrido contra el catálogo ya
+> corregido. ⚠️ Tres claves colisionaban entre bloques: **una clave repetida en un array PHP la
+> gana la última, en silencio**.
+>
+> **Verificado**: el seeder corrido DOS veces (la segunda, **0**), cero restos en los 50 patrones
+> de error contra el API, lo legítimo intacto (`滞纳金` 9, `批次` como lote 14, `غرامة التأخير` 4,
+> `المفتاح الرقمي` 3 — ese NO se corrigió: en árabe `مفتاح` sirve para un identificador) y **22/22
+> comprobaciones sobre las páginas que sirve producción**, no sobre el commit.
+
+
 > **EL SITIO INVITA A LEERSE EN TU IDIOMA, Y SEÑALA DÓNDE SE CAMBIA (2026-11-19)**: bajo la barra
 > aparece una tira —«Visítanos en tu idioma. ¿No está el tuyo? Avísanos y lo agregamos»— y una
 > flecha curva que apunta al selector. El selector llevaba meses siendo un código de dos letras en
