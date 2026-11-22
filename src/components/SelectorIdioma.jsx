@@ -81,7 +81,7 @@ export default function SelectorIdioma() {
           {/* `userSpaceOnUse` y no la caja de cada trazo: con el degradado relativo a cada
               forma, la punta recorrería ella sola los tres colores y no empalmaría con el
               final de la curva —se verían dos piezas de distinto color pegadas. */}
-          <linearGradient id="zyFlechaIdioma" gradientUnits="userSpaceOnUse" x1="8" y1="58" x2="37" y2="6">
+          <linearGradient id="zyFlechaIdioma" gradientUnits="userSpaceOnUse" x1="34" y1="58" x2="5" y2="6">
             <stop offset="0%"   stopColor="#22d3ee" />
             <stop offset="55%"  stopColor="#3b82f6" />
             <stop offset="100%" stopColor="#8b5cf6" />
@@ -92,10 +92,10 @@ export default function SelectorIdioma() {
             ⚠️ La versión anterior —trazo de 6,5 con un triángulo macizo pegado— se leía como
             dos piezas soldadas: el triángulo pesaba más que la curva y el empalme se notaba.
             La punta abierta es el mismo trazo, así que no hay empalme que se vea.
-            La curva termina a ~43°; los brazos de la punta salen a ±40° de esa dirección. */}
+            Sube de DERECHA a izquierda: la cola nace a la derecha del botón, sobre el hueco que la tira le aparta, y la punta llega a ~137°; los brazos de la punta salen a ±40° de esa dirección. */}
         <g fill="none" stroke="url(#zyFlechaIdioma)" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M8 58 C 8 38, 22 20, 37 6" />
-          <path d="M26 7 L37 6 L36 17" />
+          <path d="M34 58 C 34 38, 20 20, 5 6" />
+          <path d="M16 7 L5 6 L6 17" />
         </g>
       </svg>
 

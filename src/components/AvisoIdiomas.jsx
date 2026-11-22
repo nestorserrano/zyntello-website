@@ -30,8 +30,9 @@ import { useIdioma } from '../hooks/useIdioma'
  */
 const CLAVE = 'zyntello-aviso-idiomas'
 
-/** Ancho del dibujo de la flecha; el mismo número que `SelectorIdioma.css`. */
-const ANCHO_FLECHA = 42
+/** Lo que la punta de la flecha (y su halo) asoma por el lado INICIAL del centro del botón;
+    la cola sale hacia el lado final, que ya queda dentro del hueco. Ver `SelectorIdioma.css`. */
+const RESPIRO_FLECHA = 14
 
 /** Lo escucha `SelectorIdioma` para desplegarse sin que haya que compartir estado entre ellos. */
 export const EVENTO_ABRIR_IDIOMAS = 'zy-abrir-idiomas'
@@ -71,9 +72,10 @@ export default function AvisoIdiomas() {
     const centro = b.left + b.width / 2
     const rtl = getComputedStyle(document.documentElement).direction === 'rtl'
     /* Distancia del borde FINAL de la caja al centro del botón —derecho en LTR, izquierdo
-       en árabe—, más el ancho de la flecha y un respiro. */
+       en árabe—, más lo que la punta asoma hacia el otro lado. La ✕ se coloca al inicio de
+       ese hueco (ver `AvisoIdiomas.css`), así que la cola nunca la pisa. */
     const hasta = rtl ? centro - r.left : r.right - centro
-    c.style.setProperty('--zy-aviso-hueco', `${Math.max(0, Math.round(hasta + ANCHO_FLECHA + 10))}px`)
+    c.style.setProperty('--zy-aviso-hueco', `${Math.max(0, Math.round(hasta + RESPIRO_FLECHA))}px`)
   }, [])
 
   /*

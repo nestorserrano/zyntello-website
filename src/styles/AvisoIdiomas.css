@@ -39,11 +39,10 @@
   max-width: 1320px;
   margin: 0 auto;
   padding: .55rem clamp(16px, 4vw, 28px);
-  /* 2.6rem es el sitio de la ✕; `--zy-aviso-hueco` lo amplia hasta dejar libre la franja
+  /* 2.9rem es el sitio de la ✕; `--zy-aviso-hueco` lo amplia hasta dejar libre la franja
      por donde baja la flecha que cuelga de la barra. Lo mide `AvisoIdiomas.jsx`, porque la
-     posicion del selector cambia con el idioma. `max()` conserva el minimo de la ✕ si la
-     flecha no esta (movil) y la variable no se ha puesto. */
-  padding-inline-end: max(2.6rem, var(--zy-aviso-hueco, 0px));
+     posicion del selector cambia con el idioma. Sin flecha la variable no existe y vale 0. */
+  padding-inline-end: calc(var(--zy-aviso-hueco, 0px) + 2.9rem);
   display: flex;
   align-items: center;
   gap: .9rem;
@@ -105,7 +104,10 @@
 .zy-aviso-idiomas-cerrar {
   position: absolute;
   inset-block-start: 50%;
-  inset-inline-end: clamp(8px, 2vw, 14px);
+  /* ⚠️ Con la flecha puesta, la ✕ se corre al INICIO del hueco: la cola de la flecha baja
+     justo bajo el selector, que es donde la ✕ quedaba, y se pisaban. Sin flecha el hueco
+     vale 0 y la ✕ vuelve a su esquina. */
+  inset-inline-end: calc(var(--zy-aviso-hueco, 0px) + clamp(8px, 2vw, 14px));
   transform: translateY(-50%);
   width: 1.8rem;
   height: 1.8rem;
