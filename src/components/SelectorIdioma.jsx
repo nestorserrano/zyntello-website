@@ -76,27 +76,34 @@ export default function SelectorIdioma() {
           derecha es «Se connecter», «登录» o «Iniciar sesión», y no miden lo mismo.
           ⚠️ Decorativa, con `aria-hidden`: a un lector de pantalla no le dice nada una
           curva, y el botón de al lado ya se nombra solo. */}
-      <svg className="zy-nav-flecha" viewBox="0 0 42 64" aria-hidden="true" focusable="false">
+      <svg className="zy-nav-flecha" viewBox="0 0 48 72" aria-hidden="true" focusable="false">
         <defs>
-          {/* `userSpaceOnUse` y no la caja de cada trazo: con el degradado relativo a cada
-              forma, la punta recorrería ella sola los tres colores y no empalmaría con el
-              final de la curva —se verían dos piezas de distinto color pegadas. */}
-          <linearGradient id="zyFlechaIdioma" gradientUnits="userSpaceOnUse" x1="34" y1="58" x2="5" y2="6">
-            <stop offset="0%"   stopColor="#22d3ee" />
-            <stop offset="55%"  stopColor="#3b82f6" />
-            <stop offset="100%" stopColor="#8b5cf6" />
+          {/* `userSpaceOnUse`: el degradado recorre la flecha ENTERA de la cola a la punta, y
+              no cada forma por su cuenta. De azul acero (la cola, que acompaña) a salmón —el
+              mismo coral del botón «Elegir idioma»— en la punta, que es lo que debe mirarse. */}
+          <linearGradient id="zyFlechaIdioma" gradientUnits="userSpaceOnUse" x1="38" y1="66" x2="9" y2="4">
+            <stop offset="0%"   stopColor="#4f6f9c" />
+            <stop offset="45%"  stopColor="#8fb0dc" />
+            <stop offset="100%" stopColor="#e89b84" />
           </linearGradient>
         </defs>
-        {/* Un solo trazo fino que sube en curva suave desde la tira hasta el botón, con la
-            punta ABIERTA (chevrón) del mismo grosor y extremos redondeados.
-            ⚠️ La versión anterior —trazo de 6,5 con un triángulo macizo pegado— se leía como
-            dos piezas soldadas: el triángulo pesaba más que la curva y el empalme se notaba.
-            La punta abierta es el mismo trazo, así que no hay empalme que se vea.
-            Sube de DERECHA a izquierda: la cola nace a la derecha del botón, sobre el hueco que la tira le aparta, y la punta llega a ~137°; los brazos de la punta salen a ±40° de esa dirección. */}
-        <g fill="none" stroke="url(#zyFlechaIdioma)" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M34 58 C 34 38, 20 20, 5 6" />
-          <path d="M16 7 L5 6 L6 17" />
-        </g>
+        {/* Trazo CALIGRÁFICO: no es una línea con grosor fijo sino una forma rellena cuyos
+            dos bordes se separan a lo largo de la curva —0,3 en la cola, 3,6 en el cuello—, así
+            que nace fina y llega con fuerza a una cabeza ancha y maciza que forma una sola
+            pieza con el cuerpo.
+            Nace abajo a la DERECHA del botón y termina casi vertical (dirección ≈ −117°):
+            apunta HACIA ARRIBA, al selector, no en diagonal.
+            ⚠️ Colores OPACOS: con transparencia en la cola, el borde y el relleno se suman donde
+            se solapan y dibujan una costura más oscura. El `stroke` del mismo degradado con `strokeLinejoin="round"` redondea la cola y
+            las tres esquinas de la cabeza sin cambiar su forma. */}
+        <path
+          d="M37.7 66 C 38.8 41.9, 17.3 27.3, 10.8 15.6 L 6.8 17.6 L 9.1 4.2 L 21.2 10.4 L 17.2 12.4 C 22.7 24.7, 41.2 42.1, 38.3 66 Z"
+          fill="url(#zyFlechaIdioma)"
+          stroke="url(#zyFlechaIdioma)"
+          strokeWidth="1.4"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        />
       </svg>
 
       {abierto && (

@@ -96,11 +96,12 @@ html[data-aviso-idiomas] .zy-nav-flecha {
   position: absolute;
   /* Justo bajo el botón; la punta del dibujo queda 4px más abajo todavía. */
   top: calc(100% + 2px);
-  /* El dibujo tiene la punta a 5px de sus 42 de ancho: con este desplazamiento la punta
-     cae en el centro del botón y la cola sale por la DERECHA, sobre la tira. */
-  inset-inline-start: 10px;
-  width: 42px;
-  height: 64px;
+  /* El dibujo (48×72, pintado a 40×60) tiene la punta a 9,1 unidades del borde: 7,6px.
+     Con este desplazamiento la punta cae en el centro del botón y la cola sale por la
+     DERECHA, sobre la tira. */
+  inset-inline-start: 8px;
+  width: 40px;
+  height: 60px;
 
   /* ⚠️ No intercepta clics: pisa la franja superior de la tira, y sin esto el ratón se
      quedaría con ella en vez de con lo que haya debajo —sin dar ningún aviso—. */
@@ -110,9 +111,9 @@ html[data-aviso-idiomas] .zy-nav-flecha {
      su función y la lista tiene que taparla, no al revés. */
   z-index: 0;
 
-  /* Halo suave del color central del degradado: separa el trazo fino del fondo oscuro
-     sin engordarlo. */
-  filter: drop-shadow(0 0 5px rgba(59, 130, 246, .55));
+  /* Resplandor salmón, del color de la punta: la despega del azul marino del fondo. Late
+     junto con el rebote (ver la animación) para guiar la vista sin parpadear. */
+  filter: drop-shadow(0 0 4px rgba(232, 155, 132, .45));
   overflow: visible;
 
   animation: zy-nav-flecha 2.4s var(--zy-curva-suave) infinite;
@@ -127,16 +128,17 @@ html[dir='rtl'][data-aviso-idiomas] .zy-nav-flecha {
   animation-name: zy-nav-flecha-rtl;
 }
 
-/* Un vaivén corto hacia la punta: es lo que hace que la vista la siga hasta el botón.
-   Son 3px —suficiente para notarse por el rabillo del ojo, no tanto como para distraer. */
+/* Un rebote corto en la dirección de la punta —casi vertical— con el resplandor latiendo a
+   la vez: es lo que hace que la vista la siga hasta el botón. Son 4px, suficiente para
+   notarse por el rabillo del ojo, no tanto como para distraer. */
 @keyframes zy-nav-flecha {
-  0%, 100% { transform: translate(0, 0); }
-  50%      { transform: translate(-3px, -3px); }
+  0%, 100% { transform: translate(0, 0);            filter: drop-shadow(0 0 3px rgba(232, 155, 132, .35)); }
+  50%      { transform: translate(-1.5px, -4px);    filter: drop-shadow(0 0 7px rgba(232, 155, 132, .7)); }
 }
 
 @keyframes zy-nav-flecha-rtl {
-  0%, 100% { transform: translate(0, 0)      scaleX(-1); }
-  50%      { transform: translate(3px, -3px) scaleX(-1); }
+  0%, 100% { transform: translate(0, 0)          scaleX(-1); filter: drop-shadow(0 0 3px rgba(232, 155, 132, .35)); }
+  50%      { transform: translate(1.5px, -4px)   scaleX(-1); filter: drop-shadow(0 0 7px rgba(232, 155, 132, .7)); }
 }
 
 /* ⚠️ Quien tiene trastorno vestibular no necesita que nada se mueva para entender la
