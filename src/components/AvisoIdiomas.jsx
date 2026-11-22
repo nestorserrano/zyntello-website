@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useIdioma } from '../hooks/useIdioma'
 
 /**
@@ -11,13 +11,8 @@ import { useIdioma } from '../hooks/useIdioma'
  * recorrer la barra con la vista. Un visitante que se marcha no informa de que se marchó, así
  * que el defecto no tiene síntoma — solo una tasa de rebote que nadie atribuye al idioma.
  *
- * La flecha curva existe por eso: el banner **no sustituye** al selector, lo SEÑALA. Quien lo
- * use una vez ya sabe dónde está para siempre.
- *
- * ⚠️⚠️ **El dibujo de la flecha NO está en este archivo**, está en `SelectorIdioma`: cuelga del
- * propio botón al que apunta. Dibujada aquí no podía asomar sobre la barra —fija, z-index 1030
- * contra el 1020 de la tira— y acababa saliendo por abajo, de cola, al revés de lo que una
- * flecha hace. Lo único que queda aquí es encenderla y apartarle el sitio.
+ * Por eso el botón «Elegir idioma» del propio aviso abre el selector: el aviso **no
+ * sustituye** al selector, lleva a él. Quien lo use una vez ya sabe dónde está.
  *
  * ## ⚠️ Y la segunda mitad del mensaje es la que no puede faltar
  *
@@ -30,10 +25,6 @@ import { useIdioma } from '../hooks/useIdioma'
  */
 const CLAVE = 'zyntello-aviso-idiomas'
 
-/** Lo que la punta de la flecha (y su halo) asoma por el lado INICIAL del centro del botón;
-    la cola sale hacia el lado final, que ya queda dentro del hueco. Ver `SelectorIdioma.css`. */
-const RESPIRO_FLECHA = 14
-
 /** Lo escucha `SelectorIdioma` para desplegarse sin que haya que compartir estado entre ellos. */
 export const EVENTO_ABRIR_IDIOMAS = 'zy-abrir-idiomas'
 
@@ -41,42 +32,6 @@ export default function AvisoIdiomas() {
   const { t, idioma } = useIdioma()
   const [visible, setVisible] = useState(false)
   const caja = useRef(null)
-
-  /*
-   * Aparta el contenido de la tira de debajo de la flecha, que cuelga de la barra sobre su
-   * franja superior.
-   *
-   * ⚠⚠ Se MIDE el selector y no se escribe un número. Lo que hay a su derecha —«Se
-   *     connecter», «登录», «Iniciar sesión»— no mide lo mismo en los ocho idiomas, así que
-   *     el botón se desplaza: un hueco fijo dejaría la flecha encima del botón coral en unos
-   *     idiomas y con 100px de aire de más en otros. Y el defecto no avisa —se ve torcido,
-   *     nada falla—.
-   * ⚠️ Si no hay flecha (barra plegada en hamburguesa ≤1299px, o aún sin montar) no se reserva nada: el hueco
-   *     estrecharía el texto a cambio de apartarse de algo que no está.
-   */
-  const apartarse = useCallback(() => {
-    const c = caja.current
-    if (!c) return
-
-    const sel = document.querySelector('.zy-idioma')
-    if (!sel || !window.matchMedia('(min-width: 1300px)').matches) {
-      c.style.removeProperty('--zy-aviso-hueco')
-      return
-    }
-
-    const b = sel.getBoundingClientRect()
-    /* ⚠️ El rect es el de la CAJA interior, no el del `ref`, que ocupa la ventana entera: el
-       padding se aplica desde el borde de la caja, así que medir desde el de la ventana
-       reservaba de más —149px sobrantes en una pantalla de 1600—. */
-    const r = (c.querySelector('.zy-aviso-idiomas-caja') ?? c).getBoundingClientRect()
-    const centro = b.left + b.width / 2
-    const rtl = getComputedStyle(document.documentElement).direction === 'rtl'
-    /* Distancia del borde FINAL de la caja al centro del botón —derecho en LTR, izquierdo
-       en árabe—, más lo que la punta asoma hacia el otro lado. La ✕ se coloca al inicio de
-       ese hueco (ver `AvisoIdiomas.css`), así que la cola nunca la pisa. */
-    const hasta = rtl ? centro - r.left : r.right - centro
-    c.style.setProperty('--zy-aviso-hueco', `${Math.max(0, Math.round(hasta + RESPIRO_FLECHA))}px`)
-  }, [])
 
   /*
    * Publica el alto real de la tira en `--zy-aviso-h`, que es lo que el hero, el
@@ -95,16 +50,8 @@ export default function AvisoIdiomas() {
 
     if (!visible) { aCero(); return }
 
-    /*
-     * ⚠⚠ El marcador es lo que ENCIENDE la flecha, que vive en la barra y no aquí
-     *     (ver `SelectorIdioma.css`). Sin tira no hay nada que explique por qué hay una
-     *     flecha señalando, y una flecha sin motivo se lee como un adorno.
-     */
-    raiz.dataset.avisoIdiomas = ''
-
     const medir = () => {
       raiz.style.setProperty('--zy-aviso-h', `${caja.current?.offsetHeight ?? 0}px`)
-      apartarse()
     }
     medir()
 
@@ -113,10 +60,8 @@ export default function AvisoIdiomas() {
     return () => {
       observador.disconnect()
       aCero()
-      delete raiz.dataset.avisoIdiomas
-      caja.current?.style.removeProperty('--zy-aviso-hueco')
     }
-  }, [visible, idioma, apartarse])
+  }, [visible, idioma])
 
   useEffect(() => {
     try {

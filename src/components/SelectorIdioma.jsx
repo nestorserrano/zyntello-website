@@ -65,47 +65,6 @@ export default function SelectorIdioma() {
         <span className="zy-idioma-codigo">{actual.codigo.split('-')[0].toUpperCase()}</span>
       </button>
 
-      {/* ⚠⚠ La flecha vive AQUÍ, dentro de la barra, y no en la tira que la motiva.
-          El motivo es de capas: la barra es `position: fixed` con z-index 1030 y la tira 1020,
-          así que una flecha dibujada en la tira **no puede asomar sobre la barra** —queda
-          detrás de ella, presente en el DOM e invisible en pantalla—. Colgada desde aquí
-          sube hasta el botón y baja sobre la tira, que es el gesto que se quería.
-          ⚠⚠ Y además apunta sola: al ser hermana del botón, no hay ninguna medida que
-          mantener. Puesta en la tira quedó a 267px del selector —señalando el borde de la
-          pantalla— porque la posición del botón cambia con el idioma: lo que hay a su
-          derecha es «Se connecter», «登录» o «Iniciar sesión», y no miden lo mismo.
-          ⚠️ Decorativa, con `aria-hidden`: a un lector de pantalla no le dice nada una
-          curva, y el botón de al lado ya se nombra solo. */}
-      <svg className="zy-nav-flecha" viewBox="0 0 48 72" aria-hidden="true" focusable="false">
-        <defs>
-          {/* `userSpaceOnUse`: el degradado recorre la flecha ENTERA de la cola a la punta, y
-              no cada forma por su cuenta. De azul acero (la cola, que acompaña) a salmón —el
-              mismo coral del botón «Elegir idioma»— en la punta, que es lo que debe mirarse. */}
-          <linearGradient id="zyFlechaIdioma" gradientUnits="userSpaceOnUse" x1="38" y1="66" x2="9" y2="4">
-            <stop offset="0%"   stopColor="#4f6f9c" />
-            <stop offset="45%"  stopColor="#8fb0dc" />
-            <stop offset="100%" stopColor="#e89b84" />
-          </linearGradient>
-        </defs>
-        {/* Trazo CALIGRÁFICO: no es una línea con grosor fijo sino una forma rellena cuyos
-            dos bordes se separan a lo largo de la curva —0,3 en la cola, 3,6 en el cuello—, así
-            que nace fina y llega con fuerza a una cabeza ancha y maciza que forma una sola
-            pieza con el cuerpo.
-            Nace abajo a la DERECHA del botón y termina casi vertical (dirección ≈ −117°):
-            apunta HACIA ARRIBA, al selector, no en diagonal.
-            ⚠️ Colores OPACOS: con transparencia en la cola, el borde y el relleno se suman donde
-            se solapan y dibujan una costura más oscura. El `stroke` del mismo degradado con `strokeLinejoin="round"` redondea la cola y
-            las tres esquinas de la cabeza sin cambiar su forma. */}
-        <path
-          d="M37.7 66 C 38.8 41.9, 17.3 27.3, 10.8 15.6 L 6.8 17.6 L 9.1 4.2 L 21.2 10.4 L 17.2 12.4 C 22.7 24.7, 41.2 42.1, 38.3 66 Z"
-          fill="url(#zyFlechaIdioma)"
-          stroke="url(#zyFlechaIdioma)"
-          strokeWidth="1.4"
-          strokeLinejoin="round"
-          strokeLinecap="round"
-        />
-      </svg>
-
       {abierto && (
         <ul className="zy-idioma-lista" role="listbox" aria-label={t('idioma.etiqueta', 'Cambiar idioma')}>
           {idiomas.map((i) => (
