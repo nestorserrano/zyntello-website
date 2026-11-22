@@ -50,7 +50,7 @@ export default function AvisoIdiomas() {
    *     el botón se desplaza: un hueco fijo dejaría la flecha encima del botón coral en unos
    *     idiomas y con 100px de aire de más en otros. Y el defecto no avisa —se ve torcido,
    *     nada falla—.
-   * ⚠️ Si no hay flecha (móvil, o la barra aún sin montar) no se reserva nada: el hueco
+   * ⚠️ Si no hay flecha (barra plegada en hamburguesa ≤1299px, o aún sin montar) no se reserva nada: el hueco
    *     estrecharía el texto a cambio de apartarse de algo que no está.
    */
   const apartarse = useCallback(() => {
@@ -58,7 +58,7 @@ export default function AvisoIdiomas() {
     if (!c) return
 
     const sel = document.querySelector('.zy-idioma')
-    if (!sel || !window.matchMedia('(min-width: 721px)').matches) {
+    if (!sel || !window.matchMedia('(min-width: 1300px)').matches) {
       c.style.removeProperty('--zy-aviso-hueco')
       return
     }

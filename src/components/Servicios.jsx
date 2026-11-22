@@ -141,7 +141,7 @@ export default function Servicios() {
                 esas palabras ni van en ese orden ni se separan por ahí. */}
             {idioma === 'es' ? (
               <>
-                Catorce formas de que la tecnología<br className="d-none d-lg-block" />
+                Catorce formas de que la tecnología<br className="d-none d-lg-block" />{' '}
                 <span className="zy-degradado">deje de ser tu problema</span>
               </>
             ) : (

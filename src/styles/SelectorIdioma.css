@@ -96,9 +96,9 @@ html[data-aviso-idiomas] .zy-nav-flecha {
   position: absolute;
   /* Justo bajo el botón; la punta del dibujo queda 4px más abajo todavía. */
   top: calc(100% + 2px);
-  /* El dibujo tiene la punta a 39px de sus 42 de ancho: con este desplazamiento la punta
+  /* El dibujo tiene la punta a 37px de sus 42 de ancho: con este desplazamiento la punta
      cae en el centro del botón y la cola sale por la izquierda, sobre la tira. */
-  inset-inline-start: -24px;
+  inset-inline-start: -22px;
   width: 42px;
   height: 64px;
 
@@ -109,6 +109,11 @@ html[data-aviso-idiomas] .zy-nav-flecha {
   /* ⚠️ Por DEBAJO del desplegable (80): al abrir la lista de idiomas, la flecha ya cumplió
      su función y la lista tiene que taparla, no al revés. */
   z-index: 0;
+
+  /* Halo suave del color central del degradado: separa el trazo fino del fondo oscuro
+     sin engordarlo. */
+  filter: drop-shadow(0 0 5px rgba(59, 130, 246, .55));
+  overflow: visible;
 
   animation: zy-nav-flecha 2.4s var(--zy-curva-suave) infinite;
 }
@@ -126,12 +131,12 @@ html[dir='rtl'][data-aviso-idiomas] .zy-nav-flecha {
    Son 3px —suficiente para notarse por el rabillo del ojo, no tanto como para distraer. */
 @keyframes zy-nav-flecha {
   0%, 100% { transform: translate(0, 0); }
-  50%      { transform: translate(3px, -4px); }
+  50%      { transform: translate(3px, -3px); }
 }
 
 @keyframes zy-nav-flecha-rtl {
   0%, 100% { transform: translate(0, 0)      scaleX(-1); }
-  50%      { transform: translate(-3px, -4px) scaleX(-1); }
+  50%      { transform: translate(-3px, -3px) scaleX(-1); }
 }
 
 /* ⚠️ Quien tiene trastorno vestibular no necesita que nada se mueva para entender la
@@ -140,9 +145,12 @@ html[dir='rtl'][data-aviso-idiomas] .zy-nav-flecha {
   html[data-aviso-idiomas] .zy-nav-flecha { animation: none; }
 }
 
-/* ⚠️ En el móvil no hay a qué apuntar: la barra se pliega en un menú y el selector deja de
-   estar donde la flecha señala. El botón de la tira sigue abriendo la lista, que es lo que
-   de verdad resuelve el problema. */
-@media (max-width: 720px) {
+/* ⚠️ Con la barra plegada en hamburguesa no hay a qué apuntar: el selector queda dentro del
+   menú y deja de estar donde la flecha señala. El botón de la tira sigue abriendo la lista,
+   que es lo que de verdad resuelve el problema.
+   ⚠⚠ El corte es el MISMO 1299.98px de `Navbar.css` (y el 1300 de `AvisoIdiomas.jsx`). Con
+   720 la flecha y el hueco de la tira seguían vivos entre 721 y 1299 —con la barra ya
+   plegada—: la tira medía el selector oculto y reservaba media pantalla en blanco. */
+@media (max-width: 1299.98px) {
   html[data-aviso-idiomas] .zy-nav-flecha { display: none; }
 }

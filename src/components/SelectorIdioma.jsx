@@ -81,20 +81,22 @@ export default function SelectorIdioma() {
           {/* `userSpaceOnUse` y no la caja de cada trazo: con el degradado relativo a cada
               forma, la punta recorrería ella sola los tres colores y no empalmaría con el
               final de la curva —se verían dos piezas de distinto color pegadas. */}
-          <linearGradient id="zyFlechaIdioma" gradientUnits="userSpaceOnUse" x1="5" y1="58" x2="39" y2="4">
+          <linearGradient id="zyFlechaIdioma" gradientUnits="userSpaceOnUse" x1="8" y1="58" x2="37" y2="6">
             <stop offset="0%"   stopColor="#22d3ee" />
             <stop offset="55%"  stopColor="#3b82f6" />
             <stop offset="100%" stopColor="#8b5cf6" />
           </linearGradient>
         </defs>
-        {/* Nace PLANA abajo a la izquierda, sobre la tira, y sube cerrada hasta la punta.
-            Es un trazo con punta aparte y no una silueta maciza: la silueta anterior tenía
-            que dibujar su propio contorno de vuelta, y esa vuelta se leía como una segunda
-            curva —una banana, no una flecha—. */}
-        <path d="M5 58 C 17 59, 20.6 35.9, 31 17.9" fill="none" stroke="url(#zyFlechaIdioma)" strokeWidth="6.5" strokeLinecap="round" />
-        {/* La punta, a 60 grados: dirección (cos60, -sen60). El ángulo va en las coordenadas
-            y no en un `rotate` del CSS, que inclinaría también la cola. */}
-        <path d="M39 4 L38.7 24.6 L21.3 14.6 Z" fill="url(#zyFlechaIdioma)" />
+        {/* Un solo trazo fino que sube en curva suave desde la tira hasta el botón, con la
+            punta ABIERTA (chevrón) del mismo grosor y extremos redondeados.
+            ⚠️ La versión anterior —trazo de 6,5 con un triángulo macizo pegado— se leía como
+            dos piezas soldadas: el triángulo pesaba más que la curva y el empalme se notaba.
+            La punta abierta es el mismo trazo, así que no hay empalme que se vea.
+            La curva termina a ~43°; los brazos de la punta salen a ±40° de esa dirección. */}
+        <g fill="none" stroke="url(#zyFlechaIdioma)" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M8 58 C 8 38, 22 20, 37 6" />
+          <path d="M26 7 L37 6 L36 17" />
+        </g>
       </svg>
 
       {abierto && (
