@@ -5,8 +5,29 @@
     <link rel="icon" type="image/x-icon" href="/logos/favicon.ico" />
     <link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#08080c" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b111c" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <!-- ⚠⚠ Elige el tema ANTES de pintar: si lo hiciera React, la página saldría un
+         instante en claro y luego saltaría a oscuro. Manda lo que el visitante eligió
+         con el botón sol/luna; si no eligió nada, sigue al dispositivo, y si cambia el
+         modo del teléfono con la página abierta, la página cambia con él.
+         ⚠️ La clave es NUEVA (`zyntello-tema`): la anterior guardaba «dark» en cada
+         visita aunque nadie tocara el botón, así que con ella ningún visitante antiguo
+         habría seguido nunca a su dispositivo. -->
+    <script>
+      (function () {
+        var raiz = document.documentElement, elegido = null
+        try { elegido = localStorage.getItem('zyntello-tema') } catch (e) {}
+        var oscuro = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null
+        function aplicar() { raiz.dataset.appearance = elegido || (oscuro && oscuro.matches ? 'dark' : 'light') }
+        aplicar()
+        if (oscuro && oscuro.addEventListener) oscuro.addEventListener('change', function () {
+          try { elegido = localStorage.getItem('zyntello-tema') } catch (e) {}
+          aplicar()
+        })
+      })()
+    </script>
 
     <!-- ⚠️ La descripción se corta a ~160 caracteres en el resultado de Google.
          La anterior tenía 230 y llegaba al buscador partida a media frase. -->
@@ -35,18 +56,21 @@
     <meta property="og:title" content="Zyntello | ERP and CRM software with AI automation" />
     <meta property="og:description" content="Cloud ERP and CRM software to digitise and automate your company's processes. Dominican Republic, Venezuela, Colombia, Guatemala and Costa Rica." />
     <meta property="og:url" content="https://zyntello.com/en/" />
-    <!-- ⚠️ 1200×628. La imagen que había aquí era cuadrada (1080×1080), así que
-         WhatsApp y LinkedIn la recortaban por el centro o la degradaban a
-         miniatura. La tarjeta grande exige el formato 1.91:1. -->
-    <meta property="og:image" content="https://zyntello.com/logos/zyntello_facebook_portada.png" />
+    <!-- ⚠️ 1200×630, formato 1.91:1: una imagen cuadrada WhatsApp y LinkedIn la
+         recortan por el centro o la degradan a miniatura.
+         ⚠⚠ Es CLARA desde el 2026-11-23: la anterior (`zyntello_facebook_portada.png`)
+         era casi negra y todo enlace compartido se veía oscuro. Y tiene NOMBRE NUEVO a
+         propósito: WhatsApp y Facebook guardan la vista previa por URL, así que con el
+         mismo nombre seguirían enseñando la vieja durante días. -->
+    <meta property="og:image" content="https://zyntello.com/logos/zyntello_compartir.png" />
     <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="628" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Zyntello — software ERP, CRM y automatización empresarial" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Zyntello | Software ERP, CRM y Automatización con IA" />
     <meta name="twitter:description" content="Digitaliza, automatiza y optimiza los procesos de tu empresa con Zyntello." />
-    <meta name="twitter:image" content="https://zyntello.com/logos/zyntello_facebook_portada.png" />
+    <meta name="twitter:image" content="https://zyntello.com/logos/zyntello_compartir.png" />
 
     <!-- Space Grotesk para titulares, DM Sans para el texto -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -81,7 +105,7 @@
             "width": 512,
             "height": 512
           },
-          "image": "https://zyntello.com/logos/zyntello_facebook_portada.png",
+          "image": "https://zyntello.com/logos/zyntello_compartir.png",
           "description": "Empresa de tecnología que desarrolla e implanta software ERP y CRM en la nube, automatiza procesos con agentes de Inteligencia Artificial y acompaña la transformación digital de las empresas.",
           "email": "info@zyntello.com",
           "telephone": "+1-829-639-9877",
@@ -156,8 +180,8 @@
     }
     </script>
     <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
-  <script type="module" crossorigin src="/assets/index-X5bAWAUr.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-D-V--frT.css">
+  <script type="module" crossorigin src="/assets/index-BFdPS_mk.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-fPX0Okwl.css">
 </head>
   <body>
     <div id="root"></div>
