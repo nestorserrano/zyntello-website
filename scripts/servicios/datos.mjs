@@ -1,11 +1,20 @@
 /**
  * Los servicios que vende Zyntello, S.R.L. — uno por página.
  *
- * ⚠️⚠️ SON CATORCE, no diez. El pie del sitio listaba 10 y la sección
- * «Qué hacemos» tiene 14: consultoría contable, marketing digital, consultoría
- * electoral y encuestas estaban en la sección y **no en el pie**. Y los diez
- * del pie apuntaban TODOS a la misma ancla `#servicios`, así que daba igual
- * cuál pulsaras. Se generan las 14 para que ninguna quede huérfana.
+ * ⚠️⚠️ SON VEINTE desde el 2026-11-23. Eran catorce, y al cruzarlos con el
+ * objeto social del Registro Mercantil (RM 6053SPM) faltaban sus apartados
+ * (IX) —domótica, IoT, Industria 4.0 y 5.0— y (X) —automatización y
+ * mantenimiento industrial—: la empresa estaba inscrita para venderlos y la web
+ * no los ofrecía. Se sumaron esos cuatro, más migración e inteligencia de
+ * negocios, que el portafolio ya mostraba como casos y no tenían página.
+ *
+ * El pie lista solo diez (no caben más en la columna); el resto se alcanza
+ * desde sus tarjetas y desde «Ver los 20 servicios», para que ninguno quede
+ * huérfano.
+ *
+ * ⚠️ Los cuatro de (IX) y (X) no tienen un caso publicado detrás: su texto
+ * describe el MÉTODO, nunca un cliente ni una cifra de resultado. El día que
+ * haya un caso real, entra en el Portafolio y desde ahí se cita.
  *
  * ⚠️ El contenido nace del que ya había en `src/components/Servicios.jsx` y
  * de los casos reales de `Portafolio.jsx` (Softland, Profit 2K8→2K12, AWS,
@@ -161,6 +170,76 @@ export const SERVICIOS = [
 
   /* ══════════════════════════════════════════════════════════════════════ */
   {
+    slug: 'migracion-de-sistemas',
+    nombre: 'Migración de sistemas y datos',
+    subtitulo: 'Cambiar de sistema sin perder la historia',
+    color: '#60a5fa',
+    resumen: 'Llevamos tus datos de un ERP, una versión o un servidor a otro sin parar la operación y sin perder el histórico. La migración se ensaya en una copia y se cuadra antes de tocar producción.',
+
+    heroTitulo: 'Una migración se demuestra cuadrando, no prometiendo',
+    heroBajada: 'De Aspel a Profit, de Profit 2K8 a 2K12, del servidor de la oficina a la nube. Mapeamos el modelo de datos de origen, ensayamos en una copia y comparamos los saldos del sistema viejo con los del nuevo antes de dar nada por terminado.',
+
+    problema: {
+      titulo: 'El sistema viejo se queda porque nadie se atreve a moverlo',
+      texto: 'Casi todas las empresas que siguen con un sistema sin soporte no lo hacen por gusto: lo hacen porque migrar significa arriesgar años de histórico, parar la facturación unos días y descubrir después que los saldos no cuadran. Ese miedo es razonable, y se resuelve con método, no con valentía.',
+      puntos: [
+        'La versión ya no tiene soporte del fabricante',
+        'El servidor donde corre tiene más años de los que debería',
+        'Nadie sabe exactamente qué hay en la base de datos',
+        'El histórico está repartido entre el sistema y varios Excel',
+        'Una migración anterior dejó saldos que nunca cuadraron',
+        'Parar la facturación unos días no es una opción',
+      ],
+    },
+
+    beneficios: [
+      { titulo: 'Se mapea el origen antes de moverlo', descripcion: 'Tablas, campos, códigos y reglas del sistema de origen, documentados. Es lo que hicimos al pasar de Aspel a Profit: estudiar la base de datos antes de tocarla.' },
+      { titulo: 'Ensayo completo en una copia', descripcion: 'La migración se corre entera sobre un duplicado, las veces que haga falta. Producción solo se toca cuando el ensayo sale limpio.' },
+      { titulo: 'Cuadre antes y después', descripcion: 'Saldos de clientes, proveedores, inventario y contabilidad medidos en los dos sistemas. Si no cuadran, la migración no ha terminado.' },
+      { titulo: 'Sin parar la operación', descripcion: 'El corte se planifica para un cierre de mes o un fin de semana, con el sistema viejo disponible en consulta mientras tanto.' },
+      { titulo: 'Limpieza en el camino', descripcion: 'Clientes duplicados, artículos sin movimiento y códigos huérfanos se depuran al migrar, no después. Migrar la basura es pagar dos veces por ella.' },
+      { titulo: 'También la infraestructura', descripcion: 'Del servidor propio a la nube, o de un SQL Server viejo a uno con soporte, con el plan de vuelta atrás escrito antes de empezar.' },
+    ],
+
+    cifras: [
+      { valor: '0', etiqueta: 'histórico perdido de Profit 2K8 a 2K12' },
+      { valor: 'Copia', etiqueta: 'donde se ensaya antes de tocar producción' },
+      { valor: 'Antes = después', etiqueta: 'los saldos, medidos en los dos sistemas' },
+    ],
+
+    detalles: [
+      { titulo: 'Se migra lo que se necesita, no todo', descripcion: 'A veces conviene traer los saldos y unos años de detalle, y dejar lo anterior en un archivo de consulta. Se decide con contabilidad, no por comodidad técnica.' },
+      { titulo: 'Los maestros primero', descripcion: 'Clientes, proveedores, artículos y plan de cuentas entran antes que los movimientos. Un movimiento que apunta a un maestro mal migrado arrastra el error a cada reporte.' },
+      { titulo: 'El sistema viejo no se apaga el primer día', descripcion: 'Queda en modo consulta durante un período acordado. Es el seguro más barato de cualquier migración.' },
+      { titulo: 'Cada regla de conversión queda escrita', descripcion: 'Qué código se convirtió en cuál, y por qué. Dentro de un año alguien preguntará de dónde salió un saldo, y la respuesta tiene que existir.' },
+      { titulo: 'Los usuarios validan con sus números', descripcion: 'Cuentas por cobrar valida su cartera; inventario, sus existencias. Quien conoce el dato es quien detecta lo que no cuadra.' },
+      { titulo: 'Hay plan de vuelta atrás', descripcion: 'Si el corte falla, se sabe exactamente cómo volver al sistema anterior y en cuánto tiempo. Sin ese plan no se empieza.' },
+    ],
+
+    pasos: [
+      { titulo: 'Inventario del origen', descripcion: 'Qué datos hay, en qué estado y cuáles se necesitan en el destino.' },
+      { titulo: 'Ensayo y cuadre', descripcion: 'Migración completa sobre una copia, hasta que los saldos coinciden.' },
+      { titulo: 'Corte y acompañamiento', descripcion: 'Migración definitiva en la ventana acordada y soporte en los primeros cierres.' },
+    ],
+
+    publico: [
+      { titulo: 'Tu sistema perdió el soporte', descripcion: 'Y cada mes que pasa la migración se hace más grande.' },
+      { titulo: 'Ya decidiste cambiar de ERP', descripcion: 'Pero el histórico sigue en el sistema viejo.' },
+      { titulo: 'Una migración anterior salió mal', descripcion: 'Y los saldos nunca volvieron a cuadrar.' },
+    ],
+
+    faq: [
+      { pregunta: '¿Cuánto tiempo hay que parar?', respuesta: 'Normalmente nada en horario laboral: el corte se hace en una ventana acordada, como un cierre de mes o un fin de semana.' },
+      { pregunta: '¿Se pierde el histórico?', respuesta: 'No. O se migra completo, o lo anterior a cierta fecha queda en un archivo de consulta. Se decide antes, con contabilidad.' },
+      { pregunta: '¿Desde qué sistemas migran?', respuesta: 'Hemos migrado de Aspel a Profit y entre versiones de Profit, y trabajamos Softland y ODOO. Si tu sistema guarda los datos en una base accesible, se puede mapear.' },
+      { pregunta: '¿Y si los datos de origen están sucios?', respuesta: 'Casi siempre lo están. La depuración forma parte de la migración: duplicados, códigos huérfanos y saldos descuadrados se resuelven antes del corte.' },
+      { pregunta: '¿Cómo sé que salió bien?', respuesta: 'Porque los saldos medidos en los dos sistemas coinciden, y lo validan las personas que usan ese dato cada día.' },
+      { pregunta: '¿Migran también servidores?', respuesta: 'Sí: del servidor propio a la nube o a una versión de SQL Server con soporte, con el plan de vuelta atrás escrito.' },
+    ],
+  },
+
+  /* ══════════════════════════════════════════════════════════════════════ */
+  {
     slug: 'automatizacion-con-ia',
     nombre: 'Automatización con IA',
     subtitulo: 'IA aplicada, no IA contada',
@@ -296,6 +375,76 @@ export const SERVICIOS = [
       { pregunta: '¿Cuánto tarda?', respuesta: 'La primera versión corta sale rápido a propósito: se usa, se ajusta y se amplía con lo que se pide de verdad.' },
       { pregunta: '¿Y si lo que necesito ya existe?', respuesta: 'Lo decimos. Si un módulo de la plataforma o una configuración de tu ERP lo resuelve, sale más barato para los dos.' },
       { pregunta: '¿Con qué tecnologías trabajan?', respuesta: 'React, Node, PHP/Laravel, Python, SQL Server y MySQL, entre otras. La elección la manda el sistema con el que hay que convivir.' },
+    ],
+  },
+
+  /* ══════════════════════════════════════════════════════════════════════ */
+  {
+    slug: 'inteligencia-de-negocios',
+    nombre: 'Inteligencia de negocios y reportes',
+    subtitulo: 'Los números de tu ERP, cuando los necesitas',
+    color: '#4ade80',
+    resumen: 'Tableros y reportes gerenciales conectados a tu ERP, con la información al día y sin que nadie la arme a mano. Power BI, vistas SQL y modelos predictivos sobre tus propios datos.',
+
+    heroTitulo: 'Si el reporte del lunes lo arma alguien a mano, llega tarde',
+    heroBajada: 'Conectamos tus tableros directamente al ERP —por API o con vistas SQL— para que la gerencia vea ventas, márgenes, cartera y producción al día, sin exportar a Excel y sin esperar a que alguien termine de cuadrar.',
+
+    problema: {
+      titulo: 'La empresa tiene los datos y la gerencia decide sin ellos',
+      texto: 'El ERP guarda cada factura, cada compra y cada movimiento. Pero los reportes que trae no responden lo que la dirección pregunta, y la respuesta acaba en una hoja de cálculo que alguien arma cada semana. Cuando llega, ya es historia, y nadie está seguro de que los números coincidan con los del sistema.',
+      puntos: [
+        'El reporte gerencial se arma a mano cada semana',
+        'Los reportes del ERP no responden lo que se pregunta',
+        'Ventas y contabilidad dan cifras distintas del mismo mes',
+        'Cada empresa del grupo reporta en su propio formato',
+        'Solo una persona sabe sacar ciertos números',
+        'Se sabe qué pasó, pero no qué va a pasar',
+      ],
+    },
+
+    beneficios: [
+      { titulo: 'Conectado al ERP, no exportado', descripcion: 'Los tableros leen del sistema por API o con vistas SQL. Nadie descarga, pega ni cuadra: el número es el del ERP.' },
+      { titulo: 'Las preguntas de la gerencia', descripcion: 'Se parte de lo que la dirección necesita decidir, no de los campos que tiene el sistema. Un tablero con cuarenta gráficos no lo mira nadie.' },
+      { titulo: 'Varias empresas, una sola vista', descripcion: 'Grupos con empresas en distintos países y monedas, consolidados con la misma definición de cada indicador.' },
+      { titulo: 'Una definición por indicador', descripcion: '«Venta neta» significa lo mismo en todos los reportes. Es lo que acaba con las reuniones donde cada área trae su número.' },
+      { titulo: 'Modelos predictivos', descripcion: 'Proyección de ventas, rotación de inventario y riesgo de cartera, entrenados con tu propio histórico y no con promedios del sector.' },
+      { titulo: 'Informes que se escriben solos', descripcion: 'Agentes de IA que leen el ERP y redactan el resumen de gestión de la semana. Una persona lo revisa y lo envía.' },
+    ],
+
+    cifras: [
+      { valor: 'Al día', etiqueta: 'la información, sin armarla a mano' },
+      { valor: '1', etiqueta: 'definición por indicador, en todos los reportes' },
+      { valor: 'API + SQL', etiqueta: 'conexión directa al ERP' },
+    ],
+
+    detalles: [
+      { titulo: 'Primero el dato, después el gráfico', descripcion: 'Antes de diseñar el tablero se comprueba que el ERP registra bien lo que se quiere medir. Un tablero bonito sobre un dato malo es peor que no tenerlo.' },
+      { titulo: 'La lógica vive en la base, no en el tablero', descripcion: 'Cada indicador se escribe una vez en SQL y lo reutilizan todos los reportes. Así no hay dos fórmulas distintas para lo mismo.' },
+      { titulo: 'Cada quien ve lo suyo', descripcion: 'El vendedor su cartera, el jefe de planta su producción, la dirección todo. Los permisos se definen con el tablero, no después.' },
+      { titulo: 'Se cuadra contra el ERP', descripcion: 'Antes de entregar, cada cifra del tablero se compara con el reporte oficial del sistema. Si no coinciden, no se publica.' },
+      { titulo: 'No hace falta cambiar de ERP', descripcion: 'Trabajamos sobre Softland, Profit, ODOO o la plataforma Zyntello. Lo que hace falta es acceso a los datos, no un sistema nuevo.' },
+      { titulo: 'Lo predictivo se mide', descripcion: 'Cada proyección se compara después con lo que pasó de verdad. Un modelo que no se mide es una opinión con decimales.' },
+    ],
+
+    pasos: [
+      { titulo: 'Las preguntas', descripcion: 'Qué necesita decidir la gerencia, y con qué frecuencia.' },
+      { titulo: 'El modelo de datos', descripcion: 'Vistas e indicadores definidos una vez y cuadrados contra el ERP.' },
+      { titulo: 'Tableros y entrega', descripcion: 'Publicados, con permisos por rol y la formación para usarlos.' },
+    ],
+
+    publico: [
+      { titulo: 'Tu reporte gerencial es un Excel', descripcion: 'Que alguien arma cada semana copiando del sistema.' },
+      { titulo: 'Tienes varias empresas', descripcion: 'Y consolidarlas te lleva días.' },
+      { titulo: 'Cada área trae su número', descripcion: 'Y la reunión se va en discutir cuál es el bueno.' },
+    ],
+
+    faq: [
+      { pregunta: '¿Con qué herramientas trabajan?', respuesta: 'Power BI, SQL Server y conexiones por API al ERP. Si tu empresa ya usa otra herramienta de tableros, se valora seguir con ella.' },
+      { pregunta: '¿Tengo que cambiar de ERP?', respuesta: 'No. Trabajamos sobre los datos que tu sistema ya guarda: Softland, Profit, ODOO o la plataforma Zyntello.' },
+      { pregunta: '¿Los datos están al día?', respuesta: 'Se actualizan con la frecuencia que el negocio necesite. Para la mayoría de los indicadores gerenciales, varias veces al día es suficiente.' },
+      { pregunta: '¿Pueden consolidar varias empresas y monedas?', respuesta: 'Sí, con la misma definición de cada indicador en todas y la conversión de moneda que la empresa use para reportar.' },
+      { pregunta: '¿Qué son los informes con IA?', respuesta: 'Agentes que leen los datos del ERP y redactan el resumen de gestión: qué subió, qué bajó y qué conviene mirar. Una persona lo revisa antes de enviarlo.' },
+      { pregunta: '¿Quién mantiene los tableros?', respuesta: 'Los entregamos documentados para que tu equipo los mantenga, o los mantenemos nosotros si lo prefieres.' },
     ],
   },
 
@@ -576,6 +725,286 @@ export const SERVICIOS = [
       { pregunta: '¿Importan equipos?', respuesta: 'Sí, con el costo puesto en destino claro desde el principio, para que no aparezcan gastos después.' },
       { pregunta: '¿Y las licencias?', respuesta: 'En regla y por escrito, con lo que cubren y lo que no. Antes de comprar revisamos lo que ya tienes: es frecuente encontrar licencias sin usar.' },
       { pregunta: '¿Se puede financiar?', respuesta: 'Sí. Si la renovación no cabe de golpe en el presupuesto, se estructura: aplazarla suele costar más.' },
+    ],
+  },
+
+  /* ══════════════════════════════════════════════════════════════════════ */
+  {
+    slug: 'domotica',
+    nombre: 'Domótica y edificios inteligentes',
+    subtitulo: 'Iluminación, clima, acceso y seguridad en un solo sistema',
+    color: '#e879f9',
+    resumen: 'Diseñamos e implementamos la automatización de oficinas, locales, residenciales y edificios: iluminación, climatización, control de acceso, cámaras y consumo eléctrico, gestionados desde un solo lugar.',
+
+    heroTitulo: 'Un edificio que se apaga solo cuando se va la última persona',
+    heroBajada: 'Iluminación, aire acondicionado, control de acceso, cámaras y medición de consumo, integrados en un sistema que se gestiona desde el teléfono. Con estándares abiertos, para que no dependas de una sola marca ni de nosotros.',
+
+    problema: {
+      titulo: 'Cada sistema del edificio tiene su propia aplicación y ninguno habla con el otro',
+      texto: 'Las cámaras de un proveedor, el control de acceso de otro, el aire acondicionado con su mando y las luces encendidas toda la noche. Cada sistema se compró por separado, y el resultado es una factura eléctrica que nadie sabe explicar y un edificio que depende de que alguien se acuerde de apagar las cosas.',
+      puntos: [
+        'El aire acondicionado se queda encendido el fin de semana',
+        'Cada sistema tiene su propia aplicación y su propia clave',
+        'No se sabe quién entró ni a qué hora',
+        'La factura eléctrica sube y nadie sabe por qué',
+        'El sistema instalado solo lo entiende quien lo instaló',
+        'Ampliar obliga a comprar la misma marca otra vez',
+      ],
+    },
+
+    beneficios: [
+      { titulo: 'Todo desde un solo lugar', descripcion: 'Iluminación, clima, acceso y cámaras en una sola aplicación, con los permisos de cada persona.' },
+      { titulo: 'Escenas y horarios', descripcion: 'El edificio abre, se climatiza y se apaga según el horario real, no según la memoria de quien cierra.' },
+      { titulo: 'Consumo medido', descripcion: 'Medición eléctrica por circuito o por área, para saber qué consume y en qué momento. Lo que no se mide no se puede reducir.' },
+      { titulo: 'Control de acceso con registro', descripcion: 'Quién entró, por qué puerta y a qué hora, con permisos que se dan y se quitan sin cambiar cerraduras.' },
+      { titulo: 'Estándares abiertos', descripcion: 'Se eligen protocolos y equipos que admiten más de un fabricante, para que ampliar o reemplazar no te ate a una marca.' },
+      { titulo: 'Red separada y segura', descripcion: 'Los dispositivos del edificio van en su propia red, aislados de los equipos de la empresa. Una cámara vulnerable no puede ser la puerta de entrada a tus datos.' },
+    ],
+
+    cifras: [
+      { valor: '1', etiqueta: 'aplicación para todo el edificio' },
+      { valor: '24/7', etiqueta: 'registro de accesos y alarmas' },
+      { valor: 'Abierto', etiqueta: 'estándar, sin atarte a una marca' },
+    ],
+
+    detalles: [
+      { titulo: 'Se empieza por lo que más consume', descripcion: 'Normalmente el aire acondicionado y la iluminación. Es donde la automatización se paga antes, y donde se ve el resultado en la primera factura.' },
+      { titulo: 'Funciona aunque se caiga internet', descripcion: 'Las reglas básicas —horarios, sensores, accesos— se ejecutan en el propio edificio. La nube sirve para ver y administrar, no para que la luz se encienda.' },
+      { titulo: 'Se entrega documentado', descripcion: 'Planos, direcciones de red, usuarios y reglas, por escrito. El sistema no puede depender de que nosotros estemos disponibles.' },
+      { titulo: 'Lo eléctrico lo hace quien debe', descripcion: 'Cuando el trabajo toca tableros o potencia, se coordina con el electricista certificado de la obra. La automatización va sobre una instalación segura, no en lugar de ella.' },
+      { titulo: 'Se integra con lo que ya tienes', descripcion: 'Cámaras, cerraduras o aires existentes se aprovechan cuando admiten integración. Se cambia lo que no tiene arreglo, no todo.' },
+      { titulo: 'Residencial y comercial', descripcion: 'Desde un apartamento hasta un edificio de oficinas o un negocio con varias sucursales gestionadas desde un mismo panel.' },
+    ],
+
+    pasos: [
+      { titulo: 'Levantamiento', descripcion: 'Qué hay instalado, qué consume y qué se quiere controlar.' },
+      { titulo: 'Diseño', descripcion: 'Equipos, red y reglas, con el presupuesto por etapas.' },
+      { titulo: 'Instalación y entrega', descripcion: 'Montaje, pruebas, formación y documentación del sistema.' },
+    ],
+
+    publico: [
+      { titulo: 'Tienes oficinas o locales', descripcion: 'Y la factura eléctrica no cuadra con el horario.' },
+      { titulo: 'Administras un edificio', descripcion: 'Y el control de acceso es un cuaderno en la recepción.' },
+      { titulo: 'Estás construyendo o remodelando', descripcion: 'Y es el momento barato de dejar la infraestructura lista.' },
+    ],
+
+    faq: [
+      { pregunta: '¿Hay que cambiar todo lo que ya tengo?', respuesta: 'No. Se aprovecha lo que admite integración y se cambia lo que no. El levantamiento dice qué es cada cosa.' },
+      { pregunta: '¿Qué pasa si se cae internet?', respuesta: 'El edificio sigue funcionando: horarios, sensores y accesos se ejecutan en el sitio. Lo que se pierde es verlo desde fuera hasta que vuelva la conexión.' },
+      { pregunta: '¿Me ata a una marca?', respuesta: 'Procuramos que no: se eligen estándares abiertos y equipos de más de un fabricante, justamente para que ampliar no dependa de uno solo.' },
+      { pregunta: '¿Es seguro conectar el edificio a internet?', respuesta: 'Lo es si se hace bien: los dispositivos van en una red separada, con claves propias y acceso cifrado. Una cámara mal instalada es una puerta abierta.' },
+      { pregunta: '¿Sirve para casas?', respuesta: 'Sí, aunque nuestro foco son oficinas, locales comerciales, residenciales y edificios, donde el ahorro y el control de acceso pesan más.' },
+      { pregunta: '¿Se puede hacer por etapas?', respuesta: 'Es lo recomendable: empezar por lo que más consume, medir el resultado y seguir con el resto.' },
+    ],
+  },
+
+  /* ══════════════════════════════════════════════════════════════════════ */
+  {
+    slug: 'internet-de-las-cosas',
+    nombre: 'Internet de las cosas (IoT)',
+    subtitulo: 'Sensores que avisan antes de que el problema cueste',
+    color: '#14b8a6',
+    resumen: 'Sensores, telemetría y alertas para medir lo que hoy se revisa a mano: temperatura, nivel de tanques, energía, ubicación de la flota o estado de un equipo, con los datos llegando a tus sistemas.',
+
+    heroTitulo: 'Lo que hoy alguien revisa con una libreta, un sensor lo mide cada minuto',
+    heroBajada: 'Temperatura de una cámara de frío, nivel de un tanque, consumo de un equipo, ubicación de un camión. Instalamos los sensores, llevamos los datos a un tablero y a tu ERP, y configuramos las alertas para que te enteres antes de perder la mercancía.',
+
+    problema: {
+      titulo: 'Te enteras del problema cuando ya cuesta dinero',
+      texto: 'La cámara de frío falló de madrugada y nadie lo supo hasta abrirla por la mañana. El tanque se quedó vacío en mitad de un turno. El equipo dio señales durante semanas, pero nadie las estaba midiendo. En casi todos los casos el dato existía: lo que faltaba era alguien —o algo— mirándolo.',
+      puntos: [
+        'Las temperaturas se anotan a mano, cuando alguien se acuerda',
+        'Una falla de madrugada se descubre por la mañana',
+        'No se sabe dónde están los vehículos ni cuánto paran',
+        'El consumo de energía de cada equipo es un misterio',
+        'Los datos de campo nunca llegan al sistema',
+        'Cada sensor comprado viene con su propia aplicación',
+      ],
+    },
+
+    beneficios: [
+      { titulo: 'Medición continua', descripcion: 'Temperatura, humedad, nivel, consumo, vibración o ubicación, registrados cada pocos minutos sin intervención de nadie.' },
+      { titulo: 'Alertas que llegan a quien debe', descripcion: 'Por WhatsApp, correo o SMS cuando un valor se sale del rango, con escalamiento si nadie responde.' },
+      { titulo: 'Historial para auditorías', descripcion: 'El registro de temperatura de la cadena de frío o de un almacén, guardado y exportable para la autoridad sanitaria o el cliente que lo pida.' },
+      { titulo: 'Conectado a tus sistemas', descripcion: 'Los datos llegan al ERP o al tablero de gestión, no se quedan en la aplicación del fabricante del sensor.' },
+      { titulo: 'La conectividad que el sitio permite', descripcion: 'WiFi, red celular o redes de largo alcance y bajo consumo, según dónde esté el equipo y si hay electricidad cerca.' },
+      { titulo: 'Piloto antes de escalar', descripcion: 'Se empieza con pocos sensores en el punto que más duele, se mide el resultado y después se extiende.' },
+    ],
+
+    cifras: [
+      { valor: 'Minutos', etiqueta: 'entre la falla y el aviso, no horas' },
+      { valor: '24/7', etiqueta: 'medición sin depender de una persona' },
+      { valor: 'ERP', etiqueta: 'adonde llegan los datos, no a otra aplicación' },
+    ],
+
+    detalles: [
+      { titulo: 'Se mide lo que cambia una decisión', descripcion: 'No se instala un sensor por tenerlo. Cada medición responde una pregunta: ¿se rompió la cadena de frío?, ¿cuándo pedir combustible?, ¿qué equipo consume de más?' },
+      { titulo: 'La alerta tiene un responsable', descripcion: 'Cada aviso va a una persona concreta con un plazo para atenderlo, y si no responde, sube al siguiente. Una alerta que llega a todos no la atiende nadie.' },
+      { titulo: 'Los dispositivos también se vigilan', descripcion: 'Batería, señal y calibración se controlan igual que el valor medido. Un sensor sin batería que no avisa es peor que no tenerlo.' },
+      { titulo: 'Red separada de la empresa', descripcion: 'Los dispositivos van aislados de los equipos de oficina y con credenciales propias. Un sensor barato no puede ser la entrada a tu red.' },
+      { titulo: 'Los datos son tuyos', descripcion: 'Se guardan donde la empresa decida y se pueden exportar. No quedan encerrados en la plataforma de un fabricante.' },
+      { titulo: 'Se calibra', descripcion: 'Un sensor real nunca mide exacto el primer día. Se compara contra un instrumento de referencia y se ajusta, para que la alerta salte cuando debe.' },
+    ],
+
+    pasos: [
+      { titulo: 'El punto que más duele', descripcion: 'Qué se pierde hoy por no medir, y dónde.' },
+      { titulo: 'Piloto', descripcion: 'Pocos sensores, con alertas y tablero funcionando.' },
+      { titulo: 'Escala e integración', descripcion: 'Más puntos, conexión al ERP y mantenimiento de los dispositivos.' },
+    ],
+
+    publico: [
+      { titulo: 'Manejas cadena de frío', descripcion: 'Alimentos, medicamentos o productos que no pueden calentarse.' },
+      { titulo: 'Tienes tanques o equipos remotos', descripcion: 'Que hoy alguien tiene que ir a revisar.' },
+      { titulo: 'Tienes flota', descripcion: 'Y no sabes dónde están los vehículos ni cuánto tiempo paran.' },
+    ],
+
+    faq: [
+      { pregunta: '¿Qué se puede medir?', respuesta: 'Temperatura, humedad, nivel de líquidos, consumo eléctrico, vibración, apertura de puertas, ubicación y presencia, entre otros. Si cambia y se puede medir, normalmente hay un sensor para ello.' },
+      { pregunta: '¿Necesito internet en el sitio?', respuesta: 'No necesariamente. Hay sensores que transmiten por red celular o por redes de largo alcance y bajo consumo, pensadas para sitios sin WiFi ni electricidad cerca.' },
+      { pregunta: '¿Cómo me llegan las alertas?', respuesta: 'Por WhatsApp, correo o SMS, a la persona responsable de ese punto, con escalamiento si no responde a tiempo.' },
+      { pregunta: '¿Los datos se pueden ver en mi ERP?', respuesta: 'Sí. Esa es la diferencia con comprar sensores sueltos: los datos llegan a tus sistemas, no se quedan en la aplicación del fabricante.' },
+      { pregunta: '¿Sirve para auditorías sanitarias?', respuesta: 'Sí. El historial queda guardado y se puede exportar como registro de temperatura para la autoridad o para el cliente que lo exija.' },
+      { pregunta: '¿Por dónde conviene empezar?', respuesta: 'Por un piloto en el punto donde una falla cuesta más. Se mide el resultado y después se decide si se extiende.' },
+    ],
+  },
+
+  /* ══════════════════════════════════════════════════════════════════════ */
+  {
+    slug: 'industria-4-0-y-5-0',
+    nombre: 'Industria 4.0 y 5.0',
+    subtitulo: 'La planta conectada, con las personas en el centro',
+    color: '#fb923c',
+    resumen: 'Conectamos máquinas, producción y ERP para gestionar la planta con datos en tiempo real: eficiencia de cada línea, paradas, mermas y trazabilidad. Con la mirada de la Industria 5.0: tecnología al servicio del operario, no en su lugar.',
+
+    heroTitulo: 'La planta sabe cuánto produjo cuando termina el turno. Debería saberlo mientras produce',
+    heroBajada: 'Datos de máquina, tableros de producción en planta, eficiencia por línea (OEE), trazabilidad por lote y conexión directa con el ERP. Empezando por una línea, midiendo, y extendiendo lo que funciona.',
+
+    problema: {
+      titulo: 'La producción se reporta en papel y se analiza cuando ya no se puede corregir',
+      texto: 'En muchas plantas el turno termina, alguien pasa a limpio la hoja de producción y al día siguiente se sabe cuánto se paró y cuánto se perdió. Para entonces la causa ya no se puede investigar. La Industria 4.0 no va de robots: va de que la información de la planta llegue a tiempo para actuar sobre ella.',
+      puntos: [
+        'La producción del turno se conoce al día siguiente',
+        'Las paradas se anotan de memoria, si se anotan',
+        'Nadie sabe la eficiencia real de cada línea',
+        'La merma se descubre en el inventario de fin de mes',
+        'Rastrear un lote defectuoso lleva días',
+        'La planta y el ERP viven en mundos separados',
+      ],
+    },
+
+    beneficios: [
+      { titulo: 'Eficiencia por línea, en tiempo real', descripcion: 'Disponibilidad, rendimiento y calidad de cada máquina —el OEE—, calculados con datos de la propia máquina, no con la hoja del turno.' },
+      { titulo: 'Paradas con su causa', descripcion: 'Cada parada registrada con su duración y su motivo, para atacar las que más tiempo cuestan y no las que más se recuerdan.' },
+      { titulo: 'Tableros en la planta', descripcion: 'Pantallas en la línea con la meta del turno y lo producido hasta ahora. El operario ve lo mismo que el gerente, cuando todavía puede hacer algo.' },
+      { titulo: 'Trazabilidad por lote', descripcion: 'De la materia prima al producto despachado: qué lote, qué máquina, qué turno. Una devolución se rastrea en minutos.' },
+      { titulo: 'Planta y ERP conectados', descripcion: 'Las órdenes de producción, los consumos y lo producido fluyen entre la planta y el sistema sin teclearlos dos veces.' },
+      { titulo: 'La persona en el centro (5.0)', descripcion: 'Tecnología que le quita al operario lo repetitivo y lo peligroso, y le da información para decidir. La meta es una planta más resiliente y sostenible, no una planta sin gente.' },
+    ],
+
+    cifras: [
+      { valor: 'OEE', etiqueta: 'disponibilidad × rendimiento × calidad' },
+      { valor: 'Por turno', etiqueta: 'eficiencia visible mientras se produce' },
+      { valor: 'Por lote', etiqueta: 'trazabilidad de la materia prima al cliente' },
+    ],
+
+    detalles: [
+      { titulo: 'Se empieza por una línea', descripcion: 'La que más produce o la que más se para. Se conecta, se mide y se mejora antes de pensar en la planta entera.' },
+      { titulo: 'Las máquinas viejas también hablan', descripcion: 'Una máquina sin conexión de fábrica se puede medir con sensores de ciclo, de consumo o de conteo. No hace falta reemplazarla para conocer su eficiencia.' },
+      { titulo: 'La red de planta es otra red', descripcion: 'Las máquinas van en una red industrial separada de la de oficina, con su propia seguridad. Lo que conecta la planta no puede ser lo que la expone.' },
+      { titulo: 'Los datos van al ERP', descripcion: 'Producción, consumos y mermas alimentan el inventario y el costo real. Es donde la Industria 4.0 empieza a notarse en el estado de resultados.' },
+      { titulo: 'El operario participa', descripcion: 'Los tableros y la captura de paradas se diseñan con quienes los van a usar. Una pantalla que el turno no entiende acaba apagada.' },
+      { titulo: 'Sostenibilidad medible', descripcion: 'Energía y materia prima por unidad producida, medidas por línea. Es la parte de la Industria 5.0 que se puede llevar a un número.' },
+    ],
+
+    pasos: [
+      { titulo: 'Diagnóstico de planta', descripcion: 'Máquinas, flujos, datos disponibles y dónde se pierde más.' },
+      { titulo: 'Línea piloto', descripcion: 'Conexión, tablero y medición de eficiencia en una línea.' },
+      { titulo: 'Extensión e integración', descripcion: 'El resto de la planta, la trazabilidad y la conexión con el ERP.' },
+    ],
+
+    publico: [
+      { titulo: 'Tienes una planta de manufactura', descripcion: 'Y la producción se reporta en papel.' },
+      { titulo: 'Tienes máquinas de distintas épocas', descripcion: 'Y ninguna está conectada.' },
+      { titulo: 'Necesitas trazabilidad', descripcion: 'Por exigencia de un cliente, de una certificación o de la autoridad.' },
+    ],
+
+    faq: [
+      { pregunta: '¿Tengo que cambiar mis máquinas?', respuesta: 'No. Las máquinas sin conexión de fábrica se pueden medir con sensores externos de ciclo, conteo o consumo. Se reemplaza solo lo que no tiene otra salida.' },
+      { pregunta: '¿Qué es el OEE?', respuesta: 'La eficiencia global de un equipo: cuánto tiempo estuvo disponible, a qué velocidad produjo y cuánto salió bueno. Es el indicador que muestra dónde se pierde la capacidad de la planta.' },
+      { pregunta: '¿Qué diferencia hay entre 4.0 y 5.0?', respuesta: 'La 4.0 conecta máquinas y datos. La 5.0 pone a la persona en el centro: tecnología que apoya al operario, una planta más resiliente y una producción más sostenible.' },
+      { pregunta: '¿Se conecta con mi ERP?', respuesta: 'Sí. Órdenes de producción, consumos y producto terminado pasan entre la planta y el sistema, sea Softland, Profit, ODOO o la plataforma Zyntello.' },
+      { pregunta: '¿Cuánto tarda un piloto?', respuesta: 'Depende de la línea y de cómo se conectan sus máquinas. El diagnóstico da el plazo concreto antes de empezar.' },
+      { pregunta: '¿Ayuda con las certificaciones?', respuesta: 'La trazabilidad por lote y el registro de producción son evidencia que piden normas como ISO 9001 o programas como el OEA. El sistema la genera sin trabajo adicional.' },
+    ],
+  },
+
+  /* ══════════════════════════════════════════════════════════════════════ */
+  {
+    slug: 'automatizacion-industrial',
+    nombre: 'Automatización y mantenimiento industrial',
+    subtitulo: 'Procesos que se controlan solos y equipos que no paran sin aviso',
+    color: '#a3e635',
+    resumen: 'Automatización de procesos de planta con control y supervisión, y gestión del mantenimiento preventivo y predictivo: órdenes de trabajo, repuestos ligados al inventario e historial de cada equipo.',
+
+    heroTitulo: 'La avería más cara es la que se veía venir',
+    heroBajada: 'Control y supervisión de procesos industriales, mantenimiento planificado por horas de uso y por condición del equipo, y un historial de cada máquina que dice qué falló, cuándo y cuánto costó. Conectado a tu inventario de repuestos y a tu ERP.',
+
+    problema: {
+      titulo: 'El mantenimiento se hace cuando la máquina se para',
+      texto: 'En muchas empresas el mantenimiento es correctivo por defecto: se repara lo que se rompe. El costo real no es el repuesto, es la línea parada, el pedido que no sale y las horas extra para recuperar. Y como nadie lleva el historial, la misma falla vuelve a sorprender tres meses después.',
+      puntos: [
+        'Se repara cuando se rompe',
+        'El historial de cada equipo vive en la memoria del técnico',
+        'El repuesto crítico no está en el almacén cuando hace falta',
+        'Los procesos dependen de que un operario ajuste a mano',
+        'No se sabe cuánto cuesta mantener cada máquina',
+        'El plan preventivo existe en papel y nadie lo sigue',
+      ],
+    },
+
+    beneficios: [
+      { titulo: 'Procesos bajo control', descripcion: 'Controladores y sensores que mantienen temperatura, presión, nivel o velocidad en su punto, con supervisión desde una pantalla y alarmas cuando algo se desvía.' },
+      { titulo: 'Un preventivo que se cumple', descripcion: 'Tareas programadas por calendario, horas de uso o ciclos, que generan su orden de trabajo solas y avisan cuando se atrasan.' },
+      { titulo: 'Predictivo por condición', descripcion: 'Vibración, temperatura o consumo medidos en los equipos críticos, para intervenir cuando la condición lo pide y no cuando el calendario lo dice.' },
+      { titulo: 'Historial de cada equipo', descripcion: 'Qué falló, qué se cambió, quién lo hizo y cuánto costó. Con eso se decide si conviene reparar otra vez o reemplazar.' },
+      { titulo: 'Repuestos ligados al inventario', descripcion: 'Cada orden consume del almacén y los repuestos críticos tienen su mínimo. Lo que necesita la próxima intervención está antes de que haga falta.' },
+      { titulo: 'Indicadores de mantenimiento', descripcion: 'Tiempo medio entre fallas, tiempo medio de reparación y costo por equipo, para saber si el mantenimiento está funcionando.' },
+    ],
+
+    cifras: [
+      { valor: 'MTBF', etiqueta: 'tiempo medio entre fallas, por equipo' },
+      { valor: 'MTTR', etiqueta: 'tiempo medio de reparación' },
+      { valor: 'Por equipo', etiqueta: 'costo de mantenimiento conocido' },
+    ],
+
+    detalles: [
+      { titulo: 'Se empieza por los equipos críticos', descripcion: 'Los que paran la planta cuando fallan. Ahí el preventivo y el predictivo se pagan solos; en el resto, a veces lo correcto es dejarlos llegar a la falla.' },
+      { titulo: 'El historial se captura en el momento', descripcion: 'El técnico registra la intervención desde el teléfono al terminarla. Lo que se pasa a limpio al final de la semana no se pasa.' },
+      { titulo: 'La potencia la toca quien está certificado', descripcion: 'Cuando el trabajo involucra tableros de potencia o la garantía del fabricante, se ejecuta con el técnico certificado de esa marca. Nosotros ponemos el control, los datos y la gestión.' },
+      { titulo: 'La supervisión no sustituye a la seguridad', descripcion: 'Los paros de emergencia y las protecciones de las máquinas no se tocan para automatizar. La automatización se suma a la seguridad, nunca la reemplaza.' },
+      { titulo: 'Conectado al ERP', descripcion: 'Órdenes de trabajo, repuestos consumidos y horas de mano de obra llegan al costo. El mantenimiento deja de ser un gasto sin explicar.' },
+      { titulo: 'Cada sensor se calibra', descripcion: 'Un instrumento descalibrado dispara alarmas falsas, y una alarma que salta sin motivo enseña a ignorarlas. Se calibra al instalar y se revisa dentro del plan.' },
+    ],
+
+    pasos: [
+      { titulo: 'Inventario de equipos', descripcion: 'Qué hay, qué es crítico y cuál es su historial real.' },
+      { titulo: 'Plan y automatización', descripcion: 'Preventivo, predictivo y control donde más pesa.' },
+      { titulo: 'Operación y mejora', descripcion: 'Órdenes, indicadores y ajustes según lo que muestran los datos.' },
+    ],
+
+    publico: [
+      { titulo: 'Tu mantenimiento es correctivo', descripcion: 'Y cada avería para la producción.' },
+      { titulo: 'Tienes un plan preventivo en papel', descripcion: 'Que nadie sigue porque nadie lo recuerda.' },
+      { titulo: 'Dependes de ajustes manuales', descripcion: 'Y la calidad varía según quién esté en el turno.' },
+    ],
+
+    faq: [
+      { pregunta: '¿Qué diferencia hay entre preventivo y predictivo?', respuesta: 'El preventivo interviene por calendario o por uso; el predictivo, por la condición medida del equipo. Se combinan: predictivo en lo crítico y preventivo en lo demás.' },
+      { pregunta: '¿Programan los controladores?', respuesta: 'Diseñamos la automatización y la supervisión del proceso. Cuando el equipo tiene garantía del fabricante o el trabajo toca potencia, se coordina con el técnico certificado de esa marca.' },
+      { pregunta: '¿Se conecta con mi inventario?', respuesta: 'Sí. Cada orden de trabajo consume repuestos del almacén y los críticos tienen su mínimo, en tu ERP o en la plataforma Zyntello.' },
+      { pregunta: '¿Los técnicos tienen que usar computadora?', respuesta: 'No. Las órdenes se reciben y se cierran desde el teléfono, con foto de la intervención si hace falta.' },
+      { pregunta: '¿Cómo sé si está funcionando?', respuesta: 'Por los indicadores: tiempo medio entre fallas, tiempo medio de reparación y costo por equipo, comparados antes y después.' },
+      { pregunta: '¿Por dónde se empieza?', respuesta: 'Por el inventario de equipos y la identificación de los críticos. Es donde una hora de parada cuesta más.' },
     ],
   },
 

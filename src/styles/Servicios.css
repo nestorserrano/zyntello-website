@@ -19,10 +19,18 @@
 
 .zy-serv-rejilla {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
+  /* ⚠️⚠️ Columnas FIJAS, no `auto-fill`. Son 20 tarjetas y la destacada ocupa
+     dos en escritorio: 21 huecos. Con `auto-fill` salían 4 columnas a 1440px y
+     «Encuestas» quedaba sola en la última fila con tres huecos — y «se ve
+     bien», así que nadie lo reporta. 21 = 3 × 7 cuadra exacto; debajo de 992px
+     la destacada ocupa una, y 20 = 2 × 10. Si cambia el número de servicios,
+     se rehace esta cuenta. */
+  grid-template-columns: 1fr;
   gap: clamp(12px, 1.2vw, 18px);
   align-items: stretch;
 }
+@media (min-width: 576px) { .zy-serv-rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 992px) { .zy-serv-rejilla { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 
 .zy-serv-tarjeta {
   display: flex;

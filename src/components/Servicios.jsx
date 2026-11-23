@@ -4,6 +4,9 @@ import '../styles/Servicios.css'
 
 /* ─────────────────────────────────────────────────────────────────────────────
    El objeto social de Zyntello, S.R.L., traducido a lo que el cliente compra.
+   ⚠️ Cubre los once apartados del objeto social inscrito (RM 6053SPM): si se
+   añade uno al registro, se añade aquí, en `scripts/servicios/datos.mjs`, en
+   el desplegable de Contacto y en el catálogo del admin.
    El orden es deliberado: primero lo que la empresa vende como producto propio
    (plataforma, IA, ERP), después los servicios que la sostienen, y al final la
    consultoría de datos. Cambiar el orden cambia lo que el visitante cree que
@@ -43,11 +46,25 @@ const SERVICIOS = [
     descripcion: 'Desarrollo, personalización e implementación de Softland, Profit, ODOO y plataformas abiertas, adaptadas al flujo real de tu empresa.',
   },
   {
+    slug: 'migracion-de-sistemas',
+    icono: 'ciclo', acento: '#60a5fa',
+    grupo: 'Sistemas de gestión', grupoClave: 'serv.grupo.gestion',
+    titulo: 'Migración de sistemas y datos',
+    descripcion: 'De un ERP, una versión o un servidor a otro, sin parar la operación y sin perder el histórico.',
+  },
+  {
     slug: 'aplicaciones-a-la-medida',
     icono: 'codigo', acento: '#22d3ee',
     grupo: 'Desarrollo', grupoClave: 'serv.grupo.desarrollo',
     titulo: 'Aplicaciones a la medida',
     descripcion: 'Construidas sobre las bases de datos que ya usas. No hay que empezar de cero para resolver un problema concreto.',
+  },
+  {
+    slug: 'inteligencia-de-negocios',
+    icono: 'subida', acento: '#4ade80',
+    grupo: 'Datos', grupoClave: 'serv.grupo.bi',
+    titulo: 'Inteligencia de negocios',
+    descripcion: 'Tableros y reportes gerenciales conectados a tu ERP, con la información al día y sin armarla a mano.',
   },
   {
     slug: 'soporte-tecnico-ti',
@@ -76,6 +93,34 @@ const SERVICIOS = [
     grupo: 'Equipos', grupoClave: 'serv.grupo.equipos',
     titulo: 'Importación y venta de equipos',
     descripcion: 'Hardware, software y soluciones tecnológicas, con la asesoría técnica incluida en la compra.',
+  },
+  {
+    slug: 'domotica',
+    icono: 'casa', acento: '#e879f9',
+    grupo: 'IoT y domótica', grupoClave: 'serv.grupo.iot',
+    titulo: 'Domótica y edificios inteligentes',
+    descripcion: 'Iluminación, clima, acceso, cámaras y consumo eléctrico del edificio, gestionados desde un solo lugar.',
+  },
+  {
+    slug: 'internet-de-las-cosas',
+    icono: 'chip', acento: '#14b8a6',
+    grupo: 'IoT y domótica', grupoClave: 'serv.grupo.iot',
+    titulo: 'Internet de las cosas (IoT)',
+    descripcion: 'Sensores, telemetría y alertas para medir temperatura, niveles, energía o flota sin que nadie tenga que ir a revisar.',
+  },
+  {
+    slug: 'industria-4-0-y-5-0',
+    icono: 'fabrica', acento: '#fb923c',
+    grupo: 'Industria', grupoClave: 'serv.grupo.industria',
+    titulo: 'Industria 4.0 y 5.0',
+    descripcion: 'Máquinas, producción y ERP conectados: eficiencia por línea, paradas y trazabilidad en tiempo real, con el operario en el centro.',
+  },
+  {
+    slug: 'automatizacion-industrial',
+    icono: 'engranajes', acento: '#a3e635',
+    grupo: 'Industria', grupoClave: 'serv.grupo.industria',
+    titulo: 'Automatización y mantenimiento industrial',
+    descripcion: 'Control de procesos y mantenimiento preventivo y predictivo, con el historial de cada equipo y los repuestos ligados al inventario.',
   },
   {
     slug: 'transformacion-digital',
@@ -141,11 +186,11 @@ export default function Servicios() {
                 esas palabras ni van en ese orden ni se separan por ahí. */}
             {idioma === 'es' ? (
               <>
-                Catorce formas de que la tecnología<br className="d-none d-lg-block" />{' '}
+                Veinte formas de que la tecnología<br className="d-none d-lg-block" />{' '}
                 <span className="zy-degradado">deje de ser tu problema</span>
               </>
             ) : (
-              t('serv.titulo', 'Catorce formas de que la tecnología deje de ser tu problema')
+              t('serv.titulo.veinte', 'Veinte formas de que la tecnología deje de ser tu problema')
             )}
           </h2>
           <p className="zy-subtitulo">
