@@ -7,7 +7,7 @@
 .zy-serv-halo {
   width: 700px; height: 700px;
   top: -14%; right: -14%;
-  background: radial-gradient(circle, rgba(var(--zy-indigo-rgb), .3) 0%, transparent 65%);
+  background: radial-gradient(circle, rgba(99, 102, 241, .3) 0%, transparent 65%);
   opacity: .5;
 }
 
@@ -41,8 +41,8 @@
 /* La tarjeta de la plataforma propia ocupa dos columnas donde quepa: es el
    producto de la casa, no un servicio más de la lista. */
 .zy-serv-destacada {
-  background: linear-gradient(160deg, rgba(var(--zy-indigo-rgb), .16) 0%, rgba(var(--zy-acero-rgb), .07) 55%, var(--zy-tarjeta) 100%);
-  border-color: rgba(var(--zy-indigo-rgb), .3);
+  background: linear-gradient(160deg, rgba(99,102,241,.16) 0%, rgba(251,113,133,.07) 55%, var(--zy-tarjeta) 100%);
+  border-color: rgba(99, 102, 241, .3);
   padding: 36px 32px;
 }
 .zy-serv-destacada::before { opacity: .6; }
@@ -105,7 +105,7 @@
 .zy-serv-marca {
   padding: 6px 14px;
   border-radius: 999px;
-  background: rgba(var(--zy-tinta-rgb), .05);
+  background: rgba(255, 255, 255, .05);
   border: 1px solid var(--zy-borde);
   color: var(--zy-texto-medio);
   font-size: .78rem;
@@ -124,9 +124,9 @@
 .zy-serv-nota a {
   color: var(--zy-indigo-claro);
   font-weight: 700;
-  border-bottom: 1px solid rgba(var(--zy-indigo-rgb), .4);
+  border-bottom: 1px solid rgba(165, 180, 252, .4);
 }
-.zy-serv-nota a:hover { color: var(--zy-acero-claro); border-bottom-color: var(--zy-acero); }
+.zy-serv-nota a:hover { color: var(--zy-coral-claro); border-bottom-color: var(--zy-coral); }
 
 @media (max-width: 575.98px) {
   .zy-serv-tarjeta { padding: 24px 20px; }

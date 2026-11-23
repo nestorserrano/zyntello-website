@@ -41,26 +41,26 @@ export default function PorQueZyntello() {
   return (
     <section id="porque" className="zy-porque">
       {/* Fondo: cintas de proceso — tareas que avanzan solas */}
-      <FondoAnimado escena="flujo" tinte="acero" />
+      <FondoAnimado escena="flujo" tinte="coral" />
       <span className="zy-filo zy-filo-arriba" aria-hidden="true" />
       <div className="zy-grano" aria-hidden="true" />
 
       <div className="container-fluid px-4 px-lg-5 position-relative">
 
         <header className="zy-porque-cabecera zy-revelar">
-          <p className="zy-eyebrow zy-eyebrow-acero">{t('porque.eyebrow', 'Por qué Zyntello')}</p>
+          <p className="zy-eyebrow zy-eyebrow-coral">{t('porque.eyebrow', 'Por qué Zyntello')}</p>
           {/* ⚠️ Mismo caso que el titular de la portada: la palabra resaltada solo cae donde
               toca en español. El español conserva su marcado y los demás idiomas reciben la
               frase entera, sin el resalte. */}
           <h2 className="zy-titulo">
             {idioma === 'es'
-              ? <>Trabajamos <span className="zy-acero">distinto</span>.</>
+              ? <>Trabajamos <span className="zy-coral">distinto</span>.</>
               : t('porque.titulo', 'Trabajamos distinto.')}
           </h2>
           <p className="zy-subtitulo">
             {t('porque.subtitulo', 'La diferencia no está en la lista de tecnologías — esa la tiene cualquiera. Está en que alguien siga contestando el teléfono seis meses después de la puesta en marcha.')}
           </p>
-          <a href="#contacto" className="zy-btn zy-btn-acero zy-porque-cta">
+          <a href="#contacto" className="zy-btn zy-btn-coral zy-porque-cta">
             {t('porque.cta', 'Conversemos')}
             <Icono nombre="flecha" size={18} className="zy-flecha" />
           </a>
@@ -76,7 +76,7 @@ export default function PorQueZyntello() {
               style={{ '--zy-color-acento': r.acento, transitionDelay: `${i * 70}ms` }}
             >
               <span className="zy-porque-num">{String(i + 1).padStart(2, '0')}</span>
-              <span className="zy-porque-icono" style={{ color: 'color-mix(in srgb, var(--zy-color-acento) var(--zy-mezcla-acento), var(--zy-texto))' }}>
+              <span className="zy-porque-icono" style={{ color: r.acento }}>
                 <Icono nombre={r.icono} size={20} />
               </span>
               <div className="zy-porque-texto">

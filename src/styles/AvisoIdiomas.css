@@ -66,8 +66,8 @@
   padding: .4rem .85rem;
   border: 0;
   border-radius: var(--zy-radio-sm);
-  background: var(--zy-acero);
-  color: var(--zy-sobre-acero);
+  background: var(--zy-coral);
+  color: var(--zy-sobre-coral);
   font: inherit;
   font-size: .82rem;
   font-weight: 700;

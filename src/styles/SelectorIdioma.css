@@ -37,7 +37,7 @@
   border: 1px solid var(--zy-borde-medio);
   border-radius: var(--zy-radio);
   background: var(--zy-elevado);
-  box-shadow: var(--zy-sombra-3);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, .4);
 }
 
 /* ⚠️ En árabe la página va en RTL y el desplegable se abriría fuera de la pantalla por la

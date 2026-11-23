@@ -31,13 +31,13 @@
   width: 620px; height: 620px;
   top: -22%; left: 50%;
   margin-left: -310px;
-  background: radial-gradient(circle, rgba(var(--zy-indigo-rgb), .5) 0%, transparent 66%);
+  background: radial-gradient(circle, rgba(99, 102, 241, .5) 0%, transparent 66%);
   opacity: .5;
 }
 .zy-hero-halo-2 {
   width: 480px; height: 480px;
   bottom: -20%; right: -6%;
-  background: radial-gradient(circle, rgba(var(--zy-acero-rgb), .38) 0%, transparent 66%);
+  background: radial-gradient(circle, rgba(251, 113, 133, .38) 0%, transparent 66%);
   opacity: .42;
 }
 
@@ -49,7 +49,7 @@
   margin: 0 auto clamp(20px, 2.4vw, 30px);
   padding: 8px 18px 8px 14px;
   border-radius: 999px;
-  background: rgba(var(--zy-tinta-rgb), .045);
+  background: rgba(255, 255, 255, .045);
   border: 1px solid var(--zy-borde-medio);
   backdrop-filter: blur(10px);
   color: var(--zy-texto-medio);
@@ -126,7 +126,7 @@
   backdrop-filter: blur(8px);
   transition: background var(--zy-t-medio);
 }
-.zy-hero-cifra:hover { background: rgba(var(--zy-indigo-rgb), .1); }
+.zy-hero-cifra:hover { background: rgba(99, 102, 241, .1); }
 
 .zy-hero-cifra-num {
   font-family: var(--zy-display);
@@ -154,7 +154,7 @@
   align-items: center;
   padding: 8px 18px;
   border-radius: 999px;
-  background: rgba(var(--zy-tinta-rgb), .035);
+  background: rgba(255, 255, 255, .035);
   border: 1px solid var(--zy-borde);
   color: var(--zy-texto-tenue);
   font-family: var(--zy-display);
@@ -177,7 +177,7 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: rgba(var(--zy-tinta-rgb), .05);
+  background: rgba(255, 255, 255, .05);
   border: 1px solid var(--zy-borde-medio);
   color: var(--zy-texto-medio);
   animation: zy-bajar 2.4s ease-in-out infinite;

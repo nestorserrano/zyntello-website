@@ -16,7 +16,6 @@
 import { estilos, redesSociales, rotuloIdioma } from './plantilla.mjs'
 import { CLUSTERS, PAISES } from '../blog/clusters.mjs'
 import { IDIOMAS } from './idiomas.mjs'
-import { SCRIPT_TEMA } from './tema.mjs'
 
 const SITIO = 'https://zyntello.com'
 const WHATSAPP = '18296399877'
@@ -131,7 +130,6 @@ const cabecera = ({ titulo, descripcion, url, jsonLd, color = COLOR,
 <html lang="${idioma}" dir="${dir}">
 <head>
 <meta charset="utf-8">
-${SCRIPT_TEMA}
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(titulo)}</title>
 <meta name="description" content="${esc(descripcion)}">

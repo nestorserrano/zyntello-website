@@ -176,9 +176,9 @@ function hexToGradiente(hex) {
 
 /* ─── Badge por estado (desde admin) ─────────────────────────── */
 const ESTADO_BADGE = {
-  proximo:   { texto: 'Próximamente', bg: 'rgba(var(--zy-tinta-rgb), 0.07)',  color: 'var(--zy-texto-suave)' },
-  nuevo:     { texto: 'Nuevo',        bg: 'rgba(var(--zy-exito-rgb), 0.16)',   color: 'var(--zy-exito)' },
-  destacado: { texto: 'Destacado',    bg: 'rgba(var(--zy-acero-rgb), 0.18)',  color: 'var(--zy-acero-claro)' },
+  proximo:   { texto: 'Próximamente', bg: 'rgba(255,255,255,0.07)',  color: '#9c9caa' },
+  nuevo:     { texto: 'Nuevo',        bg: 'rgba(52,211,153,0.16)',   color: '#6ee7b7' },
+  destacado: { texto: 'Destacado',    bg: 'rgba(251,113,133,0.18)',  color: '#fda4af' },
 }
 
 /* ─── Combina datos del API con display estático ──────────────── */
@@ -489,14 +489,14 @@ export default function Soluciones() {
                 <span className="sol-bundle-name">{t('mod.erp.nombre', 'Zyntello ERP')}</span>
                 <span className="sol-bundle-badge">{t('sol.erp.badge', 'ERP Completo')}</span>
               </div>
-              <p style={{ color: 'var(--zy-texto-suave)', margin: 0, fontSize: '0.88rem' }}>
+              <p style={{ color: '#9c9caa', margin: 0, fontSize: '0.88rem' }}>
                 {t('sol.erp.lista', 'Inventario · Facturación · Cuentas por Cobrar · Cuentas por Pagar · Nómina · Control de Acceso · Bancos · Compras · Presupuesto · Activos Fijos · Caja Chica')}
               </p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexShrink: 0 }}>
               <div style={{ textAlign: 'right' }}>
-                <div style={{ color: 'var(--zy-texto)', fontWeight: 800, fontSize: '1.4rem', lineHeight: 1 }}>
-                  {simbolo} {formatPrecio(erpApp?.precio)}<span style={{ color: 'var(--zy-texto-suave)', fontSize: '0.75rem', fontWeight: 400 }}>{t('sol.periodo.mes', '/mes')}</span>
+                <div style={{ color: '#f5f5f7', fontWeight: 800, fontSize: '1.4rem', lineHeight: 1 }}>
+                  {simbolo} {formatPrecio(erpApp?.precio)}<span style={{ color: '#9c9caa', fontSize: '0.75rem', fontWeight: 400 }}>{t('sol.periodo.mes', '/mes')}</span>
                 </div>
               </div>
               <a href="https://app.zyntello.com/erp" onClick={e => e.stopPropagation()} className="sol-bundle-btn" style={{ textDecoration: 'none' }}>
@@ -592,13 +592,13 @@ export default function Soluciones() {
 
           {/* Footer */}
           <div className="text-center mt-5">
-            <p style={{ color: 'var(--zy-texto-tenue)', fontSize: '0.83rem', lineHeight: 1.8 }}>
+            <p style={{ color: '#8a8a99', fontSize: '0.83rem', lineHeight: 1.8 }}>
               {t('sol.pie.1', 'Todas las aplicaciones incluyen actualizaciones continuas y soporte técnico.')}<br />
-              <span style={{ color: 'var(--zy-texto-tenue)' }}>{t('sol.pie.2', 'Sin contratos de permanencia · Cancela cuando quieras · Acceso inmediato tras el pago.')}</span>
+              <span style={{ color: '#8a8a99' }}>{t('sol.pie.2', 'Sin contratos de permanencia · Cancela cuando quieras · Acceso inmediato tras el pago.')}</span>
             </p>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(var(--zy-indigo-rgb), 0.12)', border: '1px solid rgba(var(--zy-indigo-rgb), 0.32)', borderRadius: '10px', padding: '8px 18px', marginTop: '10px' }}>
-              <span style={{ color: 'var(--zy-indigo-claro)', fontSize: '1rem' }}>🎁</span>
-              <span style={{ color: 'var(--zy-indigo-claro)', fontSize: '0.83rem', fontWeight: 600 }}>{t('sol.regalo', 'Plan anual — 2 meses gratis en todos los paquetes')}</span>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.32)', borderRadius: '10px', padding: '8px 18px', marginTop: '10px' }}>
+              <span style={{ color: '#a5b4fc', fontSize: '1rem' }}>🎁</span>
+              <span style={{ color: '#a5b4fc', fontSize: '0.83rem', fontWeight: 600 }}>{t('sol.regalo', 'Plan anual — 2 meses gratis en todos los paquetes')}</span>
             </div>
           </div>
 

@@ -685,7 +685,7 @@ export default function WhatsAppChat() {
                   <div className="px-3 py-2"
                     style={{
                       maxWidth: '85%', color: 'var(--zy-texto)', fontSize: '0.875rem', lineHeight: 1.55,
-                      background: m.tipo === 'user' ? 'rgba(var(--zy-exito-rgb), 0.16)' : 'rgba(var(--zy-tinta-rgb), 0.06)',
+                      background: m.tipo === 'user' ? 'rgba(52,211,153,0.16)' : 'rgba(255,255,255,0.06)',
                       borderRadius: m.tipo === 'user' ? '16px 4px 16px 16px' : '4px 16px 16px 16px'
                     }}
                     /* ⚠️ Se traduce al PINTAR, no al guardar: el estado conserva el
@@ -701,7 +701,7 @@ export default function WhatsAppChat() {
               {esperando && (
                 <div className="d-flex justify-content-start">
                   <div className="px-3 py-2 d-flex gap-1 align-items-center"
-                    style={{ background: 'rgba(var(--zy-tinta-rgb), 0.06)', borderRadius: '4px 16px 16px 16px' }}>
+                    style={{ background: 'rgba(255,255,255,0.06)', borderRadius: '4px 16px 16px 16px' }}>
                     {[0, 1, 2].map(i => (
                       <span key={i} style={{
                         width: 7, height: 7, borderRadius: '50%', background: 'var(--zy-indigo-claro)', display: 'block',
@@ -722,11 +722,11 @@ export default function WhatsAppChat() {
                     <button key={i} onClick={() => seleccionarOpcion(op)}
                       className="text-start px-3 py-2 rounded-3 fw-medium"
                       style={{
-                        background: 'rgba(var(--zy-tinta-rgb), 0.04)', border: '1px solid rgba(var(--zy-exito-rgb), 0.32)',
-                        color: 'var(--zy-exito)', fontSize: '0.83rem', cursor: 'pointer', transition: 'background 0.15s'
+                        background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(52,211,153,0.32)',
+                        color: '#6ee7b7', fontSize: '0.83rem', cursor: 'pointer', transition: 'background 0.15s'
                       }}
-                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(var(--zy-exito-rgb), 0.14)'}
-                      onMouseLeave={e => e.currentTarget.style.background = 'rgba(var(--zy-tinta-rgb), 0.04)'}>
+                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(52,211,153,0.14)'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}>
                       {t(claveChat(op), op)}
                     </button>
                   ))}
@@ -750,7 +750,7 @@ export default function WhatsAppChat() {
                 className="form-control rounded-3"
                 style={{
                   background: 'var(--zy-fondo-alto)',
-                  border: `1px solid ${modoOtro ? 'rgba(var(--zy-exito-rgb), 0.6)' : 'var(--zy-borde-medio)'}`,
+                  border: `1px solid ${modoOtro ? 'rgba(52,211,153,0.6)' : 'var(--zy-borde-medio)'}`,
                   color: 'var(--zy-texto)',
                   fontSize: '0.875rem',
                   transition: 'border-color 0.2s'

@@ -107,7 +107,7 @@ export default function Nosotros() {
                   className="zy-tarjeta zy-nos-cifra"
                   style={{ '--zy-color-acento': c.acento }}
                 >
-                  <span className="zy-nos-cifra-icono" style={{ color: 'color-mix(in srgb, var(--zy-color-acento) var(--zy-mezcla-acento), var(--zy-texto))' }}>
+                  <span className="zy-nos-cifra-icono" style={{ color: c.acento }}>
                     <Icono nombre={c.icono} size={19} />
                   </span>
                   <span className="zy-nos-cifra-num">{c.numClave ? t(c.numClave, c.num) : c.num}</span>

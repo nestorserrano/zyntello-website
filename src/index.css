@@ -46,7 +46,7 @@ strong { color: var(--zy-texto); font-weight: 700; }
   border-radius: 6px;
 }
 
-::selection { background: rgba(var(--zy-indigo-rgb), .4); color: #fff; }
+::selection { background: rgba(99, 102, 241, .4); color: #fff; }
 
 /* Barra de scroll acorde al lienzo oscuro */
 ::-webkit-scrollbar { width: 11px; height: 11px; }

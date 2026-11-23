@@ -10,7 +10,7 @@
  *
  * ## El tema se comparte con el sitio, a propósito
  *
- * ⚠️⚠️ Usa la MISMA clave de `localStorage` (`zyntello-tema`, vía `lib/tema.mjs`) y el MISMO atributo
+ * ⚠️⚠️ Usa la MISMA clave de `localStorage` (`zyntello-website-appearance`) y el MISMO atributo
  * (`data-appearance`) que `src/components/Apariencia.jsx`. Con claves distintas, quien pusiera el
  * sitio en claro y abriera los Términos se encontraría la página en oscuro: no es un fallo que dé
  * error, es el sistema contradiciéndose a sí mismo delante del usuario.
@@ -24,8 +24,6 @@
  */
 
 /** Dónde vive cada documento y cómo se llama en el menú. El orden es el del menú. */
-import { SCRIPT_TEMA } from './tema.mjs'
-
 export const MENU_LEGAL = [
   { ruta: '/terminos/',          titulo: 'Términos' },
   { ruta: '/privacidad/',        titulo: 'Política de Privacidad' },
@@ -77,22 +75,22 @@ export const PANEL_LECTURA = `    <div class="lectura" role="group" aria-label="
 /**
  * CSS del tema claro, el panel y las correcciones de maqueta.
  *
- * ⚠️⚠️ La paleta clara NO está inventada: son los tokens de `src/styles/tokens.css`, la fuente
- * única de color del sitio desde el 2026-11-23 (antes vivía en `financial-ui.css`). Elegir aquí otros grises daría dos tonos de «claro» distintos
+ * ⚠️⚠️ La paleta clara NO está inventada: son las variables de `src/styles/financial-ui.css`, que
+ * es la que usa el sitio en claro. Elegir aquí otros grises daría dos tonos de «claro» distintos
  * en el mismo dominio, y el salto se ve al pasar de la portada a los Términos.
  */
 export const ESTILO_LECTURA = `<style>
 /* ── Tema claro ───────────────────────────────────────────────────────────────
-   Mismos valores que el sitio (src/styles/tokens.css), para que no haya dos claros. */
+   Mismos valores que el sitio (financial-ui.css), para que no haya dos claros. */
 html[data-appearance="light"]{
   color-scheme:light;
-  --bg:#f8fafc; --bg2:#f1f5f9; --card:#ffffff;
+  --bg:#f4f5f7; --bg2:#f8f9fa; --card:#ffffff;
   --line:#e2e8f0; --line2:#cbd5e1;
-  --tx:#0f172a; --tx2:#334155; --tx3:#64748b;
-  --ac:#4338ca; --ac2:#3730a3; --warn:#8a5a00; --ok:#047857;
+  --tx:#202f40; --tx2:#435367; --tx3:#627185;
+  --ac:#345775; --ac2:#2a4660; --warn:#8a5a00; --ok:#0f7a56;
 }
 html[data-appearance="light"] body{background:var(--bg);color:var(--tx2)}
-html[data-appearance="light"] .brand-txt b{color:#0f172a}
+html[data-appearance="light"] .brand-txt b{color:#202f40}
 html[data-appearance="light"] .prevalece{background:#fff7e6;border-color:#e8c478;color:#5c4100}
 
 /* ⚠️⚠️ Estas cuatro reglas NO son decoración: el documento traía los colores
@@ -101,10 +99,10 @@ html[data-appearance="light"] .prevalece{background:#fff7e6;border-color:#e8c478
    texto, que sí había cambiado a oscuro, encima. El resultado no era feo: era
    ILEGIBLE, y solo en el tema que se acababa de añadir. Un tema claro a medias
    es peor que no tenerlo. */
-html[data-appearance="light"] header{background:linear-gradient(180deg,#ffffff 0%,#f1f5f9 100%)}
-html[data-appearance="light"] footer{background:#eef2f7}
+html[data-appearance="light"] header{background:linear-gradient(180deg,#ffffff 0%,#f4f5f7 100%)}
+html[data-appearance="light"] footer{background:#eef1f4}
 html[data-appearance="light"] a:hover{color:var(--ac2)}
-html[data-appearance="light"] .note b{color:#0f172a}
+html[data-appearance="light"] .note b{color:#202f40}
 
 /* ⚠️⚠️ Los SIETE textos que el documento pinta de blanco fijo. Se cazaron buscando
    «color:#fff» en la hoja, no a ojo: el título y los epígrafes quedaban en blanco
@@ -116,7 +114,7 @@ html[data-appearance="light"] h1,
 html[data-appearance="light"] h2.sec,
 html[data-appearance="light"] th,
 html[data-appearance="light"] .chg td:first-child,
-html[data-appearance="light"] .fgrid h4{color:#0f172a}
+html[data-appearance="light"] .fgrid h4{color:#202f40}
 
 /* ── Marca: el mismo isotipo y lema que la portada ───────────────────────────── */
 .brand img{height:39px;width:auto;display:block}
@@ -174,13 +172,14 @@ html[data-appearance="light"] .fgrid h4{color:#0f172a}
  * documento, la página aparecería primero en oscuro y saltaría a claro un instante después —el
  * destello blanco que delata que el tema se aplicó tarde.
  */
-export const SCRIPT_TEMA_TEMPRANO = SCRIPT_TEMA + `
-<script>
-/* El tamaño de letra guardado, también antes del primer pintado. */
+export const SCRIPT_TEMA_TEMPRANO = `<script>
+/* Aplica el tema guardado antes del primer pintado. Misma clave que el sitio. */
 try{
+  var t = localStorage.getItem('zyntello-website-appearance');
+  if (t === 'light' || t === 'dark') document.documentElement.dataset.appearance = t;
   var z = parseFloat(localStorage.getItem('zyntello-legales-zoom'));
   if (z >= 0.8 && z <= 1.8) document.documentElement.style.setProperty('--fs', (15.5 * z) + 'px');
-}catch(e){/* Sin almacenamiento la página se ve igual, a tamaño normal. */}
+}catch(e){/* Sin almacenamiento la página se ve igual, en oscuro y a tamaño normal. */}
 </script>`
 
 export const SCRIPT_LECTURA = `<script>
@@ -211,10 +210,11 @@ export const SCRIPT_LECTURA = `<script>
   function cambiarTema(){
     var claro = raiz.dataset.appearance === 'light';
     raiz.dataset.appearance = claro ? 'dark' : 'light';
-    try{ localStorage.setItem('zyntello-tema', raiz.dataset.appearance); }catch(e){}
+    try{ localStorage.setItem('zyntello-website-appearance', raiz.dataset.appearance); }catch(e){}
     pintarTema();
   }
 
+  if (!raiz.dataset.appearance) raiz.dataset.appearance = 'dark';
   pintarTema();
 
   document.addEventListener('click', function(ev){

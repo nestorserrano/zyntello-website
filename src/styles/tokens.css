@@ -1,110 +1,71 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   Zyntello — Tokens del sistema de diseño · CLARO y OSCURO
-   Decidido por el director técnico el 2026-11-23: el sitio sigue el tema del
-   DISPOSITIVO (claro u oscuro) y el botón sol/luna lo fija a mano. Acentos
-   ÍNDIGO (el del logo) + AZUL ACERO. Tipografía Space Grotesk + DM Sans.
+   Zyntello — Tokens del sistema de diseño · TEMA OSCURO
+   Decidido por el director técnico el 2026-09-21: lienzo casi negro, acento
+   ÍNDIGO + CORAL, tipografía Space Grotesk (display) + DM Sans (texto).
 
-   ⚠⚠ Esta hoja es la ÚNICA fuente de color. Hasta el 2026-11-23 había una
-   segunda (`financial-ui.css`) que sobrescribía estos tokens por detrás, así
-   que cambiar uno aquí no hacía nada y nadie sabía por qué. Un hex suelto en un
-   componente es el que se queda con el color viejo al retocar la marca.
-
-   Mecánica: el CLARO es la base (`:root`) y el OSCURO se aplica con
-   `html[data-appearance="dark"]`. Lo pone el script del `<head>` de
-   `index.html` ANTES de pintar —leyendo la preferencia guardada o la del
-   dispositivo—, así que no hay destello claro→oscuro al cargar.
-
-   ⚠️ Los `*-rgb` existen para los translúcidos: `rgba(var(--zy-tinta-rgb), .05)`
-   es un velo blanco en oscuro y un velo pizarra en claro con UNA sola regla.
-   Un `rgba(255,255,255,.05)` escrito a mano no se ve sobre fondo blanco.
+   Todo color de pantalla sale de aquí. Un hex suelto dentro de un componente
+   es un descuido: cuando haya que retocar la marca, ese es el que se queda
+   con el color viejo y nadie lo ve hasta que un cliente lo señala.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 :root {
-  color-scheme: light;
+  /* ── Superficies ────────────────────────────────────────────────────────
+     Cinco niveles, no dos. En oscuro la jerarquía no la da la sombra —que casi
+     no se ve— sino cuánto se aclara la superficie al acercarse al usuario. */
+  --zy-fondo:        #08080c;
+  --zy-fondo-alto:   #0c0c12;
+  --zy-tarjeta:      #101018;
+  --zy-tarjeta-alta: #16161f;
+  --zy-elevado:      #1c1c27;
 
-  /* ── Superficies (claro): blanco y pizarra muy suave. La jerarquía la da la
-     sombra, que en claro sí se ve, más que el cambio de tono. ── */
-  --zy-fondo:        #f8fafc;
-  --zy-fondo-alto:   #f1f5f9;
-  --zy-tarjeta:      #ffffff;
-  --zy-tarjeta-alta: #ffffff;
-  --zy-elevado:      #eef2f7;
-  --zy-fondo-rgb:    248, 250, 252;
-  --zy-tarjeta-rgb:  255, 255, 255;
+  /* ── Bordes: luz, no tinta. Un borde oscuro sobre fondo oscuro no existe. ── */
+  --zy-borde:        rgba(255, 255, 255, .08);
+  --zy-borde-medio:  rgba(255, 255, 255, .14);
+  --zy-borde-fuerte: rgba(255, 255, 255, .22);
 
-  /* Tinta de los translúcidos: oscura sobre claro. */
-  --zy-tinta-rgb:    15, 23, 42;
-
-  --zy-borde:        #e2e8f0;
-  --zy-borde-medio:  #cbd5e1;
-  --zy-borde-fuerte: #94a3b8;
-
-  /* ── Texto — verificados ≥ 4.5:1 sobre --zy-fondo (#f8fafc) ── */
-  --zy-texto:       #0f172a;   /* 17,1:1 */
-  --zy-texto-medio: #334155;   /* 10,0:1 */
-  --zy-texto-suave: #475569;   /*  7,2:1 */
-  --zy-texto-tenue: #64748b;   /*  4,6:1 — el mínimo que se permite en texto */
+  /* ── Texto — todos verificados ≥ 4.5:1 sobre --zy-fondo y --zy-tarjeta ──── */
+  --zy-texto:       #f5f5f7;   /* 19:1  */
+  --zy-texto-medio: #c9c9d4;   /* 12:1  */
+  --zy-texto-suave: #9c9caa;   /*  7.3:1 */
+  --zy-texto-tenue: #8a8a99;   /*  5.9:1 — el mínimo que se permite en texto */
 
   /* ── Acentos ────────────────────────────────────────────────────────────
-     `--zy-indigo` y `--zy-acero` son RELLENOS (botones, iconos, bordes).
-     ⚠️ Para TEXTO de acento se usan `--zy-indigo-claro` y `--zy-acero-claro`:
-     el nombre viene del tema oscuro, donde el texto de acento es un tono claro;
-     en claro valen un tono OSCURO. Lo que importa es su función —«acento
-     legible como texto»—, no el adjetivo. */
-  --zy-indigo:        #4f46e5;
-  --zy-indigo-fuerte: #4338ca;
-  --zy-indigo-claro:  #4338ca;   /* 7,8:1 sobre fondo */
-  --zy-indigo-rgb:    79, 70, 229;
-  --zy-acero:         #3b6ea5;
-  --zy-acero-fuerte:  #2f5a8a;
-  --zy-acero-claro:   #2f5a8a;   /* 6,9:1 sobre fondo */
-  --zy-acero-rgb:     59, 110, 165;
-  --zy-sobre-indigo:  #ffffff;   /* 6,3:1 sobre #4f46e5 */
-  --zy-sobre-acero:   #ffffff;   /* 5,4:1 sobre #3b6ea5 */
+     ⚠️ `--zy-indigo` (#6366f1) da 3.9:1 sobre el fondo: sirve para RELLENOS,
+     bordes y fondos de botón, NO para texto pequeño. Para texto sobre oscuro
+     se usa `--zy-indigo-claro`, que da 9:1. Confundirlos no rompe nada: deja
+     un enlace que el cliente con poca vista no puede leer. */
+  --zy-indigo:        #6366f1;
+  --zy-indigo-fuerte: #4f46e5;
+  --zy-indigo-claro:  #a5b4fc;
+  --zy-coral:         #fb7185;
+  --zy-coral-claro:   #fda4af;
+  --zy-sobre-indigo:  #ffffff;   /* 5.6:1 sobre #4f46e5 */
+  --zy-sobre-coral:   #2a0a12;   /* 9:1  sobre #fb7185 — blanco daría 2.6:1 */
 
-  --zy-exito:  #047857;
-  --zy-alerta: #b45309;
-  --zy-error:  #b91c1c;
-  --zy-exito-rgb: 4, 120, 87;
-  --zy-error-rgb: 185, 28, 28;
+  --zy-exito:  #34d399;
+  --zy-alerta: #fbbf24;
+  --zy-error:  #f87171;
 
-  /* ⚠️ Acentos de CATÁLOGO usados como TEXTO (cian, ámbar, menta… de cada servicio o
-     módulo). Son tonos pensados para fondo oscuro: sobre blanco el ámbar da 1,7:1. En
-     claro se mezclan al 50% con `--zy-texto`, que los oscurece hasta ≥4.5:1 sin perder
-     el matiz; en oscuro van puros. Uso: `color-mix(in srgb, ACENTO var(--zy-mezcla-acento), var(--zy-texto))`. */
-  --zy-mezcla-acento: 50%;
+  /* ── Degradados de marca ────────────────────────────────────────────────── */
+  --zy-grad-marca: linear-gradient(120deg, #4f46e5 0%, #6366f1 45%, #fb7185 100%);
+  --zy-grad-texto: linear-gradient(110deg, #a5b4fc 0%, #fda4af 45%, #a5b4fc 100%);
+  --zy-grad-borde: linear-gradient(135deg, rgba(99,102,241,.55), rgba(251,113,133,.45));
+  --zy-grad-panel: linear-gradient(160deg, rgba(99,102,241,.12) 0%, rgba(251,113,133,.06) 60%, transparent 100%);
 
-  /* ── Degradados de marca ── */
-  --zy-grad-marca: linear-gradient(120deg, #4338ca 0%, #4f46e5 45%, #3b6ea5 100%);
-  --zy-grad-texto: linear-gradient(110deg, #4338ca 0%, #3b6ea5 50%, #4338ca 100%);
-  --zy-grad-borde: linear-gradient(135deg, rgba(79,70,229,.45), rgba(59,110,165,.4));
-  --zy-grad-panel: linear-gradient(160deg, rgba(79,70,229,.06) 0%, rgba(59,110,165,.04) 60%, transparent 100%);
+  /* ── Sombras y resplandores ─────────────────────────────────────────────── */
+  --zy-sombra-1: 0 1px 2px rgba(0, 0, 0, .5);
+  --zy-sombra-2: 0 8px 24px rgba(0, 0, 0, .55);
+  --zy-sombra-3: 0 24px 60px rgba(0, 0, 0, .65);
+  --zy-glow-indigo: 0 0 0 1px rgba(99, 102, 241, .35), 0 12px 44px rgba(79, 70, 229, .4);
+  --zy-glow-coral:  0 0 0 1px rgba(251, 113, 133, .35), 0 12px 44px rgba(251, 113, 133, .3);
 
-  /* ── Sombras: tinta pizarra, nunca negro puro (en claro el negro ensucia) ── */
-  --zy-sombra-1: 0 1px 2px rgba(15, 23, 42, .06);
-  --zy-sombra-2: 0 8px 24px rgba(15, 23, 42, .08);
-  --zy-sombra-3: 0 24px 60px rgba(15, 23, 42, .12);
-  --zy-glow-indigo: 0 0 0 1px rgba(79, 70, 229, .25), 0 10px 30px rgba(79, 70, 229, .22);
-  --zy-glow-acero:  0 0 0 1px rgba(59, 110, 165, .25), 0 10px 30px rgba(59, 110, 165, .2);
-
-  /* ── Velos del fondo animado ────────────────────────────────────────────
-     ⚠⚠ Van en la MISMA dirección que el texto: aclaran cuando el texto es
-     oscuro y oscurecen cuando es claro. Son lo que sostiene el 4.5:1 del
-     texto mientras el fondo se mueve (medido el 2026-11-17: un velo oscuro
-     bajo texto oscuro dejaba la bajada en 1,04). */
-  --zy-velo-indigo: radial-gradient(ellipse 75% 60% at 50% 42%, rgba(248,250,252,.55) 0%, rgba(248,250,252,.82) 62%, rgba(248,250,252,.95) 100%);
-  --zy-velo-acero:  radial-gradient(ellipse 80% 65% at 50% 45%, rgba(248,250,252,.55) 0%, rgba(248,250,252,.8) 60%, rgba(248,250,252,.95) 100%);
-  --zy-velo-neutro: radial-gradient(ellipse 85% 70% at 50% 50%, rgba(248,250,252,.65) 0%, rgba(248,250,252,.88) 65%, rgba(248,250,252,.97) 100%);
-  --zy-velo-panel:  rgba(255, 255, 255, .78);
-  --zy-barra-fondo: rgba(255, 255, 255, .86);
-
-  /* ── Radios ── */
+  /* ── Radios ─────────────────────────────────────────────────────────────── */
   --zy-radio-sm: 10px;
   --zy-radio:    16px;
   --zy-radio-lg: 24px;
   --zy-radio-xl: 34px;
 
-  /* ── Espaciado — escala amplia (densidad 3/10: página de marketing) ── */
+  /* ── Espaciado — escala amplia (densidad 3/10: página de marketing) ─────── */
   --zy-esp-1: 8px;
   --zy-esp-2: 16px;
   --zy-esp-3: 28px;
@@ -112,14 +73,14 @@
   --zy-esp-5: 72px;
   --zy-esp-6: 112px;
 
-  /* ── Movimiento ── */
+  /* ── Movimiento ─────────────────────────────────────────────────────────── */
   --zy-t-rapido: 140ms;
   --zy-t-medio:  280ms;
   --zy-t-lento:  620ms;
   --zy-curva:       cubic-bezier(.22, .61, .36, 1);
   --zy-curva-suave: cubic-bezier(.16, 1, .3, 1);
 
-  /* ── Tipografía ── */
+  /* ── Tipografía ─────────────────────────────────────────────────────────── */
   --zy-display: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
   --zy-texto-fuente: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
 
@@ -133,68 +94,6 @@
      ⚠️ Y se declara aqui aunque lo escriba el JS: sin valor inicial, los `calc()` que
      la suman no resuelven hasta que React monta, y la primera pintura sale descolocada. */
   --zy-aviso-h: 0px;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   TEMA OSCURO — azul marino profundo
-   En oscuro la jerarquía no la da la sombra —que casi no se ve— sino cuánto
-   se aclara la superficie al acercarse al usuario: cinco niveles.
-   ═══════════════════════════════════════════════════════════════════════════ */
-html[data-appearance="dark"] {
-  color-scheme: dark;
-
-  --zy-fondo:        #0b111c;
-  --zy-fondo-alto:   #0f1724;
-  --zy-tarjeta:      #131c2b;
-  --zy-tarjeta-alta: #182334;
-  --zy-elevado:      #1e2a3e;
-  --zy-fondo-rgb:    11, 17, 28;
-  --zy-tarjeta-rgb:  19, 28, 43;
-  --zy-tinta-rgb:    255, 255, 255;
-
-  --zy-borde:        rgba(255, 255, 255, .08);
-  --zy-borde-medio:  rgba(255, 255, 255, .14);
-  --zy-borde-fuerte: rgba(255, 255, 255, .24);
-
-  --zy-texto:       #f3f6fb;   /* 17,6:1 sobre #0b111c */
-  --zy-texto-medio: #c8d1de;   /* 12,1:1 */
-  --zy-texto-suave: #9eabbd;   /*  7,9:1 */
-  --zy-texto-tenue: #8593a7;   /*  5,8:1 */
-
-  --zy-indigo:        #6366f1;
-  --zy-indigo-fuerte: #4f46e5;
-  --zy-indigo-claro:  #a5b4fc;   /* 9,6:1 */
-  --zy-indigo-rgb:    99, 102, 241;
-  --zy-acero:         #6f9bd1;
-  --zy-acero-fuerte:  #4f7fb8;
-  --zy-acero-claro:   #a9c6ea;   /* 10,4:1 */
-  --zy-acero-rgb:     111, 155, 209;
-  --zy-sobre-indigo:  #ffffff;   /* 5,6:1 sobre #4f46e5 */
-  --zy-sobre-acero:   #0b1a2e;   /* 6,9:1 sobre #6f9bd1 — blanco daría 2,9:1 */
-
-  --zy-exito:  #34d399;
-  --zy-alerta: #fbbf24;
-  --zy-error:  #f87171;
-  --zy-exito-rgb: 52, 211, 153;
-  --zy-error-rgb: 248, 113, 113;
-  --zy-mezcla-acento: 100%;
-
-  --zy-grad-marca: linear-gradient(120deg, #4f46e5 0%, #6366f1 45%, #6f9bd1 100%);
-  --zy-grad-texto: linear-gradient(110deg, #a5b4fc 0%, #a9c6ea 50%, #a5b4fc 100%);
-  --zy-grad-borde: linear-gradient(135deg, rgba(99,102,241,.55), rgba(111,155,209,.45));
-  --zy-grad-panel: linear-gradient(160deg, rgba(99,102,241,.12) 0%, rgba(111,155,209,.06) 60%, transparent 100%);
-
-  --zy-sombra-1: 0 1px 2px rgba(0, 0, 0, .5);
-  --zy-sombra-2: 0 8px 24px rgba(0, 0, 0, .5);
-  --zy-sombra-3: 0 24px 60px rgba(0, 0, 0, .6);
-  --zy-glow-indigo: 0 0 0 1px rgba(99, 102, 241, .35), 0 12px 44px rgba(79, 70, 229, .4);
-  --zy-glow-acero:  0 0 0 1px rgba(111, 155, 209, .35), 0 12px 44px rgba(111, 155, 209, .3);
-
-  --zy-velo-indigo: radial-gradient(ellipse 75% 60% at 50% 42%, rgba(11,17,28,.62) 0%, rgba(11,17,28,.86) 62%, rgba(11,17,28,.96) 100%);
-  --zy-velo-acero:  radial-gradient(ellipse 80% 65% at 50% 45%, rgba(11,17,28,.6) 0%, rgba(11,17,28,.84) 60%, rgba(11,17,28,.96) 100%);
-  --zy-velo-neutro: radial-gradient(ellipse 85% 70% at 50% 50%, rgba(11,17,28,.7) 0%, rgba(11,17,28,.9) 65%, rgba(11,17,28,.98) 100%);
-  --zy-velo-panel:  rgba(11, 17, 28, .72);
-  --zy-barra-fondo: rgba(11, 17, 28, .86);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════

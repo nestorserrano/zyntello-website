@@ -5,29 +5,8 @@
     <link rel="icon" type="image/x-icon" href="/logos/favicon.ico" />
     <link rel="apple-touch-icon" href="/logos/zyntello_isotipo_128x128.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0b111c" media="(prefers-color-scheme: dark)" />
-    <meta name="color-scheme" content="light dark" />
-    <!-- ⚠⚠ Elige el tema ANTES de pintar: si lo hiciera React, la página saldría un
-         instante en claro y luego saltaría a oscuro. Manda lo que el visitante eligió
-         con el botón sol/luna; si no eligió nada, sigue al dispositivo, y si cambia el
-         modo del teléfono con la página abierta, la página cambia con él.
-         ⚠️ La clave es NUEVA (`zyntello-tema`): la anterior guardaba «dark» en cada
-         visita aunque nadie tocara el botón, así que con ella ningún visitante antiguo
-         habría seguido nunca a su dispositivo. -->
-    <script>
-      (function () {
-        var raiz = document.documentElement, elegido = null
-        try { elegido = localStorage.getItem('zyntello-tema') } catch (e) {}
-        var oscuro = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null
-        function aplicar() { raiz.dataset.appearance = elegido || (oscuro && oscuro.matches ? 'dark' : 'light') }
-        aplicar()
-        if (oscuro && oscuro.addEventListener) oscuro.addEventListener('change', function () {
-          try { elegido = localStorage.getItem('zyntello-tema') } catch (e) {}
-          aplicar()
-        })
-      })()
-    </script>
+    <meta name="theme-color" content="#08080c" />
+    <meta name="color-scheme" content="dark" />
 
     <!-- ⚠️ La descripción se corta a ~160 caracteres en el resultado de Google.
          La anterior tenía 230 y llegaba al buscador partida a media frase. -->
@@ -49,10 +28,10 @@
     <meta property="og:url" content="https://zyntello.com/" />
     <!-- ⚠️ 1200×630, formato 1.91:1: una imagen cuadrada WhatsApp y LinkedIn la
          recortan por el centro o la degradan a miniatura.
-         ⚠⚠ Es CLARA desde el 2026-11-23: la anterior (`zyntello_facebook_portada.png`)
-         era casi negra y todo enlace compartido se veía oscuro. Y tiene NOMBRE NUEVO a
-         propósito: WhatsApp y Facebook guardan la vista previa por URL, así que con el
-         mismo nombre seguirían enseñando la vieja durante días. -->
+         ⚠⚠ Es CLARA desde el 2026-11-23 aunque el sitio sea oscuro: la anterior
+         (`zyntello_facebook_portada.png`) era casi negra y todo enlace compartido se
+         veía oscuro. Tiene NOMBRE NUEVO a propósito: WhatsApp y Facebook guardan la
+         vista previa por URL, y con el mismo nombre seguirían enseñando la vieja. -->
     <meta property="og:image" content="https://zyntello.com/logos/zyntello_compartir.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
