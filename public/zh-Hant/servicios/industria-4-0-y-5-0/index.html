@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" dir="ltr">
+<head>
+<meta charset="utf-8">
+<script>
+(function () {
+  var raiz = document.documentElement, elegido = null
+  try { elegido = localStorage.getItem('zyntello-tema') } catch (e) {}
+  var oscuro = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null
+  function aplicar() { raiz.dataset.appearance = elegido || (oscuro && oscuro.matches ? 'dark' : 'light') }
+  aplicar()
+  if (oscuro && oscuro.addEventListener) oscuro.addEventListener('change', function () {
+    try { elegido = localStorage.getItem('zyntello-tema') } catch (e) {}
+    aplicar()
+  })
+})()
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>工業 4.0 與 5.0 — 互聯的工廠，以人為中心 | Zyntello</title>
+<meta name="description" content="我們把機台、生產和 ERP 連接起來，用即時資料管理工廠：每條產線的效率、停機、損耗和追溯。秉持工業 5.0 的理念：科技為作業員服務，而不是取代他們。">
+<link rel="canonical" href="https://zyntello.com/zh-Hant/servicios/industria-4-0-y-5-0/">
+<link rel="alternate" hreflang="es" href="https://zyntello.com/servicios/industria-4-0-y-5-0/">
+<link rel="alternate" hreflang="en" href="https://zyntello.com/en/servicios/industria-4-0-y-5-0/">
+<link rel="alternate" hreflang="fr" href="https://zyntello.com/fr/servicios/industria-4-0-y-5-0/">
+<link rel="alternate" hreflang="it" href="https://zyntello.com/it/servicios/industria-4-0-y-5-0/">
+<link rel="alternate" hreflang="zh-Hans" href="https://zyntello.com/zh-Hans/servicios/industria-4-0-y-5-0/">
+<link rel="alternate" hreflang="zh-Hant" href="https://zyntello.com/zh-Hant/servicios/industria-4-0-y-5-0/">
+<link rel="alternate" hreflang="ar" href="https://zyntello.com/ar/servicios/industria-4-0-y-5-0/">
+<link rel="alternate" hreflang="ht" href="https://zyntello.com/ht/servicios/industria-4-0-y-5-0/">
+<link rel="alternate" hreflang="x-default" href="https://zyntello.com/servicios/industria-4-0-y-5-0/">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="工業 4.0 與 5.0 — 互聯的工廠，以人為中心 | Zyntello">
+<meta property="og:description" content="我們把機台、生產和 ERP 連接起來，用即時資料管理工廠：每條產線的效率、停機、損耗和追溯。秉持工業 5.0 的理念：科技為作業員服務，而不是取代他們。">
+<meta property="og:url" content="https://zyntello.com/zh-Hant/servicios/industria-4-0-y-5-0/">
+<meta property="og:image" content="https://zyntello.com/logos/zyntello_compartir.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://zyntello.com/logos/zyntello_isotipo_transparente.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://zyntello.com/vendor/fontawesome/css/all.min.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "工業 4.0 與 5.0 — 互聯的工廠，以人為中心",
+  "description": "我們把機台、生產和 ERP 連接起來，用即時資料管理工廠：每條產線的效率、停機、損耗和追溯。秉持工業 5.0 的理念：科技為作業員服務，而不是取代他們。",
+  "url": "https://zyntello.com/zh-Hant/servicios/industria-4-0-y-5-0/",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Zyntello",
+    "url": "https://zyntello.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Zyntello, S.R.L.",
+    "url": "https://zyntello.com",
+    "sameAs": [
+      "https://www.linkedin.com/in/zyntello/",
+      "https://www.instagram.com/zyntello.ai/",
+      "https://www.facebook.com/zyntello/",
+      "https://www.youtube.com/@zyntello_ai"
+    ]
+  },
+  "mainEntity": {
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "我要汰換機台嗎？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "不用。出廠時不能連線的機台，可以用外掛的週期、計數或耗電感測器來量測。只有別無他法的才汰換。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "OEE 是什麼？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "設備綜合效率：設備有多少時間可用、以什麼速度生產、良品有多少。它是揭示工廠產能損失在哪裡的指標。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "4.0 和 5.0 有什麼差別？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "4.0 把機台和資料連接起來。5.0 把人放在中心：科技支援作業員，工廠更有韌性，生產更永續。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "能和我的 ERP 串接嗎？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "可以。製令、物料耗用和成品在現場與系統之間流通，無論是 Softland、Profit、ODOO 還是 Zyntello 平台。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "試點要多久？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "取決於產線，以及上面的機台怎麼連線。開工前，診斷會給出具體的時程。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "對認證有幫助嗎？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "依批號追溯和生產紀錄，正是 ISO 9001 這類標準或 AEO（優質企業）這類計畫所要求的佐證。系統會自動產生，不增加額外工作。"
+        }
+      }
+    ]
+  }
+}
+</script>
+<style>
+/* Tema CLARO por defecto; el oscuro entra con html[data-appearance="dark"], que pone el
+   script del <head> (lib/tema.mjs) según lo elegido o el dispositivo. Mismos valores que
+   src/styles/tokens.css: si no coinciden, pasar de la portada a un servicio cambia de «claro». */
+:root{
+  --color:#fb923c;
+  --fondo:#f8fafc; --alto:#f1f5f9; --tarjeta:#ffffff; --elevado:#eef2f7;
+  --borde:#e2e8f0; --borde2:#cbd5e1;
+  --texto:#0f172a; --medio:#334155; --suave:#475569; --tenue:#64748b;
+  --tinta:15,23,42; --barra:rgba(255,255,255,.86);
+  --sombra:0 8px 24px rgba(15,23,42,.08);
+  /* ⚠️ El acento de cada página (ámbar, cian, menta…) se eligió para fondo oscuro: como TEXTO
+     sobre blanco el ámbar da 1,7:1. En claro se mezcla al 50% con el texto; en oscuro va puro. */
+  --mezcla:50%;
+  --display:'Space Grotesk',system-ui,sans-serif; --cuerpo:'DM Sans',system-ui,sans-serif;
+}
+html[data-appearance="dark"]{
+  color-scheme:dark;
+  --fondo:#0b111c; --alto:#0f1724; --tarjeta:#131c2b; --elevado:#182334;
+  --borde:rgba(255,255,255,.08); --borde2:rgba(255,255,255,.14);
+  --texto:#f3f6fb; --medio:#c8d1de; --suave:#9eabbd; --tenue:#8593a7;
+  --tinta:255,255,255; --barra:rgba(11,17,28,.86);
+  --sombra:none;
+  --mezcla:100%;
+}
+:root{ --color-t:color-mix(in srgb,var(--color) var(--mezcla),var(--texto)); }
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{background:var(--fondo);color:var(--texto);font-family:var(--cuerpo);line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.contenedor{width:100%;max-width:1180px;margin:0 auto;padding:0 24px}
+.contenedor-estrecho{max-width:780px}
+
+/* ── Barra ─────────────────────────────────────────────────────────────── */
+.barra{position:sticky;top:0;z-index:50;background:var(--barra);backdrop-filter:blur(14px);border-bottom:1px solid var(--borde)}
+.barra-caja{display:flex;align-items:center;justify-content:space-between;gap:20px;height:72px}
+.barra-izq{display:flex;align-items:center;gap:14px;min-width:0}
+.barra-volver{display:inline-flex;align-items:center;gap:6px;color:var(--tenue);font-size:.82rem;white-space:nowrap;transition:color .28s}
+.barra-volver:hover{color:var(--texto)}
+.barra-sep{width:1px;height:22px;background:var(--borde2);flex-shrink:0}
+.barra-marca{display:flex;align-items:center;gap:9px;min-width:0}
+.barra-marca img{height:39px;width:auto;flex-shrink:0}
+.barra-marca strong{font-family:var(--display);font-weight:700;font-size:1.12rem;letter-spacing:-.03em;color:var(--color-t);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.barra-menu{display:flex;align-items:center;gap:26px}
+.barra-menu a{color:var(--suave);font-size:.88rem;transition:color .28s}
+.barra-menu a:hover{color:var(--texto)}
+.barra-acciones{display:flex;align-items:center;gap:12px;flex-shrink:0}
+
+/* ── Botones ───────────────────────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:10px;font-family:var(--display);font-weight:600;font-size:.92rem;transition:transform .2s,box-shadow .28s,background .28s;white-space:nowrap}
+.btn-principal{background:var(--color);color:#0b111c;box-shadow:0 8px 28px -12px var(--color)}
+.btn-principal:hover{transform:translateY(-2px);box-shadow:0 14px 36px -12px var(--color)}
+.btn-fantasma{border:1px solid var(--borde2);color:var(--texto)}
+.btn-fantasma:hover{border-color:var(--color);color:var(--color-t)}
+.btn-barra{padding:9px 18px;font-size:.86rem}
+
+/* ── Secciones ─────────────────────────────────────────────────────────── */
+.seccion{padding:88px 0;position:relative}
+.seccion-alta{background:var(--alto)}
+.rotulo{font-family:var(--display);font-weight:600;font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:var(--color-t);margin-bottom:14px}
+.titulo-seccion{font-family:var(--display);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.5rem);letter-spacing:-.03em;line-height:1.15;margin-bottom:18px}
+.entradilla{color:var(--suave);font-size:1.03rem;max-width:62ch;margin-bottom:44px}
+
+/* ── Hero ──────────────────────────────────────────────────────────────── */
+.hero{padding:96px 0 84px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:-40% 30% auto -10%;height:620px;background:radial-gradient(60% 60% at 30% 40%,color-mix(in srgb,var(--color) 22%,transparent),transparent 70%);filter:blur(30px);pointer-events:none}
+.hero-caja{position:relative;max-width:820px}
+.hero-marca{display:inline-flex;align-items:center;gap:9px;padding:7px 15px;border-radius:999px;border:1px solid color-mix(in srgb,var(--color) 34%,transparent);background:color-mix(in srgb,var(--color) 11%,transparent);color:var(--color-t);font-family:var(--display);font-weight:600;font-size:.79rem;letter-spacing:.04em;margin-bottom:26px}
+.hero h1{font-family:var(--display);font-weight:700;font-size:clamp(2.1rem,5.2vw,3.7rem);letter-spacing:-.04em;line-height:1.06;margin-bottom:22px}
+.hero p{color:var(--medio);font-size:clamp(1.02rem,1.5vw,1.16rem);max-width:64ch;margin-bottom:34px}
+.hero-acciones{display:flex;flex-wrap:wrap;gap:12px}
+
+/* ── Cifras ────────────────────────────────────────────────────────────── */
+.cifras{display:grid;gap:1px;background:var(--borde);border:1px solid var(--borde);border-radius:16px;overflow:hidden;margin-top:54px}
+.cifra{background:var(--tarjeta);padding:26px 24px}
+.cifra b{display:block;font-family:var(--display);font-weight:700;font-size:clamp(1.5rem,2.6vw,2rem);letter-spacing:-.03em;color:var(--color-t);line-height:1.1}
+.cifra span{display:block;color:var(--tenue);font-size:.85rem;margin-top:7px}
+
+/* ── Rejilla pareja ────────────────────────────────────────────────────── */
+.rejilla{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:18px}
+.tarjeta{background:var(--tarjeta);border:1px solid var(--borde);border-radius:16px;padding:26px 24px;box-shadow:var(--sombra);transition:border-color .3s,transform .3s}
+.tarjeta:hover{border-color:color-mix(in srgb,var(--color) 40%,transparent);transform:translateY(-3px)}
+.tarjeta h3{font-family:var(--display);font-weight:600;font-size:1.03rem;letter-spacing:-.02em;margin-bottom:9px}
+.tarjeta p{color:var(--suave);font-size:.93rem}
+.detalle{padding:20px 22px 20px 26px;border-left:2px solid color-mix(in srgb,var(--color) 45%,transparent)}
+.detalle h3{font-family:var(--display);font-weight:600;font-size:.99rem;margin-bottom:8px}
+.detalle p{color:var(--suave);font-size:.91rem}
+
+/* ── Problema ──────────────────────────────────────────────────────────── */
+.problema-caja{background:var(--tarjeta);border:1px solid var(--borde);border-radius:20px;padding:38px}
+.problema-caja > p{color:var(--suave);margin-bottom:26px;max-width:72ch}
+.puntos{list-style:none;display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:12px 26px}
+.puntos li{display:flex;gap:11px;align-items:flex-start;color:var(--medio);font-size:.93rem}
+.puntos li::before{content:'';flex-shrink:0;width:6px;height:6px;border-radius:2px;background:var(--color);margin-top:9px;transform:rotate(45deg)}
+
+/* ── Pasos ─────────────────────────────────────────────────────────────── */
+.pasos{list-style:none;counter-reset:p;display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:22px}
+.pasos li{counter-increment:p;position:relative;padding-top:52px}
+.pasos li::before{content:counter(p,decimal-leading-zero);position:absolute;top:0;left:0;font-family:var(--display);font-weight:700;font-size:1.7rem;color:color-mix(in srgb,var(--color) 55%,transparent)}
+.pasos h3{font-family:var(--display);font-weight:600;font-size:1.02rem;margin-bottom:8px}
+.pasos p{color:var(--suave);font-size:.93rem}
+
+/* ── Preguntas ─────────────────────────────────────────────────────────── */
+details{border-bottom:1px solid var(--borde);padding:19px 0}
+details summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:18px;font-family:var(--display);font-weight:600;font-size:1rem}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';color:var(--color-t);font-size:1.3rem;font-weight:400;flex-shrink:0;transition:transform .25s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
+
+/* ── Otras funcionalidades ─────────────────────────────────────────────── */
+.otra{display:block;background:var(--tarjeta);border:1px solid var(--borde);border-radius:16px;padding:22px;transition:border-color .3s,transform .3s}
+.otra:hover{transform:translateY(-3px)}
+.otra b{display:block;font-family:var(--display);font-weight:600;font-size:1rem;margin-bottom:6px}
+.otra span{color:var(--tenue);font-size:.88rem}
+
+/* ── Cierre ────────────────────────────────────────────────────────────── */
+.cierre{text-align:center;padding:96px 0}
+.cierre h2{font-family:var(--display);font-weight:700;font-size:clamp(1.7rem,3.6vw,2.6rem);letter-spacing:-.03em;margin-bottom:16px}
+.cierre p{color:var(--suave);max-width:58ch;margin:0 auto 32px}
+.acciones{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+
+/* ── Pie ───────────────────────────────────────────────────────────────── */
+.pie{border-top:1px solid var(--borde);padding:34px 0;color:var(--tenue);font-size:.85rem}
+.pie-caja{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
+.pie a{color:var(--suave)}
+.pie a:hover{color:var(--texto)}
+.pie-redes{display:flex;align-items:center;gap:10px}
+.pie-redes>span{font-family:var(--display);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.redes-sociales{display:flex;flex-wrap:wrap;gap:7px}
+.red-social{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--borde);border-radius:10px;background:var(--tarjeta);color:var(--tenue)!important;font-size:.92rem;transition:color .2s,border-color .2s,transform .2s,background .2s}
+.red-social:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--color) 42%,var(--borde));background:color-mix(in srgb,var(--color) 8%,var(--tarjeta));color:var(--color-t)!important}
+.red-social:focus-visible{outline:2px solid var(--color);outline-offset:3px}
+
+/* ── Revelado al hacer scroll ──────────────────────────────────────────────
+   ⚠️ Solo se oculta si la clase 'js' está puesta, y la pone el propio script.
+   Sin esa guarda, un fallo de JS dejaría la página ENTERA invisible — con un
+   200 y sin ningún error a la vista. */
+.js .revelar{opacity:0;transform:translateY(16px)}
+.js .revelar.visible{opacity:1;transform:none;transition:opacity .6s ease,transform .6s cubic-bezier(.22,1,.36,1)}
+@media(prefers-reduced-motion:reduce){
+  .js .revelar{opacity:1!important;transform:none!important}
+  html{scroll-behavior:auto}
+}
+
+@media(max-width:1000px){ .barra-menu{display:none} }
+@media(max-width:860px){
+  .rejilla,.puntos,.pasos{--cols:1!important}
+  .cifras{grid-template-columns:1fr!important}
+  .seccion{padding:64px 0}
+  .problema-caja{padding:26px}
+}
+@media(max-width:640px){
+  .barra-volver span{display:none}
+  .barra-marca strong{font-size:1rem}
+  .acciones .btn,.hero-acciones .btn{width:100%}
+}
+@media(max-width:420px){ .barra-marca{display:none} }
+
+/* El selector de idioma de la barra. Son ocho enlaces cortos, no un
+   desplegable: ver el comentario de la plantilla. */
+.barra-idiomas{ display:flex; align-items:center; gap:2px; }
+.barra-idiomas a,.barra-idiomas .idioma-activo{
+  padding:3px 6px; border-radius:5px; font-size:.68rem; font-weight:700;
+  letter-spacing:.03em; text-decoration:none; line-height:1.4;
+}
+.barra-idiomas a{ color:var(--tenue); }
+.barra-idiomas a:hover{ color:var(--texto); background:rgba(var(--tinta),.07); }
+.barra-idiomas .idioma-activo{ color:var(--color-t); background:rgba(var(--tinta),.06); }
+/* ⚠️ El foco visible se conserva: con teclado es lo único que indica dónde se
+   está, y este control es justo el que usa quien no entiende el resto. */
+.barra-idiomas a:focus-visible{ outline:2px solid var(--color); outline-offset:1px; }
+/* ⚠️ Por debajo de 980px el selector se esconde: ocho enlaces más el botón de
+   WhatsApp no caben en un móvil, y apretarlos deja los dos impulsables. El
+   lector de pantalla sí los sigue viendo gracias al hreflang del <head>. */
+@media(max-width:980px){ .barra-idiomas{display:none} }
+
+/* ── Árabe: la página entera se gira ──────────────────────────────────────
+   ⚠️⚠️ Sin esto el texto sale correcto y la pantalla ilegible: los márgenes,
+   las viñetas y las flechas siguen apuntando al lado de un idioma que se lee
+   al revés. Se corrigen solo los que tienen lado. */
+[dir="rtl"] .barra-volver svg{ transform:scaleX(-1); }
+[dir="rtl"] .puntos li{ padding-left:0; padding-right:1.35rem; }
+[dir="rtl"] .puntos li::before{ left:auto; right:0; }
+[dir="rtl"] .pasos li{ padding-left:0; padding-right:3.1rem; }
+[dir="rtl"] .pasos li::before{ left:auto; right:0; }
+[dir="rtl"] .otra{ border-left:0 !important; border-right:2px solid var(--color); }
+[dir="rtl"] details summary::after{ right:auto; left:0; }
+</style>
+</head>
+<body>
+
+<nav class="barra">
+  <div class="contenedor barra-caja">
+    <div class="barra-izq">
+      <a class="barra-volver" href="https://zyntello.com/#servicios">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+        <span>全部服務</span>
+      </a>
+      <span class="barra-sep" aria-hidden="true"></span>
+      <span class="barra-marca">
+        <img src="https://zyntello.com/logos/zyntello_isotipo_transparente.png" alt="" width="39" height="39">
+        <strong>工業 4.0 與 5.0</strong>
+      </span>
+    </div>
+
+    <nav class="barra-menu" aria-label="頁面各部分">
+      <a href="#resuelve">解決什麼問題</a>
+      <a href="#como">如何運作</a>
+      <a href="#detalles">細節</a>
+      <a href="#preguntas">常見問題</a>
+    </nav>
+
+    <div class="barra-acciones">
+      <nav class="barra-idiomas" aria-label="本頁的其他語言版本">
+        <a href="https://zyntello.com/servicios/industria-4-0-y-5-0/" hreflang="es" lang="es" data-idioma="es" title="Español">ES</a><a href="https://zyntello.com/en/servicios/industria-4-0-y-5-0/" hreflang="en" lang="en" data-idioma="en" title="English">EN</a><a href="https://zyntello.com/fr/servicios/industria-4-0-y-5-0/" hreflang="fr" lang="fr" data-idioma="fr" title="Français">FR</a><a href="https://zyntello.com/it/servicios/industria-4-0-y-5-0/" hreflang="it" lang="it" data-idioma="it" title="Italiano">IT</a><a href="https://zyntello.com/zh-Hans/servicios/industria-4-0-y-5-0/" hreflang="zh-Hans" lang="zh-Hans" data-idioma="zh-Hans" title="简体中文">简</a><span class="idioma-activo" aria-current="true">繁</span><a href="https://zyntello.com/ar/servicios/industria-4-0-y-5-0/" hreflang="ar" lang="ar" data-idioma="ar" title="العربية">AR</a><a href="https://zyntello.com/ht/servicios/industria-4-0-y-5-0/" hreflang="ht" lang="ht" data-idioma="ht" title="Kreyòl ayisyen">HT</a>
+      </nav>
+      <a href="https://wa.me/18296399877?text=%C2%A1Hola%20Zyntello!%20Quiero%20saber%20m%C3%A1s%20sobre%20Industria%204.0%20y%205.0.%20%C2%BFMe%20ayudan%3F%0A%0A%5BVisitante%20en%20la%20p%C3%A1gina%20en%3A%20zh-Hant%5D" target="_blank" rel="noopener" class="btn btn-principal btn-barra">聯絡 Zyntello</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="contenedor">
+    <div class="hero-caja">
+      <span class="hero-marca">Zyntello 的服務</span>
+      <h1>工廠下班後才知道產了多少。它應該在生產時就知道</h1>
+      <p>機台資料、現場生產看板、每條產線的效率（OEE）、依批號追溯，以及與 ERP 的直接串接。從一條產線開始，先量測，再把有效的做法擴大出去。</p>
+      <div class="hero-acciones">
+        <a href="https://wa.me/18296399877?text=%C2%A1Hola%20Zyntello!%20Quiero%20saber%20m%C3%A1s%20sobre%20Industria%204.0%20y%205.0.%20%C2%BFMe%20ayudan%3F%0A%0A%5BVisitante%20en%20la%20p%C3%A1gina%20en%3A%20zh-Hant%5D" target="_blank" rel="noopener" class="btn btn-principal">聯絡 Zyntello</a>
+        <a href="https://zyntello.com/#servicios" class="btn btn-fantasma">查看全部服務</a>
+      </div>
+    </div>
+
+    <div class="cifras" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+      <div class="cifra"><b>OEE</b><span>可用率 × 效能 × 品質</span></div><div class="cifra"><b>每班</b><span>生產過程中就看得到效率</span></div><div class="cifra"><b>依批號</b><span>從原物料追溯到客戶</span></div>
+    </div>
+  </div>
+</header>
+
+<section class="seccion seccion-alta" id="resuelve">
+  <div class="contenedor">
+    <p class="rotulo revelar">解決什麼問題</p>
+    <h2 class="titulo-seccion revelar">產量靠紙本回報，分析時已經來不及修正</h2>
+    <div class="problema-caja revelar">
+      <p>在很多工廠，班次結束後有人把生產日報謄寫整齊，隔天才知道停了多久、損失了多少。到那時，原因已經無從追查。工業 4.0 不是關於機器人：而是讓工廠的資訊及時送到，還來得及採取行動。</p>
+      <ul class="puntos" style="--cols:2">
+        <li>這一班的產量，隔天才知道</li><li>停機靠記憶補記，甚至根本不記</li><li>沒人知道每條產線的真實效率</li><li>損耗要到月底盤點才發現</li><li>追查一個有瑕疵的批號要花好幾天</li><li>現場和 ERP 活在兩個世界</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="seccion">
+  <div class="contenedor">
+    <p class="rotulo revelar">包含什麼</p>
+    <h2 class="titulo-seccion revelar">具體給到你什麼</h2>
+    <div class="rejilla" style="--cols:3"><article class="tarjeta revelar" style="transition-delay:0ms"><h3>每條產線的效率，即時掌握</h3><p>每台機台的可用率、效能和品質——也就是 OEE——用機台本身的資料計算，而不是用班次報表。</p></article><article class="tarjeta revelar" style="transition-delay:60ms"><h3>每次停機都有原因</h3><p>每次停機都記錄時間長度和原因，好先處理最耗時的，而不是大家印象最深的。</p></article><article class="tarjeta revelar" style="transition-delay:120ms"><h3>現場看板</h3><p>產線上的螢幕顯示這一班的目標和目前產量。作業員看到的和經理一樣，而且是在還來得及做點什麼的時候。</p></article><article class="tarjeta revelar" style="transition-delay:180ms"><h3>依批號追溯</h3><p>從原物料到出貨的成品：哪個批號、哪台機台、哪個班次。一次退貨，幾分鐘就能追查清楚。</p></article><article class="tarjeta revelar" style="transition-delay:240ms"><h3>現場與 ERP 互聯</h3><p>製令、物料耗用和產出在現場與系統之間流通，不必輸入兩次。</p></article><article class="tarjeta revelar" style="transition-delay:300ms"><h3>以人為中心（5.0）</h3><p>科技替作業員承擔重複和危險的工作，並提供他們做決定所需的資訊。目標是一座更有韌性、更永續的工廠，而不是一座沒有人的工廠。</p></article></div>
+  </div>
+</section>
+
+<section class="seccion seccion-alta" id="como">
+  <div class="contenedor">
+    <p class="rotulo revelar">如何運作</p>
+    <h2 class="titulo-seccion revelar">三步完成</h2>
+    <ol class="pasos revelar" style="--cols:3">
+      <li><h3>工廠診斷</h3><p>機台、流程、現有資料，以及損失最大的環節。</p></li><li><h3>試點產線</h3><p>在一條產線上完成連線、看板和效率量測。</p></li><li><h3>擴大與整合</h3><p>工廠其餘部分、追溯，以及與 ERP 的串接。</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="seccion" id="detalles">
+  <div class="contenedor">
+    <p class="rotulo revelar">細節之處</p>
+    <h2 class="titulo-seccion revelar">每天用起來才感受得到的地方</h2>
+    <div class="rejilla" style="--cols:3"><article class="tarjeta detalle revelar" style="transition-delay:0ms"><h3>從一條產線開始</h3><p>產量最大的那條，或停機最多的那條。先連線、量測、改善，再考慮整座工廠。</p></article><article class="tarjeta detalle revelar" style="transition-delay:60ms"><h3>老機台也能「開口說話」</h3><p>出廠時沒有連線功能的機台，可以用週期、耗電或計數感測器來量測。不必汰換它，也能知道它的效率。</p></article><article class="tarjeta detalle revelar" style="transition-delay:120ms"><h3>廠區網路是另一張網</h3><p>機台走一張與辦公網路分開的工業網路，有自己的資安防護。把工廠連起來的東西，不能反過來讓它暴露在外。</p></article><article class="tarjeta detalle revelar" style="transition-delay:180ms"><h3>資料進入 ERP</h3><p>產量、耗用和損耗進入庫存和實際成本。工業 4.0 的效果，從這裡開始反映在損益表上。</p></article><article class="tarjeta detalle revelar" style="transition-delay:240ms"><h3>讓作業員參與</h3><p>看板和停機登錄，都和將來要用它們的人一起設計。班組看不懂的螢幕，最後只會被關掉。</p></article><article class="tarjeta detalle revelar" style="transition-delay:300ms"><h3>可量測的永續</h3><p>單位產品的能源和原物料耗用，依產線量測。這是工業 5.0 中能落到數字上的部分。</p></article></div>
+  </div>
+</section>
+
+<section class="seccion seccion-alta">
+  <div class="contenedor">
+    <p class="rotulo revelar">適合誰</p>
+    <h2 class="titulo-seccion revelar">如果你是這種情況，這個適合你……</h2>
+    <div class="rejilla" style="--cols:3"><article class="tarjeta revelar" style="transition-delay:0ms"><h3>你有一座製造工廠</h3><p>產量還靠紙本回報。</p></article><article class="tarjeta revelar" style="transition-delay:60ms"><h3>你的機台來自不同年代</h3><p>沒有一台是連線的。</p></article><article class="tarjeta revelar" style="transition-delay:120ms"><h3>你需要追溯</h3><p>因為客戶、某項認證或主管機關有要求。</p></article></div>
+  </div>
+</section>
+
+<section class="seccion" id="preguntas">
+  <div class="contenedor contenedor-estrecho">
+    <p class="rotulo revelar">常見疑問</p>
+    <h2 class="titulo-seccion revelar">常見問題</h2>
+    <div class="revelar">
+      <details><summary>我要汰換機台嗎？</summary><p>不用。出廠時不能連線的機台，可以用外掛的週期、計數或耗電感測器來量測。只有別無他法的才汰換。</p></details><details><summary>OEE 是什麼？</summary><p>設備綜合效率：設備有多少時間可用、以什麼速度生產、良品有多少。它是揭示工廠產能損失在哪裡的指標。</p></details><details><summary>4.0 和 5.0 有什麼差別？</summary><p>4.0 把機台和資料連接起來。5.0 把人放在中心：科技支援作業員，工廠更有韌性，生產更永續。</p></details><details><summary>能和我的 ERP 串接嗎？</summary><p>可以。製令、物料耗用和成品在現場與系統之間流通，無論是 Softland、Profit、ODOO 還是 Zyntello 平台。</p></details><details><summary>試點要多久？</summary><p>取決於產線，以及上面的機台怎麼連線。開工前，診斷會給出具體的時程。</p></details><details><summary>對認證有幫助嗎？</summary><p>依批號追溯和生產紀錄，正是 ISO 9001 這類標準或 AEO（優質企業）這類計畫所要求的佐證。系統會自動產生，不增加額外工作。</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="seccion seccion-alta">
+  <div class="contenedor">
+    <p class="rotulo revelar">還有</p>
+    <h2 class="titulo-seccion revelar">我們常和這項搭配的其他服務</h2>
+    <div class="rejilla" style="--cols:3"><a class="otra revelar" href="https://zyntello.com/zh-Hant/servicios/automatizacion-industrial/" style="border-left:2px solid #a3e635"><b>工業自動化與設備保養</b><span>製程自己受控，設備不會毫無預警地停機</span></a><a class="otra revelar" href="https://zyntello.com/zh-Hant/servicios/transformacion-digital/" style="border-left:2px solid #818cf8"><b>數位轉型</b><span>現況診斷、路線圖與全程陪跑</span></a><a class="otra revelar" href="https://zyntello.com/zh-Hant/servicios/capacitacion-ti-e-ia/" style="border-left:2px solid #c084fc"><b>IT 與人工智慧培訓</b><span>讓團隊真正用上公司買的東西</span></a></div>
+  </div>
+</section>
+
+<section class="cierre">
+  <div class="contenedor">
+    <h2>用你自己的資料看一遍，好嗎？</h2>
+    <p>我們給你展示 工業 4.0 與 5.0 在一個和你情況相近的案例上實際運行，沒有任何義務。</p>
+    <div class="acciones">
+      <a href="https://wa.me/18296399877?text=%C2%A1Hola%20Zyntello!%20Quiero%20saber%20m%C3%A1s%20sobre%20Industria%204.0%20y%205.0.%20%C2%BFMe%20ayudan%3F%0A%0A%5BVisitante%20en%20la%20p%C3%A1gina%20en%3A%20zh-Hant%5D" target="_blank" rel="noopener" class="btn btn-principal">聯絡 Zyntello</a>
+      <a href="tel:+18296399877" class="btn btn-fantasma">撥打 +1 829 639 9877</a>
+    </div>
+  </div>
+</section>
+
+<footer class="pie">
+  <div class="contenedor pie-caja">
+    <span>© 2026 Zyntello, S.R.L. · 多明尼加共和國</span>
+    <span>
+      <a href="https://zyntello.com/#soluciones">模組</a> ·
+      <a href="https://zyntello.com/precios/">價格</a> ·
+      <a href="https://zyntello.com/blog/">部落格</a> ·
+      <a href="https://zyntello.com/nosotros/">關於我們</a> ·
+      <a href="https://zyntello.com/contacto/">聯絡我們</a> ·
+      <a href="mailto:soporte@zyntello.com">soporte@zyntello.com</a>
+    </span>
+    <div class="pie-redes">
+      <span>追蹤我們</span>
+      
+<nav class="redes-sociales" aria-label="Zyntello 的社群媒體">
+  <a class="red-social" href="https://www.linkedin.com/in/zyntello/" target="_blank" rel="noopener noreferrer" aria-label="在以下平台追蹤 Zyntello： LinkedIn" title="LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
+  <a class="red-social" href="https://www.instagram.com/zyntello.ai/" target="_blank" rel="noopener noreferrer" aria-label="在以下平台追蹤 Zyntello： Instagram" title="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+  <a class="red-social" href="https://www.facebook.com/zyntello/" target="_blank" rel="noopener noreferrer" aria-label="在以下平台追蹤 Zyntello： Facebook" title="Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
+  <a class="red-social" href="https://www.youtube.com/@zyntello_ai" target="_blank" rel="noopener noreferrer" aria-label="在以下平台追蹤 Zyntello： YouTube" title="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
+</nav>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ⚠️ La clase 'js' la pone el propio script: si esto no llega a ejecutarse,
+   '.revelar' nunca se oculta y la página se ve entera. Al revés —ocultar por
+   CSS y mostrar por JS— un fallo dejaría la página en blanco con un 200. */
+document.documentElement.classList.add('js');
+
+/* ⚠️⚠️ Al elegir un idioma aquí se GUARDA, con la misma clave que usa la
+   portada. Sin esto, cambiar de idioma en esta página no serviría de nada en
+   cuanto el visitante navegara: la portada volvería a recibirle en el idioma
+   de su navegador y la siguiente página estática, en español. El enlace sigue
+   funcionando aunque esto falle — guardar es lo accesorio, navegar es lo que
+   importa, y por eso va en try/catch. */
+Array.prototype.forEach.call(document.querySelectorAll('[data-idioma]'), function (a) {
+  a.addEventListener('click', function () {
+    try { localStorage.setItem('zyntello-sitio-idioma', a.getAttribute('data-idioma')); } catch (e) {}
+  });
+});
+
+var obs = new IntersectionObserver(function (es) {
+  es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+document.querySelectorAll('.revelar').forEach(function (el) { obs.observe(el); });
+</script>
+</body>
+</html>
