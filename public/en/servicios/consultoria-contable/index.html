@@ -2,6 +2,19 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
+<script>
+(function () {
+  var raiz = document.documentElement, elegido = null
+  try { elegido = localStorage.getItem('zyntello-tema') } catch (e) {}
+  var oscuro = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null
+  function aplicar() { raiz.dataset.appearance = elegido || (oscuro && oscuro.matches ? 'dark' : 'light') }
+  aplicar()
+  if (oscuro && oscuro.addEventListener) oscuro.addEventListener('change', function () {
+    try { elegido = localStorage.getItem('zyntello-tema') } catch (e) {}
+    aplicar()
+  })
+})()
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Accounting Consulting — Accounting wired into your systems | Zyntello</title>
 <meta name="description" content="Accounting and financial advice connected to your operation: processes, tax filings and analysis so you can decide with real numbers, in time.">
@@ -20,7 +33,9 @@
 <meta property="og:title" content="Accounting Consulting — Accounting wired into your systems | Zyntello">
 <meta property="og:description" content="Accounting and financial advice connected to your operation: processes, tax filings and analysis so you can decide with real numbers, in time.">
 <meta property="og:url" content="https://zyntello.com/en/servicios/consultoria-contable/">
-<meta property="og:image" content="https://zyntello.com/logos/zyntello_isotipo_transparente.png">
+<meta property="og:image" content="https://zyntello.com/logos/zyntello_compartir.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="https://zyntello.com/logos/zyntello_isotipo_transparente.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -106,13 +121,31 @@
 }
 </script>
 <style>
+/* Tema CLARO por defecto; el oscuro entra con html[data-appearance="dark"], que pone el
+   script del <head> (lib/tema.mjs) según lo elegido o el dispositivo. Mismos valores que
+   src/styles/tokens.css: si no coinciden, pasar de la portada a un servicio cambia de «claro». */
 :root{
   --color:#2dd4bf;
-  --fondo:#08080c; --alto:#0c0c12; --tarjeta:#101018; --elevado:#16161f;
-  --borde:rgba(255,255,255,.08); --borde2:rgba(255,255,255,.14);
-  --texto:#f5f5f7; --medio:#c4c4cf; --suave:#a1a1ae; --tenue:#8a8a99;
+  --fondo:#f8fafc; --alto:#f1f5f9; --tarjeta:#ffffff; --elevado:#eef2f7;
+  --borde:#e2e8f0; --borde2:#cbd5e1;
+  --texto:#0f172a; --medio:#334155; --suave:#475569; --tenue:#64748b;
+  --tinta:15,23,42; --barra:rgba(255,255,255,.86);
+  --sombra:0 8px 24px rgba(15,23,42,.08);
+  /* ⚠️ El acento de cada página (ámbar, cian, menta…) se eligió para fondo oscuro: como TEXTO
+     sobre blanco el ámbar da 1,7:1. En claro se mezcla al 50% con el texto; en oscuro va puro. */
+  --mezcla:50%;
   --display:'Space Grotesk',system-ui,sans-serif; --cuerpo:'DM Sans',system-ui,sans-serif;
 }
+html[data-appearance="dark"]{
+  color-scheme:dark;
+  --fondo:#0b111c; --alto:#0f1724; --tarjeta:#131c2b; --elevado:#182334;
+  --borde:rgba(255,255,255,.08); --borde2:rgba(255,255,255,.14);
+  --texto:#f3f6fb; --medio:#c8d1de; --suave:#9eabbd; --tenue:#8593a7;
+  --tinta:255,255,255; --barra:rgba(11,17,28,.86);
+  --sombra:none;
+  --mezcla:100%;
+}
+:root{ --color-t:color-mix(in srgb,var(--color) var(--mezcla),var(--texto)); }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scroll-padding-top:90px}
 body{background:var(--fondo);color:var(--texto);font-family:var(--cuerpo);line-height:1.65;-webkit-font-smoothing:antialiased}
@@ -122,7 +155,7 @@ img{max-width:100%;display:block}
 .contenedor-estrecho{max-width:780px}
 
 /* ── Barra ─────────────────────────────────────────────────────────────── */
-.barra{position:sticky;top:0;z-index:50;background:rgba(8,8,12,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--borde)}
+.barra{position:sticky;top:0;z-index:50;background:var(--barra);backdrop-filter:blur(14px);border-bottom:1px solid var(--borde)}
 .barra-caja{display:flex;align-items:center;justify-content:space-between;gap:20px;height:72px}
 .barra-izq{display:flex;align-items:center;gap:14px;min-width:0}
 .barra-volver{display:inline-flex;align-items:center;gap:6px;color:var(--tenue);font-size:.82rem;white-space:nowrap;transition:color .28s}
@@ -130,7 +163,7 @@ img{max-width:100%;display:block}
 .barra-sep{width:1px;height:22px;background:var(--borde2);flex-shrink:0}
 .barra-marca{display:flex;align-items:center;gap:9px;min-width:0}
 .barra-marca img{height:39px;width:auto;flex-shrink:0}
-.barra-marca strong{font-family:var(--display);font-weight:700;font-size:1.12rem;letter-spacing:-.03em;color:var(--color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.barra-marca strong{font-family:var(--display);font-weight:700;font-size:1.12rem;letter-spacing:-.03em;color:var(--color-t);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .barra-menu{display:flex;align-items:center;gap:26px}
 .barra-menu a{color:var(--suave);font-size:.88rem;transition:color .28s}
 .barra-menu a:hover{color:var(--texto)}
@@ -138,16 +171,16 @@ img{max-width:100%;display:block}
 
 /* ── Botones ───────────────────────────────────────────────────────────── */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:10px;font-family:var(--display);font-weight:600;font-size:.92rem;transition:transform .2s,box-shadow .28s,background .28s;white-space:nowrap}
-.btn-principal{background:var(--color);color:#08080c;box-shadow:0 8px 28px -12px var(--color)}
+.btn-principal{background:var(--color);color:#0b111c;box-shadow:0 8px 28px -12px var(--color)}
 .btn-principal:hover{transform:translateY(-2px);box-shadow:0 14px 36px -12px var(--color)}
 .btn-fantasma{border:1px solid var(--borde2);color:var(--texto)}
-.btn-fantasma:hover{border-color:var(--color);color:var(--color)}
+.btn-fantasma:hover{border-color:var(--color);color:var(--color-t)}
 .btn-barra{padding:9px 18px;font-size:.86rem}
 
 /* ── Secciones ─────────────────────────────────────────────────────────── */
 .seccion{padding:88px 0;position:relative}
 .seccion-alta{background:var(--alto)}
-.rotulo{font-family:var(--display);font-weight:600;font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:var(--color);margin-bottom:14px}
+.rotulo{font-family:var(--display);font-weight:600;font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:var(--color-t);margin-bottom:14px}
 .titulo-seccion{font-family:var(--display);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.5rem);letter-spacing:-.03em;line-height:1.15;margin-bottom:18px}
 .entradilla{color:var(--suave);font-size:1.03rem;max-width:62ch;margin-bottom:44px}
 
@@ -155,7 +188,7 @@ img{max-width:100%;display:block}
 .hero{padding:96px 0 84px;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:-40% 30% auto -10%;height:620px;background:radial-gradient(60% 60% at 30% 40%,color-mix(in srgb,var(--color) 22%,transparent),transparent 70%);filter:blur(30px);pointer-events:none}
 .hero-caja{position:relative;max-width:820px}
-.hero-marca{display:inline-flex;align-items:center;gap:9px;padding:7px 15px;border-radius:999px;border:1px solid color-mix(in srgb,var(--color) 34%,transparent);background:color-mix(in srgb,var(--color) 11%,transparent);color:var(--color);font-family:var(--display);font-weight:600;font-size:.79rem;letter-spacing:.04em;margin-bottom:26px}
+.hero-marca{display:inline-flex;align-items:center;gap:9px;padding:7px 15px;border-radius:999px;border:1px solid color-mix(in srgb,var(--color) 34%,transparent);background:color-mix(in srgb,var(--color) 11%,transparent);color:var(--color-t);font-family:var(--display);font-weight:600;font-size:.79rem;letter-spacing:.04em;margin-bottom:26px}
 .hero h1{font-family:var(--display);font-weight:700;font-size:clamp(2.1rem,5.2vw,3.7rem);letter-spacing:-.04em;line-height:1.06;margin-bottom:22px}
 .hero p{color:var(--medio);font-size:clamp(1.02rem,1.5vw,1.16rem);max-width:64ch;margin-bottom:34px}
 .hero-acciones{display:flex;flex-wrap:wrap;gap:12px}
@@ -163,12 +196,12 @@ img{max-width:100%;display:block}
 /* ── Cifras ────────────────────────────────────────────────────────────── */
 .cifras{display:grid;gap:1px;background:var(--borde);border:1px solid var(--borde);border-radius:16px;overflow:hidden;margin-top:54px}
 .cifra{background:var(--tarjeta);padding:26px 24px}
-.cifra b{display:block;font-family:var(--display);font-weight:700;font-size:clamp(1.5rem,2.6vw,2rem);letter-spacing:-.03em;color:var(--color);line-height:1.1}
+.cifra b{display:block;font-family:var(--display);font-weight:700;font-size:clamp(1.5rem,2.6vw,2rem);letter-spacing:-.03em;color:var(--color-t);line-height:1.1}
 .cifra span{display:block;color:var(--tenue);font-size:.85rem;margin-top:7px}
 
 /* ── Rejilla pareja ────────────────────────────────────────────────────── */
 .rejilla{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:18px}
-.tarjeta{background:var(--tarjeta);border:1px solid var(--borde);border-radius:16px;padding:26px 24px;transition:border-color .3s,transform .3s}
+.tarjeta{background:var(--tarjeta);border:1px solid var(--borde);border-radius:16px;padding:26px 24px;box-shadow:var(--sombra);transition:border-color .3s,transform .3s}
 .tarjeta:hover{border-color:color-mix(in srgb,var(--color) 40%,transparent);transform:translateY(-3px)}
 .tarjeta h3{font-family:var(--display);font-weight:600;font-size:1.03rem;letter-spacing:-.02em;margin-bottom:9px}
 .tarjeta p{color:var(--suave);font-size:.93rem}
@@ -194,7 +227,7 @@ img{max-width:100%;display:block}
 details{border-bottom:1px solid var(--borde);padding:19px 0}
 details summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:18px;font-family:var(--display);font-weight:600;font-size:1rem}
 details summary::-webkit-details-marker{display:none}
-details summary::after{content:'+';color:var(--color);font-size:1.3rem;font-weight:400;flex-shrink:0;transition:transform .25s}
+details summary::after{content:'+';color:var(--color-t);font-size:1.3rem;font-weight:400;flex-shrink:0;transition:transform .25s}
 details[open] summary::after{transform:rotate(45deg)}
 details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
 
@@ -219,7 +252,7 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
 .pie-redes>span{font-family:var(--display);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
 .redes-sociales{display:flex;flex-wrap:wrap;gap:7px}
 .red-social{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--borde);border-radius:10px;background:var(--tarjeta);color:var(--tenue)!important;font-size:.92rem;transition:color .2s,border-color .2s,transform .2s,background .2s}
-.red-social:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--color) 42%,var(--borde));background:color-mix(in srgb,var(--color) 8%,var(--tarjeta));color:var(--color)!important}
+.red-social:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--color) 42%,var(--borde));background:color-mix(in srgb,var(--color) 8%,var(--tarjeta));color:var(--color-t)!important}
 .red-social:focus-visible{outline:2px solid var(--color);outline-offset:3px}
 
 /* ── Revelado al hacer scroll ──────────────────────────────────────────────
@@ -255,8 +288,8 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
   letter-spacing:.03em; text-decoration:none; line-height:1.4;
 }
 .barra-idiomas a{ color:var(--tenue); }
-.barra-idiomas a:hover{ color:var(--texto); background:rgba(255,255,255,.07); }
-.barra-idiomas .idioma-activo{ color:var(--color); background:rgba(255,255,255,.06); }
+.barra-idiomas a:hover{ color:var(--texto); background:rgba(var(--tinta),.07); }
+.barra-idiomas .idioma-activo{ color:var(--color-t); background:rgba(var(--tinta),.06); }
 /* ⚠️ El foco visible se conserva: con teclado es lo único que indica dónde se
    está, y este control es justo el que usa quien no entiende el resto. */
 .barra-idiomas a:focus-visible{ outline:2px solid var(--color); outline-offset:1px; }
