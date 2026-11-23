@@ -9,6 +9,62 @@
 
 ### Bitácora reciente (estado actual — 2026-09-08)
 
+> **LOS SIETE IDIOMAS, CERRADOS: INGLÉS, FRANCÉS E ITALIANO (2026-11-23)**: las 3.053 claves
+> leídas clave a clave en `en`, `fr` e `it`. **136 textos corregidos** (44 EN, 27 FR, 65 IT),
+> aplicados en producción y verificados en las páginas servidas. El español no se tocó: 0 cambios.
+>
+> ⚠️⚠️ **Dos frases decían lo CONTRARIO de lo que querían decir, y ninguna daba error.**
+> `fun.generador-de-reportes.problema.puntos.0` en francés: «La question précise de votre activité
+> **n'a pas de rapport**». *N'avoir aucun rapport* es la expresión corriente para **«no tener nada
+> que ver, no venir al caso»** — encabezando la lista de problemas, le decía al lector que su
+> propia pregunta era irrelevante. Y `fun.sistema-de-ayuda.publico.0.titulo`: «Votre équipe
+> **tourne**», cuando en francés de empresa *ça tourne* significa **que funciona bien**; puesto
+> entre los problemas, se leía como un elogio.
+>
+> ⚠️⚠️ **En italiano, tres palabras que existen y significan otra cosa.** `porque.5.texto` decía
+> «Nessuno riparte da zero **per piacere**» — *per piacere* es **POR FAVOR**: «Nadie reinicia
+> desde cero, por favor». `serv.personal-ti-especializado.detalles.0.titulo` decía «**Il calzare**
+> tecnico», y *il calzare* es **el CALZADO**. Y «**costeggio**», en 5 claves y en el `tema` que
+> agrupa artículos del blog, es un calco inventado de «costeo»: *costeggiare* es **navegar junto a
+> la costa**. El término contable es `valorizzazione`, que es justo lo que el francés ya decía.
+> *El mismo defecto que el `نموت` árabe: la palabra existe, se escribe bien y se lee mal.*
+>
+> ⚠️ **El patrón «dos nombres para lo mismo» volvió a aparecer, en los tres.** Igual que el menú
+> árabe: EN «Features» en el menú y «Capabilities» en la sección a la que lleva; EN «IT Support»
+> contra «IT technical support» en otros tres sitios; FR **tres** nombres para el servicio de IA;
+> FR «Enquêtes» donde el resto dice «Sondages» (que no son sinónimos: una *enquête* es una
+> investigación y un *sondage* una encuesta de opinión); IT el módulo de Nómina como «Buste paga»
+> en su ficha y «Paghe» en los otros 35 sitios, con un botón «Vedi Paghe» que llevaba a una página
+> titulada «Buste paga». Se resolvió por `unificaciones()`, copiando del nombre canónico.
+>
+> ⚠️ **Signos del español copiados a idiomas que no los usan**: 26 textos ingleses citaban con
+> « », que en inglés no existe. La forma de destino no se eligió por gusto: los tres idiomas
+> escriben el apóstrofo **recto** en sus 2.646 apariciones (cero `’`), y seis claves inglesas ya
+> citaban con `"`. Y 8 escribían «40 %» con el espacio del español, que en inglés e italiano no
+> va — ⚠️ **en francés SÍ**, y sus 20 casos se conservaron.
+>
+> ⚠️⚠️ **Lo más rentable fue medir antes de corregir.** De 5 avisos de ortografía inglesa, **4
+> eran falsos positivos del barrido en bruto**: «unlicensed» (correcto en las dos variantes),
+> «labour» dentro de una URL (`/prestaciones-**laborales**-rd…`), «catalog» dentro de «catalogue»
+> y «programme evaluation» (británico correcto). De 35 «preposición + qui» franceses, **28 eran
+> interrogativas indirectas legítimas**. De 8 «fallire» italianos, **7 eran correctos**. Y de 3
+> «è come si», uno también. *Buscar en bruto incluye el HTML, los substrings y las construcciones
+> homógrafas; sin la criba se habrían «corregido» 40 textos que estaban bien.*
+>
+> ⚠️ **Y el seeder frenó una corrección.** `unificaciones()` ya declaraba por escrito que «¿Está
+> en español?» se adapta como «¿en lenguaje claro?» en un sitio y «¿en qué idioma está?» en otro,
+> **a propósito**. El defecto real era otro: la respuesta contestaba «escrito en español» a una
+> pregunta sobre lenguaje claro. Se arregló la RESPUESTA, no la pregunta. *Leer las decisiones ya
+> documentadas antes de escribir evitó deshacer trabajo razonado — la misma lección que las 10
+> claves en `您`.*
+>
+> ⚠️ **Nota de sesiones paralelas**: al regenerar las páginas aparecieron 567 archivos cambiados,
+> y no eran míos: otra sesión acababa de commitear el tema claro/oscuro (`dcf05f94`) sin regenerar
+> el HTML. El `dist/` se construyó desde un **worktree limpio** del commit, no del árbol de
+> trabajo, porque había 6 archivos de `src/components/` sin commitear de esa sesión y un build
+> normal los habría publicado a medias.
+
+
 > **EL CATÁLOGO ENTERO, CERRADO EN CHINO Y ÁRABE (2026-11-22)**: último bloque —`serv.*` (981),
 > `fun.*` (259) y las secciones pequeñas (~360)— leído línea a línea en `zh-Hans`, `zh-Hant` y
 > `ar`. **44 textos corregidos.** Con esto, las 8.000 claves del sitio están revisadas por un
