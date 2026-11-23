@@ -90,17 +90,17 @@ export default function Portafolio() {
               style={{ '--zy-color-acento': p.acento, transitionDelay: `${i * 60}ms` }}
             >
               <div className="zy-port-cima">
-                <span className="zy-port-icono" style={{ color: p.acento }}>
+                <span className="zy-port-icono" style={{ color: 'color-mix(in srgb, var(--zy-color-acento) var(--zy-mezcla-acento), var(--zy-texto))' }}>
                   <Icono nombre={p.icono} size={20} />
                 </span>
-                <span className="zy-port-categoria" style={{ color: p.acento }}>
+                <span className="zy-port-categoria" style={{ color: 'color-mix(in srgb, var(--zy-color-acento) var(--zy-mezcla-acento), var(--zy-texto))' }}>
                   {t(`port.${p.clave}.categoria`, p.categoria)}
                 </span>
               </div>
 
               <h3 className="zy-port-titulo">{t(`port.${p.clave}.titulo`, p.titulo)}</h3>
               <p className="zy-port-resultado">
-                <Icono nombre="check" size={15} style={{ color: p.acento }} />
+                <Icono nombre="check" size={15} style={{ color: 'color-mix(in srgb, var(--zy-color-acento) var(--zy-mezcla-acento), var(--zy-texto))' }} />
                 {t(`port.${p.clave}.resultado`, p.resultado)}
               </p>
 

@@ -11,7 +11,7 @@
      capacidades del hero se veia POR DETRAS de los enlaces del menu al llegar
      a una seccion por ancla: texto sobre texto, y el contraste dejaba de estar
      garantizado sin que nada fallara. El estado compacto solo anade el borde. */
-  background: rgba(8, 8, 12, .86);
+  background: rgba(var(--zy-fondo-rgb), .86);
   backdrop-filter: blur(18px) saturate(150%);
   -webkit-backdrop-filter: blur(18px) saturate(150%);
   border-bottom: 1px solid transparent;
@@ -20,7 +20,7 @@
 }
 
 .zy-nav-compacto {
-  background: rgba(8, 8, 12, .96);
+  background: rgba(var(--zy-fondo-rgb), .96);
   border-bottom-color: var(--zy-borde);
 }
 
@@ -72,7 +72,7 @@
   gap: 2px;
   list-style: none;
   margin: 0;
-  background: rgba(255, 255, 255, .04);
+  background: rgba(var(--zy-tinta-rgb), .04);
   border: 1px solid var(--zy-borde);
   border-radius: 999px;
   padding: 4px;
@@ -92,14 +92,14 @@
   white-space: nowrap;
   transition: color var(--zy-t-medio), background var(--zy-t-medio);
 }
-.zy-nav-enlace:hover { color: var(--zy-texto); background: rgba(255, 255, 255, .06); }
+.zy-nav-enlace:hover { color: var(--zy-texto); background: rgba(var(--zy-tinta-rgb), .06); }
 
 /* La seccion activa se marca con color Y con un fondo propio: el color solo no
    basta para quien no distingue el indigo del gris. */
 .zy-nav-enlace-activo {
   color: var(--zy-texto);
-  background: rgba(99, 102, 241, .22);
-  box-shadow: inset 0 0 0 1px rgba(99, 102, 241, .45);
+  background: rgba(var(--zy-indigo-rgb), .22);
+  box-shadow: inset 0 0 0 1px rgba(var(--zy-indigo-rgb), .45);
 }
 
 .zy-nav-acciones {
@@ -131,12 +131,12 @@
   justify-content: center;
   border: 1px solid var(--zy-borde-medio);
   border-radius: 999px;
-  background: rgba(255, 255, 255, .05);
+  background: rgba(var(--zy-tinta-rgb), .05);
   color: var(--zy-texto);
   cursor: pointer;
   transition: background var(--zy-t-medio);
 }
-.zy-nav-hamburguesa:hover { background: rgba(255, 255, 255, .1); }
+.zy-nav-hamburguesa:hover { background: rgba(var(--zy-tinta-rgb), .1); }
 
 /* -- Punto de corte MEDIDO, no adivinado ------------------------------------
    ⚠️⚠️ Estos dos numeros dependen del CONTENIDO del menu, no del dispositivo.

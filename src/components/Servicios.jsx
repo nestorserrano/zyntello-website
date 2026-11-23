@@ -165,7 +165,7 @@ export default function Servicios() {
                 transitionDelay: `${Math.min(i, 9) * 50}ms`,
               }}
             >
-              <span className="zy-serv-icono" style={{ color: s.acento }}>
+              <span className="zy-serv-icono" style={{ color: 'color-mix(in srgb, var(--zy-color-acento) var(--zy-mezcla-acento), var(--zy-texto))' }}>
                 <Icono nombre={s.icono} size={s.destacado ? 30 : 24} />
               </span>
 

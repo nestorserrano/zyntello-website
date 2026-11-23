@@ -1,73 +1,26 @@
-:root {
-  --zy-fondo: #111923; --zy-fondo-alto: #151f2b; --zy-tarjeta: #19232f;
-  --zy-tarjeta-alta: #202d3b; --zy-elevado: #243140;
-  --zy-indigo: #6287ad; --zy-indigo-fuerte: #345775; --zy-indigo-claro: #adc5de;
-  --zy-coral: #d79485; --zy-coral-claro: #e6b4a8;
-  --zy-grad-marca: linear-gradient(#345775, #345775);
-  --zy-grad-texto: linear-gradient(#adc5de, #adc5de);
-  --zy-grad-panel: linear-gradient(160deg, rgb(98 135 173 / .04), transparent);
-  --zy-glow-indigo: 0 4px 16px rgb(0 0 0 / .12);
-  --zy-glow-coral: 0 4px 16px rgb(0 0 0 / .12);
-
-  /* ⚠⚠ **El velo del fondo animado es un TOKEN DE TEMA, no una constante.**
-     Es lo que sostiene el 4.5:1 del texto mientras el fondo se mueve, y para
-     eso tiene que ir en la MISMA dirección que el texto: oscureciendo cuando el
-     texto es claro, aclarando cuando el texto es oscuro.
-     Vivió como constante en `FondoAnimado.jsx` con el valor OSCURO único, y en
-     tema claro oscurecía el fondo dejando el texto oscuro encima: el título
-     bajaba a 2,24 y la bajada a 1,04 —gris ceniza ilegible— mientras en oscuro
-     daba 17,73 y 7,12. Medido el 2026-11-17 en producción. */
-  --zy-velo-indigo: radial-gradient(ellipse 75% 60% at 50% 42%, rgba(8,8,12,.62) 0%, rgba(8,8,12,.86) 62%, rgba(8,8,12,.96) 100%);
-  --zy-velo-coral:  radial-gradient(ellipse 80% 65% at 50% 45%, rgba(8,8,12,.6) 0%, rgba(8,8,12,.84) 60%, rgba(8,8,12,.96) 100%);
-  --zy-velo-neutro: radial-gradient(ellipse 85% 70% at 50% 50%, rgba(8,8,12,.7) 0%, rgba(8,8,12,.9) 65%, rgba(8,8,12,.98) 100%);
-  /* Panel translucido POSADO sobre el fondo animado (la banda de cifras del hero).
-     Misma regla que los velos: va en la direccion del texto, no al reves. */
-  --zy-velo-panel: rgba(8, 8, 12, .72);
-}
-html[data-appearance="light"] {
-  color-scheme: light;
-  --zy-fondo: #f4f5f7; --zy-fondo-alto: #f8f9fa; --zy-tarjeta: #fff;
-  --zy-tarjeta-alta: #fff; --zy-elevado: #eef1f4;
-  --zy-borde: #e2e8f0; --zy-borde-medio: #cbd5e1; --zy-borde-fuerte: #94a3b8;
-  --zy-texto: #202f40; --zy-texto-medio: #435367; --zy-texto-suave: #526174; --zy-texto-tenue: #627185;
-  --zy-indigo-claro: #345775; --zy-coral: #ad5a4a; --zy-coral-claro: #ad5a4a;
-  --zy-grad-texto: linear-gradient(#345775, #345775);
-  --zy-sombra-1: 0 1px 2px rgb(0 0 0 / .03);
-  --zy-sombra-2: 0 4px 6px -1px rgb(0 0 0 / .05);
-  --zy-sombra-3: 0 12px 32px rgb(32 47 64 / .06);
-
-}
+/*
+ * Botón de apariencia (sol/luna) y utilidades de iconos.
+ *
+ * ⚠⚠ Hasta el 2026-11-23 esta hoja REDEFINÍA los tokens de color por detrás de
+ *    `tokens.css` —una paleta navy/acero entera y un tema claro a medias—, así que
+ *    tocar `tokens.css` no cambiaba nada. Los colores viven ahora SOLO allí.
+ * ⚠️ Y desapareció la regla que forzaba el hero OSCURO en tema claro: con el
+ *    rediseño claro el hero sigue al tema como el resto, con su velo claro.
+ */
 .financial-icon { display: inline-flex; align-items: center; justify-content: center; line-height: 1; }
-.zy-appearance { display: inline-flex; align-items: center; justify-content: center; min-width: 40px; min-height: 40px; border: 1px solid var(--zy-borde); border-radius: 8px; background: var(--zy-tarjeta); color: var(--zy-texto-suave); }
+
+.zy-appearance {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  border: 1px solid var(--zy-borde);
+  border-radius: 8px;
+  background: var(--zy-tarjeta);
+  color: var(--zy-texto-suave);
+  cursor: pointer;
+  transition: color var(--zy-t-rapido) var(--zy-curva), background var(--zy-t-rapido) var(--zy-curva);
+}
 .zy-appearance:hover { color: var(--zy-texto); background: var(--zy-elevado); }
 .zy-appearance:focus-visible { outline: 2px solid var(--zy-indigo-claro); outline-offset: 3px; }
-html[data-appearance="light"] .zy-nav { background: var(--zy-tarjeta); }
-
-
-/* ─── El hero es una SECCION OSCURA, tambien en tema claro ────────────────────
-   ⚠⚠ El fondo del hero no sigue al tema: lleva el canvas de constelaciones y
-   su velo oscuro, y eso es identidad de marca, no una preferencia. Lo que SI
-   tiene que seguir al fondo es el TEXTO, y ahi estaba el defecto: en tema claro
-   los tokens de texto valen oscuro, asi que la pagina pintaba texto oscuro
-   sobre el velo oscuro. Medido el 2026-11-17 en produccion: el titulo bajaba a
-   **2,24** y la bajada a **1,04** —gris ceniza ilegible, la insignia ni se
-   veia— mientras en tema oscuro daban 17,73 y 7,12.
-
-   La solucion NO es aclarar el velo: eso deja el banner blanco y le quita el
-   caracter. Es redefinir los tokens DENTRO del hero, que es lo que convierte la
-   seccion en un ambito oscuro propio. Son los mismos valores del `:root` de
-   `tokens.css`, ya verificados >= 4.5:1 sobre el velo. */
-html[data-appearance="light"] .zy-hero {
-  /* ⚠⚠ El fondo BASE tambien, no solo el texto. El velo es translucido (62% en
-     el centro), asi que sobre el fondo claro del tema daba `rgb(98,98,101)`: un
-     gris medio que es el PEOR sitio posible —ni oscuro para el texto claro ni
-     claro para el oscuro—. Con el texto ya en claro seguia dando 2,24 en la
-     bajada. Fijando la base oscura, el velo apoya sobre ella y vuelve el casi
-     negro de siempre. */
-  --zy-fondo:       #08080c;
-  --zy-texto:       #f5f5f7;
-  --zy-texto-medio: #c9c9d4;
-  --zy-texto-suave: #9c9caa;
-  --zy-texto-tenue: #8a8a99;
-  --zy-borde:       rgba(255, 255, 255, .12);
-}

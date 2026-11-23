@@ -48,8 +48,8 @@ footer .container-fluid,
   align-items: center;
   gap: 9px;
   color: var(--zy-indigo-claro);
-  background: rgba(99, 102, 241, .1);
-  border: 1px solid rgba(99, 102, 241, .28);
+  background: rgba(var(--zy-indigo-rgb), .1);
+  border: 1px solid rgba(var(--zy-indigo-rgb), .28);
   border-radius: 999px;
   padding: 7px 16px;
   font-family: var(--zy-display);
@@ -58,10 +58,10 @@ footer .container-fluid,
   letter-spacing: .14em;
   text-transform: uppercase;
 }
-.zy-eyebrow-coral {
-  color: var(--zy-coral-claro);
-  background: rgba(251, 113, 133, .1);
-  border-color: rgba(251, 113, 133, .28);
+.zy-eyebrow-acero {
+  color: var(--zy-acero-claro);
+  background: rgba(var(--zy-acero-rgb), .1);
+  border-color: rgba(var(--zy-acero-rgb), .28);
 }
 
 .zy-titulo {
@@ -92,7 +92,7 @@ footer .container-fluid,
   animation: zy-brillo 8s linear infinite;
 }
 
-.zy-coral { color: var(--zy-coral); }
+.zy-acero { color: var(--zy-acero); }
 
 /* Palabra con trazo hueco — el recurso de titular de la referencia.
    ⚠️ El trazo va al 34 % de blanco, no al 22 %: por debajo de ahí la palabra
@@ -100,7 +100,7 @@ footer .container-fluid,
    —no un adorno— el titular se queda sin sentido sin que nada lo avise. */
 .zy-hueco {
   color: transparent;
-  -webkit-text-stroke: 1.5px rgba(255, 255, 255, .34);
+  -webkit-text-stroke: 1.5px rgba(var(--zy-tinta-rgb), .34);
 }
 
 /* ═══ Tarjetas ════════════════════════════════════════════════════════════
@@ -130,7 +130,7 @@ footer .container-fluid,
   background: linear-gradient(140deg,
     var(--zy-color-acento, var(--zy-indigo)) 0%,
     transparent 45%,
-    var(--zy-color-acento2, var(--zy-coral)) 100%);
+    var(--zy-color-acento2, var(--zy-acero)) 100%);
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
@@ -193,36 +193,36 @@ footer .container-fluid,
 .zy-btn-primario {
   background: var(--zy-indigo-fuerte);
   color: var(--zy-sobre-indigo);
-  box-shadow: 0 10px 34px rgba(79, 70, 229, .38);
+  box-shadow: 0 10px 34px rgba(var(--zy-indigo-rgb), .38);
 }
 .zy-btn-primario:hover {
   background: var(--zy-indigo);
   color: var(--zy-sobre-indigo);
   transform: translateY(-2px);
-  box-shadow: 0 16px 46px rgba(99, 102, 241, .5);
+  box-shadow: 0 16px 46px rgba(var(--zy-indigo-rgb), .5);
 }
 
-.zy-btn-coral {
-  background: var(--zy-coral);
-  color: var(--zy-sobre-coral);
-  box-shadow: 0 10px 34px rgba(251, 113, 133, .32);
+.zy-btn-acero {
+  background: var(--zy-acero);
+  color: var(--zy-sobre-acero);
+  box-shadow: 0 10px 34px rgba(var(--zy-acero-rgb), .32);
 }
-.zy-btn-coral:hover {
-  background: var(--zy-coral-claro);
-  color: var(--zy-sobre-coral);
+.zy-btn-acero:hover {
+  background: var(--zy-acero-claro);
+  color: var(--zy-sobre-acero);
   transform: translateY(-2px);
-  box-shadow: 0 16px 46px rgba(251, 113, 133, .44);
+  box-shadow: 0 16px 46px rgba(var(--zy-acero-rgb), .44);
 }
 
 .zy-btn-fantasma {
-  background: rgba(255, 255, 255, .04);
+  background: rgba(var(--zy-tinta-rgb), .04);
   color: var(--zy-texto);
   border-color: var(--zy-borde-medio);
   backdrop-filter: blur(10px);
 }
 .zy-btn-fantasma:hover {
   color: var(--zy-texto);
-  background: rgba(255, 255, 255, .09);
+  background: rgba(var(--zy-tinta-rgb), .09);
   border-color: var(--zy-borde-fuerte);
   transform: translateY(-2px);
 }
@@ -243,7 +243,7 @@ a:hover > .zy-flecha { transform: translateX(5px); }
   font-size: .95rem;
   transition: color var(--zy-t-medio);
 }
-.zy-enlace:hover { color: var(--zy-coral-claro); }
+.zy-enlace:hover { color: var(--zy-acero-claro); }
 
 /* ═══ Formularios ═════════════════════════════════════════════════════════ */
 .form-control, .form-select {
@@ -260,7 +260,7 @@ a:hover > .zy-flecha { transform: translateX(5px); }
   background: var(--zy-tarjeta);
   border-color: var(--zy-indigo);
   color: var(--zy-texto);
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, .18);
+  box-shadow: 0 0 0 4px rgba(var(--zy-indigo-rgb), .18);
 }
 .form-select option { background: var(--zy-tarjeta); color: var(--zy-texto); }
 
@@ -272,8 +272,8 @@ a:hover > .zy-flecha { transform: translateX(5px); }
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(255, 255, 255, .035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, .035) 1px, transparent 1px);
+    linear-gradient(rgba(var(--zy-tinta-rgb), .035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--zy-tinta-rgb), .035) 1px, transparent 1px);
   background-size: 64px 64px;
   mask-image: radial-gradient(ellipse 85% 65% at 50% 35%, #000 10%, transparent 75%);
   -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 35%, #000 10%, transparent 75%);

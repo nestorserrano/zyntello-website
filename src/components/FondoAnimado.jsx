@@ -30,7 +30,7 @@ import { useEffect, useRef } from 'react'
  * porque se mide sobre un fotograma cualquiera y el siguiente ya es otro.
  */
 
-/* ⚠⚠ **Los velos son TOKENS DE TEMA** (`financial-ui.css`), no constantes de aquí.
+/* ⚠⚠ **Los velos son TOKENS DE TEMA** (`tokens.css`), no constantes de aquí.
    Tienen que ir en la MISMA dirección que el texto: oscurecer cuando el texto es
    claro, aclarar cuando es oscuro. Escritos aquí como un único valor oscuro, el
    tema claro quedaba con el fondo apagado y el texto oscuro encima —el título a
@@ -39,12 +39,12 @@ import { useEffect, useRef } from 'react'
    en qué tema está la página. */
 const VELOS = {
   indigo: 'var(--zy-velo-indigo)',
-  coral:  'var(--zy-velo-coral)',
+  acero:  'var(--zy-velo-acero)',
   neutro: 'var(--zy-velo-neutro)',
 }
 
 const INDIGO = '99, 102, 241'
-const CORAL  = '251, 113, 133'
+const ACERO  = '74, 125, 184'
 const MENTA  = '52, 211, 153'
 
 export default function FondoAnimado({ escena = 'malla', tinte = 'indigo', velo = 1 }) {
@@ -126,7 +126,7 @@ export default function FondoAnimado({ escena = 'malla', tinte = 'indigo', velo 
         }
         ctx.beginPath()
         ctx.arc(a.x + (b.x - a.x) * p.t, a.y + (b.y - a.y) * p.t, 2.4, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(${CORAL}, .95)`
+        ctx.fillStyle = `rgba(${ACERO}, .95)`
         ctx.fill()
       })
 
@@ -153,7 +153,7 @@ export default function FondoAnimado({ escena = 'malla', tinte = 'indigo', velo 
           amp: 18 + Math.random() * 34,
           periodo: 1.1 + Math.random() * 1.4,
           fase: Math.random() * Math.PI * 2,
-          color: i % 3 === 0 ? MENTA : i % 2 === 0 ? CORAL : INDIGO,
+          color: i % 3 === 0 ? MENTA : i % 2 === 0 ? ACERO : INDIGO,
           tareas: Array.from({ length: 3 }, () => ({ t: Math.random(), v: 0.0016 + Math.random() * 0.0028 })),
         })),
       }
@@ -198,7 +198,7 @@ export default function FondoAnimado({ escena = 'malla', tinte = 'indigo', velo 
     const ondasSembrar = () => ({
       focos: [
         { x: .18, y: .28, color: INDIGO, desfase: 0 },
-        { x: .74, y: .2,  color: CORAL,  desfase: 1.1 },
+        { x: .74, y: .2,  color: ACERO,  desfase: 1.1 },
         { x: .52, y: .78, color: MENTA,  desfase: 2.2 },
       ],
     })
