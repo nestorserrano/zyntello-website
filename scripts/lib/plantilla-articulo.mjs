@@ -142,13 +142,13 @@ ${idiomas.length ? `<link rel="alternate" hreflang="x-default" href="${rutaEn(''
 <meta property="og:title" content="${esc(titulo)}">
 <meta property="og:description" content="${esc(descripcion)}">
 <meta property="og:url" content="${url}">
-<meta property="og:image" content="${SITIO}/logos/zyntello_compartir.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="628">
-<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="${SITIO}/logos/zyntello_miniatura.png">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="1024">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="${esc(titulo)}">
 <meta name="twitter:description" content="${esc(descripcion)}">
-<meta name="twitter:image" content="${SITIO}/logos/zyntello_compartir.png">
+<meta name="twitter:image" content="${SITIO}/logos/zyntello_miniatura.png">
 <link rel="icon" href="${SITIO}/logos/favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -266,7 +266,7 @@ export function articulo(a, hermanos = [], opciones = {}) {
         inLanguage: idioma,
         datePublished: a.fecha,
         dateModified: a.actualizado || a.fecha,
-        image: `${SITIO}/logos/zyntello_compartir.png`,
+        image: `${SITIO}/logos/zyntello_miniatura.png`,
         articleSection: nombreGrupo,
         /* ⚠️ El autor es la ORGANIZACIÓN, no una persona inventada. Un autor
            falso con nombre y apellido es lo primero que desmonta la confianza

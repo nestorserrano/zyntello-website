@@ -332,10 +332,10 @@ ${idiomasDePagina.map(i => `<link rel="alternate" hreflang="${i.codigo}" href="$
 <meta property="og:title" content="${esc(f.nombre)} — ${esc(f.subtitulo)} | Zyntello">
 <meta property="og:description" content="${esc(f.resumen)}">
 <meta property="og:url" content="${rutaDe(f.slug)}">
-<meta property="og:image" content="${SITIO}/logos/zyntello_compartir.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="${SITIO}/logos/zyntello_miniatura.png">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="1024">
+<meta name="twitter:card" content="summary">
 <link rel="icon" href="${SITIO}/logos/zyntello_isotipo_transparente.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
