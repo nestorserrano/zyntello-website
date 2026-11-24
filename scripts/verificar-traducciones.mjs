@@ -37,6 +37,7 @@ import { basename, dirname, join } from 'node:path'
 /* Solo la LISTA de idiomas. `cargarCatalogo()` es lo que pide el API, y no se
    llama aquí: esta comprobación tiene que correr sin red. */
 import { IDIOMAS } from './lib/idiomas.mjs'
+import { RUTA_APLICACIONES } from '../src/lib/vista.js'
 
 const AQUI = dirname(fileURLToPath(import.meta.url))
 const COMPONENTES = join(AQUI, '..', 'src', 'components')
@@ -374,6 +375,10 @@ for (const archivo of paginasGeneradas()) {
     const esDeIdioma = partes.length >= 2
       && IDIOMAS.some(l => l.prefijo && l.prefijo.replace('/', '') === partes[0])
     if (!esSeccionGenerada && !esDeIdioma) continue
+    /* El catálogo de módulos (`/{prefijo}aplicaciones/`) no está en `public/`: lo escribe
+       `generar-portadas-idioma.mjs` en `dist/` después de `vite build`, en los ocho idiomas,
+       igual que las portadas. Buscarlo aquí acusaba 280 enlaces que funcionan. */
+    if (partes[partes.length - 1] === RUTA_APLICACIONES && partes.length <= 2) continue
     if (!existsSync(join(PUBLICO, ...partes, 'index.html'))) {
       rotos.push({ desde: archivo.slice(PUBLICO.length + 1), a: '/' + ruta })
     }
