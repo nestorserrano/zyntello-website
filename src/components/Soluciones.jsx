@@ -176,9 +176,10 @@ function hexToGradiente(hex) {
 
 /* ─── Badge por estado (desde admin) ─────────────────────────── */
 const ESTADO_BADGE = {
-  proximo:   { texto: 'Próximamente', bg: 'rgba(255,255,255,0.07)',  color: '#9c9caa' },
-  nuevo:     { texto: 'Nuevo',        bg: 'rgba(52,211,153,0.16)',   color: '#6ee7b7' },
-  destacado: { texto: 'Destacado',    bg: 'rgba(251,113,133,0.18)',  color: '#fda4af' },
+  /* Tonos para fondo BLANCO (formato appicross.com): los tres pasan de 4.5:1 sobre su fondo. */
+  proximo:   { texto: 'Próximamente', bg: '#f2f4f7', color: '#475467' },
+  nuevo:     { texto: 'Nuevo',        bg: '#ecfdf3', color: '#067647' },
+  destacado: { texto: 'Destacado',    bg: '#eff8ff', color: '#10568c' },
 }
 
 /* ─── Combina datos del API con display estático ──────────────── */
@@ -339,49 +340,6 @@ export const LANDINGS_PUBLICAS = new Set([
 // landing prometía proyección diaria, umbral configurable y aviso automático, que no
 // existen. Las pantallas siguen, dentro de Bancos; lo que se retiró es el cobro.
 
-/* ─── Iconos flotantes animados ─────────────────────────────────── */
-const FLOAT_POSITIONS = [
-  { left: '4%',  top: '12%', delay: '0s',    dur: '5.2s', size: '56px', font: '1.6rem', dir: 'a' },
-  { left: '14%', top: '72%', delay: '0.8s',  dur: '4.8s', size: '44px', font: '1.2rem', dir: 'b' },
-  { left: '24%', top: '30%', delay: '1.4s',  dur: '6.0s', size: '48px', font: '1.3rem', dir: 'a' },
-  { left: '38%', top: '80%', delay: '0.3s',  dur: '5.5s', size: '40px', font: '1.1rem', dir: 'c' },
-  { left: '52%', top: '8%',  delay: '1.8s',  dur: '4.6s', size: '52px', font: '1.5rem', dir: 'b' },
-  { left: '63%', top: '62%', delay: '0.6s',  dur: '5.8s', size: '46px', font: '1.25rem', dir: 'a' },
-  { left: '75%', top: '22%', delay: '2.1s',  dur: '4.9s', size: '50px', font: '1.4rem', dir: 'c' },
-  { left: '84%', top: '75%', delay: '1.1s',  dur: '5.3s', size: '42px', font: '1.15rem', dir: 'b' },
-  { left: '91%', top: '40%', delay: '0.4s',  dur: '6.2s', size: '54px', font: '1.5rem', dir: 'a' },
-  { left: '7%',  top: '50%', delay: '1.6s',  dur: '5.0s', size: '38px', font: '1.0rem', dir: 'c' },
-  { left: '46%', top: '45%', delay: '2.5s',  dur: '4.7s', size: '44px', font: '1.2rem', dir: 'b' },
-]
-
-function FloatingIcons({ apps }) {
-  const items = apps.slice(0, FLOAT_POSITIONS.length)
-  return (
-    <div className="sol-floating-bg" aria-hidden="true">
-      {items.map((app, i) => {
-        const pos = FLOAT_POSITIONS[i]
-        return (
-          <div key={app.id} className={`sol-float-wrap sol-float-${pos.dir}`} style={{
-            left: pos.left, top: pos.top,
-            animationDelay: pos.delay,
-            animationDuration: pos.dur,
-          }}>
-            <div className="sol-float-icon" style={{
-              width: pos.size, height: pos.size,
-              fontSize: pos.font,
-              background: `${app.color}14`,
-              border: `1px solid ${app.color}28`,
-              boxShadow: `0 0 28px ${app.color}20`,
-            }}>
-              <IconoModulo valor={app.icono} />
-            </div>
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-
 /* ─── Componente principal ──────────────────────────────────────── */
 export default function Soluciones() {
   const { idioma, t } = useIdioma()
@@ -424,16 +382,6 @@ export default function Soluciones() {
   return (
     <>
       <section id="soluciones" className="sol-section">
-
-        {/* Fondo: gradientes + iconos flotantes */}
-        <div className="sol-bg-glow sol-bg-glow-1" />
-        <div className="sol-bg-glow sol-bg-glow-2" />
-        <div className="sol-bg-glow sol-bg-glow-3" />
-        <FloatingIcons apps={apps} />
-
-        {/* Letras difusas de fondo */}
-        <div className="sol-watermark" aria-hidden="true">ZYNTELLO</div>
-        <div className="sol-watermark sol-watermark-2" aria-hidden="true">SAAS</div>
 
         <div className="container-fluid px-4 px-lg-5 sol-content">
 
@@ -489,14 +437,14 @@ export default function Soluciones() {
                 <span className="sol-bundle-name">{t('mod.erp.nombre', 'Zyntello ERP')}</span>
                 <span className="sol-bundle-badge">{t('sol.erp.badge', 'ERP Completo')}</span>
               </div>
-              <p style={{ color: '#9c9caa', margin: 0, fontSize: '0.88rem' }}>
+              <p style={{ color: 'var(--zy-texto-suave)', margin: 0, fontSize: '0.88rem' }}>
                 {t('sol.erp.lista', 'Inventario · Facturación · Cuentas por Cobrar · Cuentas por Pagar · Nómina · Control de Acceso · Bancos · Compras · Presupuesto · Activos Fijos · Caja Chica')}
               </p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexShrink: 0 }}>
               <div style={{ textAlign: 'right' }}>
-                <div style={{ color: '#f5f5f7', fontWeight: 800, fontSize: '1.4rem', lineHeight: 1 }}>
-                  {simbolo} {formatPrecio(erpApp?.precio)}<span style={{ color: '#9c9caa', fontSize: '0.75rem', fontWeight: 400 }}>{t('sol.periodo.mes', '/mes')}</span>
+                <div style={{ color: 'var(--zy-texto)', fontWeight: 800, fontSize: '1.4rem', lineHeight: 1 }}>
+                  {simbolo} {formatPrecio(erpApp?.precio)}<span style={{ color: 'var(--zy-texto-tenue)', fontSize: '0.75rem', fontWeight: 400 }}>{t('sol.periodo.mes', '/mes')}</span>
                 </div>
               </div>
               <a href="https://app.zyntello.com/erp" onClick={e => e.stopPropagation()} className="sol-bundle-btn" style={{ textDecoration: 'none' }}>

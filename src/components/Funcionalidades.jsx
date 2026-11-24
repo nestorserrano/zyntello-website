@@ -1,4 +1,3 @@
-import FondoAnimado from './FondoAnimado'
 import Icono from './Icono'
 import { useIdioma } from '../hooks/useIdioma'
 
@@ -25,7 +24,7 @@ const FUNCIONALIDADES = [
   {
     slug: 'aprobaciones',
     icono: 'check',
-    acento: '#6366f1',
+   
     nombre: 'Aprobaciones',
     gancho: 'Quién autoriza qué, escrito una vez',
     descripcion: 'Un motor único que atraviesa 16 módulos. Se define quién aprueba y desde qué importe, y el documento no avanza hasta que alguien lo firma.',
@@ -34,7 +33,7 @@ const FUNCIONALIDADES = [
   {
     slug: 'generador-de-reportes',
     icono: 'grafico',
-    acento: '#22d3ee',
+   
     nombre: 'Generador de Reportes',
     gancho: 'El reporte que falta, sin esperar a nadie',
     descripcion: 'Construye tus propios reportes sin escribir una consulta, sobre orígenes curados y siempre acotados a tu empresa.',
@@ -43,7 +42,7 @@ const FUNCIONALIDADES = [
   {
     slug: 'diccionario-de-datos',
     icono: 'libro',
-    acento: '#34d399',
+   
     nombre: 'Diccionario de Datos',
     gancho: 'Qué significa cada dato, escrito',
     descripcion: 'Tus tablas y tus columnas documentadas en español. Tus datos dejan de ser un secreto de quien programó el sistema.',
@@ -52,7 +51,7 @@ const FUNCIONALIDADES = [
   {
     slug: 'sistema-de-ayuda',
     icono: 'salvavidas',
-    acento: '#fb7185',
+   
     nombre: 'Sistema de Ayuda',
     gancho: 'Cada pantalla explica lo que hace',
     descripcion: 'Un panel de ayuda por pantalla y una explicación por campo, dentro de la propia pantalla. Sin manuales y sin cursos.',
@@ -65,10 +64,6 @@ export default function Funcionalidades() {
 
   return (
     <section id="funcionalidades" className="zy-func">
-      {/* Fondo: malla — la estructura que sostiene todo lo demás */}
-      <FondoAnimado escena="malla" tinte="indigo" />
-      <span className="zy-filo zy-filo-arriba" aria-hidden="true" />
-      <div className="zy-grano" aria-hidden="true" />
 
       <div className="container-fluid px-4 px-lg-5 position-relative">
 
@@ -97,7 +92,7 @@ export default function Funcionalidades() {
               key={f.slug}
               className="zy-func-tarjeta zy-revelar"
               href={`/funcionalidades/${f.slug}/`}
-              style={{ '--zy-color-acento': f.acento, transitionDelay: `${i * 80}ms` }}
+              style={{ transitionDelay: `${i * 80}ms` }}
             >
               <span className="zy-func-icono">
                 <Icono nombre={f.icono} size={22} />

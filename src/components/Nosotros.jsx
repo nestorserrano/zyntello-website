@@ -17,51 +17,43 @@ const PAISES = [
    «24/7») que se escriben igual en los ocho idiomas, y «IA» no — en inglés y
    en chino es «AI». */
 const CIFRAS = [
-  { num: '20+',  numClave: null,            clave: 'nos.cifra.anos',    label: 'años de experiencia en TI y ERP',       icono: 'diana',      acento: '#6366f1' },
-  { num: '5',    numClave: null,            clave: 'nos.cifra.paises',  label: 'países con presencia directa',          icono: 'globo',      acento: '#34d399' },
-  { num: 'IA',   numClave: 'nos.cifra.ia',  clave: 'nos.cifra.iatexto', label: 'aplicada a procesos empresariales',     icono: 'robot',      acento: '#a78bfa' },
-  { num: '24/7', numClave: null,            clave: 'nos.cifra.soporte', label: 'soporte posterior a la implementación', icono: 'salvavidas', acento: '#fb7185' },
+  { num: '20+',  numClave: null,            clave: 'nos.cifra.anos',    label: 'años de experiencia en TI y ERP',       icono: 'diana' },
+  { num: '5',    numClave: null,            clave: 'nos.cifra.paises',  label: 'países con presencia directa',          icono: 'globo' },
+  { num: 'IA',   numClave: 'nos.cifra.ia',  clave: 'nos.cifra.iatexto', label: 'aplicada a procesos empresariales',     icono: 'robot' },
+  { num: '24/7', numClave: null,            clave: 'nos.cifra.soporte', label: 'soporte posterior a la implementación', icono: 'salvavidas' },
 ]
 
 export default function Nosotros() {
   const { idioma, t } = useIdioma()
 
+  /* Formato «Sobre nosotros» de appicross.com: foto a todo el ancho bajo un velo azul, tarjeta
+     blanca a un lado con el texto, y —propio de Zyntello— las cifras en blanco sobre la foto. */
   return (
     <section id="nosotros" className="zy-nos">
-      <span className="zy-filo zy-filo-arriba" aria-hidden="true" />
-      <div className="zy-malla" aria-hidden="true" />
-      <div className="zy-halo zy-nos-halo" aria-hidden="true" />
+      <div className="zy-nos-foto" aria-hidden="true" />
 
       <div className="container-fluid px-4 px-lg-5 position-relative">
+        <div className="zy-nos-caja">
 
-        {/* El lema, a tamaño de manifiesto.
-            ⚠️ Son tres líneas y cada una lleva su resaltado en una palabra
-            distinta. En español se conserva exacto; en los demás idiomas va la
-            línea entera, porque «Datos» y «Tecnología» no caen al principio en
-            chino ni en árabe y el resaltado quedaría sobre otra palabra. */}
-        <div className="zy-nos-lema zy-revelar">
-          {idioma === 'es' ? (
-            <>
-              <p><span className="zy-hueco">Datos</span> que revelan.</p>
-              <p><span className="zy-hueco">Tecnología</span> que transforma.</p>
-              <p><span className="zy-degradado">Resultados que perduran.</span></p>
-            </>
-          ) : (
-            <>
-              <p>{t('nos.lema.1', 'Datos que revelan.')}</p>
-              <p>{t('nos.lema.2', 'Tecnología que transforma.')}</p>
-              <p><span className="zy-degradado">{t('nos.lema.3', 'Resultados que perduran.')}</span></p>
-            </>
-          )}
-        </div>
+          <div className="zy-nos-cifras zy-revelar">
+            {CIFRAS.map(c => (
+              <div key={c.clave} className="zy-nos-cifra">
+                <span className="zy-nos-cifra-icono"><Icono nombre={c.icono} size={19} /></span>
+                <span className="zy-nos-cifra-num">{c.numClave ? t(c.numClave, c.num) : c.num}</span>
+                <span className="zy-nos-cifra-lbl">{t(c.clave, c.label)}</span>
+              </div>
+            ))}
+          </div>
 
-        <div className="row g-5 align-items-start zy-nos-cuerpo">
-
-          <div className="col-lg-6 zy-revelar">
+          <div className="zy-nos-tarjeta zy-revelar" style={{ transitionDelay: '120ms' }}>
             <p className="zy-eyebrow">{t('pie.emp.nosotros', 'Quiénes somos')}</p>
-            {/* ⚠️ Las negritas del párrafo solo en español, por lo mismo: marcan
-                «Zyntello, S.R.L.» e «Inteligencia Artificial», y en árabe el
-                orden de la frase es otro. */}
+            <h2 className="zy-nos-lema">
+              {t('nos.lema.1', 'Datos que revelan.')}{' '}
+              {t('nos.lema.2', 'Tecnología que transforma.')}{' '}
+              <span className="zy-degradado">{t('nos.lema.3', 'Resultados que perduran.')}</span>
+            </h2>
+            {/* ⚠️ Las negritas del párrafo solo en español: marcan «Zyntello, S.R.L.» e
+                «Inteligencia Artificial», y en árabe el orden de la frase es otro. */}
             <p className="zy-nos-parrafo">
               {idioma === 'es' ? (
                 <>
@@ -97,24 +89,6 @@ export default function Nosotros() {
               {t('nos.cta', 'Agenda una consulta')}
               <Icono nombre="flecha" size={18} className="zy-flecha" />
             </a>
-          </div>
-
-          <div className="col-lg-6 zy-revelar" style={{ transitionDelay: '120ms' }}>
-            <div className="zy-nos-cifras">
-              {CIFRAS.map(c => (
-                <div
-                  key={c.clave}
-                  className="zy-tarjeta zy-nos-cifra"
-                  style={{ '--zy-color-acento': c.acento }}
-                >
-                  <span className="zy-nos-cifra-icono" style={{ color: c.acento }}>
-                    <Icono nombre={c.icono} size={19} />
-                  </span>
-                  <span className="zy-nos-cifra-num">{c.numClave ? t(c.numClave, c.num) : c.num}</span>
-                  <span className="zy-nos-cifra-lbl">{t(c.clave, c.label)}</span>
-                </div>
-              ))}
-            </div>
           </div>
 
         </div>

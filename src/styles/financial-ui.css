@@ -1,73 +1,83 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Paleta del sitio — formato appicross.com (decidido por el director técnico el
+   2026-11-24: «heredar todos los formatos, incluyendo el color claro»).
+
+   Es el ÚNICO tema. Va en `:root` y gana a `tokens.css` porque se carga después.
+   Valores medidos en la propia referencia: azul principal #10568C, titulares
+   #101828, fondos que alternan blanco y #F9FAFB, pie #0A1628.
+
+   Contraste comprobado (texto pequeño, mínimo 4.5:1):
+     #101828 / #fff  17,8   ·  #475467 / #fff  7,6   ·  #667085 / #fff  4,8
+     #667085 / #F9FAFB 4,6  ·  #10568C / #fff  7,7   ·  #fff / #10568C  7,7
+   ═══════════════════════════════════════════════════════════════════════════ */
 :root {
-  --zy-fondo: #111923; --zy-fondo-alto: #151f2b; --zy-tarjeta: #19232f;
-  --zy-tarjeta-alta: #202d3b; --zy-elevado: #243140;
-  --zy-indigo: #6287ad; --zy-indigo-fuerte: #345775; --zy-indigo-claro: #adc5de;
-  --zy-coral: #d79485; --zy-coral-claro: #e6b4a8;
-  --zy-grad-marca: linear-gradient(#345775, #345775);
-  --zy-grad-texto: linear-gradient(#adc5de, #adc5de);
-  --zy-grad-panel: linear-gradient(160deg, rgb(98 135 173 / .04), transparent);
-  --zy-glow-indigo: 0 4px 16px rgb(0 0 0 / .12);
-  --zy-glow-coral: 0 4px 16px rgb(0 0 0 / .12);
-
-  /* ⚠⚠ **El velo del fondo animado es un TOKEN DE TEMA, no una constante.**
-     Es lo que sostiene el 4.5:1 del texto mientras el fondo se mueve, y para
-     eso tiene que ir en la MISMA dirección que el texto: oscureciendo cuando el
-     texto es claro, aclarando cuando el texto es oscuro.
-     Vivió como constante en `FondoAnimado.jsx` con el valor OSCURO único, y en
-     tema claro oscurecía el fondo dejando el texto oscuro encima: el título
-     bajaba a 2,24 y la bajada a 1,04 —gris ceniza ilegible— mientras en oscuro
-     daba 17,73 y 7,12. Medido el 2026-11-17 en producción. */
-  --zy-velo-indigo: radial-gradient(ellipse 75% 60% at 50% 42%, rgba(8,8,12,.62) 0%, rgba(8,8,12,.86) 62%, rgba(8,8,12,.96) 100%);
-  --zy-velo-coral:  radial-gradient(ellipse 80% 65% at 50% 45%, rgba(8,8,12,.6) 0%, rgba(8,8,12,.84) 60%, rgba(8,8,12,.96) 100%);
-  --zy-velo-neutro: radial-gradient(ellipse 85% 70% at 50% 50%, rgba(8,8,12,.7) 0%, rgba(8,8,12,.9) 65%, rgba(8,8,12,.98) 100%);
-  /* Panel translucido POSADO sobre el fondo animado (la banda de cifras del hero).
-     Misma regla que los velos: va en la direccion del texto, no al reves. */
-  --zy-velo-panel: rgba(8, 8, 12, .72);
-}
-html[data-appearance="light"] {
   color-scheme: light;
-  --zy-fondo: #f4f5f7; --zy-fondo-alto: #f8f9fa; --zy-tarjeta: #fff;
-  --zy-tarjeta-alta: #fff; --zy-elevado: #eef1f4;
-  --zy-borde: #e2e8f0; --zy-borde-medio: #cbd5e1; --zy-borde-fuerte: #94a3b8;
-  --zy-texto: #202f40; --zy-texto-medio: #435367; --zy-texto-suave: #526174; --zy-texto-tenue: #627185;
-  --zy-indigo-claro: #345775; --zy-coral: #ad5a4a; --zy-coral-claro: #ad5a4a;
-  --zy-grad-texto: linear-gradient(#345775, #345775);
-  --zy-sombra-1: 0 1px 2px rgb(0 0 0 / .03);
-  --zy-sombra-2: 0 4px 6px -1px rgb(0 0 0 / .05);
-  --zy-sombra-3: 0 12px 32px rgb(32 47 64 / .06);
 
+  --zy-fondo:        #ffffff;
+  --zy-fondo-alto:   #f9fafb;
+  --zy-tarjeta:      #ffffff;
+  --zy-tarjeta-alta: #ffffff;
+  --zy-elevado:      #f2f4f7;
+
+  --zy-borde:        #eaecf0;
+  --zy-borde-medio:  #d0d5dd;
+  --zy-borde-fuerte: #98a2b3;
+
+  --zy-texto:       #101828;
+  --zy-texto-medio: #344054;
+  --zy-texto-suave: #475467;
+  --zy-texto-tenue: #667085;
+
+  /* «indigo» y «coral» son nombres heredados del tema oscuro; aquí los dos son
+     de la familia azul de la referencia. Se conservan los nombres para no tocar
+     las ~200 reglas que los usan. */
+  --zy-indigo:        #10568c;
+  --zy-indigo-fuerte: #10568c;
+  --zy-indigo-claro:  #10568c;
+  --zy-coral:         #1f6fae;
+  --zy-coral-claro:   #1f6fae;
+  --zy-sobre-indigo:  #ffffff;
+  --zy-sobre-coral:   #ffffff;
+  --zy-azul-hover:    #0c4470;
+
+  --zy-exito:  #079455;
+  --zy-alerta: #b54708;
+  --zy-error:  #d92d20;
+
+  --zy-grad-marca: linear-gradient(#10568c, #10568c);
+  --zy-grad-texto: linear-gradient(#10568c, #10568c);
+  --zy-grad-borde: linear-gradient(#d0d5dd, #d0d5dd);
+  --zy-grad-panel: none;
+
+  --zy-sombra-1: 0 1px 2px rgba(16, 24, 40, .05);
+  --zy-sombra-2: 0 4px 14px rgba(16, 24, 40, .08);
+  --zy-sombra-3: 0 18px 40px rgba(16, 24, 40, .12);
+  --zy-glow-indigo: 0 8px 20px rgba(16, 86, 140, .18);
+  --zy-glow-coral:  0 8px 20px rgba(16, 86, 140, .18);
+
+  --zy-radio-sm: 8px;
+  --zy-radio:    12px;
+  --zy-radio-lg: 16px;
+  --zy-radio-xl: 24px;
+
+  /* Tipografía de la referencia: la del sistema, en negrita para los titulares. */
+  --zy-display: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --zy-texto-fuente: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  --zy-velo-panel: rgba(255, 255, 255, .9);
 }
+
 .financial-icon { display: inline-flex; align-items: center; justify-content: center; line-height: 1; }
-.zy-appearance { display: inline-flex; align-items: center; justify-content: center; min-width: 40px; min-height: 40px; border: 1px solid var(--zy-borde); border-radius: 8px; background: var(--zy-tarjeta); color: var(--zy-texto-suave); }
-.zy-appearance:hover { color: var(--zy-texto); background: var(--zy-elevado); }
-.zy-appearance:focus-visible { outline: 2px solid var(--zy-indigo-claro); outline-offset: 3px; }
-html[data-appearance="light"] .zy-nav { background: var(--zy-tarjeta); }
 
-
-/* ─── El hero es una SECCION OSCURA, tambien en tema claro ────────────────────
-   ⚠⚠ El fondo del hero no sigue al tema: lleva el canvas de constelaciones y
-   su velo oscuro, y eso es identidad de marca, no una preferencia. Lo que SI
-   tiene que seguir al fondo es el TEXTO, y ahi estaba el defecto: en tema claro
-   los tokens de texto valen oscuro, asi que la pagina pintaba texto oscuro
-   sobre el velo oscuro. Medido el 2026-11-17 en produccion: el titulo bajaba a
-   **2,24** y la bajada a **1,04** —gris ceniza ilegible, la insignia ni se
-   veia— mientras en tema oscuro daban 17,73 y 7,12.
-
-   La solucion NO es aclarar el velo: eso deja el banner blanco y le quita el
-   caracter. Es redefinir los tokens DENTRO del hero, que es lo que convierte la
-   seccion en un ambito oscuro propio. Son los mismos valores del `:root` de
-   `tokens.css`, ya verificados >= 4.5:1 sobre el velo. */
-html[data-appearance="light"] .zy-hero {
-  /* ⚠⚠ El fondo BASE tambien, no solo el texto. El velo es translucido (62% en
-     el centro), asi que sobre el fondo claro del tema daba `rgb(98,98,101)`: un
-     gris medio que es el PEOR sitio posible —ni oscuro para el texto claro ni
-     claro para el oscuro—. Con el texto ya en claro seguia dando 2,24 en la
-     bajada. Fijando la base oscura, el velo apoya sobre ella y vuelve el casi
-     negro de siempre. */
-  --zy-fondo:       #08080c;
-  --zy-texto:       #f5f5f7;
-  --zy-texto-medio: #c9c9d4;
-  --zy-texto-suave: #9c9caa;
-  --zy-texto-tenue: #8a8a99;
-  --zy-borde:       rgba(255, 255, 255, .12);
+/* ─── El hero sigue siendo un ÁMBITO OSCURO: es una foto con velo ──────────────
+   ⚠⚠ Sin esto, el texto del hero tomaría los tokens claros de arriba —texto
+   oscuro— y quedaría ilegible sobre la foto. Medido el 2026-11-17 con el tema
+   claro anterior: el título bajaba a 2,24:1. */
+.zy-hero {
+  --zy-fondo:       #06111d;
+  --zy-texto:       #ffffff;
+  --zy-texto-medio: #e4e7ec;
+  --zy-texto-suave: #d0d5dd;
+  --zy-texto-tenue: #b9c0cc;
+  --zy-borde:       rgba(255, 255, 255, .16);
 }

@@ -19,6 +19,8 @@ import './styles/financial-ui.css'
 import './styles/AvisoCookies.css'
 import './styles/SelectorIdioma.css'
 import './styles/AvisoIdiomas.css'
+/* ⚠️ La ÚLTIMA: el formato appicross.com sobrescribe lo que las anteriores pensaron para el tema oscuro. */
+import './styles/appicross.css'
 
 /**
  * Primer elemento enfocable de la página: sin esto, quien navega con teclado

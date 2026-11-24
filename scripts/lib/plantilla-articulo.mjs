@@ -68,8 +68,8 @@ const ESTILOS_BLOG = `
 .cuerpo a{color:var(--color);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
 .aviso{background:var(--tarjeta);border:1px solid var(--borde);border-left:3px solid var(--color);border-radius:0 14px 14px 0;padding:20px 24px;margin:26px 0;max-width:70ch}
 .aviso p{margin:0;color:var(--suave);font-size:.95rem}
-.entrada{display:block;background:var(--tarjeta);border:1px solid var(--borde);border-radius:16px;padding:24px;transition:border-color .3s,transform .3s}
-.entrada:hover{border-color:color-mix(in srgb,var(--color) 40%,transparent);transform:translateY(-3px)}
+.entrada{display:block;background:var(--tarjeta);border:1px solid var(--borde);border-radius:16px;padding:24px;box-shadow:var(--sombra);transition:box-shadow .3s,transform .3s}
+.entrada:hover{box-shadow:var(--sombra-alta);transform:translateY(-3px)}
 .entrada time{display:block;color:var(--tenue);font-size:.79rem;margin-bottom:9px}
 .entrada h3{font-family:var(--display);font-weight:600;font-size:1.08rem;letter-spacing:-.02em;line-height:1.28;margin-bottom:8px}
 .entrada p{color:var(--suave);font-size:.91rem}
@@ -150,9 +150,6 @@ ${idiomas.length ? `<link rel="alternate" hreflang="x-default" href="${rutaEn(''
 <meta name="twitter:description" content="${esc(descripcion)}">
 <meta name="twitter:image" content="${SITIO}/logos/zyntello_miniatura.png">
 <link rel="icon" href="${SITIO}/logos/favicon.ico">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="${SITIO}/vendor/fontawesome/css/all.min.css">
 <script type="application/ld+json">
 ${JSON.stringify(jsonLd, null, 2)}

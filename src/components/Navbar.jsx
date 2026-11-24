@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import Icono from './Icono'
-import Apariencia from './Apariencia'
 import SelectorIdioma from './SelectorIdioma'
 import RedesSociales from './RedesSociales'
 import { useIdioma } from '../hooks/useIdioma'
@@ -117,7 +116,6 @@ export default function Navbar() {
             {/* ⚠️ El selector va ANTES del tema y VISIBLE: el sitio se adapta al idioma del
                 navegador, y quien lo tenga en uno que no habla necesita corregirlo sin buscarlo. */}
             <SelectorIdioma />
-            <Apariencia />
             <a
               href="https://app.zyntello.com"
               className="zy-nav-acceso"

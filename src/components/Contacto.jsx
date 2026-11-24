@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import FondoAnimado from './FondoAnimado'
 import Icono from './Icono'
 import { useIdioma } from '../hooks/useIdioma'
 
@@ -88,10 +87,6 @@ export default function Contacto() {
 
   return (
     <section id="contacto" className="zy-cont">
-      {/* Fondo: ondas de señal — cobertura y comunicación */}
-      <FondoAnimado escena="ondas" tinte="neutro" />
-      <span className="zy-filo zy-filo-arriba" aria-hidden="true" />
-      <div className="zy-grano" aria-hidden="true" />
 
       <div className="container-fluid px-4 px-lg-5 position-relative">
         <div className="row g-5">

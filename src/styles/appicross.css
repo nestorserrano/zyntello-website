@@ -1,0 +1,364 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Formato appicross.com — encargo del director técnico, 2026-11-24:
+   «heredar todos los formatos, incluyendo el color claro».
+
+   Se carga la ÚLTIMA (ver App.jsx): sobrescribe lo que las hojas anteriores
+   pensaron para el tema oscuro sin reescribirlas enteras. La paleta vive en
+   `financial-ui.css`; aquí van los FORMATOS medidos en la referencia:
+
+   · Cabecera de sección: rótulo azul en versalitas con raya delante, titular
+     grande casi negro.
+   · Fondos lisos que alternan blanco y gris muy claro, 96 px de aire.
+   · Tarjetas blancas con sombra suave, sin brillos ni bordes de colores.
+   · Botones azules redondeados; el menú se vuelve blanco al bajar.
+   · Pie azul marino #0A1628.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Las tarjetas que aún leen un acento por servicio lo reciben azul. */
+  --zy-color-acento: var(--zy-indigo);
+  --zy-color-acento2: var(--zy-indigo);
+}
+
+body {
+  background: var(--zy-fondo);
+  color: var(--zy-texto-medio);
+  font-family: var(--zy-texto-fuente);
+}
+
+/* ── Ritmo de secciones: blanco / gris alterno ─────────────────────────────── */
+main > section { padding-block: clamp(64px, 7vw, 96px); }
+#servicios, #funcionalidades, #portafolio { background: var(--zy-fondo); }
+#soluciones, #porque, #contacto { background: var(--zy-fondo-alto); }
+.zy-seccion-alta { background: var(--zy-fondo); }
+
+/* Formas decorativas de la referencia: cuadros redondeados con borde azul fino,
+   inclinados, en las esquinas. Puro adorno: detrás del contenido y sin eventos. */
+#servicios, #porque, #contacto { position: relative; overflow: hidden; }
+#servicios::before, #porque::before, #contacto::before {
+  content: '';
+  position: absolute;
+  width: 220px; height: 170px;
+  border: 1.5px solid rgba(16, 86, 140, .55);
+  border-radius: 22px;
+  background: rgba(16, 86, 140, .04);
+  pointer-events: none;
+  z-index: 0;
+}
+#servicios::before { top: 70px; right: -70px; transform: rotate(-22deg); }
+#porque::before    { bottom: 40px; left: -90px; transform: rotate(14deg); }
+#contacto::before  { top: 50px; right: -80px; transform: rotate(38deg); }
+main > section > .container-fluid { position: relative; z-index: 1; }
+
+/* ── Cabecera de sección ───────────────────────────────────────────────────── */
+.zy-eyebrow,
+.zy-eyebrow-coral {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  color: var(--zy-indigo);
+  font-family: var(--zy-display);
+  font-size: .82rem;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+.zy-eyebrow::before {
+  content: '';
+  width: 48px;
+  height: 2px;
+  background: currentColor;
+  flex-shrink: 0;
+}
+/* Centrado, la referencia no lleva la raya. */
+.text-center .zy-eyebrow::before,
+.zy-centrado .zy-eyebrow::before { display: none; }
+
+.zy-titulo {
+  font-family: var(--zy-display);
+  font-size: clamp(2rem, 3.6vw, 3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -.02em;
+  color: var(--zy-texto);
+}
+.zy-subtitulo { color: var(--zy-texto-suave); }
+
+/* Los resaltes del tema oscuro —degradado animado y letra hueca— pasan a azul
+   liso: la referencia no usa ninguno de los dos. */
+.zy-degradado {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: var(--zy-indigo);
+  animation: none;
+}
+.zy-hueco { color: var(--zy-indigo); -webkit-text-stroke: 0; }
+.zy-coral, .zy-indigo { color: var(--zy-indigo); }
+
+/* ── Tarjetas ──────────────────────────────────────────────────────────────── */
+.zy-tarjeta,
+.zy-func-tarjeta {
+  background: #fff;
+  border: 1px solid var(--zy-borde);
+  border-radius: var(--zy-radio-lg);
+  box-shadow: var(--zy-sombra-2);
+}
+.zy-tarjeta::before, .zy-tarjeta::after,
+.zy-func-tarjeta::before, .zy-func-tarjeta::after { display: none; }
+.zy-tarjeta:hover,
+.zy-func-tarjeta:hover {
+  background: #fff;
+  border-color: var(--zy-borde);
+  box-shadow: var(--zy-sombra-3);
+  transform: translateY(-6px);
+}
+
+/* Icono en círculo azul claro, como los de «Sectores» de la referencia. */
+.zy-serv-icono, .zy-func-icono, .zy-porque-icono, .zy-port-icono, .zy-cont-canal-icono {
+  border-radius: 50% !important;
+  background: rgba(16, 86, 140, .08) !important;
+  border: 0 !important;
+  color: var(--zy-indigo) !important;
+  box-shadow: none !important;
+}
+.zy-serv-tarjeta:hover .zy-serv-icono { box-shadow: none; }
+
+/* ── Botones ───────────────────────────────────────────────────────────────── */
+.zy-btn { font-family: var(--zy-display); font-weight: 600; min-height: 48px; padding: 12px 28px; }
+.zy-btn-primario,
+.zy-btn-coral {
+  background: var(--zy-indigo);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(16, 86, 140, .22);
+}
+.zy-btn-primario:hover,
+.zy-btn-coral:hover {
+  background: var(--zy-azul-hover);
+  color: #fff;
+  box-shadow: 0 12px 26px rgba(16, 86, 140, .3);
+}
+.zy-btn-fantasma {
+  background: #fff;
+  color: var(--zy-indigo);
+  border-color: var(--zy-indigo);
+  backdrop-filter: none;
+}
+.zy-btn-fantasma:hover { background: rgba(16, 86, 140, .06); color: var(--zy-indigo); border-color: var(--zy-indigo); }
+
+.zy-enlace { color: var(--zy-indigo); }
+.zy-enlace:hover { color: var(--zy-azul-hover); }
+
+/* ── Formularios ───────────────────────────────────────────────────────────── */
+.form-control, .form-select { background: #fff; border-color: var(--zy-borde-medio); }
+.form-control:focus, .form-select:focus {
+  background: #fff;
+  border-color: var(--zy-indigo);
+  box-shadow: 0 0 0 4px rgba(16, 86, 140, .14);
+}
+
+/* ── Menú: transparente sobre la foto, BLANCO al bajar ─────────────────────── */
+.zy-nav-compacto {
+  background: #fff;
+  border-bottom-color: var(--zy-borde);
+  box-shadow: 0 2px 12px rgba(16, 24, 40, .08);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.zy-nav-lista { background: none; border: 0; padding: 0; gap: 4px; }
+.zy-nav-enlace { color: var(--zy-texto-medio); font-weight: 500; font-size: .93rem; padding: 0 12px; }
+.zy-nav-enlace:hover { background: none; color: var(--zy-indigo); }
+.zy-nav-enlace-activo {
+  background: none;
+  box-shadow: none;
+  color: var(--zy-indigo);
+}
+/* ⚠️ El activo no se marca SOLO por color: lleva subrayado, para quien no distingue el azul. */
+.zy-nav-enlace-activo::after {
+  content: '';
+  position: absolute;
+  left: 12px; right: 12px; bottom: 6px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+}
+.zy-nav:not(.zy-nav-compacto) .zy-nav-enlace { color: rgba(255, 255, 255, .9); }
+.zy-nav:not(.zy-nav-compacto) .zy-nav-enlace:hover,
+.zy-nav:not(.zy-nav-compacto) .zy-nav-enlace-activo { color: #fff; }
+/* «Acceder» y «Contacto»: los dos botones azules redondeados de la referencia. */
+.zy-nav-acceso {
+  min-height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: var(--zy-indigo);
+  color: #fff !important;
+  font-weight: 600;
+}
+.zy-nav-acceso:hover { background: var(--zy-azul-hover); }
+.zy-nav-cta { min-height: 40px; padding: 0 20px; box-shadow: none; }
+.zy-nav-hamburguesa { color: var(--zy-texto); border-color: var(--zy-borde-medio); background: #fff; }
+.zy-nav:not(.zy-nav-compacto) .zy-nav-hamburguesa { color: #fff; background: rgba(255, 255, 255, .08); border-color: rgba(255, 255, 255, .35); }
+/* Menú móvil desplegado: panel blanco. */
+@media (max-width: 1299.98px) {
+  .zy-nav-menu { background: #fff; }
+  .zy-nav-enlace { min-height: 46px; }
+}
+
+/* ── Servicios: «Nuestras Áreas» con foto ──────────────────────────────────── */
+.zy-serv-areas {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-bottom: clamp(28px, 3.4vw, 44px);
+}
+@media (min-width: 768px) { .zy-serv-areas { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.zy-serv-area {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 360px;
+  padding: 28px;
+  border-radius: var(--zy-radio-lg);
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: var(--zy-sombra-3);
+  transition: transform var(--zy-t-medio) var(--zy-curva), box-shadow var(--zy-t-medio) var(--zy-curva);
+}
+/* ⚠️ El degradado garantiza el contraste del texto blanco sobre cualquier foto. */
+.zy-serv-area::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(10, 22, 40, .05) 0%, rgba(10, 22, 40, .55) 45%, rgba(10, 22, 40, .93) 100%);
+}
+.zy-serv-area:hover { transform: translateY(-6px); color: #fff; box-shadow: 0 26px 50px rgba(16, 24, 40, .22); }
+.zy-serv-area-icono {
+  width: 44px; height: 44px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .2);
+  backdrop-filter: blur(6px);
+  margin-bottom: 14px;
+}
+.zy-serv-area-titulo { font-family: var(--zy-display); font-size: 1.5rem; font-weight: 700; color: #fff; margin: 0 0 8px; }
+.zy-serv-area-desc { color: rgba(255, 255, 255, .88); font-size: .95rem; line-height: 1.55; margin: 0; }
+
+.zy-serv-grupo { color: var(--zy-indigo); }
+
+/* ── Por qué / Portafolio / Funcionalidades ────────────────────────────────── */
+.zy-porque-item:hover { background: #fff; }
+.zy-porque-num { color: var(--zy-indigo); }
+.zy-port-categoria { color: var(--zy-indigo); }
+.zy-port-resultado svg { color: var(--zy-exito); }
+.zy-port-tec { background: var(--zy-elevado); border-color: transparent; color: var(--zy-texto-medio); }
+.zy-func-dato { color: var(--zy-indigo); }
+
+/* ── Contacto ──────────────────────────────────────────────────────────────── */
+.zy-cont-form {
+  background: #fff;
+  border: 1px solid var(--zy-borde);
+  border-radius: var(--zy-radio-xl);
+  box-shadow: var(--zy-sombra-2);
+}
+.zy-cont-canal:hover { background: #fff; }
+
+/* ── Pie: azul marino de la referencia ─────────────────────────────────────
+   ⚠️ Ámbito OSCURO propio: se redefinen los tokens de texto dentro, igual que en
+   el hero. Con los del tema claro, el texto oscuro quedaría sobre el marino. */
+.zy-pie {
+  --zy-texto:       #ffffff;
+  --zy-texto-medio: #d0d5dd;
+  --zy-texto-suave: #b9c0cc;
+  --zy-texto-tenue: #98a2b3;
+  --zy-borde:       rgba(255, 255, 255, .12);
+  --zy-borde-medio: rgba(255, 255, 255, .22);
+  --zy-superficie:  rgba(255, 255, 255, .06);
+  --zy-indigo-claro: #8fd0ff;
+  background: #0a1628;
+  border-top: 0;
+  color: var(--zy-texto-suave);
+}
+.zy-pie-llamada {
+  margin-top: clamp(-20px, -1vw, 0px);
+  padding: clamp(32px, 4vw, 52px) clamp(20px, 3vw, 40px);
+  border: 0;
+  border-radius: var(--zy-radio-xl);
+  background: linear-gradient(120deg, #0c4470 0%, #10568c 60%, #1f6fae 100%);
+}
+.zy-pie-llamada-titulo { color: #fff; }
+.zy-pie-llamada .zy-degradado { color: #bfe3ff; }
+.zy-pie-llamada .zy-btn-primario { background: #fff; color: var(--zy-indigo); box-shadow: none; }
+.zy-pie-llamada .zy-btn-primario:hover { background: #e8f2fb; color: var(--zy-indigo); }
+.zy-pie-llamada .zy-btn-fantasma { background: transparent; color: #fff; border-color: rgba(255, 255, 255, .6); }
+.zy-pie-llamada .zy-btn-fantasma:hover { background: rgba(255, 255, 255, .1); color: #fff; }
+.zy-pie .zy-btn-fantasma { background: transparent; color: #fff; border-color: rgba(255, 255, 255, .35); }
+.zy-pie-titulo { color: #98a2b3; letter-spacing: .16em; }
+.zy-pie-lista a, .zy-pie-contactos a { color: #d0d5dd; }
+.zy-pie-lista a:hover, .zy-pie-contactos a:hover { color: #fff; }
+.zy-pie-marca strong { color: #fff; }
+.zy-pie .zy-redes-sociales a { border-radius: 50%; background: rgba(255, 255, 255, .08); border-color: transparent; color: #fff; }
+.zy-pie .zy-redes-sociales a:hover { background: rgba(255, 255, 255, .16); color: #fff; border-color: transparent; }
+.zy-pie-final { border-top-color: rgba(255, 255, 255, .12); color: #98a2b3; }
+
+/* ── Avisos flotantes sobre fondo claro ────────────────────────────────────── */
+.zy-aviso-idiomas { background: #fff; box-shadow: 0 2px 10px rgba(16, 24, 40, .06); }
+
+/* ── Plataforma (Soluciones): cabecera centrada, como «Sectores» ───────────── */
+.sol-hero-eyebrow {
+  background: none;
+  border: 0;
+  padding: 0;
+  border-radius: 0;
+  color: var(--zy-indigo);
+  font-family: var(--zy-display);
+  font-size: .82rem;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+.sol-hero-title { font-size: clamp(2rem, 3.6vw, 3rem); line-height: 1.15; letter-spacing: -.02em; }
+.sol-hero-accent { background: none; -webkit-text-fill-color: currentColor; color: var(--zy-indigo); animation: none; }
+
+/* El aviso de personalización, como franja azul. */
+.sol-callout {
+  background: linear-gradient(120deg, #0c4470 0%, #10568c 65%, #1f6fae 100%);
+  border: 0;
+  box-shadow: var(--zy-sombra-2);
+}
+.sol-callout-title { color: #fff; }
+.sol-callout-text { color: rgba(255, 255, 255, .86); }
+.sol-callout-btn { background: #fff; color: var(--zy-indigo); box-shadow: none; }
+.sol-callout-btn:hover { background: #e8f2fb; color: var(--zy-indigo); box-shadow: none; }
+
+.sol-moneda-selector { background: #fff; border-color: var(--zy-borde); }
+.sol-moneda-pill { background: #fff; border-color: var(--zy-borde-medio); }
+.sol-moneda-pill:hover, .sol-moneda-pill.active { background: rgba(16, 86, 140, .08); border-color: var(--zy-indigo); color: var(--zy-indigo); }
+
+.sol-bundle-banner {
+  background: #fff;
+  border: 1px solid var(--zy-borde);
+  border-inline-start: 4px solid var(--zy-indigo);
+  box-shadow: var(--zy-sombra-2);
+}
+.sol-bundle-banner:hover { border-color: var(--zy-borde); border-inline-start-color: var(--zy-indigo); box-shadow: var(--zy-sombra-3); }
+.sol-bundle-btn { box-shadow: 0 8px 20px rgba(16, 86, 140, .22); }
+.sol-bundle-btn:hover { box-shadow: 0 12px 26px rgba(16, 86, 140, .3); }
+.sol-card { background: #fff; box-shadow: var(--zy-sombra-1); }
+.sol-card::before, .sol-card::after { display: none; }
+.sol-card:hover { box-shadow: var(--zy-sombra-3); }
+
+/* Seis proyectos: en 3 columnas cuadran 2 filas llenas. Con `auto-fill` en un
+   monitor ancho salían 4 + 2 y la fila de abajo quedaba a medias. */
+@media (min-width: 992px) {
+  .zy-port-rejilla { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+}

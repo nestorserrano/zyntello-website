@@ -19,151 +19,151 @@ import '../styles/Servicios.css'
 const SERVICIOS = [
   {
     slug: 'plataforma-saas',
-    icono: 'cuadricula', acento: '#6366f1', acento2: '#fb7185',
+    icono: 'cuadricula',
     grupo: 'Plataforma', grupoClave: 'serv.grupo.plataforma',
     titulo: 'Plataforma SaaS Zyntello',
     descripcion: 'Nuestro ERP modular en la nube. Contratas solo los módulos que usas y los tienes funcionando el mismo día, sin instalar nada.',
-    destacado: true,
-    marcas: [
-      ['serv.marca.modulos',      '34 módulos'],
-      ['serv.marca.multiempresa', 'Multi-empresa'],
-      ['serv.marca.multimoneda',  'Multi-moneda'],
-      ['serv.marca.fiscal',       'Fiscal por país'],
-    ],
   },
   {
     slug: 'automatizacion-con-ia',
-    icono: 'robot', acento: '#a78bfa',
+    icono: 'robot',
     grupo: 'Inteligencia Artificial', grupoClave: 'serv.grupo.ia',
     titulo: 'Automatización con IA',
     descripcion: 'Agentes y modelos que ejecutan las tareas repetitivas, generan los reportes y conectan entre sí los sistemas que ya tienes.',
   },
   {
     slug: 'erp-y-crm',
-    icono: 'servidor', acento: '#6366f1',
+    icono: 'servidor',
     grupo: 'Sistemas de gestión', grupoClave: 'serv.grupo.gestion',
     titulo: 'ERP y CRM',
     descripcion: 'Desarrollo, personalización e implementación de Softland, Profit, ODOO y plataformas abiertas, adaptadas al flujo real de tu empresa.',
   },
   {
     slug: 'migracion-de-sistemas',
-    icono: 'ciclo', acento: '#60a5fa',
+    icono: 'ciclo',
     grupo: 'Sistemas de gestión', grupoClave: 'serv.grupo.gestion',
     titulo: 'Migración de sistemas y datos',
     descripcion: 'De un ERP, una versión o un servidor a otro, sin parar la operación y sin perder el histórico.',
   },
   {
     slug: 'aplicaciones-a-la-medida',
-    icono: 'codigo', acento: '#22d3ee',
+    icono: 'codigo',
     grupo: 'Desarrollo', grupoClave: 'serv.grupo.desarrollo',
     titulo: 'Aplicaciones a la medida',
     descripcion: 'Construidas sobre las bases de datos que ya usas. No hay que empezar de cero para resolver un problema concreto.',
   },
   {
     slug: 'inteligencia-de-negocios',
-    icono: 'subida', acento: '#4ade80',
+    icono: 'subida',
     grupo: 'Datos', grupoClave: 'serv.grupo.bi',
     titulo: 'Inteligencia de negocios',
     descripcion: 'Tableros y reportes gerenciales conectados a tu ERP, con la información al día y sin armarla a mano.',
   },
   {
     slug: 'soporte-tecnico-ti',
-    icono: 'salvavidas', acento: '#fb7185',
+    icono: 'salvavidas',
     grupo: 'Operación', grupoClave: 'serv.grupo.operacion',
     titulo: 'Soporte técnico TI',
     descripcion: 'Infraestructura, redes, servidores y sistemas, con niveles de servicio acordados según cómo opera tu empresa.',
   },
   {
     slug: 'nube-y-ciberseguridad',
-    icono: 'escudo', acento: '#34d399',
+    icono: 'escudo',
     grupo: 'Operación', grupoClave: 'serv.grupo.operacion',
     titulo: 'Nube y ciberseguridad',
     descripcion: 'Servicios en la nube, protección de la información y gestión de infraestructura: que esté disponible, y que solo entre quien debe.',
   },
   {
     slug: 'personal-ti-especializado',
-    icono: 'equipo', acento: '#fbbf24',
+    icono: 'equipo',
     grupo: 'Talento', grupoClave: 'serv.grupo.talento',
     titulo: 'Colocación de personal TI',
     descripcion: 'Desde técnicos de soporte hasta arquitectos de sistemas y especialistas en Inteligencia Artificial.',
   },
   {
     slug: 'venta-de-equipos',
-    icono: 'caja', acento: '#94a3b8',
+    icono: 'caja',
     grupo: 'Equipos', grupoClave: 'serv.grupo.equipos',
     titulo: 'Importación y venta de equipos',
     descripcion: 'Hardware, software y soluciones tecnológicas, con la asesoría técnica incluida en la compra.',
   },
   {
     slug: 'domotica',
-    icono: 'casa', acento: '#e879f9',
+    icono: 'casa',
     grupo: 'IoT y domótica', grupoClave: 'serv.grupo.iot',
     titulo: 'Domótica y edificios inteligentes',
     descripcion: 'Iluminación, clima, acceso, cámaras y consumo eléctrico del edificio, gestionados desde un solo lugar.',
   },
   {
     slug: 'internet-de-las-cosas',
-    icono: 'chip', acento: '#14b8a6',
+    icono: 'chip',
     grupo: 'IoT y domótica', grupoClave: 'serv.grupo.iot',
     titulo: 'Internet de las cosas (IoT)',
     descripcion: 'Sensores, telemetría y alertas para medir temperatura, niveles, energía o flota sin que nadie tenga que ir a revisar.',
   },
   {
     slug: 'industria-4-0-y-5-0',
-    icono: 'fabrica', acento: '#fb923c',
+    icono: 'fabrica',
     grupo: 'Industria', grupoClave: 'serv.grupo.industria',
     titulo: 'Industria 4.0 y 5.0',
     descripcion: 'Máquinas, producción y ERP conectados: eficiencia por línea, paradas y trazabilidad en tiempo real, con el operario en el centro.',
   },
   {
     slug: 'automatizacion-industrial',
-    icono: 'engranajes', acento: '#a3e635',
+    icono: 'engranajes',
     grupo: 'Industria', grupoClave: 'serv.grupo.industria',
     titulo: 'Automatización y mantenimiento industrial',
     descripcion: 'Control de procesos y mantenimiento preventivo y predictivo, con el historial de cada equipo y los repuestos ligados al inventario.',
   },
   {
     slug: 'transformacion-digital',
-    icono: 'brujula', acento: '#818cf8',
+    icono: 'brujula',
     grupo: 'Consultoría', grupoClave: 'serv.grupo.consultoria',
     titulo: 'Transformación digital',
     descripcion: 'Diagnóstico de lo que tienes, hoja de ruta tecnológica, arquitectura de sistemas y acompañamiento en la implementación.',
   },
   {
     slug: 'capacitacion-ti-e-ia',
-    icono: 'birrete', acento: '#c084fc',
+    icono: 'birrete',
     grupo: 'Consultoría', grupoClave: 'serv.grupo.consultoria',
     titulo: 'Capacitación y formación',
     descripcion: 'En el ERP implantado y en herramientas de IA, para que el equipo use de verdad lo que la empresa compró.',
   },
   {
     slug: 'consultoria-contable',
-    icono: 'libro', acento: '#2dd4bf',
+    icono: 'libro',
     grupo: 'Consultoría', grupoClave: 'serv.grupo.consultoria',
     titulo: 'Consultoría contable',
     descripcion: 'Asesoría contable y financiera integrada con tus sistemas: procesos, reportes fiscales y análisis para decidir con números reales.',
   },
   {
     slug: 'marketing-digital',
-    icono: 'megafono', acento: '#f472b6',
+    icono: 'megafono',
     grupo: 'Datos y mercado', grupoClave: 'serv.grupo.datos',
     titulo: 'Marketing digital',
     descripcion: 'Posicionamiento, campañas y analítica. Se mide el resultado, no las impresiones.',
   },
   {
     slug: 'consultoria-electoral',
-    icono: 'urna', acento: '#f87171',
+    icono: 'urna',
     grupo: 'Datos y mercado', grupoClave: 'serv.grupo.datos',
     titulo: 'Consultoría electoral',
     descripcion: 'Estrategia de campaña basada en datos: percepción ciudadana, inteligencia de mercado y monitoreo de tendencias.',
   },
   {
     slug: 'encuestas-y-estudios-de-mercado',
-    icono: 'grafico', acento: '#38bdf8',
+    icono: 'grafico',
     grupo: 'Datos y mercado', grupoClave: 'serv.grupo.datos',
     titulo: 'Encuestas y estudios de mercado',
     descripcion: 'Investigación de opinión, censos, muestreos y procesamiento estadístico para el sector público y privado.',
   },
+]
+
+/* Fotos de las tres tarjetas de «áreas», en el orden de los tres primeros servicios. */
+const FOTOS_AREAS = [
+  '/logos/hero-zyntello-empresas-2026.jpg',
+  '/logos/hero-zyntello-logistica-2026.jpg',
+  '/logos/hero-zyntello-construccion-2026.jpg',
 ]
 
 export default function Servicios() {
@@ -171,9 +171,6 @@ export default function Servicios() {
 
   return (
     <section id="servicios" className="zy-serv">
-      <span className="zy-filo zy-filo-arriba" aria-hidden="true" />
-      <div className="zy-malla" aria-hidden="true" />
-      <div className="zy-halo zy-serv-halo" aria-hidden="true" />
 
       <div className="container-fluid px-4 px-lg-5 position-relative">
 
@@ -198,33 +195,38 @@ export default function Servicios() {
           </p>
         </header>
 
-        <div className="zy-serv-rejilla">
-          {SERVICIOS.map((s, i) => (
+        {/* Formato «Nuestras Áreas» de appicross.com: los tres primeros —lo que Zyntello vende
+            como producto propio— van en tarjetas con foto; el resto, en la rejilla de abajo. */}
+        <div className="zy-serv-areas">
+          {SERVICIOS.slice(0, 3).map((s, i) => (
             <a
               key={s.slug}
               href={`/servicios/${s.slug}/`}
-              className={`zy-tarjeta zy-serv-tarjeta zy-serv-enlazada zy-revelar ${s.destacado ? 'zy-serv-destacada' : ''}`}
-              style={{
-                '--zy-color-acento': s.acento,
-                '--zy-color-acento2': s.acento2 || s.acento,
-                transitionDelay: `${Math.min(i, 9) * 50}ms`,
-              }}
+              className="zy-serv-area zy-revelar"
+              style={{ backgroundImage: `url(${FOTOS_AREAS[i]})`, transitionDelay: `${i * 80}ms` }}
             >
-              <span className="zy-serv-icono" style={{ color: s.acento }}>
-                <Icono nombre={s.icono} size={s.destacado ? 30 : 24} />
+              <span className="zy-serv-area-icono"><Icono nombre={s.icono} size={20} /></span>
+              <h3 className="zy-serv-area-titulo">{t(`serv.${s.slug}.titulo`, s.titulo)}</h3>
+              <p className="zy-serv-area-desc">{t(`serv.${s.slug}.desc`, s.descripcion)}</p>
+            </a>
+          ))}
+        </div>
+
+        <div className="zy-serv-rejilla">
+          {SERVICIOS.slice(3).map((s, i) => (
+            <a
+              key={s.slug}
+              href={`/servicios/${s.slug}/`}
+              className="zy-tarjeta zy-serv-tarjeta zy-serv-enlazada zy-revelar"
+              style={{ transitionDelay: `${Math.min(i, 9) * 50}ms` }}
+            >
+              <span className="zy-serv-icono">
+                <Icono nombre={s.icono} size={22} />
               </span>
 
               <span className="zy-serv-grupo">{t(s.grupoClave, s.grupo)}</span>
               <h3 className="zy-serv-titulo">{t(`serv.${s.slug}.titulo`, s.titulo)}</h3>
               <p className="zy-serv-desc">{t(`serv.${s.slug}.desc`, s.descripcion)}</p>
-
-              {s.marcas && (
-                <div className="zy-serv-marcas">
-                  {s.marcas.map(([clave, texto]) => (
-                    <span key={clave} className="zy-serv-marca">{t(clave, texto)}</span>
-                  ))}
-                </div>
-              )}
 
               {/* ⚠️ Un <a> dentro de otro <a> es HTML invalido y el navegador
                   lo desanida solo, dejando la tarjeta a medias. Por eso esto

@@ -8,12 +8,13 @@
  * se quedara atrás publicaría un menú legal distinto del resto — que es exactamente lo que pasó
  * con los enlaces del alta: tres copias, una sin «Avisos de terceros», y nadie lo vio.
  *
- * ## El tema se comparte con el sitio, a propósito
+ * ## Un solo tema, el claro, como el sitio
  *
- * ⚠️⚠️ Usa la MISMA clave de `localStorage` (`zyntello-website-appearance`) y el MISMO atributo
- * (`data-appearance`) que `src/components/Apariencia.jsx`. Con claves distintas, quien pusiera el
- * sitio en claro y abriera los Términos se encontraría la página en oscuro: no es un fallo que dé
- * error, es el sistema contradiciéndose a sí mismo delante del usuario.
+ * ⚠️⚠️ Desde el 2026-11-24 el sitio entero sigue el formato de appicross.com (encargo del director
+ * técnico: «heredar todos los formatos, incluyendo el color claro») y ya NO tiene selector de
+ * tema. Estas páginas tenían el suyo, con el oscuro por defecto: se retiró, y el claro se aplica
+ * siempre. Si quedara el botón, quien lo pulsara vería los Términos en un tema que el resto del
+ * dominio ya no tiene.
  *
  * ## El tamaño del texto no se guarda en `--fs` y ya
  *
@@ -68,8 +69,6 @@ export const PANEL_LECTURA = `    <div class="lectura" role="group" aria-label="
       <button type="button" class="lec-btn" data-lec="menos" aria-label="Reducir el tamaño del texto" title="Texto más pequeño">A<span>−</span></button>
       <button type="button" class="lec-btn" data-lec="reset" aria-label="Tamaño de texto normal" title="Tamaño normal">A</button>
       <button type="button" class="lec-btn" data-lec="mas" aria-label="Aumentar el tamaño del texto" title="Texto más grande">A<span>+</span></button>
-      <span class="lec-sep" aria-hidden="true"></span>
-      <button type="button" class="lec-btn lec-tema" data-lec="tema" aria-label="Cambiar entre tema claro y oscuro" title="Tema claro u oscuro"></button>
     </div>`
 
 /**
@@ -80,17 +79,20 @@ export const PANEL_LECTURA = `    <div class="lectura" role="group" aria-label="
  * en el mismo dominio, y el salto se ve al pasar de la portada a los Términos.
  */
 export const ESTILO_LECTURA = `<style>
-/* ── Tema claro ───────────────────────────────────────────────────────────────
-   Mismos valores que el sitio (financial-ui.css), para que no haya dos claros. */
+/* ── Tema claro, el único ─────────────────────────────────────────────────────
+   Mismos valores que el sitio (financial-ui.css, formato appicross.com), para
+   que no haya dos claros en el mismo dominio. */
 html[data-appearance="light"]{
   color-scheme:light;
-  --bg:#f4f5f7; --bg2:#f8f9fa; --card:#ffffff;
-  --line:#e2e8f0; --line2:#cbd5e1;
-  --tx:#202f40; --tx2:#435367; --tx3:#627185;
-  --ac:#345775; --ac2:#2a4660; --warn:#8a5a00; --ok:#0f7a56;
+  --bg:#ffffff; --bg2:#f9fafb; --card:#ffffff;
+  --line:#eaecf0; --line2:#d0d5dd;
+  --tx:#101828; --tx2:#344054; --tx3:#667085;
+  --ac:#10568c; --ac2:#0c4470; --warn:#8a5a00; --ok:#067647;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
 }
+html[data-appearance="light"] body{font-family:inherit}
 html[data-appearance="light"] body{background:var(--bg);color:var(--tx2)}
-html[data-appearance="light"] .brand-txt b{color:#202f40}
+html[data-appearance="light"] .brand-txt b{color:#101828}
 html[data-appearance="light"] .prevalece{background:#fff7e6;border-color:#e8c478;color:#5c4100}
 
 /* ⚠️⚠️ Estas cuatro reglas NO son decoración: el documento traía los colores
@@ -99,10 +101,10 @@ html[data-appearance="light"] .prevalece{background:#fff7e6;border-color:#e8c478
    texto, que sí había cambiado a oscuro, encima. El resultado no era feo: era
    ILEGIBLE, y solo en el tema que se acababa de añadir. Un tema claro a medias
    es peor que no tenerlo. */
-html[data-appearance="light"] header{background:linear-gradient(180deg,#ffffff 0%,#f4f5f7 100%)}
-html[data-appearance="light"] footer{background:#eef1f4}
+html[data-appearance="light"] header{background:#ffffff;box-shadow:0 2px 12px rgba(16,24,40,.06)}
+html[data-appearance="light"] footer{background:#f9fafb}
 html[data-appearance="light"] a:hover{color:var(--ac2)}
-html[data-appearance="light"] .note b{color:#202f40}
+html[data-appearance="light"] .note b{color:#101828}
 
 /* ⚠️⚠️ Los SIETE textos que el documento pinta de blanco fijo. Se cazaron buscando
    «color:#fff» en la hoja, no a ojo: el título y los epígrafes quedaban en blanco
@@ -114,7 +116,7 @@ html[data-appearance="light"] h1,
 html[data-appearance="light"] h2.sec,
 html[data-appearance="light"] th,
 html[data-appearance="light"] .chg td:first-child,
-html[data-appearance="light"] .fgrid h4{color:#202f40}
+html[data-appearance="light"] .fgrid h4{color:#101828}
 
 /* ── Marca: el mismo isotipo y lema que la portada ───────────────────────────── */
 .brand img{height:39px;width:auto;display:block}
@@ -173,13 +175,12 @@ html[data-appearance="light"] .fgrid h4{color:#202f40}
  * destello blanco que delata que el tema se aplicó tarde.
  */
 export const SCRIPT_TEMA_TEMPRANO = `<script>
-/* Aplica el tema guardado antes del primer pintado. Misma clave que el sitio. */
+/* El tema claro, antes del primer pintado (ya no se lee ninguna preferencia: hay uno solo). */
+document.documentElement.dataset.appearance = 'light';
 try{
-  var t = localStorage.getItem('zyntello-website-appearance');
-  if (t === 'light' || t === 'dark') document.documentElement.dataset.appearance = t;
   var z = parseFloat(localStorage.getItem('zyntello-legales-zoom'));
   if (z >= 0.8 && z <= 1.8) document.documentElement.style.setProperty('--fs', (15.5 * z) + 'px');
-}catch(e){/* Sin almacenamiento la página se ve igual, en oscuro y a tamaño normal. */}
+}catch(e){/* Sin almacenamiento la página se ve igual, a tamaño normal. */}
 </script>`
 
 export const SCRIPT_LECTURA = `<script>
@@ -202,20 +203,7 @@ export const SCRIPT_LECTURA = `<script>
     // Sin salirse del rango: por debajo no se lee y por encima el documento se desarma.
     aplicarZoom(PASOS[Math.min(Math.max(i + dir, 0), PASOS.length - 1)]);
   }
-  function pintarTema(){
-    var claro = raiz.dataset.appearance === 'light';
-    var b = document.querySelector('.lec-tema');
-    if (b) b.textContent = claro ? '\\u263E' : '\\u2600';
-  }
-  function cambiarTema(){
-    var claro = raiz.dataset.appearance === 'light';
-    raiz.dataset.appearance = claro ? 'dark' : 'light';
-    try{ localStorage.setItem('zyntello-website-appearance', raiz.dataset.appearance); }catch(e){}
-    pintarTema();
-  }
-
-  if (!raiz.dataset.appearance) raiz.dataset.appearance = 'dark';
-  pintarTema();
+  raiz.dataset.appearance = 'light';
 
   document.addEventListener('click', function(ev){
     var b = ev.target.closest ? ev.target.closest('[data-lec]') : null;
@@ -224,7 +212,6 @@ export const SCRIPT_LECTURA = `<script>
     if (q === 'mas') moverZoom(1);
     else if (q === 'menos') moverZoom(-1);
     else if (q === 'reset') aplicarZoom(1);
-    else if (q === 'tema') cambiarTema();
   });
 })();
 </script>`

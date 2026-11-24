@@ -61,7 +61,6 @@ export default function Footer() {
 
   return (
     <footer className="zy-pie">
-      <div className="zy-halo zy-pie-halo" aria-hidden="true" />
 
       <div className="container-fluid px-4 px-lg-5 position-relative">
 
