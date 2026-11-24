@@ -26,7 +26,7 @@ const NUMERO = '18296399877'
  * eso no se lee como «un emoji que no cargó»: se lee como un sistema roto.
  *
  * Quitarlos no pierde nada. En el chat el emoji identifica la opción de un
- * vistazo dentro de una lista de once; en el mensaje cada respuesta ya va en su
+ * vistazo dentro de una lista de doce; en el mensaje cada respuesta ya va en su
  * propia línea con su viñeta, así que ahí no distingue nada — solo decoraba.
  *
  * ⚠️ Se quitan también los selectores de variante (U+FE0F) y las banderas, que
@@ -52,6 +52,7 @@ const NODOS = {
     opciones: [
       '⚙️ Implementar un ERP / CRM',
       '🤖 Automatización con IA',
+      '🛒 Desarrollo web y tiendas en línea',
       '📣 Marketing Digital',
       '🗳️ Consultoría Electoral & Política',
       '📊 Encuestas y Estudios de Mercado',
@@ -65,6 +66,7 @@ const NODOS = {
     siguiente: {
       '⚙️ Implementar un ERP / CRM': 'erp_1',
       '🤖 Automatización con IA': 'ia_1',
+      '🛒 Desarrollo web y tiendas en línea': 'web_1',
       '📣 Marketing Digital': 'mkt_1',
       '🗳️ Consultoría Electoral & Política': 'electoral_1',
       '📊 Encuestas y Estudios de Mercado': 'encuestas_1',
@@ -200,6 +202,29 @@ const NODOS = {
     ],
     opciones: ['✅ Sí, quiero la demo', '❓ Tengo más preguntas'],
     siguiente: { '✅ Sí, quiero la demo': 'convertir', '❓ Tengo más preguntas': 'inicio' }
+  },
+
+  // ── Desarrollo web y tiendas en línea (servicio 21, 2026-11-24) ───────────
+  web_1: {
+    mensajes: [
+      'Hacemos **sitios corporativos y tiendas en línea conectados a tu inventario y tu facturación**: lo que se vende en la web no se vuelve a escribir a mano.',
+      '¿Qué necesitas específicamente?'
+    ],
+    opciones: [
+      '🏢 Una web corporativa para que nos encuentren',
+      '🛒 Una tienda en línea',
+      '🔗 Conectar mi tienda actual con el ERP',
+      '🔧 Mejorar la web que ya tenemos',
+    ],
+    siguiente: { default: 'web_cierre' }
+  },
+  web_cierre: {
+    mensajes: [
+      'Perfecto. La propuesta depende de lo que tiene que lograr tu web: que te encuentren, que te escriban o que te compren.',
+      '¿Te gustaría que un especialista de Zyntello te contacte por WhatsApp para prepararte la propuesta?'
+    ],
+    opciones: ['✅ Sí, quiero la propuesta', '❓ Tengo más preguntas'],
+    siguiente: { '✅ Sí, quiero la propuesta': 'convertir', '❓ Tengo más preguntas': 'inicio' }
   },
 
   // ── Marketing Digital ──────────────────────────────────────────────────────
@@ -492,7 +517,7 @@ const OPCION_OTRO = '✏️ Otro, prefiero escribirlo...'
 
 // Nodos que solo tienen opciones Sí/No — no agregar "Otro"
 const NODOS_BINARIOS = new Set([
-  'erp_cierre','ia_cierre','mkt_cierre','electoral_cierre',
+  'erp_cierre','ia_cierre','web_cierre','mkt_cierre','electoral_cierre',
   'encuestas_cierre','soporte_cierre','contable_cierre',
   'personal_cierre','equipos_cierre','transformacion_cierre','convertir'
 ])
