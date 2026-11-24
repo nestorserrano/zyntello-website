@@ -264,21 +264,33 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
 
 /* El selector de idioma de la barra. Son ocho enlaces cortos, no un
    desplegable: ver el comentario de la plantilla. */
-.barra-idiomas{ display:flex; align-items:center; gap:2px; }
-.barra-idiomas a,.barra-idiomas .idioma-activo{
-  padding:3px 6px; border-radius:5px; font-size:.68rem; font-weight:700;
-  letter-spacing:.03em; text-decoration:none; line-height:1.4;
-}
-.barra-idiomas a{ color:var(--tenue); }
-.barra-idiomas a:hover{ color:var(--texto); background:var(--elevado); }
-.barra-idiomas .idioma-activo{ color:var(--color); background:rgba(16,86,140,.08); }
+.barra-idiomas{ position:relative; border:0; padding:0; }
+/* ⚠️ Es un <details>, igual que las preguntas frecuentes: sin anular su «+» y su raya, el
+   selector salía con una «×» dentro y una línea debajo al abrirse. */
+.barra-idiomas summary::after{ content:none; }
+.barra-idiomas summary{ list-style:none; display:inline-flex; align-items:center; gap:7px; height:40px; padding:0 13px;
+  border:1px solid var(--borde2); border-radius:999px; cursor:pointer; color:var(--medio); font-size:.8rem; font-weight:700;
+  letter-spacing:.03em; user-select:none; transition:border-color .2s,color .2s; }
+.barra-idiomas summary::-webkit-details-marker{ display:none; }
+.barra-idiomas summary:hover,.barra-idiomas[open] summary{ border-color:var(--color); color:var(--color); }
+.barra-idiomas summary:focus-visible{ outline:2px solid var(--color); outline-offset:2px; }
+.barra-idiomas-flecha{ font-size:.62rem; transition:transform .2s; }
+.barra-idiomas[open] .barra-idiomas-flecha{ transform:rotate(180deg); }
+.barra-idiomas-lista{ position:absolute; top:calc(100% + 8px); inset-inline-end:0; z-index:60; min-width:190px;
+  display:flex; flex-direction:column; padding:6px; background:#fff; border:1px solid var(--borde);
+  border-radius:14px; box-shadow:var(--sombra-alta); }
+.barra-idiomas-lista a,.barra-idiomas-lista .idioma-activo{ padding:9px 12px; border-radius:9px; font-size:.9rem;
+  text-decoration:none; color:var(--medio); }
+.barra-idiomas-lista a:hover{ background:var(--elevado); color:var(--texto); }
+.barra-idiomas-lista .idioma-activo{ color:var(--color); font-weight:700; background:rgba(16,86,140,.08); }
 /* ⚠️ El foco visible se conserva: con teclado es lo único que indica dónde se
    está, y este control es justo el que usa quien no entiende el resto. */
-.barra-idiomas a:focus-visible{ outline:2px solid var(--color); outline-offset:1px; }
+.barra-idiomas-lista a:focus-visible{ outline:2px solid var(--color); outline-offset:1px; }
 /* ⚠️ Por debajo de 980px el selector se esconde: ocho enlaces más el botón de
    WhatsApp no caben en un móvil, y apretarlos deja los dos impulsables. El
    lector de pantalla sí los sigue viendo gracias al hreflang del <head>. */
-@media(max-width:980px){ .barra-idiomas{display:none} }
+/* Ya no se esconde en el teléfono: plegado ocupa lo que un botón. */
+.barra-menu a{ white-space:nowrap; }
 
 /* ── Árabe: la página entera se gira ──────────────────────────────────────
    ⚠️⚠️ Sin esto el texto sale correcto y la pantalla ilegible: los márgenes,
@@ -317,9 +329,27 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
     </nav>
 
     <div class="barra-acciones">
-      <nav class="barra-idiomas" aria-label="This page in other languages">
-        <a href="https://zyntello.com/servicios/transformacion-digital/" hreflang="es" lang="es" data-idioma="es" title="Español">ES</a><span class="idioma-activo" aria-current="true">EN</span><a href="https://zyntello.com/fr/servicios/transformacion-digital/" hreflang="fr" lang="fr" data-idioma="fr" title="Français">FR</a><a href="https://zyntello.com/it/servicios/transformacion-digital/" hreflang="it" lang="it" data-idioma="it" title="Italiano">IT</a><a href="https://zyntello.com/zh-Hans/servicios/transformacion-digital/" hreflang="zh-Hans" lang="zh-Hans" data-idioma="zh-Hans" title="简体中文">简</a><a href="https://zyntello.com/zh-Hant/servicios/transformacion-digital/" hreflang="zh-Hant" lang="zh-Hant" data-idioma="zh-Hant" title="繁體中文">繁</a><a href="https://zyntello.com/ar/servicios/transformacion-digital/" hreflang="ar" lang="ar" data-idioma="ar" title="العربية">AR</a><a href="https://zyntello.com/ht/servicios/transformacion-digital/" hreflang="ht" lang="ht" data-idioma="ht" title="Kreyòl ayisyen">HT</a>
-      </nav>
+      <details class="barra-idiomas">
+        <summary aria-label="This page in other languages"><i class="fa-solid fa-globe" aria-hidden="true"></i><span>EN</span><i class="fa-solid fa-chevron-down barra-idiomas-flecha" aria-hidden="true"></i></summary>
+        <nav class="barra-idiomas-lista" aria-label="This page in other languages">
+          <a href="https://zyntello.com/servicios/transformacion-digital/" hreflang="es" lang="es" dir="ltr" data-idioma="es">Español</a>
+          <span class="idioma-activo" aria-current="true" lang="en" dir="ltr">English</span>
+          <a href="https://zyntello.com/fr/servicios/transformacion-digital/" hreflang="fr" lang="fr" dir="ltr" data-idioma="fr">Français</a>
+          <a href="https://zyntello.com/it/servicios/transformacion-digital/" hreflang="it" lang="it" dir="ltr" data-idioma="it">Italiano</a>
+          <a href="https://zyntello.com/zh-Hans/servicios/transformacion-digital/" hreflang="zh-Hans" lang="zh-Hans" dir="ltr" data-idioma="zh-Hans">简体中文</a>
+          <a href="https://zyntello.com/zh-Hant/servicios/transformacion-digital/" hreflang="zh-Hant" lang="zh-Hant" dir="ltr" data-idioma="zh-Hant">繁體中文</a>
+          <a href="https://zyntello.com/ar/servicios/transformacion-digital/" hreflang="ar" lang="ar" dir="rtl" data-idioma="ar">العربية</a>
+          <a href="https://zyntello.com/ht/servicios/transformacion-digital/" hreflang="ht" lang="ht" dir="ltr" data-idioma="ht">Kreyòl ayisyen</a>
+        </nav>
+      </details>
+      <script>
+      /* Cierra el selector al pulsar fuera y con Escape. */
+      (function(){
+        var d = document.currentScript.previousElementSibling;
+        document.addEventListener('click', function(e){ if (d.open && !d.contains(e.target)) d.open = false; });
+        document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && d.open) { d.open = false; d.querySelector('summary').focus(); } });
+      })();
+      </script>
       <a href="https://wa.me/18296399877?text=%C2%A1Hola%20Zyntello!%20Quiero%20saber%20m%C3%A1s%20sobre%20Transformaci%C3%B3n%20digital.%20%C2%BFMe%20ayudan%3F%0A%0A%5BVisitante%20en%20la%20p%C3%A1gina%20en%3A%20en%5D" target="_blank" rel="noopener" class="btn btn-principal btn-barra">Talk to Zyntello</a>
     </div>
   </div>
