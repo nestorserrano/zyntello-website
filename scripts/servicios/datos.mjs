@@ -771,7 +771,7 @@ export const SERVICIOS = [
       { titulo: 'Se empieza por lo que más consume', descripcion: 'Normalmente el aire acondicionado y la iluminación. Es donde la automatización se paga antes, y donde se ve el resultado en la primera factura.' },
       { titulo: 'Funciona aunque se caiga internet', descripcion: 'Las reglas básicas —horarios, sensores, accesos— se ejecutan en el propio edificio. La nube sirve para ver y administrar, no para que la luz se encienda.' },
       { titulo: 'Se entrega documentado', descripcion: 'Planos, direcciones de red, usuarios y reglas, por escrito. El sistema no puede depender de que nosotros estemos disponibles.' },
-      { titulo: 'Lo eléctrico lo hace quien debe', descripcion: 'Cuando el trabajo toca tableros o potencia, se coordina con el electricista certificado de la obra. La automatización va sobre una instalación segura, no en lugar de ella.' },
+      { titulo: 'Lo eléctrico, con personal certificado', descripcion: 'Lo que toca tableros o potencia lo ejecuta personal eléctrico certificado, y si la obra ya tiene su electricista, se trabaja con él. La automatización va sobre una instalación segura, no en lugar de ella.' },
       { titulo: 'Se integra con lo que ya tienes', descripcion: 'Cámaras, cerraduras o aires existentes se aprovechan cuando admiten integración. Se cambia lo que no tiene arreglo, no todo.' },
       { titulo: 'Residencial y comercial', descripcion: 'Desde un apartamento hasta un edificio de oficinas o un negocio con varias sucursales gestionadas desde un mismo panel.' },
     ],
@@ -980,7 +980,7 @@ export const SERVICIOS = [
     detalles: [
       { titulo: 'Se empieza por los equipos críticos', descripcion: 'Los que paran la planta cuando fallan. Ahí el preventivo y el predictivo se pagan solos; en el resto, a veces lo correcto es dejarlos llegar a la falla.' },
       { titulo: 'El historial se captura en el momento', descripcion: 'El técnico registra la intervención desde el teléfono al terminarla. Lo que se pasa a limpio al final de la semana no se pasa.' },
-      { titulo: 'La potencia la toca quien está certificado', descripcion: 'Cuando el trabajo involucra tableros de potencia o la garantía del fabricante, se ejecuta con el técnico certificado de esa marca. Nosotros ponemos el control, los datos y la gestión.' },
+      { titulo: 'La garantía del equipo se respeta', descripcion: 'Lo que involucra tableros de potencia lo ejecuta personal certificado, y si la máquina está en garantía, se coordina con el fabricante para que la intervención no la anule.' },
       { titulo: 'La supervisión no sustituye a la seguridad', descripcion: 'Los paros de emergencia y las protecciones de las máquinas no se tocan para automatizar. La automatización se suma a la seguridad, nunca la reemplaza.' },
       { titulo: 'Conectado al ERP', descripcion: 'Órdenes de trabajo, repuestos consumidos y horas de mano de obra llegan al costo. El mantenimiento deja de ser un gasto sin explicar.' },
       { titulo: 'Cada sensor se calibra', descripcion: 'Un instrumento descalibrado dispara alarmas falsas, y una alarma que salta sin motivo enseña a ignorarlas. Se calibra al instalar y se revisa dentro del plan.' },
@@ -1000,7 +1000,7 @@ export const SERVICIOS = [
 
     faq: [
       { pregunta: '¿Qué diferencia hay entre preventivo y predictivo?', respuesta: 'El preventivo interviene por calendario o por uso; el predictivo, por la condición medida del equipo. Se combinan: predictivo en lo crítico y preventivo en lo demás.' },
-      { pregunta: '¿Programan los controladores?', respuesta: 'Diseñamos la automatización y la supervisión del proceso. Cuando el equipo tiene garantía del fabricante o el trabajo toca potencia, se coordina con el técnico certificado de esa marca.' },
+      { pregunta: '¿Programan los controladores?', respuesta: 'Sí. La lógica de control y la supervisión forman parte del proyecto de automatización. Si el equipo está en garantía, se coordina con el fabricante para que la intervención no la anule.' },
       { pregunta: '¿Se conecta con mi inventario?', respuesta: 'Sí. Cada orden de trabajo consume repuestos del almacén y los críticos tienen su mínimo, en tu ERP o en la plataforma Zyntello.' },
       { pregunta: '¿Los técnicos tienen que usar computadora?', respuesta: 'No. Las órdenes se reciben y se cierran desde el teléfono, con foto de la intervención si hace falta.' },
       { pregunta: '¿Cómo sé si está funcionando?', respuesta: 'Por los indicadores: tiempo medio entre fallas, tiempo medio de reparación y costo por equipo, comparados antes y después.' },
