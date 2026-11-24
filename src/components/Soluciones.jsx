@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useIdioma } from '../hooks/useIdioma'
+import Captura from './Captura'
 import { rutaAplicaciones } from '../lib/vista'
 import '../styles/Soluciones.css'
 
@@ -341,6 +342,18 @@ export const LANDINGS_PUBLICAS = new Set([
 // landing prometía proyección diaria, umbral configurable y aviso automático, que no
 // existen. Las pantallas siguen, dentro de Bancos; lo que se retiró es el cobro.
 
+/* ─── Pantallas reales, en la página del catálogo ─────────────────────────────
+   Capturas del demo (ver `Captura.jsx`): enseñan cómo se ve el módulo por dentro antes de
+   pedir que alguien escriba o entre. Para cambiar una: nueva captura del demo, nombre nuevo. */
+const GALERIA = [
+  { id: 'facturacion',   img: 'app-facturacion-2026.jpg',            titulo: 'Facturación',             pie: 'Lo facturado en el mes, lo pendiente de cobro y quién sostiene la venta.' },
+  { id: 'dashboards',    img: 'app-dashboards-financieros-2026.jpg', titulo: 'Dashboards financieros',  pie: 'El resultado del año, del ingreso a la utilidad, con la comparación contra el anterior.' },
+  { id: 'inventario',    img: 'app-inventario-2026.jpg',             titulo: 'Inventario',              pie: 'El valor del almacén, su rotación y dónde está parado el capital.' },
+  { id: 'flujo',         img: 'app-flujo-de-caja-2026.jpg',          titulo: 'Flujo de caja',           pie: 'El saldo de las próximas semanas, para ver a tiempo la que se queda en rojo.' },
+  { id: 'prestamello',   img: 'app-prestamello-2026.jpg',            titulo: 'Prestamello',             pie: 'La cartera de préstamos, lo cobrado en el mes y lo que entra en mora.' },
+  { id: 'restaurante',   img: 'app-restaurante-2026.jpg',            titulo: 'Restaurante',             pie: 'El salón mesa por mesa: cuáles están ocupadas y cuánto lleva cada cuenta.' },
+]
+
 /* Cuántas tarjetas lleva el resumen de la portada, y cuáles van primero. */
 const EN_PORTADA = 4
 const PRIORIDAD_PORTADA = { 'Destacado': 0, 'Popular': 1, 'Nuevo': 2 }
@@ -557,6 +570,29 @@ export default function Soluciones({ completo = false }) {
               </article>
             ))}
           </div>
+
+          {completo && (
+            <div className="sol-galeria">
+              <div className="sol-galeria-cabecera">
+                <div>
+                  <h2 className="sol-galeria-titulo">{t('sol.galeria.titulo', 'Así se ve por dentro')}</h2>
+                  <p className="sol-galeria-texto">{t('sol.galeria.texto', 'Pantallas reales de la plataforma, con los datos de ejemplo del demo. Puedes entrar y recorrerlas tú mismo, sin registrarte.')}</p>
+                </div>
+                <a href="https://app.zyntello.com/demo" className="zy-btn zy-btn-primario">{t('sol.galeria.boton', 'Entrar al demo')} →</a>
+              </div>
+              <div className="sol-galeria-rejilla">
+                {GALERIA.map(g => (
+                  <Captura
+                    key={g.id}
+                    enlace
+                    src={`/capturas/${g.img}`}
+                    alt={`${t(`sol.galeria.${g.id}.titulo`, g.titulo)}: ${t(`sol.galeria.${g.id}.pie`, g.pie)}`}
+                    pie={<><strong>{t(`sol.galeria.${g.id}.titulo`, g.titulo)}</strong> {t(`sol.galeria.${g.id}.pie`, g.pie)}</>}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
 
           {!completo && (
             <div className="text-center mt-5">

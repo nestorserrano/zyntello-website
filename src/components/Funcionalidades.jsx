@@ -1,4 +1,5 @@
 import Icono from './Icono'
+import Captura from './Captura'
 import { useIdioma } from '../hooks/useIdioma'
 
 /* ─── Lo que un ERP corriente no trae ─────────────────────────────────────
@@ -67,6 +68,9 @@ export default function Funcionalidades() {
 
       <div className="container-fluid px-4 px-lg-5 position-relative">
 
+        {/* Título a la izquierda y, en el hueco de la derecha, una pantalla real: la ayuda abierta
+            sobre el tablero de Facturación, que es la cuarta de estas funcionalidades. */}
+        <div className="zy-func-intro">
         <header className="zy-func-cabecera zy-revelar">
           <p className="zy-eyebrow">{t('func.eyebrow', 'Funcionalidades')}</p>
           <h2 className="zy-titulo">
@@ -82,6 +86,13 @@ export default function Funcionalidades() {
             {t('func.subtitulo', 'Cuatro cosas que no se contratan aparte y que casi nadie incluye: el control de quién autoriza, los reportes que tú mismo construyes, el significado de cada dato y la ayuda dentro de cada pantalla. Vienen con la plataforma.')}
           </p>
         </header>
+        <Captura
+          className="zy-func-captura zy-revelar"
+          src="/capturas/app-ayuda-en-pantalla-2026.jpg"
+          alt={t('func.captura.alt', 'El tablero de Facturación de Zyntello con el panel de ayuda abierto: explica la pantalla, da los pasos para usarla y responde preguntas.')}
+          pie={t('func.captura.pie', 'La ayuda se abre dentro de la pantalla en la que estás, sin salir de ella.')}
+        />
+        </div>
 
         {/* ⚠️ Cuatro columnas fijas, nunca `auto-fit`: con auto-fit, un ancho
             intermedio deja 3 arriba y 1 abajo con dos huecos — y la página

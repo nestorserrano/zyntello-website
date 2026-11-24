@@ -446,3 +446,38 @@ main > section > .container-fluid { position: relative; z-index: 1; }
 
 /* En su página no hay hero detrás: el contenido arranca bajo la barra fija. */
 .sol-pagina { padding-top: calc(var(--zy-navbar-h) + 3rem); }
+
+/* ── Capturas de la plataforma (2026-11-24) ────────────────────────────────────────────────
+   Pantallas reales del demo enmarcadas como ventana. Ver `src/components/Captura.jsx`. */
+.zy-captura { margin: 0; }
+.zy-captura-ventana {
+  border-radius: 14px; overflow: hidden; background: #0f172a;
+  border: 1px solid var(--zy-borde); box-shadow: 0 24px 60px rgba(16, 24, 40, .16);
+}
+.zy-captura-barra { display: flex; gap: 6px; padding: 10px 14px; background: #1e293b; }
+.zy-captura-barra span { width: 10px; height: 10px; border-radius: 50%; background: #475467; }
+.zy-captura-barra span:nth-child(1) { background: #f04438; }
+.zy-captura-barra span:nth-child(2) { background: #fdb022; }
+.zy-captura-barra span:nth-child(3) { background: #12b76a; }
+.zy-captura img { display: block; width: 100%; height: auto; }
+.zy-captura a { display: block; }
+.zy-captura figcaption { margin-top: 12px; font-size: .9rem; line-height: 1.55; color: var(--zy-texto-suave); }
+.zy-captura figcaption strong { color: var(--zy-texto); }
+
+/* Funcionalidades: título a la izquierda, la pantalla a la derecha. Debajo de 992 px, apilados. */
+.zy-func-intro { display: grid; gap: 32px; margin-bottom: clamp(30px, 3.6vw, 52px); align-items: center; }
+.zy-func-intro .zy-func-cabecera { margin-bottom: 0; }
+@media (min-width: 992px) {
+  .zy-func-intro { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 56px; }
+}
+
+/* Página de aplicaciones: la galería va debajo del catálogo. */
+.sol-galeria { margin-top: clamp(48px, 6vw, 80px); }
+.sol-galeria-cabecera { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 28px; }
+.sol-galeria-titulo { font-size: clamp(1.6rem, 2.6vw, 2.2rem); margin: 0 0 8px; }
+.sol-galeria-texto { margin: 0; max-width: 640px; color: var(--zy-texto-suave); }
+.sol-galeria-rejilla { display: grid; gap: 28px; }
+@media (min-width: 768px) { .sol-galeria-rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1200px) { .sol-galeria-rejilla { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.sol-galeria .zy-captura-ventana { transition: transform .25s, box-shadow .25s; }
+.sol-galeria .zy-captura-ventana:hover { transform: translateY(-4px); box-shadow: 0 30px 70px rgba(16, 24, 40, .2); }
