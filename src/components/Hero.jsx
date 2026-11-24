@@ -1,16 +1,42 @@
-import FondoAnimado from './FondoAnimado'
+import { useCallback, useEffect, useState } from 'react'
 import Icono from './Icono'
 import { useIdioma } from '../hooks/useIdioma'
 import '../styles/Hero.css'
 
-/* ⚠️ Solo el TEXTO lleva clave. El número se escribe igual en los ocho
-   idiomas, así que traducirlo sería una fila de claves que nadie cambiaría. */
-const CIFRAS = [
-  { clave: 'hero.cifra.anos',      numero: '20+',  label: 'años en TI y ERP' },
-  { clave: 'hero.cifra.proyectos', numero: '100+', label: 'proyectos entregados' },
-  { clave: 'hero.cifra.modulos',   numero: '34',   label: 'módulos en producción' },
-  { clave: 'hero.cifra.paises',    numero: '5',    label: 'países con presencia' },
+/* Formato tomado de appicross.com (pedido del director técnico, 2026-11-24): foto a pantalla
+   completa bajo el menú, varias escenas que rotan, titular grande alineado a la izquierda,
+   flechas a los lados y puntos abajo. Las fotos son propias de Zyntello: no se reutiliza nada de
+   aquel sitio.
+
+   ⚠️ La escena 1 conserva las claves del titular de siempre (`hero.titulo.*`, `hero.bajada`):
+   ya están traducidas a los ocho idiomas y la bajada lleva las palabras que la gente busca en
+   Google. Cambiarlas por textos nuevos habría perdido las dos cosas. */
+const ESCENAS = [
+  {
+    imagen: '/logos/hero-zyntello-empresas-2026.jpg',
+    kicker: ['hero.insignia', 'Plataforma propia en producción · RD · VE · CO · GT · CR'],
+    /* Son dos frases completas, así que el salto entre ellas vale en cualquier idioma. */
+    titulo: ['hero.titulo.1', 'Lo difícil nunca fue el software.'],
+    acento: ['hero.titulo.2', 'Es ponerlo a funcionar.'],
+    bajada: ['hero.bajada', 'Software ERP y CRM para digitalizar y automatizar la gestión de tu empresa. Lo implantamos, lo conectamos con agentes de Inteligencia Artificial y seguimos ahí cuando el proyecto termina. Veinte años haciendo exactamente eso.'],
+  },
+  {
+    imagen: '/logos/hero-zyntello-logistica-2026.jpg',
+    kicker: ['hero.s2.kicker', 'Inventario · Compras · Distribución'],
+    titulo: ['hero.s2.titulo', 'Inventario conectado.'],
+    acento: ['hero.s2.acento', 'Despachos bajo control.'],
+    bajada: ['hero.s2.bajada', 'Existencias, compras, almacenes y entregas en un mismo sistema, con la información de cada equipo a mano en el momento en que la necesita.'],
+  },
+  {
+    imagen: '/logos/hero-zyntello-construccion-2026.jpg',
+    kicker: ['hero.s3.kicker', 'Construcción · Presupuestos · Compras'],
+    titulo: ['hero.s3.titulo', 'Cada obra a la vista.'],
+    acento: ['hero.s3.acento', 'Costos y avances al día.'],
+    bajada: ['hero.s3.bajada', 'Presupuestos, contratos, materiales y avance de obra conectados, para corregir una desviación antes de que se convierta en pérdida.'],
+  },
 ]
+
+const INTERVALO_MS = 7000
 
 /* El objeto social, en lenguaje de cliente.
    ⚠️ La `key` de React es la CLAVE y no el texto: el texto cambia con el
@@ -35,78 +61,102 @@ const CAPACIDADES = [
 ]
 
 export default function Hero() {
-  const { t, idioma } = useIdioma()
+  const { t } = useIdioma()
+  const [actual, setActual] = useState(0)
+  /* Pausa explícita (botón) y pausa mientras el ratón o el foco están dentro: se leen por
+     separado para que soltar el ratón no reanude un carrusel que el usuario pausó a propósito. */
+  const [pausado, setPausado] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)
+  const [encima, setEncima] = useState(false)
+
+  const total = ESCENAS.length
+  const ir = useCallback(i => setActual((i + total) % total), [total])
+
+  useEffect(() => {
+    if (pausado || encima) return undefined
+    const id = setTimeout(() => setActual(a => (a + 1) % total), INTERVALO_MS)
+    return () => clearTimeout(id)
+  }, [actual, pausado, encima, total])
 
   return (
-    <section id="inicio" className="zy-hero">
-
-      {/* Fondo: malla de datos — sistemas que se hablan entre sí */}
-      <FondoAnimado escena="malla" tinte="indigo" />
-      <div className="zy-malla" aria-hidden="true" />
-      <div className="zy-halo zy-hero-halo-1" aria-hidden="true" />
-      <div className="zy-halo zy-hero-halo-2" aria-hidden="true" />
-      <div className="zy-grano" aria-hidden="true" />
+    <section
+      id="inicio"
+      className="zy-hero"
+      aria-roledescription="carousel"
+      aria-label={t('a11y.carrusel', 'Escenas de la portada')}
+      onMouseEnter={() => setEncima(true)}
+      onMouseLeave={() => setEncima(false)}
+      onFocus={() => setEncima(true)}
+      onBlur={e => { if (!e.currentTarget.contains(e.relatedTarget)) setEncima(false) }}
+    >
+      {ESCENAS.map((e, i) => (
+        <div
+          key={e.imagen}
+          className={`zy-hero-foto ${i === actual ? 'zy-activa' : ''}`}
+          style={{ backgroundImage: `url(${e.imagen})` }}
+          aria-hidden="true"
+        />
+      ))}
+      <div className="zy-hero-velo" aria-hidden="true" />
 
       <div className="container-fluid px-4 px-lg-5 zy-hero-contenido">
-
-        <p className="zy-hero-insignia zy-entrar" style={{ animationDelay: '40ms' }}>
-          <span className="zy-hero-latido" aria-hidden="true" />
-          {t('hero.insignia', 'Plataforma propia en producción · RD · VE · CO · GT · CR')}
-        </p>
-
-        <h1 className="zy-hero-titulo zy-entrar" style={{ animationDelay: '120ms' }}>
-          {/* ⚠️⚠️ El titular está partido para DAR FORMATO —el salto y el efecto hueco sobre
-              «el software»— y eso solo funciona con el orden de las palabras en español. En chino
-              o en árabe la frase se ordena distinta, así que trocearla dejaría el efecto sobre
-              palabras que no tocan y el salto en mitad de cualquier sitio.
-
-              Por eso el español conserva su marcado exacto —no se rediseña lo que funciona— y los
-              demás idiomas reciben la frase entera, sin el hueco. Perder un efecto tipográfico es
-              mucho menos grave que publicar un titular mal cortado en la portada. */}
-          {idioma === 'es' ? (
-            <>
-              Lo difícil nunca fue<br />
-              <span className="zy-hueco">el software.</span>{' '}
-            </>
-          ) : (
-            <>{t('hero.titulo.1')}{' '}</>
-          )}
-          <span className="zy-degradado">{t('hero.titulo.2', 'Es ponerlo a funcionar.')}</span>
-        </h1>
-
-        {/* ⚠️ Esta bajada carga las palabras que la gente teclea en Google
-            —software ERP, CRM, gestión empresarial, digitalizar, automatizar—
-            porque el H1 de arriba es el eslogan de marca y no las lleva.
-            Decidido el 2026-09-25: el titular se queda como está; quien busca
-            «software ERP» entra igual, porque Google lee los dos. */}
-        <p className="zy-hero-bajada zy-entrar" style={{ animationDelay: '200ms' }}>
-          {t('hero.bajada', 'Software ERP y CRM para digitalizar y automatizar la gestión de tu empresa. Lo implantamos, lo conectamos con agentes de Inteligencia Artificial y seguimos ahí cuando el proyecto termina. Veinte años haciendo exactamente eso.')}
-        </p>
-
-        <div className="zy-hero-botones zy-entrar" style={{ animationDelay: '280ms' }}>
-          <a href="#soluciones" className="zy-btn zy-btn-primario">
-            {t('hero.boton.plataforma', 'Ver la plataforma')}
-            <Icono nombre="flecha" size={18} className="zy-flecha" />
-          </a>
-          <a href="#contacto" className="zy-btn zy-btn-fantasma">
-            <Icono nombre="chat" size={18} />
-            {t('hero.boton.contacto', 'Agendar una consulta')}
-          </a>
+        <div className="zy-hero-escenas">
+          {ESCENAS.map((e, i) => {
+            const activa = i === actual
+            const Titulo = i === 0 ? 'h1' : 'h2'
+            return (
+              <div
+                key={e.imagen}
+                className={`zy-hero-escena ${activa ? 'zy-activa' : ''}`}
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`${i + 1} / ${total}`}
+                aria-hidden={!activa}
+                inert={!activa}
+              >
+                <p className="zy-hero-insignia">{t(e.kicker[0], e.kicker[1])}</p>
+                <Titulo className="zy-hero-titulo">
+                  {t(e.titulo[0], e.titulo[1])}<br />
+                  <span className="zy-hero-acento">{t(e.acento[0], e.acento[1])}</span>
+                </Titulo>
+                <p className="zy-hero-bajada">{t(e.bajada[0], e.bajada[1])}</p>
+                <div className="zy-hero-botones">
+                  <a href="#soluciones" className="zy-btn zy-hero-btn-blanco">
+                    {t('hero.boton.plataforma', 'Ver la plataforma')}
+                    <Icono nombre="flecha" size={18} className="zy-flecha" />
+                  </a>
+                  <a href="#contacto" className="zy-btn zy-hero-btn-borde">
+                    <Icono nombre="chat" size={18} />
+                    {t('hero.boton.contacto', 'Agendar una consulta')}
+                  </a>
+                </div>
+              </div>
+            )
+          })}
         </div>
+      </div>
 
-        <p className="zy-hero-nota zy-entrar" style={{ animationDelay: '340ms' }}>
-          <Icono nombre="check" size={15} />
-          {t('hero.nota', 'Sin instalaciones · Sin permanencia · Pruebas los módulos antes de contratar')}
-        </p>
+      <button type="button" className="zy-hero-flecha zy-hero-flecha-ant" onClick={() => ir(actual - 1)}
+        aria-label={t('a11y.carrusel.anterior', 'Imagen anterior')}>
+        <i className="fa-solid fa-chevron-left" aria-hidden="true" />
+      </button>
+      <button type="button" className="zy-hero-flecha zy-hero-flecha-sig" onClick={() => ir(actual + 1)}
+        aria-label={t('a11y.carrusel.siguiente', 'Imagen siguiente')}>
+        <i className="fa-solid fa-chevron-right" aria-hidden="true" />
+      </button>
 
-        <div className="zy-hero-cifras zy-entrar" style={{ animationDelay: '420ms' }}>
-          {CIFRAS.map(c => (
-            <div key={c.clave} className="zy-hero-cifra">
-              <span className="zy-hero-cifra-num">{c.numero}</span>
-              <span className="zy-hero-cifra-lbl">{t(c.clave, c.label)}</span>
-            </div>
-          ))}
-        </div>
+      <div className="zy-hero-controles">
+        <button type="button" className="zy-hero-pausa" onClick={() => setPausado(p => !p)}
+          aria-label={pausado ? t('a11y.carrusel.reanudar', 'Reanudar el carrusel') : t('a11y.carrusel.pausar', 'Pausar el carrusel')}>
+          <i className={`fa-solid ${pausado ? 'fa-play' : 'fa-pause'}`} aria-hidden="true" />
+        </button>
+        {ESCENAS.map((e, i) => (
+          <button key={e.imagen} type="button"
+            className={`zy-hero-punto ${i === actual ? 'zy-activa' : ''}`}
+            onClick={() => ir(i)}
+            aria-label={`${t('a11y.carrusel.ir', 'Mostrar imagen')} ${i + 1}`}
+            aria-current={i === actual ? 'true' : undefined} />
+        ))}
       </div>
 
       <div className="zy-hero-desfile">
@@ -120,10 +170,6 @@ export default function Hero() {
           ))}
         </div>
       </div>
-
-      <a href="#servicios" className="zy-hero-bajar" aria-label={t('a11y.bajar', 'Ir a la sección de servicios')}>
-        <Icono nombre="abajo" size={19} />
-      </a>
     </section>
   )
 }

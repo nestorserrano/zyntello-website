@@ -84,7 +84,12 @@
   --zy-display: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
   --zy-texto-fuente: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
 
-  --zy-navbar-h: 88px;
+  /* Alto de la barra azul de contacto que va encima del menú: 40px en escritorio y solo
+     arriba del todo (ver el final del archivo). `--zy-navbar-h` la incluye, así que todo lo
+     que ya se colocaba bajo la cabecera la sigue sin cambiar.
+     ⚠️ `0px` y no `0`, por el mismo motivo que `--zy-aviso-h`. */
+  --zy-barra-h: 0px;
+  --zy-navbar-h: calc(88px + var(--zy-barra-h));
 
   /* Alto de la tira de idiomas, que vive FIJA justo debajo de la barra. Lo escribe
      `AvisoIdiomas` al medirse, y vuelve a 0px al cerrarse.
@@ -157,4 +162,9 @@
     scroll-behavior: auto !important;
   }
   .zy-revelar { opacity: 1 !important; transform: none !important; }
+}
+
+/* La barra de contacto solo existe en escritorio y solo mientras no se ha bajado. */
+@media (min-width: 992px) {
+  :root:not(.zy-desplazado) { --zy-barra-h: 40px; }
 }

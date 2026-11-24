@@ -1,221 +1,236 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   Hero — tema oscuro, titular a pantalla, fondo animado
+   Hero — carrusel de fotos a pantalla completa, bajo el menú (formato Appicross)
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .zy-hero {
+  /* Lo que ocupa la cabecera EN SU ESTADO MÁS ALTO (barra de contacto + menú).
+     ⚠️ Es una constante y no `--zy-navbar-h`: esa variable encoge al hacer scroll, y si el
+     relleno del hero la siguiera, todo el contenido daría un salto de 40 px al bajar. */
+  --zy-cabecera-max: 88px;
+
   position: relative;
-  /* ⚠️ `min-height: 100svh` a secas deja el hero más alto que un portátil de
-     640 px: el titular ocupa la pantalla entera y los botones quedan debajo
-     del pliegue, sin nada que indique que hay que bajar. Solo se pide la
-     pantalla entera donde el contenido de verdad cabe (ver el final). */
-  min-height: auto;
+  min-height: clamp(640px, 100svh, 920px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  padding-top: calc(var(--zy-navbar-h) + var(--zy-aviso-h) + clamp(28px, 3.4vw, 52px));
-  padding-bottom: clamp(96px, 9vw, 124px);   /* sitio para el desfile */
-  text-align: center;
-  background: var(--zy-fondo);
+  padding-top: calc(var(--zy-cabecera-max) + var(--zy-aviso-h) + 40px);
+  padding-bottom: 150px;   /* sitio para los puntos y el desfile */
+  text-align: start;
+  /* La foto ya es oscura a la izquierda; el fondo solo se ve mientras carga. */
+  background: #06111d;
+  color: #fff;
+}
+@media (min-width: 992px) {
+  .zy-hero { --zy-cabecera-max: 128px; }
 }
 
+/* ── Fotos ──────────────────────────────────────────────────────────────── */
+.zy-hero-foto {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: 70% center;
+  opacity: 0;
+  transition: opacity .9s var(--zy-curva), transform 8s ease-out;
+}
+.zy-hero-foto.zy-activa { opacity: 1; transform: scale(1.04); }
+
+/* ⚠️ El velo es lo que garantiza el contraste del texto blanco: la foto cambia, el velo no. */
+.zy-hero-velo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(90deg, rgba(4, 14, 26, .94) 0%, rgba(4, 14, 26, .82) 38%, rgba(4, 14, 26, .35) 70%, rgba(4, 14, 26, .15) 100%),
+    linear-gradient(0deg, rgba(4, 14, 26, .9) 0%, transparent 38%),
+    linear-gradient(180deg, rgba(4, 14, 26, .45) 0%, transparent 24%);
+}
+[dir="rtl"] .zy-hero-velo { transform: scaleX(-1); }
+
+/* ── Contenido ──────────────────────────────────────────────────────────── */
 .zy-hero-contenido {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 1040px;
-  margin-inline: auto;
 }
 
-.zy-hero-halo-1 {
-  width: 620px; height: 620px;
-  top: -22%; left: 50%;
-  margin-left: -310px;
-  background: radial-gradient(circle, rgba(99, 102, 241, .5) 0%, transparent 66%);
-  opacity: .5;
+/* Todas las escenas en la MISMA celda: el bloque mide lo que la más alta, así que cambiar de
+   escena no mueve nada de lo que hay debajo. */
+.zy-hero-escenas { display: grid; max-width: 780px; }
+.zy-hero-escena {
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px);
+  transition: opacity .55s var(--zy-curva), transform .55s var(--zy-curva), visibility .55s;
 }
-.zy-hero-halo-2 {
-  width: 480px; height: 480px;
-  bottom: -20%; right: -6%;
-  background: radial-gradient(circle, rgba(251, 113, 133, .38) 0%, transparent 66%);
-  opacity: .42;
-}
+.zy-hero-escena.zy-activa { opacity: 1; visibility: visible; transform: none; }
 
-/* ── Insignia superior ──────────────────────────────────────────────────── */
 .zy-hero-insignia {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0 auto clamp(20px, 2.4vw, 30px);
-  padding: 8px 18px 8px 14px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, .045);
-  border: 1px solid var(--zy-borde-medio);
-  backdrop-filter: blur(10px);
-  color: var(--zy-texto-medio);
-  font-size: .82rem;
-  font-weight: 500;
+  margin: 0 0 18px;
+  color: #8fd0ff;
+  font-family: var(--zy-display);
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
 }
 
-.zy-hero-latido {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--zy-exito);
-  box-shadow: 0 0 12px var(--zy-exito);
-  animation: zy-pulso 2.2s ease-in-out infinite;
-}
-
-/* ── Titular ────────────────────────────────────────────────────────────── */
 .zy-hero-titulo {
   font-family: var(--zy-display);
-  font-size: clamp(2.2rem, 5vw, 4.4rem);
+  font-size: clamp(2.3rem, 5.2vw, 4.6rem);
   font-weight: 700;
-  line-height: .99;
-  letter-spacing: -.045em;
-  margin-bottom: clamp(16px, 1.8vw, 24px);
+  line-height: 1.02;
+  letter-spacing: -.04em;
+  margin: 0 0 22px;
+  color: #fff;
   text-wrap: balance;
 }
+.zy-hero-acento { color: #8fd0ff; }
 
 .zy-hero-bajada {
-  color: var(--zy-texto-suave);
-  font-size: clamp(1.02rem, 1.5vw, 1.2rem);
-  line-height: 1.75;
+  color: rgba(255, 255, 255, .8);
+  font-size: clamp(1.02rem, 1.45vw, 1.2rem);
+  line-height: 1.7;
   max-width: 620px;
-  margin: 0 auto clamp(26px, 3vw, 36px);
+  margin: 0 0 32px;
   text-wrap: pretty;
 }
 
-.zy-hero-botones {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
+.zy-hero-botones { display: flex; gap: 14px; flex-wrap: wrap; }
 
-.zy-hero-nota {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  margin-top: 24px;
-  color: var(--zy-texto-tenue);
-  font-size: .86rem;
+.zy-hero .zy-hero-btn-blanco {
+  background: #fff;
+  color: #0b2440;
+  border-radius: 999px;
 }
-.zy-hero-nota svg { color: var(--zy-exito); }
+.zy-hero .zy-hero-btn-blanco:hover { background: #e8f2fb; color: #0b2440; }
+.zy-hero .zy-hero-btn-borde {
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, .45);
+  background: rgba(255, 255, 255, .06);
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+}
+.zy-hero .zy-hero-btn-borde:hover { background: rgba(255, 255, 255, .14); color: #fff; }
 
-/* ── Cifras ─────────────────────────────────────────────────────────────── */
-.zy-hero-cifras {
+/* ── Flechas ────────────────────────────────────────────────────────────── */
+.zy-hero-flecha {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  width: 54px; height: 54px;
+  margin-top: -27px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  margin-top: clamp(32px, 3.6vw, 48px);
-  background: var(--zy-borde);        /* las líneas separadoras son el hueco */
-  border: 1px solid var(--zy-borde);
-  border-radius: var(--zy-radio);
-  overflow: hidden;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .5);
+  background: rgba(0, 0, 0, .18);
+  color: #fff;
+  font-size: 1.05rem;
+  transition: background var(--zy-t-medio), border-color var(--zy-t-medio);
 }
+.zy-hero-flecha:hover { background: rgba(255, 255, 255, .16); border-color: #fff; }
+.zy-hero-flecha:focus-visible,
+.zy-hero-pausa:focus-visible,
+.zy-hero-punto:focus-visible { outline: 2px solid #8fd0ff; outline-offset: 3px; }
+.zy-hero-flecha-ant { inset-inline-start: 24px; }
+.zy-hero-flecha-sig { inset-inline-end: 24px; }
+/* En árabe «anterior» queda a la derecha: el chevron tiene que mirar hacia fuera también. */
+[dir="rtl"] .zy-hero-flecha i { transform: scaleX(-1); }
 
-.zy-hero-cifra {
+/* ── Puntos y pausa ─────────────────────────────────────────────────────── */
+.zy-hero-controles {
+  position: absolute;
+  z-index: 3;
+  left: 0; right: 0;
+  bottom: 92px;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: clamp(16px, 1.8vw, 22px) 14px;
-  /* ⚠⚠ Token de tema, NO un negro fijo: escrito a mano, en tema claro pintaba
-     esta banda oscura con el texto oscuro del tema encima —ilegible—. El navbar
-     tuvo el mismo defecto y se parcheó aparte en financial-ui.css. */
-  background: var(--zy-velo-panel);
-  backdrop-filter: blur(8px);
-  transition: background var(--zy-t-medio);
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
-.zy-hero-cifra:hover { background: rgba(99, 102, 241, .1); }
-
-.zy-hero-cifra-num {
-  font-family: var(--zy-display);
-  font-size: clamp(1.6rem, 2.6vw, 2.3rem);
-  font-weight: 700;
-  letter-spacing: -.03em;
-  color: var(--zy-texto);
-  line-height: 1;
+.zy-hero-pausa {
+  width: 32px; height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .4);
+  background: transparent;
+  color: #fff;
+  font-size: .7rem;
+  margin-inline-end: 6px;
 }
-.zy-hero-cifra-lbl {
-  color: var(--zy-texto-tenue);
-  font-size: .78rem;
-  line-height: 1.35;
+/* El punto visible es pequeño, pero el área que se pulsa no: 24 px de alto como mínimo. */
+.zy-hero-punto {
+  position: relative;
+  width: 10px; height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  transition: width .3s var(--zy-curva);
 }
+.zy-hero-punto::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 7px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .45);
+  transition: background .3s;
+}
+.zy-hero-punto:hover::before { background: rgba(255, 255, 255, .75); }
+.zy-hero-punto.zy-activa { width: 40px; }
+.zy-hero-punto.zy-activa::before { background: #fff; }
 
 /* ── Desfile de capacidades ─────────────────────────────────────────────── */
 .zy-hero-desfile {
   position: absolute;
-  left: 0; right: 0; bottom: 38px;
+  left: 0; right: 0; bottom: 0;
   z-index: 2;
+  padding: 16px 0;
+  background: rgba(4, 14, 26, .55);
+  border-top: 1px solid rgba(255, 255, 255, .1);
+  backdrop-filter: blur(8px);
 }
 
 .zy-hero-capacidad {
   display: inline-flex;
   align-items: center;
-  padding: 8px 18px;
+  padding: 7px 16px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, .035);
-  border: 1px solid var(--zy-borde);
-  color: var(--zy-texto-tenue);
+  border: 1px solid rgba(255, 255, 255, .16);
+  color: rgba(255, 255, 255, .78);
   font-family: var(--zy-display);
   font-size: .8rem;
   font-weight: 500;
   white-space: nowrap;
 }
 
-/* ── Indicador de scroll ────────────────────────────────────────────────── */
-.zy-hero-bajar {
-  position: absolute;
-  z-index: 3;
-  /* Se centra con margen, no con translateX: la animación `zy-bajar` también
-     escribe `transform`, así que un translateX aquí se perdería en el primer
-     fotograma y el botón saltaría a la izquierda. */
-  left: 50%;
-  margin-left: -21px;
-  bottom: 100px;
-  width: 42px; height: 42px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, .05);
-  border: 1px solid var(--zy-borde-medio);
-  color: var(--zy-texto-medio);
-  animation: zy-bajar 2.4s ease-in-out infinite;
-}
-.zy-hero-bajar:hover { color: var(--zy-texto); border-color: var(--zy-indigo); }
-
 /* ── Adaptación ─────────────────────────────────────────────────────────── */
-
-/* Solo pide la pantalla entera donde el contenido de verdad cabe. */
-@media (min-width: 992px) and (min-height: 820px) {
-  .zy-hero { min-height: 100svh; }
-}
-
-@media (max-width: 1199.98px) {
-  .zy-hero { padding-top: calc(var(--zy-navbar-h) + var(--zy-aviso-h) + 44px); }
-  .zy-hero-bajar { display: none; }
+@media (max-width: 991.98px) {
+  .zy-hero-flecha { display: none; }   /* en táctil se usan los puntos */
 }
 
 @media (max-width: 767.98px) {
-  .zy-hero { padding-bottom: 116px; }
-  .zy-hero-insignia { font-size: .75rem; padding: 7px 14px 7px 11px; }
-  .zy-hero-titulo { font-size: clamp(2.1rem, 10vw, 3.2rem); letter-spacing: -.04em; }
-  .zy-hero-bajada { font-size: 1rem; margin-bottom: 30px; }
+  .zy-hero { min-height: 0; padding-bottom: 140px; }
+  .zy-hero-foto { background-position: 72% center; }
+  .zy-hero-velo {
+    background:
+      linear-gradient(90deg, rgba(4, 14, 26, .93), rgba(4, 14, 26, .78)),
+      linear-gradient(0deg, rgba(4, 14, 26, .9) 0%, transparent 50%);
+  }
+  .zy-hero-titulo { font-size: clamp(2.05rem, 9.5vw, 3rem); }
+  .zy-hero-bajada { font-size: 1rem; margin-bottom: 26px; }
   .zy-hero-botones { flex-direction: column; align-items: stretch; }
-  .zy-hero-botones .zy-btn { width: 100%; }
-  .zy-hero-nota { font-size: .8rem; line-height: 1.5; text-align: left; }
-
-  /* Dos columnas: cuatro cifras en 360 px dejan el número en 11 px */
-  .zy-hero-cifras { grid-template-columns: repeat(2, 1fr); margin-top: 40px; }
-  .zy-hero-capacidad { font-size: .75rem; padding: 7px 14px; }
-  .zy-hero-desfile { bottom: 28px; }
+  .zy-hero-botones .zy-btn { width: 100%; justify-content: center; }
+  .zy-hero-controles { bottom: 84px; }
+  .zy-hero-capacidad { font-size: .75rem; padding: 6px 13px; }
 }
 
-/* Pantalla baja (portátil 1366×640, tableta apaisada) */
-@media (max-height: 760px) and (min-width: 992px) {
-  .zy-hero { padding-top: calc(var(--zy-navbar-h) + var(--zy-aviso-h) + 36px); padding-bottom: 108px; }
-  .zy-hero-titulo { font-size: clamp(2.4rem, 5vw, 4rem); margin-bottom: 20px; }
-  .zy-hero-bajada { margin-bottom: 28px; }
-  .zy-hero-cifras { margin-top: 36px; }
-  .zy-hero-cifra { padding: 16px 12px; }
+@media (prefers-reduced-motion: reduce) {
+  .zy-hero-foto, .zy-hero-escena, .zy-hero-punto { transition: none; }
+  .zy-hero-foto.zy-activa { transform: none; }
 }

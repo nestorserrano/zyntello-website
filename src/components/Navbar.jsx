@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Icono from './Icono'
 import Apariencia from './Apariencia'
 import SelectorIdioma from './SelectorIdioma'
+import RedesSociales from './RedesSociales'
 import { useIdioma } from '../hooks/useIdioma'
 import '../styles/Navbar.css'
 
@@ -28,7 +29,13 @@ export default function Navbar() {
   /* Navbar sólido en cuanto se despega del hero: sobre el vídeo claro, un
      navbar transparente deja los enlaces sin contraste garantizado. */
   useEffect(() => {
-    const alScroll = () => setCompacto(window.scrollY > 24)
+    const alScroll = () => {
+      const abajo = window.scrollY > 24
+      setCompacto(abajo)
+      /* La barra de contacto se pliega al bajar, y con ella `--zy-navbar-h` (tokens.css):
+         el aviso de idiomas, el menú móvil y el scroll por anclas la siguen sin tocarlos. */
+      document.documentElement.classList.toggle('zy-desplazado', abajo)
+    }
     alScroll()
     window.addEventListener('scroll', alScroll, { passive: true })
     return () => window.removeEventListener('scroll', alScroll)
@@ -53,7 +60,20 @@ export default function Navbar() {
   }, [])
 
   return (
-    <nav className={`zy-nav ${compacto ? 'zy-nav-compacto' : ''}`}>
+    /* ⚠️ Con el menú móvil abierto se pinta OPACA aunque esté arriba: sobre la foto la barra es
+       transparente y lleva texto claro, y el panel desplegable no tiene foto detrás. */
+    <nav className={`zy-nav ${compacto || abierto ? 'zy-nav-compacto' : ''}`}>
+      {/* Barra de contacto (formato Appicross). Solo escritorio y solo arriba del todo. */}
+      <div className="zy-nav-barra">
+        <div className="zy-nav-barra-caja container-fluid px-4 px-lg-5">
+          <div className="zy-nav-barra-datos">
+            <a href="tel:+18296399877" dir="ltr"><i className="fa-solid fa-phone" aria-hidden="true" /> +1 829 639 9877</a>
+            <a href="mailto:info@zyntello.com"><i className="fa-regular fa-envelope" aria-hidden="true" /> info@zyntello.com</a>
+          </div>
+          <RedesSociales />
+        </div>
+      </div>
+
       <div className="zy-nav-caja container-fluid px-4 px-lg-5">
 
         <a className="zy-nav-marca" href="#inicio" onClick={() => setAbierto(false)}>

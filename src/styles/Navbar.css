@@ -224,3 +224,66 @@
   .zy-nav-marca img { height: 48px; }
   .zy-nav-marca-texto strong { font-size: 1.28rem; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Barra de contacto + menú transparente sobre la foto (formato Appicross)
+   ═══════════════════════════════════════════════════════════════════════════ */
+.zy-nav {
+  display: flex;
+  flex-direction: column;
+  transition: height var(--zy-t-medio) var(--zy-curva), background var(--zy-t-medio);
+}
+.zy-nav-caja { height: auto; flex: 1; width: 100%; }
+
+.zy-nav-barra {
+  height: var(--zy-barra-h);
+  overflow: hidden;
+  background: #0f5487;
+  color: rgba(255, 255, 255, .92);
+  font-size: .8rem;
+  transition: height var(--zy-t-medio) var(--zy-curva);
+}
+.zy-nav-barra-caja {
+  height: 40px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1400px;
+  margin-inline: auto;
+}
+.zy-nav-barra-datos { display: flex; gap: 22px; }
+.zy-nav-barra a { color: inherit; display: inline-flex; align-items: center; gap: 7px; }
+.zy-nav-barra a:hover { color: #fff; text-decoration: underline; }
+.zy-nav-barra .zy-redes-sociales { gap: 4px; }
+.zy-nav-barra .zy-redes-sociales a {
+  width: 28px; height: 28px;
+  border: 0; border-radius: 6px;
+  background: transparent;
+  color: rgba(255, 255, 255, .9);
+  font-size: .82rem;
+}
+.zy-nav-barra .zy-redes-sociales a:hover { background: rgba(255, 255, 255, .14); color: #fff; transform: none; }
+
+/* Arriba del todo, sobre la foto: sin fondo y con texto claro EN LOS DOS TEMAS.
+   ⚠️ Los tokens de texto se redefinen aquí dentro: en tema claro valen oscuro, y sobre la foto
+   el menú quedaría gris oscuro sobre gris oscuro. Mismos valores que el `:root` oscuro. */
+.zy-nav:not(.zy-nav-compacto),
+html[data-appearance="light"] .zy-nav:not(.zy-nav-compacto) {
+  --zy-texto:       #f5f5f7;
+  --zy-texto-medio: #d6d6de;
+  --zy-texto-suave: #c9c9d4;
+  --zy-texto-tenue: #b4b4c2;
+  --zy-borde:       rgba(255, 255, 255, .16);
+  --zy-borde-medio: rgba(255, 255, 255, .28);
+  background: linear-gradient(180deg, rgba(3, 12, 22, .5) 0%, rgba(3, 12, 22, 0) 100%);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+/* En móvil la franja ya mide 0 px; se saca del todo para que sus enlaces no queden en el orden
+   del tabulador estando invisibles. */
+@media (max-width: 991.98px) {
+  .zy-nav-barra { display: none; }
+}
+/* Plegada al bajar: fuera del tabulador también (con alto 0 los enlaces seguían enfocables). */
+.zy-desplazado .zy-nav-barra { visibility: hidden; }
