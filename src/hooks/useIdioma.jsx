@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import { enAplicaciones, rutaAplicaciones } from '../lib/vista'
 
 /**
  * El idioma del sitio público. Ver `[WEB-IDIOMA-1]`.
@@ -160,6 +161,12 @@ export function ProveedorIdioma({ children }) {
        recarga o comparte el enlace, y entonces la elección se deshace sola porque la URL manda.
        Un selector que se deshace al recargar es peor que uno que no está, porque el visitante
        cree que eligió. */
+    /* El catálogo de aplicaciones tiene una página por idioma, así que ahí elegir idioma
+       SIEMPRE mueve la URL — también desde el español, que no lleva prefijo. */
+    if (enAplicaciones()) {
+      const destinoApps = rutaAplicaciones(nuevo)
+      if (window.location.pathname !== destinoApps) { window.location.assign(destinoApps); return }
+    }
     const destino = nuevo === 'es' ? '/' : `/${nuevo}/`
     const actual = `/${window.location.pathname.split('/').filter(Boolean)[0] ?? ''}`
     const enPortadaConPrefijo = detectarDeLaUrl() !== null

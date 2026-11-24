@@ -109,7 +109,7 @@ export const PAGINAS = [
 
     heroTitulo: 'Pagas los módulos que usas, y ninguno más',
     heroBajada: 'No hay licencia inicial, ni proyecto de implantación que cobrar antes de empezar, ni un paquete de veinte módulos del que vas a usar tres. Se contrata mensualmente lo que necesitas hoy y se añade lo demás cuando el negocio lo pida.',
-    segundoBoton: { texto: 'Ver los módulos y sus precios', href: 'https://zyntello.com/#soluciones' },
+    segundoBoton: { texto: 'Ver los módulos y sus precios', href: 'https://zyntello.com/aplicaciones/' },
 
     problema: {
       titulo: 'El precio de un ERP casi nunca es el precio de un ERP',
@@ -182,7 +182,7 @@ export const PAGINAS = [
 
     heroTitulo: 'Veinte años implantando sistemas antes de escribir el nuestro',
     heroBajada: 'Zyntello, S.R.L. no empezó siendo un producto. Empezó implantando los sistemas de otros —Softland, Profit, infraestructura, nube— y viendo de cerca por qué tantos proyectos de ERP acaban abandonados. La plataforma que vendemos hoy es la consecuencia de eso.',
-    segundoBoton: { texto: 'Ver la plataforma', href: 'https://zyntello.com/#soluciones' },
+    segundoBoton: { texto: 'Ver la plataforma', href: 'https://zyntello.com/aplicaciones/' },
 
     problema: {
       titulo: 'Casi nadie abandona un ERP porque le falte una función',

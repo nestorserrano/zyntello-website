@@ -13,6 +13,7 @@ import AvisoCookies from './components/AvisoCookies'
 import AvisoIdiomas from './components/AvisoIdiomas'
 import { ProveedorIdioma, useIdioma } from './hooks/useIdioma'
 import { useRevelar } from './hooks/useRevelar'
+import { enAplicaciones } from './lib/vista'
 import './styles/zyntello.css'
 import './styles/Secciones.css'
 import './styles/financial-ui.css'
@@ -52,14 +53,24 @@ function App() {
           se leería como publicidad y la gente lo cerraría sin mirarlo. */}
       <AvisoIdiomas />
       <main>
-        <Hero />
-        <Servicios />
-        <Soluciones />
-        <Funcionalidades />
-        <PorQueZyntello />
-        <Portafolio />
-        <Nosotros />
-        <Contacto />
+        {/* El catálogo completo tiene su propia página (ver `src/lib/vista.js`). */}
+        {enAplicaciones() ? (
+          <>
+            <Soluciones completo />
+            <Contacto />
+          </>
+        ) : (
+          <>
+            <Hero />
+            <Servicios />
+            <Soluciones />
+            <Funcionalidades />
+            <PorQueZyntello />
+            <Portafolio />
+            <Nosotros />
+            <Contacto />
+          </>
+        )}
       </main>
       <Footer />
       <WhatsAppChat />

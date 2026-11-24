@@ -3,6 +3,7 @@ import Icono from './Icono'
 import SelectorIdioma from './SelectorIdioma'
 import RedesSociales from './RedesSociales'
 import { useIdioma } from '../hooks/useIdioma'
+import { enAplicaciones, rutaPortada } from '../lib/vista'
 import '../styles/Navbar.css'
 
 // ⚠️ Cada sección lleva su CLAVE de traducción y su texto en español. El español se queda en el
@@ -19,11 +20,17 @@ const SECCIONES = [
 ]
 
 export default function Navbar() {
-  const { t } = useIdioma()
+  const { t, idioma } = useIdioma()
+
+  /* En la página de aplicaciones no hay hero con foto detrás, así que la barra va SIEMPRE
+     opaca (con texto claro sobre fondo blanco no se leería), y los enlaces a secciones que
+     solo están en la portada llevan a la portada. Catálogo y contacto sí están en esa página. */
+  const apps = enAplicaciones()
+  const ancla = (id) => (apps && id !== 'soluciones' && id !== 'contacto' ? `${rutaPortada(idioma)}#${id}` : `#${id}`)
 
   const [abierto, setAbierto] = useState(false)
   const [compacto, setCompacto] = useState(false)
-  const [activa, setActiva] = useState('inicio')
+  const [activa, setActiva] = useState(apps ? 'soluciones' : 'inicio')
 
   /* Navbar sólido en cuanto se despega del hero: sobre el vídeo claro, un
      navbar transparente deja los enlaces sin contraste garantizado. */
@@ -61,7 +68,7 @@ export default function Navbar() {
   return (
     /* ⚠️ Con el menú móvil abierto se pinta OPACA aunque esté arriba: sobre la foto la barra es
        transparente y lleva texto claro, y el panel desplegable no tiene foto detrás. */
-    <nav className={`zy-nav ${compacto || abierto ? 'zy-nav-compacto' : ''}`}>
+    <nav className={`zy-nav ${compacto || abierto || apps ? 'zy-nav-compacto' : ''}`}>
       {/* Barra de contacto (formato Appicross). Solo escritorio y solo arriba del todo. */}
       <div className="zy-nav-barra">
         <div className="zy-nav-barra-caja container-fluid px-4 px-lg-5">
@@ -75,7 +82,7 @@ export default function Navbar() {
 
       <div className="zy-nav-caja container-fluid px-4 px-lg-5">
 
-        <a className="zy-nav-marca" href="#inicio" onClick={() => setAbierto(false)}>
+        <a className="zy-nav-marca" href={ancla('inicio')} onClick={() => setAbierto(false)}>
           <img src="/logos/zyntello_isotipo_transparente.png" alt="" width="58" height="58" />
           <span className="zy-nav-marca-texto">
             <strong>Zyntello</strong>
@@ -101,7 +108,7 @@ export default function Navbar() {
             {SECCIONES.map(([id, clave, etiqueta]) => (
               <li key={id}>
                 <a
-                  href={`#${id}`}
+                  href={ancla(id)}
                   className={`zy-nav-enlace ${activa === id ? 'zy-nav-enlace-activo' : ''}`}
                   aria-current={activa === id ? 'true' : undefined}
                   onClick={() => setAbierto(false)}

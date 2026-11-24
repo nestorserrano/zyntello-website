@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useIdioma } from '../hooks/useIdioma'
+import { rutaAplicaciones } from '../lib/vista'
 import '../styles/Soluciones.css'
 
 /* ⚠️ Las insignias de la tarjeta («Nuevo», «Destacado»…) se deciden fuera del
@@ -340,8 +341,19 @@ export const LANDINGS_PUBLICAS = new Set([
 // landing prometía proyección diaria, umbral configurable y aviso automático, que no
 // existen. Las pantallas siguen, dentro de Bancos; lo que se retiró es el cobro.
 
-/* ─── Componente principal ──────────────────────────────────────── */
-export default function Soluciones() {
+/* Cuántas tarjetas lleva el resumen de la portada, y cuáles van primero. */
+const EN_PORTADA = 4
+const PRIORIDAD_PORTADA = { 'Destacado': 0, 'Popular': 1, 'Nuevo': 2 }
+
+/* ─── Componente principal ──────────────────────────────────────────
+ *
+ * ⚠️ Se pinta de DOS formas (decisión del director técnico, 2026-11-24):
+ *   · en la portada, un RESUMEN: la franja del ERP, cuatro tarjetas y el botón al catálogo;
+ *   · con `completo`, el catálogo entero en `/{prefijo}aplicaciones/`, con el selector de moneda.
+ * Eran 35 tarjetas en la portada —nueve filas— y el catálogo va a seguir creciendo.
+ * Es el mismo componente en las dos para que los precios salgan del mismo sitio.
+ */
+export default function Soluciones({ completo = false }) {
   const { idioma, t } = useIdioma()
   const [moneda, setMoneda]     = useState('USD')
   const [rates, setRates]       = useState(null)
@@ -379,9 +391,17 @@ export default function Soluciones() {
     return (usd * rates[moneda]).toLocaleString('es-DO', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
   }
 
+  /* Lo que el admin declara vendible por separado, NO lo que está fuera del bundle: un módulo
+     puede ir dentro del ERP y venderse solo. */
+  const vendibles = apps.filter(app => app.vendibleSuelto && !ERP_BUNDLE_SLUGS.has(app.id))
+  const visibles = completo ? vendibles : [...vendibles]
+    .sort((a, b) => (PRIORIDAD_PORTADA[a.etiqueta] ?? 9) - (PRIORIDAD_PORTADA[b.etiqueta] ?? 9))
+    .slice(0, EN_PORTADA)
+  const Titulo = completo ? 'h1' : 'h2'
+
   return (
     <>
-      <section id="soluciones" className="sol-section">
+      <section id="soluciones" className={`sol-section${completo ? ' sol-pagina' : ''}`}>
 
         <div className="container-fluid px-4 px-lg-5 sol-content">
 
@@ -390,7 +410,7 @@ export default function Soluciones() {
             <p className="sol-hero-eyebrow">
               {t('sol.eyebrow.plataforma', 'Plataforma SaaS')} · {apps.length} {t('sol.eyebrow.modulos', 'módulos')}
             </p>
-            <h2 className="sol-hero-title">
+            <Titulo className="sol-hero-title">
               {/* ⚠️ Mismo criterio que el resto del sitio: el español conserva
                   su salto y su resaltado, los demás reciben la frase entera. */}
               {idioma === 'es' ? (
@@ -398,12 +418,13 @@ export default function Soluciones() {
               ) : (
                 t('sol.titulo', 'Tu empresa, digitalizada.')
               )}
-            </h2>
+            </Titulo>
             <p className="sol-hero-subtitle">
               {t('sol.subtitulo', 'Microaplicaciones empresariales listas para usar. Sin instalaciones, acceso desde cualquier dispositivo y soporte incluido.')}
             </p>
           </div>
 
+          {completo && <>
           {/* Callout personalización */}
           <div className="sol-callout">
             <div style={{ flex: 1, minWidth: '220px' }}>
@@ -428,6 +449,7 @@ export default function Soluciones() {
             </div>
             {!rates && <span className="sol-moneda-loading">{t('sol.moneda.cargando', 'Cargando tasas…')}</span>}
           </div>
+          </>}
 
           {/* Banner ERP */}
           <div className="sol-bundle-banner" onClick={() => window.location.href = 'https://app.zyntello.com/erp'} style={{ cursor: 'pointer' }}>
@@ -453,10 +475,8 @@ export default function Soluciones() {
             </div>
           </div>
 
-          {/* Grid de apps — se ofrece lo que el admin declara vendible por separado, NO lo
-              que está fuera del bundle: un módulo puede ir dentro del ERP y venderse solo. */}
           <div className="sol-grid">
-            {apps.filter(app => app.vendibleSuelto && !ERP_BUNDLE_SLUGS.has(app.id)).map(app => (
+            {visibles.map(app => (
               <article key={app.id} className="sol-card" style={{ '--sol-acento': app.color }}>
 
                 <header className="sol-card-cima">
@@ -538,17 +558,26 @@ export default function Soluciones() {
             ))}
           </div>
 
-          {/* Footer */}
+          {!completo && (
+            <div className="text-center mt-5">
+              <a href={rutaAplicaciones(idioma)} className="zy-btn zy-btn-primario">
+                {t('sol.ver.todos', 'Ver los {n} módulos y sus precios').replace('{n}', apps.length)} →
+              </a>
+            </div>
+          )}
+
+          {completo && (
           <div className="text-center mt-5">
-            <p style={{ color: '#8a8a99', fontSize: '0.83rem', lineHeight: 1.8 }}>
+            <p style={{ color: 'var(--zy-texto-tenue)', fontSize: '0.83rem', lineHeight: 1.8 }}>
               {t('sol.pie.1', 'Todas las aplicaciones incluyen actualizaciones continuas y soporte técnico.')}<br />
-              <span style={{ color: '#8a8a99' }}>{t('sol.pie.2', 'Sin contratos de permanencia · Cancela cuando quieras · Acceso inmediato tras el pago.')}</span>
+              <span>{t('sol.pie.2', 'Sin contratos de permanencia · Cancela cuando quieras · Acceso inmediato tras el pago.')}</span>
             </p>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.32)', borderRadius: '10px', padding: '8px 18px', marginTop: '10px' }}>
-              <span style={{ color: '#a5b4fc', fontSize: '1rem' }}>🎁</span>
-              <span style={{ color: '#a5b4fc', fontSize: '0.83rem', fontWeight: 600 }}>{t('sol.regalo', 'Plan anual — 2 meses gratis en todos los paquetes')}</span>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(16,86,140,0.08)', border: '1px solid rgba(16,86,140,0.25)', borderRadius: '10px', padding: '8px 18px', marginTop: '10px' }}>
+              <span style={{ fontSize: '1rem' }}>🎁</span>
+              <span style={{ color: 'var(--zy-indigo)', fontSize: '0.83rem', fontWeight: 600 }}>{t('sol.regalo', 'Plan anual — 2 meses gratis en todos los paquetes')}</span>
             </div>
           </div>
+          )}
 
         </div>
       </section>

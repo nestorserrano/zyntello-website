@@ -79,29 +79,47 @@ if (plantilla.includes('/src/main.jsx')) {
   process.exit(1)
 }
 
-/** Los `hreflang` de los ocho, más el `x-default` que apunta al español. */
-const alternativas = IDIOMAS.map((i) =>
-  `    <link rel="alternate" hreflang="${i.codigo}" href="${SITIO}/${i.prefijo}" />`,
-).join('\n') + `\n    <link rel="alternate" hreflang="x-default" href="${SITIO}/" />`
+/* ⚠️ Dos páginas por idioma salen del MISMO bundle: la portada y, desde el 2026-11-24, el
+   catálogo de aplicaciones (`/{prefijo}aplicaciones/`, ver `src/lib/vista.js`). La app React
+   decide cuál pintar mirando la URL; aquí se le da a cada una su título, su canonical y sus
+   hreflang, que es lo que lee Google. */
+const PAGINAS = [
+  {
+    sufijo: '',
+    titulo: 'pag.portada.titulo', tituloEs: 'Zyntello | Software ERP, CRM y Automatización con IA',
+    descripcion: 'pag.portada.descripcion', descripcionEs: 'Software ERP y CRM en la nube para digitalizar y automatizar los procesos de tu empresa.',
+  },
+  {
+    sufijo: 'aplicaciones/',
+    titulo: 'pag.aplicaciones.titulo', tituloEs: 'Módulos y precios de la plataforma | Zyntello',
+    descripcion: 'pag.aplicaciones.descripcion', descripcionEs: 'Todos los módulos de la plataforma Zyntello con su precio mensual: ERP, facturación, nómina, CRM y aplicaciones por tipo de negocio.',
+  },
+]
 
-const tituloDe = (c) => texto(c, 'pag.portada.titulo')
-  || 'Zyntello | Software ERP, CRM y Automatización con IA'
-const descripcionDe = (c) => texto(c, 'pag.portada.descripcion')
-  || 'Software ERP y CRM en la nube para digitalizar y automatizar los procesos de tu empresa.'
+/** Los `hreflang` de los ocho, más el `x-default` que apunta al español. */
+const alternativasDe = (sufijo) => IDIOMAS.map((i) =>
+  `    <link rel="alternate" hreflang="${i.codigo}" href="${SITIO}/${i.prefijo}${sufijo}" />`,
+).join('\n') + `\n    <link rel="alternate" hreflang="x-default" href="${SITIO}/${sufijo}" />`
 
 /* Guarda: sin las dos claves en el catálogo, las siete portadas saldrían en español con su
    `lang` diciendo otra cosa. Mejor no escribir nada que publicar eso. */
-const sinTraducir = IDIOMAS.filter((i) => i.codigo !== 'es' && !texto(i.codigo, 'pag.portada.titulo'))
-if (sinTraducir.length) {
-  console.error(`✗ falta 'pag.portada.titulo' en: ${sinTraducir.map((i) => i.codigo).join(', ')}`)
-  console.error('  Siémbralas en el panel antes de generar; no se ha escrito nada.')
-  process.exit(1)
+for (const pagina of PAGINAS) {
+  const sinTraducir = IDIOMAS.filter((i) => i.codigo !== 'es' && !texto(i.codigo, pagina.titulo))
+  if (sinTraducir.length) {
+    console.error(`✗ falta '${pagina.titulo}' en: ${sinTraducir.map((i) => i.codigo).join(', ')}`)
+    console.error('  Siémbralas en el panel antes de generar; no se ha escrito nada.')
+    process.exit(1)
+  }
 }
 
 let escritas = 0
-for (const idioma of IDIOMAS) {
-  const { codigo, prefijo, dir = codigo === 'ar' ? 'rtl' : 'ltr' } = idioma
+for (const pagina of PAGINAS) for (const idioma of IDIOMAS) {
+  const { codigo, dir = codigo === 'ar' ? 'rtl' : 'ltr' } = idioma
+  const prefijo = idioma.prefijo + pagina.sufijo
   const url = `${SITIO}/${prefijo}`
+  const tituloDe = (c) => texto(c, pagina.titulo) || pagina.tituloEs
+  const descripcionDe = (c) => texto(c, pagina.descripcion) || pagina.descripcionEs
+  const alternativas = alternativasDe(pagina.sufijo)
 
   const html = plantilla
     .replace(/<html lang="[^"]*"[^>]*>/, `<html lang="${codigo}" dir="${dir}">`)
@@ -129,8 +147,9 @@ for (const idioma of IDIOMAS) {
 const mapa = join(DIST, 'sitemap.xml')
 if (existsSync(mapa)) {
   let xml = readFileSync(mapa, 'utf8')
-  const nuevas = IDIOMAS.filter((i) => i.prefijo)
-    .map((i) => `${SITIO}/${i.prefijo}`)
+  const nuevas = PAGINAS.flatMap((p) => IDIOMAS.map((i) => i.prefijo + p.sufijo))
+    .filter(Boolean)
+    .map((ruta) => `${SITIO}/${ruta}`)
     .filter((u) => !xml.includes(`<loc>${u}</loc>`))
   if (nuevas.length) {
     const hoy = new Date().toISOString().slice(0, 10)
@@ -143,4 +162,4 @@ if (existsSync(mapa)) {
   console.log(`  sitemap  ${nuevas.length} portadas añadidas`)
 }
 
-console.log(`\n${IDIOMAS.length} portadas · ${escritas} reescritas`)
+console.log(`\n${IDIOMAS.length * PAGINAS.length} páginas · ${escritas} reescritas`)

@@ -179,7 +179,7 @@ ${idiomas.length > 1 ? '      ' + selectorIdioma({
     enlace: i => rutaEn(i.prefijo, resto),
     etiqueta: t('a11y.idiomas', 'Idioma'),
   }) : ''}
-      <a href="${SITIO}/${prefijoDe(idioma)}#soluciones" class="btn btn-fantasma btn-barra">${esc(t('pag.boton.modulos', 'Ver los módulos'))}</a>
+      <a href="${SITIO}/${prefijoDe(idioma)}aplicaciones/" class="btn btn-fantasma btn-barra">${esc(t('pag.boton.modulos', 'Ver los módulos'))}</a>
     </div>
   </div>
 </nav>`
@@ -413,7 +413,7 @@ ${grupos.map(([g, arts, clave]) => `<section class="grupo">
     <p>${esc(t('blogp.cierre.texto', 'Son problemas que hemos visto muchas veces. Cuéntanos el tuyo y te decimos si se arregla con un módulo o con otra cosa.'))}</p>
     <div class="acciones">
       <a href="https://wa.me/${WHATSAPP}" target="_blank" rel="noopener" class="btn btn-principal">${esc(t('pag.boton.whatsapp', 'Hablar con Zyntello'))}</a>
-      <a href="${SITIO}/${p}#soluciones" class="btn btn-fantasma">${esc(t('pag.boton.modulos', 'Ver los módulos'))}</a>
+      <a href="${SITIO}/${p}aplicaciones/" class="btn btn-fantasma">${esc(t('pag.boton.modulos', 'Ver los módulos'))}</a>
     </div>
   </div>
 </section>

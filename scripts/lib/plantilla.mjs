@@ -567,7 +567,7 @@ ${otras.length === 0 ? '' : `<section class="seccion seccion-alta">
   <div class="contenedor pie-caja">
     <span>© ${new Date().getFullYear()} Zyntello, S.R.L. · ${esc(t('nos.pais.rd', 'República Dominicana'))}</span>
     <span>
-      <a href="${SITIO}/#soluciones">${esc(t('pie.emp.modulos', 'Módulos'))}</a> ·
+      <a href="${SITIO}/aplicaciones/">${esc(t('pie.emp.modulos', 'Módulos'))}</a> ·
       <a href="${SITIO}/precios/">${esc(t('pie.emp.precios', 'Precios'))}</a> ·
       <a href="${SITIO}/blog/">${esc(t('pie.emp.blog', 'Blog'))}</a> ·
       <a href="${SITIO}/nosotros/">${esc(t('nav.nosotros', 'Nosotros'))}</a> ·

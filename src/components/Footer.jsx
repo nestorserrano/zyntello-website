@@ -1,5 +1,6 @@
 import Icono from './Icono'
 import RedesSociales from './RedesSociales'
+import { enAplicaciones, rutaAplicaciones, rutaPortada } from '../lib/vista'
 import { useIdioma } from '../hooks/useIdioma'
 
 /* ⚠️⚠️ Cada servicio a SU página. Hasta el 2026-09-21 los diez apuntaban a
@@ -33,14 +34,17 @@ const SERVICIOS = [
    nadie la enlaza — y el síntoma es que no posiciona, no que falle. El pie es
    el sitio donde se enlaza todo desde todas partes.
 
-   ⚠️ Las que siguen siendo ancla (#porque, #portafolio, #soluciones) lo siguen
+   ⚠️ Los módulos dejaron de ser el ancla #soluciones el 2026-11-24: el catálogo
+   completo tiene su propia página, en cada idioma (`src/lib/vista.js`).
+
+   ⚠️ Las que siguen siendo ancla (#porque, #portafolio) lo siguen
    siendo a propósito: son secciones de la portada y convertirlas en enlace
    recargaría la página en vez de desplazarse, que es peor de usar. */
 const EMPRESA = [
   ['/nosotros/',       'pie.emp.nosotros',      'Quiénes somos'],
   ['#porque',          'pie.emp.porque',        'Por qué Zyntello'],
   ['#portafolio',      'nav.portafolio',        'Portafolio'],
-  ['#soluciones',      'pie.emp.modulos',       'Módulos'],
+  ['/aplicaciones/',   'pie.emp.modulos',       'Módulos'],
   ['/precios/',        'pie.emp.precios',       'Precios'],
   ['/automatizacion/', 'pie.emp.automatizacion', 'Automatización'],
   ['/blog/',           'pie.emp.blog',          'Blog'],
@@ -58,6 +62,13 @@ const LEGALES = [
 
 export default function Footer() {
   const { idioma, t } = useIdioma()
+
+  /* El catálogo existe en los ocho idiomas; y desde la página de aplicaciones, un ancla de la
+     portada tiene que llevar a la portada, porque ahí esa sección no está. */
+  const enlaceEmpresa = (href) =>
+    href === '/aplicaciones/' ? rutaAplicaciones(idioma)
+      : href.startsWith('#') && enAplicaciones() ? `${rutaPortada(idioma)}${href}`
+      : href
 
   return (
     <footer className="zy-pie">
@@ -128,7 +139,7 @@ export default function Footer() {
             <h3 className="zy-pie-titulo">{t('pie.titulo.empresa', 'Empresa')}</h3>
             <ul className="zy-pie-lista">
               {EMPRESA.map(([href, clave, texto]) => (
-                <li key={href}><a href={href}>{t(clave, texto)}</a></li>
+                <li key={href}><a href={enlaceEmpresa(href)}>{t(clave, texto)}</a></li>
               ))}
             </ul>
           </div>

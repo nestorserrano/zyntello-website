@@ -431,3 +431,18 @@ main > section > .container-fluid { position: relative; z-index: 1; }
   from { transform: translate(-30px, 60px) scale(.8); }
   to   { transform: translate(40px, -80px) scale(1.15); }
 }
+
+/* ── Catálogo de aplicaciones: resumen en la portada y página propia (2026-11-24) ──────────
+   Los botones de las tarjetas iban cada uno del color de su módulo (celeste, amarillo, verde…):
+   en el esquema claro se leían como pastillas sueltas. Ahora todos van en el azul del sitio;
+   el color del módulo se queda solo en el icono. */
+.sol-btn-conocer, .sol-btn-obtener {
+  background: #fff; border: 1px solid var(--zy-indigo); color: var(--zy-indigo); box-shadow: none;
+}
+.sol-btn-conocer:hover, .sol-btn-obtener:hover {
+  background: var(--zy-indigo); color: #fff; box-shadow: 0 8px 20px rgba(16, 86, 140, .22);
+}
+.sol-card-proximo { background: var(--zy-fondo-alto); }
+
+/* En su página no hay hero detrás: el contenido arranca bajo la barra fija. */
+.sol-pagina { padding-top: calc(var(--zy-navbar-h) + 3rem); }

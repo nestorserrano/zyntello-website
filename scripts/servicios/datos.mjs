@@ -37,7 +37,7 @@ export const SERVICIOS = [
     resumen: 'Un ERP de 34 módulos donde contratas solo lo que usas y lo tienes funcionando el mismo día, sin instalar nada y sin proyecto de implantación.',
 
     heroTitulo: 'El ERP que empieza por el módulo que te duele hoy',
-    segundoBoton: { texto: 'Ver los módulos y precios', href: 'https://zyntello.com/#soluciones' },
+    segundoBoton: { texto: 'Ver los módulos y precios', href: 'https://zyntello.com/aplicaciones/' },
     heroBajada: '34 módulos que comparten una sola base de datos: contratas el que necesitas ahora y añades los demás cuando toque, sin migrar nada. Multi-empresa, multi-moneda y con la fiscalidad de tu país.',
 
     problema: {
