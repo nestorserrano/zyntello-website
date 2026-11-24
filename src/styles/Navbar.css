@@ -159,9 +159,10 @@
      2. Por debajo de 1300 px se pliega en hamburguesa.
    Si manana se anade otra seccion al menu, hay que VOLVER A MEDIR.
    ------------------------------------------------------------------------- */
-@media (max-width: 1559.98px) {
-  .zy-nav-marca-texto small { display: none; }
-}
+/* ⚠️ Remedido el 2026-11-24: el lema ya no cabe en NINGUN ancho. La caja tiene tope de 1400 px
+   (zyntello.css), asi que pasar de 1560 no le da mas sitio, y con el lema el contenido mide
+   1546: el boton de Contacto quedaba cortado o fuera de la pantalla. Sin el, 1400 justos. */
+.zy-nav-marca-texto small { display: none; }
 
 @media (max-width: 1299.98px) {
   .zy-nav-hamburguesa { display: inline-flex; }
