@@ -6,7 +6,7 @@ import { useIdioma } from '../hooks/useIdioma'
    `#servicios`, la MISMA ancla: daba igual cuál pulsaras, y eso no se ve como
    un error — se ve como una web donde el pie «no hace nada».
 
-   ⚠️ Son veinte en la sección «Qué hacemos» y aquí caben diez sin que la
+   ⚠️ Son veintiuno en la sección «Qué hacemos» y aquí caben diez sin que la
    columna se alargue de más. Los otros diez se alcanzan desde sus tarjetas y
    desde el enlace de abajo, para que ninguno quede sin camino.
 
@@ -120,7 +120,7 @@ export default function Footer() {
               {SERVICIOS.map(([slug, texto]) => (
                 <li key={slug}><a href={`/servicios/${slug}/`}>{t(`pie.serv.${slug}`, texto)}</a></li>
               ))}
-              <li><a href="/#servicios" className="zy-pie-todos">{t('pie.todos.veinte', 'Ver los 20 servicios')} →</a></li>
+              <li><a href="/#servicios" className="zy-pie-todos">{t('pie.todos.servicios', 'Ver todos los servicios')} →</a></li>
             </ul>
           </div>
 

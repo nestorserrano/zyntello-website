@@ -53,6 +53,13 @@ const SERVICIOS = [
     descripcion: 'Construidas sobre las bases de datos que ya usas. No hay que empezar de cero para resolver un problema concreto.',
   },
   {
+    slug: 'desarrollo-web-y-tiendas-en-linea',
+    icono: 'carrito',
+    grupo: 'Desarrollo', grupoClave: 'serv.grupo.desarrollo',
+    titulo: 'Desarrollo web y tiendas en línea',
+    descripcion: 'Sitios corporativos y tiendas en línea conectados a tu inventario y tu facturación: lo que se vende en la web no se escribe dos veces.',
+  },
+  {
     slug: 'inteligencia-de-negocios',
     icono: 'subida',
     grupo: 'Datos', grupoClave: 'serv.grupo.bi',
@@ -181,13 +188,16 @@ export default function Servicios() {
                 su resaltado, y los demás idiomas reciben la frase entera. El
                 corte cae entre «tecnología» y «deje de ser», y en chino o árabe
                 esas palabras ni van en ese orden ni se separan por ahí. */}
+            {/* ⚠️ Sin número a propósito: decía «Veinte formas…», y al sumar un servicio el
+                catálogo no puede corregir las traducciones ya hechas (el seeder solo rellena lo
+                vacío), así que el inglés o el chino seguirían diciendo veinte. */}
             {idioma === 'es' ? (
               <>
-                Veinte formas de que la tecnología<br className="d-none d-lg-block" />{' '}
+                Todo lo que hace falta para que la tecnología<br className="d-none d-lg-block" />{' '}
                 <span className="zy-degradado">deje de ser tu problema</span>
               </>
             ) : (
-              t('serv.titulo.veinte', 'Veinte formas de que la tecnología deje de ser tu problema')
+              t('serv.titulo.todo', 'Todo lo que hace falta para que la tecnología deje de ser tu problema')
             )}
           </h2>
           <p className="zy-subtitulo">

@@ -16,6 +16,7 @@ const SERVICIOS = [
   ['migracion-de-sistemas',           'Migración de sistemas y datos'],
   ['automatizacion-con-ia',           'Automatización con Inteligencia Artificial'],
   ['aplicaciones-a-la-medida',        'Aplicaciones a la medida'],
+  ['desarrollo-web-y-tiendas-en-linea', 'Desarrollo web y tiendas en línea'],
   ['inteligencia-de-negocios',        'Inteligencia de negocios y reportes'],
   ['soporte-tecnico-ti',              'Soporte técnico TI'],
   ['nube-y-ciberseguridad',           'Nube, ciberseguridad e infraestructura'],

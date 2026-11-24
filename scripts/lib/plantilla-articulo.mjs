@@ -13,7 +13,7 @@
  * va por donde vino.
  */
 
-import { estilos, redesSociales, rotuloIdioma } from './plantilla.mjs'
+import { estilos, redesSociales, selectorIdioma } from './plantilla.mjs'
 import { CLUSTERS, PAISES } from '../blog/clusters.mjs'
 import { IDIOMAS } from './idiomas.mjs'
 
@@ -174,11 +174,11 @@ ${ESTILOS_BLOG.trim()}
       </a>
     </div>
     <div class="barra-acciones">
-${idiomas.length > 1 ? `      <div class="barra-idiomas" role="navigation" aria-label="${esc(t('a11y.idiomas', 'Idioma'))}">
-${idiomas.map(i => i.codigo === idioma
-    ? `        <span class="idioma-activo" aria-current="true">${rotuloIdioma(i.codigo)}</span>`
-    : `        <a href="${rutaEn(i.prefijo, resto)}" hreflang="${i.codigo}" lang="${i.codigo}" title="${esc(i.nombre)}">${rotuloIdioma(i.codigo)}</a>`).join('\n')}
-      </div>` : ''}
+${idiomas.length > 1 ? '      ' + selectorIdioma({
+    idiomas, actual: idioma,
+    enlace: i => rutaEn(i.prefijo, resto),
+    etiqueta: t('a11y.idiomas', 'Idioma'),
+  }) : ''}
       <a href="${SITIO}/${prefijoDe(idioma)}#soluciones" class="btn btn-fantasma btn-barra">${esc(t('pag.boton.modulos', 'Ver los módulos'))}</a>
     </div>
   </div>

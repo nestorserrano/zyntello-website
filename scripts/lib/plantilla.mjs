@@ -51,6 +51,41 @@ const rejilla = (items, max, render) =>
 export const rotuloIdioma = (codigo) =>
   codigo === 'zh-Hans' ? '简' : codigo === 'zh-Hant' ? '繁' : codigo.toUpperCase()
 
+/**
+ * El selector de idioma de la barra: un DESPLEGABLE, como el de la portada.
+ *
+ * ⚠️ Antes eran ocho enlaces cortos en fila («ES EN FR IT 简 繁 AR HT»). Ocupaban tanto que el
+ * menú de la página se partía en dos líneas y el nombre del servicio salía cortado, y se
+ * escondían por completo por debajo de 980 px — en el teléfono no había forma de cambiar de
+ * idioma. Lo señaló el director técnico el 2026-11-24.
+ *
+ * ⚠️ Es un `<details>` NATIVO: abre y cierra sin JavaScript, con teclado y con lector de
+ * pantalla. El script de debajo solo añade lo que el navegador no hace solo: cerrarlo al pulsar
+ * fuera y con Escape.
+ *
+ * ⚠️ Los enlaces siguen siendo `<a href hreflang>` reales dentro del HTML: un rastreador los
+ * encuentra igual que antes, aunque estén plegados.
+ *
+ * `enlace(i)` devuelve la URL de esta misma página en el idioma `i`.
+ */
+export const selectorIdioma = ({ idiomas, actual, enlace, etiqueta }) => `<details class="barra-idiomas">
+        <summary aria-label="${esc(etiqueta)}"><i class="fa-solid fa-globe" aria-hidden="true"></i><span>${rotuloIdioma(actual)}</span><i class="fa-solid fa-chevron-down barra-idiomas-flecha" aria-hidden="true"></i></summary>
+        <nav class="barra-idiomas-lista" aria-label="${esc(etiqueta)}">
+          ${idiomas.map(i => i.codigo === actual
+            ? `<span class="idioma-activo" aria-current="true" lang="${i.codigo}" dir="${i.dir}">${esc(i.nombre)}</span>`
+            : `<a href="${enlace(i)}" hreflang="${i.codigo}" lang="${i.codigo}" dir="${i.dir}" data-idioma="${i.codigo}">${esc(i.nombre)}</a>`
+          ).join('\n          ')}
+        </nav>
+      </details>
+      <script>
+      /* Cierra el selector al pulsar fuera y con Escape. */
+      (function(){
+        var d = document.currentScript.previousElementSibling;
+        document.addEventListener('click', function(e){ if (d.open && !d.contains(e.target)) d.open = false; });
+        document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && d.open) { d.open = false; d.querySelector('summary').focus(); } });
+      })();
+      </script>`
+
 /* ⚠️ `t` llega por parámetro con un valor por defecto que devuelve el respaldo
    tal cual: así el blog —que llama a `redesSociales()` sin argumentos— sigue
    funcionando en español sin tener que cargar el catálogo. */
@@ -234,21 +269,33 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
 
 /* El selector de idioma de la barra. Son ocho enlaces cortos, no un
    desplegable: ver el comentario de la plantilla. */
-.barra-idiomas{ display:flex; align-items:center; gap:2px; }
-.barra-idiomas a,.barra-idiomas .idioma-activo{
-  padding:3px 6px; border-radius:5px; font-size:.68rem; font-weight:700;
-  letter-spacing:.03em; text-decoration:none; line-height:1.4;
-}
-.barra-idiomas a{ color:var(--tenue); }
-.barra-idiomas a:hover{ color:var(--texto); background:var(--elevado); }
-.barra-idiomas .idioma-activo{ color:var(--color); background:rgba(16,86,140,.08); }
+.barra-idiomas{ position:relative; border:0; padding:0; }
+/* ⚠️ Es un <details>, igual que las preguntas frecuentes: sin anular su «+» y su raya, el
+   selector salía con una «×» dentro y una línea debajo al abrirse. */
+.barra-idiomas summary::after{ content:none; }
+.barra-idiomas summary{ list-style:none; display:inline-flex; align-items:center; gap:7px; height:40px; padding:0 13px;
+  border:1px solid var(--borde2); border-radius:999px; cursor:pointer; color:var(--medio); font-size:.8rem; font-weight:700;
+  letter-spacing:.03em; user-select:none; transition:border-color .2s,color .2s; }
+.barra-idiomas summary::-webkit-details-marker{ display:none; }
+.barra-idiomas summary:hover,.barra-idiomas[open] summary{ border-color:var(--color); color:var(--color); }
+.barra-idiomas summary:focus-visible{ outline:2px solid var(--color); outline-offset:2px; }
+.barra-idiomas-flecha{ font-size:.62rem; transition:transform .2s; }
+.barra-idiomas[open] .barra-idiomas-flecha{ transform:rotate(180deg); }
+.barra-idiomas-lista{ position:absolute; top:calc(100% + 8px); inset-inline-end:0; z-index:60; min-width:190px;
+  display:flex; flex-direction:column; padding:6px; background:#fff; border:1px solid var(--borde);
+  border-radius:14px; box-shadow:var(--sombra-alta); }
+.barra-idiomas-lista a,.barra-idiomas-lista .idioma-activo{ padding:9px 12px; border-radius:9px; font-size:.9rem;
+  text-decoration:none; color:var(--medio); }
+.barra-idiomas-lista a:hover{ background:var(--elevado); color:var(--texto); }
+.barra-idiomas-lista .idioma-activo{ color:var(--color); font-weight:700; background:rgba(16,86,140,.08); }
 /* ⚠️ El foco visible se conserva: con teclado es lo único que indica dónde se
    está, y este control es justo el que usa quien no entiende el resto. */
-.barra-idiomas a:focus-visible{ outline:2px solid var(--color); outline-offset:1px; }
+.barra-idiomas-lista a:focus-visible{ outline:2px solid var(--color); outline-offset:1px; }
 /* ⚠️ Por debajo de 980px el selector se esconde: ocho enlaces más el botón de
    WhatsApp no caben en un móvil, y apretarlos deja los dos impulsables. El
    lector de pantalla sí los sigue viendo gracias al hreflang del <head>. */
-@media(max-width:980px){ .barra-idiomas{display:none} }
+/* Ya no se esconde en el teléfono: plegado ocupa lo que un botón. */
+.barra-menu a{ white-space:nowrap; }
 
 /* ── Árabe: la página entera se gira ──────────────────────────────────────
    ⚠️⚠️ Sin esto el texto sale correcto y la pantalla ilegible: los márgenes,
@@ -408,12 +455,11 @@ ${estilos(f.color).trim()}
     </nav>
 
     <div class="barra-acciones">
-      ${idiomasDePagina.length < 2 ? '' : `<nav class="barra-idiomas" aria-label="${esc(t('pag.idioma.otros', 'Esta página en otros idiomas'))}">
-        ${idiomasDePagina.map(i => i.codigo === idioma
-          ? `<span class="idioma-activo" aria-current="true">${rotuloIdioma(i.codigo)}</span>`
-          : `<a href="${rutaEn(i.prefijo, f.slug)}" hreflang="${i.codigo}" lang="${i.codigo}" data-idioma="${i.codigo}" title="${esc(i.nombre)}">${rotuloIdioma(i.codigo)}</a>`
-        ).join('')}
-      </nav>`}
+      ${idiomasDePagina.length < 2 ? '' : selectorIdioma({
+        idiomas: idiomasDePagina, actual: idioma,
+        enlace: i => rutaEn(i.prefijo, f.slug),
+        etiqueta: t('pag.idioma.otros', 'Esta página en otros idiomas'),
+      })}
       <a href="https://wa.me/${WHATSAPP}?text=${waTexto}" target="_blank" rel="noopener" class="btn btn-principal btn-barra">${esc(t('pag.boton.whatsapp', 'Hablar con Zyntello'))}</a>
     </div>
   </div>

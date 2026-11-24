@@ -1,7 +1,8 @@
 /**
  * Los servicios que vende Zyntello, S.R.L. — uno por página.
  *
- * ⚠️⚠️ SON VEINTE desde el 2026-11-23. Eran catorce, y al cruzarlos con el
+ * ⚠️⚠️ SON VEINTIUNO desde el 2026-11-24 (se sumó «Desarrollo web y tiendas en
+ * línea», pedido por el director técnico). Eran catorce, y al cruzarlos con el
  * objeto social del Registro Mercantil (RM 6053SPM) faltaban sus apartados
  * (IX) —domótica, IoT, Industria 4.0 y 5.0— y (X) —automatización y
  * mantenimiento industrial—: la empresa estaba inscrita para venderlos y la web
@@ -375,6 +376,76 @@ export const SERVICIOS = [
       { pregunta: '¿Cuánto tarda?', respuesta: 'La primera versión corta sale rápido a propósito: se usa, se ajusta y se amplía con lo que se pide de verdad.' },
       { pregunta: '¿Y si lo que necesito ya existe?', respuesta: 'Lo decimos. Si un módulo de la plataforma o una configuración de tu ERP lo resuelve, sale más barato para los dos.' },
       { pregunta: '¿Con qué tecnologías trabajan?', respuesta: 'React, Node, PHP/Laravel, Python, SQL Server y MySQL, entre otras. La elección la manda el sistema con el que hay que convivir.' },
+    ],
+  },
+
+  /* ══════════════════════════════════════════════════════════════════════ */
+  {
+    slug: 'desarrollo-web-y-tiendas-en-linea',
+    nombre: 'Desarrollo web y tiendas en línea',
+    subtitulo: 'Conectados a tu inventario y tu facturación',
+    color: '#10568c',
+    resumen: 'Sitios corporativos y tiendas en línea que leen el inventario real y facturan con el mismo sistema que el resto de la empresa. Lo que se vende en la web no se vuelve a escribir a mano.',
+
+    heroTitulo: 'Una tienda en línea que no conoce tu inventario vende lo que no tienes',
+    heroBajada: 'Sitios corporativos y tiendas en línea conectados a tu ERP: el precio, la existencia y la factura salen del mismo sitio que en el mostrador. Rápidos en el teléfono, en los idiomas de tus clientes y con una medición que llega hasta la venta.',
+
+    problema: {
+      titulo: 'La web y el sistema de la empresa no se hablan',
+      texto: 'La tienda se montó aparte: tiene sus propios productos, sus propios precios y su propio inventario. Cada pedido se copia a mano al ERP, los precios se desactualizan y un día se vende algo que ya no está en el almacén. La web crece y la operación que hay detrás no da abasto.',
+      puntos: [
+        'Cada pedido de la web se vuelve a escribir en el ERP',
+        'Se vende en línea lo que ya no hay en el almacén',
+        'Los precios de la web y del mostrador no coinciden',
+        'La web tarda en cargar y el visitante se va',
+        'Nadie sabe cuántas ventas trajo la web',
+        'Cambiar un texto o una foto depende de un tercero',
+      ],
+    },
+
+    beneficios: [
+      { titulo: 'Existencia real, en línea', descripcion: 'La tienda lee el inventario del ERP: lo que se agota en el mostrador deja de venderse en la web, sin que nadie lo marque a mano.' },
+      { titulo: 'El pedido entra solo', descripcion: 'Cada compra en línea llega al ERP como pedido, con su cliente y su forma de pago. Se factura y se despacha igual que una venta del mostrador.' },
+      { titulo: 'Un solo precio', descripcion: 'Precios y promociones se mantienen en un único lugar. La web los toma de ahí, así que no hay dos listas que se contradigan.' },
+      { titulo: 'Rápida en el teléfono', descripcion: 'Se construye primero para la pantalla del móvil y para conexiones lentas, porque cada segundo de espera cuesta visitantes.' },
+      { titulo: 'Cobros en línea', descripcion: 'Pasarelas de pago locales e internacionales, con el cobro registrado en el mismo sistema que el resto del dinero de la empresa.' },
+      { titulo: 'Tú cambias el contenido', descripcion: 'Textos, fotos, productos y precios se editan desde un panel. Publicar una oferta no debería depender de llamar a nadie.' },
+    ],
+
+    cifras: [
+      { valor: 'Mismo inventario', etiqueta: 'que el almacén, al momento' },
+      { valor: 'Sin recaptura', etiqueta: 'el pedido entra solo al ERP' },
+      { valor: 'Móvil primero', etiqueta: 'pensada para la pantalla del teléfono' },
+    ],
+
+    detalles: [
+      { titulo: 'Web corporativa o tienda: no es lo mismo', descripcion: 'Una web corporativa existe para que te encuentren y te escriban; una tienda, para cobrar. Se decide al principio, porque cambia la estructura, el alojamiento y el mantenimiento.' },
+      { titulo: 'La integración es lo que ahorra trabajo', descripcion: 'Una tienda suelta se monta rápido. Lo que de verdad ahorra horas es conectarla con el inventario, los precios y la facturación, y es la parte que más se cuida.' },
+      { titulo: 'La factura sale del mismo sistema', descripcion: 'La venta en línea se factura con el mismo comprobante fiscal que el resto, porque la emite el mismo sistema. No hay una contabilidad aparte para la web.' },
+      { titulo: 'Velocidad y buscadores van juntos', descripcion: 'Una web lenta pierde visitantes y posición en Google a la vez. La velocidad se mide antes de entregar, no después de las quejas.' },
+      { titulo: 'Varios idiomas, si tus clientes los hablan', descripcion: 'Cada idioma con su propia dirección, para que Google lo muestre a quien busca en ese idioma, y no una traducción automática encima de la página.' },
+      { titulo: 'Se puede empezar por una parte', descripcion: 'Primero la web corporativa, después el catálogo y por último la venta en línea. No hace falta montarlo todo el primer día.' },
+    ],
+
+    pasos: [
+      { titulo: 'Qué tiene que lograr la web', descripcion: 'Que te encuentren, que te escriban o que te compren: cambia todo lo demás.' },
+      { titulo: 'Conectar antes de diseñar', descripcion: 'De dónde salen productos, precios y existencias, y adónde va cada pedido.' },
+      { titulo: 'Publicar, medir y ajustar', descripcion: 'Velocidad, contactos y ventas, medidos desde el primer mes.' },
+    ],
+
+    publico: [
+      { titulo: 'Vendes en línea y copias los pedidos', descripcion: 'Del correo o de la tienda al ERP, a mano.' },
+      { titulo: 'Tu web no trae clientes', descripcion: 'Recibe visitas, pero nadie escribe ni compra.' },
+      { titulo: 'Quieres empezar a vender en línea', descripcion: 'Sin montar un segundo inventario aparte.' },
+    ],
+
+    faq: [
+      { pregunta: '¿Usan una plataforma de tiendas o lo programan?', respuesta: 'Depende del caso. Para un catálogo estándar conviene una plataforma conocida; si el proceso de venta es particular, se desarrolla a medida. Lo que no cambia es que quede conectada al ERP.' },
+      { pregunta: '¿Funciona con el ERP que ya tengo?', respuesta: 'Si tiene una forma de leer y escribir sus datos —una base de datos o una API—, sí. También se conecta con la plataforma Zyntello.' },
+      { pregunta: '¿Qué formas de pago se pueden cobrar?', respuesta: 'Tarjeta a través de pasarelas de pago, transferencias y pago contra entrega, según el país. El cobro queda registrado en el mismo sistema que el resto.' },
+      { pregunta: '¿Quién mantiene la web después?', respuesta: 'Tu equipo, el contenido del día a día, desde un panel. Zyntello, las actualizaciones, la seguridad y los cambios de funcionamiento.' },
+      { pregunta: '¿Cuánto tarda?', respuesta: 'Una web corporativa, semanas. Una tienda conectada al inventario y a la facturación lleva más, porque la integración se prueba con pedidos reales antes de abrirla.' },
+      { pregunta: '¿Incluye el posicionamiento en Google?', respuesta: 'La web se entrega rápida y bien estructurada para los buscadores. Las campañas y el posicionamiento continuo forman parte del servicio de marketing digital.' },
     ],
   },
 

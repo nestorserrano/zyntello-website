@@ -362,3 +362,72 @@ main > section > .container-fluid { position: relative; z-index: 1; }
 @media (min-width: 992px) {
   .zy-port-rejilla { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 }
+
+/* ── Formas que giran al hacer scroll ─────────────────────────────────────────
+   Petición del director técnico (2026-11-24): que los cuadros decorativos
+   «se muevan al bajar y subir, como si giraran». Animación ligada al scroll,
+   NATIVA (`animation-timeline`), sin JavaScript: cada sección declara su línea
+   de tiempo y sus formas avanzan mientras ella cruza la pantalla; al subir,
+   retroceden.
+
+   ⚠️ Donde el navegador no la soporta (Firefox, a día de hoy) las formas se
+   quedan QUIETAS en su sitio: es adorno, nada se rompe. Y quien pidió reducir
+   el movimiento en su sistema también las ve quietas. */
+
+/* Segundas formas: círculo y rombo, para que no sean todas el mismo cuadro. */
+#servicios::after, #porque::after, #contacto::after,
+#funcionalidades::before, #portafolio::before {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+#servicios::after { width: 96px; height: 96px; left: 4%; bottom: 120px; border-radius: 50%; border: 1.5px solid rgba(16, 86, 140, .4); }
+#porque::after    { width: 54px; height: 54px; right: 8%; top: 90px; border-radius: 12px; background: rgba(16, 86, 140, .08); border: 1.5px solid rgba(16, 86, 140, .45); transform: rotate(45deg); }
+#contacto::after  { width: 120px; height: 120px; left: -40px; bottom: 60px; border-radius: 50%; border: 1.5px dashed rgba(16, 86, 140, .35); }
+#funcionalidades { position: relative; overflow: hidden; }
+#funcionalidades::before { width: 180px; height: 140px; right: -50px; bottom: 60px; border-radius: 22px; border: 1.5px solid rgba(16, 86, 140, .5); background: rgba(16, 86, 140, .04); transform: rotate(24deg); }
+#portafolio { position: relative; overflow: hidden; }
+#portafolio::before { width: 70px; height: 70px; left: 3%; top: 110px; border-radius: 16px; border: 1.5px solid rgba(16, 86, 140, .45); transform: rotate(18deg); }
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    #servicios       { view-timeline: --zy-t-serv block; }
+    #porque          { view-timeline: --zy-t-porque block; }
+    #contacto        { view-timeline: --zy-t-cont block; }
+    #funcionalidades { view-timeline: --zy-t-func block; }
+    #portafolio      { view-timeline: --zy-t-port block; }
+
+    #servicios::before, #servicios::after, #porque::before, #porque::after,
+    #contacto::before, #contacto::after, #funcionalidades::before, #portafolio::before {
+      animation-duration: 1ms; /* el tiempo lo pone el scroll; se declara para Safari */
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-range: cover 0% cover 100%;
+    }
+    #servicios::before       { animation-name: zy-gira-a; animation-timeline: --zy-t-serv; --zy-giro0: -22deg; }
+    #servicios::after        { animation-name: zy-flota;  animation-timeline: --zy-t-serv; }
+    #porque::before          { animation-name: zy-gira-b; animation-timeline: --zy-t-porque; --zy-giro0: 14deg; }
+    #porque::after           { animation-name: zy-gira-a; animation-timeline: --zy-t-porque; --zy-giro0: 45deg; }
+    #contacto::before        { animation-name: zy-gira-b; animation-timeline: --zy-t-cont; --zy-giro0: 38deg; }
+    #contacto::after         { animation-name: zy-gira-a; animation-timeline: --zy-t-cont; --zy-giro0: 0deg; }
+    #funcionalidades::before { animation-name: zy-gira-a; animation-timeline: --zy-t-func; --zy-giro0: 24deg; }
+    #portafolio::before      { animation-name: zy-gira-b; animation-timeline: --zy-t-port; --zy-giro0: 18deg; }
+  }
+}
+
+/* Gira a favor del reloj y baja; la «b», al revés y sube. Media vuelta por
+   sección: lo bastante para que se note el giro, sin marear. */
+@keyframes zy-gira-a {
+  from { transform: translateY(-70px) rotate(var(--zy-giro0, 0deg)); }
+  to   { transform: translateY(90px)  rotate(calc(var(--zy-giro0, 0deg) + 180deg)); }
+}
+@keyframes zy-gira-b {
+  from { transform: translateY(80px)  rotate(var(--zy-giro0, 0deg)); }
+  to   { transform: translateY(-80px) rotate(calc(var(--zy-giro0, 0deg) - 180deg)); }
+}
+/* El círculo no se ve girar: se desplaza en diagonal y cambia de tamaño. */
+@keyframes zy-flota {
+  from { transform: translate(-30px, 60px) scale(.8); }
+  to   { transform: translate(40px, -80px) scale(1.15); }
+}
