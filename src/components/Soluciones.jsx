@@ -584,7 +584,7 @@ export default function Soluciones({ completo = false }) {
                 {GALERIA.map(g => (
                   <Captura
                     key={g.id}
-                    enlace
+
                     src={`/capturas/${g.img}`}
                     alt={`${t(`sol.galeria.${g.id}.titulo`, g.titulo)}: ${t(`sol.galeria.${g.id}.pie`, g.pie)}`}
                     pie={<><strong>{t(`sol.galeria.${g.id}.titulo`, g.titulo)}</strong> {t(`sol.galeria.${g.id}.pie`, g.pie)}</>}

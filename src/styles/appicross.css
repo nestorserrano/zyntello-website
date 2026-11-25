@@ -481,3 +481,21 @@ main > section > .container-fluid { position: relative; z-index: 1; }
 @media (min-width: 1200px) { .sol-galeria-rejilla { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .sol-galeria .zy-captura-ventana { transition: transform .25s, box-shadow .25s; }
 .sol-galeria .zy-captura-ventana:hover { transform: translateY(-4px); box-shadow: 0 30px 70px rgba(16, 24, 40, .2); }
+
+/* Visor: la captura ampliada encima de la página (`<dialog>` nativo, ver Captura.jsx). */
+.zy-captura-abrir { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+/* ⚠️ `margin: auto` explícito: el reset global le quita el margen al <dialog>, que entonces se
+   pega a la esquina y la imagen tapa toda la pantalla — sin fondo donde pulsar para cerrar. */
+.zy-visor {
+  margin: auto; padding: 0; border: 0; background: transparent; max-width: min(92vw, 1400px); max-height: 90vh;
+  overflow: visible;
+}
+.zy-visor::backdrop { background: rgba(10, 22, 40, .82); backdrop-filter: blur(3px); }
+.zy-visor img { display: block; width: auto; max-width: 100%; max-height: 86vh; height: auto; border-radius: 12px; box-shadow: 0 30px 80px rgba(0, 0, 0, .45); }
+.zy-visor-cerrar {
+  position: absolute; top: -16px; inset-inline-end: -16px; width: 40px; height: 40px; border-radius: 50%;
+  border: 0; background: #fff; color: var(--zy-texto); font-size: 1.5rem; line-height: 1; cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .3);
+}
+.zy-visor-cerrar:focus-visible { outline: 3px solid var(--zy-indigo); outline-offset: 2px; }
+@media (max-width: 640px) { .zy-visor-cerrar { top: 6px; inset-inline-end: 6px; } }
