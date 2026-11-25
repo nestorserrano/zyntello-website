@@ -186,7 +186,22 @@ export function ProveedorIdioma({ children }) {
    */
   const t = (clave, respaldo = '') => textos?.[idioma]?.[clave] ?? textos?.es?.[clave] ?? respaldo
 
-  return <Contexto.Provider value={{ idioma, setIdioma, t, idiomas: IDIOMAS }}>{children}</Contexto.Provider>
+  /**
+   * Un texto de un MÓDULO (nombre, subtítulo) cuyo dueño es el ADMIN, no este panel de textos.
+   *
+   * ⚠️⚠️ El español sale SIEMPRE del valor que manda el admin: si se leyera de aquí, renombrar
+   * un módulo o cambiar su subtítulo en el admin no cambiaría el sitio (pedido por el director
+   * técnico el 2026-11-25: «todo lo de los módulos viene del admin»).
+   * La traducción solo se usa si fue hecha sobre ESE mismo español; si el admin lo cambió, la
+   * traducción vieja diría otra cosa, y se muestra el español nuevo hasta que se traduzca.
+   */
+  const tAdmin = (clave, valorAdmin) => {
+    if (!valorAdmin) return t(clave, '')
+    if (idioma === 'es' || textos?.es?.[clave] !== valorAdmin) return valorAdmin
+    return textos?.[idioma]?.[clave] ?? valorAdmin
+  }
+
+  return <Contexto.Provider value={{ idioma, setIdioma, t, tAdmin, idiomas: IDIOMAS }}>{children}</Contexto.Provider>
 }
 
 export function useIdioma() {

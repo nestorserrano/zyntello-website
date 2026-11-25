@@ -182,6 +182,7 @@ const ESTADO_BADGE = {
   proximo:   { texto: 'Próximamente', bg: '#f2f4f7', color: '#475467' },
   nuevo:     { texto: 'Nuevo',        bg: '#ecfdf3', color: '#067647' },
   destacado: { texto: 'Destacado',    bg: '#eff8ff', color: '#10568c' },
+  activo:    { texto: 'Disponible',   bg: '#f2f4f7', color: '#344054' },
 }
 
 /* ─── Combina datos del API con display estático ──────────────── */
@@ -198,8 +199,9 @@ function combinarModulo(apiData) {
   const estado     = apiData.estado || 'activo'
   const disponible = apiData.disponible !== false  // si el API no lo envía, asumimos disponible
   const etiquetaEstado = ESTADO_BADGE[estado] ? ESTADO_BADGE[estado].texto : null
-  // Para 'activo' usamos la etiqueta estática; para proximo/nuevo/destacado usamos el estado
-  const etiqueta = estado === 'activo' ? display.etiqueta : etiquetaEstado
+  // ⚠️ La insignia sale SOLO del estado del admin. Antes, para 'activo' se pintaba una etiqueta
+  // escrita aquí («Popular», «Lanzamiento»), así que cambiar el estado en el admin no la cambiaba.
+  const etiqueta = etiquetaEstado
 
   return {
     id:             apiData.slug,
@@ -399,7 +401,7 @@ const grupoDe = (app) => GRUPO_DE[app.id] || 'gestion'
 const normalizar = (s) => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
 
 export default function Soluciones({ completo = false }) {
-  const { idioma, t } = useIdioma()
+  const { idioma, t, tAdmin } = useIdioma()
   const [moneda, setMoneda]     = useState('USD')
   const [rates, setRates]       = useState(null)
   const [apps, setApps]         = useState(() => leerCacheModulos() || APPS_FALLBACK)
@@ -431,6 +433,7 @@ export default function Soluciones({ completo = false }) {
   const infoMoneda = MONEDAS_INFO[moneda]
   const simbolo    = infoMoneda.simbolo
   const erpApp     = apps.find(a => a.id === 'erp')  // precio del bundle ERP desde el admin
+  const incluidosErp = apps.filter(a => a.bundle && a.id !== 'erp')
 
   const formatPrecio = (usd) => {
     if (usd == null || isNaN(usd)) return '—'
@@ -444,7 +447,7 @@ export default function Soluciones({ completo = false }) {
   // La búsqueda mira el nombre y el subtítulo en el idioma del visitante Y en español.
   const q = normalizar(busqueda.trim())
   const coincide = (app) => !q || normalizar([
-    t(`mod.${app.id}.nombre`, app.nombre), t(`mod.${app.id}.subtitulo`, app.subtitulo || ''),
+    tAdmin(`mod.${app.id}.nombre`, app.nombre), tAdmin(`mod.${app.id}.subtitulo`, app.subtitulo || ''),
     app.nombre, app.subtitulo,
   ].join(' ')).includes(q)
   const visibles = completo
@@ -512,11 +515,15 @@ export default function Soluciones({ completo = false }) {
             <div style={{ flex: 1 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
                 <span style={{ fontSize: '1.5rem' }}>🏢</span>
-                <span className="sol-bundle-name">{t('mod.erp.nombre', 'Zyntello ERP')}</span>
+                <span className="sol-bundle-name">{tAdmin('mod.erp.nombre', erpApp?.nombre || 'Zyntello ERP')}</span>
                 <span className="sol-bundle-badge">{t('sol.erp.badge', 'ERP Completo')}</span>
               </div>
               <p style={{ color: 'var(--zy-texto-suave)', margin: 0, fontSize: '0.88rem' }}>
-                {t('sol.erp.lista', 'Inventario · Facturación · Cuentas por Cobrar · Cuentas por Pagar · Nómina · Control de Acceso · Bancos · Compras · Presupuesto · Activos Fijos · Caja Chica')}
+                {/* Lo que incluye el ERP lo declara el admin (`modulos.bundle`): la lista escrita a mano
+                    se quedaba vieja en cuanto se añadía o quitaba un módulo del paquete. */}
+                {incluidosErp.length
+                  ? incluidosErp.map(a => tAdmin(`mod.${a.id}.nombre`, a.nombre)).join(' · ')
+                  : t('sol.erp.lista', '')}
               </p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexShrink: 0 }}>
@@ -573,8 +580,8 @@ export default function Soluciones({ completo = false }) {
                     `modulos`. Aquí se pide su traducción y, si no está, se cae a lo
                     que mandó el API — así renombrar un módulo en el panel cambia el
                     español solo, y lo único que queda viejo es su traducción. */}
-                <h3 className="sol-card-nombre">{t(`mod.${app.id}.nombre`, app.nombre)}</h3>
-                <p className="sol-card-sub">{t(`mod.${app.id}.subtitulo`, app.subtitulo || app.descripcion)}</p>
+                <h3 className="sol-card-nombre">{tAdmin(`mod.${app.id}.nombre`, app.nombre)}</h3>
+                <p className="sol-card-sub">{tAdmin(`mod.${app.id}.subtitulo`, app.subtitulo || app.descripcion)}</p>
 
                 {/* El aviso «amplía X» se queda aunque la tarjeta se haya
                     simplificado: sin él, el cliente contrata un módulo que no
@@ -582,7 +589,7 @@ export default function Soluciones({ completo = false }) {
                 {app.requiere && (
                   <p className="sol-card-requiere">
                     {t('sol.requiere.1', 'Amplía')}{' '}
-                    <strong>{nombresRequeridos(app.requiere, apps, t)}</strong>{' '}
+                    <strong>{nombresRequeridos(app.requiere, apps, tAdmin)}</strong>{' '}
                     {app.requiere.includes(',')
                       ? t('sol.requiere.2.varios', '— necesita uno de esos módulos contratado')
                       : t('sol.requiere.2', '— necesita ese módulo contratado')}
