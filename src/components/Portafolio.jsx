@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import FotoDeSeccion from './FotoDeSeccion'
 import Icono from './Icono'
 import { useIdioma } from '../hooks/useIdioma'
@@ -12,6 +13,9 @@ import { useIdioma } from '../hooks/useIdioma'
    así. Traducir las dos descriptivas de la lista («Migración de datos»,
    «Machine Learning») dejaría una mezcla de etiquetas traducidas y marcas sin
    traducir dentro de la misma fila, que se lee peor que dejarlas todas igual. */
+/** En el teléfono, cuántos proyectos se ven antes de «Ver los 6 proyectos». */
+const EN_MOVIL = 2
+
 const PROYECTOS = [
   {
     clave: 'erp-softland',
@@ -59,6 +63,7 @@ const PROYECTOS = [
 
 export default function Portafolio() {
   const { idioma, t } = useIdioma()
+  const [todos, setTodos] = useState(false)   // móvil: proyectos desplegados
 
   return (
     <section id="portafolio" className="zy-port zy-seccion-alta">
@@ -89,7 +94,7 @@ export default function Portafolio() {
           {PROYECTOS.map((p, i) => (
             <article
               key={p.clave}
-              className="zy-tarjeta zy-port-tarjeta zy-revelar"
+              className={`zy-tarjeta zy-port-tarjeta zy-revelar${!todos && i >= EN_MOVIL ? ' zy-oculto-movil' : ''}`}
               style={{ transitionDelay: `${i * 60}ms` }}
             >
               <div className="zy-port-cima">
@@ -115,6 +120,13 @@ export default function Portafolio() {
             </article>
           ))}
         </div>
+
+        {/* Solo en el teléfono: ver la nota de Servicios.jsx. */}
+        {!todos && (
+          <button type="button" className="zy-btn zy-btn-fantasma zy-ver-mas-movil" aria-expanded="false" onClick={() => setTodos(true)}>
+            {t('port.ver.todos.movil', 'Ver los {n} proyectos').replace('{n}', PROYECTOS.length)}
+          </button>
+        )}
 
       </div>
     </section>

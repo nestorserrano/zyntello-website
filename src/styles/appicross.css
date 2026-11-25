@@ -512,3 +512,16 @@ main > section > .container-fluid { position: relative; z-index: 1; }
   .zy-intro-foto { display: block; position: relative; min-height: 240px; border-radius: 16px; overflow: hidden; box-shadow: var(--zy-sombra-2, 0 12px 32px rgba(16, 24, 40, .12)); }
   .zy-intro-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 }
+
+/* ── Teléfono: secciones largas plegadas (2026-11-24) ───────────────────────────────────────
+   Servicios (18 tarjetas) y Portafolio (6 proyectos) iban en una sola columna y alargaban la
+   portada unas diez pantallas. En el teléfono se ven las primeras y un botón despliega el resto;
+   en escritorio no se pliega nada y el botón no existe. */
+.zy-ver-mas-movil { display: none; }
+@media (max-width: 767px) {
+  .zy-oculto-movil { display: none !important; }
+  .zy-ver-mas-movil { display: flex; width: 100%; justify-content: center; margin-top: 18px; }
+}
+
+/* El precio del ERP no se parte («$» en una línea y la cifra en otra) ni la flecha del pie cae sola. */
+.sol-bundle-banner [style*="font-weight: 800"], .zy-pie-todos { white-space: nowrap; }

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import FotoDeSeccion from './FotoDeSeccion'
 import Icono from './Icono'
 import { useIdioma } from '../hooks/useIdioma'
@@ -168,6 +169,9 @@ const SERVICIOS = [
 ]
 
 /* Fotos de las tres tarjetas de «áreas», en el orden de los tres primeros servicios. */
+/** En el teléfono, cuántas tarjetas se ven antes de «Ver los 18 servicios» (más las tres áreas). */
+const EN_MOVIL = 3
+
 const FOTOS_AREAS = [
   '/logos/hero-zyntello-empresas-2026.jpg',
   '/logos/hero-zyntello-logistica-2026.jpg',
@@ -176,6 +180,7 @@ const FOTOS_AREAS = [
 
 export default function Servicios() {
   const { idioma, t } = useIdioma()
+  const [todos, setTodos] = useState(false)   // móvil: tarjetas desplegadas
 
   return (
     <section id="servicios" className="zy-serv">
@@ -232,7 +237,7 @@ export default function Servicios() {
             <a
               key={s.slug}
               href={`/servicios/${s.slug}/`}
-              className="zy-tarjeta zy-serv-tarjeta zy-serv-enlazada zy-revelar"
+              className={`zy-tarjeta zy-serv-tarjeta zy-serv-enlazada zy-revelar${!todos && i >= EN_MOVIL ? ' zy-oculto-movil' : ''}`}
               style={{ transitionDelay: `${Math.min(i, 9) * 50}ms` }}
             >
               <span className="zy-serv-icono">
@@ -253,6 +258,14 @@ export default function Servicios() {
             </a>
           ))}
         </div>
+
+        {/* ⚠️ Solo en el teléfono (ver `.zy-ver-mas-movil`): ahí las 18 tarjetas iban en una
+            columna y ocupaban unas ocho pantallas. En escritorio caben en filas y no se pliega nada. */}
+        {!todos && (
+          <button type="button" className="zy-btn zy-btn-fantasma zy-ver-mas-movil" aria-expanded="false" onClick={() => setTodos(true)}>
+            {t('serv.ver.todos.movil', 'Ver los {n} servicios').replace('{n}', SERVICIOS.length)}
+          </button>
+        )}
 
         <p className="zy-serv-nota zy-revelar">
           {t('serv.nota', '¿No aparece lo que buscas? Nuestro objeto social cubre cualquier actividad de tecnología y automatización empresarial.')}{' '}
