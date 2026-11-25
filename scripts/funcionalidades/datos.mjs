@@ -161,10 +161,10 @@ export const FUNCIONALIDADES = [
     subtitulo: 'Qué significa cada dato, escrito',
     color: '#34d399',
     icono: 'libro',
-    resumen: '593 tablas y 5.612 columnas documentadas en español, con lo que significa cada una y qué la cambia. Tus datos dejan de ser un secreto de quien los programó.',
+    resumen: '593 tablas y 5.612 columnas documentadas en tu idioma, con lo que significa cada una y qué la cambia. Tus datos dejan de ser un secreto de quien los programó.',
 
     heroTitulo: 'Tus datos, explicados uno por uno',
-    heroBajada: '593 tablas y 5.612 columnas documentadas en español: qué guarda cada una, quién la escribe y qué pasa si cambia. Es lo que hace que tu información siga siendo tuya aunque cambie tu proveedor.',
+    heroBajada: '593 tablas y 5.612 columnas documentadas en tu idioma: qué guarda cada una, quién la escribe y qué pasa si cambia. Es lo que hace que tu información siga siendo tuya aunque cambie tu proveedor.',
 
     problema: {
       titulo: 'Los datos son tuyos, pero solo si sabes qué significan',
@@ -180,7 +180,7 @@ export const FUNCIONALIDADES = [
     },
 
     beneficios: [
-      { titulo: '5.612 columnas explicadas', descripcion: 'No los nombres técnicos: qué significa el dato en tu negocio, en español y escrito para quien no programó el sistema.' },
+      { titulo: '5.612 columnas explicadas', descripcion: 'No los nombres técnicos: qué significa el dato en tu negocio, en tu idioma y escrito para quien no programó el sistema.' },
       { titulo: '593 tablas documentadas', descripcion: 'Cada una con qué guarda, qué módulo la escribe y con qué se relaciona. La estructura de tu información deja de ser un mapa que solo alguien tiene.' },
       { titulo: 'Alimenta el generador de reportes', descripcion: 'Lo que está documentado es lo que se puede consultar. El diccionario no es un anexo: es lo que hace que armar un reporte no sea adivinar.' },
       { titulo: 'La respuesta para una auditoría', descripcion: 'De dónde sale cada número, campo por campo. Contestar eso con un documento en vez de con una explicación acorta una auditoría entera.' },
@@ -190,7 +190,7 @@ export const FUNCIONALIDADES = [
 
     cifras: [
       { valor: '593', etiqueta: 'tablas documentadas' },
-      { valor: '5.612', etiqueta: 'columnas explicadas en español' },
+      { valor: '5.612', etiqueta: 'columnas explicadas en tu idioma' },
       { valor: '28', etiqueta: 'módulos cubiertos' },
     ],
 
@@ -217,7 +217,7 @@ export const FUNCIONALIDADES = [
 
     faq: [
       { pregunta: '¿Hay que contratarlo aparte?', respuesta: 'No. Viene con la plataforma y cubre los módulos que tengas contratados.' },
-      { pregunta: '¿Está en español?', respuesta: 'Sí, entero. Y no describe la columna técnica: describe qué significa ese dato en tu negocio.' },
+      { pregunta: '¿Está en mi idioma?', respuesta: 'Sí, en los ocho idiomas de la plataforma: español, inglés, francés, italiano, chino simplificado y tradicional, árabe y criollo haitiano. Y no describe la columna técnica: describe qué significa ese dato en tu negocio.' },
       { pregunta: '¿Sirve para integrar con otro sistema?', respuesta: 'Sí: es la estructura escrita, así que conectar algo deja de exigir ingeniería inversa sobre datos de ejemplo.' },
       { pregunta: '¿Se mantiene al día?', respuesta: 'Sí, y no por buena voluntad: una tabla nueva sin su documentación pone la suite de pruebas en rojo.' },
       { pregunta: '¿Qué relación tiene con los reportes?', respuesta: 'Lo documentado es lo que el generador de reportes puede consultar. El diccionario es lo que hace que armar un reporte no sea adivinar.' },
@@ -289,7 +289,7 @@ export const FUNCIONALIDADES = [
     faq: [
       { pregunta: '¿Hay que contratarlo aparte?', respuesta: 'No. Está en la plataforma, en todos los módulos, sin coste adicional.' },
       { pregunta: '¿Es un manual en PDF?', respuesta: 'No, y esa es la diferencia: es un panel dentro de cada pantalla y una explicación junto a cada campo, donde surge la duda.' },
-      { pregunta: '¿Está en español?', respuesta: 'Sí, entero, y con los términos de tu país: tu impuesto, tu comprobante y tu organismo.' },
+      { pregunta: '¿Está en mi idioma?', respuesta: 'Sí, en los ocho idiomas de la plataforma, y con los términos de tu país: tu impuesto, tu comprobante y tu organismo.' },
       { pregunta: '¿Cubre todos los módulos?', respuesta: 'Los 34. Y una pantalla nueva sin su ayuda pone la suite de pruebas en rojo, así que no se queda atrás.' },
       { pregunta: '¿Sirve para formar gente nueva?', respuesta: 'Es su mejor uso: cada pantalla explica qué resuelve y en qué orden se usa, así que se aprende trabajando.' },
       { pregunta: '¿Se puede imprimir?', respuesta: 'La ayuda está pensada para leerse en la pantalla, donde surge la duda. Para la estructura de los datos está el Diccionario de Datos, que sí se exporta.' },

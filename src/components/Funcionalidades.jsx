@@ -46,7 +46,7 @@ const FUNCIONALIDADES = [
    
     nombre: 'Diccionario de Datos',
     gancho: 'Qué significa cada dato, escrito',
-    descripcion: 'Tus tablas y tus columnas documentadas en español. Tus datos dejan de ser un secreto de quien programó el sistema.',
+    descripcion: 'Tus tablas y tus columnas documentadas en tu idioma. Tus datos dejan de ser un secreto de quien programó el sistema.',
     dato: '5.612 columnas',
   },
   {
