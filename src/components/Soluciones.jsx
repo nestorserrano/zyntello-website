@@ -249,6 +249,8 @@ function combinarModulo(apiData) {
     // los 34 sin la barra estándar ni botón de demo, y nada lo delataba: la
     // página se veía bien, solo que distinta de las otras 33.
     url:            apiData.url || null,
+    // Los idiomas en que el admin publica su landing (siempre 'es').
+    idiomas:        apiData.idiomas || ['es'],
     // ⚠️ No basta con que el admin declare una `url`: la declara para todos.
     // Solo los de LANDINGS_PUBLICAS llevan a una pagina que se pueda abrir.
     tieneLanding:   LANDINGS_PUBLICAS.has(apiData.slug),
@@ -328,6 +330,15 @@ const MONEDAS_INFO = {
 // el mismo producto —sus rutas, su controlador y su tablero se llaman
 // `projects` por dentro— vendido dos veces al mismo precio. Dejarlo aquí
 // mantendría en el sitemap una página de un módulo que ya no existe.
+/* La landing en el idioma del visitante: /en/condominios/ en vez de /condominios/.
+   ⚠️ Solo si el admin la declara publicada en ese idioma; si su traducción quedó desfasada, se
+   manda a la española en vez de a un 404. */
+export const enlaceLanding = (app, idioma) => {
+  if (idioma === 'es' || !app.idiomas?.includes(idioma)) return app.url
+  const u = new URL(app.url)
+  return `${u.origin}/${idioma}${u.pathname.replace(/\/?$/, '/')}`
+}
+
 export const LANDINGS_PUBLICAS = new Set([
   'zyntello-psa', 'crm', 'tareas', 'facturacion', 'inventario',
   'encuestas', 'contabilidad', 'condominios', 'constructflow', 'events',
@@ -366,12 +377,35 @@ const PRIORIDAD_PORTADA = { 'Destacado': 0, 'Popular': 1, 'Nuevo': 2 }
  * Eran 35 tarjetas en la portada —nueve filas— y el catálogo va a seguir creciendo.
  * Es el mismo componente en las dos para que los precios salgan del mismo sitio.
  */
+/* Los tres grupos del catálogo (2026-11-24): con 28 tarjetas en una columna, en el teléfono el
+   catálogo eran ~16 pantallas de desplazamiento. Agrupar responde a la primera pregunta del
+   visitante —«¿hay algo para MI tipo de negocio?»— sin leerlas todas.
+   Un módulo que no esté en esta lista cae en «Gestión»: uno nuevo aparece igual, nunca se esconde. */
+const GRUPO_DE = {
+  condominios: 'sectores', constructflow: 'sectores', events: 'sectores', restaurante: 'sectores',
+  doctores: 'sectores', supermercado: 'sectores', ferreteria: 'sectores', dental: 'sectores',
+  alquileres: 'sectores', prestamello: 'sectores', carwash: 'sectores',
+  inteligencia: 'mejoras', fiscal: 'mejoras', abastecimiento: 'mejoras', rutas: 'mejoras',
+  'dashboards-financieros': 'mejoras', 'fiscal-documentos': 'mejoras',
+}
+const GRUPOS = [
+  ['todas',    'sol.filtro.todas',    'Todas'],
+  ['gestion',  'sol.filtro.gestion',  'Gestión del negocio'],
+  ['sectores', 'sol.filtro.sectores', 'Por tipo de negocio'],
+  ['mejoras',  'sol.filtro.mejoras',  'Inteligencia y cumplimiento'],
+]
+const grupoDe = (app) => GRUPO_DE[app.id] || 'gestion'
+// Sin acentos ni mayúsculas: quien busca «nomina» tiene que encontrar «Nómina».
+const normalizar = (s) => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+
 export default function Soluciones({ completo = false }) {
   const { idioma, t } = useIdioma()
   const [moneda, setMoneda]     = useState('USD')
   const [rates, setRates]       = useState(null)
   const [apps, setApps]         = useState(() => leerCacheModulos() || APPS_FALLBACK)
   const [apiCargada, setApiCargada] = useState(false)
+  const [grupo, setGrupo]       = useState('todas')
+  const [busqueda, setBusqueda] = useState('')
 
   useEffect(() => {
     fetch('https://api.exchangerate-api.com/v4/latest/USD')
@@ -407,9 +441,18 @@ export default function Soluciones({ completo = false }) {
   /* Lo que el admin declara vendible por separado, NO lo que está fuera del bundle: un módulo
      puede ir dentro del ERP y venderse solo. */
   const vendibles = apps.filter(app => app.vendibleSuelto && !ERP_BUNDLE_SLUGS.has(app.id))
-  const visibles = completo ? vendibles : [...vendibles]
-    .sort((a, b) => (PRIORIDAD_PORTADA[a.etiqueta] ?? 9) - (PRIORIDAD_PORTADA[b.etiqueta] ?? 9))
-    .slice(0, EN_PORTADA)
+  // La búsqueda mira el nombre y el subtítulo en el idioma del visitante Y en español.
+  const q = normalizar(busqueda.trim())
+  const coincide = (app) => !q || normalizar([
+    t(`mod.${app.id}.nombre`, app.nombre), t(`mod.${app.id}.subtitulo`, app.subtitulo || ''),
+    app.nombre, app.subtitulo,
+  ].join(' ')).includes(q)
+  const visibles = completo
+    ? vendibles.filter(app => (grupo === 'todas' || grupoDe(app) === grupo) && coincide(app))
+    : [...vendibles]
+      .sort((a, b) => (PRIORIDAD_PORTADA[a.etiqueta] ?? 9) - (PRIORIDAD_PORTADA[b.etiqueta] ?? 9))
+      .slice(0, EN_PORTADA)
+  const cuantos = (g) => g === 'todas' ? vendibles.length : vendibles.filter(a => grupoDe(a) === g).length
   const Titulo = completo ? 'h1' : 'h2'
 
   return (
@@ -488,6 +531,31 @@ export default function Soluciones({ completo = false }) {
             </div>
           </div>
 
+          {completo && (
+            <div className="sol-filtros">
+              <div className="sol-filtros-grupos" role="group" aria-label={t('sol.filtro.aria', 'Filtrar módulos')}>
+                {GRUPOS.map(([id, clave, texto]) => (
+                  <button key={id} type="button" aria-pressed={grupo === id}
+                    className={`sol-filtro${grupo === id ? ' activo' : ''}`} onClick={() => setGrupo(id)}>
+                    {t(clave, texto)} <span className="sol-filtro-n">{cuantos(id)}</span>
+                  </button>
+                ))}
+              </div>
+              <input type="search" className="sol-buscar" value={busqueda} onChange={e => setBusqueda(e.target.value)}
+                placeholder={t('sol.buscar.placeholder', 'Buscar un módulo…')}
+                aria-label={t('sol.buscar.placeholder', 'Buscar un módulo…')} />
+            </div>
+          )}
+
+          {completo && visibles.length === 0 && (
+            <div className="sol-vacio">
+              <p>{t('sol.buscar.vacio', 'Ningún módulo coincide con «{q}». Escríbenos y te decimos si lo cubrimos.').replace('{q}', busqueda.trim())}</p>
+              <button type="button" className="zy-btn zy-btn-fantasma" onClick={() => { setBusqueda(''); setGrupo('todas') }}>
+                {t('sol.buscar.limpiar', 'Ver todos los módulos')}
+              </button>
+            </div>
+          )}
+
           <div className="sol-grid">
             {visibles.map(app => (
               <article key={app.id} className="sol-card" style={{ '--sol-acento': app.color }}>
@@ -549,7 +617,7 @@ export default function Soluciones({ completo = false }) {
                   {app.tieneLanding && app.url ? (
                     /* Con landing: el visitante primero conoce y prueba el
                        modulo; la contratacion vive dentro de esa pagina. */
-                    <a href={app.url} className="sol-btn-conocer">
+                    <a href={enlaceLanding(app, idioma)} className="sol-btn-conocer">
                       {t('serv.enlace', 'Conoce más')}
                     </a>
                   ) : app.disponible !== false ? (

@@ -170,9 +170,23 @@ function construir() {
   const DATOS_LANDINGS = join(AQUI, '..', 'admin', 'database', 'seeders', 'landings')
   const GENERADOR = join(AQUI, '..', 'admin', 'app', 'Http', 'Controllers', 'ModuloController.php')
 
+  // ⚠️ Y su copia en cada idioma (2026-11-24), solo si la traducción está VIGENTE: su huella es la
+  // del español. Con otra huella el admin no la publica, y declararla aquí mandaría a Google a un 404.
+  const TRADUCCIONES = join(AQUI, '..', 'admin', 'resources', 'landings')
+  const leerJson = (ruta) => { try { return JSON.parse(readFileSync(ruta, 'utf8')) } catch { return null } }
+  const es = leerJson(join(TRADUCCIONES, 'es.json'))
+  const otros = ['en', 'fr', 'it', 'zh-Hans', 'zh-Hant', 'ar', 'ht']
+    .map((i) => [i, leerJson(join(TRADUCCIONES, `${i}.json`))])
+    .filter(([, d]) => d && es)
+
   for (const slug of landingsDeModulo().sort()) {
     const lastmod = masReciente([join(DATOS_LANDINGS, `${slug}.php`), GENERADOR])
     urls.push({ loc: `${SITIO}/${slug}/`, lastmod, prioridad: '0.9', frecuencia: 'monthly' })
+    for (const [i, d] of otros) {
+      if (d.modulos?.[slug]?._huella && d.modulos[slug]._huella === es.modulos?.[slug]?._huella) {
+        urls.push({ loc: `${SITIO}/${i}/${slug}/`, lastmod: masReciente([join(TRADUCCIONES, `${i}.json`), GENERADOR]), prioridad: '0.8', frecuencia: 'monthly' })
+      }
+    }
   }
 
   const cuerpo = urls.map((u) => [

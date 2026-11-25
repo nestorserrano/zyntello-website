@@ -525,3 +525,90 @@ main > section > .container-fluid { position: relative; z-index: 1; }
 
 /* El precio del ERP no se parte («$» en una línea y la cifra en otra) ni la flecha del pie cae sola. */
 .sol-bundle-banner [style*="font-weight: 800"], .zy-pie-todos { white-space: nowrap; }
+
+/* ═══ Catálogo de aplicaciones: filtros, buscador y tarjetas compactas (2026-11-24) ═══
+   En el teléfono el catálogo eran ~16 pantallas de una sola columna. Los grupos y el buscador
+   responden «¿hay algo para mi negocio?» sin recorrerlo entero, y la barra se queda pegada
+   arriba mientras se baja, para cambiar de grupo sin volver al principio. */
+.sol-filtros {
+  position: sticky; top: calc(var(--zy-navbar-h) - var(--zy-barra-h) + 8px); z-index: 20;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
+  margin: 0 0 22px; padding: 12px;
+  background: rgba(255, 255, 255, .94); backdrop-filter: blur(8px);
+  border: 1px solid var(--zy-borde); border-radius: 16px; box-shadow: var(--zy-sombra-1);
+}
+.sol-filtros-grupos { display: flex; flex-wrap: wrap; gap: 8px; }
+.sol-filtro {
+  display: inline-flex; align-items: center; gap: 7px; min-height: 38px; padding: 6px 14px;
+  border: 1px solid var(--zy-borde-medio); border-radius: 999px; background: #fff;
+  color: var(--zy-texto-medio); font-size: .85rem; font-weight: 600; cursor: pointer;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.sol-filtro:hover { border-color: var(--zy-indigo); color: var(--zy-indigo); }
+.sol-filtro.activo { background: var(--zy-indigo); border-color: var(--zy-indigo); color: #fff; }
+.sol-filtro-n { font-size: .72rem; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: rgba(16, 86, 140, .1); }
+.sol-filtro.activo .sol-filtro-n { background: rgba(255, 255, 255, .22); }
+.sol-buscar {
+  flex: 1 1 220px; max-width: 320px; min-height: 40px; padding: 8px 14px;
+  border: 1px solid var(--zy-borde-medio); border-radius: 999px; background: #fff;
+  color: var(--zy-texto); font-size: .9rem;
+}
+.sol-buscar:focus { outline: 2px solid var(--zy-indigo); outline-offset: 1px; border-color: var(--zy-indigo); }
+.sol-vacio { text-align: center; padding: 40px 16px; color: var(--zy-texto-suave); }
+.sol-vacio p { margin: 0 auto 16px; max-width: 520px; }
+
+/* Toda la tarjeta lleva a la landing, no solo el botón: en el teléfono el botón era un blanco
+   pequeño y el resto de la tarjeta, que parece pulsable, no hacía nada. */
+.sol-card .sol-card-pie { position: static; }
+.sol-card .sol-btn-conocer::after { content: ''; position: absolute; inset: 0; z-index: 2; border-radius: inherit; }
+/* ⚠️ Sin esto, al pasar el ratón el `transform` del botón lo convierte en el bloque contenedor
+   del ::after, que encoge al tamaño del botón y la tarjeta parpadea. */
+.sol-card .sol-btn-conocer:hover { transform: none; }
+
+@media (max-width: 767.98px) {
+  .sol-filtros { top: calc(var(--zy-navbar-h) - var(--zy-barra-h) + 4px); padding: 10px; gap: 10px; margin-bottom: 16px; }
+  /* Los grupos se deslizan de lado en una sola fila en vez de ocupar tres. */
+  .sol-filtros-grupos { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0 -2px; padding: 0 2px; width: 100%; }
+  .sol-filtros-grupos::-webkit-scrollbar { display: none; }
+  .sol-filtro { flex-shrink: 0; min-height: 36px; padding: 5px 12px; font-size: .8rem; }
+  .sol-buscar { max-width: none; flex-basis: 100%; min-height: 38px; }
+  .sol-grid { gap: 10px; }
+  .sol-card { padding: 14px 16px; gap: 4px; }
+  .sol-card-cima { margin-bottom: 0; }
+  .sol-card-icono { width: 38px; height: 38px; font-size: 1.15rem; border-radius: 11px; }
+  .sol-card-nombre { font-size: 1.02rem; }
+  .sol-card-sub { font-size: .82rem; }
+  .sol-card-pie { padding-top: 8px; }
+  .sol-card-monto { font-size: 1.1rem; }
+  .sol-btn-conocer, .sol-btn-obtener { min-height: 38px; padding: 8px 16px; }
+}
+/* ⚠️ `overflow: hidden` en la sección anulaba el `sticky` de la barra de filtros: un antepasado
+   con hidden se vuelve su contenedor de desplazamiento y la barra se va con la página sin
+   ningún error. `clip` recorta igual los adornos y NO crea ese contenedor. */
+.sol-section.sol-pagina { overflow: clip; }
+
+/* En el teléfono, el icono a la izquierda del nombre: la tarjeta pierde una fila entera. */
+@media (max-width: 767.98px) {
+  .sol-pagina .sol-card {
+    display: grid; grid-template-columns: 38px minmax(0, 1fr) auto; column-gap: 12px; row-gap: 2px;
+    grid-template-areas: "icono nombre badge" "icono sub sub" "requiere requiere requiere" "pie pie pie";
+  }
+  .sol-pagina .sol-card-cima { display: contents; }
+  .sol-pagina .sol-card-icono { grid-area: icono; align-self: start; }
+  .sol-pagina .sol-card-badge { grid-area: badge; align-self: start; font-size: .65rem; padding: 3px 8px; }
+  .sol-pagina .sol-card-nombre { grid-area: nombre; align-self: center; }
+  .sol-pagina .sol-card-sub { grid-area: sub; }
+  .sol-pagina .sol-card-requiere { grid-area: requiere; }
+  .sol-pagina .sol-card-pie { grid-area: pie; }
+}
+
+/* Selector de moneda en el teléfono (pedido el 2026-11-24): las cinco monedas se partían en dos
+   filas desiguales al lado del rótulo. Ahora el rótulo va encima y las cinco caben en UNA fila,
+   repartidas a lo ancho. */
+@media (max-width: 767.98px) {
+  .sol-moneda-selector { flex-direction: column; align-items: stretch; gap: 8px; padding: 12px; }
+  .sol-moneda-pills { flex-wrap: nowrap; gap: 6px; }
+  .sol-moneda-pill { flex: 1 1 0; justify-content: center; min-height: 36px; padding: 6px 4px; min-width: 0; }
+  .sol-moneda-code { font-size: .8rem; }
+  .sol-moneda-loading { margin-left: 0; }
+}

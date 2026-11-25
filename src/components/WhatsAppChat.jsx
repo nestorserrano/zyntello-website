@@ -537,6 +537,50 @@ export default function WhatsAppChat() {
   const inputRef = useRef(null)
   const bottomRef = useRef(null)
 
+  /* El botón se puede ARRASTRAR para destapar lo que tenga debajo (pedido por el director técnico el
+     2026-11-24: en el teléfono tapaba el «Conoce más» de las tarjetas).
+     ⚠️ La posición vive solo en memoria, a propósito: al recargar o volver a la página el botón
+     está otra vez en su esquina. Por eso NO se guarda en localStorage, y por eso `pageshow`
+     la reinicia: al volver con «atrás» el navegador restaura la página de su caché CON su estado,
+     y el botón aparecería donde se dejó. */
+  const [desplazo, setDesplazo] = useState({ x: 0, y: 0 })
+  const arrastre = useRef(null)
+  const fueArrastre = useRef(false)
+  useEffect(() => {
+    const aLaEsquina = () => setDesplazo({ x: 0, y: 0 })
+    const alVolver = (e) => { if (e.persisted) aLaEsquina() }
+    // Solo al cambiar el ANCHO (girar el teléfono): en el móvil, al desplazarse, la barra del
+    // navegador aparece y desaparece y dispara `resize` cambiando solo el alto; reiniciar ahí
+    // devolvería el botón a la esquina cada vez que el visitante baja por la página.
+    let ancho = window.innerWidth
+    const alCambiarAncho = () => { if (window.innerWidth !== ancho) { ancho = window.innerWidth; aLaEsquina() } }
+    window.addEventListener('pageshow', alVolver)
+    window.addEventListener('resize', alCambiarAncho)
+    return () => { window.removeEventListener('pageshow', alVolver); window.removeEventListener('resize', alCambiarAncho) }
+  }, [])
+
+  const empezarArrastre = (e) => {
+    arrastre.current = { px: e.clientX, py: e.clientY, ox: desplazo.x, oy: desplazo.y, movido: false }
+    e.currentTarget.setPointerCapture?.(e.pointerId)
+  }
+  const arrastrar = (e) => {
+    const a = arrastre.current
+    if (!a) return
+    const dx = e.clientX - a.px, dy = e.clientY - a.py
+    // Menos de 6 px es un toque tembloroso, no un arrastre: tiene que seguir abriendo el chat.
+    if (!a.movido && Math.hypot(dx, dy) < 6) return
+    a.movido = true
+    // Dentro de la pantalla: el botón (62 px) parte de la esquina, a 24 px de cada borde.
+    const borde = 24, lado = 62, margen = 8
+    const x = Math.min(borde - margen, Math.max(-(window.innerWidth - lado - borde - margen), a.ox + dx))
+    const y = Math.min(borde - margen, Math.max(-(window.innerHeight - lado - borde - margen), a.oy + dy))
+    setDesplazo({ x, y })
+  }
+  const soltar = () => {
+    fueArrastre.current = !!arrastre.current?.movido
+    arrastre.current = null
+  }
+
   useEffect(() => {
     const t = setTimeout(() => setPulso(false), 5000)
     return () => clearTimeout(t)
@@ -681,7 +725,7 @@ export default function WhatsAppChat() {
         cede ante lo que exige una decisión del visitante —el aviso de cookies—,
         que además dura hasta que lo acepta y nunca más.
       */}
-      <div data-chat style={{ position: 'fixed', bottom: '1.5rem', right: '1.5rem', zIndex: 55 }}>
+      <div data-chat style={{ position: 'fixed', bottom: '1.5rem', right: '1.5rem', zIndex: 55, transform: `translate(${desplazo.x}px, ${desplazo.y}px)` }}>
 
         {/* Panel del chat */}
         {abierto && (
@@ -794,9 +838,21 @@ export default function WhatsAppChat() {
 
         {/* Botón flotante */}
         <div className="d-flex justify-content-end">
-          <button onClick={() => setAbierto(!abierto)}
+          <button
+            onClick={() => {
+              // Soltar tras arrastrar también dispara `click`: ese no abre el chat.
+              if (fueArrastre.current) { fueArrastre.current = false; return }
+              // Al abrir, el botón vuelve a su esquina: el panel se despliega hacia arriba y a la
+              // izquierda, y desde otra posición se saldría de la pantalla.
+              if (!abierto) setDesplazo({ x: 0, y: 0 })
+              setAbierto(!abierto)
+            }}
+            onPointerDown={empezarArrastre}
+            onPointerMove={arrastrar}
+            onPointerUp={soltar}
+            onPointerCancel={soltar}
             className="rounded-circle d-flex align-items-center justify-content-center"
-            style={{ width: 62, height: 62, background: '#25d366', border: 'none', boxShadow: '0 4px 20px rgba(37,211,102,0.45)', cursor: 'pointer', position: 'relative', transition: 'transform 0.2s' }}
+            style={{ width: 62, height: 62, background: '#25d366', border: 'none', boxShadow: '0 4px 20px rgba(37,211,102,0.45)', cursor: 'grab', position: 'relative', transition: 'transform 0.2s', touchAction: 'none' }}
             onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
             onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>
             {pulso && (
