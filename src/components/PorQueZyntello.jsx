@@ -1,3 +1,4 @@
+import FotoDeSeccion from './FotoDeSeccion'
 import { useIdioma } from '../hooks/useIdioma'
 import Icono from './Icono'
 
@@ -42,6 +43,7 @@ export default function PorQueZyntello() {
 
       <div className="container-fluid px-4 px-lg-5 position-relative">
 
+        <div className="zy-intro-con-foto">
         <header className="zy-porque-cabecera zy-revelar">
           <p className="zy-eyebrow zy-eyebrow-coral">{t('porque.eyebrow', 'Por qué Zyntello')}</p>
           {/* ⚠️ Mismo caso que el titular de la portada: la palabra resaltada solo cae donde
@@ -60,6 +62,9 @@ export default function PorQueZyntello() {
             <Icono nombre="flecha" size={18} className="zy-flecha" />
           </a>
         </header>
+        {/* Foto: Unsplash wnpf3Q5pkXA (BaljkanN4), licencia Unsplash. */}
+        <FotoDeSeccion src="/logos/seccion-soporte-2026.jpg" alt={t('porque.foto.alt', 'Una agente de soporte con auriculares atiende a un cliente desde su escritorio')} />
+        </div>
 
         <ol className="zy-porque-lista">
           {RAZONES.map((r, i) => (

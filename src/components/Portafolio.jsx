@@ -1,3 +1,4 @@
+import FotoDeSeccion from './FotoDeSeccion'
 import Icono from './Icono'
 import { useIdioma } from '../hooks/useIdioma'
 
@@ -64,6 +65,7 @@ export default function Portafolio() {
 
       <div className="container-fluid px-4 px-lg-5 position-relative">
 
+        <div className="zy-intro-con-foto">
         <header className="zy-port-cabecera zy-revelar">
           <p className="zy-eyebrow">{t('port.eyebrow', 'Nuestro trabajo')}</p>
           <h2 className="zy-titulo">
@@ -79,6 +81,9 @@ export default function Portafolio() {
             {t('port.subtitulo', 'Proyectos funcionando en empresas reales, no maquetas. Estos son los que podemos contar.')}
           </p>
         </header>
+        {/* Una pantalla REAL del demo, no una foto: «en producción, no maquetas». */}
+        <FotoDeSeccion src="/capturas/app-dashboards-financieros-2026.jpg" posicion="left top" alt={t('port.foto.alt', 'El tablero de dashboards financieros de la plataforma Zyntello, con datos de ejemplo')} />
+        </div>
 
         <div className="zy-port-rejilla">
           {PROYECTOS.map((p, i) => (

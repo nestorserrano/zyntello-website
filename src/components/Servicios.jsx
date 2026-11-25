@@ -1,3 +1,4 @@
+import FotoDeSeccion from './FotoDeSeccion'
 import Icono from './Icono'
 import { useIdioma } from '../hooks/useIdioma'
 import '../styles/Servicios.css'
@@ -181,6 +182,7 @@ export default function Servicios() {
 
       <div className="container-fluid px-4 px-lg-5 position-relative">
 
+        <div className="zy-intro-con-foto">
         <header className="zy-serv-cabecera zy-revelar">
           <p className="zy-eyebrow">{t('serv.eyebrow', 'Qué hacemos')}</p>
           <h2 className="zy-titulo">
@@ -204,6 +206,9 @@ export default function Servicios() {
             {t('serv.subtitulo', 'No vendemos software enlatado. Cada implementación parte de entender cómo funciona tu empresa — y construimos o adaptamos la tecnología exacta que necesita.')}
           </p>
         </header>
+        {/* Foto: Unsplash pOO-q-KP4tU (Marcel Petzold), licencia Unsplash. */}
+        <FotoDeSeccion src="/logos/seccion-consultoria-2026.jpg" alt={t('serv.foto.alt', 'Un consultor explica una propuesta en el portátil a dos personas de la empresa cliente')} />
+        </div>
 
         {/* Formato «Nuestras Áreas» de appicross.com: los tres primeros —lo que Zyntello vende
             como producto propio— van en tarjetas con foto; el resto, en la rejilla de abajo. */}
