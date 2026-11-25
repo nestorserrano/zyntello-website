@@ -22,8 +22,16 @@ import { useIdioma } from '../hooks/useIdioma'
  *
  * ⚠️ Se cierra y se recuerda cerrado. Un aviso que reaparece en cada visita deja de leerse y
  * pasa a ser un estorbo que la gente aprende a esquivar con la vista.
+ *
+ * ⚠️ Y desde el 2026-11-24 (decisión del director técnico) se retira SOLO a los 20 segundos, y
+ * cerrarse así cuenta igual que pulsar la ×: desde ese momento no vuelve a aparecer. Antes solo se
+ * recordaba la ×, así que quien lo leía y seguía navegando se lo volvía a encontrar cada vez que
+ * regresaba a la portada.
+ * ⚠️ Si al cumplirse el plazo el puntero o el foco están dentro, espera a que salgan: quitarle
+ * la tira a quien está a punto de pulsar «Elegir idioma» es peor que dejarla unos segundos más.
  */
 const CLAVE = 'zyntello-aviso-idiomas'
+const SEGUNDOS_A_LA_VISTA = 20
 
 /** Lo escucha `SelectorIdioma` para desplegarse sin que haya que compartir estado entre ellos. */
 export const EVENTO_ABRIR_IDIOMAS = 'zy-abrir-idiomas'
@@ -32,6 +40,8 @@ export default function AvisoIdiomas() {
   const { t, idioma } = useIdioma()
   const [visible, setVisible] = useState(false)
   const caja = useRef(null)
+  const dentro = useRef(false)   // puntero o foco sobre la tira
+  const vencido = useRef(false)  // ya pasaron los 20 segundos
 
   /*
    * Publica el alto real de la tira en `--zy-aviso-h`, que es lo que el hero, el
@@ -73,6 +83,25 @@ export default function AvisoIdiomas() {
     }
   }, [])
 
+  useEffect(() => {
+    if (!visible) return
+    const reloj = setTimeout(() => {
+      vencido.current = true
+      // Cerrarse sola cuenta como cerrada: no vuelve, ni al regresar a la portada.
+      try { localStorage.setItem(CLAVE, '1') } catch { /* ver arriba */ }
+      if (!dentro.current) setVisible(false)
+    }, SEGUNDOS_A_LA_VISTA * 1000)
+    return () => clearTimeout(reloj)
+  }, [visible])
+
+  const entrar = () => { dentro.current = true }
+  const salir = (e) => {
+    // `focusout` hacia un hijo de la propia tira no es salir de ella.
+    if (e?.relatedTarget && caja.current?.contains(e.relatedTarget)) return
+    dentro.current = false
+    if (vencido.current) setVisible(false)
+  }
+
   const cerrar = () => {
     setVisible(false)
     try { localStorage.setItem(CLAVE, '1') } catch { /* ver arriba */ }
@@ -85,7 +114,8 @@ export default function AvisoIdiomas() {
   if (!visible) return null
 
   return (
-    <div ref={caja} className="zy-aviso-idiomas" role="region" aria-label={t('avisoIdiomas.region', 'Idiomas disponibles')}>
+    <div ref={caja} className="zy-aviso-idiomas" role="region" aria-label={t('avisoIdiomas.region', 'Idiomas disponibles')}
+      onMouseEnter={entrar} onMouseLeave={salir} onFocus={entrar} onBlur={salir}>
       <div className="zy-aviso-idiomas-caja">
         <p className="zy-aviso-idiomas-texto">
           <strong>{t('avisoIdiomas.titulo', 'Visítanos en tu idioma.')}</strong>{' '}
