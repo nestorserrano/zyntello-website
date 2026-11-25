@@ -466,6 +466,10 @@ export const PAGINAS = [
         pregunta: '¿Cómo se contrata?',
         respuesta: 'Por volumen: un plan según cuántos comprobantes electrónicos emites al mes, sobre el módulo de Facturación. Escríbenos y te decimos cuál te corresponde.',
       },
+      {
+        pregunta: '¿Zyntello es proveedor autorizado por la DGII?',
+        respuesta: 'Zyntello está en proceso de autorización como proveedor de servicios de facturación electrónica ante la DGII. Mientras tanto, tu empresa se certifica como emisor con su propio certificado digital, en los ambientes de la DGII y sobre el mismo sistema con el que vas a facturar.',
+      },
     ],
   },
 ]
