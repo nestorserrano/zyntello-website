@@ -446,6 +446,12 @@ main > section.zy-nos { padding-block: clamp(56px, 7vw, 110px); }
   display: block;
 }
 .zy-cont-canal-enlace { color: var(--zy-indigo-claro); font-weight: 500; }
+.zy-cont-canal-local {
+  display: block;
+  margin-top: 2px;
+  font-size: .82rem;
+  color: var(--zy-texto-tenue);
+}
 .zy-cont-canal-enlace:hover { color: var(--zy-coral-claro); }
 
 .zy-cont-form {

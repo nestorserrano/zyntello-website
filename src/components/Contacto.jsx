@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Icono from './Icono'
 import { useIdioma } from '../hooks/useIdioma'
 
@@ -39,13 +39,50 @@ const CANALES = [
   // ⚠️ «WhatsApp» y el número NO se traducen: son una marca y una dirección.
   { icono: 'chat',       clave: null,                    titulo: 'WhatsApp',        valor: '+1 829 639 9877',      href: 'https://wa.me/18296399877' },
   { icono: 'salvavidas', clave: 'cont.canal.cliente',    titulo: 'Ya eres cliente', valor: 'soporte@zyntello.com', href: 'mailto:soporte@zyntello.com' },
-  { icono: 'reloj',      clave: 'cont.canal.horario',    titulo: 'Horario',         valor: 'Lunes a viernes, 8:00 a 18:00 (AST)', claveValor: 'cont.canal.horario.valor', href: null },
+  // ⚠️ Antes decía «(AST)»: la hora es correcta (GMT-4), pero casi nadie reconoce la sigla.
+  { icono: 'reloj',      clave: 'cont.canal.horario',    titulo: 'Horario',         valor: 'Lunes a viernes, 8:00 a 18:00, hora de Santo Domingo (GMT-4)', claveValor: 'cont.canal.horario.rd', href: null, horario: true },
 ]
+
+/* El horario de atención es de 8:00 a 18:00 en Santo Domingo, que es GMT-4 todo el año —la
+   República Dominicana no cambia la hora en verano—. En UTC, de 12:00 a 22:00. */
+const ABRE_UTC = 12
+const CIERRA_UTC = 22
+const ZONA_ZYNTELLO = 'America/Santo_Domingo'
+
+/**
+ * El horario de atención en la hora del VISITANTE, o `null` si coincide con la de Santo Domingo.
+ *
+ * Lo calcula su navegador con su propia zona, y por eso respeta el horario de verano de donde
+ * esté: Madrid en invierno ve 13:00 a 23:00 y en verano 14:00 a 24:00. Quien está en Caracas o en
+ * Santo Domingo no ve la segunda línea, porque ya es su hora.
+ */
+function horarioDelVisitante(idioma) {
+  try {
+    const hoy = new Date()
+    const aLas = h => new Date(Date.UTC(hoy.getUTCFullYear(), hoy.getUTCMonth(), hoy.getUTCDate(), h))
+    const hora = (d, timeZone) =>
+      new Intl.DateTimeFormat(idioma, { hour: 'numeric', minute: '2-digit', timeZone }).format(d)
+
+    const inicio = hora(aLas(ABRE_UTC))
+    const fin = hora(aLas(CIERRA_UTC))
+    if (inicio === hora(aLas(ABRE_UTC), ZONA_ZYNTELLO) && fin === hora(aLas(CIERRA_UTC), ZONA_ZYNTELLO)) {
+      return null
+    }
+    return { inicio, fin }
+  } catch {
+    return null // un navegador sin Intl ve el horario de Santo Domingo, que ya dice su zona
+  }
+}
 
 export default function Contacto() {
   const { idioma, t } = useIdioma()
   const [form, setForm] = useState({ nombre: '', empresa: '', email: '', servicio: '', mensaje: '' })
   const [estado, setEstado] = useState(null) // null | 'enviando' | 'ok' | 'error'
+
+  // ⚠️ Después de montar, no al renderizar: la portada se prerenderiza en el build, y ahí no
+  //    hay zona del visitante. Calcularlo en el render daría la hora del servidor de build.
+  const [horaLocal, setHoraLocal] = useState(null)
+  useEffect(() => { setHoraLocal(horarioDelVisitante(idioma)) }, [idioma])
 
   const cambiar = e => setForm({ ...form, [e.target.name]: e.target.value })
 
@@ -119,6 +156,13 @@ export default function Contacto() {
                     {c.href
                       ? <a className="zy-cont-canal-valor zy-cont-canal-enlace" href={c.href}>{c.valor}</a>
                       : <span className="zy-cont-canal-valor">{c.claveValor ? t(c.claveValor, c.valor) : c.valor}</span>}
+                    {c.horario && horaLocal && (
+                      <span className="zy-cont-canal-local">
+                        {t('cont.canal.horario.tuhora', 'En tu hora: {inicio} a {fin}')
+                          .replace('{inicio}', horaLocal.inicio)
+                          .replace('{fin}', horaLocal.fin)}
+                      </span>
+                    )}
                   </div>
                 </div>
               ))}
