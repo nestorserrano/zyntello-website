@@ -276,7 +276,9 @@ details p{color:var(--suave);font-size:.94rem;margin-top:13px;max-width:72ch}
   .barra-marca strong{font-size:1rem}
   .acciones .btn,.hero-acciones .btn{width:100%}
 }
-@media(max-width:420px){ .barra-marca{display:none} }
+/* En el teléfono se esconde el NOMBRE, nunca el isotipo: sin él la barra se quedaba en una «<»
+   suelta y la página no decía de quién era (visto el 2026-11-24). */
+@media(max-width:420px){ .barra-marca strong{display:none} .barra-marca img{height:32px} .barra-izq{gap:10px} .btn-barra{padding:9px 14px} }
 
 /* El selector de idioma de la barra. Son ocho enlaces cortos, no un
    desplegable: ver el comentario de la plantilla. */
