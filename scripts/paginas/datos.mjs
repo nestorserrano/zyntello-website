@@ -317,4 +317,155 @@ export const PAGINAS = [
       { pregunta: '¿Qué hacéis con mis datos si os escribo?', respuesta: 'Usarlos para responderte. No se venden ni se ceden; la política de privacidad publicada explica qué se guarda y durante cuánto tiempo.' },
     ],
   },
+  /* ══════════════════════════════════════════════════════════════════════ */
+  // [ECF-PAG-1] Página propia de la facturación electrónica dominicana (decisión del director
+  // técnico, 2026-11-24): es lo primero que se vende en RD. ⚠️ Solo afirma lo que el código hace:
+  // el ACUSE comercial se registra pero AÚN no se transmite a la DGII (EcfAcuseService), así que
+  // la página dice «registras su aprobación», nunca «se envía». Y no se presenta a Zyntello como
+  // proveedor autorizado por la DGII: no es un dato que tengamos.
+  {
+    slug: 'facturacion-electronica',
+    nombre: 'Facturación electrónica e-CF',
+    subtitulo: 'República Dominicana, DGII',
+    color: '#10568c',
+    resumen: 'Emite tus comprobantes fiscales electrónicos desde la misma factura: el sistema arma el e-CF, lo firma, lo envía a la DGII y te dice si lo aceptó, sin pasar por otro programa.',
+    heroTitulo: 'Tu factura sale ya como e-CF, firmada y enviada a la DGII',
+    heroBajada: 'La Ley 32-23 hizo obligatoria la facturación electrónica en República Dominicana. En Zyntello no es un sistema aparte: facturas como siempre y el comprobante electrónico se genera, se firma con tu certificado digital y se transmite a la DGII desde la misma pantalla.',
+    segundoBoton: {
+      texto: 'Probar el demo',
+      href: 'https://app.zyntello.com/demo',
+    },
+    problema: {
+      titulo: 'Facturar en un sistema y emitir el e-CF en otro',
+      texto: 'Muchas empresas resolvieron la obligación con un portal o un proveedor aparte: se factura en el sistema de siempre y después se vuelve a cargar cada factura para emitir el comprobante electrónico. Cada paso extra es una oportunidad de que el monto, el ITBIS o el RNC del cliente no coincidan, y de que la DGII rechace el documento cuando la mercancía ya se entregó.',
+      puntos: [
+        'Cada factura se teclea dos veces: en el sistema y en el portal del e-CF',
+        'El rechazo de la DGII se descubre días después',
+        'Nadie sabe qué comprobantes quedaron sin transmitir',
+        'Las notas de crédito no quedan ligadas a su factura',
+        'El 606 y el 607 se arman a mano a fin de mes',
+        'Los e-CF de los proveedores llegan por correo y se pierden',
+      ],
+    },
+    beneficios: [
+      {
+        titulo: 'Sale de la misma factura',
+        descripcion: 'No hay un segundo sistema. Al emitir la factura se genera el e-CF con sus datos: mismo monto, mismo ITBIS, mismo cliente.',
+      },
+      {
+        titulo: 'Firmado y transmitido',
+        descripcion: 'El XML se firma con el certificado digital de tu empresa y se envía a la DGII, que devuelve su número de seguimiento.',
+      },
+      {
+        titulo: 'Sabes qué respondió la DGII',
+        descripcion: 'Cada comprobante muestra si fue aceptado, aceptado condicional o rechazado, y la bitácora guarda cada envío y cada respuesta.',
+      },
+      {
+        titulo: 'Representación impresa y correo',
+        descripcion: 'La factura en PDF con su código de seguridad, lista para entregar o enviar al cliente por correo desde la propia pantalla.',
+      },
+      {
+        titulo: 'Retransmisión por lote',
+        descripcion: 'Si se cayó la conexión o la DGII no respondió, los pendientes se vuelven a enviar juntos, sin buscarlos uno por uno.',
+      },
+      {
+        titulo: 'Los e-CF que recibes, también',
+        descripcion: 'Importas el XML del proveedor, se valida contra el formato oficial, registras su aprobación o su rechazo comercial y lo precargas como compra.',
+      },
+    ],
+    detalles: [
+      {
+        titulo: 'Ocho tipos de comprobante',
+        descripcion: 'Crédito fiscal (E31), consumo (E32), notas de débito y de crédito (E33 y E34), gastos menores (E43), regímenes especiales (E44), gubernamental (E45) y exportación (E46).',
+      },
+      {
+        titulo: 'Exportación y regímenes especiales, bien gravados',
+        descripcion: 'El E44 y el E46 no se emiten como exentos: van a la tasa de ITBIS del 0 %, que es como los pide la DGII.',
+      },
+      {
+        titulo: 'Pruebas, certificación y producción',
+        descripcion: 'La plataforma trabaja con los tres ambientes de la DGII, así que la certificación de tu empresa se hace sobre el mismo sistema con el que vas a facturar.',
+      },
+      {
+        titulo: 'Notas de crédito con su referencia',
+        descripcion: 'Cada nota lleva el comprobante que modifica, como exige el formato, y queda enlazada a la factura original.',
+      },
+      {
+        titulo: 'Reportes 606 y 607',
+        descripcion: 'Las compras y las ventas del período salen del mismo registro de comprobantes, sin pasarlas a mano a una hoja de cálculo.',
+      },
+      {
+        titulo: 'Varias empresas, numeración separada',
+        descripcion: 'Cada empresa del grupo usa su propio RNC, su certificado y sus secuencias, y sus comprobantes no se mezclan con los de las otras.',
+      },
+    ],
+    cifras: [
+      {
+        valor: '8',
+        etiqueta: 'tipos de e-CF que emite',
+      },
+      {
+        valor: '3',
+        etiqueta: 'ambientes de la DGII: pruebas, certificación y producción',
+      },
+      {
+        valor: '1',
+        etiqueta: 'sola captura: la factura y su e-CF salen juntas',
+      },
+    ],
+    pasos: [
+      {
+        titulo: 'Cargas tu certificado digital',
+        descripcion: 'El que la DGII asocia a tu RNC, con tus secuencias autorizadas de e-CF.',
+      },
+      {
+        titulo: 'Certificas tu empresa',
+        descripcion: 'Se pasan las pruebas de la DGII en su ambiente de certificación, sobre el mismo sistema.',
+      },
+      {
+        titulo: 'Facturas como siempre',
+        descripcion: 'Cada factura sale ya como e-CF, firmada y transmitida, con su respuesta a la vista.',
+      },
+    ],
+    publico: [
+      {
+        titulo: 'Ya emites e-CF con un portal aparte',
+        descripcion: 'Y cargas cada factura dos veces.',
+      },
+      {
+        titulo: 'Te toca empezar a emitir',
+        descripcion: 'Y quieres hacerlo sin cambiar de sistema de facturación.',
+      },
+      {
+        titulo: 'Recibes muchos e-CF de proveedores',
+        descripcion: 'Y necesitas registrarlos sin teclear cada compra.',
+      },
+    ],
+    faq: [
+      {
+        pregunta: '¿Necesito un certificado digital?',
+        respuesta: 'Sí. La DGII exige que cada e-CF vaya firmado con el certificado digital de la empresa emisora. Se carga una vez en la configuración y el sistema firma cada comprobante con él.',
+      },
+      {
+        pregunta: '¿Qué pasa si la DGII rechaza un comprobante?',
+        respuesta: 'Lo ves en la factura y en el panel de documentos electrónicos, con el motivo que devolvió la DGII. Se corrige y se vuelve a transmitir; la bitácora conserva los dos intentos.',
+      },
+      {
+        pregunta: '¿Y si se cae internet?',
+        respuesta: 'La factura se guarda igual y el e-CF queda pendiente. Cuando vuelve la conexión, los pendientes se retransmiten por lote desde el panel.',
+      },
+      {
+        pregunta: '¿Puedo seguir usando NCF tradicionales?',
+        respuesta: 'La plataforma maneja los dos mientras convivan: secuencias NCF y secuencias e-CF, cada una con su autorización y su consumo a la vista.',
+      },
+      {
+        pregunta: '¿Sirve si tengo varias empresas?',
+        respuesta: 'Sí. Cada empresa del grupo tiene su RNC, su certificado y sus secuencias, y sus comprobantes se emiten y se reportan por separado.',
+      },
+      {
+        pregunta: '¿Cómo se contrata?',
+        respuesta: 'Por volumen: un plan según cuántos comprobantes electrónicos emites al mes, sobre el módulo de Facturación. Escríbenos y te decimos cuál te corresponde.',
+      },
+    ],
+  },
 ]

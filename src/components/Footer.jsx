@@ -46,6 +46,7 @@ const EMPRESA = [
   ['#portafolio',      'nav.portafolio',        'Portafolio'],
   ['/aplicaciones/',   'pie.emp.modulos',       'Módulos'],
   ['/precios/',        'pie.emp.precios',       'Precios'],
+  ['/facturacion-electronica/', 'pie.emp.ecf',   'Facturación electrónica e-CF'],
   ['/automatizacion/', 'pie.emp.automatizacion', 'Automatización'],
   ['/blog/',           'pie.emp.blog',          'Blog'],
   ['/contacto/',       'nav.contacto',          'Contacto'],
