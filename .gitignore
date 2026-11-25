@@ -40,6 +40,8 @@ dist-ssr
 # nunca existio: era un intento de versionar el de la app desde este repo.
 admin/
 app/*
+# Zyntello Salud (medicos.zyntello.com): app independiente, con su propio repo.
+medicos/
 
 # Repositorio Laravel independiente creado en una sesion anterior (un solo commit,
 # "Initial Laravel project", sin remoto). Se ignora como admin/ y app/*: es un repo
