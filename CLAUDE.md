@@ -615,10 +615,11 @@ c:/wamp64/www/zyntello/         ← Esta carpeta (repo: zyntello-website)
 ├── admin/                      ← Panel interno Zyntello (repo: zyntello-admin)
 ├── app/                        ← App SaaS unificada (repo: zyntello-app)
 │   └── zyntello-app/           ← Laravel multi-tenant con TODOS los módulos
+├── medicos/                    ← Zyntello Salud, consultorios médicos (repo: zyntello-salud) — app INDEPENDIENTE
 └── CLAUDE.md                   ← Este archivo
 ```
 
-> `admin/` y `app/zyntello-app/` son repositorios Git independientes y están ignorados en este repo del sitio web.
+> `admin/`, `app/zyntello-app/` y `medicos/` son repositorios Git independientes y están ignorados en este repo del sitio web.
 
 ---
 
@@ -633,6 +634,25 @@ c:/wamp64/www/zyntello/         ← Esta carpeta (repo: zyntello-website)
 > - Bases de datos nuevas por módulo
 > - Conexiones nuevas en `config/database.php`
 
+### ⚠️ La única excepción declarada: Zyntello Salud (`medicos/`)
+
+> **Decisión del director técnico, 2026-11-25.**
+
+El vertical de consultorios médicos **salió** de zyntello-app (`[MED-RETIRO]` `7b22ce018`, que
+borró las tablas `med_*`) y pasó a una aplicación aparte, **Zyntello Salud**:
+
+- **Repo, base y subdominio propios.** Repo privado `nestorserrano/zyntello-salud`, base
+  `ukrmeumy_zyntello_salud` y `medicos.zyntello.com`.
+- **No se comunica con zyntello-app.** No comparte usuarios, clientes, base ni cobros.
+- **Solo suscriptor (`tenant_id`), sin empresas.** Sus reglas —aislamiento, roles, portabilidad a
+  SQL Server u Oracle, despliegue— están en **`medicos/CLAUDE.md`**. Las de este archivo sobre
+  `empresa_id`, los 8 idiomas y la ayuda/diccionario **no aplican allí**.
+- **Dental** será OTRA app independiente, con el mismo criterio, cuando se haga.
+
+Por qué: Zyntello ERP es demasiado avanzado para un consultorio, y el médico necesita módulos
+simples. ⚠️ **La excepción es para estos verticales, decididos uno a uno.** Cualquier otro módulo
+sigue la regla de arriba.
+
 ---
 
 ## Estructura en Bluehost (servidor)
@@ -645,6 +665,8 @@ c:/wamp64/www/zyntello/         ← Esta carpeta (repo: zyntello-website)
       public/                   ← Document root de admin.zyntello.com
     app/                        ← Repo zyntello-app
       public/                   ← Document root de app.zyntello.com
+    medicos/                    ← Repo zyntello-salud (Zyntello Salud)
+      public/                   ← Document root de medicos.zyntello.com
 ```
 
 | Subdominio | Document Root |
@@ -652,6 +674,7 @@ c:/wamp64/www/zyntello/         ← Esta carpeta (repo: zyntello-website)
 | zyntello.com | `public_html/zyntello/` |
 | admin.zyntello.com | `public_html/zyntello/admin/public` |
 | app.zyntello.com | `public_html/zyntello/app/public` |
+| medicos.zyntello.com | `public_html/zyntello/medicos/public` |
 
 ---
 
@@ -662,18 +685,21 @@ c:/wamp64/www/zyntello/         ← Esta carpeta (repo: zyntello-website)
 | Sitio web | `nestorserrano/zyntello-website` | Activo |
 | Admin interno | `nestorserrano/zyntello-admin` | Activo |
 | App unificada (todos los módulos) | `nestorserrano/zyntello-app` | Activo |
+| Zyntello Salud (consultorios médicos) | `nestorserrano/zyntello-salud` | Activo, **privado** |
 | App antigua ConstructFlow | `nestorserrano/zyntello-constructflow` | Archivado |
 
 ---
 
 ## Bases de datos (Bluehost)
 
-> **Solo dos BDs en todo el ecosistema.** Cualquier módulo nuevo va a `ukrmeumy_zyntello` con prefijo de tabla.
+> **Cualquier módulo nuevo va a `ukrmeumy_zyntello` con prefijo de tabla.** La única excepción es
+> Zyntello Salud, que tiene base y usuario propios (ver la excepción declarada en «Arquitectura»).
 
 | Aplicación | BD producción | BD local | Usuario |
 |---|---|---|---|
 | App SaaS unificada (todos los módulos) | `ukrmeumy_zyntello` | `zyntello_app` (puerto 3308) | `ukrmeumy_zyntello_user` |
 | Admin interno | `ukrmeumy_zyntello_admin` | `zyntello_admin` | `ukrmeumy_zyntello_user` |
+| Zyntello Salud (`medicos/`) | `ukrmeumy_zyntello_salud` | `zyntello_salud` (puerto 3308) | `ukrmeumy_salud` (propio) |
 
 > 🔐 **Las contraseñas NO se documentan aquí.** Viven en el `.env` de cada entorno —
 > el del servidor para producción, el local para desarrollo— y ese archivo está en
