@@ -42,6 +42,9 @@ admin/
 app/*
 # Zyntello Salud (medicos.zyntello.com): app independiente, con su propio repo.
 medicos/
+# Zyntello Encuestas (encuestas.zyntello.com): app independiente, con su propio repo.
+# ⚠️ No es `encuestas/`: esa carpeta del servidor es la landing que genera el admin.
+encuestas-app/
 
 # Repositorio Laravel independiente creado en una sesion anterior (un solo commit,
 # "Initial Laravel project", sin remoto). Se ignora como admin/ y app/*: es un repo
