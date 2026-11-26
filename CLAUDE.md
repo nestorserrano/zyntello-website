@@ -634,7 +634,9 @@ c:/wamp64/www/zyntello/         ← Esta carpeta (repo: zyntello-website)
 > - Bases de datos nuevas por módulo
 > - Conexiones nuevas en `config/database.php`
 
-### ⚠️ La única excepción declarada: Zyntello Salud (`medicos/`)
+### ⚠️ Las excepciones declaradas: Zyntello Salud y Zyntello Encuestas
+
+#### Zyntello Salud (`medicos/`)
 
 > **Decisión del director técnico, 2026-11-25.**
 
@@ -650,8 +652,35 @@ borró las tablas `med_*`) y pasó a una aplicación aparte, **Zyntello Salud**:
 - **Dental** será OTRA app independiente, con el mismo criterio, cuando se haga.
 
 Por qué: Zyntello ERP es demasiado avanzado para un consultorio, y el médico necesita módulos
-simples. ⚠️ **La excepción es para estos verticales, decididos uno a uno.** Cualquier otro módulo
-sigue la regla de arriba.
+simples.
+
+⚠️ El árbol de Salud estuvo **publicado** en `zyntello.com/medicos/` hasta el 2026-11-25
+(`.git/config` y `composer.json` daban 200). Lo cierra desde `af9a4e2` su propio `.htaccess` raíz.
+**Toda app que viva dentro de `public_html/zyntello/` necesita el suyo**: el de la carpeta padre
+NO cierra nada.
+
+#### Zyntello Encuestas (`encuestas-app/`)
+
+> **Decisión del director técnico, 2026-11-25.** Plan:
+> `app/zyntello-app/docs/blueprints/encuestas/01-BLUEPRINT.md`.
+
+Análisis de datos por encuestas para firmas encuestadoras, campañas y empresas, vendible aparte:
+
+- **Repo, base y subdominio propios.** Repo privado `nestorserrano/zyntello-encuestas`, base
+  `ukrmeumy_encuestas` (usuario propio `ukrmeumy_encuestas`) y `encuestas.zyntello.com`.
+- ⚠️⚠️ **La carpeta es `encuestas-app/`, NO `encuestas/`**: esa la ocupa la landing comercial que
+  el admin genera para `zyntello.com/encuestas/`. Meter ahí la app obligaría a cerrar la carpeta
+  de una página pública.
+- **Independiente del ERP, no del admin.** No comparte código ni base con zyntello-app (lo que hizo
+  falta se COPIÓ); el alta, el cobro, el vencimiento y el corte de acceso sí los decide el admin,
+  como en el ERP.
+- **`company_id` con el MISMO UUID que en el ERP** (`char(36)`), sin `empresa_id`: un cliente con
+  los dos productos es uno solo en el admin. Además del muro de la compañía tiene un **muro por
+  estudio**. Sus reglas están en **`encuestas-app/CLAUDE.md`**.
+- Salud seguirá el mismo modelo (`company_id` + suscripción por el admin): plan en
+  `medicos/docs/blueprint.md`, sección 12.
+
+⚠️ **Las excepciones se deciden una a una.** Cualquier otro módulo sigue la regla de arriba.
 
 ---
 
@@ -667,6 +696,9 @@ sigue la regla de arriba.
       public/                   ← Document root de app.zyntello.com
     medicos/                    ← Repo zyntello-salud (Zyntello Salud)
       public/                   ← Document root de medicos.zyntello.com
+    encuestas-app/              ← Repo zyntello-encuestas (Zyntello Encuestas)
+      public/                   ← Document root de encuestas.zyntello.com
+    encuestas/                  ← ⚠️ NO es la app: landing de zyntello.com/encuestas/ (la genera el admin)
 ```
 
 | Subdominio | Document Root |
@@ -675,6 +707,7 @@ sigue la regla de arriba.
 | admin.zyntello.com | `public_html/zyntello/admin/public` |
 | app.zyntello.com | `public_html/zyntello/app/public` |
 | medicos.zyntello.com | `public_html/zyntello/medicos/public` |
+| encuestas.zyntello.com | `public_html/zyntello/encuestas-app/public` |
 
 ---
 
