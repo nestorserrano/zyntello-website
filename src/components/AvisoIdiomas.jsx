@@ -23,10 +23,9 @@ import { useIdioma } from '../hooks/useIdioma'
  * ⚠️ Se cierra y se recuerda cerrado. Un aviso que reaparece en cada visita deja de leerse y
  * pasa a ser un estorbo que la gente aprende a esquivar con la vista.
  *
- * ⚠️ Y desde el 2026-11-24 (decisión del director técnico) se retira SOLO a los 20 segundos, y
- * cerrarse así cuenta igual que pulsar la ×: desde ese momento no vuelve a aparecer. Antes solo se
- * recordaba la ×, así que quien lo leía y seguía navegando se lo volvía a encontrar cada vez que
- * regresaba a la portada.
+ * ⚠️ Y desde el 2026-11-24 (decisión del director técnico) se retira SOLO a los 20 segundos. Desde
+ * el 2026-11-26 se recuerda como visto EN CUANTO APARECE: sale una sola vez, en la primera página,
+ * y no vuelve ni al navegar, ni al regresar, ni al actualizar.
  * ⚠️ Si al cumplirse el plazo el puntero o el foco están dentro, espera a que salgan: quitarle
  * la tira a quien está a punto de pulsar «Elegir idioma» es peor que dejarla unos segundos más.
  */
@@ -75,7 +74,13 @@ export default function AvisoIdiomas() {
 
   useEffect(() => {
     try {
-      if (!localStorage.getItem(CLAVE)) setVisible(true)
+      if (!localStorage.getItem(CLAVE)) {
+        setVisible(true)
+        // ⚠️ Se da por visto AL APARECER, no al cumplirse el plazo: si solo se anotaba a los 20
+        // segundos, quien cambiaba de página o actualizaba antes se la volvía a encontrar en cada
+        // carga — el reloj muere con la página y nunca llegaba a anotarse.
+        localStorage.setItem(CLAVE, '1')
+      }
     } catch {
       // Navegación privada o almacenamiento bloqueado: se enseña igual. Que no se pueda
       // recordar el cierre no es motivo para ocultar el aviso a quien aún no lo ha visto.
@@ -87,8 +92,6 @@ export default function AvisoIdiomas() {
     if (!visible) return
     const reloj = setTimeout(() => {
       vencido.current = true
-      // Cerrarse sola cuenta como cerrada: no vuelve, ni al regresar a la portada.
-      try { localStorage.setItem(CLAVE, '1') } catch { /* ver arriba */ }
       if (!dentro.current) setVisible(false)
     }, SEGUNDOS_A_LA_VISTA * 1000)
     return () => clearTimeout(reloj)
