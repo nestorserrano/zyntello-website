@@ -9,6 +9,29 @@
 
 ### Bitácora reciente (estado actual — 2026-09-08)
 
+> **SALUD EN AZUL HOSPITAL, DOCTORES DISPONIBLE Y LOS CINCO README (2026-11-26)**:
+> Zyntello Salud cambia el rosa por el **azul hospital** (`#0369a1`) y lleva la **vara de
+> Asclepio** —una serpiente, sin alas: el caduceo de dos es de Hermes— en el emblema, el favicon,
+> la miniatura para compartir y la cabecera de la receta (salud `a798b9e`). Su **entrada pasa a
+> tema claro** (salud `d061bde`), decisión permanente del director técnico; el oscuro queda en la
+> etiqueta `salud-entrada-oscura`. Encuestas conserva su entrada oscura y todo lo demás sigue
+> igual en las dos apps.
+>
+> La landing `doctores` deja de decir «Está en preparación»: su primera pregunta frecuente dice que
+> ya funciona en `medicos.zyntello.com`, en los 8 idiomas (admin `b200292`, huella
+> `32db05fe75b5b09a`). La vitrina del ERP y el catálogo de respaldo del sitio (`9843a61b6`) llevan
+> Salud y Encuestas a sus propios dominios. Sitio y admin desplegados y verificados en el archivo
+> servido.
+>
+> **Los README de los cinco repos, al día**: el del admin era la plantilla de Laravel en inglés
+> (admin `b6772b4`); el de la app tenía las cifras de septiembre —hoy 653 tablas, 387 migraciones,
+> 932 pruebas y 1.625 pantallas con ayuda— (app `f5a7a384c`); los de Salud y Encuestas tenían tres
+> líneas (`66c8a8b`, `f4107fd`); el del sitio presenta ya los tres productos (`f9bc01c79`).
+> Graphify se reconstruyó con **cinco** repos: **36.136 nodos y 82.883 aristas** (antes 24.140, de
+> septiembre); Salud (1.005) y Encuestas (589) entran por primera vez, con su `.graphifyignore`.
+> ⚠️ La raíz necesitó el suyo: `.codex-worktrees/` guarda copias enteras de otros repos, no está
+> en el `.gitignore` y el grafo las habría duplicado. Lanzado desde Bash no se colgó: 12 minutos.
+
 > **CAPTURAS DE DOCUMENTOS FISCALES E INTELIGENCIA, Y EL AVISO DE IDIOMAS (2026-11-25/26)**:
 > `fiscal-documentos` estrena 4 capturas (Colombia, Guatemala FEL, Costa Rica Hacienda y la cola
 > e-CF dominicana) e `inteligencia` una cuarta (Recomendaciones), con su pie en los 8 idiomas y la

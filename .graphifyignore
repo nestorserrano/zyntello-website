@@ -1,0 +1,16 @@
+# Graphify — en la raíz solo se indexa el sitio web.
+# Los otros repos se extraen aparte y se fusionan (graphify-refresh.ps1).
+admin/
+app/
+medicos/
+encuestas-app/
+# Copias de trabajo enteras de otros repos: duplicarían miles de nodos
+.codex-worktrees/
+# Dependencias, builds y material que no es código
+node_modules/
+vendor/
+public/vendor/
+dist/
+graphify-out/
+material/
+video-zyntello/
