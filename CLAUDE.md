@@ -646,7 +646,9 @@ borró las tablas `med_*`) y pasó a una aplicación aparte, **Zyntello Salud**:
 - **Repo, base y subdominio propios.** Repo privado `nestorserrano/zyntello-salud`, base
   `ukrmeumy_zyntello_salud` y `medicos.zyntello.com`.
 - **No se comunica con zyntello-app.** No comparte usuarios, clientes, base ni cobros.
-- **Solo suscriptor (`tenant_id`), sin empresas.** Sus reglas —aislamiento, roles, portabilidad a
+- **Solo compañía (`company_id`, el MISMO UUID que en el ERP), sin empresas.** Desde
+  `[SALUD-ADM]` (2026-11-26) el alta, la suscripción y el corte los decide el admin, igual que en
+  Encuestas, y tiene registro público en `medicos.zyntello.com/registro`. Sus reglas —aislamiento, roles, portabilidad a
   SQL Server u Oracle, despliegue— están en **`medicos/CLAUDE.md`**. Las de este archivo sobre
   `empresa_id`, los 8 idiomas y la ayuda/diccionario **no aplican allí**.
 - **Dental** será OTRA app independiente, con el mismo criterio, cuando se haga.
@@ -677,8 +679,7 @@ Análisis de datos por encuestas para firmas encuestadoras, campañas y empresas
 - **`company_id` con el MISMO UUID que en el ERP** (`char(36)`), sin `empresa_id`: un cliente con
   los dos productos es uno solo en el admin. Además del muro de la compañía tiene un **muro por
   estudio**. Sus reglas están en **`encuestas-app/CLAUDE.md`**.
-- Salud seguirá el mismo modelo (`company_id` + suscripción por el admin): plan en
-  `medicos/docs/blueprint.md`, sección 12.
+- Salud sigue el mismo modelo (`company_id` + suscripción por el admin) desde `[SALUD-ADM]`.
 
 ⚠️ **Las excepciones se deciden una a una.** Cualquier otro módulo sigue la regla de arriba.
 
