@@ -9,6 +9,25 @@
 
 ### Bitácora reciente (estado actual — 2026-09-08)
 
+> **CAPTURAS DE DOCUMENTOS FISCALES E INTELIGENCIA, Y EL AVISO DE IDIOMAS (2026-11-25/26)**:
+> `fiscal-documentos` estrena 4 capturas (Colombia, Guatemala FEL, Costa Rica Hacienda y la cola
+> e-CF dominicana) e `inteligencia` una cuarta (Recomendaciones), con su pie en los 8 idiomas y la
+> `_huella` recalculada (`fiscal-documentos` `c3fc40d7a94fd7ed`, `inteligencia` `a254b8b2e18c1734`).
+> Admin `5f674b2`, sitio `c476cdbdc`. Verificado en producción en `/`, `/en/`, `/zh-Hans/` y `/ar/`.
+>
+> ⚠️⚠️ **Al capturar salieron dos defectos de la app que nadie había visto** (app `fc89da765`,
+> `af6d99cd3`, `237e6fef2`): Recomendaciones decía «El cálculo no ha corrido todavía» ENCIMA de
+> seis recomendaciones calculadas —`InteligenciaDemoSeeder` no anotaba `ultima_ejecucion`—, y la
+> cola e-CF pintaba el valor crudo `pendiente_envio` como estado. Ambos verificados en producción
+> tras el `demo:reset` del 26.
+>
+> ⚠️ **El aviso de idiomas reaparecía en cada carga** (sitio `81e478d85`): se anotaba como visto
+> solo al cumplirse los 20 segundos o con la ×, y el reloj muere con la página — quien navegaba o
+> actualizaba antes se lo volvía a encontrar siempre. Ahora se anota **al aparecer**.
+>
+> Limpieza: 22 scripts PHP de diagnóstico de septiembre en `/home4/ukrmeumy/` (fuera del document
+> root), revisados y borrados.
+
 > **LOS SIETE IDIOMAS, CERRADOS: INGLÉS, FRANCÉS E ITALIANO (2026-11-23)**: las 3.053 claves
 > leídas clave a clave en `en`, `fr` e `it`. **136 textos corregidos** (44 EN, 27 FR, 65 IT),
 > aplicados en producción y verificados en las páginas servidas. El español no se tocó: 0 cambios.
